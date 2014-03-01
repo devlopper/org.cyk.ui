@@ -51,6 +51,11 @@
 			<artifactId>all-themes</artifactId>
 			<version>1.0.10</version>
 		</dependency>
+		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>primefaces-extensions</artifactId>
+			<version>1.1.0</version>
+		</dependency>
 		<!-- Utilities -->
 		<dependency>
 			<groupId>org.omnifaces</groupId>

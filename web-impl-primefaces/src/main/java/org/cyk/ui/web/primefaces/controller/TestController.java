@@ -34,6 +34,8 @@ public class TestController extends AbstractBean implements Serializable {
 		
 		command.setExecuteMethod(new AbstractMethod<Object, Object>() {
 			
+			private static final long serialVersionUID = -3554292967012003944L;
+
 			@Override
 			protected Object __execute__(Object parameter) {
 				// TODO Auto-generated method stub

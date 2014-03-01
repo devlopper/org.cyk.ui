@@ -2,12 +2,16 @@ package org.cyk.ui.api.form;
 
 import java.util.Collection;
 
-import org.cyk.ui.api.IViewContent;
+import org.cyk.ui.api.IView;
 
-public interface IForm extends IViewContent {
+public interface IForm/*<DTO>*/ extends IView {
 	
 	Collection<IFormField> getFields();
 	
-	Collection<IFormField> getCommands();
+	Collection<IFormCommand> getCommands();
+	
+	//DTO getDto();
+	
+	//void build(Class<?>...groups);
 
 }
