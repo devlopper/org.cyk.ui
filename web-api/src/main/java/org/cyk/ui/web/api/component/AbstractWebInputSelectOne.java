@@ -8,9 +8,10 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import lombok.Getter;
+import lombok.Setter;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.cyk.ui.api.annotation.FormField;
-import org.cyk.ui.api.annotation.FormField.SelectOneInputType;
 import org.cyk.ui.api.component.input.IInputSelectOne;
 import org.cyk.ui.api.component.input.ISelectItem;
 
@@ -18,19 +19,22 @@ import org.cyk.ui.api.component.input.ISelectItem;
 public abstract class AbstractWebInputSelectOne<VALUE_TYPE> extends AbstractWebInputComponent<VALUE_TYPE> implements IWebInputSelectOne<VALUE_TYPE>,Serializable  {
 
 	private static final long serialVersionUID = 7029658406107605595L;
-
+	
+	@Setter
 	private Collection<SelectItem> items = new ArrayList<SelectItem>();
 	private String noSelectionMarker = "---";
 	private String noSelectionLabel = "NO SEL";//FunctionController.i18n("combobox.noselection");
 	private Boolean renderNoSelectionLabel=Boolean.TRUE;
 	private String processOnSelect="@this",updateOnSelect;
 	private Boolean onChangeDisable=Boolean.TRUE,booleanValueType=Boolean.FALSE;
-	private SelectOneInputType selectOneInputType;
 	
 	public AbstractWebInputSelectOne(IInputSelectOne<VALUE_TYPE> input) {
 		super(input);
-		for(ISelectItem selectItem : input.getItems())
-			items.add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
+		
+		if(input.getItems()!=null)
+			for(ISelectItem selectItem : input.getItems())
+				items.add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
+		
 	}
 	
 	/*
@@ -54,17 +58,18 @@ public abstract class AbstractWebInputSelectOne<VALUE_TYPE> extends AbstractWebI
 	
 	@Override
 	public String getFamily() {
-		//if(isRadio())
+		if(isRadio())
 			return "InputSelectOneRadio";
-		//return super.getFamily();
+		return super.getFamily();
 	}
 	
 	public boolean isCombobox(){
-		return FormField.SelectOneInputType.COMBOBOX.equals(selectOneInputType);
+		return FormField.SelectOneInputType.COMBOBOX.equals(formField.selectOneInputType());
 	}
 	
 	public boolean isRadio(){
-		return FormField.SelectOneInputType.RADIO.equals(selectOneInputType);
+		return Boolean.class.equals(ClassUtils.primitiveToWrapper(field.getType())) || 
+				FormField.SelectOneInputType.RADIO.equals(formField.selectOneInputType());
 	}
 	
 	/*

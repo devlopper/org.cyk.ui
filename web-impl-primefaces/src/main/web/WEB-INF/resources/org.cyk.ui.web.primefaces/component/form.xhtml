@@ -71,15 +71,45 @@
 	            <h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"/>
 	        </pe:dynaFormControl> 
 
-			<!--
-			<pe:dynaFormControl type="input" for="outputText">
-				<h:inputText id="outputText" value="#{data.value}" escape="false" />
-			</pe:dynaFormControl>
+	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu"><table border="0" style="width: 100%;" cellpadding="0" cellspacing="0"><tr>  
+	            <td style="width: 100%;">
+	            	<p:message  escape="false" for="selectOneMenu"/>
+	            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+		            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{value.validate}" valueChangeListener="#{data.valueChangeListener}" 
+		            	rendered="#{not data.readOnly}">
+		            	<!--
+		            	<f:converter binding="#{jsfComponentController.converter}" />
+		            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
+		                -->
+		                <f:selectItems value="#{data.items}"/>  
+		                <f:attribute name="fieldId" value="#{data.id}"/>
+		                <!--
+		                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+		            	-->
+		            </p:selectOneMenu>
+	            	<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.style}" styleClass="#{data.styleClass}"/>
+	            </td> 
+	           
+	            <td>
+	            
+	            	<p:commandButton 
+						value="#{data.createCommand.label}" 
+						icon="#{data.createCommand.icon}" 
+						action="#{value.switchModel(data,edit)}" 
+						process="@this" 
+				        update="#{update}" 
+				        rendered="#{data.createCommand.rendered}">
+				        
+				    </p:commandButton>
+	            
+	            <!--ui:include src="/primefacesForm/include/commandButton.xhtml" >
+	        		<ui:param name="data" value="#{data}" />
+	        		<ui:param name="value" value="#{value}" />
+	        		<ui:param name="edit" value="false" />
+	        		<ui:param name="update" value="#{constantManager.FORM_INPUTS_PANEL_ID}" />
+	        	</ui:include--></td>	
+	        </tr> </table></pe:dynaFormControl> 
 
-			<pe:dynaFormControl type="output">
-				<h:outputText value="#{data.value}" escape="false" />
-			</pe:dynaFormControl>
-			-->
 		</pe:dynaForm>
 		
 		<p:separator/>

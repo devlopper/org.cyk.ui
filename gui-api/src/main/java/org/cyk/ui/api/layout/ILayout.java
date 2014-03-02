@@ -1,7 +1,5 @@
 package org.cyk.ui.api.layout;
 
-import java.util.Collection;
-
 import org.cyk.ui.api.component.IComponent;
 import org.cyk.utility.common.cdi.provider.CommonMethodProvider;
 
@@ -17,7 +15,8 @@ public interface ILayout {
 	
 	Integer getColumnsCount();
 	
-	Collection<ILayoutRow> getRows();
+	Integer getRowsCount();
+	//Collection<ILayoutRow> getRows();
 	
 	void createRow();
 	

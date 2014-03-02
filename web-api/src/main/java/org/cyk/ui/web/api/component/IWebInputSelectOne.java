@@ -9,4 +9,6 @@ public interface IWebInputSelectOne<VALUE_TYPE> extends IWebInputComponent<VALUE
 
 	Collection<SelectItem> getItems();
 	
+	void setItems(Collection<SelectItem> items);
+	
 }

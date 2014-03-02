@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.annotation.FormField;
+import org.cyk.ui.api.annotation.FormField.CompositionRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
 import org.cyk.utility.common.validation.System;
 
@@ -36,9 +37,9 @@ public class MyEntity {
 	@FormField
 	private MyEnum myEnum;
 	
-	@FormField
+	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
 	private MyDetails details1;
-	
+	/*
 	@FormField
 	private MyDetails details2;
 	
@@ -47,31 +48,31 @@ public class MyEntity {
 	
 	@FormField
 	private MyDetails details4;
-	
+	*/
 	/**/
-	
+	@Setter @Getter
 	public static class MyDetails{
 		
 		@FormField
-		private String name;
+		private String detailsName = "Zouzoua Lingue";
 		
 		@FormField
-		private Boolean yesOrNo;
+		private Boolean detailsYesOrNo;
 		
 		@FormField
-		private Integer myInt;
+		private Integer detailsMyInt;
 		
 		@FormField
-		private Float myFloat;
+		private Float detailsMyFloat=123456f;
 		
 		@FormField
-		private BigDecimal myBigDecimal;
+		private BigDecimal detailsMyBigDecimal;
 		
 		@FormField
-		private Date date;
+		private Date detailsDate;
 		
 		@FormField
-		private MyEnum myEnum;
+		private MyEnum detailsMyEnum=MyEnum.V3;
 		
 	}
 

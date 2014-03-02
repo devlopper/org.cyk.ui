@@ -10,6 +10,7 @@ import javax.faces.validator.ValidatorException;
 
 import lombok.Getter;
 
+import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.component.input.IInputComponent;
 
 @Getter
@@ -22,6 +23,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	protected Field field;
 	protected Converter converter;
 	protected Object object;
+	protected FormField formField;
 
 	public AbstractWebInputComponent(IInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
@@ -31,6 +33,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 		field = input.getField();
 		object = input.getObject();
 		value = input.getValue();
+		formField = field.getAnnotation(FormField.class);
 	}
 	
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
