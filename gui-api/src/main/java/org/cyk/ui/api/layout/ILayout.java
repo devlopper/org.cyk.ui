@@ -1,6 +1,7 @@
 package org.cyk.ui.api.layout;
 
 import org.cyk.ui.api.component.IComponent;
+import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.cdi.provider.CommonMethodProvider;
 
 /**
@@ -23,6 +24,12 @@ public interface ILayout {
 	void add(IComponent<?> component);
 	
 	CommonMethodProvider getCommonMethodProvider();
+	
+	void setCommonMethodProvider(CommonMethodProvider c);
+	
+	CommonUtils getCommonUtils();
+	
+	void setCommonUtils(CommonUtils c);
 	
 	/**
 	 * The models to use to build the layout

@@ -7,6 +7,7 @@ import java.util.Locale;
 import lombok.Getter;
 
 import org.cyk.ui.api.component.input.IInputComponent;
+import org.cyk.ui.api.form.IForm;
 
 @Getter
 public class InputDate extends AbstractWebInputComponent<Date> implements IWebInputDate,Serializable  {
@@ -18,8 +19,8 @@ public class InputDate extends AbstractWebInputComponent<Date> implements IWebIn
 	private String pattern="dd/MM/yyyy",mode="popup",showOn="button";
 	private Locale locale;
 	
-	public InputDate(IInputComponent<Date> input) {
-		super(input);
+	public InputDate(IForm<?, ?, ?, ?> containerForm,IInputComponent<Date> input) {
+		super(containerForm,input);
 	}
 	
 }

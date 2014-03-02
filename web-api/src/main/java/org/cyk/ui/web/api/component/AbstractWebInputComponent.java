@@ -12,12 +12,14 @@ import lombok.Getter;
 
 import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.component.input.IInputComponent;
+import org.cyk.ui.api.form.IForm;
 
 @Getter
 public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<VALUE_TYPE> implements Serializable, IWebInputComponent<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 6386648827377414199L;
 	
+	protected IForm<?, ?, ?, ?> containerForm;
 	protected String label,requiredMessage,validatorId,validationGroupClass;
 	protected Boolean readOnly,required;
 	protected Field field;
@@ -25,7 +27,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	protected Object object;
 	protected FormField formField;
 
-	public AbstractWebInputComponent(IInputComponent<VALUE_TYPE> input) {
+	public AbstractWebInputComponent(IForm<?, ?, ?, ?> containerForm,IInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
 		requiredMessage = input.getRequiredMessage();
 		readOnly = input.getReadOnly();
@@ -34,6 +36,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 		object = input.getObject();
 		value = input.getValue();
 		formField = field.getAnnotation(FormField.class);
+		this.containerForm = containerForm;
 	}
 	
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{

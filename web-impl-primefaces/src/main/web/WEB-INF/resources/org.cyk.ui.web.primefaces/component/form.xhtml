@@ -12,7 +12,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<pe:dynaForm value="#{cc.value.model}" var="data">
+		<pe:dynaForm value="#{cc.value.selected.model}" var="data">
 
 			<pe:dynaFormControl />
 
@@ -93,14 +93,14 @@
 	            <td>
 	            
 	            	<p:commandButton 
-						value="#{data.createCommand.label}" 
-						icon="#{data.createCommand.icon}" 
-						action="#{value.switchModel(data,edit)}" 
+						value="New"  
+						action="#{cc.value.switchTo(data.form)}" 
 						process="@this" 
-				        update="#{update}" 
-				        rendered="#{data.createCommand.rendered}">
+				        update="@form" >
 				        
 				    </p:commandButton>
+				    
+				   
 	            
 	            <!--ui:include src="/primefacesForm/include/commandButton.xhtml" >
 	        		<ui:param name="data" value="#{data}" />
@@ -115,6 +115,14 @@
 		<p:separator/>
 		
 		<p:commandButton value="OK" action="#{cc.value.command.execute(null)}" update="@form"/>
+		
+		 <p:commandButton 
+						value="Back"  
+						action="#{cc.value.back}" 
+						process="@this" 
+				        update="@form" >
+				        
+				    </p:commandButton>
 		
 	</cc:implementation>
 

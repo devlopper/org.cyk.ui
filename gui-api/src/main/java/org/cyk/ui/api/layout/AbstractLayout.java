@@ -36,20 +36,12 @@ public abstract class AbstractLayout extends AbstractBean implements ILayout {
 	private static final long serialVersionUID = -3972921029089528026L;
 	
 	@Getter @Setter protected Integer rowsCount=0,columnsCount = 2,_columnsCounter=0;
-	@Inject @Getter protected CommonMethodProvider commonMethodProvider;
-	@Inject @Getter protected CommonUtils commonUtils;
-	//protected Collection<ILayoutRow> rows = new ArrayList<>();
-	//@Getter protected ILayoutRow currentRow;
+	@Inject @Getter @Setter protected CommonMethodProvider commonMethodProvider;
+	@Inject @Getter @Setter protected CommonUtils commonUtils;
 	
 	protected Collection<Object> models = new LinkedList<>();
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
-	
-	/*
-	@Override
-	public Collection<ILayoutRow> getRows() {
-		return rows;
-	}*/
-		
+			
 	@Override
 	public void model(Object... theModels) {
 		for(Object model : theModels)
@@ -65,6 +57,7 @@ public abstract class AbstractLayout extends AbstractBean implements ILayout {
 	@Override
 	public void build() {
 		_columnsCounter = 0;
+	
 		addRow();
 		for(Object model : models)
 			build(model);

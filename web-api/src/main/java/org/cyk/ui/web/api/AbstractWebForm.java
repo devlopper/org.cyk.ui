@@ -30,7 +30,7 @@ import org.cyk.ui.web.api.component.InputSelectOne;
 import org.cyk.ui.web.api.component.InputText;
 
 @Log
-public abstract class AbstractWebForm<OUTPUTLABEL,INPUT> extends AbstractForm<OUTPUTLABEL,INPUT,SelectItem> implements IWebForm<OUTPUTLABEL,INPUT,SelectItem> , Serializable {
+public abstract class AbstractWebForm<FORM,OUTPUTLABEL,INPUT> extends AbstractForm<FORM,OUTPUTLABEL,INPUT,SelectItem> implements IWebForm<FORM,OUTPUTLABEL,INPUT,SelectItem> , Serializable {
 
 	private static final long serialVersionUID = 5514311939767908514L;
 		
@@ -71,22 +71,22 @@ public abstract class AbstractWebForm<OUTPUTLABEL,INPUT> extends AbstractForm<OU
 	
 	@Override
 	public IWebInputBoolean inputBoolean(IInputBoolean anIInput) {
-		return new InputBoolean(anIInput);
+		return new InputBoolean(this,anIInput);
 	}
 	
 	@Override
 	public IWebInputDate inputDate(IInputDate anIInput) {
-		return new InputDate(anIInput);
+		return new InputDate(this,anIInput);
 	}
 	
 	@Override
 	public IWebInputNumber inputNumber(IInputNumber anIInput) {
-		return new InputNumber(anIInput);
+		return new InputNumber(this,anIInput);
 	}
 	
 	@Override
-	public IWebInputSelectOne<Object> inputSelectOne(IInputSelectOne<Object> anIInput) {
-		IWebInputSelectOne<Object> inputSelectOne = new InputSelectOne(anIInput);
+	public IWebInputSelectOne<Object,FORM> inputSelectOne(IInputSelectOne<Object> anIInput) {
+		IWebInputSelectOne<Object,FORM> inputSelectOne = new InputSelectOne<FORM>(this,anIInput);
 		if(inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty()){
 			Collection<SelectItem> items = new LinkedHashSet<>();
 			for(Object object : load(anIInput.getField().getType()))
@@ -99,6 +99,6 @@ public abstract class AbstractWebForm<OUTPUTLABEL,INPUT> extends AbstractForm<OU
 	
 	@Override
 	public IWebInputText inputText(IInputText anIInput) {
-		return new InputText(anIInput);
+		return new InputText(this,anIInput);
 	}
 }

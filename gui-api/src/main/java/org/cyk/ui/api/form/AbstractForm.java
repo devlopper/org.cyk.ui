@@ -7,10 +7,12 @@ import lombok.Getter;
 
 import org.cyk.ui.api.AbstractView;
 
-public abstract class AbstractForm<OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractView implements IForm<OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
+public abstract class AbstractForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractView implements IForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -3666969590470758214L;
-
+	
+	@Getter protected IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> parent;
+	@Getter protected FORM model;
 	protected OUTPUTLABEL currentLabel;
 	
 	@Getter protected Collection<IFormField> fields;
@@ -18,6 +20,20 @@ public abstract class AbstractForm<OUTPUTLABEL,INPUT,SELECTITEM> extends Abstrac
 	@Getter protected Collection<IFormCommand> commands;
 	
 	//@Getter protected DefaultActionCommand command;
+	
+	@Override
+	public void build() {
+		model = createModel();
+		super.build();
+	}
+	
+	@Override
+	public void setParent(IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form) {
+		this.parent = form;
+		//do set injected beans
+		commonUtils = form.getCommonUtils();
+		commonMethodProvider = form.getCommonMethodProvider();
+	}
 	
 	/*
 	public WebForm(ViewBuilder aViewBuilder,MessageManager messageManager,Object aDto) {

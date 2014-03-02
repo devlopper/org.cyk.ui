@@ -14,12 +14,15 @@ import org.apache.commons.lang3.ClassUtils;
 import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.component.input.IInputSelectOne;
 import org.cyk.ui.api.component.input.ISelectItem;
+import org.cyk.ui.api.form.IForm;
 
 @Getter
-public abstract class AbstractWebInputSelectOne<VALUE_TYPE> extends AbstractWebInputComponent<VALUE_TYPE> implements IWebInputSelectOne<VALUE_TYPE>,Serializable  {
+public abstract class AbstractWebInputSelectOne<VALUE_TYPE,FORM> extends AbstractWebInputComponent<VALUE_TYPE> implements IWebInputSelectOne<VALUE_TYPE,FORM>,Serializable  {
 
 	private static final long serialVersionUID = 7029658406107605595L;
 	
+	@Getter @Setter
+	private IForm<FORM, ?, ?, SelectItem> form;
 	@Setter
 	private Collection<SelectItem> items = new ArrayList<SelectItem>();
 	private String noSelectionMarker = "---";
@@ -28,13 +31,13 @@ public abstract class AbstractWebInputSelectOne<VALUE_TYPE> extends AbstractWebI
 	private String processOnSelect="@this",updateOnSelect;
 	private Boolean onChangeDisable=Boolean.TRUE,booleanValueType=Boolean.FALSE;
 	
-	public AbstractWebInputSelectOne(IInputSelectOne<VALUE_TYPE> input) {
-		super(input);
-		
+	public AbstractWebInputSelectOne(IForm<?, ?, ?, ?> conatinerForm,IInputSelectOne<VALUE_TYPE> input) {
+		super(conatinerForm,input);
 		if(input.getItems()!=null)
 			for(ISelectItem selectItem : input.getItems())
 				items.add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
 		
+		form = createForm();
 	}
 	
 	/*

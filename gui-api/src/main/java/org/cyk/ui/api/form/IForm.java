@@ -6,7 +6,17 @@ import org.cyk.ui.api.IView;
 import org.cyk.ui.api.component.input.IInputComponent;
 import org.cyk.ui.api.component.output.IOutputLabel;
 
-public interface IForm<OUTPUTLABEL,INPUT,SELECTITEM> extends IView {
+public interface IForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IView {
+	
+	IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> getParent();
+	
+	void setParent(IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form);
+	
+	FORM createModel();
+	
+	FORM getModel();
+	
+	IForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createChild(IInputComponent<?> anInput);
 	
 	OUTPUTLABEL createOutputLabel(IOutputLabel anOutputLabel);
 	INPUT createInput(IInputComponent<?> anInputComponent);

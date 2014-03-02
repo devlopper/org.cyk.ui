@@ -39,6 +39,9 @@ public class MyEntity {
 	
 	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
 	private MyDetails details1;
+	
+	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
+	private MyDetails2 details2;
 	/*
 	@FormField
 	private MyDetails details2;
@@ -61,6 +64,14 @@ public class MyEntity {
 		
 		@FormField
 		private Integer detailsMyInt;
+		
+		@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
+		private MyDetails2 details2;
+		
+	}
+	
+	@Setter @Getter
+	public static class MyDetails2{
 		
 		@FormField
 		private Float detailsMyFloat=123456f;

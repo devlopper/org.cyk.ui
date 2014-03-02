@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 
 import org.cyk.ui.api.component.input.IInputComponent;
+import org.cyk.ui.api.form.IForm;
 
 @Getter
 public class InputText extends AbstractWebInputComponent<String> implements IWebInputText,Serializable  {
@@ -13,8 +14,8 @@ public class InputText extends AbstractWebInputComponent<String> implements IWeb
 
 	private String filterMask;
 	
-	public InputText(IInputComponent<String> input) {
-		super(input);
+	public InputText(IForm<?, ?, ?, ?> containerForm,IInputComponent<String> input) {
+		super(containerForm,input);
 	}
 	
 }
