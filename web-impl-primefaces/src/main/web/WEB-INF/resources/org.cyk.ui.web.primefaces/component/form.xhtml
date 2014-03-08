@@ -12,6 +12,7 @@
 	</cc:interface>
 
 	<cc:implementation>
+	
 		<pe:dynaForm value="#{cc.value.selected.model}" var="data">
 
 			<pe:dynaFormControl />
@@ -60,7 +61,7 @@
 	        	<p:message  escape="false" for="selectOneRadio"/>
 	            <p:selectOneRadio id="selectOneRadio" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
 	            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
-	            	validator="#{value.validate}" valueChangeListener="#{data.valueChangeListener}" rendered="#{not data.readOnly}">
+	            	validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" rendered="#{not data.readOnly}">
 	            	<!--
 	            	<f:converter binding="#{jsfComponentController.converter}" /> 
 	            	-->
@@ -75,8 +76,8 @@
 	            <td style="width: 100%;">
 	            	<p:message  escape="false" for="selectOneMenu"/>
 	            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
-		            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{value.validate}" valueChangeListener="#{data.valueChangeListener}" 
-		            	rendered="#{not data.readOnly}">
+		            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
+		            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
 		            	<!--
 		            	<f:converter binding="#{jsfComponentController.converter}" />
 		            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
@@ -94,7 +95,7 @@
 	            
 	            	<p:commandButton 
 						value="New"  
-						action="#{cc.value.switchTo(data.form)}" 
+						action="#{cc.value.switchTo(data)}" 
 						process="@this" 
 				        update="@form" >
 				        
@@ -114,7 +115,7 @@
 		
 		<p:separator/>
 		
-		<p:commandButton value="OK" action="#{cc.value.command.execute(null)}" update="@form"/>
+		<p:commandButton value="OK" action="#{cc.value.submitCommand.execute(null)}" process="@form" update="@form"/>
 		
 		 <p:commandButton 
 						value="Back"  

@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import lombok.Getter;
 
 @Getter
-public abstract class AbstractInputSelectOne<VALUE_TYPE> extends AbstractInputComponent<VALUE_TYPE> implements Serializable, IInputSelectOne<VALUE_TYPE> {
+public abstract class AbstractInputSelectOne<VALUE_TYPE> extends AbstractInputComponent<VALUE_TYPE> implements Serializable, IInputSelectOne<VALUE_TYPE,ISelectItem> {
 
 	private static final long serialVersionUID = -7367234616039323949L;
 

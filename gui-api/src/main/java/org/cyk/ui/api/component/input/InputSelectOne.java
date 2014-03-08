@@ -3,7 +3,7 @@ package org.cyk.ui.api.component.input;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-public class InputSelectOne extends AbstractInputSelectOne<Object> implements Serializable, IInputSelectOne<Object> {
+public class InputSelectOne extends AbstractInputSelectOne<Object> implements Serializable, IInputSelectOne<Object,ISelectItem> {
 
 	private static final long serialVersionUID = -7367234616039323949L;
 

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.command.DefaultActionCommand;
+import org.cyk.ui.web.api.MessageManager;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 

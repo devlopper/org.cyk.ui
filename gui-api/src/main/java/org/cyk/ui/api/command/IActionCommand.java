@@ -1,6 +1,7 @@
 package org.cyk.ui.api.command;
 
 import org.cyk.ui.api.IMessageManager;
+import org.cyk.utility.common.AbstractMethod;
 
 /**
  * A call to the server side function to be executed
@@ -40,5 +41,27 @@ public interface IActionCommand extends ICommand {
 	Object failure(Throwable throwable);
 	
 	IMessageManager getMessageManager();
+	
+	void setMessageManager(IMessageManager messageManager);
+	
+	void setValidateMethod(AbstractValidateMethod<Object> method);
+	
+	void setExecuteMethod(AbstractMethod<Object, Object> method);
+	
+	void setSuccessNotificationMessageMethod(AbstractSucessNotificationMessageMethod<Object> method);
+	
+	/**/
+	
+	public static abstract class AbstractValidateMethod<OBJECT> extends AbstractMethod<Boolean, OBJECT>{
+
+		private static final long serialVersionUID = 87318682837035755L;
+
+	}
+	
+	public static abstract class AbstractSucessNotificationMessageMethod<OBJECT> extends AbstractMethod<String, OBJECT>{
+
+		private static final long serialVersionUID = 87318682837035755L;
+
+	}
 
 }

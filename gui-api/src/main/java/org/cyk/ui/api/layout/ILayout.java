@@ -34,7 +34,9 @@ public interface ILayout {
 	/**
 	 * The models to use to build the layout
 	 */
-	void model(Object...theObjects);
+	void setObjectModel(Object anObjectModel);
+	
+	Object getObjectModel();
 	
 	void group(Class<?>...theGroupsClasses);
 	

@@ -17,5 +17,7 @@ public interface IComponent<VALUE_TYPE> {
 	Integer getHeight();
 	
 	VALUE_TYPE getValue();
+	
+	void setValue(VALUE_TYPE value);
 
 }

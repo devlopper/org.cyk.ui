@@ -10,6 +10,7 @@ import javax.faces.validator.ValidatorException;
 
 import lombok.Getter;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.component.input.IInputComponent;
 import org.cyk.ui.api.form.IForm;
@@ -42,6 +43,12 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
 		//Dynamically find validation logic
 		//System.out.println("AbstractWebInputComponent.validate() : "+value);
+		
 	}
-	
+
+	@Override
+	public void updateValue() throws Exception {
+		FieldUtils.writeField(field, object, value, true);
+	}
+		
 }

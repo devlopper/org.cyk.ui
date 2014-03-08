@@ -15,11 +15,11 @@ public class DefaultActionCommand implements IActionCommand , Serializable {
 	private static final long serialVersionUID = 3245517653342272298L;
 
 	@Setter
-	private IMessageManager messageManager;
+	protected IMessageManager messageManager;
 	
-	@Getter @Setter private AbstractValidateMethod<Object> validateMethod;
-	@Getter @Setter private AbstractMethod<Object, Object> executeMethod;
-	@Getter @Setter private AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
+	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
+	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
+	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
 	@Override
 	public Boolean validate() {
@@ -75,18 +75,5 @@ public class DefaultActionCommand implements IActionCommand , Serializable {
 		return messageManager;
 	}
 	
-	/**/
-	
-	public static abstract class AbstractValidateMethod<OBJECT> extends AbstractMethod<Boolean, OBJECT>{
-
-		private static final long serialVersionUID = 87318682837035755L;
-
-	}
-	
-	public static abstract class AbstractSucessNotificationMessageMethod<OBJECT> extends AbstractMethod<String, OBJECT>{
-
-		private static final long serialVersionUID = 87318682837035755L;
-
-	}
- 
+	 
 }

@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.controller;
+package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 

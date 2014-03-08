@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.logging.Level;
 
 import javax.inject.Inject;
@@ -39,14 +38,8 @@ public abstract class AbstractLayout extends AbstractBean implements ILayout {
 	@Inject @Getter @Setter protected CommonMethodProvider commonMethodProvider;
 	@Inject @Getter @Setter protected CommonUtils commonUtils;
 	
-	protected Collection<Object> models = new LinkedList<>();
+	@Getter @Setter protected Object objectModel;
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
-			
-	@Override
-	public void model(Object... theModels) {
-		for(Object model : theModels)
-			models.add(model);
-	}
 	
 	@Override
 	public void group(Class<?>... theGroupsClasses) {
@@ -57,10 +50,8 @@ public abstract class AbstractLayout extends AbstractBean implements ILayout {
 	@Override
 	public void build() {
 		_columnsCounter = 0;
-	
 		addRow();
-		for(Object model : models)
-			build(model);
+		build(objectModel);
 	}
 	
 	/**/
@@ -140,5 +131,5 @@ public abstract class AbstractLayout extends AbstractBean implements ILayout {
 			log.log(Level.SEVERE,e.toString(),e);
 		}
 	}
-
+	
 }

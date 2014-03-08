@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -19,7 +20,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractCompone
 
 	protected IForm<?, ?, ?, ?> containerForm;
 	protected String label;
-	protected VALUE_TYPE value;
+	@Setter protected VALUE_TYPE value;
 	protected Object object;
 	protected Field field;
 	protected Boolean required,readOnly;
@@ -40,5 +41,10 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractCompone
 		}
 	}
 	
+	@Override
+	public void updateValue() throws Exception {
+		throw new IllegalArgumentException("Must not call this method on this object");
+	}
+
 	
 }

@@ -5,6 +5,7 @@ import org.cyk.ui.api.component.input.IInputDate;
 import org.cyk.ui.api.component.input.IInputNumber;
 import org.cyk.ui.api.component.input.IInputSelectOne;
 import org.cyk.ui.api.component.input.IInputText;
+import org.cyk.ui.api.component.input.ISelectItem;
 import org.cyk.ui.api.form.IForm;
 import org.cyk.ui.web.api.component.IWebInputBoolean;
 import org.cyk.ui.web.api.component.IWebInputDate;
@@ -17,9 +18,7 @@ public interface IWebForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IForm<FORM,
 	IWebInputText inputText(IInputText anIInput);
 	IWebInputNumber inputNumber(IInputNumber anIInput);
 	IWebInputBoolean inputBoolean(IInputBoolean anIInput);
-	IWebInputSelectOne<Object,FORM> inputSelectOne(IInputSelectOne<Object> anIInput);
+	IWebInputSelectOne<Object,FORM> inputSelectOne(IInputSelectOne<Object,ISelectItem> anIInput);
 	IWebInputDate inputDate(IInputDate anIInput);
-	
-	void link(OUTPUTLABEL anOutputLabel,INPUT anInput);
 	
 }

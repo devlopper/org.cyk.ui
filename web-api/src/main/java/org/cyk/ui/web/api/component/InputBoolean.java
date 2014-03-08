@@ -23,13 +23,13 @@ public class InputBoolean extends AbstractWebInputSelectOne<Boolean,Object> impl
 		return null;
 		//throw new IllegalStateException("Cannot have a form");
 	}*/
-
+/*
 	@Override
 	public IForm<Object, ?, ?, SelectItem> createForm() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	*/
 	/*
 	@Override
 	public Object getForm() {

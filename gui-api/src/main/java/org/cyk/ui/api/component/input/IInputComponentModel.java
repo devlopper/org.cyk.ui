@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.cyk.ui.api.component.IComponent;
 import org.cyk.ui.api.form.IForm;
 
-public interface IInputComponent<VALUE_TYPE> extends IComponent<VALUE_TYPE> {
+public interface IInputComponentModel<VALUE_TYPE> extends IComponent<VALUE_TYPE> {
 
 	IForm<?, ?, ?, ?> getContainerForm();
 	
@@ -25,7 +25,5 @@ public interface IInputComponent<VALUE_TYPE> extends IComponent<VALUE_TYPE> {
 	
 	String getValidationGroupClass();
 	
-	void updateValue() throws Exception;
 	
-	//void afterChildFormUpdated();
 }

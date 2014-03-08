@@ -6,6 +6,8 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.annotation.FormField.CompositionRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
@@ -17,14 +19,14 @@ public class MyEntity {
 	public enum MyEnum{V1,V2,V3,v55}
 	
 	@FormField(groups=Client.class)
-	private String name="Jesus";
+	private String name;//="Jesus";
 	
 	@FormField(groups=System.class)
 	private Boolean yesOrNo;
 	
-	@FormField
-	private Integer myInt=5;
-	
+	//@FormField
+	//private Integer myInt=5;
+	/*
 	@FormField
 	private Float myFloat;
 	
@@ -36,12 +38,13 @@ public class MyEntity {
 	
 	@FormField
 	private MyEnum myEnum;
-	
+	*/
 	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
-	private MyDetails details1;
-	
+	private MyDetails details1;// = new MyDetails();
+	/*
 	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
 	private MyDetails2 details2;
+	*/
 	/*
 	@FormField
 	private MyDetails details2;
@@ -57,8 +60,8 @@ public class MyEntity {
 	public static class MyDetails{
 		
 		@FormField
-		private String detailsName = "Zouzoua Lingue";
-		
+		private String detailsName;// = "Zouzoua Lingue";
+		/*
 		@FormField
 		private Boolean detailsYesOrNo;
 		
@@ -67,7 +70,12 @@ public class MyEntity {
 		
 		@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
 		private MyDetails2 details2;
+		*/
 		
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
 	}
 	
 	@Setter @Getter

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.cyk.ui.api.component.IComponent;
 import org.cyk.ui.web.api.AbstractWebPage;
+import org.cyk.ui.web.api.MessageManager;
 
 public class AbstractController extends AbstractWebPage implements Serializable {
 
