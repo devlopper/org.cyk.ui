@@ -6,7 +6,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import lombok.extern.java.Log;
@@ -16,20 +15,16 @@ import org.cyk.system.root.service.api.language.LanguageService;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Singleton @Named @Log
+@Singleton @Log
 public class WebUIMessageManager extends AbstractBean implements UIMessageManager,Serializable {
 	
 	private static final long serialVersionUID = -2096649010369789825L;
 	
 	@Inject private LanguageService languageService;
 	
-	protected String format(String message){
-		message = StringUtils.replace(message, "\r\n", "<br/>");
-		message = StringUtils.replace(message, "\n", "<br/>");
-		//message = StringEscapeUtils.escapeHtml4(message);
-		return message;
-	}
+	protected FacesMessage facesMessage;
 	
+	/*
 	public void add(Severity severity,Object text,Boolean isMessageId){
 		String message = isMessageId?languageService.findText(text.toString()):text.toString();
 		message = format(message);
@@ -54,6 +49,38 @@ public class WebUIMessageManager extends AbstractBean implements UIMessageManage
 	
 	public void addInfo(Object messageId){
 		addInfo(messageId, Boolean.TRUE);
+	}*/
+	
+	
+	@Override
+	public UIMessageManager message(SeverityType severityType, Text summary, Text details) {
+		facesMessage = new FacesMessage(severity(severityType), toString(summary), toString(details));
+		return this;
+	}
+	
+	@Override
+	public UIMessageManager message(SeverityType severityType, Object object, Boolean isId) {
+		facesMessage = new FacesMessage(severity(severityType), toString(new Text(object, isId)), toString(new Text(object, isId)));
+		return this;
+	}
+		
+	@Override
+	public UIMessageManager throwable(Throwable throwable) {
+		StringBuilder m = new StringBuilder(throwable.toString());
+		if(throwable.getCause()!=null)
+			m.append("\r\nCause : "+throwable.getCause());
+		message(SeverityType.ERROR,new Text(m, Boolean.FALSE),new Text(m, Boolean.FALSE));
+		return this;
+	}
+
+	@Override
+	public void showInline() {
+		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	}
+
+	@Override
+	public void showDialog() {
+		log.warning("I dont know how to show message in dialog!!!");
 	}
 	
 	/**/
@@ -67,28 +94,21 @@ public class WebUIMessageManager extends AbstractBean implements UIMessageManage
 		return null;
 	}
 	
-	@Override
-	public void add(SeverityType severityType, Object object, Boolean isId) {
-		Severity facesMessageSeverity = severity(severityType);
-		add(facesMessageSeverity, object.toString(), isId);
+	protected String format(String message){
+		message = StringUtils.replace(message, "\r\n", "<br/>");
+		message = StringUtils.replace(message, "\n", "<br/>");
+		//message = StringEscapeUtils.escapeHtml4(message);
+		return message;
 	}
 	
-	@Override
-	public void addError(Throwable throwable) {
-		StringBuilder m = new StringBuilder(throwable.toString());
-		if(throwable.getCause()!=null)
-			m.append("\r\nCause : "+throwable.getCause());
-		add(SeverityType.ERROR,m,Boolean.FALSE);
+	protected String toString(Text text){
+		String message = Boolean.TRUE.equals(text.getIsId())?languageService.findText(text.getText().toString()):text.getText().toString();
+		message = format(message);
+		return message;
 	}
-	
-	/*
-	public String text(String id){
-		return commonMethodProvider.getTextServiceFindMethod().execute(id,null,true);
-	}*/
-	
-	@Override
-	public void showInDialog(SeverityType severityType,Object title, Object object, Boolean isId) {
-		log.warning("I dont know how to show message in dialog!!!");
-	}
+
+
+
+
 
 }

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.ui.api.UIManager.LoadDataMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
 import org.cyk.ui.web.primefaces.Form;
 import org.cyk.ui.web.primefaces.test.MyEntity.MyDetails2;
@@ -33,7 +34,6 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		System.out.println(uiManager.text("edit"));
 		uiManager.setLoadDataMethod(new LoadDataMethod() {
 			private static final long serialVersionUID = -2251974175051850252L;
 			@Override
@@ -53,7 +53,9 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override
 			protected Object __execute__(Object parameter) {
-				messageManager.showInDialog(SeverityType.INFO,"Recap",ToStringBuilder.reflectionToString(myForm.getObjectModel(), ToStringStyle.MULTI_LINE_STYLE), false);
+				messageManager.message(
+						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(myForm.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
+						.showDialog();
 				return null;
 			}
 		});

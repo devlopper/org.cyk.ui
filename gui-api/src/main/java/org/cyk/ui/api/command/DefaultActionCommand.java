@@ -14,8 +14,7 @@ public class DefaultActionCommand implements UIActionCommand , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
 
-	@Setter
-	protected UIMessageManager messageManager;
+	@Setter protected UIMessageManager messageManager;
 	
 	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
 	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
@@ -46,7 +45,7 @@ public class DefaultActionCommand implements UIActionCommand , Serializable {
 	public Object onExecuteSucceed() {
 		String message = successNotificationMessage();
 		if(StringUtils.isNotEmpty(message))
-			getMessageManager().add(SeverityType.INFO, message,Boolean.FALSE);
+			getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
 		return null;
 	}
 	
@@ -64,7 +63,7 @@ public class DefaultActionCommand implements UIActionCommand , Serializable {
 	
 	@Override
 	public Object failure(Throwable throwable) {
-		getMessageManager().add(SeverityType.ERROR, throwable,Boolean.FALSE);
+		getMessageManager().message(SeverityType.ERROR, throwable,Boolean.FALSE).showInline();
 		return null;
 	}
 	

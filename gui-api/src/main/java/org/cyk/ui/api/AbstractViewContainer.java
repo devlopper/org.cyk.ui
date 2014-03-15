@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import lombok.Getter;
 
@@ -18,6 +19,6 @@ public abstract class AbstractViewContainer extends AbstractBean implements UICo
 	@Getter protected Collection<UIView> views = new LinkedList<>();
 	@Getter protected Object objectModel;
 
-	@Inject @Getter protected UIManager uiManager;
+	@Inject @Named(value="uiManager") @Getter protected UIManager uiManager;
 	
 }

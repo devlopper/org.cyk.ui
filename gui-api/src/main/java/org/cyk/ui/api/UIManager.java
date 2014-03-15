@@ -24,7 +24,7 @@ public class UIManager extends AbstractBean implements Serializable {
 	protected LoadDataMethod loadDataMethod;
 	
 	protected ToStringMethod toStringMethod;
-	
+	 
 	@Inject protected LanguageService languageService;
 	
 	@SuppressWarnings("unchecked")
