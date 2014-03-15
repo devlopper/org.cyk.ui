@@ -2,10 +2,9 @@ package org.cyk.ui.api.form;
 
 import java.util.Collection;
 
-import org.cyk.ui.api.IMessageManager;
-import org.cyk.ui.api.IViewContainer;
-import org.cyk.ui.api.component.input.IInputComponent;
-import org.cyk.ui.api.component.input.IInputSelectOne;
+import org.cyk.ui.api.UIContainer;
+import org.cyk.ui.api.form.input.UIInputComponent;
+import org.cyk.ui.api.form.input.UIInputSelectOne;
 
 /**
  * Contains forms
@@ -16,7 +15,7 @@ import org.cyk.ui.api.component.input.IInputSelectOne;
  * @param <INPUT>
  * @param <SELECTITEM>
  */
-public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IViewContainer {
+public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIContainer {
 	
 	Object getObjectModel();
 	
@@ -24,13 +23,13 @@ public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IView
 	 * The commands of the form container
 	 * @return
 	 */
-	Collection<IFormCommand> getCommands();
+	Collection<UIFormCommand> getCommands();
 	
 	/**
 	 * The submit command of the form container
 	 * @return
 	 */
-	IFormCommand getSubmitCommand();
+	UIFormCommand getSubmitCommand();
 	
 	/**
 	 * The code to run on submit
@@ -43,24 +42,18 @@ public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IView
 	 * The selected form of the form container
 	 * @return
 	 */
-	IForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getSelected();
+	UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getSelected();
 	
 	/**
 	 * Switch to a given form
 	 * @param selected
 	 */
-	void switchTo(IInputComponent<?> anInput);
+	void switchTo(UIInputComponent<?> anInput);
 	
 	/**
 	 * Go back to the previous form
 	 */
 	void back();
-	
-	/**
-	 * The UI message manager
-	 * @return
-	 */
-	IMessageManager getMessageManager();
 	
 	/**
 	 * Dynamic load of data
@@ -76,11 +69,11 @@ public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends IView
 	 */
 	SELECTITEM item(Object object);
 	
-	void addItem(IInputSelectOne<?,SELECTITEM> anInput,Object object);
+	void addItem(UIInputSelectOne<?,SELECTITEM> anInput,Object object);
 	
 	void updateValues() throws Exception;
 	
-	IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> createForm();
+	UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> createFormData();
 	
 	//void onAfterFormUpdated(IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> aForm);
 	

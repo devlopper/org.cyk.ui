@@ -6,16 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.ui.api.IMessageManager;
-import org.cyk.ui.api.IMessageManager.SeverityType;
+import org.cyk.ui.api.UIMessageManager;
+import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.utility.common.AbstractMethod;
 
-public class DefaultActionCommand implements IActionCommand , Serializable {
+public class DefaultActionCommand implements UIActionCommand , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
 
 	@Setter
-	protected IMessageManager messageManager;
+	protected UIMessageManager messageManager;
 	
 	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
 	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
@@ -69,7 +69,7 @@ public class DefaultActionCommand implements IActionCommand , Serializable {
 	}
 	
 	@Override
-	public IMessageManager getMessageManager() {
+	public UIMessageManager getMessageManager() {
 		if(messageManager==null)
 			throw new RuntimeException("No message manager has been provided.");
 		return messageManager;

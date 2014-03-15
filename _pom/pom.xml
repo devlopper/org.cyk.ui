@@ -20,9 +20,18 @@
 	<modules>
 		<module>../gui-api</module> 
 		<module>../web-api</module>
-		<module>../web-impl-primefaces</module>
+		<module>../web-primefaces-api</module>
 		
 	</modules> 
 
 	
+	<dependencies>
+		<dependency>
+			<groupId>org.cyk.system.root.service</groupId>
+			<artifactId>service-impl-ejb</artifactId>
+			<version>0.0.1</version>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>

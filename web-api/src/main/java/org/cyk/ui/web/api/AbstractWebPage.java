@@ -2,12 +2,18 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 
-import org.cyk.ui.api.AbstractViewContainer;
+import javax.inject.Inject;
 
-public abstract class AbstractWebPage extends AbstractViewContainer implements IWebPage,Serializable {
+import lombok.Getter;
+
+import org.cyk.ui.api.AbstractWindow;
+
+public abstract class AbstractWebPage extends AbstractWindow implements IWebPage,Serializable {
 
 	private static final long serialVersionUID = -7284361545083572063L;
 	
-	
+	@Inject @Getter protected WebUIMessageManager messageManager;
 
+
+	
 }

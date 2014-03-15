@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.ui.api.component.AbstractComponent;
 
-public abstract class AbstractOutputComponent<VALUE_TYPE> extends AbstractComponent<VALUE_TYPE> implements Serializable, IOutputComponent<VALUE_TYPE> {
+public abstract class AbstractOutputComponent<VALUE_TYPE> extends AbstractComponent<VALUE_TYPE> implements Serializable, UIOutputComponent<VALUE_TYPE> {
 
 	private static final long serialVersionUID = -1941413441310418139L;
 
