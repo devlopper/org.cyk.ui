@@ -32,6 +32,10 @@ public interface UIActionCommand extends UICommand {
 	 */
 	Object onExecuteFailed(Throwable throwable);
 	
+	Boolean getNotifyOnSucceed();
+	
+	void setNotifyOnSucceed(Boolean aValue);
+	
 	String successNotificationMessage();
 	
 	/**

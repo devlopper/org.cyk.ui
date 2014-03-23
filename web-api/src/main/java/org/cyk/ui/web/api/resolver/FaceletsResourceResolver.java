@@ -4,11 +4,13 @@ import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
+
 import javax.faces.view.facelets.ResourceResolver;
 
 import lombok.extern.java.Log;
 
-@Log
+@Log //@javax.faces.view.facelets.FaceletsResourceResolver
 public class FaceletsResourceResolver extends ResourceResolver {
 
     private ResourceResolver parent;

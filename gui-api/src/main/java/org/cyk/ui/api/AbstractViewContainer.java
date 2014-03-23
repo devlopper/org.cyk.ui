@@ -15,4 +15,10 @@ public abstract class AbstractViewContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	//@Getter protected Collection<UIView> views = new LinkedList<>();
 	@Getter protected Object objectModel;
 
+	/**/
+	
+	protected String text(String id){
+		return getWindow().getUiManager().getLanguageService().findText(id);
+	}
+	
 }

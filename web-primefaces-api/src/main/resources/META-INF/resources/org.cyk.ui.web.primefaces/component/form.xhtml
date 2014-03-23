@@ -5,7 +5,8 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions">
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
 	<cc:interface componentType="org.cyk.ui.primefaces.Form">
 		<cc:attribute name="value" required="true" />
@@ -133,29 +134,21 @@
 		            </td> 
 		           
 		            <ui:fragment rendered="#{data.isSelectItemEditable()}"><td>
+		            	<cyk:formCommand value="#{cc.value.primefacesSwitchCommand}" rendered="#{data.isSelectItemEditable()}" executeParameter="#{data}" />
+		            	<!--
 		            	<p:commandButton rendered="#{data.isSelectItemEditable()}" value="#{uiManager.text('edit')}" action="#{cc.value.switchTo(data)}" 
 							process="@this" update="@form" >
 					    </p:commandButton>
+					    -->
 		            </td></ui:fragment>	
 	        	</tr></table>
-	        	
 	        </pe:dynaFormControl>
-	        
-	        <!-- Input message
-			<pe:dynaFormControl type="OutputMessage" for="outputMessage" >  
-			#{data.value}
-			
-	        	<p:message id="outputMessage" escape="false" for="#{data.value}" />
-	        
-	        </pe:dynaFormControl--> 
-
 		</pe:dynaForm>
 		
 		<p:separator/>
-		
-		<p:commandButton value="OK" action="#{cc.value.submitCommand.execute(null)}" process="@form" update="@form"/>
-		
-		<p:commandButton value="Back" action="#{cc.value.back}" process="@this" update="@form" />
+	
+		<cyk:formCommand value="#{cc.value.primefacesSubmitCommand}" />
+		<cyk:formCommand value="#{cc.value.primefacesBackCommand}" rendered="#{not cc.value.root}"/>
 		
 	</cc:implementation>
 

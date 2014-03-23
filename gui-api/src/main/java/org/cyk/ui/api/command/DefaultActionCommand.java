@@ -20,6 +20,9 @@ public class DefaultActionCommand implements UIActionCommand , Serializable {
 	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
 	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
+	@Getter @Setter protected String label,icon,tooltip;
+	@Getter @Setter protected Boolean notifyOnSucceed=Boolean.FALSE;
+	
 	@Override
 	public Boolean validate() {
 		if(validateMethod==null)
@@ -43,9 +46,11 @@ public class DefaultActionCommand implements UIActionCommand , Serializable {
 	
 	@Override
 	public Object onExecuteSucceed() {
-		String message = successNotificationMessage();
-		if(StringUtils.isNotEmpty(message))
-			getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
+		if(Boolean.TRUE.equals(notifyOnSucceed)){
+			String message = successNotificationMessage();
+			if(StringUtils.isNotEmpty(message))
+				getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
+		}
 		return null;
 	}
 	

@@ -3,7 +3,6 @@ package org.cyk.ui.api.form;
 import java.util.Collection;
 
 import org.cyk.ui.api.UIContainer;
-import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -32,12 +31,35 @@ public interface UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UICo
 	 */
 	UIFormCommand getSubmitCommand();
 	
+	UIFormCommand getSwitchCommand();
+	
+	UIFormCommand getBackCommand();
+	
+	UIFormCommand getResetValuesCommand();
+	
+	UIFormCommand getCloseCommand();
+	
 	/**
 	 * The code to run on submit
 	 * @param object
 	 * @throws Exception 
 	 */
 	void onSubmit(Object object) throws Exception;
+	
+	/**
+	 * Go back to the previous form
+	 */
+	void onBack();
+	
+	/**
+	 * Switch to a given form
+	 * @param selected
+	 */
+	void onSwitch(Object object);
+	
+	void onResetValues();
+	
+	void onClose();
 	
 	void setSubmitMethodMain(AbstractMethod<Object, Object> anAbstractMethod);
 	
@@ -46,17 +68,6 @@ public interface UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UICo
 	 * @return
 	 */
 	UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getSelected();
-	
-	/**
-	 * Switch to a given form
-	 * @param selected
-	 */
-	void switchTo(UIInputComponent<?> anInput);
-	
-	/**
-	 * Go back to the previous form
-	 */
-	void back();
 	
 	/**
 	 * Dynamic load of data
@@ -80,4 +91,5 @@ public interface UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UICo
 	
 	//void onAfterFormUpdated(IForm<FORM, OUTPUTLABEL, INPUT, SELECTITEM> aForm);
 	
+	Boolean getRoot();
 }

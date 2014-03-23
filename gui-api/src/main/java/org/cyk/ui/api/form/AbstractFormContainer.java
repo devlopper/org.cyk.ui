@@ -12,6 +12,8 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.AbstractViewContainer;
 import org.cyk.ui.api.UIView;
+import org.cyk.ui.api.form.UIFormCommand.ExecutionPhase;
+import org.cyk.ui.api.form.UIFormCommand.ProcessGroup;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
@@ -25,17 +27,18 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	 * to keep navigation trace
 	 */
 	protected Stack<UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> stack = new Stack<>();
-	@Getter protected UIFormCommand submitCommand;
+	@Getter protected UIFormCommand submitCommand,backCommand,resetValuesCommand,closeCommand,switchCommand;
 	@Getter protected Collection<UIFormCommand> commands;
 	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		
-		submitCommand = new DefaultFormCommand();
-		submitCommand.setMessageManager(getWindow().getMessageManager()); 
-		submitCommand.setExecuteMethod(new AbstractMethod<Object, Object>() {
+		commandInitialisation();
+	}
+	
+	protected void commandInitialisation(){
+		submitCommand = createCommand("button.send", new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -46,8 +49,59 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 				}
 				return null;
 			}
-		});		
+		},ExecutionPhase.AFTER_DATA_SENT,ProcessGroup.FORM);
+		submitCommand.setNotifyOnSucceed(Boolean.TRUE);
+		backCommand = createCommand("button.back", new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = -3554292967012003944L;
+			@Override
+			protected Object __execute__(Object parameter) {
+				try {
+					onBack();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		},ExecutionPhase.BEFORE_DATA_SENT,ProcessGroup.THIS);
+		switchCommand = createCommand("button.edit", new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = -3554292967012003944L;
+			@Override
+			protected Object __execute__(Object parameter) {
+				try {
+					onSwitch(parameter);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		},ExecutionPhase.BEFORE_DATA_SENT,ProcessGroup.THIS);
 	}
+	
+	protected UIFormCommand createCommand(String labelId,AbstractMethod<Object, Object> executeMethod,ExecutionPhase anExecutionPhase,ProcessGroup aProcessGroup){
+		UIFormCommand command = new DefaultFormCommand();
+		command.setLabel(text(labelId));
+		command.setMessageManager(getWindow().getMessageManager()); 
+		command.setExecuteMethod(executeMethod);
+		command.setExecutionPhase(anExecutionPhase);
+		command.setProcessGroup(aProcessGroup);
+		return command;
+	}
+			
+	@Override
+	public UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object) {
+		if(object==null)
+			throw new IllegalArgumentException("Object model cannot be null");
+		if(objectModel==null)
+			objectModel = object;
+		UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form = createFormData();
+		form.setContainer(this);
+		form.setObjectModel(object);
+		form.build();
+		stack.push(form);
+		return form;
+	}
+	
+	/* Command Events */
 	
 	@Override
 	public void onSubmit(Object object) throws Exception {
@@ -56,7 +110,7 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 			onSubmitMain(object);
 		}else{
 			onSubmitDetails(object);
-			back();
+			onBack();
 		}
 	}
 	
@@ -82,9 +136,15 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 		}
 	}
 	
+	@Override
+	public void onBack() {
+		stack.pop();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void switchTo(UIInputComponent<?> anInput) {
+	public void onSwitch(Object anObject) {
+		UIInputComponent<?> anInput = (UIInputComponent<?>) anObject;
 		Object object = commonUtils.readField(anInput.getObject(), anInput.getField(), true);
 		((UIInputComponent<Object>)anInput).setValue( object );
 		try {
@@ -95,7 +155,7 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 		}
 		switchTo(object,anInput);
 	}
-	
+		
 	private void switchTo(Object object,UIInputComponent<?> anInput){
 		UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form = (UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM>) build(object);
 		if(anInput!=null)
@@ -103,24 +163,19 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	}
 	
 	@Override
-	public UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object) {
-		if(object==null)
-			throw new IllegalArgumentException("Object model cannot be null");
-		if(objectModel==null)
-			objectModel = object;
-		UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form = createFormData();
-		form.setContainer(this);
-		form.setObjectModel(object);
-		form.build();
-		stack.push(form);
-		return form;
+	public void onResetValues() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override
-	public void back() {
-		stack.pop();
-	}
+	public void onClose() {
+		// TODO Auto-generated method stub
 		
+	}
+	
+	/**/
+	
 	@Override
 	public UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> getSelected() {
 		return stack.peek();
@@ -137,7 +192,10 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 		return getWindow().getUiManager().collection(aClass);
 	}
 	
-
+	@Override
+	public Boolean getRoot() {
+		return stack.size()==1;
+	}
 	
 	
 }

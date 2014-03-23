@@ -3,6 +3,7 @@ package org.cyk.ui.api;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -27,6 +28,13 @@ public class UIManager extends AbstractBean implements Serializable {
 	 
 	@Inject protected LanguageService languageService;
 	
+	
+	@Override @PostConstruct
+	public void postConstruct() {
+		super.postConstruct();
+		languageService.registerResourceBundle("org.cyk.ui.api.resources.message");
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T> Collection<T> collection(Class<T> aClass) {
 		if(loadDataMethod==null)
@@ -48,9 +56,7 @@ public class UIManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	private final String constantInputLayout = "il";
-	private final String constantInputLayoutMessageAtRight = "matr";
-	private final String constantInputLayoutMessageAtTop = "matt";
+	
 	
 	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {

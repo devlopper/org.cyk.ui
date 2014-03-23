@@ -19,19 +19,19 @@ public class MyEntity {
 	public enum MyEnum{V1,V2,V3,v55}
 	
 	@FormField(groups=Client.class,required=true,description="Une chaine de caracteres")
-	private String string;//="1";//="Jesus";
+	private String string="Jesus";
 	
 	@FormField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
-	private String textArea;//="1";
+	private String textArea="1";
 	
 	@FormField(groups=System.class,required=true)
-	private Boolean yesOrNoWrapper;//=false;
+	private Boolean yesOrNoWrapper=false;
 	
 	//@FormField(groups=System.class)
 	//private boolean yesOrNoPrimitive;
 	
 	@FormField(required=true)
-	private Integer myIntWrapper;//=1;
+	private Integer myIntWrapper=1;
 	
 	//@FormField
 	//private int myIntPrimitive=1;
@@ -46,7 +46,7 @@ public class MyEntity {
 	private BigDecimal myBigDecimal=new BigDecimal(1);
 	
 	@FormField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
-	private Date date;// = new Date();
+	private Date date = new Date();
 	
 	@FormField(required=true)
 	private MyEnum myEnum;
@@ -71,7 +71,7 @@ public class MyEntity {
 	@Setter @Getter
 	public static class MyDetails{
 		
-		@FormField
+		@FormField(required=true)
 		private String detailsName;// = "Zouzoua Lingue";
 		
 		@FormField

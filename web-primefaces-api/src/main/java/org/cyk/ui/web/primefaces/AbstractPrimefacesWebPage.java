@@ -23,7 +23,7 @@ public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaForm
 	
 	@Override
 	public UIFormContainer<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> newFormContainerInstance() {
-		return new FormContainer();
+		return new PrimefacesFormContainer();
 	}
 	
 }

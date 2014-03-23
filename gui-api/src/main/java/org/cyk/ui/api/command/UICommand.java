@@ -6,5 +6,17 @@ package org.cyk.ui.api.command;
  *
  */
 public interface UICommand {
+	
+	String getLabel();
+	
+	void setLabel(String label);
+	
+	String getIcon();
+	
+	void setIcon(String icon);
 
+	String getTooltip();
+	
+	void setTooltip(String label);
+	
 }
