@@ -25,97 +25,121 @@
 			<!--  ********************************************************** Inputs *********************************************************************** -->
 			<!-- Single Line Text -->
 			<pe:dynaFormControl type="InputText" for="inputText">
-				<p:message escape="false"  for="inputText" />
-				<p:inputText id="inputText" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
-					required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" converter="#{data.converter}" 
-					rendered="#{not data.readOnly}">
-					<f:attribute name="fieldId" value="#{data.id}" />
-					<pe:keyFilter mask="#{data.filterMask}" rendered="#{not empty data.filterMask}" />
-					<f:validateBean validationGroups="#{data.validationGroupClass}" />
-				</p:inputText>
-				<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" 
-					styleClass="#{data.cascadeStyleSheet.clazz}" />
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputText" />
+					<ui:define name="input">
+						<p:inputText id="inputText" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
+							required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" converter="#{data.converter}" 
+							rendered="#{not data.readOnly}">
+							<f:attribute name="fieldId" value="#{data.id}" />
+							<pe:keyFilter mask="#{data.filterMask}" rendered="#{not empty data.filterMask}" />
+							<f:validateBean validationGroups="#{data.validationGroupClass}" />
+						</p:inputText>					
+					</ui:define>
+				</ui:decorate>
 			</pe:dynaFormControl>
 			
 			<!-- Multiple Line Text -->
-
+			<pe:dynaFormControl type="InputTextArea" for="inputTextArea">
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputTextArea" />
+					<ui:define name="input">
+						<p:inputTextarea id="inputTextArea" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
+							required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" rendered="#{not data.readOnly}" 
+							cols="#{data.columnCount}" rows="#{data.rowCount}">
+							<f:attribute name="fieldId" value="#{data.id}" />
+							<f:validateBean validationGroups="#{data.validationGroupClass}" />
+						</p:inputTextarea>			
+					</ui:define>
+				</ui:decorate>
+			</pe:dynaFormControl>
+			
 			<!-- Date -->
 			<pe:dynaFormControl type="InputDate" for="calendar">
-				<p:message escape="false" for="calendar" />
-				<p:calendar id="calendar" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" mode="#{data.mode}"
-					showOn="#{data.showOn}" navigator="#{data.navigator}" showButtonPanel="#{data.showButtonPanel}" mindate="#{data.minDate}" maxdate="#{data.maxDate}"
-					pattern="#{data.pattern}" locale="#{data.locale}" required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}"
-					rendered="#{not data.readOnly}" />
-				<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" />
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="calendar" />
+					<ui:define name="input">
+						<p:calendar id="calendar" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" mode="#{data.mode}"
+							showOn="#{data.showOn}" navigator="#{data.navigator}" showButtonPanel="#{data.showButtonPanel}" mindate="#{data.minDate}" maxdate="#{data.maxDate}"
+							pattern="#{data.pattern}" locale="#{data.locale}" required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}"
+							rendered="#{not data.readOnly}" />
+					</ui:define>
+				</ui:decorate>
 			</pe:dynaFormControl>
 			
 			<!-- Number -->
 			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
-	        	<p:message  escape="false" for="inputNumber"/>
-	            <pe:inputNumber id="inputNumber" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
-	            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
-	            	validator="#{data.validate}" rendered="#{not data.readOnly}" converter="#{data.converter}">
-	            	<f:attribute name="fieldId" value="#{data.id}"/>
-	            </pe:inputNumber>  
-	            <h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"/>
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputNumber" />
+					<ui:define name="input">
+			            <pe:inputNumber id="inputNumber" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
+			            	validator="#{data.validate}" rendered="#{not data.readOnly}" converter="#{data.converter}">
+			            	<f:attribute name="fieldId" value="#{data.id}"/>
+			            </pe:inputNumber>  
+			        </ui:define>
+				</ui:decorate>
 	        </pe:dynaFormControl>
 			
 			<!-- Select One -->
 			<!-- Radio -->
 			<pe:dynaFormControl type="InputSelectOneRadio" for="selectOneRadio">  
-	        	<p:message  escape="false" for="selectOneRadio"/>
-	            <p:selectOneRadio id="selectOneRadio" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
-	            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" converter="#{data.converter}"
-	            	validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" rendered="#{not data.readOnly}">
-	            	<!--
-	            	<f:converter binding="#{jsfComponentController.converter}" /> 
-	            	-->
-	                <f:selectItems value="#{data.items}"/>  
-	                <f:attribute name="fieldId" value="#{data.id}"/>
-	                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
-	            </p:selectOneRadio>  
-	            <h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"/>
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="selectOneRadio" />
+					<ui:define name="input">
+			            <p:selectOneRadio id="selectOneRadio" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" converter="#{data.converter}"
+			            	validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" rendered="#{not data.readOnly}">
+			            	<!--
+			            	<f:converter binding="#{jsfComponentController.converter}" /> 
+			            	-->
+			                <f:selectItems value="#{data.items}"/>  
+			                <f:attribute name="fieldId" value="#{data.id}"/>
+			                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+			            </p:selectOneRadio>  
+					</ui:define>
+				</ui:decorate>
 	        </pe:dynaFormControl> 
 
-	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu"><table border="0" style="width: 100%;" cellpadding="0" cellspacing="0"><tr>  
-	            <td style="width: 100%;">
-	            	<p:message  escape="false" for="selectOneMenu"/>
-	            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
-		            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
-		            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
-		            	<!--
-		            	<f:converter binding="#{jsfComponentController.converter}" />
-		            	
-		            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
-		                -->
-		                <f:selectItems value="#{data.items}"/>  
-		                <f:attribute name="fieldId" value="#{data.id}"/>
-		                <!--
-		                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
-		            	-->
-		            </p:selectOneMenu>
-	            	<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"/>
-	            </td> 
-	           
-	            <td>
-	            
-	            	<p:commandButton rendered="#{data.isSelectItemEditable()}"
-						value="#{uiManager.text('edit')}"  
-						action="#{cc.value.switchTo(data)}" 
-						process="@this" 
-				        update="@form" >
-				        
-				    </p:commandButton>
-				    
-				   
-	            
-	            <!--ui:include src="/primefacesForm/include/commandButton.xhtml" >
-	        		<ui:param name="data" value="#{data}" />
-	        		<ui:param name="value" value="#{value}" />
-	        		<ui:param name="edit" value="false" />
-	        		<ui:param name="update" value="#{constantManager.FORM_INPUTS_PANEL_ID}" />
-	        	</ui:include--></td>	
-	        </tr> </table></pe:dynaFormControl>
+	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu">
+	        	
+	        	<table style="width: 100%;"><tr>  
+		            <td style="width: 100%;">
+		            	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+							<ui:param name="input" value="#{data}" />
+							<ui:param name="forId" value="selectOneMenu" />
+							<ui:define name="input">
+				            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+					            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
+					            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
+					            	<!--
+					            	<f:converter binding="#{jsfComponentController.converter}" />
+					            	
+					            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
+					                -->
+					                <f:selectItems value="#{data.items}"/>  
+					                <f:attribute name="fieldId" value="#{data.id}"/>
+					                <!--
+					                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+					            	-->
+					            </p:selectOneMenu>
+				            </ui:define>
+				    	</ui:decorate>
+		            </td> 
+		           
+		            <ui:fragment rendered="#{data.isSelectItemEditable()}"><td>
+		            	<p:commandButton rendered="#{data.isSelectItemEditable()}" value="#{uiManager.text('edit')}" action="#{cc.value.switchTo(data)}" 
+							process="@this" update="@form" >
+					    </p:commandButton>
+		            </td></ui:fragment>	
+	        	</tr></table>
+	        	
+	        </pe:dynaFormControl>
 	        
 	        <!-- Input message
 			<pe:dynaFormControl type="OutputMessage" for="outputMessage" >  
@@ -131,13 +155,7 @@
 		
 		<p:commandButton value="OK" action="#{cc.value.submitCommand.execute(null)}" process="@form" update="@form"/>
 		
-		 <p:commandButton 
-						value="Back"  
-						action="#{cc.value.back}" 
-						process="@this" 
-				        update="@form" >
-				        
-				    </p:commandButton>
+		<p:commandButton value="Back" action="#{cc.value.back}" process="@this" update="@form" />
 		
 	</cc:implementation>
 

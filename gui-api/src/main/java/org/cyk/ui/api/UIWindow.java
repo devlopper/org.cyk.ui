@@ -1,7 +1,10 @@
 package org.cyk.ui.api;
 
+import org.cyk.ui.api.form.UIFormContainer;
 
-public interface UIWindow {
+
+
+public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	/**
 	 * Get the title
@@ -14,5 +17,10 @@ public interface UIWindow {
 	 * @return
 	 */
 	UIMessageManager getMessageManager();
-
+	
+	UIManager getUiManager();
+	
+	UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> newFormContainerInstance();
+	
+	UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel);
 }

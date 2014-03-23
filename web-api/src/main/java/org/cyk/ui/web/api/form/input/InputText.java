@@ -5,17 +5,25 @@ import java.io.Serializable;
 import lombok.Getter;
 
 import org.cyk.ui.api.form.UIFormData;
-import org.cyk.ui.api.form.input.UIInputComponent;
+import org.cyk.ui.api.form.input.UIInputText;
 
 @Getter
-public class InputText extends AbstractWebInputComponent<String> implements WebUIInputText, Serializable  {
+public class InputText extends AbstractWebInputComponent<String> implements WebUIInputText,UIInputText, Serializable  {
 
 	private static final long serialVersionUID = 7029658406107605595L;
 
+	@Getter private Integer rowCount,columnCount;
 	private String filterMask;
 	
-	public InputText(UIFormData<?, ?, ?, ?> containerForm,UIInputComponent<String> input) {
+	public InputText(UIFormData<?, ?, ?, ?> containerForm,UIInputText input) {
 		super(containerForm,input);
+		rowCount = input.getRowCount();
+		columnCount = input.getColumnCount();
+	}
+	
+	@Override
+	public String getFamily() {
+		return annotation.textArea()?"InputTextArea":super.getFamily();
 	}
 	
 }

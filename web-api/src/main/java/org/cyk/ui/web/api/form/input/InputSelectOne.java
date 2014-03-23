@@ -13,11 +13,11 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.form.UIFormData;
-import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.ui.api.form.input.ISelectItem;
+import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.ui.web.api.form.IWebFormContainer;
+import org.cyk.utility.common.annotation.FormField;
 
 @Getter @Log
 public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> implements WebUIInputSelectOne<Object,FORM>,UIInputSelectOne<Object,SelectItem>,Serializable  {
@@ -60,7 +60,7 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 				return (Converter) javax.faces.convert.BooleanConverter.class.newInstance();
 			if(isEnum())
 				return (Converter) javax.faces.convert.EnumConverter.class.newInstance();
-			return  ((IWebFormContainer<FORM, ?, ?, SelectItem>)containerForm.getContainer()).getObjectConverter();
+			return  ((IWebFormContainer<FORM, ?, ?>)containerForm.getContainer()).getObjectConverter();
 		} catch (Exception e) {
 			log.log(Level.SEVERE,e.toString(),e);
 			return null;
@@ -83,11 +83,11 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	}
 	
 	public boolean isCombobox(){
-		return FormField.SelectOneInputType.COMBOBOX.equals(formField.selectOneInputType());
+		return FormField.SelectOneInputType.COMBOBOX.equals(annotation.selectOneInputType());
 	}
 	
 	public boolean isRadio(){
-		return isBoolean() || FormField.SelectOneInputType.RADIO.equals(formField.selectOneInputType());
+		return isBoolean() || FormField.SelectOneInputType.RADIO.equals(annotation.selectOneInputType());
 	}
 	
 	@Override

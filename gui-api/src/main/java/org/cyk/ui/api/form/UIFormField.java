@@ -1,6 +1,6 @@
 package org.cyk.ui.api.form;
 
-public interface IFormField {
+public interface UIFormField {
 	
 	//void updateValue();
 

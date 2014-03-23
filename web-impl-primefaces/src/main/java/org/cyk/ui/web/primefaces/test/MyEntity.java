@@ -8,8 +8,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.ui.api.annotation.FormField;
-import org.cyk.ui.api.annotation.FormField.CompositionRelationshipInputType;
+import org.cyk.utility.common.annotation.FormField;
+import org.cyk.utility.common.annotation.FormField.CompositionRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
 import org.cyk.utility.common.validation.System;
 
@@ -18,37 +18,37 @@ public class MyEntity {
 	
 	public enum MyEnum{V1,V2,V3,v55}
 	
-	@FormField(groups=Client.class)
-	private String string="1";//="Jesus";
+	@FormField(groups=Client.class,required=true,description="Une chaine de caracteres")
+	private String string;//="1";//="Jesus";
 	
-	@FormField(textArea=true)
-	private String textArea="1";
+	@FormField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
+	private String textArea;//="1";
 	
-	@FormField(groups=System.class)
-	private Boolean yesOrNoWrapper=false;
+	@FormField(groups=System.class,required=true)
+	private Boolean yesOrNoWrapper;//=false;
 	
-	@FormField(groups=System.class)
-	private boolean yesOrNoPrimitive;
+	//@FormField(groups=System.class)
+	//private boolean yesOrNoPrimitive;
 	
-	@FormField
-	private Integer myIntWrapper=1;
+	@FormField(required=true)
+	private Integer myIntWrapper;//=1;
 	
-	@FormField
-	private int myIntPrimitive=1;
+	//@FormField
+	//private int myIntPrimitive=1;
 	
 	@FormField
 	private Float myFloatWrapper=1f;
 	
-	@FormField
-	private float myFloatPrimitive=1f;
+	//@FormField
+	//private float myFloatPrimitive=1f;
 	
 	@FormField
 	private BigDecimal myBigDecimal=new BigDecimal(1);
 	
-	@FormField(groups=Client.class)
-	private Date date = new Date();
+	@FormField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
+	private Date date;// = new Date();
 	
-	@FormField
+	@FormField(required=true)
 	private MyEnum myEnum;
 	
 	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)

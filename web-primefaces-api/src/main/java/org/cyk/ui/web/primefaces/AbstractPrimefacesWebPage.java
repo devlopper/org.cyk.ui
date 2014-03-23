@@ -2,12 +2,28 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
-import org.cyk.ui.web.api.AbstractWebPage;
+import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
-public class AbstractPrimefacesWebPage extends AbstractWebPage implements Serializable {
+import lombok.Getter;
+
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.form.UIFormContainer;
+import org.cyk.ui.web.api.AbstractWebPage;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+
+public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaFormModel,DynaFormLabel,DynaFormControl> implements Serializable {
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
+	@Inject @Getter protected UIManager uiManager;
+	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
+	@Override
+	public UIFormContainer<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> newFormContainerInstance() {
+		return new FormContainer();
+	}
 	
 }

@@ -9,9 +9,9 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.component.AbstractComponent;
 import org.cyk.ui.api.form.UIFormData;
+import org.cyk.utility.common.annotation.FormField;
 
 @Getter @Setter @Log
 public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractComponent<VALUE_TYPE> implements Serializable, UIInputComponent<VALUE_TYPE> {
@@ -19,19 +19,22 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractCompone
 	private static final long serialVersionUID = 438462134701637492L;
 
 	protected UIFormData<?, ?, ?, ?> containerForm;
-	protected String label;
+	protected String label,description;
 	protected VALUE_TYPE value;
 	protected Object object;
 	protected Field field;
 	protected Boolean required,readOnly;
 	protected String requiredMessage,validatorId,validationGroupClass,readOnlyValue;
 	
+	protected FormField annotation;
+	
 	@SuppressWarnings("unchecked")
 	public AbstractInputComponent(String aLabel,Field aField,Object anObject) {
 		this.label=aLabel;
 		this.field=aField;
-		FormField formField = aField.getAnnotation(FormField.class);
-		required = formField.required();
+		annotation = aField.getAnnotation(FormField.class);
+		this.description = annotation.description();
+		required = annotation.required();
 		requiredMessage = "Valeur obligatoire";
 		this.object=anObject;
 		try {

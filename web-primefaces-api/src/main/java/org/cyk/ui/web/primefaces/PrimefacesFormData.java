@@ -8,13 +8,13 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-public class FormData extends AbstractWebFormData<DynaFormModel,DynaFormLabel,DynaFormControl> {
+public class PrimefacesFormData extends AbstractWebFormData<DynaFormModel,DynaFormLabel,DynaFormControl> {
 
 	private static final long serialVersionUID = -2915809915934469649L;
 
 	private DynaFormRow currentRow;
 	
-	public FormData() {}
+	public PrimefacesFormData() {}
 	
 	@Override
 	public DynaFormModel createDataModel() {
@@ -37,6 +37,16 @@ public class FormData extends AbstractWebFormData<DynaFormModel,DynaFormLabel,Dy
 	@Override
 	public void link(DynaFormLabel anOutputLabel, DynaFormControl anInput) {
 		anOutputLabel.setForControl(anInput);
+	}
+
+	@Override
+	public String getInputTemplateFileAtRight() {
+		return "template/form-inputMessageAtRight.xhtml";
+	}
+
+	@Override
+	public String getInputTemplateFileAtTop() {
+		return "template/form-inputMessageAtTop.xhtml";
 	}
 			
 }

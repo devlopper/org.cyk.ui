@@ -10,6 +10,8 @@ public interface UIInputComponent<VALUE_TYPE> extends UIComponent<VALUE_TYPE> {
 	UIFormData<?, ?, ?, ?> getContainerForm();
 	
 	String getLabel();
+	
+	String getDescription();
 
 	Object getObject();
 	

@@ -14,23 +14,23 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.cyk.ui.api.AbstractView;
-import org.cyk.ui.api.annotation.FormField;
-import org.cyk.ui.api.annotation.FormField.CompositionRelationshipInputType;
 import org.cyk.ui.api.component.UIComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
-import org.cyk.ui.api.form.input.UIInputComponent;
-import org.cyk.ui.api.form.input.UIInputSelect;
 import org.cyk.ui.api.form.input.InputDate;
 import org.cyk.ui.api.form.input.InputNumber;
 import org.cyk.ui.api.form.input.InputSelectOne;
 import org.cyk.ui.api.form.input.InputText;
+import org.cyk.ui.api.form.input.UIInputComponent;
+import org.cyk.ui.api.form.input.UIInputSelect;
 import org.cyk.ui.api.form.output.IOutputLabel;
 import org.cyk.ui.api.form.output.IOutputMessage;
 import org.cyk.ui.api.form.output.OutputLabel;
 import org.cyk.ui.api.form.output.OutputMessage;
+import org.cyk.utility.common.annotation.FormField;
+import org.cyk.utility.common.annotation.FormField.CompositionRelationshipInputType;
 
 @Log
-public abstract class AbstractFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractView implements UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
+public abstract class AbstractFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> implements UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -3666969590470758214L;
 	

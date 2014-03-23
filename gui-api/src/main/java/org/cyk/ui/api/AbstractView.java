@@ -12,14 +12,14 @@ import org.cyk.ui.api.layout.UILayout;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 
-public abstract class AbstractView extends AbstractBean implements UIView , Serializable {
+public abstract class AbstractView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractBean implements UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -3666969590470758214L;
 
 	@Getter @Setter protected UILayout layout;
 	@Getter protected String title;
 	@Getter @Setter protected Integer rowsCount=0,columnsCount = 2,_columnsCounter=0;
-	@Getter @Setter protected UIContainer container;
+	@Getter @Setter protected UIContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> container;
 	
 	@Getter @Setter protected Object objectModel;
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
@@ -30,12 +30,5 @@ public abstract class AbstractView extends AbstractBean implements UIView , Seri
 		for(Class<?> clazz : theGroupsClasses)
 			groups.add(clazz);
 	}
-
-	public UIMessageManager getMessageManager() {
-		return container.getMessageManager();
-	}
-	
-	
-
 		
 }

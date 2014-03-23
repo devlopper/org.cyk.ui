@@ -13,7 +13,7 @@ import org.cyk.ui.web.api.form.input.WebUIInputSelectOne;
 import org.cyk.ui.web.api.form.input.WebUIInputText;
 import org.cyk.ui.web.api.form.input.WebUIOutputText;
 
-public interface IWebForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
+public interface IWebFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 
 	WebUIInputText inputText(UIInputText anIInput);
 	WebUIInputNumber inputNumber(UIInputNumber anIInput);
@@ -21,4 +21,8 @@ public interface IWebForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIFormData<
 	WebUIInputDate inputDate(UIInputDate anIInput);
 	
 	WebUIOutputText outputText(UIOutputText anIOutputText);
+	
+	String getInputTemplateFile();
+	String getInputTemplateFileAtRight();
+	String getInputTemplateFileAtTop();
 }

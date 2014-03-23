@@ -11,7 +11,7 @@ import org.cyk.ui.api.layout.UILayout;
  * @author Komenan Y .Christian
  *
  */
-public interface UIView {
+public interface UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	/**
 	 * Get the layout of the view
@@ -29,13 +29,13 @@ public interface UIView {
 	 * Get the view container
 	 * @return
 	 */
-	UIContainer getContainer();
+	UIContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getContainer();
 	
 	/**
 	 * Set the view container
 	 * @param aContainer
 	 */
-	void setContainer(UIContainer aContainer);
+	void setContainer(UIContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> aContainer);
 	
 	/**
 	 * The title of the view

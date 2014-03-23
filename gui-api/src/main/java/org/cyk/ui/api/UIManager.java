@@ -47,6 +47,12 @@ public class UIManager extends AbstractBean implements Serializable {
 	}
 	
 	/**/
+	
+	private final String constantInputLayout = "il";
+	private final String constantInputLayoutMessageAtRight = "matr";
+	private final String constantInputLayoutMessageAtTop = "matt";
+	
+	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {
 		private static final long serialVersionUID = 1175379361365502915L;
 		

@@ -17,7 +17,7 @@ import org.cyk.ui.api.form.input.UIInputComponent;
  * @param <INPUT>
  * @param <SELECTITEM>
  */
-public interface UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIView {
+public interface UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	/**
 	 * The real component to use

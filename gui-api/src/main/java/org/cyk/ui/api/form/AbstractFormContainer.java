@@ -17,7 +17,7 @@ import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
 
 @Log
-public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractViewContainer implements IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
+public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractViewContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> implements UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -3666969590470758214L;
 	
@@ -27,14 +27,14 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	protected Stack<UIFormData<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> stack = new Stack<>();
 	@Getter protected UIFormCommand submitCommand;
 	@Getter protected Collection<UIFormCommand> commands;
-	@Setter @Getter protected AbstractMethod<Object, Object> submitMain,submitDetails;
+	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
 		submitCommand = new DefaultFormCommand();
-		submitCommand.setMessageManager(getMessageManager()); 
+		submitCommand.setMessageManager(getWindow().getMessageManager()); 
 		submitCommand.setExecuteMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
@@ -61,8 +61,8 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	}
 	
 	protected void onSubmitMain(Object object){
-		if(submitMain!=null)
-			submitMain.execute(object);
+		if(submitMethodMain!=null)
+			submitMethodMain.execute(object);
 	}
 	
 	protected void onSubmitDetails(Object object){
@@ -97,14 +97,13 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	}
 	
 	private void switchTo(Object object,UIInputComponent<?> anInput){
-		@SuppressWarnings("unchecked")
 		UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM> form = (UIFormData<FORM, OUTPUTLABEL, INPUT, SELECTITEM>) build(object);
 		if(anInput!=null)
 			form.setParentField(anInput);
 	}
 	
 	@Override
-	public UIView build(Object object) {
+	public UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object) {
 		if(object==null)
 			throw new IllegalArgumentException("Object model cannot be null");
 		if(objectModel==null)
@@ -135,7 +134,7 @@ public abstract class AbstractFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	
 	@Override
 	public <T> Collection<T> load(Class<T> aClass) {
-		return uiManager.collection(aClass);
+		return getWindow().getUiManager().collection(aClass);
 	}
 	
 

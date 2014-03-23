@@ -6,10 +6,13 @@ import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputText;
 import org.cyk.ui.api.form.AbstractFormData;
-import org.cyk.ui.api.form.IFormContainer;
+import org.cyk.ui.api.form.UIFormContainer;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.api.form.input.UIInputDate;
 import org.cyk.ui.api.form.input.UIInputNumber;
@@ -29,10 +32,11 @@ import org.cyk.ui.web.api.form.input.InputNumber;
 import org.cyk.ui.web.api.form.input.InputSelectOne;
 import org.cyk.ui.web.api.form.input.InputText;
 
-public abstract class AbstractWebFormData<FORM,OUTPUTLABEL,INPUT> extends AbstractFormData<FORM,OUTPUTLABEL,INPUT,SelectItem> implements IWebForm<FORM,OUTPUTLABEL,INPUT,SelectItem> , Serializable {
+public abstract class AbstractWebFormData<FORM,OUTPUTLABEL,INPUT> extends AbstractFormData<FORM,OUTPUTLABEL,INPUT,SelectItem> implements IWebFormData<FORM,OUTPUTLABEL,INPUT,SelectItem> , Serializable {
 
 	private static final long serialVersionUID = 5514311939767908514L;
 	
+	@Getter @Setter private String inputTemplateFile=getInputTemplateFileAtRight();
 	
 	@SuppressWarnings("unchecked")
 	public UIInputComponent<?> input(UIInputComponent<?> aComponent){
@@ -74,7 +78,7 @@ public abstract class AbstractWebFormData<FORM,OUTPUTLABEL,INPUT> extends Abstra
 		WebUIInputSelectOne<Object,FORM> inputSelectOne = new InputSelectOne<FORM>(this,anIInput);
 		if(inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty()){
 			@SuppressWarnings("unchecked")
-			Collection<Object> datas = (Collection<Object>) ((IFormContainer<?,?,?,?>)container).load(anIInput.getField().getType());
+			Collection<Object> datas = (Collection<Object>) ((UIFormContainer<?,?,?,?>)container).load(anIInput.getField().getType());
 			if(anIInput.getValue()!=null){
 				if(datas==null)
 					datas = Arrays.asList(anIInput.getValue());

@@ -13,5 +13,6 @@ public abstract class AbstractWebComponent<VALUE_TYPE> extends AbstractComponent
 	private static final long serialVersionUID = 6386648827377414199L;
 
 	protected CascadeStyleSheet cascadeStyleSheet;
+
 	
 }

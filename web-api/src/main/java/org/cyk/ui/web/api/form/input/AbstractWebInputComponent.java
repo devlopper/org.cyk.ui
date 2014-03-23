@@ -12,10 +12,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.ui.api.annotation.FormField;
 import org.cyk.ui.api.form.UIFormData;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.web.api.AbstractWebComponent;
+import org.cyk.utility.common.annotation.FormField;
 
 @Getter @Setter
 public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<VALUE_TYPE> implements Serializable, WebUIInputComponent<VALUE_TYPE> {
@@ -23,22 +23,23 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	private static final long serialVersionUID = 6386648827377414199L;
 	
 	protected UIFormData<?, ?, ?, ?> containerForm;
-	protected String label,requiredMessage,validatorId,validationGroupClass,readOnlyValue;
+	protected String label,requiredMessage,validatorId,validationGroupClass,readOnlyValue,description;
 	protected Boolean readOnly,required;
 	protected Field field;
 	protected Converter converter;
-	protected Object object;
-	protected FormField formField;
+	protected Object object; 
+	protected FormField annotation;
 
 	public AbstractWebInputComponent(UIFormData<?, ?, ?, ?> containerForm,UIInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
+		description = input.getDescription();
 		requiredMessage = input.getRequiredMessage();
 		readOnly = input.getReadOnly();
 		required = input.getRequired();
 		field = input.getField();
 		object = input.getObject();
 		value = input.getValue();
-		formField = field.getAnnotation(FormField.class);
+		annotation = field.getAnnotation(FormField.class);
 		this.containerForm = containerForm;
 		readOnlyValue = input.getReadOnlyValue();
 	}

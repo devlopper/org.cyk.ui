@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.cyk.ui.api.UIContainer;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.api.form.input.UIInputSelectOne;
+import org.cyk.utility.common.AbstractMethod;
 
 /**
  * Contains forms
@@ -15,7 +16,7 @@ import org.cyk.ui.api.form.input.UIInputSelectOne;
  * @param <INPUT>
  * @param <SELECTITEM>
  */
-public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIContainer {
+public interface UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	Object getObjectModel();
 	
@@ -37,6 +38,8 @@ public interface IFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UICon
 	 * @throws Exception 
 	 */
 	void onSubmit(Object object) throws Exception;
+	
+	void setSubmitMethodMain(AbstractMethod<Object, Object> anAbstractMethod);
 	
 	/**
 	 * The selected form of the form container

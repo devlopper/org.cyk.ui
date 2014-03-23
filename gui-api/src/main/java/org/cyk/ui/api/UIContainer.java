@@ -1,13 +1,15 @@
 package org.cyk.ui.api;
 
-import java.util.Collection;
-
 /**
  * A view container is views wrapper in order to interact with them.
  * @author Komenan Y .Christian
  *
  */
-public interface UIContainer {
+public interface UIContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
+	
+	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getWindow();
+	
+	void setWindow(UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> aWindow);
 	
 	/**
 	 * Get the title
@@ -19,17 +21,10 @@ public interface UIContainer {
 	 * Get the views
 	 * @return
 	 */
-	Collection<UIView> getViews();
+	//Collection<UIView> getViews();
 	
 	Object getObjectModel();
 	
-	/**
-	 * The UI message manager
-	 * @return
-	 */
-	UIMessageManager getMessageManager();
+	UIView<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object);
 	
-	UIView build(Object object);
-	
-
 }

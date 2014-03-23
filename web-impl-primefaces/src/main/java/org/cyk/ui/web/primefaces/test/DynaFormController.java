@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Getter;
@@ -16,10 +16,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.ui.api.UIManager.LoadDataMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
+import org.cyk.ui.api.form.UIFormContainer;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
-import org.cyk.ui.web.primefaces.Form;
 import org.cyk.ui.web.primefaces.test.MyEntity.MyDetails2;
 import org.cyk.utility.common.AbstractMethod;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
 
 @Named
 @ViewScoped
@@ -29,11 +32,12 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	@Inject private Form myForm;
+	private UIFormContainer<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> myForm;
 	
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		
 		uiManager.setLoadDataMethod(new LoadDataMethod() {
 			private static final long serialVersionUID = -2251974175051850252L;
 			@Override
@@ -48,8 +52,10 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 				return collection;
 			}
 		});
-		myForm.build(new MyEntity());
-		myForm.setSubmitMain(new AbstractMethod<Object, Object>() {
+		
+		myForm = createFormContainer(new MyEntity());
+		
+		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -59,6 +65,7 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 				return null;
 			}
 		});
+		
 	}
 	
 
