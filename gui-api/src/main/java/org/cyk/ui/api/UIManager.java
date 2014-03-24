@@ -3,7 +3,6 @@ package org.cyk.ui.api;
 import java.io.Serializable;
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -28,11 +27,10 @@ public class UIManager extends AbstractBean implements Serializable {
 	 
 	@Inject protected LanguageService languageService;
 	
-	
-	@Override @PostConstruct
-	public void postConstruct() {
-		super.postConstruct();
-		languageService.registerResourceBundle("org.cyk.ui.api.resources.message");
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		languageService.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 	}
 	
 	@SuppressWarnings("unchecked")
