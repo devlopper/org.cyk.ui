@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.service.api.language.LanguageService;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -20,7 +20,7 @@ public class WebUIMessageManager extends AbstractBean implements UIMessageManage
 	
 	private static final long serialVersionUID = -2096649010369789825L;
 	
-	@Inject private LanguageService languageService;
+	@Inject private LanguageBusiness languageBusiness;
 	
 	protected FacesMessage facesMessage;
 	
@@ -102,7 +102,7 @@ public class WebUIMessageManager extends AbstractBean implements UIMessageManage
 	}
 	
 	protected String toString(Text text){
-		String message = Boolean.TRUE.equals(text.getIsId())?languageService.findText(text.getText().toString()):text.getText().toString();
+		String message = Boolean.TRUE.equals(text.getIsId())?languageBusiness.findText(text.getText().toString()):text.getText().toString();
 		message = format(message);
 		return message;
 	}

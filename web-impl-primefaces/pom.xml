@@ -47,8 +47,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.cyk.system.root.service</groupId>
-			<artifactId>service-impl-ejb</artifactId>
+			<groupId>org.cyk.system.root.business</groupId>
+			<artifactId>business-impl-ejb</artifactId>
 			<version>0.0.1</version>
 			<type>ejb</type>
 		</dependency>

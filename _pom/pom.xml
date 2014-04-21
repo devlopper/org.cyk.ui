@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.cyk.pom</groupId>
 		<artifactId>global</artifactId>
 		<version>gp.0.0.1</version>
-	</parent> 
+	</parent>
 
 	<groupId>org.cyk.ui</groupId>
 	<artifactId>pom</artifactId>
@@ -16,22 +17,21 @@
 
 	<name>User Interface</name>
 	<url>http://www.cykcorp.org</url>
-	
+
 	<modules>
-		<module>../gui-api</module> 
+		<module>../gui-api</module>
 		<module>../web-api</module>
 		<module>../web-primefaces-api</module>
-		
-	</modules> 
+	</modules>
 
-	
 	<dependencies>
 		<dependency>
-			<groupId>org.cyk.system.root.service</groupId>
-			<artifactId>service-impl-ejb</artifactId>
+			<groupId>org.cyk.system.root.business</groupId>
+			<artifactId>business-impl-ejb</artifactId>
 			<version>0.0.1</version>
 			<type>ejb</type>
 			<scope>provided</scope>
 		</dependency>
+		
 	</dependencies>
 </project>

@@ -12,7 +12,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.system.root.service.api.language.LanguageService;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -25,12 +25,12 @@ public class UIManager extends AbstractBean implements Serializable {
 	
 	protected ToStringMethod toStringMethod;
 	 
-	@Inject protected LanguageService languageService;
+	@Inject protected LanguageBusiness languageBusiness;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		languageService.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
+		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -49,7 +49,7 @@ public class UIManager extends AbstractBean implements Serializable {
 	}
 	
 	public String text(String code){
-		return languageService.findText(code);
+		return languageBusiness.findText(code);
 	}
 	
 	/**/

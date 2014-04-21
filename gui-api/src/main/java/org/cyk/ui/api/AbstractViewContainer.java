@@ -18,7 +18,7 @@ public abstract class AbstractViewContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> e
 	/**/
 	
 	protected String text(String id){
-		return getWindow().getUiManager().getLanguageService().findText(id);
+		return getWindow().getUiManager().getLanguageBusiness().findText(id);
 	}
 	
 }

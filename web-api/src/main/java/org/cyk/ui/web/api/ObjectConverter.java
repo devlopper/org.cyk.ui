@@ -6,11 +6,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.utility.common.AbstractMethod;
-
-import com.sun.jersey.spi.resource.Singleton;
 
 import lombok.extern.java.Log;
 
