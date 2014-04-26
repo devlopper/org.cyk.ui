@@ -12,7 +12,7 @@ public class UIDataTable<ROW_DATA,COLUMN_DATA> extends AbstractClassFieldValueTa
 	protected String nullValue() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	} 
 
 	@Override
 	protected String valueOf(Object object) {
