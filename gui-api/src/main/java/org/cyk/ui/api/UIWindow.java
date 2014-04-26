@@ -1,6 +1,6 @@
 package org.cyk.ui.api;
 
-import org.cyk.ui.api.form.UIFormContainer;
+import org.cyk.ui.api.form.UIForm;
 
 
 
@@ -20,7 +20,7 @@ public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	UIManager getUiManager();
 	
-	UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> newFormContainerInstance();
+	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> newFormContainerInstance();
 	
-	UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel);
+	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel);
 }

@@ -108,7 +108,6 @@
 	        </pe:dynaFormControl> 
 
 	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu">
-	        	
 	        	<table style="width: 100%;"><tr>  
 		            <td style="width: 100%;">
 		            	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
@@ -134,21 +133,35 @@
 		            </td> 
 		           
 		            <ui:fragment rendered="#{data.isSelectItemEditable()}"><td>
-		            	<cyk:formCommand value="#{cc.value.primefacesSwitchCommand}" rendered="#{data.isSelectItemEditable()}" executeParameter="#{data}" />
-		            	<!--
-		            	<p:commandButton rendered="#{data.isSelectItemEditable()}" value="#{uiManager.text('edit')}" action="#{cc.value.switchTo(data)}" 
-							process="@this" update="@form" >
-					    </p:commandButton>
-					    -->
+		            	<cyk:command value="#{cc.value.primefacesSwitchCommand}" rendered="#{data.isSelectItemEditable()}" executeParameter="#{data}" />
 		            </td></ui:fragment>	
 	        	</tr></table>
 	        </pe:dynaFormControl>
+	        
+			<!-- Many -->
+			<!--
+			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputNumber" />
+					<ui:define name="input">
+			            <pe:inputNumber id="inputNumber" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
+			            	validator="#{data.validate}" rendered="#{not data.readOnly}" converter="#{data.converter}">
+			            	<f:attribute name="fieldId" value="#{data.id}"/>
+			            </pe:inputNumber>  
+			        </ui:define>
+				</ui:decorate>
+	        </pe:dynaFormControl>	        
+	        -->
 		</pe:dynaForm>
 		
 		<p:separator/>
 	
-		<cyk:formCommand value="#{cc.value.primefacesSubmitCommand}" />
-		<cyk:formCommand value="#{cc.value.primefacesBackCommand}" rendered="#{not cc.value.root}"/>
+		<cyk:command value="#{cc.value.primefacesSubmitCommand}" />
+		<cyk:command value="#{cc.value.primefacesBackCommand}" rendered="#{not cc.value.root}"/>
+		
+		<p:menubar model="#{cc.value.model}" /> 
 		
 	</cc:implementation>
 

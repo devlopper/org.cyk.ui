@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import lombok.Getter;
 
-import org.cyk.ui.api.form.UIFormData;
+import org.cyk.ui.api.form.UISubForm;
 import org.cyk.ui.api.form.input.UIInputText;
 
 @Getter
@@ -15,7 +15,7 @@ public class InputText extends AbstractWebInputComponent<String> implements WebU
 	@Getter private Integer rowCount,columnCount;
 	private String filterMask;
 	
-	public InputText(UIFormData<?, ?, ?, ?> containerForm,UIInputText input) {
+	public InputText(UISubForm<?, ?, ?, ?> containerForm,UIInputText input) {
 		super(containerForm,input);
 		rowCount = input.getRowCount();
 		columnCount = input.getColumnCount();

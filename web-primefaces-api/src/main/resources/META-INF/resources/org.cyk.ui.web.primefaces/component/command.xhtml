@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<cc:interface componentType="org.cyk.ui.primefaces.Command">
+		<cc:attribute name="value" required="true" />
+		<cc:attribute name="executeParameter" required="false" />
+	</cc:interface>
+
+	<cc:implementation>
+		
+		<p:commandButton id="#{cc.id}CommandButton"
+			action="#{cc.value.model.execute(cc.attrs.executeParameter)}" 
+			process="#{cc.value.commandButton.process}" 
+			update="#{cc.value.commandButton.update}"
+			value="#{cc.value.commandButton.value}" />
+			
+	</cc:implementation>
+
+</ui:composition>

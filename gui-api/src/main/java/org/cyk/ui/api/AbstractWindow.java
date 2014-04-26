@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import lombok.Getter;
 
-import org.cyk.ui.api.form.UIFormContainer;
+import org.cyk.ui.api.form.UIForm;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractBean implements UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM>,Serializable {
@@ -14,8 +14,8 @@ public abstract class AbstractWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	@Getter protected String title;
 	
 	@Override
-	public UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel) {
-		UIFormContainer<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formContainer = newFormContainerInstance();
+	public UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel) {
+		UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formContainer = newFormContainerInstance();
 		formContainer.setWindow(this);
 		((AbstractBean)formContainer).postConstruct();
 		formContainer.build(anObjectModel);

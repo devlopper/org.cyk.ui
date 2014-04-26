@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.ui.api.form.UIFormData;
+import org.cyk.ui.api.form.UISubForm;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.web.api.AbstractWebComponent;
 import org.cyk.utility.common.annotation.FormField;
@@ -22,7 +22,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 
 	private static final long serialVersionUID = 6386648827377414199L;
 	
-	protected UIFormData<?, ?, ?, ?> containerForm;
+	protected UISubForm<?, ?, ?, ?> containerForm;
 	protected String label,requiredMessage,validatorId,validationGroupClass,readOnlyValue,description;
 	protected Boolean readOnly,required;
 	protected Field field;
@@ -30,7 +30,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	protected Object object; 
 	protected FormField annotation;
 
-	public AbstractWebInputComponent(UIFormData<?, ?, ?, ?> containerForm,UIInputComponent<VALUE_TYPE> input) {
+	public AbstractWebInputComponent(UISubForm<?, ?, ?, ?> containerForm,UIInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
 		description = input.getDescription();
 		requiredMessage = input.getRequiredMessage();

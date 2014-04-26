@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.cyk.ui.api.form.UIFormData;
+import org.cyk.ui.api.form.UISubForm;
 import org.cyk.ui.api.form.input.UIInputNumber;
 
 @Getter @Log
@@ -17,7 +17,7 @@ public class InputNumber extends AbstractWebInputComponent<Number> implements We
 
 	private static final long serialVersionUID = 7029658406107605595L;
 
-	public InputNumber(UIFormData<?, ?, ?, ?> containerForm,UIInputNumber input) {
+	public InputNumber(UISubForm<?, ?, ?, ?> containerForm,UIInputNumber input) {
 		super(containerForm,input);
 	}
 	

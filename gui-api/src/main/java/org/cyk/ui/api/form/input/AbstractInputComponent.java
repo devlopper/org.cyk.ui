@@ -10,7 +10,7 @@ import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.component.AbstractComponent;
-import org.cyk.ui.api.form.UIFormData;
+import org.cyk.ui.api.form.UISubForm;
 import org.cyk.utility.common.annotation.FormField;
 
 @Getter @Setter @Log
@@ -18,7 +18,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractCompone
 
 	private static final long serialVersionUID = 438462134701637492L;
 
-	protected UIFormData<?, ?, ?, ?> containerForm;
+	protected UISubForm<?, ?, ?, ?> containerForm;
 	protected String label,description;
 	protected VALUE_TYPE value;
 	protected Object object;

@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.utility.common.annotation.FormField;
-import org.cyk.utility.common.annotation.FormField.CompositionRelationshipInputType;
+import org.cyk.utility.common.annotation.FormField.OneRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
 import org.cyk.utility.common.validation.System;
 
@@ -51,7 +51,7 @@ public class MyEntity {
 	@FormField(required=true)
 	private MyEnum myEnum;
 	
-	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
+	@FormField(oneRelationshipInputType=OneRelationshipInputType.FORM)
 	private MyDetails details1;// = new MyDetails();
 	/*
 	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
@@ -80,7 +80,7 @@ public class MyEntity {
 		@FormField
 		private Integer detailsMyInt;
 		
-		@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
+		@FormField(oneRelationshipInputType=OneRelationshipInputType.FORM)
 		private MyDetails2 details2;
 		
 		

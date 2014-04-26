@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.form.UIFormContainer;
+import org.cyk.ui.api.form.UIForm;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -22,8 +22,8 @@ public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaForm
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
 	@Override
-	public UIFormContainer<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> newFormContainerInstance() {
-		return new PrimefacesFormContainer();
+	public UIForm<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> newFormContainerInstance() {
+		return new PrimefacesForm();
 	}
 	
 }
