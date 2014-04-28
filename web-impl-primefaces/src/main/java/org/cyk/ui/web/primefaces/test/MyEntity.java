@@ -8,8 +8,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.utility.common.annotation.FormField;
-import org.cyk.utility.common.annotation.FormField.OneRelationshipInputType;
+import org.cyk.utility.common.annotation.UIField;
+import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
 import org.cyk.utility.common.validation.System;
 
@@ -18,69 +18,69 @@ public class MyEntity {
 	
 	public enum MyEnum{V1,V2,V3,v55}
 	
-	@FormField(groups=Client.class,required=true,description="Une chaine de caracteres")
+	@UIField(groups=Client.class,required=true,description="Une chaine de caracteres")
 	private String string="Jesus";
 	
-	@FormField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
+	@UIField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
 	private String textArea="1";
 	
-	@FormField(groups=System.class,required=true)
+	@UIField(groups=System.class,required=true)
 	private Boolean yesOrNoWrapper=false;
 	
-	//@FormField(groups=System.class)
+	//@UIField(groups=System.class)
 	//private boolean yesOrNoPrimitive;
 	
-	@FormField(required=true)
+	@UIField(required=true)
 	private Integer myIntWrapper=1;
 	
-	//@FormField
+	//@UIField
 	//private int myIntPrimitive=1;
 	
-	@FormField
+	@UIField
 	private Float myFloatWrapper=1f;
 	
-	//@FormField
+	//@UIField
 	//private float myFloatPrimitive=1f;
 	
-	@FormField
+	@UIField
 	private BigDecimal myBigDecimal=new BigDecimal(1);
 	
-	@FormField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
+	@UIField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
 	private Date date = new Date();
 	
-	@FormField(required=true)
+	@UIField(required=true)
 	private MyEnum myEnum;
 	
-	@FormField(oneRelationshipInputType=OneRelationshipInputType.FORM)
+	@UIField(oneRelationshipInputType=OneRelationshipInputType.FORM)
 	private MyDetails details1;// = new MyDetails();
 	/*
-	@FormField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
+	@UIField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
 	private MyDetails2 details2;
 	*/
 	/*
-	@FormField
+	@UIField
 	private MyDetails details2;
 	
-	@FormField
+	@UIField
 	private MyDetails details3;
 	
-	@FormField
+	@UIField
 	private MyDetails details4;
 	*/
 	/**/
 	@Setter @Getter
 	public static class MyDetails{
 		
-		@FormField(required=true)
+		@UIField(required=true)
 		private String detailsName;// = "Zouzoua Lingue";
 		
-		@FormField
+		@UIField
 		private Boolean detailsYesOrNo;
 		
-		@FormField
+		@UIField
 		private Integer detailsMyInt;
 		
-		@FormField(oneRelationshipInputType=OneRelationshipInputType.FORM)
+		@UIField(oneRelationshipInputType=OneRelationshipInputType.FORM)
 		private MyDetails2 details2;
 		
 		
@@ -93,16 +93,16 @@ public class MyEntity {
 	@Setter @Getter
 	public static class MyDetails2{
 		
-		@FormField
+		@UIField
 		private Float detailsMyFloat;
 		
-		@FormField
+		@UIField
 		private BigDecimal detailsMyBigDecimal;
 		
-		@FormField
+		@UIField
 		private Date detailsDate;
 		
-		@FormField
+		@UIField
 		private MyEnum detailsMyEnum=MyEnum.V3;
 		
 		@Override

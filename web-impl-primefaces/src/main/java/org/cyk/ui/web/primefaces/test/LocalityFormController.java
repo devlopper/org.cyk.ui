@@ -50,7 +50,7 @@ public class LocalityFormController extends AbstractPrimefacesWebPage implements
 			}
 		});
 		
-		myForm = (PrimefacesForm) createFormContainer(new Locality());
+		myForm = (PrimefacesForm) formInstance(new Locality());
 		
 		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;

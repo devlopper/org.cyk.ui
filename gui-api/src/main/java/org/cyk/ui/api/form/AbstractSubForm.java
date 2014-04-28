@@ -27,8 +27,8 @@ import org.cyk.ui.api.form.output.IOutputMessage;
 import org.cyk.ui.api.form.output.OutputLabel;
 import org.cyk.ui.api.form.output.OutputMessage;
 import org.cyk.ui.api.layout.UILayout;
-import org.cyk.utility.common.annotation.FormField;
-import org.cyk.utility.common.annotation.FormField.OneRelationshipInputType;
+import org.cyk.utility.common.annotation.UIField;
+import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Log
@@ -105,12 +105,12 @@ public abstract class AbstractSubForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	
 	private void build(Object objectModel) {
 		Collection<Class<? extends Annotation>> annotationClasses = new ArrayList<>();
-		annotationClasses.add(FormField.class);
+		annotationClasses.add(UIField.class);
 		Collection<Field> fields = commonUtils.getAllFields(objectModel.getClass(), annotationClasses);
 		
 		for(Field field : fields){
 			Boolean add = Boolean.TRUE;
-			FormField annotation = field.getAnnotation(FormField.class);
+			UIField annotation = field.getAnnotation(UIField.class);
 			if(!groups.isEmpty() /*&& ArrayUtils.isNotEmpty(annotation.groups())*/){
 				Boolean found = Boolean.FALSE;
 				for(Class<?> clazz : groups)
@@ -162,7 +162,7 @@ public abstract class AbstractSubForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends
 		}
 	}
 	
-	private UIComponent<?> component(Field aField,Object anObject,FormField annotation){
+	private UIComponent<?> component(Field aField,Object anObject,UIField annotation){
 		UIComponent<?> component = null;
 		if(OneRelationshipInputType.FORM.equals(annotation.oneRelationshipInputType()))
 			component = new InputSelectOne(aField.getName(), aField, anObject);

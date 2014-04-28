@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.form.UIForm;
+import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -22,8 +23,13 @@ public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaForm
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
 	@Override
-	public UIForm<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> newFormContainerInstance() {
+	public UIForm<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> formInstance() {
 		return new PrimefacesForm();
+	}
+	
+	@Override
+	public <DATA> Table<DATA> tableInstance(Class<DATA> aDataClass) {
+		return new PrimefacesTable<>(aDataClass, this);
 	}
 	
 }

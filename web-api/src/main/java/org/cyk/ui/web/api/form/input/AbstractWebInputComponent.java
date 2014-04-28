@@ -15,7 +15,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.form.UISubForm;
 import org.cyk.ui.api.form.input.UIInputComponent;
 import org.cyk.ui.web.api.AbstractWebComponent;
-import org.cyk.utility.common.annotation.FormField;
+import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Setter
 public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<VALUE_TYPE> implements Serializable, WebUIInputComponent<VALUE_TYPE> {
@@ -28,7 +28,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 	protected Field field;
 	protected Converter converter;
 	protected Object object; 
-	protected FormField annotation;
+	protected UIField annotation;
 
 	public AbstractWebInputComponent(UISubForm<?, ?, ?, ?> containerForm,UIInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
@@ -39,7 +39,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebComponent<
 		field = input.getField();
 		object = input.getObject();
 		value = input.getValue();
-		annotation = field.getAnnotation(FormField.class);
+		annotation = field.getAnnotation(UIField.class);
 		this.containerForm = containerForm;
 		readOnlyValue = input.getReadOnlyValue();
 	}

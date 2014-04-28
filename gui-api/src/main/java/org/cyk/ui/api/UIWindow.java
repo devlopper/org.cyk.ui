@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import org.cyk.ui.api.form.UIForm;
+import org.cyk.ui.api.model.table.Table;
 
 
 
@@ -20,7 +21,9 @@ public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	UIManager getUiManager();
 	
-	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> newFormContainerInstance();
+	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formInstance();
 	
-	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> createFormContainer(Object anObjectModel);
+	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formInstance(Object anObjectModel);
+	
+	<DATA> Table<DATA> tableInstance(Class<DATA> aDataClass);
 }

@@ -49,7 +49,7 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 			}
 		});
 		
-		myForm = (PrimefacesForm) createFormContainer(new MyEntity());
+		myForm = (PrimefacesForm) formInstance(new MyEntity());
 		myForm.buldCommands(getClass(), "myForm");
 		
 		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {

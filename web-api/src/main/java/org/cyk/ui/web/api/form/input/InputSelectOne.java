@@ -17,7 +17,7 @@ import org.cyk.ui.api.form.UISubForm;
 import org.cyk.ui.api.form.input.ISelectItem;
 import org.cyk.ui.api.form.input.UIInputSelectOne;
 import org.cyk.ui.web.api.form.WebUIForm;
-import org.cyk.utility.common.annotation.FormField;
+import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Log
 public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> implements WebUIInputSelectOne<Object,FORM>,UIInputSelectOne<Object,SelectItem>,Serializable  {
@@ -83,11 +83,11 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	}
 	
 	public boolean isCombobox(){
-		return FormField.SelectOneInputType.COMBOBOX.equals(annotation.selectOneInputType());
+		return UIField.SelectOneInputType.COMBOBOX.equals(annotation.selectOneInputType());
 	}
 	
 	public boolean isRadio(){
-		return isBoolean() || FormField.SelectOneInputType.RADIO.equals(annotation.selectOneInputType());
+		return isBoolean() || UIField.SelectOneInputType.RADIO.equals(annotation.selectOneInputType());
 	}
 	
 	@Override

@@ -8,17 +8,20 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
-	<cc:interface componentType="org.cyk.ui.primefaces.CrudDataTable">
+	<cc:interface componentType="org.cyk.ui.primefaces.Table">
 		<cc:attribute name="value" required="true" />
 	</cc:interface>
 
 	<cc:implementation>
-		<p:menubar model="#{cc.value.menu}" />
+		<p:menubar model="#{cc.value.menuModel}" /> 
+		
 		<p:dataTable var="row" value="#{cc.value.rows}" >
-			<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" sortBy="#{column.property}" filterBy="#{column.property}">  
+			<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
+			<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
 	            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
 	  			<h:outputText value=" #{cc.value.value(row,column)}" />
 	        </p:columns> 
+	        
 		</p:dataTable>
 		
 	</cc:implementation>
