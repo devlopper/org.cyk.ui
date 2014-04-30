@@ -6,8 +6,8 @@ import java.util.Locale;
 
 import lombok.Getter;
 
-import org.cyk.ui.api.form.UISubForm;
-import org.cyk.ui.api.form.input.UIInputComponent;
+import org.cyk.ui.api.editor.EditorInputs;
+import org.cyk.ui.api.editor.input.UIInputComponent;
 
 @Getter
 public class InputDate extends AbstractWebInputComponent<Date> implements WebUIInputDate,Serializable  {
@@ -19,7 +19,7 @@ public class InputDate extends AbstractWebInputComponent<Date> implements WebUII
 	private String pattern="dd/MM/yyyy",mode="popup",showOn="button";
 	private Locale locale;
 	
-	public InputDate(UISubForm<?, ?, ?, ?> containerForm,UIInputComponent<Date> input) {
+	public InputDate(EditorInputs<?, ?, ?, ?> containerForm,UIInputComponent<Date> input) {
 		super(containerForm,input);
 	}
 	

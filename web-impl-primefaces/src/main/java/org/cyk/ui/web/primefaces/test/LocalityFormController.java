@@ -17,7 +17,7 @@ import org.cyk.ui.api.UIManager.LoadDataMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
-import org.cyk.ui.web.primefaces.PrimefacesForm;
+import org.cyk.ui.web.primefaces.PrimefacesEditor;
 import org.cyk.ui.web.primefaces.test.MyEntity.MyDetails2;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -29,7 +29,7 @@ public class LocalityFormController extends AbstractPrimefacesWebPage implements
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private PrimefacesForm myForm;
+	private PrimefacesEditor myForm;
 			
 	@Override
 	protected void initialisation() { 
@@ -50,7 +50,7 @@ public class LocalityFormController extends AbstractPrimefacesWebPage implements
 			}
 		});
 		
-		myForm = (PrimefacesForm) formInstance(new Locality());
+		myForm = (PrimefacesEditor) editorInstance(new Locality());
 		
 		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;

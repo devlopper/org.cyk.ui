@@ -24,11 +24,11 @@ import org.cyk.utility.common.AbstractMethod;
 @ViewScoped
 @Getter
 @Setter
-public class DynaFormController extends AbstractPrimefacesWebPage implements Serializable {
+public class DynaFormController2 extends AbstractPrimefacesWebPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private PrimefacesEditor editor;
+	private PrimefacesEditor myForm;
 			
 	@Override
 	protected void initialisation() { 
@@ -49,20 +49,38 @@ public class DynaFormController extends AbstractPrimefacesWebPage implements Ser
 			}
 		});
 		
-		editor = (PrimefacesEditor) editorInstance(new MyEntity());
+	}
+	
+	public void form1(){
+		myForm = (PrimefacesEditor) editorInstance(new MyEntity());
+		myForm.buldCommands(getClass(), "myForm");
 		
-		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
+		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				messageManager.message(
-						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(editor.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
+						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(myForm.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
 						.showDialog();
 				return null;
 			}
 		});
+	}
+	
+	public void form2(){
+		myForm = (PrimefacesEditor) editorInstance(new Details());
+		myForm.buldCommands(getClass(), "myForm");
 		
-		
+		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = -2421175279479434675L;
+			@Override
+			protected Object __execute__(Object parameter) {
+				messageManager.message(
+						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(myForm.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
+						.showDialog();
+				return null;
+			}
+		});
 	}
 	
 

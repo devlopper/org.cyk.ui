@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.test;
 
 import java.io.Serializable;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -8,11 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.geography.Locality;
-import org.cyk.ui.api.UIMessageManager.SeverityType;
-import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
-import org.cyk.utility.common.AbstractMethod;
 
 @Named
 @ViewScoped

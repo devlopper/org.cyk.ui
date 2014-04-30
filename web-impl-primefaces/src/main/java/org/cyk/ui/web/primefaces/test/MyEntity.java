@@ -24,31 +24,31 @@ public class MyEntity {
 	@UIField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
 	private String textArea="1";
 	
-	@UIField(groups=System.class,required=true)
+	//@UIField(groups=System.class,required=true)
 	private Boolean yesOrNoWrapper=false;
 	
 	//@UIField(groups=System.class)
 	//private boolean yesOrNoPrimitive;
 	
-	@UIField(required=true)
+	//@UIField(required=true)
 	private Integer myIntWrapper=1;
 	
 	//@UIField
 	//private int myIntPrimitive=1;
 	
-	@UIField
+	//@UIField
 	private Float myFloatWrapper=1f;
 	
 	//@UIField
 	//private float myFloatPrimitive=1f;
 	
-	@UIField
+	//@UIField
 	private BigDecimal myBigDecimal=new BigDecimal(1);
 	
-	@UIField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
+	//@UIField(groups=Client.class,required=true,description="Votre date de naissance par exemple : dd/mm/aaaa")
 	private Date date = new Date();
 	
-	@UIField(required=true)
+	//@UIField(required=true)
 	private MyEnum myEnum;
 	
 	@UIField(oneRelationshipInputType=OneRelationshipInputType.FORM)

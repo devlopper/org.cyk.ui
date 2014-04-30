@@ -13,10 +13,10 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.cyk.ui.api.form.UISubForm;
-import org.cyk.ui.api.form.input.ISelectItem;
-import org.cyk.ui.api.form.input.UIInputSelectOne;
-import org.cyk.ui.web.api.form.WebUIForm;
+import org.cyk.ui.api.editor.EditorInputs;
+import org.cyk.ui.api.editor.input.ISelectItem;
+import org.cyk.ui.api.editor.input.UIInputSelectOne;
+import org.cyk.ui.web.api.form.WebEditor;
 import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Log
@@ -35,7 +35,7 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	private Boolean onChangeDisable=Boolean.TRUE,booleanValueType=Boolean.FALSE;
 	
 	
-	public InputSelectOne(UISubForm<?, ?, ?, ?> conatinerForm,UIInputSelectOne<Object,ISelectItem> input) {
+	public InputSelectOne(EditorInputs<?, ?, ?, ?> conatinerForm,UIInputSelectOne<Object,ISelectItem> input) {
 		super(conatinerForm,input);
 		for(ISelectItem selectItem : input.getItems())
 			getItems().add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
@@ -60,7 +60,7 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 				return (Converter) javax.faces.convert.BooleanConverter.class.newInstance();
 			if(isEnum())
 				return (Converter) javax.faces.convert.EnumConverter.class.newInstance();
-			return  ((WebUIForm<FORM, ?, ?>)containerForm.getContainer()).getObjectConverter();
+			return  ((WebEditor<FORM, ?, ?>)containerForm.getEditor()).getObjectConverter();
 		} catch (Exception e) {
 			log.log(Level.SEVERE,e.toString(),e);
 			return null;

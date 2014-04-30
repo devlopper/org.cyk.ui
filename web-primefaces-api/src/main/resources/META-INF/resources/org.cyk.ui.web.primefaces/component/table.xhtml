@@ -19,7 +19,7 @@
 			<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 			<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
 	            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
-	  			<h:outputText value=" #{cc.value.value(row,column)}" />
+	  			<h:outputText value=" #{cc.value.cellValue(row,column)}" />
 	        </p:columns> 
 	        
 		</p:dataTable>

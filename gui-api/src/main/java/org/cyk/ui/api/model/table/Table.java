@@ -5,9 +5,6 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.geography.Locality;
-import org.cyk.ui.api.UIMessageManager.SeverityType;
-import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultMenu;

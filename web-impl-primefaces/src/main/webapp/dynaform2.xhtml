@@ -24,7 +24,17 @@
 	<h:form id="form">
 		<p:messages globalOnly="true" />
 		<p:separator/>
-		<cyk:form value="#{dynaFormController.editor}" />
+		<p:button value="DnaForm" outcome="dynamicform" />
+		<p:commandButton value="Form 1" action="#{dynaFormController2.form1}" update="fp" oncomplete="PF('dlg1').show();" /> 
+		<p:commandButton value="Form 2" action="#{dynaFormController2.form2}" update="fp" oncomplete="PF('dlg1').show();" /> 
+		
+		<p:dialog id="basicDialog" header="Basic Dialog" widgetVar="dlg1"> 
+			<p:outputPanel id="fp">
+				<cyk:form value="#{dynaFormController.myForm}" />
+			</p:outputPanel> 
+		      
+		</p:dialog> 
+		
 	</h:form>
   
     

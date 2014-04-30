@@ -1,17 +1,10 @@
 package org.cyk.ui.api;
 
-import org.cyk.ui.api.form.UIForm;
+import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
 
 
-
-public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
-	
-	/**
-	 * Get the title
-	 * @return
-	 */
-	String getTitle();
+public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	/**
 	 * The UI message manager
@@ -21,9 +14,9 @@ public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	
 	UIManager getUiManager();
 	
-	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formInstance();
+	Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance();
 	
-	UIForm<FORM,OUTPUTLABEL,INPUT,SELECTITEM> formInstance(Object anObjectModel);
+	Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel);
 	
 	<DATA> Table<DATA> tableInstance(Class<DATA> aDataClass);
 }
