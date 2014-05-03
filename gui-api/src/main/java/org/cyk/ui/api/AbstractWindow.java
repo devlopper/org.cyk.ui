@@ -8,32 +8,33 @@ import lombok.Getter;
 
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
+import org.cyk.ui.api.model.table.TableCell;
+import org.cyk.ui.api.model.table.TableColumn;
+import org.cyk.ui.api.model.table.TableRow;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends AbstractBean implements UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM>,Serializable {
+public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
 	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();
+	protected Collection<TABLE> tables = new ArrayList<>();
 	
 	@Getter protected String title;
-	
-	@Override
-	protected void initialisation() {
-		super.initialisation();
 		
-	}
-	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		for(Editor<?,?,?,?> editor : editors)
 			editor.targetDependentInitialisation();
+		
+		for(TABLE table : tables)
+			table.targetDependentInitialisation();
 	}
 	
 	@Override
-	public Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel) {
-		Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
+	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel) {
+		Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
 		editor.setWindow(this);
 		((AbstractBean)editor).postConstruct();
 		editor.build(anObjectModel);
@@ -41,9 +42,16 @@ public abstract class AbstractWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		return editor;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public <DATA> Table<DATA> tableInstance(Class<DATA> aDataClass) {
-		return new Table<>(aDataClass, this);
+	public <DATA> TABLE tableInstance(Class<DATA> aDataClass) {
+		@SuppressWarnings("rawtypes")
+		Table table = tableInstance();
+		table.setWindow(this);
+		((AbstractBean)table).postConstruct();
+		table.build(aDataClass, TableRow.class, TableColumn.class, TableCell.class);
+		tables.add((TABLE) table);
+		return (TABLE) table;
 	}
 		
 }

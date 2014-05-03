@@ -5,8 +5,8 @@ import javax.faces.component.UINamingContainer;
 
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
 
-@FacesComponent(value="org.cyk.ui.primefaces.Form")
-public class FormCompositeComponent extends UINamingContainer {
+@FacesComponent(value="org.cyk.ui.primefaces.Editor")
+public class EditorCompositeComponent extends UINamingContainer {
 
     enum PropertyKeys {
         value

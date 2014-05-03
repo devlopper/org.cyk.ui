@@ -4,7 +4,7 @@ import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
 
 
-public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
+public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
 	
 	/**
 	 * The UI message manager
@@ -14,9 +14,11 @@ public interface UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	UIManager getUiManager();
 	
-	Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance();
+	Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance();
 	
-	Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel);
+	Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel);
 	
-	<DATA> Table<DATA> tableInstance(Class<DATA> aDataClass);
+	<DATA> TABLE tableInstance();
+	
+	<DATA> TABLE tableInstance(Class<DATA> aDataClass);
 }

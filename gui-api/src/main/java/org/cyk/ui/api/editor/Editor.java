@@ -3,6 +3,7 @@ package org.cyk.ui.api.editor;
 import java.util.Collection;
 
 import org.cyk.ui.api.UIWindow;
+import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
@@ -19,17 +20,15 @@ import org.cyk.utility.common.AbstractMethod;
  * @param <INPUT>
  * @param <SELECTITEM>
  */
-public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
+public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart {
 	
-	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getWindow();
+	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> getWindow();
 	
-	void setWindow(UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> aWindow);
+	void setWindow(UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> aWindow);
 	
 	UIMenu getMenu();
 	
 	void setMenu(UIMenu aMenu);
-	
-	String getTitle();
 	
 	Object getObjectModel();
 	

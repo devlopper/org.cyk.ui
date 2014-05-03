@@ -35,7 +35,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	@Getter protected Collection<UICommand> commands;
 	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/;
 	
-	@Getter @Setter protected UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM> window;
+	@Getter @Setter protected UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> window;
 	@Getter protected String title;
 	@Getter @Setter protected UIMenu menu = new DefaultMenu();
 	//@Getter protected Collection<UIView> views = new LinkedList<>();

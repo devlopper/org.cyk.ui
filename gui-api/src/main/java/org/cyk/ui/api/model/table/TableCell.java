@@ -13,6 +13,8 @@ public class TableCell extends DefaultCell implements Serializable {
 
 	private static final long serialVersionUID = 3633221262937015949L;
 
+	private Object editingValue;
+	
 	public TableCell(String value) {
 		super(value);
 	}

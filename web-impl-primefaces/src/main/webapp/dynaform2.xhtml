@@ -25,12 +25,12 @@
 		<p:messages globalOnly="true" />
 		<p:separator/>
 		<p:button value="DnaForm" outcome="dynamicform" />
-		<p:commandButton value="Form 1" action="#{dynaFormController2.form1}" update="fp" oncomplete="PF('dlg1').show();" /> 
-		<p:commandButton value="Form 2" action="#{dynaFormController2.form2}" update="fp" oncomplete="PF('dlg1').show();" /> 
+		<p:commandButton value="Form 1" action="#{dynaFormController2.form1}" update="fp" oncomplete="PF('dlg1').show();" immediate="true" process="@this"/> 
+		<p:commandButton value="Form 2" action="#{dynaFormController2.form2}" update="fp" oncomplete="PF('dlg1').show();" immediate="true" process="@this" /> 
 		
 		<p:dialog id="basicDialog" header="Basic Dialog" widgetVar="dlg1"> 
 			<p:outputPanel id="fp">
-				<cyk:form value="#{dynaFormController.myForm}" />
+				<cyk:editor value="#{dynaFormController2.editor1}" />
 			</p:outputPanel> 
 		      
 		</p:dialog> 

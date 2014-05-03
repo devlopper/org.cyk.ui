@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.ui.api.UIManager.LoadDataMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
+import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
 import org.cyk.ui.web.primefaces.test.MyEntity.MyDetails2;
 import org.cyk.utility.common.AbstractMethod;
@@ -24,11 +24,12 @@ import org.cyk.utility.common.AbstractMethod;
 @ViewScoped
 @Getter
 @Setter
-public class DynaFormController2 extends AbstractPrimefacesWebPage implements Serializable {
+public class DynaFormController2 extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private PrimefacesEditor myForm;
+	private PrimefacesEditor editor1;
+	private PrimefacesEditor editor2;
 			
 	@Override
 	protected void initialisation() { 
@@ -49,18 +50,19 @@ public class DynaFormController2 extends AbstractPrimefacesWebPage implements Se
 			}
 		});
 		
+		form1();
+		
 	}
 	
 	public void form1(){
-		myForm = (PrimefacesEditor) editorInstance(new MyEntity());
-		myForm.buldCommands(getClass(), "myForm");
+		editor1 = (PrimefacesEditor) editorInstance(new MyEntity());
 		
-		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
+		editor1.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				messageManager.message(
-						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(myForm.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
+						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(editor1.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
 						.showDialog();
 				return null;
 			}
@@ -68,15 +70,14 @@ public class DynaFormController2 extends AbstractPrimefacesWebPage implements Se
 	}
 	
 	public void form2(){
-		myForm = (PrimefacesEditor) editorInstance(new Details());
-		myForm.buldCommands(getClass(), "myForm");
+		editor1 = (PrimefacesEditor) editorInstance(new Details());
 		
-		myForm.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
+		editor1.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				messageManager.message(
-						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(myForm.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
+						SeverityType.INFO,new Text("Recap",false),new Text(ToStringBuilder.reflectionToString(editor1.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
 						.showDialog();
 				return null;
 			}

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.UIWindow;
+import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
@@ -14,23 +15,27 @@ import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.model.table.AbstractClassFieldValueTable;
 
 @Getter @Setter
-public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DATA>,TableColumn,TableCell> implements Serializable {
+public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DATA>,TableColumn,TableCell> implements UIWindowPart,Serializable {
 
 	private static final long serialVersionUID = -7832418987283686453L;
 	
 	protected UIMenu menu = new DefaultMenu();
-	protected UIWindow<?, ?, ?, ?> window;
+	protected UIWindow<?, ?, ?, ?,?> window;
+	protected String title;
 	
+	/*
 	@SuppressWarnings("unchecked")
-	public Table(Class<DATA> aDataClass,UIWindow<?, ?, ?, ?> aWindow) {
-		super(aDataClass,(Class<? extends TableRow<DATA>>) TableRow.class, TableColumn.class,TableCell.class);
-		this.window = aWindow;
-		crudCommand();	
+	public Table() {
+		build(aDataClass,(Class<? extends TableRow<DATA>>) TableRow.class, TableColumn.class,TableCell.class);
+		//this.window = aWindow;
+		
 	}
-
+	*/
+	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		crudCommand();	
 	}
 	
 	private void addCommand(UICommand command){
@@ -67,5 +72,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	private String text(String id){
 		return window.getUiManager().getLanguageBusiness().findText(id);
 	}
+	
+	public void targetDependentInitialisation(){}
 	
 }

@@ -9,13 +9,12 @@ import lombok.Getter;
 
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.Editor;
-import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 
-public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaFormModel,DynaFormLabel,DynaFormControl> implements Serializable {
+public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormLabel,DynaFormControl,PrimefacesTable<?>> implements Serializable {
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
@@ -28,8 +27,14 @@ public abstract class AbstractPrimefacesWebPage extends AbstractWebPage<DynaForm
 	}
 	
 	@Override
-	public <DATA> Table<DATA> tableInstance(Class<DATA> aDataClass) {
-		return new PrimefacesTable<>(aDataClass, this);
+	public <DATA> PrimefacesTable<DATA> tableInstance() {
+		return new PrimefacesTable<>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass) {
+		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass);
 	}
 	
 }

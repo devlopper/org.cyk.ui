@@ -16,7 +16,7 @@ import org.cyk.system.root.model.geography.Locality;
 import org.cyk.ui.api.UIManager.LoadDataMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
+import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
 import org.cyk.ui.web.primefaces.test.MyEntity.MyDetails2;
 import org.cyk.utility.common.AbstractMethod;
@@ -25,7 +25,7 @@ import org.cyk.utility.common.AbstractMethod;
 @ViewScoped
 @Getter
 @Setter
-public class LocalityFormController extends AbstractPrimefacesWebPage implements Serializable {
+public class LocalityFormController extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 

@@ -9,14 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.geography.Locality;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesWebPage;
+import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class LocalityListController extends AbstractPrimefacesWebPage implements Serializable {
+public class LocalityListController extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
@@ -25,8 +25,7 @@ public class LocalityListController extends AbstractPrimefacesWebPage implements
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		dataTable =  (PrimefacesTable<Locality>) tableInstance(Locality.class);
-		dataTable.bindToField("dataTable");
+		dataTable =  tableInstance(Locality.class);
 		
 		Locality l = new Locality(null, null, "L1");l.setName("Ole");
 		dataTable.addRow(l);
