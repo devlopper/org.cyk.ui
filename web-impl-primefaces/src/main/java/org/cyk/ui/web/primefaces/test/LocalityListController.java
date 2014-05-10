@@ -26,14 +26,15 @@ public class LocalityListController extends AbstractPrimefacesPage implements Se
 	protected void initialisation() { 
 		super.initialisation();
 		dataTable =  tableInstance(Locality.class);
+		dataTable.setEditable(true);
 		
-		Locality l = new Locality(null, null, "L1");l.setName("Ole");
+		Locality l = new Locality(null, null, "L1");l.setName("Ole");l.setAbbreviation("MA");
 		dataTable.addRow(l);
 		
-		l = new Locality(null, null, "L2");l.setName("Pole");
+		l = new Locality(null, null, "L2");l.setName("Pole");l.setAbbreviation("MA");
 		dataTable.addRow(l);
 		
-		l = new Locality(null, null, "L3");l.setName("Babi");
+		l = new Locality(null, null, "L3");l.setName("Babi");l.setAbbreviation("MA");
 		dataTable.addRow(l);
 		
 		/*

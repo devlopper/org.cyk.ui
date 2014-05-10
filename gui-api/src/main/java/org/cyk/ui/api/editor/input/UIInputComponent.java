@@ -2,12 +2,12 @@ package org.cyk.ui.api.editor.input;
 
 import java.lang.reflect.Field;
 
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.EditorInputs;
 
-public interface UIInputComponent<VALUE_TYPE> extends UIComponent<VALUE_TYPE> {
+public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VALUE_TYPE> {
 
-	EditorInputs<?, ?, ?, ?> getContainerForm();
+	EditorInputs<?, ?, ?, ?> getEditorInputs();
 	
 	String getLabel();
 	

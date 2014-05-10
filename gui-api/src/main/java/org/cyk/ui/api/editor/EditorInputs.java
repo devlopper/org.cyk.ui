@@ -2,7 +2,8 @@ package org.cyk.ui.api.editor;
 
 import java.util.Collection;
 
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.UIPart;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.layout.UILayout;
@@ -17,7 +18,7 @@ import org.cyk.ui.api.layout.UILayout;
  * @param <INPUT>
  * @param <SELECTITEM>
  */
-public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>  {
+public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart  {
 	
 	UILayout getLayout();
 
@@ -27,17 +28,11 @@ public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>  {
 	
 	void setEditor(Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> anEditor);
 	
-	String getTitle();
-
-	Integer getColumnsCount();
-	
-	Integer getRowsCount();
-	
 	void createRow();
 	
-	void add(UIComponent<?> component);
+	void add(UIInputOutputComponent<?> component);
 	
-	Collection<UIComponent<?>> getComponents();
+	Collection<UIInputOutputComponent<?>> getComponents();
 	
 	void setObjectModel(Object anObjectModel);
 	
@@ -47,15 +42,13 @@ public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>  {
 	
 	void build();
 	
-	UIInputComponent<?> input(UIInputComponent<?> anIInput);
-	
 	UIOutputComponent<?> output(UIOutputComponent<?> anIOutput);
 	
 	FORM createDataModel();
 	
 	FORM getDataModel();
 	
-	Object createComponent(UIComponent<?> aComponent);
+	Object createComponent(UIInputOutputComponent<?> aComponent);
 	
 	Collection<UIInputComponent<?>> getInputFields();
 	

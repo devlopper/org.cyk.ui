@@ -12,7 +12,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.ui.api.UIManager.LoadDataMethod;
+import org.cyk.ui.api.UIManager.CollectionLoadMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
@@ -35,20 +35,7 @@ public class DynaFormController2 extends AbstractPrimefacesPage implements Seria
 	protected void initialisation() { 
 		super.initialisation();
 		
-		uiManager.setLoadDataMethod(new LoadDataMethod() {
-			private static final long serialVersionUID = -2251974175051850252L;
-			@Override
-			protected Collection<Object> __execute__(Class<Object> aClass) {
-				Collection<Object> collection = new ArrayList<>();
-				//if(MyDetails.class.equals(aClass))
-				//	return Arrays.asList(new MyDetails(),new MyDetails());
-				if(MyDetails2.class.equals(aClass)){
-					collection.add(new MyDetails2());
-					collection.add(new MyDetails2());
-				}
-				return collection;
-			}
-		});
+		
 		
 		form1();
 		

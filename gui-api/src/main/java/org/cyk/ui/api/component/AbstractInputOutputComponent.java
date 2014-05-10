@@ -13,7 +13,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractComponent<VALUE_TYPE> extends AbstractBean implements UIComponent<VALUE_TYPE>,Serializable {
+public abstract class AbstractInputOutputComponent<VALUE_TYPE> extends AbstractBean implements UIInputOutputComponent<VALUE_TYPE>,Serializable {
 
 	private static final long serialVersionUID = -7631765878611822196L;
 	
@@ -25,11 +25,11 @@ public abstract class AbstractComponent<VALUE_TYPE> extends AbstractBean impleme
 	protected UIManager uiManager;
 	
 	@SuppressWarnings("unchecked")
-	public AbstractComponent() {
+	public AbstractInputOutputComponent() {
 		constructor((Class<VALUE_TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0], null);
 	}
 	
-	public AbstractComponent(Class<VALUE_TYPE> aClass,VALUE_TYPE aValue) {
+	public AbstractInputOutputComponent(Class<VALUE_TYPE> aClass,VALUE_TYPE aValue) {
 		constructor(aClass, aValue);
 	}
 	

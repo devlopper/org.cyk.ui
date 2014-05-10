@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
+import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.TableCell;
@@ -17,14 +22,25 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
+	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();
 	protected Collection<TABLE> tables = new ArrayList<>();
+	@Inject protected MenuManager menuManager;
+	@Getter protected String title = "CYK Systems";
 	
-	@Getter protected String title;
-		
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		mainMenu = menuManager.build(Type.APPLICATION);
+	}
+	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		if(editors.size()==1)
+			contentMenu = editors.iterator().next().getMenu();
+			
+		targetDependentInitialisation();
 		for(Editor<?,?,?,?> editor : editors)
 			editor.targetDependentInitialisation();
 		

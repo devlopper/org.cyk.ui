@@ -8,7 +8,7 @@ import javax.faces.model.SelectItem;
 
 import lombok.Getter;
 
-import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.web.api.form.AbstractWebEditor;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -40,8 +40,8 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 	@Override
 	public void targetDependentInitialisation() {
 		Field field = commonUtils.getField(getWindow(), this);
-		for(UICommand command : menu.getCommands())
-			model.addElement(commandBuilder.menuItem(command, Introspector.decapitalize(getWindow().getClass().getSimpleName()), field.getName()));
+		for(UICommandable commandable : menu.getCommandables())
+			model.addElement(commandBuilder.menuItem(null,null,commandable,null, Introspector.decapitalize(getWindow().getClass().getSimpleName()), field.getName(),"menu"));
 	}
 	
 	@Override

@@ -8,7 +8,7 @@
  
     <h:head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    	<link href="#{request.contextPath}/contracts/root/css/default.css" rel="stylesheet" type="text/css"/>
+    	<link href="#{request.contextPath}/contracts/defaultDesktop/css/default.css" rel="stylesheet" type="text/css"/>
 		<title>Web Primefaces UI - Desktop</title>
     </h:head>
     
@@ -25,11 +25,12 @@
 		        	 
 		    </p:layoutUnit>
 		  	
-		    <p:layoutUnit position="center">  
+		    <p:layoutUnit position="center"><h:form id="form">  
+		        <p:messages globalOnly="true" />
 		        <ui:insert name="body">
 		        	<h1>Web Primefaces UI - Desktop</h1>
 		        </ui:insert>	 
-		    </p:layoutUnit>
+		    </h:form></p:layoutUnit>
 		    
 		    <p:layoutUnit position="south">
 		    	Footer

@@ -14,13 +14,28 @@
 
 	<cc:implementation>
 		<p:menubar model="#{cc.value.menuModel}" /> 
-		
-		<p:dataTable var="row" value="#{cc.value.rows}" >
+		<p:dataTable var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}">
 			<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 			<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
 	            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
-	  			<h:outputText value=" #{cc.value.cell(row,column)}" />
+	  			<ui:param name="templateFile" value="template/editor/inputMessageAtTop.xhtml" />
+	  			<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+	  			
+	  			<p:cellEditor>
+	  				<f:facet name="input">
+	  					
+	  					<ui:include src="include/inputTextOneLine.xhtml" >
+	  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+	  					</ui:include>
+	  					
+	  				</f:facet>
+	  				<f:facet name="output"><h:outputText value="#{cc.value.cell(row,column)}" escape="false"/></f:facet>
+	  			</p:cellEditor>
 	        </p:columns> 
+	        
+	        <p:column>
+	        	<p:rowEditor />
+	        </p:column>
 	        
 		</p:dataTable>
 		

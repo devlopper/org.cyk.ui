@@ -1,7 +1,7 @@
 package org.cyk.ui.api.component.output;
 
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 
-public interface UIOutputComponent<VALUE_TYPE> extends UIComponent<VALUE_TYPE> {
+public interface UIOutputComponent<VALUE_TYPE> extends UIInputOutputComponent<VALUE_TYPE> {
 
 }

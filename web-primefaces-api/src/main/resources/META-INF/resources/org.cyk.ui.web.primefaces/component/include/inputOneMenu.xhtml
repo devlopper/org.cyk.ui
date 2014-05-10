@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+<body>
+	<ui:composition>
+		
+       	<table style="width: 100%;"><tr>  
+            <td style="width: 100%;">
+            	<ui:decorate template="#{templateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="selectOneMenu" />
+					<ui:define name="input">
+		            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
+			            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
+			            	<!--
+			            	<f:converter binding="#{jsfComponentController.converter}" />
+			            	
+			            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
+			                -->
+			                <f:selectItems value="#{data.items}"/>  
+			                <f:attribute name="fieldId" value="#{data.id}"/>
+			                <!--
+			                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+			            	-->
+			            </p:selectOneMenu>
+		            </ui:define>
+		    	</ui:decorate>
+            </td> 
+           
+            <ui:fragment rendered="#{data.isSelectItemEditable()}"><td>
+            	<cyk:command value="#{cc.value.primefacesSwitchCommand}" rendered="#{data.isSelectItemEditable()}" executeParameter="#{data}" />
+            </td></ui:fragment>	
+       	</tr></table>
+		
+	</ui:composition>
+</body>
+</html>

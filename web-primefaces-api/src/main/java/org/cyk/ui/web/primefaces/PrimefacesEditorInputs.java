@@ -1,6 +1,6 @@
 package org.cyk.ui.web.primefaces;
 
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.output.IOutputLabel;
 import org.cyk.ui.web.api.form.AbstractWebEditorInputs;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -11,7 +11,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormRow;
 public class PrimefacesEditorInputs extends AbstractWebEditorInputs<DynaFormModel,DynaFormLabel,DynaFormControl> {
 
 	private static final long serialVersionUID = -2915809915934469649L;
-
+	
 	private DynaFormRow currentRow;
 	
 	public PrimefacesEditorInputs() {}
@@ -26,8 +26,9 @@ public class PrimefacesEditorInputs extends AbstractWebEditorInputs<DynaFormMode
 		currentRow = dataModel.createRegularRow();
 	}
 	
+	
 	@Override
-	public Object createComponent(UIComponent<?> aComponent) {
+	public Object createComponent(UIInputOutputComponent<?> aComponent) {
 		if(aComponent instanceof IOutputLabel)
 			return currentRow.addLabel((String) aComponent.getValue());
 		
@@ -41,12 +42,18 @@ public class PrimefacesEditorInputs extends AbstractWebEditorInputs<DynaFormMode
 
 	@Override
 	public String getInputTemplateFileAtRight() {
-		return "template/form-inputMessageAtRight.xhtml";
+		return "template/editor/inputMessageAtRight.xhtml";
 	}
 
 	@Override
 	public String getInputTemplateFileAtTop() {
-		return "template/form-inputMessageAtTop.xhtml";
+		return "template/editor/inputMessageAtTop.xhtml";
+	}
+	
+	@Override
+	public void targetDependentInitialisation() {
+		// TODO Auto-generated method stub
+		
 	}
 			
 }

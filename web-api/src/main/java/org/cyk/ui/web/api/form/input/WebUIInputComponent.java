@@ -14,4 +14,7 @@ public interface WebUIInputComponent<VALUE_TYPE> extends WebUIIComponent<VALUE_T
 	
 	void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException;
 	
+	String getTemplateFile();
+	String getTemplateFileAtRight();
+	String getTemplateFileAtTop();
 }

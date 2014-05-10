@@ -9,22 +9,24 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.ui.api.component.AbstractComponent;
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.component.AbstractInputOutputComponent;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.utility.common.annotation.UIField;
+import org.cyk.utility.common.validation.Client;
 
 @Getter @Setter @Log
-public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractComponent<VALUE_TYPE> implements Serializable, UIInputComponent<VALUE_TYPE> {
+public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOutputComponent<VALUE_TYPE> implements Serializable, UIInputComponent<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 438462134701637492L;
 
-	protected EditorInputs<?, ?, ?, ?> containerForm;
+	protected EditorInputs<?, ?, ?, ?> editorInputs;
 	protected String label,description;
 	protected VALUE_TYPE value;
 	protected Object object;
 	protected Field field;
 	protected Boolean required,readOnly;
-	protected String requiredMessage,validatorId,validationGroupClass,readOnlyValue;
+	protected String requiredMessage,validatorId,validationGroupClass=Client.class.getName(),readOnlyValue;
 	
 	protected UIField annotation;
 	
@@ -49,6 +51,12 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractCompone
 	public void updateValue() throws Exception {
 		throw new IllegalArgumentException("Must not call this method on this object");
 	}
+	
+	public static UIInputComponent<?> create(UIInputComponent<?> anInputComponent){
+		return UIManager.COMPONENT_CREATE_METHOD.execute(anInputComponent);
+	}
+	
+	
 
 	
 }

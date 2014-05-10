@@ -1,10 +1,8 @@
 package org.cyk.ui.api.editor;
 
-import java.util.Collection;
-
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
-import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
@@ -34,15 +32,15 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	
 	EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object);
 	
-	UICommand getSubmitCommand();
+	UICommandable getSubmitCommand();
 	
-	UICommand getSwitchCommand();
+	UICommandable getSwitchCommand();
 	
-	UICommand getBackCommand();
+	UICommandable getBackCommand();
 	
-	UICommand getResetValuesCommand();
+	UICommandable getResetValuesCommand();
 	
-	UICommand getCloseCommand();
+	UICommandable getCloseCommand();
 	
 	void onSubmit(Object object) throws Exception;
 	
@@ -57,8 +55,6 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	void setSubmitMethodMain(AbstractMethod<Object, Object> anAbstractMethod);
 	
 	EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> getSelected();
-	
-	<T> Collection<T> load(Class<T> aClass);
 	
 	SELECTITEM item(Object object);
 	

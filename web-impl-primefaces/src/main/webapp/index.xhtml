@@ -6,14 +6,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{indexController}" />
+ 		<ui:define name="body">
+ 			<ui:repeat var="parameterClass" value="#{uiManager.parametersClasses}">
+				<p:button value="#{parameterClass.simpleName}" outcome="dynamiceditor" >
+					<f:param name="#{webManager.requestParameterClass}" value="#{uiManager.keyFromClass(parameterClass)}" />
+				</p:button>
+			</ui:repeat>
+ 		</ui:define>
+ 	</ui:decorate>
  
-	<h:body>
-		<f:view contracts="rootDesktop" >
-			<ui:composition template="/template/default.xhtml">
-				<ui:define name="body">
-					
-				</ui:define>
-			</ui:composition>
-		</f:view>
-    </h:body>
 </html>

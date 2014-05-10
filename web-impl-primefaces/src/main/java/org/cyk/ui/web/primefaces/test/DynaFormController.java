@@ -12,7 +12,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.ui.api.UIManager.LoadDataMethod;
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIManager.CollectionLoadMethod;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
@@ -33,8 +34,7 @@ public class DynaFormController extends AbstractPrimefacesPage implements Serial
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		
-		uiManager.setLoadDataMethod(new LoadDataMethod() {
+		UIManager.COLLECTION_LOAD_METHOD = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -2251974175051850252L;
 			@Override
 			protected Collection<Object> __execute__(Class<Object> aClass) {
@@ -47,10 +47,10 @@ public class DynaFormController extends AbstractPrimefacesPage implements Serial
 				}
 				return collection;
 			}
-		});
+		};
 		
 		editor = (PrimefacesEditor) editorInstance(new MyEntity());
-		
+		//contentMenuModel = editor.getModel();
 		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override

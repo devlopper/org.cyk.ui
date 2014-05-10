@@ -2,11 +2,11 @@ package org.cyk.ui.api.layout;
 
 import java.util.Collection;
 
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 
 public interface LayoutRow {
 	
-	Collection<UIComponent<?>> getComponents();
+	Collection<UIInputOutputComponent<?>> getComponents();
 
-	LayoutRow add(UIComponent<?> component);
+	LayoutRow add(UIInputOutputComponent<?> component);
 }

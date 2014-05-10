@@ -20,12 +20,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
 	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
-	@Getter @Setter protected String identifier,label,icon,tooltip;
 	@Getter @Setter protected Boolean notifyOnSucceed=Boolean.FALSE;
-	@Getter @Setter private EventListener eventListener;
-	@Getter @Setter private RenderType renderType;
-	
-	@Getter @Setter private ProcessGroup processGroup;
 	
 	@Override
 	public Boolean validate() {
@@ -82,11 +77,5 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 			throw new RuntimeException("No message manager has been provided.");
 		return messageManager;
 	}
-	
-	@Override
-	public Boolean getIsNavigation() {
-		return false;
-	}
-	
 	 
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.primefaces.model.menu.DefaultMenuItem;
 
 @Getter @Setter
@@ -13,14 +13,14 @@ public class PrimefacesMenuItem extends DefaultMenuItem implements Serializable 
 
 	private static final long serialVersionUID = 6706193290921067166L;
 
-	private UICommand _command;
+	private UICommandable commandable;
 
-	public PrimefacesMenuItem(UICommand aCommand) {
+	public PrimefacesMenuItem(UICommandable aCommandable) {
 		super();
-		this._command = aCommand;
-		setValue(aCommand.getLabel());
+		this.commandable = aCommandable;
+		setValue(aCommandable.getLabel());
 		setUpdate("@form");
-		if(UICommand.ProcessGroup.THIS.equals(aCommand.getProcessGroup()))
+		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			setProcess("@this");	
 	}
 	

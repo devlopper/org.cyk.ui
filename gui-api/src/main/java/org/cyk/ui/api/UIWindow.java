@@ -1,5 +1,6 @@
 package org.cyk.ui.api;
 
+import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
 
@@ -13,6 +14,18 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	UIMessageManager getMessageManager();
 	
 	UIManager getUiManager();
+	
+	UIMenu getMainMenu();
+	
+	void setMainMenu(UIMenu aMenu);
+	
+	UIMenu getContextualMenu();
+	
+	void setContextualMenu(UIMenu aMenu);
+	
+	UIMenu getContentMenu();
+	
+	void setContentMenu(UIMenu aMenu);
 	
 	Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance();
 	

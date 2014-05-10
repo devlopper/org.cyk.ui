@@ -1,6 +1,6 @@
 package org.cyk.ui.api.component;
 
-public interface UIComponent<VALUE_TYPE> {
+public interface UIInputOutputComponent<VALUE_TYPE> {
 	
 	String getId();
 	

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface UIMenu {
 	
-	Collection<UICommand> getCommands();
+	Collection<UICommandable> getCommandables();
 
-	UICommand command(String anIdentifier);
+	UICommandable commandable(String anIdentifier);
 }

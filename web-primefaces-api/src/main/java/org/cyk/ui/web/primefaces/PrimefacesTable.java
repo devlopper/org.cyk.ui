@@ -19,7 +19,20 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	@Override
 	public void targetDependentInitialisation() {
 		Field field = commonUtils.getField(getWindow(), this);
-		menuModel = commandBuilder.buildMenuModel(menu, window.getClass(), field.getName());
+		menuModel = commandBuilder.menuModel(null,null,menu, window.getClass(), field.getName());
+	}
+	
+	public String includeFileFor(Object object){
+		return "include/inputTextOneLine.xhtml";
+		/*
+		if(object instanceof UIInputComponent<?>){
+			UIInputComponent<?> inputComponent = (UIInputComponent<?>) object;
+			System.out.println("PrimefacesHelper.includeFileFor()");
+			return "include/inputTextOneLine.xhtml";
+		}
+		System.out.println("PrimefacesTable.includeFileFor()");	
+		*/
+		//return null;
 	}
 		
 }

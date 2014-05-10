@@ -7,5 +7,7 @@ public interface UIPart {
 	 * @return
 	 */
 	String getTitle();
+	
+	void targetDependentInitialisation();
 
 }

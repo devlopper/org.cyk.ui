@@ -10,6 +10,7 @@ import org.cyk.utility.common.AbstractMethod;
  */
 public interface UICommand {
 	
+	/*
 	String getIdentifier();
 	
 	void setIdentifier(String anIdentifier);
@@ -25,7 +26,7 @@ public interface UICommand {
 	String getTooltip();
 	
 	void setTooltip(String label);
-	
+	*/
 	/**
 	 * Validate data provided by user
 	 * @return true if success else false
@@ -70,19 +71,6 @@ public interface UICommand {
 	
 	void setSuccessNotificationMessageMethod(AbstractSucessNotificationMessageMethod<Object> method);
 	
-	EventListener getEventListener();
-	
-	void setEventListener(EventListener anEventListener);
-	
-	ProcessGroup getProcessGroup();
-	
-	void setProcessGroup(ProcessGroup aProcessGroup);
-	
-	RenderType getRenderType();
-	
-	void setRenderType(RenderType aRenderType);
-	
-	Boolean getIsNavigation();
 	
 	/**/
 	
@@ -98,10 +86,10 @@ public interface UICommand {
 
 	}
 	
-	public enum EventListener{NONE,CLICK}
-
-	public enum ProcessGroup{THIS,FORM,PARTIAL}
 	
-	public enum RenderType{BUTTON,LINK}
+
+	
+	
+	
 	
 }

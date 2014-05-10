@@ -13,6 +13,7 @@ import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.model.menu.MenuModel;
 
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormLabel,DynaFormControl,PrimefacesTable<?>> implements Serializable {
 
@@ -21,6 +22,17 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter protected UIManager uiManager;
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
+	@Getter protected MenuModel mainMenuModel,contentMenuModel;
+	private CommandBuilder commandBuilder = new CommandBuilder();
+	
+	@Override
+	public void targetDependentInitialisation() {
+		System.out.println(mainMenu.getCommandables());
+		mainMenuModel = commandBuilder.menuModel(uiManager,webManager,mainMenu, getClass(), "mainMenuModel");
+		contentMenuModel = commandBuilder.menuModel(uiManager,webManager,contentMenu, getClass(), "contentMenu");
+		
+	}
+
 	@Override
 	public Editor<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> editorInstance() {
 		return new PrimefacesEditor();

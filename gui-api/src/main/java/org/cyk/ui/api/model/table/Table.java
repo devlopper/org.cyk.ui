@@ -8,11 +8,16 @@ import lombok.Setter;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.DefaultCommand;
+import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
-import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.editor.input.AbstractInputComponent;
+import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.model.table.AbstractClassFieldValueTable;
+import org.cyk.utility.common.model.table.DefaultCell;
 
 @Getter @Setter
 public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DATA>,TableColumn,TableCell> implements UIWindowPart,Serializable {
@@ -22,49 +27,60 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected UIMenu menu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;
-	
-	/*
-	@SuppressWarnings("unchecked")
-	public Table() {
-		build(aDataClass,(Class<? extends TableRow<DATA>>) TableRow.class, TableColumn.class,TableCell.class);
-		//this.window = aWindow;
+	protected Boolean editable=Boolean.FALSE;
+	protected UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
 		
-	}
-	*/
-	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		crudCommand();	
 	}
 	
-	private void addCommand(UICommand command){
-		command.setMessageManager(window.getMessageManager());
-		menu.getCommands().add(command);
+	@Override
+	public boolean addRow(TableRow<DATA> row) {
+		discoverer.setObjectModel(row.getData());
+		row.setInputComponents(discoverer.run().getInputComponents());
+		return super.addRow(row);
+		
+	}
+	
+	@Override
+	public boolean addCell(TableRow<DATA> row, TableColumn column, DefaultCell cell) {
+		for(UIInputComponent<?> input : row.getInputComponents())
+			if(input.getField().getName().equals(column.getFieldName())){
+				((TableCell)cell).setInputComponent(AbstractInputComponent.create(input));
+				break;
+			}
+		return super.addCell(row, column, cell);
+	}
+	
+	private void addCommandable(UICommandable commandable){
+		commandable.getCommand().setMessageManager(window.getMessageManager());
+		menu.getCommandables().add(commandable);
 	}
 	
 	protected void crudCommand(){
-		UICommand command = new DefaultCommand();
-		command.setLabel(text("button.add"));
-		command.setIcon("ui-icon-plus");
-		addCommand(command);
+		UICommandable commandable = new DefaultCommandable();
+		commandable.setCommand(new DefaultCommand());
+		commandable.setLabel(text("button.add"));
+		commandable.setIcon("ui-icon-plus");
+		addCommandable(commandable);
 		
-		command.setExecuteMethod(new AbstractMethod<Object, Object>() {
+		commandable.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;
 			@Override protected Object __execute__(Object parameter) {return null;}
 		});
 		
 		
+		commandable = new DefaultCommandable();
+		commandable.setLabel(text("button.delete.selected.rows"));
+		commandable.setIcon("ui-icon-close");
+		addCommandable(commandable);
 		
-		command = new DefaultCommand();
-		command.setLabel(text("button.delete.selected.rows"));
-		command.setIcon("ui-icon-close");
-		addCommand(command);
-		
-		command = new DefaultCommand();
-		command.setLabel(text("button.export"));
-		command.setIcon("ui-icon-document");
-		addCommand(command);
+		commandable = new DefaultCommandable();
+		commandable.setLabel(text("button.export"));
+		commandable.setIcon("ui-icon-document");
+		addCommandable(commandable);
 	}
 	
 	/**/
@@ -72,6 +88,8 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	private String text(String id){
 		return window.getUiManager().getLanguageBusiness().findText(id);
 	}
+	
+	
 	
 	public void targetDependentInitialisation(){}
 	

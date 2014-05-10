@@ -1,17 +1,28 @@
 package org.cyk.ui.api.model.table;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.utility.common.model.table.DefaultTableRow;
-@NoArgsConstructor
+
+@Getter @Setter @NoArgsConstructor
 public class TableRow<DATA> extends DefaultTableRow<DATA> implements Serializable {
 
 	private static final long serialVersionUID = -1546359593321487355L;
 
+	private Collection<UIInputComponent<?>> inputComponents;
+	
 	public TableRow(DATA data, String title) {
 		super(data, title);
+		UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+		discoverer.setObjectModel(data);
+		inputComponents = discoverer.run().getInputComponents();
 	}
 
 }

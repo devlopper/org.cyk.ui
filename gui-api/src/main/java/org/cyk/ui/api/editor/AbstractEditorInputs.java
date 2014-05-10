@@ -1,34 +1,26 @@
 package org.cyk.ui.api.editor;
 
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedHashSet;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
-import org.cyk.ui.api.component.UIComponent;
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
-import org.cyk.ui.api.editor.input.InputDate;
-import org.cyk.ui.api.editor.input.InputNumber;
-import org.cyk.ui.api.editor.input.InputSelectOne;
-import org.cyk.ui.api.editor.input.InputText;
 import org.cyk.ui.api.editor.input.UIInputComponent;
-import org.cyk.ui.api.editor.input.UIInputSelect;
 import org.cyk.ui.api.editor.output.IOutputLabel;
 import org.cyk.ui.api.editor.output.IOutputMessage;
 import org.cyk.ui.api.editor.output.OutputLabel;
 import org.cyk.ui.api.editor.output.OutputMessage;
+import org.cyk.ui.api.layout.GridLayout;
 import org.cyk.ui.api.layout.UILayout;
-import org.cyk.utility.common.annotation.UIField;
-import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
+import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Log
@@ -42,42 +34,54 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	@Getter protected Collection<UIInputComponent<?>> inputFields = new ArrayList<>();
 	@Getter @Setter protected UIInputComponent<?> parentField;
 	
-	@Getter @Setter protected UILayout layout;
+	@Getter @Setter protected UILayout layout = new GridLayout();
 	@Getter protected String title;
-	@Getter @Setter protected Integer rowsCount=0,columnsCount = 2,_columnsCounter=0;
 	@Getter @Setter protected Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editor;
 	
 	@Getter @Setter protected Object objectModel;
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
-	@Getter protected Collection<UIComponent<?>> components = new LinkedHashSet<>();
+	@Getter protected Collection<UIInputOutputComponent<?>> components = new LinkedHashSet<>();
+	
+	protected UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+	
+	public AbstractEditorInputs() {
+		layout.setOnAddRow(new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = 4575306741618826683L;
+			@Override
+			protected Object __execute__(Object parameter) {
+				createRow();
+				return null;
+			}
+		});
+	}
 	
 	@Override
 	public void group(Class<?>... theGroupsClasses) {
 		for(Class<?> clazz : theGroupsClasses)
 			groups.add(clazz);
 	}
-	
+	 
 	@Override
 	public void build() {
 		dataModel = createDataModel();
-		_columnsCounter = 0;
-		addRow();
-		build(objectModel);
-	}
-		
-	private void addRow() {
-		createRow();
-		rowsCount++;
+		((AbstractBean)layout).postConstruct();
+		layout.addRow();
+		discoverer.setObjectModel(objectModel);
+		for(UIInputComponent<?> input : discoverer.run().getInputComponents()){
+			//for each input we need a label
+			add(new OutputLabel(input.getField().getName()));
+			add(input);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void add(UIComponent<?> component) {
+	public void add(UIInputOutputComponent<?> component) {
 		if(component instanceof IOutputLabel)
 			currentLabel = (OUTPUTLABEL) createComponent((IOutputLabel) component);
 		else if(component instanceof UIInputComponent<?>){
 			if(currentLabel!=null){
-				UIInputComponent<?> iinput = input((UIInputComponent<?>) component);
+				UIInputComponent<?> iinput = UIManager.COMPONENT_CREATE_METHOD.execute((UIInputComponent<?>) component);
 				if(iinput==null){
 					log.warning("No input component implementation can be found for Type "+component.getFamily()+". It will be ignored");
 					return;
@@ -101,91 +105,18 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 				createComponent(message);
 			}
 		}
-	}
-	
-	private void build(Object objectModel) {
-		Collection<Class<? extends Annotation>> annotationClasses = new ArrayList<>();
-		annotationClasses.add(UIField.class);
-		Collection<Field> fields = commonUtils.getAllFields(objectModel.getClass(), annotationClasses);
 		
-		for(Field field : fields){
-			Boolean add = Boolean.TRUE;
-			UIField annotation = field.getAnnotation(UIField.class);
-			if(!groups.isEmpty() /*&& ArrayUtils.isNotEmpty(annotation.groups())*/){
-				Boolean found = Boolean.FALSE;
-				for(Class<?> clazz : groups)
-					if(ArrayUtils.contains(annotation.groups(), clazz)){
-						//System.out.println("Found : "+clazz+" "+StringUtils.join(annotation.groups()));
-						found = Boolean.TRUE;
-						break;
-					}
-				add = found;
-			}
-			if(add){
-				if(OneRelationshipInputType.FIELDS.equals(annotation.oneRelationshipInputType())){
-					build(commonUtils.readField(objectModel,field, true));
-				}else{
-					OutputLabel label = new OutputLabel(field.getName());
-					UIComponent<?> input = component(field, objectModel,annotation);
-					if(input==null){
-						log.warning("No component can be found for Type "+field.getType()+". It will be ignored");
-						continue;
-					}
-					add(label);
-					
-					if(input instanceof UIInputSelect<?, ?>){
-						UIInputSelect<?, ?> inputSelect = (UIInputSelect<?, ?>)input;
-						if(inputSelect.isBoolean() || inputSelect.isEnum() || inputSelect.getAddable())
-							;//add(input);
-						else
-							((UIInputComponent<?>) input).setReadOnly(Boolean.TRUE);
-							//add(new OutputText((String) getCommonUtils().readField(objectModel, field, false)));
-					}else{
-						
-					}
-					
-					add(input);
-					
-					
-					//OutputMessage message = new OutputMessage(input.getId());
-					//add(message);
-					
-					_columnsCounter += label.getWidth()+input.getWidth();//+message.getWidth();
-					//System.out.println(columnsCount+" "+layout.getColumnsCount());
-				}
-				
-				if(_columnsCounter>=getColumnsCount()){
-					addRow();
-					_columnsCounter = 0;
-				}
-			}
-		}
+		layout.addColumn(component);
 	}
-	
-	private UIComponent<?> component(Field aField,Object anObject,UIField annotation){
-		UIComponent<?> component = null;
-		if(OneRelationshipInputType.FORM.equals(annotation.oneRelationshipInputType()))
-			component = new InputSelectOne(aField.getName(), aField, anObject);
-		else if(String.class.equals(aField.getType()))
-			component = new InputText(aField.getName(),aField,anObject);
-		else if(Date.class.equals(aField.getType()))
-			component = new InputDate(aField.getName(), aField, anObject);
-		else if(Boolean.class.equals(ClassUtils.primitiveToWrapper(aField.getType())))
-			component = new InputSelectOne(aField.getName(), aField, anObject);
-		else if(commonUtils.isNumberClass(aField.getType()))
-			component = new InputNumber(aField.getName(), aField, anObject);
-		else if(aField.getType().isEnum())
-			component = new InputSelectOne(aField.getName(), aField, anObject);
 		
-		return component;
-	}
-			
 	@Override
 	public void updateFieldsValue() throws Exception {
 		for(UIInputComponent<?> input : getInputFields()){
 			input.updateValue();
-			//System.out.println(input.getField().getName()+" - "+container.getCommonUtils().readField(input.getObject(), input.getField(), false));
+			//System.out.println(input.getField().getName()+" - "+commonUtils.readField(input.getObject(), input.getField(), false));
 		}
 	}
+	
+	
 	
 }

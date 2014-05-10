@@ -15,7 +15,7 @@
 	<cc:implementation>
 		
 		<p:commandButton id="#{cc.id}CommandButton"
-			action="#{cc.value.model.execute(cc.attrs.executeParameter)}" 
+			action="#{cc.value.commandable.command.execute(cc.attrs.executeParameter)}" 
 			process="#{cc.value.commandButton.process}" 
 			update="#{cc.value.commandButton.update}"
 			value="#{cc.value.commandButton.value}" />

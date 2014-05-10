@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+ 
+    <h:head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	<!-- Error : Not Found - Check how it comes -->
+    	<!--
+    	<link href="#{request.contextPath}/contracts/defaultDesktop/css/default.css" rel="stylesheet" type="text/css"/>
+    	<link href="#{request.contextPath}/contracts/defaultDesktop/css/common.css" rel="stylesheet" type="text/css"/>
+		-->
+		
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces" />
+		
+		<title><h:outputText value="#{empty pageController.title?'CYK Systems':pageController.title}" /></title>
+		
+    </h:head>
+    
+    <ui:insert name="metadata"/>
+ 
+	<h:body>
+
+		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
+			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" ><h:form id="formNorth">
+				<p:menubar id="menubar" model="#{pageController.mainMenuModel}" />
+			</h:form></pe:layoutPane>
+			
+			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent">
+				WEST
+				 <!--
+				 <ui:insert name="westContent">
+					 <h:form id="contextMenuForm">
+						<p:menu model="#{pageController.contextMenuModel}" />
+					</h:form>
+				 </ui:insert>
+				 -->
+			</pe:layoutPane>
+			
+			
+			<pe:layoutPane id="contentPane" position="center" styleClassContent="maincenterpanecontent" >
+			 	<h:form id="form" enctype="multipart/form-data" >
+				 	<pe:layoutPane id="contentp" position="center">
+				 		<p:outputPanel id="contentPanel">
+				 			<p:messages id="messages" globalOnly="true" />
+				 			<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
+				 		</p:outputPanel>
+				 	</pe:layoutPane>
+				 	<pe:layoutPane id="commandp" position="south" styleClassContent="bordernone">
+						
+						<p:outputPanel id="menuPanel">
+							<p:menubar id="menubar" model="#{pageController.contentMenuModel}" styleClass="maincenterpanecontentformmenubar"/>
+						</p:outputPanel>
+						
+				 	</pe:layoutPane>
+				 	
+				 	<!--
+				 	<p:blockUI widgetVar="#{constantManager.FORM_PROCESSING_BLOCK_UI_WIDGET_ID}" 
+				 		block="contentPanel" >
+						<p><h:outputText value="#{uiManager.text('form.processing')}" /></p>  
+				        <p:graphicImage library="images" name="progressbar.gif"/>  
+					</p:blockUI>  
+					
+					<p:dialog modal="true" widgetVar="#{constantManager.FORM_PROCESSING_DIALOG_UI_WIDGET_ID}" resizable="false" closable="false" 
+						draggable="false" appendTo="@(body)" header="#{uiManager.text('form.processing')}">
+						<p><h:outputText value="#{uiManager.text('form.processing')}" /></p>   
+				        <p:graphicImage library="images" name="progressbar.gif"/>  
+					</p:dialog>
+					-->
+				</h:form>
+			</pe:layoutPane>
+			
+			<pe:layoutPane position="south" resizable="false" closable="false" styleClassContent="footerpanecontent bordernone">
+				<p:ajaxStatus style="width:32px;height:32px;position:fixed;right:32px;bottom:32px" >  
+				    <f:facet name="start">  
+				        <p:graphicImage library="images" name="loadingprime.gif" alt="working"/>  
+				    </f:facet>  
+				    <f:facet name="complete">  
+				        <h:outputText value="" />  
+				    </f:facet>  
+				</p:ajaxStatus> 
+				<ui:insert name="southContent">
+					<div style="text-align: center;font-size: 11px;font-weight: bold;" class="ui-panel-titlebar ui-widget-header ui-helper-clearfix">
+						<h:outputText value="#{pageController.footer}" escape="false"/>
+					</div>
+				</ui:insert>
+			</pe:layoutPane>
+			
+		</pe:layout> 
+ 		
+    </h:body>
+</html>

@@ -9,15 +9,15 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputNumber;
+import org.cyk.ui.web.api.form.WebEditorInputs;
 
 @Getter @Log
 public class InputNumber extends AbstractWebInputComponent<Number> implements WebUIInputNumber,Serializable  {
 
 	private static final long serialVersionUID = 7029658406107605595L;
 
-	public InputNumber(EditorInputs<?, ?, ?, ?> containerForm,UIInputNumber input) {
+	public InputNumber(WebEditorInputs<?, ?, ?, ?> containerForm,UIInputNumber input) {
 		super(containerForm,input);
 	}
 	

@@ -8,25 +8,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
- 
-	<h:body><f:view contracts="rootDesktop" ><ui:composition template="/template/default.xhtml"><ui:define name="body">
-	
-	<style>
-		.pe-dynaform-grid{
-			
-		}
-		.pe-dynaform-grid td{
-			border: 1px solid red;
-		}
-	</style>
-	
-	
-	<h:form id="form">
-		<p:messages globalOnly="true" />
-		<p:separator/>
-		<cyk:editor value="#{dynaFormController.editor}" />
-	</h:form>
-  
-    
-	</ui:define></ui:composition></f:view></h:body>
+ 	
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{dynaFormController}" />
+ 		<ui:define name="body">
+ 			<cyk:editor value="#{dynaFormController.editor}" />
+ 		</ui:define>
+ 	</ui:decorate>
+ 	
 </html>

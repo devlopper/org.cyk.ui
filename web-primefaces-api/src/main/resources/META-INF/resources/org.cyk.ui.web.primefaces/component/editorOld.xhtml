@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+	<cc:interface componentType="org.cyk.ui.primefaces.Editor">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+		<pe:dynaForm id="DynaForm" value="#{cc.value.selected.dataModel}" var="data">
+
+			<pe:dynaFormControl />
+			
+			<pe:dynaFormControl type="OutputText" for="outputText" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"> 
+	        	<h:outputText id="outputText" value="#{data.value}" escape="false"
+	        		style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" />
+	        </pe:dynaFormControl>
+
+			<!--  ********************************************************** Inputs *********************************************************************** -->
+			<!-- Single Line Text -->
+			<pe:dynaFormControl type="InputText" for="inputText">
+				<ui:include src="include/inputText.xhtml" >
+					<ui:param name="templateFile" value="#{cc.value.selected.inputTemplateFile}" />
+				</ui:include>
+				<!--
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputText" />
+					<ui:define name="input">
+						<p:inputText id="inputText" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
+							required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" converter="#{data.converter}" 
+							rendered="#{not data.readOnly}">
+							<f:attribute name="fieldId" value="#{data.id}" />
+							<pe:keyFilter mask="#{data.filterMask}" rendered="#{not empty data.filterMask}" />
+							<f:validateBean validationGroups="#{data.validationGroupClass}" />
+						</p:inputText>					
+					</ui:define>
+				</ui:decorate>
+				-->
+			</pe:dynaFormControl>
+			
+			<!-- Multiple Line Text -->
+			<pe:dynaFormControl type="InputTextArea" for="inputTextArea">
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputTextArea" />
+					<ui:define name="input">
+						<p:inputTextarea id="inputTextArea" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
+							required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" rendered="#{not data.readOnly}" 
+							cols="#{data.columnCount}" rows="#{data.rowCount}">
+							<f:attribute name="fieldId" value="#{data.id}" />
+							<f:validateBean validationGroups="#{data.validationGroupClass}" />
+						</p:inputTextarea>			
+					</ui:define>
+				</ui:decorate>
+			</pe:dynaFormControl>
+			
+			<!-- Date -->
+			<pe:dynaFormControl type="InputDate" for="calendar">
+				<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="calendar" />
+					<ui:define name="input">
+						<p:calendar id="calendar" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" mode="#{data.mode}"
+							showOn="#{data.showOn}" navigator="#{data.navigator}" showButtonPanel="#{data.showButtonPanel}" mindate="#{data.minDate}" maxdate="#{data.maxDate}"
+							pattern="#{data.pattern}" locale="#{data.locale}" required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}"
+							rendered="#{not data.readOnly}" />
+					</ui:define>
+				</ui:decorate>
+			</pe:dynaFormControl>
+			
+			<!-- Number -->
+			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputNumber" />
+					<ui:define name="input">
+			            <pe:inputNumber id="inputNumber" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
+			            	validator="#{data.validate}" rendered="#{not data.readOnly}" converter="#{data.converter}">
+			            	<f:attribute name="fieldId" value="#{data.id}"/>
+			            </pe:inputNumber>  
+			        </ui:define>
+				</ui:decorate>
+	        </pe:dynaFormControl>
+			
+			<!-- Select One -->
+			<!-- Radio -->
+			<pe:dynaFormControl type="InputSelectOneRadio" for="selectOneRadio">  
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="selectOneRadio" />
+					<ui:define name="input">
+			            <p:selectOneRadio id="selectOneRadio" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" converter="#{data.converter}"
+			            	validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" rendered="#{not data.readOnly}">
+			            	<!--
+			            	<f:converter binding="#{jsfComponentController.converter}" /> 
+			            	-->
+			                <f:selectItems value="#{data.items}"/>  
+			                <f:attribute name="fieldId" value="#{data.id}"/>
+			                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+			            </p:selectOneRadio>  
+					</ui:define>
+				</ui:decorate>
+	        </pe:dynaFormControl> 
+
+	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu">
+	        	<table style="width: 100%;"><tr>  
+		            <td style="width: 100%;">
+		            	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+							<ui:param name="input" value="#{data}" />
+							<ui:param name="forId" value="selectOneMenu" />
+							<ui:define name="input">
+				            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+					            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
+					            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
+					            	<!--
+					            	<f:converter binding="#{jsfComponentController.converter}" />
+					            	
+					            	<f:selectItem itemLabel="#{data.noSelectionLabel}" noSelectionOption="" rendered="#{data.renderNoSelectionLabel}"/>  
+					                -->
+					                <f:selectItems value="#{data.items}"/>  
+					                <f:attribute name="fieldId" value="#{data.id}"/>
+					                <!--
+					                <p:ajax event="change" process="#{data.processOnSelect}" update="#{data.updateOnSelect}" disabled="#{data.onChangeDisable}" />
+					            	-->
+					            </p:selectOneMenu>
+				            </ui:define>
+				    	</ui:decorate>
+		            </td> 
+		           
+		            <ui:fragment rendered="#{data.isSelectItemEditable()}"><td>
+		            	<cyk:command value="#{cc.value.primefacesSwitchCommand}" rendered="#{data.isSelectItemEditable()}" executeParameter="#{data}" />
+		            </td></ui:fragment>	
+	        	</tr></table>
+	        </pe:dynaFormControl>
+	        
+			<!-- Many -->
+			<!--
+			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
+	        	<ui:decorate template="#{cc.value.selected.inputTemplateFile}">
+					<ui:param name="input" value="#{data}" />
+					<ui:param name="forId" value="inputNumber" />
+					<ui:define name="input">
+			            <pe:inputNumber id="inputNumber" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}"
+			            	validator="#{data.validate}" rendered="#{not data.readOnly}" converter="#{data.converter}">
+			            	<f:attribute name="fieldId" value="#{data.id}"/>
+			            </pe:inputNumber>  
+			        </ui:define>
+				</ui:decorate>
+	        </pe:dynaFormControl>	        
+	        -->
+		</pe:dynaForm>
+		
+		<p:separator/>
+	
+		<cyk:command value="#{cc.value.primefacesSubmitCommand}" />
+		<cyk:command value="#{cc.value.primefacesBackCommand}" rendered="#{not cc.value.root}"/>
+		
+		<p:menubar model="#{cc.value.model}" /> 
+		
+	</cc:implementation>
+
+</ui:composition>

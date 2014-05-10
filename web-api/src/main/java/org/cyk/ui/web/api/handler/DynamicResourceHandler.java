@@ -14,8 +14,9 @@ public class DynamicResourceHandler extends ResourceHandlerWrapper {
 	private static final Set<String> PATHS = new LinkedHashSet<String>();
 
 	static {
-		PATHS.add("/META-INF/resources");
-		PATHS.add("/META-INF/pages");
+		PATHS.add("/META-INF/resources");//images , css , ...
+		PATHS.add("/META-INF/contracts");//templates
+		PATHS.add("/META-INF/pages");//web pages
 	}
 
 	private ResourceHandler wrapped;

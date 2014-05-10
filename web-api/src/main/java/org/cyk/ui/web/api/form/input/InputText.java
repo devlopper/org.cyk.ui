@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import lombok.Getter;
 
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputText;
+import org.cyk.ui.web.api.form.WebEditorInputs;
 
 @Getter
 public class InputText extends AbstractWebInputComponent<String> implements WebUIInputText,UIInputText, Serializable  {
@@ -15,7 +15,7 @@ public class InputText extends AbstractWebInputComponent<String> implements WebU
 	@Getter private Integer rowCount,columnCount;
 	private String filterMask;
 	
-	public InputText(EditorInputs<?, ?, ?, ?> containerForm,UIInputText input) {
+	public InputText(WebEditorInputs<?, ?, ?, ?> containerForm,UIInputText input) {
 		super(containerForm,input);
 		rowCount = input.getRowCount();
 		columnCount = input.getColumnCount();

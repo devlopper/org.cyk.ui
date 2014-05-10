@@ -1,15 +1,15 @@
 package org.cyk.ui.web.primefaces;
 
-import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.primefaces.model.menu.DefaultMenuItem;
 
 public class Utils {
 
-	public static void configure(DefaultMenuItem aMenuItem,UICommand aCommand){
+	public static void configure(DefaultMenuItem aMenuItem,UICommandable aCommand){
 		aMenuItem.setValue(aCommand.getLabel());
 		aMenuItem.setUpdate("@form");
 		
-		if(UICommand.ProcessGroup.THIS.equals(aCommand.getProcessGroup()))
+		if(UICommandable.ProcessGroup.THIS.equals(aCommand.getProcessGroup()))
 			aMenuItem.setProcess("@this");
 	}
 	
