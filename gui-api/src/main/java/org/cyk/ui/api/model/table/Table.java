@@ -62,7 +62,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected void crudCommand(){
 		UICommandable commandable = new DefaultCommandable();
 		commandable.setCommand(new DefaultCommand());
-		commandable.setLabel(text("button.add"));
+		commandable.setLabel(text("command.add"));
 		commandable.setIcon("ui-icon-plus");
 		addCommandable(commandable);
 		
@@ -73,12 +73,12 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		
 		
 		commandable = new DefaultCommandable();
-		commandable.setLabel(text("button.delete.selected.rows"));
+		commandable.setLabel(text("command.delete.selected.rows"));
 		commandable.setIcon("ui-icon-close");
 		addCommandable(commandable);
 		
 		commandable = new DefaultCommandable();
-		commandable.setLabel(text("button.export"));
+		commandable.setLabel(text("command.export"));
 		commandable.setIcon("ui-icon-document");
 		addCommandable(commandable);
 	}

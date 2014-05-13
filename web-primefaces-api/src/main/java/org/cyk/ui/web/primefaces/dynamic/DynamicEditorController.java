@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
@@ -31,9 +32,9 @@ public class DynamicEditorController extends AbstractPrimefacesPage implements S
 	protected void initialisation() { 
 		super.initialisation();
 		
-		Class<?> clazz = uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
+		BusinessEntityInfos businessEntityInfos = uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
 		try {
-			editor = (PrimefacesEditor) editorInstance(clazz.newInstance());
+			editor = (PrimefacesEditor) editorInstance(businessEntityInfos.getClazz().newInstance());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

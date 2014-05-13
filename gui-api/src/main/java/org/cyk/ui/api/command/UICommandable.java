@@ -2,6 +2,8 @@ package org.cyk.ui.api.command;
 
 import java.util.Collection;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+
 public interface UICommandable {
 	
 	UICommand getCommand();
@@ -46,13 +48,13 @@ public interface UICommandable {
 	
 	void setChildren(Collection<UICommandable> commandables);
 	
-	Class<?> getDynamicClass();
+	BusinessEntityInfos getBusinessEntityInfos();
 	
-	void setDynamicClass(Class<?> aClass);
+	void setBusinessEntityInfos(BusinessEntityInfos aBusinessEntityInfos);
 	
-	DynamicView getDynamicView();
+	ViewType getViewType();
 	
-	void setDynamicView(DynamicView aDynamicView);
+	void setViewType(ViewType aViewType);
 	
 	/**/
 	
@@ -64,6 +66,6 @@ public interface UICommandable {
 	
 	public enum ProcessGroup{THIS,FORM,PARTIAL}
 	
-	public enum DynamicView{EDITOR,TABLE}
+	public enum ViewType{DYNAMIC_EDITOR,DYNAMIC_TABLE}
 
 }

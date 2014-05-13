@@ -50,7 +50,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	}
 	
 	protected void commandInitialisation(){
-		submitCommand = createCommandable("button.send", new AbstractMethod<Object, Object>() {
+		submitCommand = createCommandable("command.send", new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -63,7 +63,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 			}
 		},EventListener.NONE,ProcessGroup.FORM);
 		submitCommand.getCommand().setNotifyOnSucceed(Boolean.TRUE);
-		backCommand = createCommandable("button.back", new AbstractMethod<Object, Object>() {
+		backCommand = createCommandable("command.back", new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -75,7 +75,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				return null;
 			}
 		},EventListener.NONE,ProcessGroup.THIS);
-		switchCommand = createCommandable("button.edit", new AbstractMethod<Object, Object>() {
+		switchCommand = createCommandable("command.edit", new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
 			protected Object __execute__(Object parameter) {

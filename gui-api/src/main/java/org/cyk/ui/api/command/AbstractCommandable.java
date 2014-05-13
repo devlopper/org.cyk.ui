@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.ui.api.UIMessageManager;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
@@ -16,8 +17,9 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 
 	@Setter protected UIMessageManager messageManager;
 	@Getter @Setter protected UICommand command;
+	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
 	@Getter @Setter protected String identifier,label,icon,tooltip;
-	@Getter @Setter protected DynamicView dynamicView;
+	@Getter @Setter protected ViewType viewType;
 	@Getter @Setter protected Class<?> dynamicClass;
 	@Getter @Setter protected EventListener eventListener;
 	@Getter @Setter protected RenderType renderType;

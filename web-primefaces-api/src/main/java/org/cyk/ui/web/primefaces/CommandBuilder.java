@@ -37,14 +37,14 @@ public class CommandBuilder implements Serializable {
 			if(StringUtils.isNotEmpty(aCommandable.getIcon()))
 				menuItem.setIcon(aCommandable.getIcon());
 			if(aCommandable.getIsNavigationCommand()){
-				if(aCommandable.getDynamicView()==null){
+				if(aCommandable.getViewType()==null){
 					
 				}else{
-					switch(aCommandable.getDynamicView()){
-					case EDITOR:menuItem.setOutcome("dynamiceditor");break;
-					case TABLE:menuItem.setOutcome("dynamictable");break;
+					switch(aCommandable.getViewType()){
+					case DYNAMIC_EDITOR:menuItem.setOutcome("dynamiceditor");break;
+					case DYNAMIC_TABLE:menuItem.setOutcome("dynamictable");break;
 					}
-					menuItem.setParam(webManager.getRequestParameterClass(), uiManager.keyFromClass(aCommandable.getDynamicClass()));
+					menuItem.setParam(webManager.getRequestParameterClass(), uiManager.keyFromClass(aCommandable.getBusinessEntityInfos()));
 				}
 				
 			}else{
