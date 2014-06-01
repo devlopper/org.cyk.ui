@@ -66,6 +66,6 @@ public interface UICommandable {
 	
 	public enum ProcessGroup{THIS,FORM,PARTIAL}
 	
-	public enum ViewType{DYNAMIC_EDITOR,DYNAMIC_TABLE}
-
+	public enum ViewType{DYNAMIC_EDITOR,DYNAMIC_TABLE,MANAGEMENT_DEPLOYMENT,MANAGEMENT_LICENCE}
+	
 }

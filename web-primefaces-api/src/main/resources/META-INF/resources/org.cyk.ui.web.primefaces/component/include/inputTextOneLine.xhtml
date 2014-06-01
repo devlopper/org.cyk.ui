@@ -16,7 +16,7 @@
 			<ui:define name="input">
 				<p:inputText id="inputText" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
 					required="#{data.required}" validator="#{data.validate}" converter="#{data.converter}" 
-					rendered="#{not data.readOnly}">
+					rendered="#{not data.readOnly}" requiredMessage="#{data.requiredMessage}">
 					<f:attribute name="fieldId" value="#{data.id}" />
 					<pe:keyFilter mask="#{data.filterMask}" rendered="#{not empty data.filterMask}" />
 					<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>

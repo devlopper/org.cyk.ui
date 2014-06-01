@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import lombok.Getter;
@@ -46,14 +47,23 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 				else if(aComponent instanceof UIInputSelectOne<?,?>){
 					component = new InputSelectOne<Object>(null,(UIInputSelectOne<Object, ISelectItem>) aComponent);
 					WebUIInputSelectOne<Object,Object> inputSelectOne = (WebUIInputSelectOne<Object, Object>) component;
-					if(inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty()){
-						Collection<Object> datas = (Collection<Object>) UIManager.collection(inputSelectOne.getField().getType());
-						if(inputSelectOne.getValue()!=null){
+					if(inputSelectOne.isSelectItemForeign() && (inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty())){
+						Collection<Object> datas = (Collection<Object>) UIManager.collection(inputSelectOne.getFieldType());
+						
+						//if(inputSelectOne.getValue()!=null){
 							if(datas==null)
-								datas = Arrays.asList(inputSelectOne.getValue());
-							else
+								if(inputSelectOne.getValue()==null)
+									;
+								else
+									datas = Arrays.asList(inputSelectOne.getValue());
+							else if(inputSelectOne.getValue()!=null && !datas.contains(inputSelectOne.getValue()))
 								datas.add(inputSelectOne.getValue());
-						}
+						//}
+						
+						inputSelectOne.getItems().add(new SelectItem(null, /*UIManager.getInstance().text("editor.selectone.noselection")*/"---"));	
+						if(datas!=null)
+							for(Object object : datas)
+								inputSelectOne.getItems().add(new SelectItem(object, UIManager.toString(object)));
 					}
 				}
 				return component;
@@ -65,6 +75,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	protected String label,requiredMessage,validatorId,validationGroupClass,readOnlyValue,description;
 	protected Boolean readOnly,required;
 	protected Field field;
+	protected Class<?> fieldType;
 	protected Converter converter;
 	protected Object object; 
 	protected UIField annotation;
@@ -76,9 +87,10 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		readOnly = input.getReadOnly();
 		required = input.getRequired();
 		field = input.getField();
+		fieldType = input.getFieldType();
 		object = input.getObject();
 		value = input.getValue();
-		annotation = field.getAnnotation(UIField.class);
+		annotation = input.getAnnotation();
 		this.editorInputs = editorInputs;
 		readOnlyValue = input.getReadOnlyValue();
 		this.validationGroupClass = input.getValidationGroupClass();
@@ -86,7 +98,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	
 	public String getReadOnlyValue(){
 		Object value = commonUtils.readField(object, field, false);
-		return uiManager.toString(value);
+		return UIManager.toString(value);
 	}
 	
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{

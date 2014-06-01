@@ -10,10 +10,10 @@ import org.cyk.utility.common.validation.System;
 @Getter @Setter
 public class Details {
 
-	@UIField(groups=Client.class,required=true)
+	@UIField(groups=Client.class)
 	private String name;
 	
-	@UIField(groups=System.class,required=true)
+	@UIField(groups=System.class)
 	private Boolean yesOrNoWrapper=false;
 	
 }

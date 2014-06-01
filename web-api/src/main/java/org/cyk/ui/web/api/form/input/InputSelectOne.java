@@ -34,21 +34,23 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	private String processOnSelect="@this",updateOnSelect;
 	private Boolean onChangeDisable=Boolean.TRUE,booleanValueType=Boolean.FALSE;
 	
+	private UIInputSelectOne<Object,ISelectItem> __input__;
 	
 	public InputSelectOne(WebEditorInputs<?, ?, ?, ?> conatinerForm,UIInputSelectOne<Object,ISelectItem> input) {
 		super(conatinerForm,input);
 		for(ISelectItem selectItem : input.getItems())
 			getItems().add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
+		__input__ = input;
 	}
 	
 	@Override
 	public Boolean isBoolean() {
-		return Boolean.class.equals( ClassUtils.primitiveToWrapper(getField().getType()));
+		return Boolean.class.equals( ClassUtils.primitiveToWrapper(getFieldType()));
 	}
 	
 	@Override
 	public Boolean isEnum() {
-		return getField().getType().isEnum();
+		return getFieldType().isEnum();
 	}
 		
 	
@@ -92,7 +94,12 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	
 	@Override
 	public Boolean getAddable() {
-		return Boolean.FALSE;
+		return __input__.getAddable();
+	}
+	
+	@Override
+	public Boolean isSelectItemForeign() {
+		return __input__.isSelectItemForeign();
 	}
 	
 	@Override

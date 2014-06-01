@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.utility.common.AbstractMethod;
@@ -56,7 +57,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Override
 	public String successNotificationMessage() {
 		if(successNotificationMessageMethod==null)
-			return "Success ";
+			return UIManager.getInstance().text("command.execution.succeed");
 		return successNotificationMessageMethod.execute();
 	}
 	

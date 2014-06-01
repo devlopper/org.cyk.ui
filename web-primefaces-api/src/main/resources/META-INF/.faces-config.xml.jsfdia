@@ -5,8 +5,15 @@
    <PROCESS-ITEM-OUTPUT ID="dynamiceditor::#__dynamic__#editor.xhtml"
     NAME="output" PATH="/__dynamic__/editor.xhtml"
     TARGET="rules:#__dynamic__#editor.xhtml" TITLE="dynamiceditor" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="deploymentmanagement::#__management__#deployment.xhtml"
+    NAME="output1" PATH="/__management__/deployment.xhtml"
+    TARGET="rules:#__management__#deployment.xhtml"
+    TITLE="deploymentmanagement" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#__dynamic__#editor.xhtml"
   PATH="/__dynamic__/editor.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#__management__#deployment.xhtml"
+  PATH="/__management__/deployment.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

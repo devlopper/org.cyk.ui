@@ -12,7 +12,8 @@ public interface UIInputSelect<VALUE_TYPE,SELECT_ITEM> extends UIInputComponent<
 	
 	Boolean getAddable();
 	
-	Boolean isSelectItemEditable();
+	Boolean isSelectItemForeign();
 	
+	Boolean isSelectItemEditable();
 	
 }

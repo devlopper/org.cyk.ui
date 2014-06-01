@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,19 +18,30 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
+import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.utility.common.AbstractMethod;
-import org.cyk.utility.common.annotation.Model.CrudStrategy;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
-@Singleton @Getter @Setter @Named(value="uiManager") //@Startup
+@Singleton @Getter @Setter @Named(value="uiManager")
 public class UIManager extends AbstractStartupBean implements Serializable {
 
 	private static final long serialVersionUID = -9062523105492591265L;
 
+	private static UIManager INSTANCE;
+	
+	public static UIManager getInstance() {
+		//if(INSTANCE==null)
+		//	INSTANCE = new UIManager();
+		return INSTANCE;
+	}
+	
 	@Inject protected LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
+	@Inject protected GenericBusiness genericBusiness;
 	
 	/* constants */
 	private final String windowParameter="windowParam";
@@ -38,22 +50,50 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		INSTANCE = this;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION)){
 			registerClassKey(infos);
 		}
+				
+		COLLECTION_LOAD_METHOD = new CollectionLoadMethod() {
+			private static final long serialVersionUID = -4679710339375267115L;
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Collection<Object> __execute__(Class<Object> parameter) {
+				Class<AbstractIdentifiable> c = null;
+				try {
+					c = (Class<AbstractIdentifiable>) Class.forName(parameter.getName());
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				Collection<AbstractIdentifiable> r = genericBusiness.use(c).find().all();
+				Collection<Object> l = new ArrayList<>();
+				for(AbstractIdentifiable i : r)
+					l.add(i);
+				return l;
+			}
+		};
+		
+		TO_STRING_METHOD = new ToStringMethod() {
+			private static final long serialVersionUID = 7479681304478557922L;
+			@Override
+			protected String __execute__(Object parameter) {
+				return parameter.toString();
+			}
+		};
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T> Collection<T> collection(Class<T> aClass){
 		if(COLLECTION_LOAD_METHOD==null){
-			System.out.println("No collection provider found");
+			System.out.println("Data collection for Type <"+aClass.getSimpleName()+"> cannot be loaded");
 			return null;
 		}
 		return (Collection<T>) COLLECTION_LOAD_METHOD.execute((Class<Object>) aClass);
 	}
 	
-	public String toString(Object object){
+	public static String toString(Object object){
 		if(object==null)
 			return "";
 		if(TO_STRING_METHOD==null)

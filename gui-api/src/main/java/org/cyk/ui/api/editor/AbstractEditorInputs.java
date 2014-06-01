@@ -69,7 +69,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 		discoverer.setObjectModel(objectModel);
 		for(UIInputComponent<?> input : discoverer.run().getInputComponents()){
 			//for each input we need a label
-			add(new OutputLabel(input.getField().getName()));
+			add(new OutputLabel(input.getLabel()));
 			add(input);
 		}
 	}

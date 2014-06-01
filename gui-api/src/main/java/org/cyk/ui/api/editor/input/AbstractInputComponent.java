@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.component.AbstractInputOutputComponent;
@@ -25,20 +28,30 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 	protected VALUE_TYPE value;
 	protected Object object;
 	protected Field field;
+	protected Class<?> fieldType;
 	protected Boolean required,readOnly;
 	protected String requiredMessage,validatorId,validationGroupClass=Client.class.getName(),readOnlyValue;
 	
 	protected UIField annotation;
 	
 	@SuppressWarnings("unchecked")
-	public AbstractInputComponent(String aLabel,Field aField,Object anObject) {
-		this.label=aLabel;
+	public AbstractInputComponent(Field aField,Class<?> fieldType,UIField annotation,Object anObject) {
 		this.field=aField;
-		annotation = aField.getAnnotation(UIField.class);
-		this.description = annotation.description();
-		required = annotation.required();
-		requiredMessage = "Valeur obligatoire";
+		this.annotation = annotation;
 		this.object=anObject;
+		this.fieldType=fieldType;
+		
+		String _label = StringUtils.isEmpty(annotation.label())?field.getName():annotation.label();
+		switch(annotation.labelValueType()){
+		case I18N_ID:this.label=UIManager.getInstance().text(_label); break;
+		case I18N_VALUE:this.label=_label; break;
+		case VALUE:this.label=_label; break;
+		}
+		
+		this.description = annotation.description();
+		required = field.isAnnotationPresent(NotNull.class);
+		requiredMessage =label+" : "+UIManager.getInstance().text("editor.field.value.required");
+		
 		try {
 			value = (VALUE_TYPE) FieldUtils.readField(field, object, Boolean.TRUE);
 		} catch (Exception e) {

@@ -14,7 +14,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.utility.common.annotation.Model.CrudStrategy;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Singleton
@@ -48,7 +48,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 			p.setViewType(ViewType.DYNAMIC_EDITOR);
 		}
 			//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
-		aMenu.getCommandables().add(commandable("help", "ui-icon-help"));
+		aMenu.getCommandables().add(commandable("command.help", "ui-icon-help"));
+		
+		aMenu.getCommandables().add(commandable = commandable("command.management", "ui-icon-help"));
+		commandable.getChildren().add( p = commandable("command.management.deployment", null));
+		p.setViewType(ViewType.MANAGEMENT_DEPLOYMENT);
 	}
 	
 	/**/

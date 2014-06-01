@@ -20,7 +20,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
 	@Getter @Setter protected String identifier,label,icon,tooltip;
 	@Getter @Setter protected ViewType viewType;
-	@Getter @Setter protected Class<?> dynamicClass;
+	@Getter @Setter protected Class<?> dynamicClass; 
 	@Getter @Setter protected EventListener eventListener;
 	@Getter @Setter protected RenderType renderType;
 	@Getter @Setter protected ProcessGroup processGroup;

@@ -12,10 +12,10 @@ import org.cyk.utility.common.validation.Client;
 @Getter @Setter
 public class Master {
 
-	@UIField(groups=Client.class,required=true,description="Master name")
+	@UIField(groups=Client.class,description="Master name")
 	private String masterName;
 	
-	@UIField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Master coments")
+	@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Master coments")
 	private String textArea;
 	
 	private Collection<Details> details = new ArrayList<>();

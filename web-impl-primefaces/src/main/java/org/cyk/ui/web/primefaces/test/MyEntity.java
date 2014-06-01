@@ -11,17 +11,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
 import org.cyk.utility.common.validation.Client;
-import org.cyk.utility.common.validation.System;
 
 @Getter @Setter
 public class MyEntity {
 	
 	public enum MyEnum{V1,V2,V3,v55}
 	
-	@UIField(groups=Client.class,required=true,description="Une chaine de caracteres")
+	@UIField(groups=Client.class,description="Une chaine de caracteres")
 	private String string="Jesus";
 	
-	@UIField(textArea=true,required=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
+	@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
 	private String textArea="1";
 	
 	//@UIField(groups=System.class,required=true)
@@ -71,7 +70,7 @@ public class MyEntity {
 	@Setter @Getter
 	public static class MyDetails{
 		
-		@UIField(required=true)
+		@UIField
 		private String detailsName;// = "Zouzoua Lingue";
 		
 		@UIField

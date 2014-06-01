@@ -12,14 +12,12 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
-	private CommandBuilder commandBuilder = new CommandBuilder();
-	
 	@Getter private MenuModel menuModel;
 	
 	@Override
 	public void targetDependentInitialisation() {
 		Field field = commonUtils.getField(getWindow(), this);
-		menuModel = commandBuilder.menuModel(null,null,menu, window.getClass(), field.getName());
+		menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
 	}
 	
 	public String includeFileFor(Object object){

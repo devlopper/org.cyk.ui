@@ -16,9 +16,18 @@
 		
 		<p:commandButton id="#{cc.id}CommandButton"
 			action="#{cc.value.commandable.command.execute(cc.attrs.executeParameter)}" 
-			process="#{cc.value.commandcommand.process}" 
-			update="#{cc.value.commandcommand.update}"
-			value="#{cc.value.commandcommand.value}" />
+			process="#{cc.value.commandButton.process}" 
+			update="#{cc.value.commandButton.update}"
+			value="#{cc.value.commandButton.value}" >
+			<!--
+			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.execution.confirmation.question')}" icon="ui-icon-alert" />
+			-->
+		</p:commandButton>
+		
+		<p:confirmDialog global="true">
+	        <p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
 			
 	</cc:implementation>
 

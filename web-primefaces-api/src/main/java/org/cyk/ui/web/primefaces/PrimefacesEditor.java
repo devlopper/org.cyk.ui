@@ -21,8 +21,6 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
-	private CommandBuilder commandBuilder = new CommandBuilder();
-	
 	@Getter private Command primefacesSubmitCommand;
 	@Getter private Command primefacesBackCommand;
 	@Getter private Command primefacesSwitchCommand;
@@ -32,7 +30,7 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		primefacesSubmitCommand = new Command(submitCommand);
+		primefacesSubmitCommand =  new Command(submitCommand);
 		primefacesBackCommand = new Command(backCommand);
 		primefacesSwitchCommand = new Command(switchCommand);
 	}
@@ -41,7 +39,7 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 	public void targetDependentInitialisation() {
 		Field field = commonUtils.getField(getWindow(), this);
 		for(UICommandable commandable : menu.getCommandables())
-			model.addElement(commandBuilder.menuItem(null,null,commandable,null, Introspector.decapitalize(getWindow().getClass().getSimpleName()), field.getName(),"menu"));
+			model.addElement(CommandBuilder.getInstance().menuItem(commandable,null, Introspector.decapitalize(getWindow().getClass().getSimpleName()), field.getName(),"menu"));
 	}
 	
 	@Override

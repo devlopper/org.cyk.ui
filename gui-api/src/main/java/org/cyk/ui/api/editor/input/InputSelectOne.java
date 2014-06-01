@@ -5,7 +5,10 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import javax.persistence.ManyToOne;
+
 import org.apache.commons.lang3.ClassUtils;
+import org.cyk.utility.common.annotation.UIField;
 
 import lombok.Getter;
 
@@ -17,8 +20,8 @@ public class InputSelectOne extends AbstractInputComponent<Object> implements Se
 	@Getter
 	protected Collection<ISelectItem> items = new LinkedHashSet<>();
 	
-	public InputSelectOne(String aLabel, Field aField,Object anObject) {
-		super(aLabel, aField,anObject);
+	public InputSelectOne(Field aField,Class<?> fieldType,UIField annotation,Object anObject) {
+		super(aField,fieldType,annotation,anObject);
 		if(isBoolean()){
 			items.add(new DefaultSelectItem("OUI",Boolean.TRUE));
 			items.add(new DefaultSelectItem("NON",Boolean.FALSE));
@@ -46,5 +49,10 @@ public class InputSelectOne extends AbstractInputComponent<Object> implements Se
 	@Override
 	public Boolean isSelectItemEditable() {
 		return !isBoolean() && !isEnum();
+	}
+	
+	@Override
+	public Boolean isSelectItemForeign() {
+		return field.isAnnotationPresent(ManyToOne.class);
 	}
 }

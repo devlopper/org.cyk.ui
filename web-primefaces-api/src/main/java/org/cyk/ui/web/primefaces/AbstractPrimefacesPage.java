@@ -22,14 +22,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter protected UIManager uiManager;
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
+	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel;
-	private CommandBuilder commandBuilder = new CommandBuilder();
 	
 	@Override
 	public void targetDependentInitialisation() {
-		mainMenuModel = commandBuilder.menuModel(uiManager,webManager,mainMenu, getClass(), "mainMenuModel");
-		contentMenuModel = commandBuilder.menuModel(uiManager,webManager,contentMenu, getClass(), "contentMenu");
-		
+		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
+		//contentMenuModel = commandBuilder.menuModel(contentMenu, getClass(), "contentMenu");	
 	}
 
 	@Override
@@ -47,5 +46,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass) {
 		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass);
 	}
+
+	public String text(String code) {
+		return uiManager.text(code);
+	}
+	
+	
 	
 }

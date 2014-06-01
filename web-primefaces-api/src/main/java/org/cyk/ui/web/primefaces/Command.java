@@ -14,10 +14,6 @@ public class Command implements Serializable {
 	private static final long serialVersionUID = 6706193290921067166L;
 
 	private UICommandable commandable;
-	private String managedBeanName = "dynaFormController";
-	private String formName = "myForm";
-	private String commandName = "primefacesSubmitCommand";
-	
 	private CommandButton commandButton;
 	
 	public Command(UICommandable aCommandable) {
@@ -26,13 +22,9 @@ public class Command implements Serializable {
 	}
 	
 	public CommandButton getCommandButton(){
-		if(commandButton==null){
-			commandButton = new CommandButton();
-			commandButton.setValue(commandable.getLabel());
-			commandButton.setUpdate("@form");
-			if(UICommandable.ProcessGroup.THIS.equals(commandable.getProcessGroup()))
-				commandButton.setProcess("@this");		
-		}
+		if(commandButton==null)
+			commandButton = CommandBuilder.getInstance().commandButton(commandable);
+			
 		return commandButton;
 	}
 	

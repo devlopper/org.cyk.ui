@@ -40,7 +40,7 @@ public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutMan
         // north pane  
         LayoutOptions north = new LayoutOptions(); 
         fixed(north);
-        north.addOption("size", 35);
+        north.addOption("size", 49);
         options.setNorthOptions(north);  
         //configureNorth(north);
         
@@ -59,7 +59,7 @@ public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutMan
         // south pane  
         LayoutOptions south = new LayoutOptions();  
         fixed(south);
-        south.addOption("size", 20);    
+        south.addOption("size", 15);    
         options.setSouthOptions(south);  
         
 	}
