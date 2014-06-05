@@ -18,6 +18,7 @@
 			action="#{cc.value.commandable.command.execute(cc.attrs.executeParameter)}" 
 			process="#{cc.value.commandButton.process}" 
 			update="#{cc.value.commandButton.update}"
+			oncomplete="#{cc.value.commandButton.oncomplete}"
 			value="#{cc.value.commandButton.value}" >
 			<!--
 			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.execution.confirmation.question')}" icon="ui-icon-alert" />

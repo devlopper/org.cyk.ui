@@ -38,6 +38,10 @@ public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VAL
 	
 	String getValidationGroupClass();
 	
+	VALUE_TYPE getValidatedValue();
+	
+	void setValidatedValue(VALUE_TYPE value);
+	
 	void updateValue() throws Exception;
 	
 	//void afterChildFormUpdated();

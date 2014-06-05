@@ -9,10 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.component.UIInputFieldDiscoverer;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
+import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.output.IOutputLabel;
 import org.cyk.ui.api.editor.output.IOutputMessage;
@@ -81,7 +81,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 			currentLabel = (OUTPUTLABEL) createComponent((IOutputLabel) component);
 		else if(component instanceof UIInputComponent<?>){
 			if(currentLabel!=null){
-				UIInputComponent<?> iinput = UIManager.COMPONENT_CREATE_METHOD.execute((UIInputComponent<?>) component);
+				UIInputComponent<?> iinput = AbstractInputComponent.create((UIInputComponent<?>) component);
 				if(iinput==null){
 					log.warning("No input component implementation can be found for Type "+component.getFamily()+". It will be ignored");
 					return;

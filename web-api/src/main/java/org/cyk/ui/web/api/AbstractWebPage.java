@@ -17,7 +17,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	private static final long serialVersionUID = -7284361545083572063L;
 	
 	@Inject protected WebManager webManager;
-	@Getter @Setter protected String footer;
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick;
 	
 	@Override
 	protected void initialisation() {

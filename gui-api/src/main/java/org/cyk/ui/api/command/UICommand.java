@@ -10,23 +10,6 @@ import org.cyk.utility.common.AbstractMethod;
  */
 public interface UICommand {
 	
-	/*
-	String getIdentifier();
-	
-	void setIdentifier(String anIdentifier);
-	
-	String getLabel();
-	
-	void setLabel(String label);
-	
-	String getIcon();
-	
-	void setIcon(String icon);
-
-	String getTooltip();
-	
-	void setTooltip(String label);
-	*/
 	/**
 	 * Validate data provided by user
 	 * @return true if success else false
@@ -68,6 +51,8 @@ public interface UICommand {
 	void setValidateMethod(AbstractValidateMethod<Object> method);
 	
 	void setExecuteMethod(AbstractMethod<Object, Object> method);
+	
+	void setAfterFailureMethod(AbstractMethod<Object, Object> method);
 	
 	void setSuccessNotificationMessageMethod(AbstractSucessNotificationMessageMethod<Object> method);
 	

@@ -31,6 +31,8 @@ public class CommandBuilder implements Serializable {
 		CommandButton commandButton = new CommandButton();
 		commandButton.setValue(aCommandable.getLabel());
 		commandButton.setUpdate(":form:contentPanel");
+		if(StringUtils.isNotEmpty(aCommandable.getIcon()))
+			commandButton.setIcon(aCommandable.getIcon());
 		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			commandButton.setProcess("@this");		
 		/*

@@ -51,7 +51,7 @@
 				 			<p:messages id="messages" globalOnly="true" />
 				 			<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
 				 			<!-- Messages -->
-							<p:outputPanel id="messagePanel">
+							<p:outputPanel id="messagePanel" autoUpdate="true">
 								<p:dialog id="messageDialogId" widgetVar="#{webManager.messageDialogWidgetId}" header="#{uiManager.text('information')}" modal="true" appendTo="@(body)" 
 									visible="#{not empty facesContext.messageList}" draggable="false" resizable="false">
 									<table style="margin: auto;" cellspacing="5">
@@ -67,7 +67,7 @@
 											<td colspan="1">
 												<div align="center">
 													<p:commandButton value="OK" type="button" icon="ui-icon-check" 
-														onclick="PF('#{webManager.messageDialogWidgetId}').hide();" />
+														onclick="PF('#{webManager.messageDialogWidgetId}').hide();#{pageController.messageDialogOkButtonOnClick}" />
 												</div>
 											</td>
 										</tr>

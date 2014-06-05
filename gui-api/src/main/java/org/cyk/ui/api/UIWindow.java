@@ -1,11 +1,14 @@
 package org.cyk.ui.api;
 
+import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.table.Table;
 
 
 public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
+	
+	GenericBusiness getGenericBusiness();
 	
 	/**
 	 * The UI message manager

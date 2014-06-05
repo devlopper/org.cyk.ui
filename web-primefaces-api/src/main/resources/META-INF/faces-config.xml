@@ -12,6 +12,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>dynamictable</from-outcome>
+			<to-view-id>/__dynamic__/table.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>deploymentmanagement</from-outcome>
 			<to-view-id>/__management__/deployment.xhtml</to-view-id>
 		</navigation-case>

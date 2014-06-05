@@ -23,35 +23,7 @@ public class WebUIMessageManager extends AbstractBean implements UIMessageManage
 	@Inject private LanguageBusiness languageBusiness;
 	
 	protected FacesMessage facesMessage;
-	
-	/*
-	public void add(Severity severity,Object text,Boolean isMessageId){
-		String message = isMessageId?languageService.findText(text.toString()):text.toString();
-		message = format(message);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity,message, message));
-	}
-	
-	public void add(Severity severity,Object messageId){
-		add(severity, messageId, Boolean.TRUE);
-	}
-	
-	public void addError(Object text,Boolean isMessageId){
-		add(FacesMessage.SEVERITY_ERROR, text,isMessageId);
-	}
-	
-	public void addError(Object text){
-		addError(text, Boolean.TRUE);
-	}
 		
-	public void addInfo(Object text,Boolean isMessageId){
-		add(FacesMessage.SEVERITY_INFO, text,isMessageId);
-	}
-	
-	public void addInfo(Object messageId){
-		addInfo(messageId, Boolean.TRUE);
-	}*/
-	
-	
 	@Override
 	public UIMessageManager message(SeverityType severityType, Text summary, Text details) {
 		facesMessage = new FacesMessage(severity(severityType), toString(summary), toString(details));

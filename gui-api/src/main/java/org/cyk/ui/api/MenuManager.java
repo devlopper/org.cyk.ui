@@ -45,7 +45,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		for(BusinessEntityInfos businessEntityInfos : businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION)){
 			commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 			p.setBusinessEntityInfos(businessEntityInfos);
-			p.setViewType(ViewType.DYNAMIC_EDITOR);
+			p.setViewType(ViewType.DYNAMIC_TABLE);
 		}
 			//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
 		aMenu.getCommandables().add(commandable("command.help", "ui-icon-help"));

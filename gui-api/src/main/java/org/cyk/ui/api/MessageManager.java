@@ -1,6 +1,8 @@
 package org.cyk.ui.api;
 
 public class MessageManager implements UIMessageManager {
+	
+	public static UIMessageManager INSTANCE;
 
 	@Override
 	public UIMessageManager message(SeverityType severityType, Text summary, Text details) {

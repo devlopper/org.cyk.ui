@@ -22,7 +22,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter protected UIManager uiManager;
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
-	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel;
 	
 	@Override

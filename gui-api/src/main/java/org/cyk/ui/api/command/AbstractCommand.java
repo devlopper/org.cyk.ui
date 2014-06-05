@@ -1,16 +1,21 @@
 package org.cyk.ui.api.command;
 
 import java.io.Serializable;
+import java.util.logging.Level;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.AbstractBusinessException;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.CommonUtils;
 
+@Log
 public abstract class AbstractCommand implements UICommand , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
@@ -18,7 +23,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Setter protected UIMessageManager messageManager;
 	
 	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
-	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod;
+	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod;
 	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
 	@Getter @Setter protected Boolean notifyOnSucceed=Boolean.FALSE;
@@ -68,7 +73,17 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	
 	@Override
 	public Object failure(Throwable throwable) {
-		getMessageManager().message(SeverityType.ERROR, throwable,Boolean.FALSE).showInline();
+		Throwable cause = CommonUtils.getInstance().getThrowableInstanceOf(throwable, AbstractBusinessException.class);
+		String message;
+		if(cause==null){
+			log.log(Level.SEVERE,throwable.getMessage(),throwable);
+			message = UIManager.getInstance().text("command.execution.failure");
+		}else{
+			message = cause.getMessage();
+		}
+		getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+		if(afterFailureMethod!=null)
+			afterFailureMethod.execute(throwable);
 		return null;
 	}
 	

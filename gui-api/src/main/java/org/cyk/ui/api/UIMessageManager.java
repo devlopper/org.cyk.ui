@@ -15,19 +15,10 @@ public interface UIMessageManager {
 	
 	UIMessageManager throwable(Throwable throwable);
 	
-	//UIMessageManager severity(SeverityType severityType);
-	
 	void showInline();
 	
 	void showDialog();
 	
-	
-	//void add(SeverityType severityType,Object object,Boolean isId);
-	
-	//void addError(Throwable throwable);
-	
-	//void showInDialog(SeverityType severityType,Object title,Object object,Boolean isId);
-
 	/**/
 	
 	@Getter @AllArgsConstructor

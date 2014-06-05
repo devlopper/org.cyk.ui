@@ -15,6 +15,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.component.AbstractInputOutputComponent;
 import org.cyk.ui.api.editor.EditorInputs;
+import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.validation.Client;
 
@@ -23,9 +24,35 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 
 	private static final long serialVersionUID = 438462134701637492L;
 
+	public static ComputeReadOnlyValueMethod COMPUTE_READ_ONLY_VALUE_METHOD = new ComputeReadOnlyValueMethod() {
+		private static final long serialVersionUID = -2440628467044855958L;
+		@Override
+		protected String __execute__(Object object) {
+			return object==null?"":object.toString();
+		}
+	};
+	
+	public static ComputeLabelValueMethod COMPUTE_LABEL_VALUE_METHOD = new ComputeLabelValueMethod() {
+		private static final long serialVersionUID = -2440628467044855958L;
+		@Override
+		protected String __execute__(Object object) {
+			Object[] params = (Object[]) object;
+			String fieldName = (String) params[0];
+			UIField annotation = (UIField) params[1];
+			
+			String _label = StringUtils.isEmpty(annotation.label())?fieldName:annotation.label();
+			switch(annotation.labelValueType()){
+			case I18N_ID:return UIManager.getInstance().text(_label);
+			case I18N_VALUE:return _label;
+			case VALUE:return _label;
+			default : return _label;
+			}
+		}
+	};
+	
 	protected EditorInputs<?, ?, ?, ?> editorInputs;
 	protected String label,description;
-	protected VALUE_TYPE value;
+	protected VALUE_TYPE value,validatedValue;
 	protected Object object;
 	protected Field field;
 	protected Class<?> fieldType;
@@ -40,14 +67,15 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		this.annotation = annotation;
 		this.object=anObject;
 		this.fieldType=fieldType;
-		
+		/*
 		String _label = StringUtils.isEmpty(annotation.label())?field.getName():annotation.label();
 		switch(annotation.labelValueType()){
 		case I18N_ID:this.label=UIManager.getInstance().text(_label); break;
 		case I18N_VALUE:this.label=_label; break;
 		case VALUE:this.label=_label; break;
 		}
-		
+		*/
+		this.label = COMPUTE_LABEL_VALUE_METHOD.execute(new Object[]{field.getName(),annotation});
 		this.description = annotation.description();
 		required = field.isAnnotationPresent(NotNull.class);
 		requiredMessage =label+" : "+UIManager.getInstance().text("editor.field.value.required");
@@ -57,7 +85,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString(), e);
 		}
-		readOnlyValue = value==null?"":value.toString();
+		readOnlyValue = COMPUTE_READ_ONLY_VALUE_METHOD.execute(value);
 	}
 	
 	@Override
@@ -69,7 +97,15 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		return UIManager.COMPONENT_CREATE_METHOD.execute(anInputComponent);
 	}
 	
+	/**/
 	
+	public static abstract class ComputeReadOnlyValueMethod extends AbstractMethod<String, Object>{
+		private static final long serialVersionUID = 6676233958270401002L;
+	}
+	
+	public static abstract class ComputeLabelValueMethod extends AbstractMethod<String, Object>{
+		private static final long serialVersionUID = 6676233958270401002L;
+	}
 
 	
 }

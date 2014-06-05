@@ -13,31 +13,66 @@
 	</cc:interface>
 
 	<cc:implementation>
+		<!--
 		<p:menubar model="#{cc.value.menuModel}" /> 
-		<p:dataTable var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}">
+		-->
+		<cyk:command value="#{cc.value.primefacesAddRowCommand}" />
+		
+		<p:dataTable id="dataTable" var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}" styleClass="dataTableStyleClass" rowIndexVar="index">
+			
+			<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
+			<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />
+			<p:ajax event="rowEditCancel" listener="#{cc.value.onRowEditCancel}" />
+			
 			<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 			<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
 	            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
 	  			<ui:param name="templateFile" value="template/editor/inputMessageAtTop.xhtml" />
+	  			<!--
 	  			<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+	  			-->
 	  			
 	  			<p:cellEditor>
 	  				<f:facet name="input">
-	  					
-	  					<ui:include src="include/inputTextOneLine.xhtml" >
+	  					<!--
+	  					<ui:include src="#{primefacesConstants.includeFile(cc.value.cell(row,column).inputComponent)}" >
 	  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
 	  					</ui:include>
+	  					-->
+	  					
+	  					<ui:fragment rendered="#{uiManager.isInputText(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputTextOneLine.xhtml" >
+	  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+	  					</ui:include></ui:fragment>
+	  					
+	  					<ui:fragment rendered="#{uiManager.isInputSelectOne(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputOneMenu.xhtml" >
+	  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+	  					</ui:include></ui:fragment>
 	  					
 	  				</f:facet>
 	  				<f:facet name="output"><h:outputText value="#{cc.value.cell(row,column)}" escape="false"/></f:facet>
 	  			</p:cellEditor>
 	        </p:columns> 
 	        
-	        <p:column>
+	        <p:column rendered="#{cc.value.editable}">
 	        	<p:rowEditor />
+	        	<cyk:command value="#{cc.value.primefacesDeleteRowCommand}" executeParameter="#{index}"/>
 	        </p:column>
 	        
 		</p:dataTable>
+		
+		<h:outputScript>
+	    	function clickEditButtonLastRow(){
+				$('.dataTableStyleClass div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+					 $(this).click();	
+				});
+			}	
+			
+			function clickEditButtonRow(rowIndex){
+				$('.dataTableStyleClass div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+					 $(this).click();	
+				});
+			}	
+		</h:outputScript>	
 		
 	</cc:implementation>
 

@@ -22,6 +22,8 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.editor.input.UIInputComponent;
+import org.cyk.ui.api.editor.input.UIInputSelectOne;
+import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
@@ -34,8 +36,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static UIManager INSTANCE;
 	
 	public static UIManager getInstance() {
-		//if(INSTANCE==null)
-		//	INSTANCE = new UIManager();
 		return INSTANCE;
 	}
 	
@@ -126,7 +126,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
+	public Boolean isInputText(UIInputComponent<?> inputComponent){
+		return inputComponent instanceof UIInputText;
+	}
 	
+	public Boolean isInputSelectOne(UIInputComponent<?> inputComponent){
+		return inputComponent instanceof UIInputSelectOne;
+	}
 	
 	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {

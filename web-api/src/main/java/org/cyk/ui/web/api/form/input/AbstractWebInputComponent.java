@@ -16,6 +16,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.ISelectItem;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputDate;
@@ -79,6 +80,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	protected Converter converter;
 	protected Object object; 
 	protected UIField annotation;
+	protected VALUE_TYPE validatedValue;
 
 	public AbstractWebInputComponent(WebEditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<VALUE_TYPE> input) {
 		label = input.getLabel();
@@ -101,15 +103,19 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		return UIManager.toString(value);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
 		//Dynamically find validation logic
-		//System.out.println("AbstractWebInputComponent.validate() : "+value);
+		//System.out.println("AbstractWebInputComponent.validate() : "+field.getName()+" - " +value+" - ");
+		//if success then
+		validatedValue = (VALUE_TYPE) value;
 		
 	}
 
 	@Override
 	public void updateValue() throws Exception {
 		FieldUtils.writeField(field, object, value, true);
+		readOnlyValue=AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(value);
 	}
 
 	@Override

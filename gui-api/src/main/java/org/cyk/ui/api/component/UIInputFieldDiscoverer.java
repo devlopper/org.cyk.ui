@@ -54,6 +54,8 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 			if(getter!=null){//Method first
 				annotation = getter.getAnnotation(UIField.class);
 				fieldType = getter.getReturnType();
+				//if(annotation!=null)
+				//	System.out.println("UIInputFieldDiscoverer.build() : "+fieldType);
 			}
 			if(annotation==null){// Field second
 				annotation = field.getAnnotation(UIField.class);
@@ -61,6 +63,7 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 			}
 			if(annotation==null)
 				continue;
+			
 			if(!groups.isEmpty() /*&& ArrayUtils.isNotEmpty(annotation.groups())*/){
 				Boolean found = Boolean.FALSE;
 				for(Class<?> clazz : groups)
@@ -72,6 +75,7 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 				add = found;
 			}
 			if(add){
+				
 				if(OneRelationshipInputType.FIELDS.equals(annotation.oneRelationshipInputType())){
 					build(commonUtils.readField(objectModel,field, true));
 				}else{
