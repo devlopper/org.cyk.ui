@@ -33,7 +33,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	private static final long serialVersionUID = 6386648827377414199L;
 	
 	static {
-		UIManager.COMPONENT_CREATE_METHOD = new UIManager.ComponentCreateMethod() {
+		UIManager.getInstance().setComponentCreateMethod(new UIManager.ComponentCreateMethod() {
 			private static final long serialVersionUID = -6005484639897008871L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -49,7 +49,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 					component = new InputSelectOne<Object>(null,(UIInputSelectOne<Object, ISelectItem>) aComponent);
 					WebUIInputSelectOne<Object,Object> inputSelectOne = (WebUIInputSelectOne<Object, Object>) component;
 					if(inputSelectOne.isSelectItemForeign() && (inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty())){
-						Collection<Object> datas = (Collection<Object>) UIManager.collection(inputSelectOne.getFieldType());
+						Collection<Object> datas = (Collection<Object>) UIManager.getInstance().getCollectionLoadMethod().execute((Class<Object>) inputSelectOne.getFieldType());
 						
 						//if(inputSelectOne.getValue()!=null){
 							if(datas==null)
@@ -64,12 +64,12 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 						inputSelectOne.getItems().add(new SelectItem(null, /*UIManager.getInstance().text("editor.selectone.noselection")*/"---"));	
 						if(datas!=null)
 							for(Object object : datas)
-								inputSelectOne.getItems().add(new SelectItem(object, UIManager.toString(object)));
+								inputSelectOne.getItems().add(new SelectItem(object, UIManager.getInstance().getToStringMethod().execute(object)));
 					}
 				}
 				return component;
 			}
-		};
+		});
 	}
 	
 	protected WebEditorInputs<?, ?, ?, ?> editorInputs;
@@ -97,11 +97,11 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		readOnlyValue = input.getReadOnlyValue();
 		this.validationGroupClass = input.getValidationGroupClass();
 	}
-	
+	/*
 	public String getReadOnlyValue(){
 		Object value = commonUtils.readField(object, field, false);
-		return UIManager.toString(value);
-	}
+		return UIManager.getInstance() toString(value);
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{

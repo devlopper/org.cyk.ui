@@ -36,9 +36,6 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 		table.setEditable(true);
 		master = identifiableFromRequestParameter( (Class<AbstractIdentifiable>)businessEntityInfos.getClazz());
 		
-		if(master!=null)
-			contentTitle = master+" - "+contentTitle;
-		
 		if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
 			if(master==null)
 				for(DataTreeType dataTreeType : dataTreeTypeBusiness.findHierarchies())

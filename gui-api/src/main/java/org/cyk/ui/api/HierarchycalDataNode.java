@@ -25,7 +25,7 @@ public class HierarchycalDataNode implements Serializable {
 		fieldDiscoverer.setObjectModel(data);
 		for(UIInputComponent<?> input : fieldDiscoverer.run().getInputComponents()){
 			//input.setReadOnly(true);
-			inputComponents.add(UIManager.COMPONENT_CREATE_METHOD.execute(input));
+			inputComponents.add(UIManager.getInstance().getComponentCreateMethod().execute(input));
 		}
 	}
 	

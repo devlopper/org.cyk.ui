@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
@@ -32,6 +33,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 
 	private static final long serialVersionUID = -7832418987283686453L;
 	
+	protected AbstractIdentifiable master;
 	protected UIMenu menu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;
@@ -172,6 +174,12 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	
 	private String text(String id){
 		return getWindow().getUiManager().getLanguageBusiness().findText(id);
+	}
+	
+	public String getTitle(){
+		if(title==null)
+			title = UIManager.getInstance().text(rowDataClass);
+		return title;
 	}
 	
 	public void targetDependentInitialisation(){}

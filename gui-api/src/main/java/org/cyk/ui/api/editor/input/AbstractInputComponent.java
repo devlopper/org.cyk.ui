@@ -94,7 +94,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 	}
 	
 	public static UIInputComponent<?> create(UIInputComponent<?> anInputComponent){
-		return UIManager.COMPONENT_CREATE_METHOD.execute(anInputComponent);
+		return UIManager.getInstance().getComponentCreateMethod().execute(anInputComponent);
 	}
 	
 	/**/

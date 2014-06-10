@@ -41,6 +41,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return INSTANCE;
 	}
 	
+	private CollectionLoadMethod collectionLoadMethod;
+	private ComponentCreateMethod componentCreateMethod;
+	private ToStringMethod toStringMethod;
+	
 	@Inject protected LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected GenericBusiness genericBusiness;
@@ -58,7 +62,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(infos);
 		}
 				
-		COLLECTION_LOAD_METHOD = new CollectionLoadMethod() {
+		collectionLoadMethod = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -4679710339375267115L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -77,7 +81,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			}
 		};
 		
-		TO_STRING_METHOD = new ToStringMethod() {
+		toStringMethod = new ToStringMethod() {
 			private static final long serialVersionUID = 7479681304478557922L;
 			@Override
 			protected String __execute__(Object parameter) {
@@ -87,24 +91,31 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> Collection<T> collection(Class<T> aClass){
-		if(COLLECTION_LOAD_METHOD==null){
+	public <T> Collection<T> collection(Class<T> aClass){
+		if(collectionLoadMethod==null){
 			System.out.println("Data collection for Type <"+aClass.getSimpleName()+"> cannot be loaded");
 			return null;
 		}
-		return (Collection<T>) COLLECTION_LOAD_METHOD.execute((Class<Object>) aClass);
+		return (Collection<T>) collectionLoadMethod.execute((Class<Object>) aClass);
 	}
 	
-	public static String toString(Object object){
+	public String toString(Object object){
 		if(object==null)
 			return "";
-		if(TO_STRING_METHOD==null)
+		if(toStringMethod==null)
 			return ToStringBuilder.reflectionToString(object,ToStringStyle.SHORT_PREFIX_STYLE);
-		return TO_STRING_METHOD.execute(object);
+		return toStringMethod.execute(object);
 	}
 	
 	public String text(String code){
 		return languageBusiness.findText(code);
+	}
+	
+	public String text(Class<?> aClass){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
+		if(businessEntityInfos==null)
+			return "###???###";
+		return text(businessEntityInfos.getUiLabelId());
 	}
 	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
@@ -135,6 +146,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
+	private BusinessEntityInfos businessEntityInfos(Class<?> aClass){
+		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
+			if(entry.getValue().getClazz().equals(aClass))
+				return entry.getValue();
+		//We can call the service for more
+		return null;
+	}
+	
 	public Boolean isInputText(UIInputComponent<?> inputComponent){
 		return inputComponent instanceof UIInputText;
 	}
@@ -152,25 +171,16 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static abstract class CollectionLoadMethod extends AbstractLoadDataMethod<Object>{
 		private static final long serialVersionUID = 7640865186916095212L;
 	}
-	public static CollectionLoadMethod COLLECTION_LOAD_METHOD;
 	
 	
 	public static abstract class ToStringMethod extends AbstractMethod<String, Object> {
 		private static final long serialVersionUID = 1175379361365502915L;
 	}
-	public static ToStringMethod TO_STRING_METHOD = new ToStringMethod(){
-		private static final long serialVersionUID = 5808352526362726091L;
-		@Override
-		protected String __execute__(Object object) {
-			if(object==null)
-				return "";
-			return ToStringBuilder.reflectionToString(object,ToStringStyle.SHORT_PREFIX_STYLE);
-		}
-	};
+	
 	
 	public static abstract class ComponentCreateMethod extends AbstractMethod<UIInputComponent<?>, UIInputComponent<?>> {
 		private static final long serialVersionUID = 4855972832374849032L;
 	}
-	public static ComponentCreateMethod COMPONENT_CREATE_METHOD ;
+	
 	
 }

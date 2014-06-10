@@ -34,6 +34,7 @@ public class DynaFormController extends AbstractPrimefacesPage implements Serial
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		/*
 		UIManager.COLLECTION_LOAD_METHOD = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -2251974175051850252L;
 			@Override
@@ -48,7 +49,7 @@ public class DynaFormController extends AbstractPrimefacesPage implements Serial
 				return collection;
 			}
 		};
-		
+		*/
 		editor = (PrimefacesEditor) editorInstance(new MyEntity());
 		//contentMenuModel = editor.getModel();
 		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
