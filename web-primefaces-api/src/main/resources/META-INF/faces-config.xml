@@ -9,16 +9,25 @@
 		<navigation-case>
 			<from-outcome>dynamiceditor</from-outcome>
 			<to-view-id>/__dynamic__/editor.xhtml</to-view-id>
+			<redirect/>
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>dynamictable</from-outcome>
 			<to-view-id>/__dynamic__/table.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>dynamichierarchy</from-outcome>
+			<to-view-id>/__dynamic__/hierarchy.xhtml</to-view-id>
+			<redirect/>
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>deploymentmanagement</from-outcome>
 			<to-view-id>/__management__/deployment.xhtml</to-view-id>
+			<redirect/>
 		</navigation-case>
     </navigation-rule>	
 

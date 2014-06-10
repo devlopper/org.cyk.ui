@@ -8,10 +8,12 @@ import javax.inject.Singleton;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -31,7 +33,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		UIMenu menu = new DefaultMenu();
 		switch(type){
 		case APPLICATION:application(menu);break;
-		case CONTEXTUAL: break;
+		case CONTEXTUAL:contextual(menu); break;
 		}
 		return menu;
 	}
@@ -39,34 +41,42 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	private void application(UIMenu aMenu){
-		aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
+		//aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
 		UICommandable commandable,p;
-		aMenu.getCommandables().add(commandable = commandable("command.administration", "ui-icon-gear"));
+		aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
 		for(BusinessEntityInfos businessEntityInfos : businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION)){
 			commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 			p.setBusinessEntityInfos(businessEntityInfos);
-			p.setViewType(ViewType.DYNAMIC_TABLE);
+			if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
+				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);	
+			}else{
+				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
+			}
 		}
 			//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
-		aMenu.getCommandables().add(commandable("command.help", "ui-icon-help"));
+		aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
 		
-		aMenu.getCommandables().add(commandable = commandable("command.management", "ui-icon-help"));
+		aMenu.getCommandables().add(commandable = commandable("command.management", IconType.ACTION_HELP));
 		commandable.getChildren().add( p = commandable("command.management.deployment", null));
 		p.setViewType(ViewType.MANAGEMENT_DEPLOYMENT);
 	}
 	
+	private void contextual(UIMenu aMenu){
+		
+	}
+	
 	/**/
 	
-	private UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,String icon){
+	private UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
 		UICommandable commandable = new DefaultCommandable();
 		commandable.setCommandRequestType(aCommandRequestType);
 		commandable.setLabel(languageBusiness.findText(labelId));
-		commandable.setIcon(icon);
+		commandable.setIconType(iconType);
 		return commandable;
 	}
 	
-	private UICommandable commandable(String labelId,String icon){
-		return commandable(CommandRequestType.UI_VIEW, labelId, icon);
+	private UICommandable commandable(String labelId,IconType iconType){
+		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
 	}
 	
 }

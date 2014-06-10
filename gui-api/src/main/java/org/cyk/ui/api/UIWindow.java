@@ -10,6 +10,12 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	
 	GenericBusiness getGenericBusiness();
 	
+	String getContentTitle();
+	
+	Boolean getShowContentMenu();
+	
+	Boolean getShowContextualMenu();
+	
 	/**
 	 * The UI message manager
 	 * @return
@@ -37,4 +43,8 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	<DATA> TABLE tableInstance();
 	
 	<DATA> TABLE tableInstance(Class<DATA> aDataClass);
+	
+	<DATA> HierarchycalData<DATA> hierarchyInstance();
+	
+	<DATA> HierarchycalData<DATA> hierarchyInstance(Class<DATA> aDataClass);
 }

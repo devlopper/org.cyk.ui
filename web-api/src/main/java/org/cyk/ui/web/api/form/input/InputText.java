@@ -12,7 +12,7 @@ public class InputText extends AbstractWebInputComponent<String> implements WebU
 
 	private static final long serialVersionUID = 7029658406107605595L;
 
-	@Getter private Integer rowCount,columnCount;
+	@Getter private Integer rowCount,columnCount,size=10;
 	private String filterMask;
 	
 	public InputText(WebEditorInputs<?, ?, ?, ?> containerForm,UIInputText input) {

@@ -7,15 +7,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
  	
- 	<ui:fragment rendered="#{not input.readOnly}"><table>
+ 	<ui:fragment rendered="#{not input.readOnly}"><table border="1" style="border: none;">
  		<ui:fragment rendered="#{not empty input.description}"><tr>
  			<td><h:outputText value="#{input.description}" /> </td>
  		</tr></ui:fragment>
  		<tr>
- 			<td><p:message escape="false" for="#{forId}" /></td>
+ 			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>
  		</tr>
  		<tr>
- 			<td><ui:insert name="input" /></td>
+ 			<td style="border: none;"><ui:insert name="input" /></td>
  		</tr>
  	</table></ui:fragment>
  	

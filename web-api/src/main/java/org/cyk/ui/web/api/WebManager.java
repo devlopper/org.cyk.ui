@@ -32,6 +32,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String messageDialogWidgetId = "messageDialogWidget";
 	
 	private final String requestParameterClass = "clazz";
+	private final String requestParameterIdentifiable = "identifiable";
 	
 
 }

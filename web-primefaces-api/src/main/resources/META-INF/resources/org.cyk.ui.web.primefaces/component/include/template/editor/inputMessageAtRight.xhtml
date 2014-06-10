@@ -6,13 +6,13 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
  	
- 	<ui:fragment rendered="#{not input.readOnly}"><table>
+ 	<ui:fragment rendered="#{not input.readOnly}"><table style="border: none;">
  		<ui:fragment rendered="#{not empty input.description}"><tr>
- 			<td colspan="2"><h:outputText value="#{input.description}" /> </td>
+ 			<td colspan="2" style="border: none;"><h:outputText value="#{input.description}" /> </td>
  		</tr></ui:fragment>
  		<tr>
- 			<td><ui:insert name="input" /></td>
- 			<td><p:message escape="false" for="#{forId}" /></td>
+ 			<td style="border: none;"><ui:insert name="input" /></td>
+ 			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>
  		</tr>
  	</table></ui:fragment>
  	

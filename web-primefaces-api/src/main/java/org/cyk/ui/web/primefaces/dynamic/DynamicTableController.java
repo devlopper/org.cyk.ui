@@ -3,14 +3,15 @@ package org.cyk.ui.web.primefaces.dynamic;
 import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -18,26 +19,38 @@ import org.cyk.utility.common.AbstractMethod;
 @ViewScoped
 @Getter
 @Setter
-public class DynamicTableController extends AbstractPrimefacesPage implements Serializable {
+public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
+	@Inject private DataTreeTypeBusiness dataTreeTypeBusiness;
+	
+	private AbstractIdentifiable master;
 	private PrimefacesTable<AbstractIdentifiable> table;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		BusinessEntityInfos businessEntityInfos = uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
-		
 		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz());
-		table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());
 		table.setEditable(true);
+		master = identifiableFromRequestParameter( (Class<AbstractIdentifiable>)businessEntityInfos.getClazz());
 		
-		table.getAddRowCommand().getCommand().setMessageManager(messageManager);
-		table.getSaveRowCommand().setMessageManager(messageManager);
-		table.getDeleteRowCommand().getCommand().setMessageManager(messageManager);
-		table.getCancelRowCommand().setMessageManager(messageManager);
+		if(master!=null)
+			contentTitle = master+" - "+contentTitle;
+		
+		if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
+			if(master==null)
+				for(DataTreeType dataTreeType : dataTreeTypeBusiness.findHierarchies())
+					table.addRow(dataTreeType);
+			else{
+				dataTreeTypeBusiness.findHierarchy((DataTreeType) master);
+				for(DataTreeType dataTreeType : ((DataTreeType)master).getChildren())
+					table.addRow(dataTreeType);
+			}
+		}else{
+			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
+		}
 		
 		table.getSaveRowCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -4698491663673906259L;
@@ -47,6 +60,11 @@ public class DynamicTableController extends AbstractPrimefacesPage implements Se
 				return null;
 			}
 		});
+	}
+	
+	@Override
+	public Boolean getShowContentMenu() {
+		return Boolean.TRUE;
 	}
 
 }

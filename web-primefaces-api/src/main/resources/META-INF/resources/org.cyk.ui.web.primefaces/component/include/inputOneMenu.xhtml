@@ -12,12 +12,12 @@
 	<ui:composition>
 		
        	<table style="width: 100%;"><tr>  
-            <td style="width: 100%;">
+            <td style="width: 100%;border: none;">
             	<ui:decorate template="#{templateFile}">
 					<ui:param name="input" value="#{data}" />
 					<ui:param name="forId" value="selectOneMenu" />
 					<ui:define name="input">
-		            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"
+		            	<p:selectOneMenu id="selectOneMenu" value="#{data.value}" style="#{data.cascadeStyleSheet.inline};" styleClass="#{data.cascadeStyleSheet.clazz}"
 			            	required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" valueChangeListener="#{data.valueChangeListener}" 
 			            	rendered="#{not data.readOnly}" converter="#{objectConverter}">
 			            	<!--

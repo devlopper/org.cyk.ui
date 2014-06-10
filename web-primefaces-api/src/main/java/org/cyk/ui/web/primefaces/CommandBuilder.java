@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.web.api.WebManager;
 import org.primefaces.component.commandbutton.CommandButton;
@@ -29,10 +30,15 @@ public class CommandBuilder implements Serializable {
 	
 	public CommandButton commandButton(UICommandable aCommandable){
 		CommandButton commandButton = new CommandButton();
-		commandButton.setValue(aCommandable.getLabel());
+		if(Boolean.TRUE.equals(aCommandable.getShowLabel()))
+			commandButton.setValue(aCommandable.getLabel());
 		commandButton.setUpdate(":form:contentPanel");
-		if(StringUtils.isNotEmpty(aCommandable.getIcon()))
-			commandButton.setIcon(aCommandable.getIcon());
+		if(aCommandable.getIconType()!=null)
+			commandButton.setIcon(icon(aCommandable.getIconType()));
+		if(StringUtils.isEmpty(aCommandable.getTooltip()))
+			commandButton.setTitle(aCommandable.getLabel());
+		else
+			commandButton.setTitle(aCommandable.getTooltip());
 		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			commandButton.setProcess("@this");		
 		/*
@@ -48,15 +54,16 @@ public class CommandBuilder implements Serializable {
 		if(aCommandable.getChildren().isEmpty()){
 			DefaultMenuItem	menuItem = new DefaultMenuItem();
 			menuItem.setValue(aCommandable.getLabel());
-			if(StringUtils.isNotEmpty(aCommandable.getIcon()))
-				menuItem.setIcon(aCommandable.getIcon());
+			if(aCommandable.getIconType()!=null)
+				menuItem.setIcon(icon(aCommandable.getIconType()));
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
 					
 				}else{
 					switch(aCommandable.getViewType()){
-					case DYNAMIC_EDITOR:menuItem.setOutcome("dynamiceditor");break;
-					case DYNAMIC_TABLE:menuItem.setOutcome("dynamictable");break;
+					case DYNAMIC_FORM_EDITOR:menuItem.setOutcome("dynamiceditor");break;
+					case DYNAMIC_FORM_TABLE:menuItem.setOutcome("dynamictable");break;
+					case DYNAMIC_FORM_HIERARCHY:menuItem.setOutcome("dynamichierarchy");break;
 					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome("deploymentmanagement");break;
 					default:break;
 					}
@@ -81,8 +88,8 @@ public class CommandBuilder implements Serializable {
 			return menuItem;
 		}else{
 			DefaultSubMenu subMenu = new DefaultSubMenu(aCommandable.getLabel());
-			if(StringUtils.isNotEmpty(aCommandable.getIcon()))
-				subMenu.setIcon(aCommandable.getIcon());
+			if(aCommandable.getIconType()!=null)
+				subMenu.setIcon(icon(aCommandable.getIconType()));
 			for(UICommandable commandable : aCommandable.getChildren())
 				menuItem(commandable, subMenu, managedBeanName, fields);
 			return subMenu;
@@ -97,6 +104,20 @@ public class CommandBuilder implements Serializable {
 			model.addElement(menuItem(commandable,null, Introspector.decapitalize(managedBeanClass.getSimpleName()), fieldName));
 		}
 		return model;
+	}
+	
+	private String icon(IconType iconType){
+		if(iconType==null)
+			return null;
+		switch(iconType){
+		case ACTION_ADD:return "ui-icon-plus";
+		case ACTION_CANCEL:return "ui-icon-close";
+		case ACTION_OPEN:return "ui-icon-folder";
+		case ACTION_REMOVE:return "ui-icon-trash";
+		case ACTION_ADMINISTRATE:return "ui-icon-gear";
+		case ACTION_HELP:return "ui-icon-help";
+		default:return null;
+		}
 	}
 	
 }

@@ -12,7 +12,7 @@ public abstract class AbstractWebInputOutputComponent<VALUE_TYPE> extends Abstra
 
 	private static final long serialVersionUID = 6386648827377414199L;
 
-	protected CascadeStyleSheet cascadeStyleSheet;
+	protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 
 	
 }

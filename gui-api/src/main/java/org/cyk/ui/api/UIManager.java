@@ -25,10 +25,12 @@ import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.annotation.Deployment;
+import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
-@Singleton @Getter @Setter @Named(value="uiManager")
+@Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
 
 	private static final long serialVersionUID = -9062523105492591265L;
@@ -120,6 +122,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public String keyFromClass(BusinessEntityInfos aBusinessEntityInfos){
 		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
 			if(entry.getValue().equals(aBusinessEntityInfos))
+				return entry.getKey();
+		return null;
+	}
+	
+	public String keyFromClass(Class<?> aClass){
+		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
+			if(entry.getValue().getClazz().equals(aClass))
 				return entry.getKey();
 		return null;
 	}

@@ -26,10 +26,12 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
+	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();
 	protected Collection<TABLE> tables = new ArrayList<>();
+	protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	@Inject protected MenuManager menuManager;
-	@Getter protected String title = "CYK Systems";
+	@Getter protected String title = "CYK Systems",contentTitle="Content";
 	
 	@Override
 	protected void initialisation() {
@@ -40,8 +42,8 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		if(editors.size()==1)
-			contentMenu = editors.iterator().next().getMenu();
+		//if(editors.size()==1)
+		//	contentMenu = editors.iterator().next().getMenu();
 			
 		targetDependentInitialisation();
 		for(Editor<?,?,?,?> editor : editors)
@@ -49,6 +51,17 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		
 		for(TABLE table : tables)
 			table.targetDependentInitialisation();
+		
+		for(HierarchycalData<?> hierarchicalData : hierarchicalDatas)
+			hierarchicalData.targetDependentInitialisation();
+	}
+	
+	public Boolean getShowContextualMenu(){
+		return contextualMenu!=null;
+	}
+	
+	public Boolean getShowContentMenu(){
+		return contentMenu!=null;
 	}
 	
 	@Override
@@ -69,8 +82,23 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		table.setWindow(this);
 		((AbstractBean)table).postConstruct();
 		table.build(aDataClass, TableRow.class, TableColumn.class, TableCell.class);
+		table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
+		table.getSaveRowCommand().setMessageManager(getMessageManager());
+		table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
+		table.getCancelRowCommand().setMessageManager(getMessageManager());
 		tables.add((TABLE) table);
 		return (TABLE) table;
+	}
+	
+	@Override
+	public <DATA> HierarchycalData<DATA> hierarchyInstance(Class<DATA> aNodeClass) {
+		HierarchycalData<DATA> hierarchicalData = hierarchyInstance();
+		hierarchicalData.setWindow(this);
+		hierarchicalData.setNodeDataClass(aNodeClass);
+		((AbstractBean)hierarchicalData).postConstruct();
+		hierarchicalData.getAddNodeCommand().getCommand().setMessageManager(getMessageManager());
+		hierarchicalDatas.add(hierarchicalData);
+		return hierarchicalData;
 	}
 	
 	public void onMessageDialogBoxClosed(){

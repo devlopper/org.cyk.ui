@@ -9,8 +9,12 @@
     NAME="output1" PATH="/__dynamic__/table.xhtml"
     TARGET="rules:#__dynamic__#table.xhtml" TITLE="dynamictable" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
+    ID="dynamichierarchy::#__dynamic__#hierarchy.xhtml" NAME="output2"
+    PATH="/__dynamic__/hierarchy.xhtml"
+    TARGET="rules:#__dynamic__#hierarchy.xhtml" TITLE="dynamichierarchy" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
     ID="deploymentmanagement::#__management__#deployment.xhtml"
-    NAME="output2" PATH="/__management__/deployment.xhtml"
+    NAME="output3" PATH="/__management__/deployment.xhtml"
     TARGET="rules:#__management__#deployment.xhtml"
     TITLE="deploymentmanagement" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
@@ -21,4 +25,6 @@
   PATH="/__management__/deployment.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#__dynamic__#table.xhtml"
   PATH="/__dynamic__/table.xhtml" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#__dynamic__#hierarchy.xhtml"
+  PATH="/__dynamic__/hierarchy.xhtml" SHAPE="272,433,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

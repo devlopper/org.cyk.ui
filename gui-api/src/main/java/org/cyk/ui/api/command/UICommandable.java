@@ -18,9 +18,13 @@ public interface UICommandable {
 	
 	void setLabel(String label);
 	
-	String getIcon();
+	Boolean getShowLabel();
 	
-	void setIcon(String icon);
+	void setShowLabel(Boolean show);
+	
+	IconType getIconType();
+	
+	void setIconType(IconType anIconType);
 
 	String getTooltip();
 	
@@ -66,6 +70,10 @@ public interface UICommandable {
 	
 	public enum ProcessGroup{THIS,FORM,PARTIAL}
 	
-	public enum ViewType{DYNAMIC_EDITOR,DYNAMIC_TABLE,MANAGEMENT_DEPLOYMENT,MANAGEMENT_LICENCE}
+	public enum ViewType{DYNAMIC_FORM_EDITOR,DYNAMIC_FORM_TABLE,DYNAMIC_FORM_HIERARCHY,MANAGEMENT_DEPLOYMENT,MANAGEMENT_LICENCE}
+	
+	public enum IconType{
+		ACTION_ADD,ACTION_CANCEL,ACTION_REMOVE,ACTION_OPEN,ACTION_ADMINISTRATE,ACTION_HELP
+	}
 	
 }

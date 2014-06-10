@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import lombok.Getter;
 
+import org.cyk.ui.api.HierarchycalData;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.web.api.AbstractWebPage;
@@ -22,12 +23,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter protected UIManager uiManager;
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	
-	@Getter protected MenuModel mainMenuModel,contentMenuModel;
+	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
 	
 	@Override
 	public void targetDependentInitialisation() {
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
-		//contentMenuModel = commandBuilder.menuModel(contentMenu, getClass(), "contentMenu");	
+		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
+		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
 	}
 
 	@Override
@@ -44,6 +46,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Override
 	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass) {
 		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass);
+	}
+	
+	@Override
+	public <DATA> HierarchycalData<DATA> hierarchyInstance() {
+		return new PrimefacesHierarchycalData<>();
 	}
 
 	public String text(String code) {

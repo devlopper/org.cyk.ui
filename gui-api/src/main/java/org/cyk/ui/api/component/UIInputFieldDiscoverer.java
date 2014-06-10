@@ -48,26 +48,13 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 		
 		for(Field field : fields){
 			Boolean add = Boolean.TRUE;
-			Method getter = MethodUtils.getAccessibleMethod(objectModel.getClass(),"get"+StringUtils.capitalize(field.getName()));
-			UIField annotation = null;
-			Class<?> fieldType = null;
-			if(getter!=null){//Method first
-				annotation = getter.getAnnotation(UIField.class);
-				fieldType = getter.getReturnType();
-				//if(annotation!=null)
-				//	System.out.println("UIInputFieldDiscoverer.build() : "+fieldType);
-			}
-			if(annotation==null){// Field second
-				annotation = field.getAnnotation(UIField.class);
-				fieldType = field.getType();
-			}
-			if(annotation==null)
+			UIFieldInfos uiFieldInfos = uiFieldOf(field,objectModel.getClass());
+			if(uiFieldInfos==null)
 				continue;
-			
 			if(!groups.isEmpty() /*&& ArrayUtils.isNotEmpty(annotation.groups())*/){
 				Boolean found = Boolean.FALSE;
 				for(Class<?> clazz : groups)
-					if(ArrayUtils.contains(annotation.groups(), clazz)){
+					if(ArrayUtils.contains(uiFieldInfos.getAnnotation().groups(), clazz)){
 						//System.out.println("Found : "+clazz+" "+StringUtils.join(annotation.groups()));
 						found = Boolean.TRUE;
 						break;
@@ -76,11 +63,11 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 			}
 			if(add){
 				
-				if(OneRelationshipInputType.FIELDS.equals(annotation.oneRelationshipInputType())){
+				if(OneRelationshipInputType.FIELDS.equals(uiFieldInfos.getAnnotation().oneRelationshipInputType())){
 					build(commonUtils.readField(objectModel,field, true));
 				}else{
 					
-					UIInputComponent<?> input = component(field, fieldType,objectModel,annotation);
+					UIInputComponent<?> input = component(field, uiFieldInfos.getFieldType(),objectModel,uiFieldInfos.getAnnotation());
 					if(input==null){
 						log.warning("No component can be found for Type "+field.getType()+". It will be ignored");
 					}else{
@@ -122,6 +109,25 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 		}
 		
 		return component;
+	}
+	
+	public static UIFieldInfos uiFieldOf(Field field,Class<?> clazz){
+		Method getter = MethodUtils.getAccessibleMethod(clazz,"get"+StringUtils.capitalize(field.getName()));
+		UIField annotation = null;
+		Class<?> fieldType = null;
+		if(getter!=null){//Method first
+			annotation = getter.getAnnotation(UIField.class);
+			fieldType = getter.getReturnType();
+			//if(annotation!=null)
+			//	System.out.println("UIInputFieldDiscoverer.build() : "+fieldType);
+		}
+		if(annotation==null){// Field second
+			annotation = field.getAnnotation(UIField.class);
+			fieldType = field.getType();
+		}
+		if(annotation==null)
+			return null;
+		return new UIFieldInfos(annotation, fieldType);
 	}
 
 }

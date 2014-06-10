@@ -10,10 +10,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -21,7 +19,7 @@ import org.cyk.utility.common.AbstractMethod;
 @ViewScoped
 @Getter
 @Setter
-public class DynamicEditorController extends AbstractPrimefacesPage implements Serializable {
+public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
@@ -31,8 +29,6 @@ public class DynamicEditorController extends AbstractPrimefacesPage implements S
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		
-		BusinessEntityInfos businessEntityInfos = uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
 		try {
 			editor = (PrimefacesEditor) editorInstance(businessEntityInfos.getClazz().newInstance());
 		} catch (Exception e) {

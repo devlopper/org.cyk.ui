@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+	<cc:interface componentType="org.cyk.ui.primefaces.Hierarchy">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<ui:param name="templateFile" value="template/editor/inputMessageAtTop.xhtml" />
+ 		<o:tree value="#{cc.value.tree}" var="record" varNode="node">
+			<o:treeNode>
+	            <ul>
+	                <o:treeNodeItem>
+	                    <li>
+	                    	<table><tr>
+	                    		<ui:repeat var="input" value="#{record.inputComponents}"><td>	                    		
+			                    	<ui:fragment rendered="#{uiManager.isInputText(input)}" ><ui:include src="include/inputTextOneLine.xhtml" >
+				  						<ui:param name="data" value="#{input}" />
+				  					</ui:include></ui:fragment>
+				  					
+				  					<ui:fragment rendered="#{uiManager.isInputSelectOne(input)}" ><ui:include src="include/inputOneMenu.xhtml" >
+				  						<ui:param name="data" value="#{input}" />
+				  					</ui:include></ui:fragment>
+		                    	</td></ui:repeat>
+	                        	<td> <cyk:command value="#{cc.value.primefacesAddNodeCommand}" executeParameter="#{record.data}" /> </td>               
+	                    	</tr> </table> 
+	                    	<o:treeInsertChildren />
+	                    </li>
+	                </o:treeNodeItem>
+		            </ul>
+			</o:treeNode>		        
+		</o:tree>
+			
+	</cc:implementation>
+
+</ui:composition>

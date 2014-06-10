@@ -31,20 +31,17 @@
 				<p:menubar id="menubar" model="#{pageController.mainMenuModel}" />
 			</h:form></pe:layoutPane>
 			
-			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent">
-				WEST
-				 <!--
+			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent" rendered="#{pageController.showContextualMenu}">
 				 <ui:insert name="westContent">
-					 <h:form id="contextMenuForm">
-						<p:menu model="#{pageController.contextMenuModel}" />
+					 <h:form id="contextualMenuForm">
+						<p:tabMenu model="#{pageController.contextualMenuModel}" />
 					</h:form>
 				 </ui:insert>
-				 -->
 			</pe:layoutPane>
 			
 			
 			<pe:layoutPane id="contentPane" position="center" styleClassContent="maincenterpanecontent" >
-				<f:facet name="header"><h:outputText value="HEADER" /> </f:facet>
+				<f:facet name="header"><h:outputText value="#{pageController.contentTitle}" /> </f:facet>
 			 	<h:form id="form" enctype="multipart/form-data" >
 				 	<pe:layoutPane id="contentp" position="center">
 				 		<p:outputPanel id="contentPanel">
@@ -53,7 +50,7 @@
 				 			<!-- Messages -->
 							<p:outputPanel id="messagePanel" autoUpdate="true">
 								<p:dialog id="messageDialogId" widgetVar="#{webManager.messageDialogWidgetId}" header="#{uiManager.text('information')}" modal="true" appendTo="@(body)" 
-									visible="#{not empty facesContext.messageList}" draggable="false" resizable="false">
+									visible="#{not empty facesContext.messageList}" draggable="false" resizable="false" closable="false">
 									<table style="margin: auto;" cellspacing="5">
 										<tr style="vertical-align: middle;">
 											<td><p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" type="ordered">
@@ -77,10 +74,11 @@
 				 		</p:outputPanel>
 				 	</pe:layoutPane>
 				 	
-				 	<pe:layoutPane id="commandp" position="south" styleClassContent="maincenterpanecontentformmenubar bordernone" 
-				 		rendered="#{false and pageController.contentMenuModel!=null}">
+				 	<pe:layoutPane id="commandp" position="south" styleClassContent="maincenterpanecontentformmenubar" rendered="#{pageController.showContentMenu}">
 						<p:outputPanel id="menuPanel">
-							<p:menubar id="menubar" model="#{pageController.contentMenuModel}" styleClass="maincenterpanecontentformmenubar"/>
+							<ui:insert name="contentMenuBar">
+								<p:menubar id="menubar" model="#{pageController.contentMenuModel}" styleClass="maincenterpanecontentformmenubar"/>
+							</ui:insert>
 						</p:outputPanel>
 				 	</pe:layoutPane>
 				 	

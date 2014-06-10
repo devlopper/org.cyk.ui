@@ -130,7 +130,9 @@
 
 .maincenterpanecontentformmenubar {
 	border-radius:0px !important;
-	
+	border-top : none !important;
+ 	border-right : none !important;
+ 	border-bottom : none !important;
 }
 
 .maincenterpanecontentformmenubar .ui-menuitem-link{
@@ -176,3 +178,11 @@
 	background: yellow;
 	font-weight: bold;
 }
+
+/*---------------------------------------------------------- Editor  ------------------------------------------------------------------*/
+
+/*---------------------------------------------------------- Table  ------------------------------------------------------------------*/
+.cyk-ui-table-dynamic-selectonemenu{
+	min-width: 150px;
+}
+
