@@ -43,7 +43,7 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 	}
 	
 	@Override
-	public EditorInputs<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> createFormData() {
+	public EditorInputs<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> createEditorInputs() {
 		return new PrimefacesEditorInputs();
 	}
 

@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
@@ -36,12 +37,14 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	@Getter protected UICommandable submitCommand,backCommand,resetValuesCommand,closeCommand,switchCommand;
 	@Getter protected Collection<UICommand> commands;
 	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/;
+	@Getter @Setter protected Boolean showCommands = Boolean.TRUE;
 	
 	@Getter @Setter protected UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> window;
 	@Getter protected String title;
 	@Getter @Setter protected UIMenu menu = new DefaultMenu();
 	//@Getter protected Collection<UIView> views = new LinkedList<>();
 	@Getter protected Object objectModel;
+	@Getter @Setter protected Crud crud;
 	
 	@Override
 	protected void initialisation() {
@@ -50,6 +53,15 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	}
 	
 	protected void commandInitialisation(){
+		submitMethodMain = new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = -3528789218248076908L;
+			@Override
+			protected Object __execute__(Object parameter) { 
+				//TODO must know which crud operation is it
+				//getWindow().getGenericBusiness().create((AbstractIdentifiable) parameter);
+				return null;
+			}
+		};
 		submitCommand = createCommandable("command.send", new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
@@ -107,10 +119,10 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 			throw new IllegalArgumentException("Object model cannot be null");
 		if(objectModel==null)
 			objectModel = object;
-		EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> inputs = createFormData();
+		EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> inputs = createEditorInputs();
 		inputs.setEditor(this);
 		inputs.setObjectModel(object);
-		inputs.build();
+		inputs.build(crud);
 		stack.push(inputs);
 		return inputs;
 	}

@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import org.cyk.ui.api.component.output.OutputText;
 
-public class OutputLabel extends OutputText implements Serializable,UIOutputLabel {
+public class OutputSeparator extends OutputText implements Serializable,UIOutputSeparator {
 
 	private static final long serialVersionUID = 422762056026115157L;
 
-	public OutputLabel(String aValue) {
+	public OutputSeparator(String aValue) {
 		super(aValue);
+		//TODO must be calculate at runtime : will work for 2 columns only
+		setWidth(2);
 	}
 	
 }

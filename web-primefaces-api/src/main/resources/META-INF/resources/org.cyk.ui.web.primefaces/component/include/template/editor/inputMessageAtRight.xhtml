@@ -17,7 +17,8 @@
  	</table></ui:fragment>
  	
  	<ui:fragment rendered="#{input.readOnly}">
- 		<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" />		
+ 		<h:outputText value="#{data.readOnlyValue}" rendered="#{data.readOnly}" 
+ 			style="#{data.readOnlyValueCascadeStyleSheet.inline}" styleClass="#{data.readOnlyValueCascadeStyleSheet.clazz}" />		
 	</ui:fragment>
 		
 </ui:composition>

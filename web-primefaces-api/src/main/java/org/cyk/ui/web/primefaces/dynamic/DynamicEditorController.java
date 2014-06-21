@@ -8,10 +8,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.ui.api.UIMessageManager.SeverityType;
-import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -25,31 +21,34 @@ public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimef
 
 	private PrimefacesEditor editor;
 	
-			
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
 		try {
-			editor = (PrimefacesEditor) editorInstance(businessEntityInfos.getClazz().newInstance());
+			editor = (PrimefacesEditor) editorInstance(identifiable==null?businessEntityInfos.getClazz().newInstance():identifiable,crudFromRequestParameter());
+			editor.setShowCommands(Boolean.FALSE);
+			editor.getSubmitCommand().getCommand().setAfterSuccessNotificationMessageMethod(new AbstractMethod<Object,Object>(){
+				private static final long serialVersionUID = -9058153097352454644L;
+				@Override
+				protected Object __execute__(Object parameter) {
+					//if(Boolean.TRUE.equals(getRenderedAsDialog()))
+					//	RequestContext.getCurrentInstance().closeDialog(parameter);
+					//else
+						messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
+					return null;
+				}
+			});
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		
-		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = -2421175279479434675L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				messageManager.message(
-						SeverityType.INFO,new Text("Dynamic Module",false),new Text(ToStringBuilder.reflectionToString(editor.getObjectModel(),ToStringStyle.MULTI_LINE_STYLE),false))
-						.showDialog();
-				return null;
-			}
-		});
-		
-		
 	}
 	
+	@Override
+	public Boolean getShowContentMenu() {
+		return Boolean.TRUE;
+	}
 
 
 }

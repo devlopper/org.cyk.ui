@@ -1,8 +1,10 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,10 +16,9 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -27,7 +28,6 @@ import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
-import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
@@ -42,8 +42,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	private CollectionLoadMethod collectionLoadMethod;
-	private ComponentCreateMethod componentCreateMethod;
+	public static ComponentCreateMethod componentCreateMethod;
 	private ToStringMethod toStringMethod;
+	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
 	
 	@Inject protected LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
@@ -51,14 +52,45 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/* constants */
 	private final String windowParameter="windowParam";
+	private final String crudParameter="crud";
+	private final String crudCreateParameter="create";
+	private final String crudReadParameter="read";
+	private final String crudUpdateParameter="update";
+	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
+	
+	public String getCrudParameterValue(Crud crud){
+		crud=crud==null?Crud.READ:crud;
+		switch(crud){
+		case CREATE:return crudCreateParameter;
+		case READ:return crudReadParameter;
+		case UPDATE:return crudUpdateParameter;
+		case DELETE:return crudDeleteParameter;
+		default: return null;
+		}
+	}
+	
+	public Crud getCrudValue(String crudParameterValue){
+		switch(crudParameterValue){
+		case crudCreateParameter:return Crud.CREATE;
+		case crudReadParameter:return Crud.READ;
+		case crudUpdateParameter:return Crud.UPDATE;
+		case crudDeleteParameter:return Crud.DELETE;
+		default: return null;
+		}
+	}
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
-		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION)){
+		
+		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
+		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
+		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
+		
+		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos()){
 			registerClassKey(infos);
 		}
 				
@@ -90,28 +122,15 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		};
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T> Collection<T> collection(Class<T> aClass){
-		if(collectionLoadMethod==null){
-			System.out.println("Data collection for Type <"+aClass.getSimpleName()+"> cannot be loaded");
-			return null;
-		}
-		return (Collection<T>) collectionLoadMethod.execute((Class<Object>) aClass);
-	}
-	
-	public String toString(Object object){
-		if(object==null)
-			return "";
-		if(toStringMethod==null)
-			return ToStringBuilder.reflectionToString(object,ToStringStyle.SHORT_PREFIX_STYLE);
-		return toStringMethod.execute(object);
+	public ComponentCreateMethod getComponentCreateMethod() {
+		return componentCreateMethod;
 	}
 	
 	public String text(String code){
 		return languageBusiness.findText(code);
 	}
 	
-	public String text(Class<?> aClass){
+	public String textOfClass(Class<?> aClass){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
 		if(businessEntityInfos==null)
 			return "###???###";
@@ -154,12 +173,26 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return null;
 	}
 	
+	public Integer collectionSize(Collection<?> collection){
+		return collection.size();
+	}
+	
 	public Boolean isInputText(UIInputComponent<?> inputComponent){
 		return inputComponent instanceof UIInputText;
 	}
 	
 	public Boolean isInputSelectOne(UIInputComponent<?> inputComponent){
 		return inputComponent instanceof UIInputSelectOne;
+	}
+	
+	/**/
+	
+	public String formatDate(Date date,Boolean dateTime){
+		return (Boolean.TRUE.equals(dateTime)?dateTimeFormat:dateFormat).format(date);
+	}
+	
+	public String formatTime(Date time){
+		return timeFormat.format(time);
 	}
 	
 	/**/

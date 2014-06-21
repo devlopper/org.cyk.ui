@@ -5,6 +5,8 @@ import org.cyk.ui.web.api.CascadeStyleSheet;
 
 public interface WebUIIComponent<VALUE_TYPE> extends UIInputOutputComponent<VALUE_TYPE> {
 
-	public abstract CascadeStyleSheet getCascadeStyleSheet();
+	CascadeStyleSheet getCascadeStyleSheet();
+	
+	CascadeStyleSheet getReadOnlyValueCascadeStyleSheet();
 
 }

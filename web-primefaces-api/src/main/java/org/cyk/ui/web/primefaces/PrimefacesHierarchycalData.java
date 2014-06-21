@@ -1,34 +1,29 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
-import org.cyk.ui.api.HierarchycalData;
-import org.cyk.ui.api.HierarchycalDataNode;
 import org.cyk.utility.common.AbstractMethod;
-import org.omnifaces.model.tree.ListTreeModel;
-import org.omnifaces.model.tree.TreeModel;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
-public class PrimefacesHierarchycalData<DATA> extends HierarchycalData<DATA> implements Serializable {
+public class PrimefacesHierarchycalData<DATA> /*extends HierarchycalData<DATA>*/ implements Serializable {
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
 	@Getter private MenuModel menuModel;
 	@Getter @Setter private NodeEditEventMethod onNodeEditMethod,onNodeEditInitMethod,onNodeEditCancelMethod;
 	@Getter private Command primefacesAddNodeCommand,primefacesSaveNodeCommand,primefacesCancelNodeCommand,primefacesDeleteNodeCommand;
-	@Getter private TreeModel<HierarchycalDataNode> tree;
+	//@Getter private TreeModel<HierarchycalDataNode> tree;
 	
-	@Override
+	//@Override
 	protected void afterInitialisation() {
-		super.afterInitialisation();
-		primefacesAddNodeCommand =  new Command(addNodeCommand);
+		//super.afterInitialisation();
+		//primefacesAddNodeCommand =  new Command(addNodeCommand);
 		
 		//primefacesDeleteNodeCommand =  new Command(deleteNodeCommand);
 		
@@ -54,15 +49,15 @@ public class PrimefacesHierarchycalData<DATA> extends HierarchycalData<DATA> imp
 	
 	
 	
-	@Override
+	//@Override
 	public void targetDependentInitialisation() {
-		tree = new ListTreeModel<HierarchycalDataNode>();
+		/*tree = new ListTreeModel<HierarchycalDataNode>();
 		Field field = commonUtils.getField(getWindow(), this);
 		menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
 		for(DATA d : data)
-			populate(d, tree);
+			populate(d, tree);*/
 	}
-	
+	/*
 	private void populate(DATA root,TreeModel<HierarchycalDataNode> tree){
 		TreeModel<HierarchycalDataNode> childTree = tree.addChild(new HierarchycalDataNode(root));
 		@SuppressWarnings("unchecked")
@@ -71,13 +66,13 @@ public class PrimefacesHierarchycalData<DATA> extends HierarchycalData<DATA> imp
 			for(DATA child : children)
 				populate(child, childTree);
 	}
-	
-	@Override
+	*/
+	//@Override
 	protected void link(DATA parent, DATA child) {
-		super.link(parent, child);
-		find(tree, parent).addChild(new HierarchycalDataNode(child));
+		//super.link(parent, child);
+		//find(tree, parent).addChild(new HierarchycalDataNode(child));
 	}
-	
+	/*
 	protected TreeModel<HierarchycalDataNode> find(TreeModel<HierarchycalDataNode> tree,DATA data){
 		if(tree.getData()!=null && tree.getData().getData().equals(data))
 			return tree;
@@ -85,7 +80,7 @@ public class PrimefacesHierarchycalData<DATA> extends HierarchycalData<DATA> imp
 			return find(child, data);
 		return null;
 	}
-			
+		*/	
 	/**/
 	
 	/**/

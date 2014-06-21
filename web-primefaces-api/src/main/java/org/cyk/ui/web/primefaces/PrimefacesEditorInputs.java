@@ -1,7 +1,8 @@
 package org.cyk.ui.web.primefaces;
 
 import org.cyk.ui.api.component.UIInputOutputComponent;
-import org.cyk.ui.api.editor.output.IOutputLabel;
+import org.cyk.ui.api.editor.output.UIOutputLabel;
+import org.cyk.ui.api.editor.output.UIOutputSeparator;
 import org.cyk.ui.web.api.form.AbstractWebEditorInputs;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -29,10 +30,13 @@ public class PrimefacesEditorInputs extends AbstractWebEditorInputs<DynaFormMode
 	
 	@Override
 	public Object createComponent(UIInputOutputComponent<?> aComponent) {
-		if(aComponent instanceof IOutputLabel)
-			return currentRow.addLabel((String) aComponent.getValue());
+		if(aComponent instanceof UIOutputLabel)
+			return currentRow.addLabel((String) aComponent.getValue(),aComponent.getWidth(),aComponent.getHeight());
 		
-		return currentRow.addControl(aComponent, aComponent.getFamily());
+		Object c = currentRow.addControl(aComponent, aComponent.getFamily(),aComponent.getWidth(),aComponent.getHeight());
+		if(aComponent instanceof UIOutputSeparator)
+			;//createRow();
+		return c;
 	}
 	
 	@Override
@@ -51,9 +55,6 @@ public class PrimefacesEditorInputs extends AbstractWebEditorInputs<DynaFormMode
 	}
 	
 	@Override
-	public void targetDependentInitialisation() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void targetDependentInitialisation() {}
 			
 }

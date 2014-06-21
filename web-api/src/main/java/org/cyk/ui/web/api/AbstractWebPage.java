@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.model.table.Table;
@@ -20,13 +21,42 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	
 	@Inject protected WebManager webManager;
 	@Inject protected WebNavigationManager navigationManager;
-	@Getter @Setter protected String footer,messageDialogOkButtonOnClick;
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url;
+	private String windowMode;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		footer="CYK Systems - All rights Reserved.";
+		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
+		if(StringUtils.isEmpty(windowMode))
+			windowMode = webManager.getRequestParameterWindowModeNormal();
+		url = navigationManager.getRequestUrl();
+		
 	}
+	
+	@Override
+	public Boolean getShowFooter() {
+		return getShowMainMenu();
+	}
+	
+	@Override
+	public Boolean getShowMainMenu() {
+		return webManager.getRequestParameterWindowModeNormal().equals(windowMode);
+	}
+	
+	@Override
+	public Boolean getRenderedAsDialog() {
+		return webManager.getRequestParameterWindowModeDialog().equals(windowMode);
+	}
+	
+	/*
+	@Override
+	public String getTitle() {
+		if(Boolean.TRUE.equals(getShowMainMenu()))
+			return super.getTitle();
+		return contentTitle;
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
@@ -37,6 +67,10 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass){
 		return identifiableFromRequestParameter(aClass, webManager.getRequestParameterIdentifiable());
+	}
+	
+	protected Crud crudFromRequestParameter(){
+		return getUiManager().getCrudValue(requestParameter(getUiManager().getCrudParameter()));
 	}
 	
 	protected Boolean hasRequestParameter(String name){

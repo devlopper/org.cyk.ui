@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import org.cyk.ui.api.command.UICommandable;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.event.SelectEvent;
 
 @Getter @Setter
 public class Command implements Serializable {
@@ -27,5 +28,7 @@ public class Command implements Serializable {
 			
 		return commandButton;
 	}
+	
+	public void onDialogReturn(SelectEvent selectEvent){}
 	
 }

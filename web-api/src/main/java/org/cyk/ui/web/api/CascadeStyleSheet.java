@@ -12,4 +12,14 @@ public class CascadeStyleSheet implements Serializable {
 
 	private String clazz,inline;
 	
+	public CascadeStyleSheet addClass(String aClazz){
+		clazz=clazz+" "+aClazz;
+		return this;
+	}
+	
+	public CascadeStyleSheet addInline(String aInline){
+		inline=inline+" "+aInline;
+		return this;
+	}
+	
 }

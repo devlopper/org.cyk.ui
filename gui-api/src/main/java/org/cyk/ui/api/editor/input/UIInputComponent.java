@@ -22,6 +22,8 @@ public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VAL
 	
 	Class<?> getFieldType();
 
+	void setRequired(Boolean required);
+	
 	Boolean getRequired();
 	
 	String getRequiredMessage();

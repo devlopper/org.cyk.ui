@@ -9,15 +9,17 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.component.UIInputFieldDiscoverer;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
-import org.cyk.ui.api.editor.output.IOutputLabel;
-import org.cyk.ui.api.editor.output.IOutputMessage;
 import org.cyk.ui.api.editor.output.OutputLabel;
 import org.cyk.ui.api.editor.output.OutputMessage;
+import org.cyk.ui.api.editor.output.UIOutputLabel;
+import org.cyk.ui.api.editor.output.UIOutputMessage;
+import org.cyk.ui.api.editor.output.UIOutputSeparator;
 import org.cyk.ui.api.layout.GridLayout;
 import org.cyk.ui.api.layout.UILayout;
 import org.cyk.utility.common.AbstractMethod;
@@ -62,24 +64,28 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	}
 	 
 	@Override
-	public void build() {
+	public void build(Crud crud) {
 		dataModel = createDataModel();
 		((AbstractBean)layout).postConstruct();
 		layout.addRow();
 		discoverer.setObjectModel(objectModel);
-		for(UIInputComponent<?> input : discoverer.run().getInputComponents()){
+		for(UIInputOutputComponent<?> component : discoverer.run(crud).getComponents()){
 			//for each input we need a label
-			add(new OutputLabel(input.getLabel()));
-			add(input);
+			if(component instanceof UIInputComponent<?>){
+				add(new OutputLabel(((UIInputComponent<?>)component).getLabel()));
+			}
+			add(component);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void add(UIInputOutputComponent<?> component) {
-		if(component instanceof IOutputLabel)
-			currentLabel = (OUTPUTLABEL) createComponent((IOutputLabel) component);
-		else if(component instanceof UIInputComponent<?>){
+		if(component instanceof UIOutputLabel)
+			currentLabel = (OUTPUTLABEL) createComponent(component);
+		else if(component instanceof UIOutputSeparator){
+			createComponent(component);
+		}else if(component instanceof UIInputComponent<?>){
 			if(currentLabel!=null){
 				UIInputComponent<?> iinput = AbstractInputComponent.create((UIInputComponent<?>) component);
 				if(iinput==null){
@@ -99,9 +105,9 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 				return;
 			}
 			createComponent(ioutput);
-		}else if(component instanceof IOutputMessage){
+		}else if(component instanceof UIOutputMessage){
 			if(currentInput!=null){
-				IOutputMessage message = new OutputMessage(currentInput.getId());
+				UIOutputMessage message = new OutputMessage(currentInput.getId());
 				createComponent(message);
 			}
 		}

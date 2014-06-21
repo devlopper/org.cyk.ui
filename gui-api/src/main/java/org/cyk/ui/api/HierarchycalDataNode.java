@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.cyk.ui.api.component.UIInputFieldDiscoverer;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 
-@Getter @Setter
+@Getter @Setter @Deprecated
 public class HierarchycalDataNode implements Serializable {
 
 	private static final long serialVersionUID = 8042093058414618870L;
@@ -23,10 +23,10 @@ public class HierarchycalDataNode implements Serializable {
 		this.data = data;
 		UIInputFieldDiscoverer fieldDiscoverer = new UIInputFieldDiscoverer();
 		fieldDiscoverer.setObjectModel(data);
-		for(UIInputComponent<?> input : fieldDiscoverer.run().getInputComponents()){
+		//for(UIInputComponent<?> input : fieldDiscoverer.run().getInputComponents()){
 			//input.setReadOnly(true);
-			inputComponents.add(UIManager.getInstance().getComponentCreateMethod().execute(input));
-		}
+			//inputComponents.add(UIManager.getInstance().getComponentCreateMethod().execute(input));
+		//}
 	}
 	
 	@Override

@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
 
+import javax.persistence.Embedded;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -16,14 +19,18 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.cyk.system.root.business.api.Crud;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.input.InputDate;
 import org.cyk.ui.api.editor.input.InputNumber;
 import org.cyk.ui.api.editor.input.InputSelectOne;
 import org.cyk.ui.api.editor.input.InputText;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelect;
+import org.cyk.ui.api.editor.output.OutputSeparator;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
+import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @Log
@@ -33,11 +40,21 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 	
 	private Object objectModel;
 	private Collection<Class<?>> groups = new LinkedHashSet<>();
-	private Collection<UIInputComponent<?>> inputComponents;
+	private Collection<UIInputOutputComponent<?>> components;
 	
-	public UIInputFieldDiscoverer run(){
-		inputComponents = new ArrayList<>();
+	public UIInputFieldDiscoverer run(Crud crud){
+		components = new ArrayList<>();
 		build(objectModel);
+		for(UIInputOutputComponent<?> component : components){
+			if(component instanceof UIInputComponent<?>){
+				UIInputComponent<?> input = (UIInputComponent<?>) component;
+				input.setReadOnly(crud==null || Crud.READ.equals(crud) || Crud.DELETE.equals(crud) );
+				if(Boolean.TRUE.equals(input.getReadOnly()))
+					input.setRequired(Boolean.FALSE);
+				else
+					input.setRequired(input.getField().isAnnotationPresent(NotNull.class));
+			}
+		}
 		return this;
 	}
 	
@@ -64,6 +81,11 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 			if(add){
 				
 				if(OneRelationshipInputType.FIELDS.equals(uiFieldInfos.getAnnotation().oneRelationshipInputType())){
+					if(SeparatorAfter.AUTO.equals(uiFieldInfos.getAnnotation().separatorAfter())){
+						if(!field.isAnnotationPresent(Embedded.class))
+							components.add(new OutputSeparator(UIManager.getInstance().textOfClass(field.getType())));
+					}
+					
 					build(commonUtils.readField(objectModel,field, true));
 				}else{
 					
@@ -71,7 +93,7 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 					if(input==null){
 						log.warning("No component can be found for Type "+field.getType()+". It will be ignored");
 					}else{
-						inputComponents.add(input);
+						components.add(input);
 						
 						if(input instanceof UIInputSelect<?, ?>){
 							UIInputSelect<?, ?> inputSelect = (UIInputSelect<?, ?>)input;

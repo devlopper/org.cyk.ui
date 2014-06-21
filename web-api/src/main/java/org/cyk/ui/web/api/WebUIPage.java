@@ -10,5 +10,9 @@ public interface WebUIPage<FORM,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extend
 	public void setFooter(String footer);
 	
 	public String getFooter();
+	
+	Boolean getShowFooter();
+	
+	String getUrl();
 
 }

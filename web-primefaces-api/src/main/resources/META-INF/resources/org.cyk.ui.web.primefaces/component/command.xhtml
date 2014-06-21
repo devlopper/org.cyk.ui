@@ -22,6 +22,9 @@
 			value="#{cc.value.commandButton.value}" 
 			icon="#{cc.value.commandButton.icon}"
 			title="#{cc.value.commandButton.title}">
+			
+			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
+			
 			<!--
 			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.execution.confirmation.question')}" icon="ui-icon-alert" />
 			-->

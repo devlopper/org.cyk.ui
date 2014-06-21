@@ -1,5 +1,6 @@
 package org.cyk.ui.api.editor;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.UICommandable;
@@ -62,10 +63,16 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	
 	void updateValues() throws Exception;
 	
-	EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> createFormData();
+	EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> createEditorInputs();
 	
 	Boolean getRoot();
 	
-	void targetDependentInitialisation();
+	Boolean getShowCommands();
+	
+	void setShowCommands(Boolean aValue);
+	
+	Crud getCrud();
+	
+	void setCrud(Crud crud);
 	
 }

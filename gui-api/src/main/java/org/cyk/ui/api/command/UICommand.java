@@ -24,7 +24,7 @@ public interface UICommand {
 	/**
 	 * The code to be executed on <code>execute()</code> success
 	 */
-	Object onExecuteSucceed();
+	Object onExecuteSucceed(Object object);
 	
 	/**
 	 * The code to be executed on <code>execute()</code> failure
@@ -54,7 +54,7 @@ public interface UICommand {
 	
 	void setAfterFailureMethod(AbstractMethod<Object, Object> method);
 	
-	void setSuccessNotificationMessageMethod(AbstractSucessNotificationMessageMethod<Object> method);
+	void setAfterSuccessNotificationMessageMethod(AbstractMethod<Object, Object> method);
 	
 	
 	/**/

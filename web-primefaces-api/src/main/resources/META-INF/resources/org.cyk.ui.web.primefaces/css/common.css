@@ -15,6 +15,10 @@
 
 .bordernone{border: none !important;}
 
+.ui-datalist-bordernone .ui-widget-content {
+border: none;
+}
+
 .centerContentTitleStyleClass{
 	font-weight: bold;
 }
@@ -180,7 +184,10 @@
 }
 
 /*---------------------------------------------------------- Editor  ------------------------------------------------------------------*/
-
+.cyk-ui-editor-dynamic-input-readonly{
+	font-weight: bold;
+	
+}
 /*---------------------------------------------------------- Table  ------------------------------------------------------------------*/
 .cyk-ui-table-dynamic-selectonemenu{
 	min-width: 150px;

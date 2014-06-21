@@ -71,7 +71,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	    	navigationHelper.addParameter(url, QUERY_PARAMETER_FACES_REDIRECT_NAME, navigationCase.isRedirect());
 	    if(parameters!=null && parameters.length>0){
 	    	for(int i=0;i<parameters.length-1;i=i+2)
-				navigationHelper.addParameter(url, (String) parameters[i], parameters[i+1]);
+	    		if(parameters[i+1]==null)
+	    			;
+	    		else
+	    			navigationHelper.addParameter(url, (String) parameters[i], parameters[i+1]);
 	    }
 	    if(Boolean.TRUE.equals(partial))
 	    	return url.toString();
@@ -119,5 +122,5 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-
+	
 }

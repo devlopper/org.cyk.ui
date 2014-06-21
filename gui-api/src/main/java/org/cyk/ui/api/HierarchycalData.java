@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
@@ -18,7 +17,7 @@ import org.cyk.ui.api.component.UIInputFieldDiscoverer;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter
+@Getter @Setter @Deprecated
 public class HierarchycalData<DATA> extends AbstractBean implements UIWindowPart,Serializable {
 
 	private static final long serialVersionUID = -9086692457789120721L;
@@ -79,12 +78,12 @@ public class HierarchycalData<DATA> extends AbstractBean implements UIWindowPart
 		private static final long serialVersionUID = 6739817055207710222L;
 		@Override
 		protected Object __execute__(Object parameter) {
-			Object[] arrays = (Object[]) parameter;
+			/*Object[] arrays = (Object[]) parameter;
 			if(arrays[0] instanceof DataTreeType){
 				if(((DataTreeType)arrays[0]).getChildren()==null)
 					((DataTreeType)arrays[0]).setChildren(new ArrayList<DataTreeType>());
 				return ((DataTreeType)arrays[0]).getChildren().add((DataTreeType)arrays[1]);
-			}
+			}*/
 			return null;
 		}
 	};

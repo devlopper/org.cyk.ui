@@ -2,6 +2,7 @@ package org.cyk.ui.api.editor;
 
 import java.util.Collection;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIPart;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
@@ -40,7 +41,7 @@ public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart 
 	
 	void group(Class<?>...theGroupsClasses);
 	
-	void build();
+	void build(Crud crud);
 	
 	UIOutputComponent<?> output(UIOutputComponent<?> anIOutput);
 	

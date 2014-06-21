@@ -25,13 +25,13 @@ public class DynamicHierarchyController extends AbstractDynamicBusinessEntityPri
 	
 	private PrimefacesHierarchycalData<DataTreeType> hierarchycalData;
 
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		hierarchycalData=(PrimefacesHierarchycalData<DataTreeType>) hierarchyInstance(businessEntityInfos.getClazz());
-		for(DataTreeType dataTreeType : dataTreeTypeBusiness.findHierarchies())
-			hierarchycalData.getData().add(dataTreeType);
+		//hierarchycalData=(PrimefacesHierarchycalData<DataTreeType>) hierarchyInstance(businessEntityInfos.getClazz());
+		//for(DataTreeType dataTreeType : dataTreeTypeBusiness.findHierarchies())
+		//	hierarchycalData.getData().add(dataTreeType);
 		
 	}
 	

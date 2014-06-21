@@ -12,6 +12,7 @@ import lombok.Getter;
 
 import org.cyk.system.root.business.api.BusinessLayer;
 import org.cyk.system.root.business.api.BusinessManager;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
@@ -33,7 +34,7 @@ public class DeploymentController extends AbstractPrimefacesPage implements Seri
 		title=text("deployment");
 		for(BusinessLayer businessLayer : businessManager.findBusinessLayers())
 			businessLayers.add((AbstractBusinessLayer) businessLayer); 
-		editor = (PrimefacesEditor) editorInstance(new Object());
+		editor = (PrimefacesEditor) editorInstance(new Object(),Crud.READ);
 		editor.getSubmitCommand().setLabel(text("execute"));
 		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -2421175279479434675L;

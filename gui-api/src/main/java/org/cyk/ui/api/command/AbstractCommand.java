@@ -23,7 +23,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Setter protected UIMessageManager messageManager;
 	
 	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
-	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod;
+	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod,afterSuccessNotificationMessageMethod;
 	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
 	@Getter @Setter protected Boolean notifyOnSucceed=Boolean.FALSE;
@@ -41,7 +41,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 				if(executeMethod==null)
 					throw new RuntimeException("No execution method has been provided.");
 				executeMethod.execute(object);
-				return onExecuteSucceed();
+				return onExecuteSucceed(object);
 			} catch (Exception exception) {
 				return failure(exception);
 			}
@@ -50,12 +50,14 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	}
 	
 	@Override
-	public Object onExecuteSucceed() {
+	public Object onExecuteSucceed(Object object) {
 		if(Boolean.TRUE.equals(notifyOnSucceed)){
 			String message = successNotificationMessage();
 			if(StringUtils.isNotEmpty(message))
 				getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
 		}
+		if(afterSuccessNotificationMessageMethod!=null)
+			afterSuccessNotificationMessageMethod.execute(object);
 		return null;
 	}
 	

@@ -9,10 +9,14 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.event.EventBusiness;
+import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
+import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
@@ -24,12 +28,15 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	private static final long serialVersionUID = 7282005324574303823L;
 
 	@Inject @Getter protected GenericBusiness genericBusiness;
+	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
+	@Inject @Getter protected EventBusiness eventBusiness;
 	
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();
 	protected Collection<TABLE> tables = new ArrayList<>();
-	protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
+	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
+	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	@Inject protected MenuManager menuManager;
 	@Getter protected String title = "CYK Systems",contentTitle="Content";
 	
@@ -51,9 +58,12 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		
 		for(TABLE table : tables)
 			table.targetDependentInitialisation();
-		
+		/*
 		for(HierarchycalData<?> hierarchicalData : hierarchicalDatas)
 			hierarchicalData.targetDependentInitialisation();
+		*/
+		for(EventCalendar eventCalendar : eventCalendars)
+			eventCalendar.targetDependentInitialisation();
 	}
 	
 	public Boolean getShowContextualMenu(){
@@ -64,11 +74,16 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		return contentMenu!=null;
 	}
 	
+	public Boolean getShowMainMenu(){
+		return Boolean.TRUE;
+	}
+	
 	@Override
-	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel) {
+	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
 		Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
 		editor.setWindow(this);
 		((AbstractBean)editor).postConstruct();
+		editor.setCrud(crud);
 		editor.build(anObjectModel);
 		editors.add(editor);
 		return editor;
@@ -90,6 +105,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		return (TABLE) table;
 	}
 	
+	/*
 	@Override
 	public <DATA> HierarchycalData<DATA> hierarchyInstance(Class<DATA> aNodeClass) {
 		HierarchycalData<DATA> hierarchicalData = hierarchyInstance();
@@ -99,6 +115,16 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		hierarchicalData.getAddNodeCommand().getCommand().setMessageManager(getMessageManager());
 		hierarchicalDatas.add(hierarchicalData);
 		return hierarchicalData;
+	}*/
+	
+	@Override
+	public EventCalendar eventCalendarInstance(Class<?> aClass) {
+		EventCalendar eventCalendar = eventCalendarInstance();
+		eventCalendar.setWindow(this);
+		((AbstractBean)eventCalendar).postConstruct();
+		eventCalendar.getAddEventCommand().getCommand().setMessageManager(getMessageManager());
+		eventCalendars.add(eventCalendar);
+		return eventCalendar;
 	}
 	
 	public void onMessageDialogBoxClosed(){

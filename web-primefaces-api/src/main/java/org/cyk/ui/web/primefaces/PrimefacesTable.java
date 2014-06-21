@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.model.table.HierarchyNode;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
@@ -27,6 +28,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	@Getter private MenuModel menuModel;
 	@Getter @Setter private RowEditEventMethod onRowEditMethod,onRowEditInitMethod,onRowEditCancelMethod;
 	@Getter private Command primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
+	@Getter private PrimefacesTree primefacesTree;
 	
 	@Override
 	protected void afterInitialisation() {
@@ -40,12 +42,10 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 		rowNavigateEventMethod = new RowNavigateEventMethod() {
 			private static final long serialVersionUID = -3334241830659069117L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			protected void onEvent(TableRow<?> row) {
-				WebNavigationManager.getInstance().redirectTo("dynamictable",new Object[]{
-						WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(row.getData().getClass()),
-						WebManager.getInstance().getRequestParameterIdentifiable(), ((AbstractIdentifiable)row.getData()).getIdentifier()
-				});
+				redirectTo((DATA) row.getData());
 			}
 		};
 		
@@ -71,8 +71,32 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	public void targetDependentInitialisation() {
 		Field field = commonUtils.getField(getWindow(), this);
 		menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
-	}
+		if(Boolean.TRUE.equals(getShowHierarchy())){
+			HierarchyNode hierarchyNode = new HierarchyNode(null);
+			hierarchyNode.setLabel(getTitle());
+			primefacesTree = new PrimefacesTree(hierarchyNode);
+			for(DATA d : hierarchyData)
+				primefacesTree.populate(d);	
+			primefacesTree.setOnNodeSelect(new AbstractMethod<Object, Object>() {
+				private static final long serialVersionUID = -9071786035119019765L;
+				@SuppressWarnings("unchecked")
+				@Override
+				protected Object __execute__(Object parameter) {
+					redirectTo((DATA) parameter);
+					return null;
+				}
+			});
+		}
 		
+	}
+	
+	private void redirectTo(DATA object){
+		WebNavigationManager.getInstance().redirectTo("dynamictable",new Object[]{
+				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(rowDataClass),
+				WebManager.getInstance().getRequestParameterIdentifiable(), object==null?null:((AbstractIdentifiable)object).getIdentifier()
+		});
+	}
+
 	public void onRowEditInit(RowEditEvent rowEditEvent){
 		if(onRowEditInitMethod!=null)
 			onRowEditInitMethod.__execute__(rowEditEvent);
@@ -98,12 +122,14 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 		return r;
 	}
 	
-	/**/
+	/**/  
 	
 	public static abstract class RowEditEventMethod extends AbstractMethod<Object, RowEditEvent>{
 		private static final long serialVersionUID = -145475519122234694L;
 		@Override protected final Object __execute__(RowEditEvent rowEditEvent) {onEvent(rowEditEvent);return null;}
 		protected abstract void onEvent(RowEditEvent rowEditEvent);
 	}
+	
+	
 		
 }

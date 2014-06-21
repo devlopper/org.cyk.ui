@@ -2,12 +2,18 @@ package org.cyk.ui.api.model.table;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
+import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIWindow;
@@ -17,10 +23,11 @@ import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.component.UIFieldInfos;
 import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.utility.common.AbstractMethod;
@@ -45,6 +52,8 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected RowNavigateEventMethod rowNavigateEventMethod;
 	protected DATA dataAdding;
 	protected Integer lastEditedRowIndex;
+	protected Boolean showHierarchy,showOpenCommand;
+	protected List<DATA> hierarchyData = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -57,6 +66,9 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				if(dataAdding==null)
 					try {
 						addRow(dataAdding = (DATA) rowDataClass.newInstance());
+						if(isDataTreeType() && master!=null ){
+							((DataTreeType)dataAdding).setNode(new NestedSetNode(((DataTreeType)master).getNode().getSet(), ((DataTreeType)master).getNode()));
+						}
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
@@ -74,14 +86,13 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				return null;
 			}
 		});
+		openRowCommand.setShowLabel(Boolean.FALSE);
 		
 		saveRowCommand = createCommand(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4758954266295164539L;
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Object __execute__(Object object) {
-				//throw new BusinessException("This is a business exception");
-				//throw new RuntimeException("This is a runtime exception");
 				lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
 				getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
 				dataAdding = null;
@@ -117,6 +128,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				return null;
 			}
 		});
+		deleteRowCommand.setShowLabel(Boolean.FALSE);
 		
 	}
 	
@@ -138,8 +150,9 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	public boolean addRow(TableRow<DATA> row) {
 		discoverer.setObjectModel(row.getData());
 		row.getInputComponents().clear();
-		for(UIInputComponent<?> inputComponent : discoverer.run().getInputComponents()){
-			row.getInputComponents().add(inputComponent);
+		for(UIInputOutputComponent<?> component : discoverer.run(Crud.UPDATE).getComponents()){
+			if(component instanceof UIInputComponent<?>)
+				row.getInputComponents().add((UIInputComponent<?>) component);
 		}
 		return super.addRow(row);
 		
@@ -176,10 +189,22 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		return getWindow().getUiManager().getLanguageBusiness().findText(id);
 	}
 	
+	protected Boolean isDataTreeType(){
+		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);
+	}
+	
 	public String getTitle(){
 		if(title==null)
-			title = UIManager.getInstance().text(rowDataClass);
+			title = UIManager.getInstance().textOfClass(rowDataClass);
 		return title;
+	}
+	
+	public Boolean getShowHierarchy(){
+		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);
+	}
+	
+	public Boolean getShowOpenCommand(){
+		return getShowHierarchy();
 	}
 	
 	public void targetDependentInitialisation(){}

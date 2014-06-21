@@ -33,7 +33,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	private static final long serialVersionUID = 6386648827377414199L;
 	
 	static {
-		UIManager.getInstance().setComponentCreateMethod(new UIManager.ComponentCreateMethod() {
+		UIManager.componentCreateMethod = new UIManager.ComponentCreateMethod() {
 			private static final long serialVersionUID = -6005484639897008871L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -69,7 +69,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 				}
 				return component;
 			}
-		});
+		};
 	}
 	
 	protected WebEditorInputs<?, ?, ?, ?> editorInputs;
@@ -87,6 +87,13 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		description = input.getDescription();
 		requiredMessage = input.getRequiredMessage();
 		readOnly = input.getReadOnly();
+		//System.out.println(editorInputs.getEditor().getCrud());
+		/*
+		if(editorInputs==null || editorInputs.getEditor().getCrud()==null || Crud.CREATE.equals(editorInputs.getEditor().getCrud()) || Crud.UPDATE.equals(editorInputs.getEditor().getCrud()))
+			required = input.getRequired();
+		else
+			required = Boolean.FALSE;
+			*/
 		required = input.getRequired();
 		field = input.getField();
 		fieldType = input.getFieldType();
@@ -96,12 +103,8 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		this.editorInputs = editorInputs;
 		readOnlyValue = input.getReadOnlyValue();
 		this.validationGroupClass = input.getValidationGroupClass();
+		readOnlyValueCascadeStyleSheet.addClass("cyk-ui-editor-dynamic-input-readonly");
 	}
-	/*
-	public String getReadOnlyValue(){
-		Object value = commonUtils.readField(object, field, false);
-		return UIManager.getInstance() toString(value);
-	}*/
 	
 	@SuppressWarnings("unchecked")
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
@@ -115,7 +118,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	@Override
 	public void updateValue() throws Exception {
 		FieldUtils.writeField(field, object, value, true);
-		readOnlyValue=AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(value);
+		readOnlyValue=AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
 	}
 
 	@Override

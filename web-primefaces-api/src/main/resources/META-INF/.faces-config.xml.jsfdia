@@ -17,6 +17,9 @@
     NAME="output3" PATH="/__management__/deployment.xhtml"
     TARGET="rules:#__management__#deployment.xhtml"
     TITLE="deploymentmanagement" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="toolscalendar::#__tools__#calendar.xhtml"
+    NAME="output4" PATH="/__tools__/calendar.xhtml"
+    TARGET="rules:#__tools__#calendar.xhtml" TITLE="toolscalendar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#__dynamic__#editor.xhtml"
@@ -27,4 +30,6 @@
   PATH="/__dynamic__/table.xhtml" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#__dynamic__#hierarchy.xhtml"
   PATH="/__dynamic__/hierarchy.xhtml" SHAPE="272,433,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#__tools__#calendar.xhtml"
+  PATH="/__tools__/calendar.xhtml" SHAPE="304,609,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

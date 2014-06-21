@@ -2,9 +2,11 @@ package org.cyk.ui.api.editor.input;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.logging.Level;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +30,20 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		private static final long serialVersionUID = -2440628467044855958L;
 		@Override
 		protected String __execute__(Object object) {
-			return object==null?"":object.toString();
+			Object[] arrays = (Object[]) object;
+			Field field = (Field) arrays[0]; 
+			Object value = arrays[1];
+			if(value instanceof Date){
+				Temporal temporal = field.getAnnotation(Temporal.class);
+				if(temporal==null || TemporalType.TIMESTAMP.equals(temporal.value()))
+					return UIManager.getInstance().formatDate((Date) value,Boolean.TRUE);
+				else if(TemporalType.DATE.equals(temporal.value()))
+					return UIManager.getInstance().formatDate((Date) value,Boolean.FALSE);
+				else if(TemporalType.TIME.equals(temporal.value()))
+					return UIManager.getInstance().formatTime((Date) value);
+				return UIManager.getInstance().formatDate((Date) value,Boolean.FALSE);
+			}
+			return value==null?"":value.toString();
 		}
 	};
 	
@@ -67,17 +82,10 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		this.annotation = annotation;
 		this.object=anObject;
 		this.fieldType=fieldType;
-		/*
-		String _label = StringUtils.isEmpty(annotation.label())?field.getName():annotation.label();
-		switch(annotation.labelValueType()){
-		case I18N_ID:this.label=UIManager.getInstance().text(_label); break;
-		case I18N_VALUE:this.label=_label; break;
-		case VALUE:this.label=_label; break;
-		}
-		*/
+		
 		this.label = COMPUTE_LABEL_VALUE_METHOD.execute(new Object[]{field.getName(),annotation});
 		this.description = annotation.description();
-		required = field.isAnnotationPresent(NotNull.class);
+		//required = field.isAnnotationPresent(NotNull.class);
 		requiredMessage =label+" : "+UIManager.getInstance().text("editor.field.value.required");
 		
 		try {
@@ -85,7 +93,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString(), e);
 		}
-		readOnlyValue = COMPUTE_READ_ONLY_VALUE_METHOD.execute(value);
+		readOnlyValue = COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
 	}
 	
 	@Override

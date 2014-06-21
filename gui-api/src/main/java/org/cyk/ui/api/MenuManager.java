@@ -1,6 +1,10 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,8 +47,15 @@ public class MenuManager extends AbstractBean implements Serializable {
 	private void application(UIMenu aMenu){
 		//aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
 		UICommandable commandable,p;
+		
+		aMenu.getCommandables().add(commandable = commandable("command.tools", IconType.THING_TOOLS));
+		commandable.getChildren().add( p = commandable("command.tools.calendar", null));
+		p.setViewType(ViewType.TOOLS_CALENDAR);
+		
 		aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
-		for(BusinessEntityInfos businessEntityInfos : businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION)){
+		List<BusinessEntityInfos> list = new ArrayList<>(businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION));
+		Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
+		for(BusinessEntityInfos businessEntityInfos : list){
 			commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 			p.setBusinessEntityInfos(businessEntityInfos);
 			if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
@@ -77,6 +88,15 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	private UICommandable commandable(String labelId,IconType iconType){
 		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
+	}
+	
+	private class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
+
+		@Override
+		public int compare(BusinessEntityInfos o1, BusinessEntityInfos o2) {
+			return o1.getClazz().getName().compareTo(o2.getClazz().getName());
+		}
+		
 	}
 	
 }

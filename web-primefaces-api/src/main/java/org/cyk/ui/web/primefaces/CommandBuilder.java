@@ -65,6 +65,7 @@ public class CommandBuilder implements Serializable {
 					case DYNAMIC_FORM_TABLE:menuItem.setOutcome("dynamictable");break;
 					case DYNAMIC_FORM_HIERARCHY:menuItem.setOutcome("dynamichierarchy");break;
 					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome("deploymentmanagement");break;
+					case TOOLS_CALENDAR:menuItem.setOutcome("toolscalendar");break;
 					default:break;
 					}
 					if(aCommandable.getBusinessEntityInfos()!=null)
@@ -112,7 +113,7 @@ public class CommandBuilder implements Serializable {
 		switch(iconType){
 		case ACTION_ADD:return "ui-icon-plus";
 		case ACTION_CANCEL:return "ui-icon-close";
-		case ACTION_OPEN:return "ui-icon-folder";
+		case ACTION_OPEN:return "ui-icon-folder-open";
 		case ACTION_REMOVE:return "ui-icon-trash";
 		case ACTION_ADMINISTRATE:return "ui-icon-gear";
 		case ACTION_HELP:return "ui-icon-help";
