@@ -22,6 +22,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.api.editor.input.UIInputText;
@@ -211,8 +212,16 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	
-	public static abstract class ComponentCreateMethod extends AbstractMethod<UIInputComponent<?>, UIInputComponent<?>> {
+	public static abstract class ComponentCreateMethod extends AbstractMethod<UIInputComponent<?>, Object[]> {
 		private static final long serialVersionUID = 4855972832374849032L;
+		
+		@Override
+		protected final UIInputComponent<?> __execute__(Object[] parameter) {
+			return component((EditorInputs<?, ?, ?, ?>)parameter[0], (UIInputComponent<?>)parameter[1]);
+		}
+		
+		protected abstract UIInputComponent<?> component(EditorInputs<?, ?, ?, ?> anEditorInputs,UIInputComponent<?> aComponent);
+		
 	}
 	
 	

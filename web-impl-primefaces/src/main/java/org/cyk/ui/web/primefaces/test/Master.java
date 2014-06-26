@@ -18,6 +18,7 @@ public class Master {
 	@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Master coments")
 	private String textArea;
 	
+	@UIField
 	private Collection<Details> details = new ArrayList<>();
 	
 }

@@ -3,7 +3,7 @@ package org.cyk.ui.web.api;
 import java.io.Serializable;
 
 import org.cyk.ui.api.component.AbstractInputOutputComponent;
-import org.cyk.ui.web.api.form.input.WebUIIComponent;
+import org.cyk.ui.web.api.editor.input.WebUIIComponent;
 
 import lombok.Getter;
 

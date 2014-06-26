@@ -3,7 +3,7 @@ package org.cyk.ui.web.primefaces;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.output.UIOutputLabel;
 import org.cyk.ui.api.editor.output.UIOutputSeparator;
-import org.cyk.ui.web.api.form.AbstractWebEditorInputs;
+import org.cyk.ui.web.api.editor.AbstractWebEditorInputs;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;

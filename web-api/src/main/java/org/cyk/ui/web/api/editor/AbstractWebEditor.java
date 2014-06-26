@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form;
+package org.cyk.ui.web.api.editor;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.cyk.ui.api.editor.AbstractEditor;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.web.api.ObjectConverter;
-import org.cyk.ui.web.api.form.input.WebUIInputSelect;
+import org.cyk.ui.web.api.editor.input.WebUIInputSelect;
 
 public abstract class AbstractWebEditor<FORM,OUTPUTLABEL,INPUT> extends AbstractEditor<FORM,OUTPUTLABEL,INPUT,SelectItem> implements WebEditor<FORM,OUTPUTLABEL,INPUT> , Serializable {
 

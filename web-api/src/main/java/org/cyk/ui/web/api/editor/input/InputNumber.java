@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -10,7 +10,7 @@ import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.cyk.ui.api.editor.input.UIInputNumber;
-import org.cyk.ui.web.api.form.WebEditorInputs;
+import org.cyk.ui.web.api.editor.WebEditorInputs;
 
 @Getter @Log
 public class InputNumber extends AbstractWebInputComponent<Number> implements WebUIInputNumber,Serializable  {

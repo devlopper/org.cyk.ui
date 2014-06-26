@@ -13,7 +13,7 @@ import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIFieldDiscoverer;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -26,7 +26,7 @@ public class HierarchycalData<DATA> extends AbstractBean implements UIWindowPart
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;
 	protected Boolean editable=Boolean.FALSE;
-	protected UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	
 	protected DATA dataAdding;
 	protected Integer lastEditedNodeIndex;

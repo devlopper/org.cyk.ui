@@ -8,8 +8,8 @@ import javax.inject.Singleton;
 import lombok.Getter;
 
 import org.cyk.ui.api.editor.input.UIInputComponent;
-import org.cyk.ui.web.api.form.input.InputSelectOne;
-import org.cyk.ui.web.api.form.input.InputText;
+import org.cyk.ui.web.api.editor.input.InputSelectOne;
+import org.cyk.ui.web.api.editor.input.InputText;
 
 @Singleton @Named @Getter
 public class PrimefacesConstants implements Serializable {

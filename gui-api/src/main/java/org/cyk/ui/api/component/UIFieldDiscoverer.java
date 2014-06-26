@@ -22,6 +22,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.input.InputDate;
+import org.cyk.ui.api.editor.input.InputMany;
 import org.cyk.ui.api.editor.input.InputNumber;
 import org.cyk.ui.api.editor.input.InputSelectOne;
 import org.cyk.ui.api.editor.input.InputText;
@@ -34,7 +35,7 @@ import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @Log
-public class UIInputFieldDiscoverer extends AbstractBean implements Serializable {
+public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -1736034319757227724L;
 	
@@ -42,7 +43,7 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 	private Collection<Class<?>> groups = new LinkedHashSet<>();
 	private Collection<UIInputOutputComponent<?>> components;
 	
-	public UIInputFieldDiscoverer run(Crud crud){
+	public UIFieldDiscoverer run(Crud crud){
 		components = new ArrayList<>();
 		build(objectModel);
 		for(UIInputOutputComponent<?> component : components){
@@ -125,8 +126,9 @@ public class UIInputFieldDiscoverer extends AbstractBean implements Serializable
 			component = new InputNumber(aField,fieldType,annotation, anObject);
 		else if(aField.getType().isEnum())
 			component = new InputSelectOne(aField,fieldType,annotation, anObject);
-		
-		else {
+		else if(Collection.class.isAssignableFrom(aField.getType())){
+			component = new InputMany(aField, fieldType, annotation, anObject);
+		}else {
 			component = new InputSelectOne(aField,fieldType,annotation, anObject);
 		}
 		

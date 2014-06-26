@@ -26,7 +26,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.component.UIFieldInfos;
-import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIFieldDiscoverer;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
@@ -45,7 +45,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;
 	protected Boolean editable=Boolean.FALSE;
-	protected UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	protected UICommandable addRowCommand,deleteRowCommand,openRowCommand;
 	protected UICommand saveRowCommand,cancelRowCommand;
 	protected RowSaveEventMethod rowSaveEventMethod;
@@ -134,7 +134,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	
 	@Override
 	protected UIField uiField(Field field, Class<DATA> clazz) {
-		UIFieldInfos uiFieldInfos = UIInputFieldDiscoverer.uiFieldOf(field,clazz);
+		UIFieldInfos uiFieldInfos = UIFieldDiscoverer.uiFieldOf(field,clazz);
 		return uiFieldInfos==null?null:uiFieldInfos.getAnnotation();
 	}
 		
@@ -142,7 +142,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	public boolean addColumn(TableColumn column) {
 		Boolean r = super.addColumn(column);
 		column.setTitle(AbstractInputComponent.COMPUTE_LABEL_VALUE_METHOD.execute(new Object[]{column.getFieldName(),
-				UIInputFieldDiscoverer.uiFieldOf(FieldUtils.getField(rowDataClass, column.getFieldName(), true),rowDataClass).getAnnotation()}));
+				UIFieldDiscoverer.uiFieldOf(FieldUtils.getField(rowDataClass, column.getFieldName(), true),rowDataClass).getAnnotation()}));
 		return r;
 	}
 	
@@ -162,7 +162,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	public boolean addCell(TableRow<DATA> row, TableColumn column, DefaultCell cell) {
 		for(UIInputComponent<?> input : row.getInputComponents())
 			if(input.getField().getName().equals(column.getFieldName())){
-				((TableCell)cell).setInputComponent(AbstractInputComponent.create(input));
+				((TableCell)cell).setInputComponent(AbstractInputComponent.create(null,input));
 				break;
 			}
 		return super.addCell(row, column, cell);

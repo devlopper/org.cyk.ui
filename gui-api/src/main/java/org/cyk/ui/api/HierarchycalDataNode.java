@@ -7,7 +7,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIFieldDiscoverer;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 
 @Getter @Setter @Deprecated
@@ -21,7 +21,7 @@ public class HierarchycalDataNode implements Serializable {
 	public HierarchycalDataNode(Object data) {
 		super();
 		this.data = data;
-		UIInputFieldDiscoverer fieldDiscoverer = new UIInputFieldDiscoverer();
+		UIFieldDiscoverer fieldDiscoverer = new UIFieldDiscoverer();
 		fieldDiscoverer.setObjectModel(data);
 		//for(UIInputComponent<?> input : fieldDiscoverer.run().getInputComponents()){
 			//input.setReadOnly(true);

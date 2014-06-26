@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.ClassUtils;
 import org.cyk.ui.api.editor.input.ISelectItem;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
-import org.cyk.ui.web.api.form.WebEditor;
-import org.cyk.ui.web.api.form.WebEditorInputs;
+import org.cyk.ui.web.api.editor.WebEditor;
+import org.cyk.ui.web.api.editor.WebEditorInputs;
 import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Log

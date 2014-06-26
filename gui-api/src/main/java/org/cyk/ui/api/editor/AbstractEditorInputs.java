@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.api.component.UIInputFieldDiscoverer;
+import org.cyk.ui.api.component.UIFieldDiscoverer;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
@@ -44,7 +44,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
 	@Getter protected Collection<UIInputOutputComponent<?>> components = new LinkedHashSet<>();
 	
-	protected UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	
 	public AbstractEditorInputs() {
 		layout.setOnAddRow(new AbstractMethod<Object, Object>() {
@@ -87,7 +87,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 			createComponent(component);
 		}else if(component instanceof UIInputComponent<?>){
 			if(currentLabel!=null){
-				UIInputComponent<?> iinput = AbstractInputComponent.create((UIInputComponent<?>) component);
+				UIInputComponent<?> iinput = AbstractInputComponent.create(this,(UIInputComponent<?>) component);
 				if(iinput==null){
 					log.warning("No input component implementation can be found for Type "+component.getFamily()+". It will be ignored");
 					return;

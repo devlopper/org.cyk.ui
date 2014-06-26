@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

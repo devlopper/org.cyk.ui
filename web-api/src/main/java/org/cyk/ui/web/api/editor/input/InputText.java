@@ -1,11 +1,11 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import java.io.Serializable;
 
 import lombok.Getter;
 
 import org.cyk.ui.api.editor.input.UIInputText;
-import org.cyk.ui.web.api.form.WebEditorInputs;
+import org.cyk.ui.web.api.editor.WebEditorInputs;
 
 @Getter
 public class InputText extends AbstractWebInputComponent<String> implements WebUIInputText,UIInputText, Serializable  {

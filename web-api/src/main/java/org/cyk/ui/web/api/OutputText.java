@@ -3,7 +3,7 @@ package org.cyk.ui.web.api;
 import java.io.Serializable;
 
 import org.cyk.ui.api.component.output.UIOutputText;
-import org.cyk.ui.web.api.form.input.WebUIOutputText;
+import org.cyk.ui.web.api.editor.input.WebUIOutputText;
 
 public class OutputText extends AbstractWebOutputComponent<String> implements WebUIOutputText,Serializable  {
 

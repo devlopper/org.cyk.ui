@@ -10,7 +10,7 @@ import lombok.Getter;
 
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.editor.EditorInputs;
-import org.cyk.ui.web.api.form.AbstractWebEditor;
+import org.cyk.ui.web.api.editor.AbstractWebEditor;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;

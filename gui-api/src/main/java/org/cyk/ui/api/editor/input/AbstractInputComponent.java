@@ -101,8 +101,8 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		throw new IllegalArgumentException("Must not call this method on this object");
 	}
 	
-	public static UIInputComponent<?> create(UIInputComponent<?> anInputComponent){
-		return UIManager.getInstance().getComponentCreateMethod().execute(anInputComponent);
+	public static UIInputComponent<?> create(EditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<?> anInputComponent){
+		return UIManager.getInstance().getComponentCreateMethod().execute(new Object[]{editorInputs,anInputComponent});
 	}
 	
 	/**/

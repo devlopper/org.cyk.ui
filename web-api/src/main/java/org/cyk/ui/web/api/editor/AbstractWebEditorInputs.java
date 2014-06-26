@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form;
+package org.cyk.ui.web.api.editor;
 
 import java.io.Serializable;
 
@@ -11,8 +11,8 @@ import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.component.output.UIOutputText;
 import org.cyk.ui.api.editor.AbstractEditorInputs;
 import org.cyk.ui.web.api.OutputText;
-import org.cyk.ui.web.api.form.input.WebUIOutputComponent;
-import org.cyk.ui.web.api.form.input.WebUIOutputText;
+import org.cyk.ui.web.api.editor.input.WebUIOutputComponent;
+import org.cyk.ui.web.api.editor.input.WebUIOutputText;
 
 public abstract class AbstractWebEditorInputs<FORM,OUTPUTLABEL,INPUT> extends AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SelectItem> implements WebEditorInputs<FORM,OUTPUTLABEL,INPUT,SelectItem> , Serializable {
 

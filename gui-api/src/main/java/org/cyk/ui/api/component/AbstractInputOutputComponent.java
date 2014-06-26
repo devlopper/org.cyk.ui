@@ -24,9 +24,8 @@ public abstract class AbstractInputOutputComponent<VALUE_TYPE> extends AbstractB
 	@Getter @Setter protected VALUE_TYPE value;
 	protected UIManager uiManager;
 	
-	@SuppressWarnings("unchecked")
 	public AbstractInputOutputComponent() {
-		constructor((Class<VALUE_TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0], null);
+		constructor(/*(Class<VALUE_TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0]*/ valueTypeClass(), null);
 	}
 	
 	public AbstractInputOutputComponent(Class<VALUE_TYPE> aClass,VALUE_TYPE aValue) {
@@ -38,6 +37,11 @@ public abstract class AbstractInputOutputComponent<VALUE_TYPE> extends AbstractB
 		this.value=aValue;
 		id = System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(2);
 		uiManager = getReference(CDI.current().getBeanManager(),UIManager.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Class<VALUE_TYPE> valueTypeClass(){
+		return (Class<VALUE_TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
 	@Override

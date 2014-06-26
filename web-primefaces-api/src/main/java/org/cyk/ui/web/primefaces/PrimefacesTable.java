@@ -15,7 +15,7 @@ import org.cyk.ui.api.model.table.TableColumn;
 import org.cyk.ui.api.model.table.TableRow;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.api.form.input.WebUIInputSelectOne;
+import org.cyk.ui.web.api.editor.input.WebUIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.model.table.DefaultCell;
 import org.primefaces.event.RowEditEvent;

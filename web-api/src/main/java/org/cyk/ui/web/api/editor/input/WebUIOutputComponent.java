@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import org.cyk.ui.api.component.output.UIOutputComponent;
 

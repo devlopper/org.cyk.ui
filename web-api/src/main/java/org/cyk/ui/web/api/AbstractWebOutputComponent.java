@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 
 import org.cyk.ui.api.component.output.UIOutputComponent;
-import org.cyk.ui.web.api.form.input.WebUIOutputComponent;
+import org.cyk.ui.web.api.editor.input.WebUIOutputComponent;
 
 @Getter
 public class AbstractWebOutputComponent<VALUE_TYPE> extends AbstractWebInputOutputComponent<VALUE_TYPE> implements Serializable, WebUIOutputComponent<VALUE_TYPE> {

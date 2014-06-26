@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -16,15 +16,17 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.ISelectItem;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputDate;
+import org.cyk.ui.api.editor.input.UIInputMany;
 import org.cyk.ui.api.editor.input.UIInputNumber;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.ui.web.api.AbstractWebInputOutputComponent;
-import org.cyk.ui.web.api.form.WebEditorInputs;
+import org.cyk.ui.web.api.editor.WebEditorInputs;
 import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Setter
@@ -37,16 +39,19 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 			private static final long serialVersionUID = -6005484639897008871L;
 			@SuppressWarnings("unchecked")
 			@Override
-			protected UIInputComponent<?> __execute__(UIInputComponent<?> aComponent) {
+			protected UIInputComponent<?> component(EditorInputs<?, ?, ?, ?> anEditorInputs,UIInputComponent<?> aComponent) {
 				WebUIInputComponent<?> component = null;
+				WebEditorInputs<?, ?, ?, ?> editorInputs = (WebEditorInputs<?, ?, ?, ?>) anEditorInputs;
 				if(aComponent instanceof UIInputText)
-					component = new InputText(null,(UIInputText) aComponent);
+					component = new InputText(editorInputs,(UIInputText) aComponent);
 				else if(aComponent instanceof UIInputDate)
-					component = new InputDate(null,(UIInputDate) aComponent);
+					component = new InputDate(editorInputs,(UIInputDate) aComponent);
 				else if(aComponent instanceof UIInputNumber)
-					component = new InputNumber(null,(UIInputNumber) aComponent);
-				else if(aComponent instanceof UIInputSelectOne<?,?>){
-					component = new InputSelectOne<Object>(null,(UIInputSelectOne<Object, ISelectItem>) aComponent);
+					component = new InputNumber(editorInputs,(UIInputNumber) aComponent);
+				else if(aComponent instanceof UIInputMany){
+					component = new InputMany(editorInputs, (UIInputMany) aComponent);
+				}else if(aComponent instanceof UIInputSelectOne<?,?>){
+					component = new InputSelectOne<Object>(editorInputs,(UIInputSelectOne<Object, ISelectItem>) aComponent);
 					WebUIInputSelectOne<Object,Object> inputSelectOne = (WebUIInputSelectOne<Object, Object>) component;
 					if(inputSelectOne.isSelectItemForeign() && (inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty())){
 						Collection<Object> datas = (Collection<Object>) UIManager.getInstance().getCollectionLoadMethod().execute((Class<Object>) inputSelectOne.getFieldType());

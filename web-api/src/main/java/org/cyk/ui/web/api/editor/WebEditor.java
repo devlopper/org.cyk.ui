@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form;
+package org.cyk.ui.web.api.editor;
 
 import javax.faces.model.SelectItem;
 

@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.form.input;
+package org.cyk.ui.web.api.editor.input;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.Locale;
 import lombok.Getter;
 
 import org.cyk.ui.api.editor.input.UIInputDate;
-import org.cyk.ui.web.api.form.WebEditorInputs;
+import org.cyk.ui.web.api.editor.WebEditorInputs;
 
 @Getter
 public class InputDate extends AbstractWebInputComponent<Date> implements WebUIInputDate,Serializable  {
