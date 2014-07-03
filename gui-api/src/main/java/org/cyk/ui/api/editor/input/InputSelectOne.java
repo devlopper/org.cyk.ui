@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.ClassUtils;
+import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.UIField;
 
 import lombok.Getter;
@@ -23,12 +24,13 @@ public class InputSelectOne extends AbstractInputComponent<Object> implements Se
 	public InputSelectOne(Field aField,Class<?> fieldType,UIField annotation,Object anObject) {
 		super(aField,fieldType,annotation,anObject);
 		if(isBoolean()){
-			items.add(new DefaultSelectItem("OUI",Boolean.TRUE));
-			items.add(new DefaultSelectItem("NON",Boolean.FALSE));
+			items.add(new DefaultSelectItem(UIManager.getInstance().text("yes"),Boolean.TRUE));
+			items.add(new DefaultSelectItem(UIManager.getInstance().text("no"),Boolean.FALSE));
 		}else if(isEnum()){
 			for(Object value : aField.getType().getEnumConstants())
-				items.add(new DefaultSelectItem(value.toString(),value));
+				items.add(new DefaultSelectItem(UIManager.getInstance().text(value.toString()),value));
 		}
+		
 	}
 	
 	@Override
@@ -48,7 +50,7 @@ public class InputSelectOne extends AbstractInputComponent<Object> implements Se
 	
 	@Override
 	public Boolean isSelectItemEditable() {
-		return !isBoolean() && !isEnum();
+		return !isBoolean() && !isEnum() && !isSelectItemForeign();
 	}
 	
 	@Override

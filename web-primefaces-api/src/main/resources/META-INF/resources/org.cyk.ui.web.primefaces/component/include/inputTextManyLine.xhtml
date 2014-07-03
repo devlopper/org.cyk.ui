@@ -6,7 +6,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <body>
 	<ui:composition>
 		
@@ -16,7 +17,7 @@
 			<ui:define name="input">
 				<p:inputTextarea id="inputTextArea" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
 					required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}" rendered="#{not data.readOnly}" 
-					cols="#{data.columnCount}" rows="#{data.rowCount}">
+					cols="#{data.columnCount}" rows="#{data.rowCount}" pt:placeholder="#{data.label}">
 					<f:attribute name="fieldId" value="#{data.id}" />
 					<f:validateBean validationGroups="#{data.validationGroupClass}" />
 				</p:inputTextarea>			

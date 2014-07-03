@@ -7,9 +7,11 @@ import javax.inject.Inject;
 
 import lombok.Getter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
+import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -44,8 +46,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass) {
-		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass);
+	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
+		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass,usedFor,crud);
 	}
 	/*
 	@Override

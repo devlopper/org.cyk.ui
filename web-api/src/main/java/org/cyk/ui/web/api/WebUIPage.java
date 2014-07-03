@@ -14,5 +14,7 @@ public interface WebUIPage<FORM,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extend
 	Boolean getShowFooter();
 	
 	String getUrl();
+	
+	String getOnDocumentReadyJavaScript();
 
 }

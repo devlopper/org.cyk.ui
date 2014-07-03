@@ -16,19 +16,29 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.command.DefaultCommand;
+import org.cyk.ui.api.command.DefaultCommandable;
+import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.EventListener;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputComponent;
+import org.cyk.ui.api.editor.input.UIInputNumber;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.annotation.UIField.TextValueType;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
@@ -138,6 +148,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return text(businessEntityInfos.getUiLabelId());
 	}
 	
+	public String uiLabelIdOfClass(Class<?> aClass){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
+		if(businessEntityInfos==null)
+			return "?UNKNOWN_UI_ID-"+aClass.getSimpleName()+"?";
+		return businessEntityInfos.getUiLabelId();
+	}
+	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
 		for(BusinessEntityInfos infos : theClasses){
 			BusinessEntityInfos clazz = entitiesRequestParameterIdMap.get(infos.getIdentifier());
@@ -166,7 +183,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
-	private BusinessEntityInfos businessEntityInfos(Class<?> aClass){
+	public BusinessEntityInfos businessEntityInfos(Class<?> aClass){
 		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
 			if(entry.getValue().getClazz().equals(aClass))
 				return entry.getValue();
@@ -186,6 +203,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return inputComponent instanceof UIInputSelectOne;
 	}
 	
+	public Boolean isInputNumber(UIInputComponent<?> inputComponent){
+		return inputComponent instanceof UIInputNumber;
+	}
+	
 	/**/
 	
 	public String formatDate(Date date,Boolean dateTime){
@@ -194,6 +215,35 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public String formatTime(Date time){
 		return timeFormat.format(time);
+	}
+	
+	/**/
+	
+	//
+	//String labelId,IconType iconType,AbstractMethod<Object, Object> action
+	public UICommandable createCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
+		UICommandable commandable = new DefaultCommandable();
+		commandable.setCommand(createCommand(executeMethod));
+		commandable.setLabel(text(labelId));
+		commandable.setIconType(iconType);
+		commandable.setEventListener(anExecutionPhase);
+		commandable.setProcessGroup(aProcessGroup);
+		return commandable;
+	}
+	
+	public UICommand createCommand(AbstractMethod<Object, Object> action){
+		UICommand command = new DefaultCommand();
+		command.setExecuteMethod(action);
+		return command;
+	}
+	
+	public String annotationTextValue(TextValueType textValueType,String textValue,String defaultValue) {
+		switch(textValueType){
+		case I18N_ID:return text(StringUtils.isEmpty(textValue)?defaultValue:textValue);
+		case I18N_VALUE:return StringUtils.isEmpty(textValue)?defaultValue:textValue;
+		case VALUE:return null;
+		default : return null;
+		}
 	}
 	
 	/**/

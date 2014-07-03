@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,10 +15,13 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
+import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
 import org.cyk.ui.api.model.table.TableRow;
@@ -85,22 +89,27 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		((AbstractBean)editor).postConstruct();
 		editor.setCrud(crud);
 		editor.build(anObjectModel);
+		configure(editor);
 		editors.add(editor);
 		return editor;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <DATA> TABLE tableInstance(Class<DATA> aDataClass) {
+	public <DATA> TABLE tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
 		@SuppressWarnings("rawtypes")
 		Table table = tableInstance();
+		table.setUsedFor(usedFor);
+		table.setCrud(crud);
 		table.setWindow(this);
 		((AbstractBean)table).postConstruct();
 		table.build(aDataClass, TableRow.class, TableColumn.class, TableCell.class);
-		table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
-		table.getSaveRowCommand().setMessageManager(getMessageManager());
-		table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
-		table.getCancelRowCommand().setMessageManager(getMessageManager());
+		configure(table);
+		//table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
+		//table.getSaveRowCommand().setMessageManager(getMessageManager());
+		//table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
+		//table.getCancelRowCommand().setMessageManager(getMessageManager());
+		
 		tables.add((TABLE) table);
 		return (TABLE) table;
 	}
@@ -122,13 +131,32 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		EventCalendar eventCalendar = eventCalendarInstance();
 		eventCalendar.setWindow(this);
 		((AbstractBean)eventCalendar).postConstruct();
-		eventCalendar.getAddEventCommand().getCommand().setMessageManager(getMessageManager());
+		configure(eventCalendar);
+		//eventCalendar.getAddEventCommand().getCommand().setMessageManager(getMessageManager());
 		eventCalendars.add(eventCalendar);
 		return eventCalendar;
 	}
 	
 	public void onMessageDialogBoxClosed(){
 		System.out.println("AbstractWindow.onMessageDialogBoxClosed()");
+	}
+	
+	private void configure(UIWindowPart aWindowPart){
+		Collection<Field> fields = commonUtils.getAllFields(aWindowPart.getClass());
+		for(Field field : fields)
+			if(UICommandable.class.isAssignableFrom(field.getType())){
+				UICommandable commandable = ((UICommandable)commonUtils.readField(aWindowPart, field, Boolean.FALSE));
+				if(commandable!=null)
+					configureCommand( commandable.getCommand() );
+			}else if(UICommand.class.isAssignableFrom(field.getType())){
+				configureCommand( (UICommand)commonUtils.readField(aWindowPart, field, Boolean.FALSE) );
+			}
+	}
+	
+	private void configureCommand(UICommand aCommand){
+		if(aCommand==null)
+			return;
+		aCommand.setMessageManager(getMessageManager());
 	}
 		
 }

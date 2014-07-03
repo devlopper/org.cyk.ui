@@ -13,7 +13,7 @@ import org.cyk.ui.api.editor.input.UIInputNumber;
 import org.cyk.ui.web.api.editor.WebEditorInputs;
 
 @Getter @Log
-public class InputNumber extends AbstractWebInputComponent<Number> implements WebUIInputNumber,Serializable  {
+public class InputNumber extends AbstractWebInputComponent<Number> implements WebUIInputNumber,UIInputNumber,Serializable  {
 
 	private static final long serialVersionUID = 7029658406107605595L;
 

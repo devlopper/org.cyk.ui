@@ -28,15 +28,11 @@ public class TestEditorController extends AbstractPrimefacesPage implements Seri
 		super.initialisation();
 		try {
 			editor = (PrimefacesEditor) editorInstance(new Master(),Crud.CREATE);
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
+		
 	}
-	
-	
-
 
 }

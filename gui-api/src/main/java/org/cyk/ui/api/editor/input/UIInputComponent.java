@@ -34,7 +34,7 @@ public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VAL
 	
 	String getReadOnlyValue();
 	
-	void setReadOnlyValue(String aValue);
+	//void setReadOnlyValue(String aValue);
 	
 	String getValidatorId();
 	
@@ -45,6 +45,8 @@ public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VAL
 	void setValidatedValue(VALUE_TYPE value);
 	
 	void updateValue() throws Exception;
+	
+	void updateReadOnlyValue();
 	
 	//void afterChildFormUpdated();
 }

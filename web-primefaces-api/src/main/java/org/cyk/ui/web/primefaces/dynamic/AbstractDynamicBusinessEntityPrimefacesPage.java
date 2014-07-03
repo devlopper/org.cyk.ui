@@ -22,9 +22,13 @@ public abstract class AbstractDynamicBusinessEntityPrimefacesPage extends Abstra
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		businessEntityInfos = uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
+		businessEntityInfos = fetchBusinessEntityInfos(); //uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
 		identifiable = identifiableFromRequestParameter((Class<AbstractIdentifiable>)businessEntityInfos.getClazz());
 		contentTitle = text(businessEntityInfos.getUiLabelId());
+	}
+	
+	protected BusinessEntityInfos fetchBusinessEntityInfos(){
+		return uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
 	}
 	
 }

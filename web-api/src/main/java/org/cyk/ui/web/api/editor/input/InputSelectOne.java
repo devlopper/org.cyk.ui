@@ -34,13 +34,10 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 	private String processOnSelect="@this",updateOnSelect;
 	private Boolean onChangeDisable=Boolean.TRUE,booleanValueType=Boolean.FALSE;
 	
-	private UIInputSelectOne<Object,ISelectItem> __input__;
-	
 	public InputSelectOne(WebEditorInputs<?, ?, ?, ?> conatinerForm,UIInputSelectOne<Object,ISelectItem> input) {
 		super(conatinerForm,input);
 		for(ISelectItem selectItem : input.getItems())
 			getItems().add(new SelectItem(selectItem.getValue(), selectItem.getLabel()));
-		__input__ = input;
 	}
 	
 	@Override
@@ -92,19 +89,22 @@ public class InputSelectOne<FORM> extends AbstractWebInputComponent<Object> impl
 		return isBoolean() || UIField.SelectOneInputType.RADIO.equals(annotation.selectOneInputType());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean getAddable() {
-		return __input__.getAddable();
+		return ((UIInputSelectOne<Object,ISelectItem>)__input__).getAddable();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean isSelectItemForeign() {
-		return __input__.isSelectItemForeign();
+		return ((UIInputSelectOne<Object,ISelectItem>)__input__).isSelectItemForeign();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean isSelectItemEditable() {
-		return !isBoolean() && !isEnum();
+		return ((UIInputSelectOne<Object,ISelectItem>)__input__).isSelectItemEditable();
 	}
 	
 }

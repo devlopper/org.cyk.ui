@@ -23,6 +23,7 @@ import org.cyk.ui.api.editor.output.UIOutputSeparator;
 import org.cyk.ui.api.layout.GridLayout;
 import org.cyk.ui.api.layout.UILayout;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.annotation.UIEditor;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Log
@@ -66,6 +67,10 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	@Override
 	public void build(Crud crud) {
 		dataModel = createDataModel();
+		UIEditor uiEditor = objectModel.getClass().getAnnotation(UIEditor.class);
+		if(uiEditor!=null){
+			layout.setColumnsCount(uiEditor.columnsCount());
+		}
 		((AbstractBean)layout).postConstruct();
 		layout.addRow();
 		discoverer.setObjectModel(objectModel);
@@ -73,7 +78,9 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 			//for each input we need a label
 			if(component instanceof UIInputComponent<?>){
 				add(new OutputLabel(((UIInputComponent<?>)component).getLabel()));
-			}
+			}else if(component instanceof UIOutputSeparator){
+				((UIOutputSeparator)component).setWidth(layout.getColumnsCount());
+			} 
 			add(component);
 		}
 	}

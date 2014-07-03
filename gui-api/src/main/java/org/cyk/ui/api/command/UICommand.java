@@ -32,9 +32,9 @@ public interface UICommand {
 	 */
 	Object onExecuteFailed(Throwable throwable);
 	
-	Boolean getNotifyOnSucceed();
+	AbstractNotifyOnSucceedMethod<Object> getNotifyOnSucceedMethod();
 	
-	void setNotifyOnSucceed(Boolean aValue);
+	void setNotifyOnSucceedMethod(AbstractNotifyOnSucceedMethod<Object> aMethod);
 	
 	String successNotificationMessage();
 	
@@ -58,8 +58,13 @@ public interface UICommand {
 	
 	
 	/**/
-	
 	public static abstract class AbstractValidateMethod<OBJECT> extends AbstractMethod<Boolean, OBJECT>{
+
+		private static final long serialVersionUID = 87318682837035755L;
+
+	}
+	
+	public static abstract class AbstractNotifyOnSucceedMethod<OBJECT> extends AbstractMethod<Boolean, OBJECT>{
 
 		private static final long serialVersionUID = 87318682837035755L;
 
@@ -70,6 +75,7 @@ public interface UICommand {
 		private static final long serialVersionUID = 87318682837035755L;
 
 	}
+	
 	
 	
 

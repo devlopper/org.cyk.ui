@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 
 import javax.persistence.Embedded;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -30,6 +31,7 @@ import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelect;
 import org.cyk.ui.api.editor.output.OutputSeparator;
 import org.cyk.utility.common.annotation.UIField;
+import org.cyk.utility.common.annotation.UIField.BreakLineAfter;
 import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
 import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -49,7 +51,8 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 		for(UIInputOutputComponent<?> component : components){
 			if(component instanceof UIInputComponent<?>){
 				UIInputComponent<?> input = (UIInputComponent<?>) component;
-				input.setReadOnly(crud==null || Crud.READ.equals(crud) || Crud.DELETE.equals(crud) );
+				if(!Boolean.TRUE.equals(input.getReadOnly()))
+					input.setReadOnly(crud==null || Crud.READ.equals(crud) || Crud.DELETE.equals(crud) );
 				if(Boolean.TRUE.equals(input.getReadOnly()))
 					input.setRequired(Boolean.FALSE);
 				else
@@ -81,10 +84,16 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 			}
 			if(add){
 				
-				if(OneRelationshipInputType.FIELDS.equals(uiFieldInfos.getAnnotation().oneRelationshipInputType())){
+				OneRelationshipInputType oneRelationshipInputType = uiFieldInfos.getAnnotation().oneRelationshipInputType();
+				if(OneRelationshipInputType.AUTO.equals(oneRelationshipInputType))
+					if(field.isAnnotationPresent(OneToOne.class))
+						oneRelationshipInputType = OneRelationshipInputType.FIELDS;
+				
+				if(OneRelationshipInputType.FIELDS.equals(oneRelationshipInputType)){
 					if(SeparatorAfter.AUTO.equals(uiFieldInfos.getAnnotation().separatorAfter())){
 						if(!field.isAnnotationPresent(Embedded.class))
-							components.add(new OutputSeparator(UIManager.getInstance().textOfClass(field.getType())));
+							components.add(new OutputSeparator(UIManager.getInstance().annotationTextValue(uiFieldInfos.getAnnotation().separatorLabelValueType(), 
+									uiFieldInfos.getAnnotation().separatorLabel(), UIManager.getInstance().uiLabelIdOfClass(field.getType()))));
 					}
 					
 					build(commonUtils.readField(objectModel,field, true));
@@ -95,7 +104,14 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 						log.warning("No component can be found for Type "+field.getType()+". It will be ignored");
 					}else{
 						components.add(input);
-						
+						input.setWidth(uiFieldInfos.getAnnotation().columnSpan());
+						input.setHeight(uiFieldInfos.getAnnotation().rowSpan());
+						if(BreakLineAfter.TRUE.equals(uiFieldInfos.getAnnotation().breakLineAfter()))
+							input.setWidth(1000);
+						if(SeparatorAfter.TRUE.equals(uiFieldInfos.getAnnotation().separatorAfter())){
+							components.add(new OutputSeparator(UIManager.getInstance().annotationTextValue(uiFieldInfos.getAnnotation().separatorLabelValueType(), 
+									uiFieldInfos.getAnnotation().separatorLabel(), "SEP")));
+						}
 						if(input instanceof UIInputSelect<?, ?>){
 							UIInputSelect<?, ?> inputSelect = (UIInputSelect<?, ?>)input;
 							if(inputSelect.isBoolean() || inputSelect.isEnum() || inputSelect.isSelectItemForeign() || inputSelect.getAddable())

@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -28,49 +30,17 @@ public class PrimefacesManager extends AbstractBean implements Serializable {
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
-		super.initialisation();
-		/*
-		UIManager.componentCreateMethod = new UIManager.ComponentCreateMethod() {
-			private static final long serialVersionUID = -6005484639897008871L;
-			@SuppressWarnings("unchecked")
-			@Override
-			protected UIInputComponent<?> __execute__(UIInputComponent<?> aComponent) {
-				WebUIInputComponent<?> component = null;
-				if(aComponent instanceof UIInputText)
-					component = new InputText(null,(UIInputText) aComponent);
-				else if(aComponent instanceof UIInputDate)
-					component = new InputDate(null,(UIInputDate) aComponent);
-				else if(aComponent instanceof UIInputNumber)
-					component = new InputNumber(null,(UIInputNumber) aComponent);
-				else if(aComponent instanceof UIInputMany){
-					component = new InputMany(null, (UIInputMany) aComponent);
-				}else if(aComponent instanceof UIInputSelectOne<?,?>){
-					component = new InputSelectOne<Object>(null,(UIInputSelectOne<Object, ISelectItem>) aComponent);
-					WebUIInputSelectOne<Object,Object> inputSelectOne = (WebUIInputSelectOne<Object, Object>) component;
-					if(inputSelectOne.isSelectItemForeign() && (inputSelectOne.getItems()==null || inputSelectOne.getItems().isEmpty())){
-						Collection<Object> datas = (Collection<Object>) UIManager.getInstance().getCollectionLoadMethod().execute((Class<Object>) inputSelectOne.getFieldType());
-						
-						//if(inputSelectOne.getValue()!=null){
-							if(datas==null)
-								if(inputSelectOne.getValue()==null)
-									;
-								else
-									datas = Arrays.asList(inputSelectOne.getValue());
-							else if(inputSelectOne.getValue()!=null && !datas.contains(inputSelectOne.getValue()))
-								datas.add(inputSelectOne.getValue());
-						//}
-						
-						inputSelectOne.getItems().add(new SelectItem(null, UIManager.getInstance().text("editor.selectone.noselection")"---"));	
-						if(datas!=null)
-							for(Object object : datas)
-								inputSelectOne.getItems().add(new SelectItem(object, UIManager.getInstance().getToStringMethod().execute(object)));
-					}
-				}
-				return component;
-			}
-		};
-		*/
-		
+		super.initialisation();		
+	}
+	
+	public String includeFile(UIInputComponent<?> input){
+		if(UIManager.getInstance().isInputText(input))
+			return "include/inputTextOneLine.xhtml";
+		else if(UIManager.getInstance().isInputSelectOne(input))
+			return "include/inputOneMenu.xhtml";
+		else if(UIManager.getInstance().isInputNumber(input))
+			return "include/inputNumber.xhtml";
+		return null;
 	}
 	
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){

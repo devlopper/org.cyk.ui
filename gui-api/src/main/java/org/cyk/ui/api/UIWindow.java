@@ -8,6 +8,7 @@ import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
+import org.cyk.ui.api.model.table.Table.UsedFor;
 
 
 public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
@@ -54,7 +55,7 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	
 	<DATA> TABLE tableInstance();
 	
-	<DATA> TABLE tableInstance(Class<DATA> aDataClass);
+	<DATA> TABLE tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud);
 	/*
 	<DATA> HierarchycalData<DATA> hierarchyInstance();
 	

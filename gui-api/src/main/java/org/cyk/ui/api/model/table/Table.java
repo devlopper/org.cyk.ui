@@ -18,15 +18,15 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
-import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.component.UIFieldInfos;
 import org.cyk.ui.api.component.UIFieldDiscoverer;
+import org.cyk.ui.api.component.UIFieldInfos;
 import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
@@ -40,6 +40,8 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 
 	private static final long serialVersionUID = -7832418987283686453L;
 	
+	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
+	
 	protected AbstractIdentifiable master;
 	protected UIMenu menu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
@@ -52,17 +54,24 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected RowNavigateEventMethod rowNavigateEventMethod;
 	protected DATA dataAdding;
 	protected Integer lastEditedRowIndex;
-	protected Boolean showHierarchy,showOpenCommand;
+	protected Boolean showHierarchy,showOpenCommand,showFooterCommandBlock;
 	protected List<DATA> hierarchyData = new ArrayList<>();
+	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
+	protected Crud crud;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
-		addRowCommand = createCommandable("command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
+		addRowCommand = UIManager.getInstance().createCommandable("command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object parameter) {
+				/*if(UsedFor.FIELD_INPUT.equals(usedFor)){
+					
+				}else{
+					
+				}*/
 				if(dataAdding==null)
 					try {
 						addRow(dataAdding = (DATA) rowDataClass.newInstance());
@@ -76,59 +85,86 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 					addRowCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "warning.table.canaddoneatatime", true).showDialog();
 				return null;
 			}
-		});
+		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 		
-		openRowCommand = createCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
+		openRowCommand = UIManager.getInstance().createCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				rowNavigateEventMethod.execute((TableRow<?>) parameter);
 				return null;
 			}
-		});
+		},EventListener.NONE,ProcessGroup.FORM);
 		openRowCommand.setShowLabel(Boolean.FALSE);
 		
-		saveRowCommand = createCommand(new AbstractMethod<Object, Object>() {
+		saveRowCommand = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4758954266295164539L;
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Object __execute__(Object object) {
-				lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
-				getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
+				if(UsedFor.FIELD_INPUT.equals(usedFor)){
+						
+				}else{
+					lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
+					getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
+					updateRow(rows.get(lastEditedRowIndex), (DATA) object);
+				}
 				dataAdding = null;
 				return null;
 			}
 		});
 		
-		cancelRowCommand = createCommand(new AbstractMethod<Object, Object>() {
+		cancelRowCommand = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4758954266295164539L;
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Object __execute__(Object object) {
+				
 				if(object==dataAdding){
+					if(UsedFor.FIELD_INPUT.equals(usedFor)){
+						
+					}else{
+						
+					}
 					deleteRow(rows.size()-1);
 					dataAdding = null;
 				}else{
-					DATA initialData = (DATA) getWindow().getGenericBusiness().find( ((AbstractIdentifiable)object).getIdentifier() );
-					updateRow(rows.get(rowIndex((DATA) object).intValue()), initialData);
-				}
+					if(UsedFor.FIELD_INPUT.equals(usedFor)){
+						
+					}else{
+						DATA initialData = (DATA) getWindow().getGenericBusiness().find( ((AbstractIdentifiable)object).getIdentifier() );
+						updateRow(rows.get(rowIndex((DATA) object).intValue()), initialData);
+					}
+					
+				}	
+				
 				return null;
 			}
 		});
 		
-		deleteRowCommand = createCommandable("command.delete", IconType.ACTION_REMOVE, new AbstractMethod<Object, Object>() {
+		deleteRowCommand = UIManager.getInstance().createCommandable("command.delete", IconType.ACTION_REMOVE, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object object) {
 				@SuppressWarnings("unchecked")
 				TableRow<DATA> row = (TableRow<DATA>) object;
-				getWindow().getGenericBusiness().delete((AbstractIdentifiable) row.getData());
+				if(UsedFor.FIELD_INPUT.equals(usedFor)){
+					
+				}else{
+					getWindow().getGenericBusiness().delete((AbstractIdentifiable) row.getData());
+					//deleteRowCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "SUCCES", false).showDialog();	
+				}
 				deleteRow(row);
-				//deleteRowCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "SUCCES", false).showDialog();
 				return null;
 			}
-		});
+		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 		deleteRowCommand.setShowLabel(Boolean.FALSE);
+		
+		if(UsedFor.FIELD_INPUT.equals(usedFor)){
+			setEditable(!Crud.READ.equals(crud));
+			addRowCommand.setShowLabel(Boolean.FALSE);
+			addRowCommand.setRendered(getEditable());
+		}
 		
 	}
 	
@@ -167,27 +203,14 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			}
 		return super.addCell(row, column, cell);
 	}
-	
-	protected UICommandable createCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> action){
-		UICommandable commandable = new DefaultCommandable();
-		commandable.setCommand(createCommand(action));
-		commandable.setLabel(text(labelId));
-		commandable.setIconType(iconType);
-		return commandable;
+	/*
+	@Override
+	protected String valueOf(TableCell cell, Object object) {
+		cell.getInputComponent().updateReadOnlyValue();
+		return AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{cell.get});
 	}
-	
-	protected UICommand createCommand(AbstractMethod<Object, Object> action){
-		UICommand command = new DefaultCommand();
-		command.setMessageManager(getWindow().getMessageManager());
-		command.setExecuteMethod(action);
-		return command;
-	}
-	
+	*/
 	/**/
-	
-	private String text(String id){
-		return getWindow().getUiManager().getLanguageBusiness().findText(id);
-	}
 	
 	protected Boolean isDataTreeType(){
 		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);
@@ -205,6 +228,10 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	
 	public Boolean getShowOpenCommand(){
 		return getShowHierarchy();
+	}
+	
+	public Boolean getShowFooterCommandBlock(){
+		return UsedFor.FIELD_INPUT.equals(usedFor);
 	}
 	
 	public void targetDependentInitialisation(){}

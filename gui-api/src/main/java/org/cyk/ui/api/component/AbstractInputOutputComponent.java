@@ -19,7 +19,7 @@ public abstract class AbstractInputOutputComponent<VALUE_TYPE> extends AbstractB
 	
 	private String name;
 	@Getter private String id;
-	@Getter @Setter private Integer leftIndex,topIndex,width=1,height=1;
+	@Getter @Setter protected Integer leftIndex,topIndex,width=1,height=1;
 	protected Class<VALUE_TYPE> clazz;
 	@Getter @Setter protected VALUE_TYPE value;
 	protected UIManager uiManager;

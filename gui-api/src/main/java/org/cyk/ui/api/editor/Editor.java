@@ -75,4 +75,6 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	
 	void setCrud(Crud crud);
 	
+	Boolean getSubmitMethodMainExecuted();
+	
 }

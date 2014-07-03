@@ -16,6 +16,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
+import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -33,15 +34,17 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz());
+		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz(),UsedFor.ENTITY_INPUT,null);
 		table.setEditable(true);
-		table.setMaster(/*identifiableFromRequestParameter( (Class<AbstractIdentifiable>)businessEntityInfos.getClazz())*/ identifiable);
+		table.setMaster(identifiable);
 		if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
 			new TreeHandler<DataTreeTypeBusiness, DataTreeType>(dataTreeTypeBusiness,(DataTreeType)table.getMaster()).handle();
 		}else if(AbstractDataTree.class.isAssignableFrom(businessEntityInfos.getClazz())){
+			@SuppressWarnings("rawtypes")
+			AbstractDataTreeBusiness bean = 
+					(AbstractDataTreeBusiness) AbstractBusinessLayer.findTypedBusinessBean((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
 			new TreeHandler<AbstractDataTreeBusiness<AbstractDataTree<DataTreeType>,DataTreeType>, AbstractDataTree<DataTreeType>>(
-					AbstractBusinessLayer.findDataTreeBusinessBean((Class<AbstractDataTree<DataTreeType>>) businessEntityInfos.getClazz()),
-					(AbstractDataTree<DataTreeType>)table.getMaster()).handle();
+					bean,(AbstractDataTree<DataTreeType>)table.getMaster()).handle();
 		}else{
 			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
 		}
@@ -50,7 +53,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 			private static final long serialVersionUID = -4698491663673906259L;
 			@Override
 			protected Object __execute__(Object parameter) {
-				messageDialogOkButtonOnClick="clickEditButtonRow('"+(table.getLastEditedRowIndex()+1)+"');";
+				messageDialogOkButtonOnClick="clickEditButtonRow('"+table.getUpdateStyleClass()+"','"+(table.getLastEditedRowIndex()+1)+"');";
 				return null;
 			}
 		});

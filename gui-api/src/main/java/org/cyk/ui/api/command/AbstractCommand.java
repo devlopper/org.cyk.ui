@@ -23,10 +23,9 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Setter protected UIMessageManager messageManager;
 	
 	@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
+	@Getter @Setter protected AbstractNotifyOnSucceedMethod<Object> notifyOnSucceedMethod;
 	@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod,afterSuccessNotificationMessageMethod;
 	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
-	
-	@Getter @Setter protected Boolean notifyOnSucceed=Boolean.FALSE;
 	
 	@Override
 	public Boolean validate() {
@@ -51,6 +50,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	
 	@Override
 	public Object onExecuteSucceed(Object object) {
+		Boolean notifyOnSucceed = notifyOnSucceedMethod!=null && notifyOnSucceedMethod.execute(object);
 		if(Boolean.TRUE.equals(notifyOnSucceed)){
 			String message = successNotificationMessage();
 			if(StringUtils.isNotEmpty(message))

@@ -28,11 +28,13 @@ public class CommandBuilder implements Serializable {
 		return INSTANCE;
 	}
 	
-	public CommandButton commandButton(UICommandable aCommandable){
+	public CommandButton commandButton(Command command){
+		UICommandable aCommandable = command.getCommandable();
 		CommandButton commandButton = new CommandButton();
+		commandButton.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 		if(Boolean.TRUE.equals(aCommandable.getShowLabel()))
 			commandButton.setValue(aCommandable.getLabel());
-		commandButton.setUpdate(":form:contentPanel");
+		commandButton.setUpdate(command.getUpdate());
 		if(aCommandable.getIconType()!=null)
 			commandButton.setIcon(icon(aCommandable.getIconType()));
 		if(StringUtils.isEmpty(aCommandable.getTooltip()))
@@ -117,6 +119,11 @@ public class CommandBuilder implements Serializable {
 		case ACTION_REMOVE:return "ui-icon-trash";
 		case ACTION_ADMINISTRATE:return "ui-icon-gear";
 		case ACTION_HELP:return "ui-icon-help";
+		case ACTION_APPLY:return "ui-icon-check";
+		case ACTION_EDIT:return "ui-icon-pencil";
+		case ACTION_GO_BACK:return "ui-icon-arrow-e";
+		case ACTION_OK:return "ui-icon-check";
+		case ACTION_SAVE:return "ui-icon-check";
 		default:return null;
 		}
 	}

@@ -13,8 +13,12 @@ public interface UIInputOutputComponent<VALUE_TYPE> {
 	Integer getTopIndex();
 
 	Integer getWidth();
+	
+	void setWidth(Integer aWidth);
 
 	Integer getHeight();
+	
+	void setHeight(Integer aHeight);
 	
 	VALUE_TYPE getValue();
 	

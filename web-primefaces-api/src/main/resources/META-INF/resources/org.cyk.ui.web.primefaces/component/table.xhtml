@@ -13,6 +13,7 @@
 	</cc:interface>
 
 	<cc:implementation>
+		<ui:param name="updateDataTableStyleClass" value="#{cc.value.updateStyleClass}" />
 		<!--
 		<p:menubar model="#{cc.value.menuModel}" /> 
 		-->
@@ -27,7 +28,8 @@
 				<cyk:tree value="#{cc.value.primefacesTree}" />
 			</td></ui:fragment>
 			-->
-			<!--<td>--><p:dataTable id="dataTable" var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}" styleClass="dataTableStyleClass" rowIndexVar="index"
+			<!--<td>--><p:dataTable id="dataTable" var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}" 
+				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index"
 				emptyMessage="#{uiManager.text('record.list.empty')}">
 				
 				<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
@@ -44,8 +46,9 @@
 		  			
 		  			<p:cellEditor>
 		  				<f:facet name="input">
-		  					<!--
-		  					<ui:include src="#{primefacesConstants.includeFile(cc.value.cell(row,column).inputComponent)}" >
+		  					
+		  					<!-- 
+		  					<ui:include src="#{primefacesManager.includeFile(cc.value.cell(row,column).inputComponent)}" >
 		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
 		  					</ui:include>
 		  					-->
@@ -58,8 +61,14 @@
 		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
 		  					</ui:include></ui:fragment>
 		  					
+		  					<ui:fragment rendered="#{uiManager.isInputNumber(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputNumber.xhtml" >
+		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  					</ui:include></ui:fragment>
+		  					
 		  				</f:facet>
-		  				<f:facet name="output"><h:outputText value="#{cc.value.cell(row,column)}" escape="false"/></f:facet>
+		  				<f:facet name="output">
+		  					<h:outputText value="#{cc.value.cell(row,column)}" escape="false"/>
+		  				</f:facet>
 		  			</p:cellEditor>
 		        </p:columns> 
 		        
@@ -79,21 +88,10 @@
 			</p:dataTable><!--</td>-->
 		
 		<!--</tr> </table>-->
-		
-		<h:outputScript>
-	    	function clickEditButtonLastRow(){
-				$('.dataTableStyleClass div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
-					 $(this).click();	
-				});
-			}	
-			
-			function clickEditButtonRow(rowIndex){
-				$('.dataTableStyleClass div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
-					 $(this).click();	
-				});
-			}	
-		</h:outputScript>	
-		
+		<p:outputPanel rendered="#{cc.value.showFooterCommandBlock}" >
+			<cyk:command value="#{cc.value.primefacesAddRowCommand}" />	
+		</p:outputPanel>
+				
 	</cc:implementation>
 
 </ui:composition>

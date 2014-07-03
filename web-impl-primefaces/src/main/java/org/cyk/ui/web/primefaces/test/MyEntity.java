@@ -8,16 +8,18 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.cyk.utility.common.annotation.UIEditor;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
+import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
 import org.cyk.utility.common.validation.Client;
 
-@Getter @Setter
+@Getter @Setter @UIEditor(columnsCount=2)
 public class MyEntity {
 	
 	public enum MyEnum{V1,V2,V3,v55}
 	
-	@UIField(groups=Client.class,description="Une chaine de caracteres")
+	@UIField(groups=Client.class,description="Une chaine de caracteres",separatorAfter=SeparatorAfter.TRUE)
 	private String string="Jesus";
 	
 	@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
@@ -50,7 +52,7 @@ public class MyEntity {
 	//@UIField(required=true)
 	private MyEnum myEnum;
 	
-	@UIField(oneRelationshipInputType=OneRelationshipInputType.FORM)
+	@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
 	private MyDetails details1;// = new MyDetails();
 	/*
 	@UIField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
@@ -76,10 +78,10 @@ public class MyEntity {
 		@UIField
 		private Boolean detailsYesOrNo;
 		
-		@UIField
+		//@UIField
 		private Integer detailsMyInt;
 		
-		@UIField(oneRelationshipInputType=OneRelationshipInputType.FORM)
+		@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
 		private MyDetails2 details2;
 		
 		
@@ -92,10 +94,10 @@ public class MyEntity {
 	@Setter @Getter
 	public static class MyDetails2{
 		
-		@UIField
+		//@UIField
 		private Float detailsMyFloat;
 		
-		@UIField
+		//@UIField
 		private BigDecimal detailsMyBigDecimal;
 		
 		@UIField

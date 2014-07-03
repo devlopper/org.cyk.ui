@@ -78,7 +78,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	}
 	
 	protected WebEditorInputs<?, ?, ?, ?> editorInputs;
-	protected String label,requiredMessage,validatorId,validationGroupClass,readOnlyValue,description;
+	protected String label,requiredMessage,validatorId,validationGroupClass,description;
 	protected Boolean readOnly,required;
 	protected Field field;
 	protected Class<?> fieldType;
@@ -86,19 +86,14 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	protected Object object; 
 	protected UIField annotation;
 	protected VALUE_TYPE validatedValue;
+	protected UIInputComponent<VALUE_TYPE> __input__;
 
 	public AbstractWebInputComponent(WebEditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<VALUE_TYPE> input) {
+		__input__ = input;
 		label = input.getLabel();
 		description = input.getDescription();
 		requiredMessage = input.getRequiredMessage();
 		readOnly = input.getReadOnly();
-		//System.out.println(editorInputs.getEditor().getCrud());
-		/*
-		if(editorInputs==null || editorInputs.getEditor().getCrud()==null || Crud.CREATE.equals(editorInputs.getEditor().getCrud()) || Crud.UPDATE.equals(editorInputs.getEditor().getCrud()))
-			required = input.getRequired();
-		else
-			required = Boolean.FALSE;
-			*/
 		required = input.getRequired();
 		field = input.getField();
 		fieldType = input.getFieldType();
@@ -106,9 +101,10 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 		value = input.getValue();
 		annotation = input.getAnnotation();
 		this.editorInputs = editorInputs;
-		readOnlyValue = input.getReadOnlyValue();
 		this.validationGroupClass = input.getValidationGroupClass();
 		readOnlyValueCascadeStyleSheet.addClass("cyk-ui-editor-dynamic-input-readonly");
+		width = input.getWidth();
+		height = input.getHeight();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -123,7 +119,20 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	@Override
 	public void updateValue() throws Exception {
 		FieldUtils.writeField(field, object, value, true);
-		readOnlyValue=AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
+		updateReadOnlyValue();
+	}
+	
+	@Override
+	public void updateReadOnlyValue() {
+		System.out.println("AbstractWebInputComponent.updateReadOnlyValue() "+field.getName()+" : "+value);
+		__input__.updateReadOnlyValue(); 
+		
+		//AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
+	}
+	
+	@Override
+	public String getReadOnlyValue() {
+		return __input__.getReadOnlyValue();
 	}
 
 	@Override

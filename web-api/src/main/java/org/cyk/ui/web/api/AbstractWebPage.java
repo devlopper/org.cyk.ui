@@ -21,7 +21,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	
 	@Inject protected WebManager webManager;
 	@Inject protected WebNavigationManager navigationManager;
-	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url;
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,onDocumentReadyJavaScript;
 	private String windowMode;
 	
 	@Override
@@ -58,10 +58,9 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 		return contentTitle;
 	}*/
 	
-	@SuppressWarnings("unchecked")
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))
-			return (T) getGenericBusiness().use(aClass).find(requestParameterLong(identifierId));
+			return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));
 		return null;
 	}
 	

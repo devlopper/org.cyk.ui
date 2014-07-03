@@ -34,6 +34,10 @@ public interface UICommandable {
 	
 	void setRenderType(RenderType aRenderType);
 	
+	Boolean getRendered();
+	
+	void setRendered(Boolean aValue);
+	
 	CommandRequestType getCommandRequestType();
 	
 	void setCommandRequestType(CommandRequestType aCommandRequestType);
@@ -77,7 +81,7 @@ public interface UICommandable {
 	}
 	
 	public enum IconType{
-		ACTION_ADD,ACTION_CANCEL,ACTION_REMOVE,ACTION_OPEN,ACTION_ADMINISTRATE,ACTION_HELP,
+		ACTION_GO_BACK,ACTION_OK,ACTION_APPLY,ACTION_SAVE,ACTION_ADD,ACTION_EDIT,ACTION_CANCEL,ACTION_REMOVE,ACTION_OPEN,ACTION_ADMINISTRATE,ACTION_HELP,
 		
 		THING_TOOLS,THING_CALENDAR,
 	}

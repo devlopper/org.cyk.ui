@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.component.AbstractInputOutputComponent;
@@ -54,14 +53,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 			Object[] params = (Object[]) object;
 			String fieldName = (String) params[0];
 			UIField annotation = (UIField) params[1];
-			
-			String _label = StringUtils.isEmpty(annotation.label())?fieldName:annotation.label();
-			switch(annotation.labelValueType()){
-			case I18N_ID:return UIManager.getInstance().text(_label);
-			case I18N_VALUE:return _label;
-			case VALUE:return _label;
-			default : return _label;
-			}
+			return UIManager.getInstance().annotationTextValue(annotation.labelValueType(), annotation.label(), fieldName);
 		}
 	};
 	
@@ -85,14 +77,19 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		
 		this.label = COMPUTE_LABEL_VALUE_METHOD.execute(new Object[]{field.getName(),annotation});
 		this.description = annotation.description();
-		//required = field.isAnnotationPresent(NotNull.class);
 		requiredMessage =label+" : "+UIManager.getInstance().text("editor.field.value.required");
-		
 		try {
 			value = (VALUE_TYPE) FieldUtils.readField(field, object, Boolean.TRUE);
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString(), e);
+			return;
 		}
+		updateReadOnlyValue();
+	}
+	
+	@Override
+	public void updateReadOnlyValue() {
+		System.out.println("AbstractInputComponent.updateReadOnlyValue() "+field.getName()+" : "+value);
 		readOnlyValue = COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
 	}
 	

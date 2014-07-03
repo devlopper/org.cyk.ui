@@ -16,15 +16,21 @@ public class Command implements Serializable {
 
 	private UICommandable commandable;
 	private CommandButton commandButton;
+	private String update;
 	
-	public Command(UICommandable aCommandable) {
+	public Command(UICommandable aCommandable,String update) {
 		super();
 		this.commandable = aCommandable;
+		this.update = update;
+	}
+	
+	public Command(UICommandable aCommandable) {
+		this(aCommandable,":form:contentPanel :form:menuPanel");
 	}
 	
 	public CommandButton getCommandButton(){
 		if(commandButton==null)
-			commandButton = CommandBuilder.getInstance().commandButton(commandable);
+			commandButton = CommandBuilder.getInstance().commandButton(this);
 			
 		return commandButton;
 	}

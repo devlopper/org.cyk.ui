@@ -14,7 +14,11 @@ public interface UILayout {
 	
 	Integer getColumnsCount();
 	
+	void setColumnsCount(Integer aCount);
+	
 	Integer getRowsCount();
+	
+	void setRowsCount(Integer aCount);
 	
 	void addRow();
 	

@@ -13,7 +13,6 @@
 	</cc:interface>
 
 	<cc:implementation>
-		
 		<p:commandButton id="#{cc.id}CommandButton"
 			action="#{cc.value.commandable.command.execute(cc.attrs.executeParameter)}" 
 			process="#{cc.value.commandButton.process}" 
@@ -21,6 +20,7 @@
 			oncomplete="#{cc.value.commandButton.oncomplete}"
 			value="#{cc.value.commandButton.value}" 
 			icon="#{cc.value.commandButton.icon}"
+			rendered="#{cc.value.commandButton.rendered}"
 			title="#{cc.value.commandButton.title}">
 			
 			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />

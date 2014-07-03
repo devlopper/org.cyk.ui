@@ -10,8 +10,6 @@ public class OutputSeparator extends OutputText implements Serializable,UIOutput
 
 	public OutputSeparator(String aValue) {
 		super(aValue);
-		//TODO must be calculate at runtime : will work for 2 columns only
-		setWidth(2);
 	}
 	
 }

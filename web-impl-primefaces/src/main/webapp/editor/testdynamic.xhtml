@@ -19,9 +19,9 @@
 	</style-->
  	
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{testEditorController}" />
+ 		<ui:param name="pageController" value="#{testDynamicEditorController}" />
  		<ui:define name="body">
- 			<cyk:editor value="#{testEditorController.editor}" />
+ 			<cyk:editor value="#{testDynamicEditorController.editor}" />
  		</ui:define>
  	</ui:decorate>
  	

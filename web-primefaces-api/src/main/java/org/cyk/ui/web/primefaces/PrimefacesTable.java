@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.table.HierarchyNode;
@@ -29,12 +30,14 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	@Getter @Setter private RowEditEventMethod onRowEditMethod,onRowEditInitMethod,onRowEditCancelMethod;
 	@Getter private Command primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
 	@Getter private PrimefacesTree primefacesTree;
+	@Getter private String updateStyleClass;
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		primefacesAddRowCommand =  new Command(addRowCommand);
-		primefacesAddRowCommand.getCommandButton().setOncomplete("clickEditButtonLastRow();");
+		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
+		primefacesAddRowCommand =  new Command(addRowCommand,  "@(."+updateStyleClass+")");
+		primefacesAddRowCommand.getCommandButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"');");
 		
 		primefacesDeleteRowCommand =  new Command(deleteRowCommand);
 		primefacesOpenRowCommand =  new Command(openRowCommand);
@@ -69,23 +72,27 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	
 	@Override
 	public void targetDependentInitialisation() {
-		Field field = commonUtils.getField(getWindow(), this);
-		menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
-		if(Boolean.TRUE.equals(getShowHierarchy())){
-			HierarchyNode hierarchyNode = new HierarchyNode(null);
-			hierarchyNode.setLabel(getTitle());
-			primefacesTree = new PrimefacesTree(hierarchyNode);
-			for(DATA d : hierarchyData)
-				primefacesTree.populate(d);	
-			primefacesTree.setOnNodeSelect(new AbstractMethod<Object, Object>() {
-				private static final long serialVersionUID = -9071786035119019765L;
-				@SuppressWarnings("unchecked")
-				@Override
-				protected Object __execute__(Object parameter) {
-					redirectTo((DATA) parameter);
-					return null;
-				}
-			});
+		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
+			Field field = commonUtils.getField(getWindow(), this);
+			menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
+			if(Boolean.TRUE.equals(getShowHierarchy())){
+				HierarchyNode hierarchyNode = new HierarchyNode(null);
+				hierarchyNode.setLabel(getTitle());
+				primefacesTree = new PrimefacesTree(hierarchyNode);
+				for(DATA d : hierarchyData)
+					primefacesTree.populate(d);	
+				primefacesTree.setOnNodeSelect(new AbstractMethod<Object, Object>() {
+					private static final long serialVersionUID = -9071786035119019765L;
+					@SuppressWarnings("unchecked")
+					@Override
+					protected Object __execute__(Object parameter) {
+						redirectTo((DATA) parameter);
+						return null;
+					}
+				});
+			}
+		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
+			
 		}
 		
 	}

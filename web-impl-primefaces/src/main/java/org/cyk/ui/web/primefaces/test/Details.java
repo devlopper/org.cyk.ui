@@ -1,5 +1,7 @@
 package org.cyk.ui.web.primefaces.test;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,9 @@ public class Details {
 
 	@UIField(groups=Client.class)
 	private String name;
+	
+	@UIField(groups=Client.class)
+	private BigDecimal salary;
 	
 	@UIField(groups=System.class)
 	private Boolean yesOrNoWrapper=false;
