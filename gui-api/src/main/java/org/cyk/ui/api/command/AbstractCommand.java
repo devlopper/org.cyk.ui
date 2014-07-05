@@ -1,6 +1,8 @@
 package org.cyk.ui.api.command;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -76,14 +78,18 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Override
 	public Object failure(Throwable throwable) {
 		Throwable cause = CommonUtils.getInstance().getThrowableInstanceOf(throwable, AbstractBusinessException.class);
-		String message;
+		Set<String> messages = new LinkedHashSet<>();
 		if(cause==null){
 			log.log(Level.SEVERE,throwable.getMessage(),throwable);
-			message = UIManager.getInstance().text("command.execution.failure");
+			messages.add(UIManager.getInstance().text("command.execution.failure"));
 		}else{
-			message = cause.getMessage();
+			if(cause instanceof AbstractBusinessException)
+				messages.addAll(((AbstractBusinessException)cause).getMessages());
 		}
-		getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+		
+		for(String message : messages)
+			getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+		
 		if(afterFailureMethod!=null)
 			afterFailureMethod.execute(throwable);
 		return null;

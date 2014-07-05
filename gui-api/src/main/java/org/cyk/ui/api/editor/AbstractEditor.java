@@ -114,21 +114,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		},EventListener.NONE,ProcessGroup.THIS);
 		switchCommand.setShowLabel(Boolean.FALSE);
 	}
-	
-	/*
-	protected UICommandable createCommandable(String labelId,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
-		UICommandable commandable = new DefaultCommandable();
-		commandable.setCommand(new DefaultCommand());
-		commandable.setLabel(text(labelId));
-		commandable.getCommand().setMessageManager(getWindow().getMessageManager()); 
-		commandable.getCommand().setExecuteMethod(executeMethod);
-		commandable.setEventListener(anExecutionPhase);
-		commandable.setProcessGroup(aProcessGroup);
-		menu.getCommandables().add(commandable);
-		return commandable;
-	}
-	*/
-			
+				
 	@Override
 	public EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> build(Object object) {
 		if(object==null)
@@ -168,8 +154,6 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		if(form.getParentField() instanceof UIInputSelectOne ){
 			try {
 				form.getParentField().updateReadOnlyValue();
-				System.out.println("ROV : "+form.getParentField().getReadOnlyValue());
-				System.out.println("AbstractEditor.onSubmitDetails()");
 				//FieldUtils.writeField(form.getParentField().getField(), form.getParentField().getObject(), form.getObjectModel(), Boolean.TRUE);
 				//debug(form.getParentField().getObject());
 			} catch (Exception e) {

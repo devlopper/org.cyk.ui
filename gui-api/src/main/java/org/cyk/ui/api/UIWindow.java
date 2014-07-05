@@ -4,6 +4,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
@@ -12,6 +13,8 @@ import org.cyk.ui.api.model.table.Table.UsedFor;
 
 
 public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
+	
+	ValidationPolicy getValidationPolicy();
 	
 	GenericBusiness getGenericBusiness();
 	

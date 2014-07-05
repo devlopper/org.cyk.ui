@@ -22,6 +22,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
+	/*@Inject*/// @Getter protected ValidationPolicy validationPolicy;
 	@Inject @Getter protected UIManager uiManager;
 	@Inject @Getter protected PrimefacesMessageManager messageManager;
 	

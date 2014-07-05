@@ -45,7 +45,7 @@
 			 	<h:form id="form" enctype="multipart/form-data" >
 				 	<pe:layoutPane id="contentp" position="center">
 				 		<p:outputPanel id="contentPanel">
-				 			<p:messages id="messages" globalOnly="true" />
+				 			<p:messages id="messages" globalOnly="true" escape="false"/>
 				 			<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
 				 			<!-- Messages -->
 							<p:outputPanel id="messagePanel" autoUpdate="true">

@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,7 +18,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.EditorInputs;
-import org.cyk.ui.api.editor.input.AbstractInputComponent;
 import org.cyk.ui.api.editor.input.ISelectItem;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputDate;
@@ -111,6 +111,11 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
 		//Dynamically find validation logic
 		//System.out.println("AbstractWebInputComponent.validate() : "+field.getName()+" - " +value+" - ");
+		try {
+			getEditorInputs().getEditor().getWindow().getValidationPolicy().validateField(field,value);
+		} catch (Exception e) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
 		//if success then
 		validatedValue = (VALUE_TYPE) value;
 		
@@ -124,9 +129,8 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	
 	@Override
 	public void updateReadOnlyValue() {
-		System.out.println("AbstractWebInputComponent.updateReadOnlyValue() "+field.getName()+" : "+value);
+		__input__.setValue(value);
 		__input__.updateReadOnlyValue(); 
-		
 		//AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
 	}
 	

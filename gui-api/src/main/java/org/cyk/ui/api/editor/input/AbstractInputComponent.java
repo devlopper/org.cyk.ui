@@ -89,7 +89,6 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 	
 	@Override
 	public void updateReadOnlyValue() {
-		System.out.println("AbstractInputComponent.updateReadOnlyValue() "+field.getName()+" : "+value);
 		readOnlyValue = COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{field,value});
 	}
 	

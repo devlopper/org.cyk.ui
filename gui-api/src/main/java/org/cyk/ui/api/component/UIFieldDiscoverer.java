@@ -21,6 +21,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.ui.api.Debug;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.input.InputDate;
 import org.cyk.ui.api.editor.input.InputMany;
@@ -56,7 +57,7 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 				if(Boolean.TRUE.equals(input.getReadOnly()))
 					input.setRequired(Boolean.FALSE);
 				else
-					input.setRequired(input.getField().isAnnotationPresent(NotNull.class));
+					input.setRequired(!Boolean.TRUE.equals(Debug.getInstance().getInputIgnoreRequired()) && input.getField().isAnnotationPresent(NotNull.class));
 			}
 		}
 		return this;

@@ -14,6 +14,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -31,6 +32,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
+	@Inject @Getter protected ValidationPolicy validationPolicy;
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;
