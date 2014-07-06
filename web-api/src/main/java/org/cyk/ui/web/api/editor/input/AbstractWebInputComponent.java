@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.ISelectItem;
@@ -30,7 +31,7 @@ import org.cyk.ui.web.api.editor.WebEditorInputs;
 import org.cyk.utility.common.annotation.UIField;
 
 @Getter @Setter
-public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutputComponent<VALUE_TYPE> implements Serializable, WebUIInputComponent<VALUE_TYPE> {
+public abstract class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutputComponent<VALUE_TYPE> implements Serializable, WebUIInputComponent<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 6386648827377414199L;
 	
@@ -85,7 +86,7 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	protected Converter converter;
 	protected Object object; 
 	protected UIField annotation;
-	protected VALUE_TYPE validatedValue;
+	protected VALUE_TYPE validatedValue;//TODO is it necessary?
 	protected UIInputComponent<VALUE_TYPE> __input__;
 
 	public AbstractWebInputComponent(WebEditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<VALUE_TYPE> input) {
@@ -109,16 +110,17 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	
 	@SuppressWarnings("unchecked")
 	public void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException{
-		//Dynamically find validation logic
-		//System.out.println("AbstractWebInputComponent.validate() : "+field.getName()+" - " +value+" - ");
 		try {
-			getEditorInputs().getEditor().getWindow().getValidationPolicy().validateField(field,value);
+			validate((VALUE_TYPE) value);
 		} catch (Exception e) {
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
-		//if success then
+	}
+	
+	@Override
+	public void validate(VALUE_TYPE aValue) {
+		__input__.validate(aValue);
 		validatedValue = (VALUE_TYPE) value;
-		
 	}
 
 	@Override
@@ -152,6 +154,16 @@ public class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebInputOutpu
 	@Override
 	public String getTemplateFileAtTop() {
 		return editorInputs.getInputTemplateFileAtTop();
+	}
+	
+	@Override
+	public ValidationPolicy getValidationPolicy() {
+		return __input__.getValidationPolicy();
+	}
+	
+	@Override
+	public void setValidationPolicy(ValidationPolicy aValidationPolicy) {
+		__input__.setValidationPolicy(aValidationPolicy);
 	}
 		
 }

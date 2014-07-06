@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.component.AbstractInputOutputComponent;
 import org.cyk.ui.api.editor.EditorInputs;
@@ -58,6 +59,7 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 	};
 	
 	protected EditorInputs<?, ?, ?, ?> editorInputs;
+	protected ValidationPolicy validationPolicy;
 	protected String label,description;
 	protected VALUE_TYPE value,validatedValue;
 	protected Object object;
@@ -97,7 +99,14 @@ public abstract class AbstractInputComponent<VALUE_TYPE> extends AbstractInputOu
 		throw new IllegalArgumentException("Must not call this method on this object");
 	}
 	
-	public static UIInputComponent<?> create(EditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<?> anInputComponent){
+	@Override
+	public void validate(VALUE_TYPE aValue) {
+		//System.out.println("AbstractWebInputComponent.validate() : "+field.getName()+" - " +aValue);
+		getValidationPolicy().validateField(field,aValue);
+	}
+	
+	public static UIInputComponent<?> create(EditorInputs<?, ?, ?, ?> editorInputs,UIInputComponent<?> anInputComponent,ValidationPolicy aValidationPolicy){
+		anInputComponent.setValidationPolicy(aValidationPolicy);
 		return UIManager.getInstance().getComponentCreateMethod().execute(new Object[]{editorInputs,anInputComponent});
 	}
 	

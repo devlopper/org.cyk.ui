@@ -88,10 +88,11 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
 		Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
 		editor.setWindow(this);
+		configureBeforeConstruct(editor);
 		((AbstractBean)editor).postConstruct();
 		editor.setCrud(crud);
 		editor.build(anObjectModel);
-		configure(editor);
+		configureAfterConstruct(editor);
 		editors.add(editor);
 		return editor;
 	}
@@ -104,9 +105,10 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		table.setUsedFor(usedFor);
 		table.setCrud(crud);
 		table.setWindow(this);
+		configureBeforeConstruct(table);
 		((AbstractBean)table).postConstruct();
 		table.build(aDataClass, TableRow.class, TableColumn.class, TableCell.class);
-		configure(table);
+		configureAfterConstruct(table);
 		//table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
 		//table.getSaveRowCommand().setMessageManager(getMessageManager());
 		//table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
@@ -132,8 +134,9 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	public EventCalendar eventCalendarInstance(Class<?> aClass) {
 		EventCalendar eventCalendar = eventCalendarInstance();
 		eventCalendar.setWindow(this);
+		configureBeforeConstruct(eventCalendar);
 		((AbstractBean)eventCalendar).postConstruct();
-		configure(eventCalendar);
+		configureAfterConstruct(eventCalendar);
 		//eventCalendar.getAddEventCommand().getCommand().setMessageManager(getMessageManager());
 		eventCalendars.add(eventCalendar);
 		return eventCalendar;
@@ -143,7 +146,11 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		System.out.println("AbstractWindow.onMessageDialogBoxClosed()");
 	}
 	
-	private void configure(UIWindowPart aWindowPart){
+	private void configureBeforeConstruct(UIWindowPart aWindowPart){
+		aWindowPart.setValidationPolicy(getValidationPolicy());
+	}
+	
+	private void configureAfterConstruct(UIWindowPart aWindowPart){
 		Collection<Field> fields = commonUtils.getAllFields(aWindowPart.getClass());
 		for(Field field : fields)
 			if(UICommandable.class.isAssignableFrom(field.getType())){

@@ -7,6 +7,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
@@ -25,6 +26,7 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 
 	private static final long serialVersionUID = -7832418987283686453L;
 	
+	protected ValidationPolicy validationPolicy; 
 	protected UIMenu menu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;

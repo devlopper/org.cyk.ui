@@ -94,7 +94,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 			createComponent(component);
 		}else if(component instanceof UIInputComponent<?>){
 			if(currentLabel!=null){
-				UIInputComponent<?> iinput = AbstractInputComponent.create(this,(UIInputComponent<?>) component);
+				UIInputComponent<?> iinput = AbstractInputComponent.create(this,(UIInputComponent<?>) component,getEditor().getValidationPolicy());
 				if(iinput==null){
 					log.warning("No input component implementation can be found for Type "+component.getFamily()+". It will be ignored");
 					return;
@@ -118,7 +118,6 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 				createComponent(message);
 			}
 		}
-		
 		layout.addColumn(component);
 	}
 		

@@ -11,6 +11,7 @@ import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIWindow;
@@ -36,6 +37,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	 * to keep navigation trace
 	 */
 	protected Stack<EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> stack = new Stack<>();
+	@Setter @Getter protected ValidationPolicy validationPolicy;
 	@Getter protected UICommandable submitCommand,backCommand,resetValuesCommand,closeCommand,switchCommand;
 	@Getter protected Collection<UICommand> commands;
 	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/,onDebugSubmitMethodMain;

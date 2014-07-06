@@ -25,7 +25,7 @@ public abstract class AbstractInputOutputComponent<VALUE_TYPE> extends AbstractB
 	protected UIManager uiManager;
 	
 	public AbstractInputOutputComponent() {
-		constructor(/*(Class<VALUE_TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0]*/ valueTypeClass(), null);
+		constructor(valueTypeClass(), null);
 	}
 	
 	public AbstractInputOutputComponent(Class<VALUE_TYPE> aClass,VALUE_TYPE aValue) {

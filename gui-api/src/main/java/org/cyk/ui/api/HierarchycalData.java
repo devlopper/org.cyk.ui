@@ -18,7 +18,7 @@ import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @Deprecated
-public class HierarchycalData<DATA> extends AbstractBean implements UIWindowPart,Serializable {
+public class HierarchycalData<DATA> extends AbstractBean implements /*UIWindowPart,*/Serializable {
 
 	private static final long serialVersionUID = -9086692457789120721L;
 	
@@ -67,8 +67,8 @@ public class HierarchycalData<DATA> extends AbstractBean implements UIWindowPart
 		LINK.execute(new Object[]{parent,child});
 	}
 	
-	@Override
-	public void targetDependentInitialisation() {} 
+	//@Override
+	//public void targetDependentInitialisation() {} 
 	
 	private String text(String id){
 		return getWindow().getUiManager().getLanguageBusiness().findText(id);

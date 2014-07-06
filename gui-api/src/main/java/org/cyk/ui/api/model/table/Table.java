@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
@@ -41,7 +42,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	private static final long serialVersionUID = -7832418987283686453L;
 	
 	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
-	
+	protected ValidationPolicy validationPolicy; 
 	protected AbstractIdentifiable master;
 	protected UIMenu menu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
@@ -198,7 +199,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	public boolean addCell(TableRow<DATA> row, TableColumn column, DefaultCell cell) {
 		for(UIInputComponent<?> input : row.getInputComponents())
 			if(input.getField().getName().equals(column.getFieldName())){
-				((TableCell)cell).setInputComponent(AbstractInputComponent.create(null,input));
+				((TableCell)cell).setInputComponent(AbstractInputComponent.create(null,input,validationPolicy));
 				break;
 			}
 		return super.addCell(row, column, cell);
