@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test;
+package org.cyk.ui.test.model;
 
 import java.math.BigDecimal;
 

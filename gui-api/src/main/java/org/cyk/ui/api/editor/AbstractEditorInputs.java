@@ -43,7 +43,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	
 	@Getter @Setter protected Object objectModel;
 	protected Collection<Class<?>> groups = new LinkedHashSet<>();
-	@Getter protected Collection<UIInputOutputComponent<?>> components = new LinkedHashSet<>();
+	@Getter protected Collection<UIInputOutputComponent<?>> components;
 	
 	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	
@@ -71,10 +71,15 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 		if(uiEditor!=null){
 			layout.setColumnsCount(uiEditor.columnsCount());
 		}
+		if(getEditor().getWindow().getEditorInputsEventListenerMethod()!=null)
+			getEditor().getWindow().getEditorInputsEventListenerMethod().execute(this);
 		((AbstractBean)layout).postConstruct();
 		layout.addRow();
 		discoverer.setObjectModel(objectModel);
-		for(UIInputOutputComponent<?> component : discoverer.run(crud).getComponents()){
+		components = new ArrayList<>(discoverer.run(crud).getComponents());
+		normalize();
+		for(UIInputOutputComponent<?> component : components){
+			//System.out.println(component.getFamily()+"("+component.getWidth()+" , "+component.getHeight()+")");
 			//for each input we need a label
 			if(component instanceof UIInputComponent<?>){
 				add(new OutputLabel(((UIInputComponent<?>)component).getLabel()));
@@ -82,6 +87,19 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 				((UIOutputSeparator)component).setWidth(layout.getColumnsCount());
 			} 
 			add(component);
+		}
+	}
+	
+	private void normalize(){
+		int i = 0;
+		int l = components.size();
+		for(UIInputOutputComponent<?> component : components){
+			i++;
+			//last row
+			if(i==l){
+				if(component.getWidth()<(layout.getColumnsCount()/2))
+					component.setWidth(layout.getColumnsCount());
+			}
 		}
 	}
 

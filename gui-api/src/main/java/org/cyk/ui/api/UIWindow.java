@@ -4,14 +4,19 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
+import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
+import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.Table.UsedFor;
+import org.cyk.utility.common.AbstractMethod;
 
 
 public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
+	
+	ValidationPolicy getValidationPolicy();
 	
 	GenericBusiness getGenericBusiness();
 	
@@ -64,4 +69,9 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	EventCalendar eventCalendarInstance(Class<?> aDataClass);
 	
 	EventCalendar eventCalendarInstance();
+	
+	AbstractMethod<Object, EditorInputs<EDITOR, OUTPUTLABEL,INPUT,SELECTITEM>> getEditorInputsEventListenerMethod();
+	
+	void setEditorInputsEventListenerMethod(AbstractMethod<Object, EditorInputs<EDITOR, OUTPUTLABEL,INPUT,SELECTITEM>> aMethod);
+	
 }

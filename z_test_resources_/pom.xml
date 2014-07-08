@@ -9,10 +9,9 @@
 		<version>0.0.1</version>
 	</parent>
 
-	<name>Desktop User Interface API</name>
+	<name>User Interface Test Resources</name>
 
-	<groupId>org.cyk.ui.desktop</groupId>
-	<artifactId>desktop-api</artifactId>
+	<artifactId>test-resources</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>

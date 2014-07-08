@@ -21,7 +21,7 @@ public class PrimefacesMessageManager extends WebUIMessageManager implements Ser
 	
 	@Override
 	public void showDialog() {
-        RequestContext.getCurrentInstance().showMessageInDialog(facesMessage);  
+        RequestContext.getCurrentInstance().showMessageInDialog(builtMessage);  
 	}
 
 }

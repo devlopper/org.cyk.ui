@@ -3,5 +3,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
  <application>
   <resource-handler>org.cyk.ui.web.api.handler.DynamicResourceHandler</resource-handler>
+  <!-- Because of glassfish Null String Issue -->
+  <el-resolver>org.cyk.ui.web.api.resolver.NullStringResolver</el-resolver>
  </application>
 </faces-config>

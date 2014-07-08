@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test;
+package org.cyk.ui.test.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.validation.Client;
 
-@Getter @Setter
+@Getter @Setter 
 public class Master {
 
 	@UIField(groups=Client.class,description="Master name")
@@ -24,7 +24,7 @@ public class Master {
 	@UIField
 	private Float aFloat;
 	
-	@UIField(manyRelationshipClass=Details.class)
+	//@UIField(manyRelationshipClass=Details.class)
 	private Collection<Details> details = new ArrayList<>();
 	
 }

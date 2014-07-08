@@ -9,14 +9,21 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
  	
- 	<!--style>
+ 	<style>
 		.pe-dynaform-grid{
 			
+		}
+		.pe-dynaform-cell label{
+			vertical-align: top !important;
+			text-align: left;
+		}
+		.pe-dynaform-grid tr{
+			vertical-align: top !important;
 		}
 		.pe-dynaform-grid td{
 			border: 1px solid red;
 		}
-	</style-->
+	</style>
  	
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{testEditorController}" />

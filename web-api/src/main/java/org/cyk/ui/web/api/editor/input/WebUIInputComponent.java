@@ -6,9 +6,10 @@ import javax.faces.convert.Converter;
 import javax.faces.validator.ValidatorException;
 
 import org.cyk.ui.api.editor.input.UIInputComponent;
+import org.cyk.ui.web.api.WebUIInputOutputComponent;
 
 
-public interface WebUIInputComponent<VALUE_TYPE> extends WebUIIComponent<VALUE_TYPE>,UIInputComponent<VALUE_TYPE> {
+public interface WebUIInputComponent<VALUE_TYPE> extends WebUIInputOutputComponent<VALUE_TYPE>,UIInputComponent<VALUE_TYPE> {
 
 	Converter getConverter();
 	

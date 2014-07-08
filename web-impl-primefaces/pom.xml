@@ -52,6 +52,12 @@
 			<version>0.0.1</version>
 			<type>ejb</type>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.cyk.ui</groupId>
+			<artifactId>test-resources</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 </project>

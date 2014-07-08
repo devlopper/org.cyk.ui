@@ -38,6 +38,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	 */
 	protected Stack<EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> stack = new Stack<>();
 	@Setter @Getter protected ValidationPolicy validationPolicy;
+	
 	@Getter protected UICommandable submitCommand,backCommand,resetValuesCommand,closeCommand,switchCommand;
 	@Getter protected Collection<UICommand> commands;
 	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/,onDebugSubmitMethodMain;

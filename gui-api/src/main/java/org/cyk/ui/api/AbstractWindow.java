@@ -20,12 +20,14 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
+import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
 import org.cyk.ui.api.model.table.TableRow;
+import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,Serializable {
@@ -33,6 +35,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	private static final long serialVersionUID = 7282005324574303823L;
 
 	@Inject @Getter protected ValidationPolicy validationPolicy;
+	@Getter @Setter protected AbstractMethod<Object, EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>> editorInputsEventListenerMethod;
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;

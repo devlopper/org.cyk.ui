@@ -62,7 +62,7 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 		}
 		return this;
 	}
-	
+		
 	private void build(Object objectModel) {
 		//Collection<Class<? extends Annotation>> annotationClasses = new ArrayList<>();
 		//annotationClasses.add(UIField.class);
