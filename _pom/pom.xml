@@ -24,7 +24,7 @@
 		<module>../web-primefaces-api</module>
 		<module>../desktop-api</module>
 		<module>../desktop-swing-api</module>
-		<module>../_z_test_resources_</module>
+		<module>../z_test_resources_</module>
 	</modules>
 
 	<dependencies>

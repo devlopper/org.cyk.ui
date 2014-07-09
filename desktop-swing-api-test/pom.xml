@@ -30,6 +30,12 @@
 			<type>ejb</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.cyk.ui</groupId>
+			<artifactId>test-resources</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
 		<!--dependency>
 		    <groupId>org.glassfish.main.appclient.client</groupId>
 		    <artifactId>gf-client</artifactId>
