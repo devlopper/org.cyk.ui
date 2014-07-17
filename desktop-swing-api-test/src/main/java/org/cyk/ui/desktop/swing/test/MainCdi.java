@@ -12,6 +12,8 @@ public class MainCdi {
 	@Inject private SimpleJFrame simpleJFrame;
 	
 	public void main(@Observes ContainerInitialized containerInitialized) {
+		simpleJFrame.setVisible(true);
+		System.out.println("MainCdi.main() : "+simpleJFrame);
 		try {
 			InitialContext ctx = new InitialContext();
 			RemoteConnectivityChecker remoteConnectivityChecker = (RemoteConnectivityChecker) ctx.lookup("RemoteConnectivityChecker");
@@ -19,7 +21,7 @@ public class MainCdi {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		simpleJFrame.setVisible(true);
+		
 	}
 	
 }

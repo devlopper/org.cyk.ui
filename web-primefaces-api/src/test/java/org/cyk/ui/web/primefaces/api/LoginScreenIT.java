@@ -3,6 +3,11 @@ package org.cyk.ui.web.primefaces.api;
 import java.io.File;
 import java.net.URL;
 
+import org.cyk.ui.web.primefaces.api.todel.Credentials;
+import org.cyk.ui.web.primefaces.api.todel.HomePage;
+import org.cyk.ui.web.primefaces.api.todel.LoginController;
+import org.cyk.ui.web.primefaces.api.todel.LoginPage;
+import org.cyk.ui.web.primefaces.api.todel.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.InitialPage;

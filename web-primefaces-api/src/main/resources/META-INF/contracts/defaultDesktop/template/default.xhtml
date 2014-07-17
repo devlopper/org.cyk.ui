@@ -19,7 +19,24 @@
 		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces" />
 		
 		<title><h:outputText value="#{empty pageController.title?'CYK Systems':pageController.title}" /></title>
-		
+
+		<script type="text/javascript">
+	        $(document).ready(function() {
+	        	//Ready
+	        	#{pageController.onDocumentReadyJavaScript}
+	        	//Loaded
+	        	$(window).on('load', function() { #{pageController.onDocumentLoadJavaScript} });
+	        	//Before unloadind
+	        	$(window).bind('beforeunload', function(){
+					#{pageController.onDocumentBeforeUnLoadJavaScript}
+					//the custom message for page unload doesn't work on Firefox
+					if(#{pageController.onDocumentBeforeUnLoadWarnAsString})
+						return '#{pageController.onDocumentBeforeUnLoadWarningMessage}';
+				
+				});
+			});  
+	     </script>  
+	     
     </h:head>
     
     <ui:insert name="metadata"/>
@@ -109,10 +126,7 @@
  		
  		<h:outputScript>
  			$ = jQuery;
-			$(document).ready(function() {
-	        	#{pageController.onDocumentReadyJavaScript}
-	        });
-		
+			
 	    	function clickEditButtonLastRow(dataTableStyleClass){
 	    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
 					 $(this).click();	
@@ -138,6 +152,7 @@
 					 $(this).click();	
 				});
 			}	
+			
 		</h:outputScript>
  		
     </h:body>

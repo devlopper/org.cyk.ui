@@ -53,6 +53,9 @@ public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimef
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
 	}
-
-
+	/*
+	@Override
+	public Boolean getOnDocumentBeforeUnLoadWarn() {
+		return Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
+	}*/
 }

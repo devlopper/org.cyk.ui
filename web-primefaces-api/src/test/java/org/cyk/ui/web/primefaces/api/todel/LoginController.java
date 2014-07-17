@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.api;
+package org.cyk.ui.web.primefaces.api.todel;
 
 import java.io.Serializable;
 

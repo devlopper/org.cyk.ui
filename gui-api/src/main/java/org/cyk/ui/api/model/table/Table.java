@@ -3,6 +3,7 @@ package org.cyk.ui.api.model.table;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -59,6 +61,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected List<DATA> hierarchyData = new ArrayList<>();
 	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
+	protected AbstractMethod<Object, Object> selectObjectMethod;
 	
 	@Override
 	protected void initialisation() {
@@ -236,6 +239,47 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	}
 	
 	public void targetDependentInitialisation(){}
+	
+	public void select(Object object){
+		if(selectObjectMethod==null)
+			return;
+		selectObjectMethod.execute(object);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <B extends AbstractDataTreeNodeBusiness<? extends AbstractDataTreeNode>> void handle(B business){
+		for(AbstractDataTreeNode node : business.findHierarchies())
+			hierarchyData.add((DATA) node);
+		
+		Collection<DATA> collection = new ArrayList<>();
+		if(master==null)
+			for(DATA node : hierarchyData)
+				collection.add((DATA) node);
+		else{
+			//business.findHierarchy( master);
+			master = (AbstractIdentifiable) getMasterReferenceFromHierarchy(hierarchyData);
+			if( ((AbstractDataTreeNode)master).getChildren()!=null)
+				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)master).getChildren())
+					collection.add((DATA) node);	
+		}
+		
+		for(DATA node : collection)
+			addRow(node);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private DATA getMasterReferenceFromHierarchy(List<DATA> list){
+		Integer index = list.indexOf(master);
+		if(index>-1)
+			return list.get(index);
+		for(DATA data : list){
+			DATA c = getMasterReferenceFromHierarchy( (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
+			if(c!=null)
+				return c;
+		}
+		return null;
+	}
 	
 	/**/
 	

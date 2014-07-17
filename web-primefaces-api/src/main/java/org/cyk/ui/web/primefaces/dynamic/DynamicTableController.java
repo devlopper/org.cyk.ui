@@ -8,14 +8,10 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
-import org.cyk.system.root.business.impl.AbstractBusinessLayer;
+import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
 import org.cyk.utility.common.AbstractMethod;
@@ -37,14 +33,10 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz(),UsedFor.ENTITY_INPUT,null);
 		table.setEditable(true);
 		table.setMaster(identifiable);
-		if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
-			new TreeHandler<DataTreeTypeBusiness, DataTreeType>(dataTreeTypeBusiness,(DataTreeType)table.getMaster()).handle();
-		}else if(AbstractDataTree.class.isAssignableFrom(businessEntityInfos.getClazz())){
+		if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
 			@SuppressWarnings("rawtypes")
-			AbstractDataTreeBusiness bean = 
-					(AbstractDataTreeBusiness) AbstractBusinessLayer.findTypedBusinessBean((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
-			new TreeHandler<AbstractDataTreeBusiness<AbstractDataTree<DataTreeType>,DataTreeType>, AbstractDataTree<DataTreeType>>(
-					bean,(AbstractDataTree<DataTreeType>)table.getMaster()).handle();
+			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
+			table.handle(bean);
 		}else{
 			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
 		}
@@ -57,6 +49,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 				return null;
 			}
 		});
+		
 	}
 	
 	@Override
@@ -67,35 +60,6 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 	@Override
 	public Boolean getShowContextualMenu() {
 		return table.getShowHierarchy();
-	}
-	
-	private class TreeHandler<B extends AbstractDataTreeNodeBusiness<T>,T extends AbstractDataTreeNode> implements Serializable{
-		
-		private static final long serialVersionUID = 7193929565231451122L;
-		private B business;
-		private T master;
-		
-		private TreeHandler(B business, T master) {
-			super();
-			this.business = business;
-			this.master = master;
-		}
-
-		public void handle(){
-			if(master==null)
-				for(T node : business.findHierarchies())
-					table.addRow(node);
-			else{
-				business.findHierarchy(master);
-				if(master.getChildren()!=null)
-					for(AbstractDataTreeNode node : master.getChildren())
-						table.addRow(node);
-				
-			}
-			for(T node : business.findHierarchies())
-				table.getHierarchyData().add(node);
-		}
-		
 	}
 
 }

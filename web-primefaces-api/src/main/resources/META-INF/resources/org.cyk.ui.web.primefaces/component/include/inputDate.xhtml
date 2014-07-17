@@ -6,7 +6,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <body>
 	<ui:composition>
 		
@@ -17,7 +18,9 @@
 				<p:calendar id="calendar" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" mode="#{data.mode}"
 					showOn="#{data.showOn}" navigator="#{data.navigator}" showButtonPanel="#{data.showButtonPanel}" mindate="#{data.minDate}" maxdate="#{data.maxDate}"
 					pattern="#{data.pattern}" locale="#{data.locale}" required="#{data.required}" requiredMessage="#{data.requiredMessage}" validator="#{data.validate}"
-					rendered="#{not data.readOnly}" />
+					rendered="#{not data.readOnly}" pt:placeholder="#{data.label}">
+					<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
+				</p:calendar>
 			</ui:define>
 		</ui:decorate>
 		

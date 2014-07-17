@@ -96,7 +96,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		super.initialisation();
 		INSTANCE = this;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
-		
+		//System.out.println("string.format.pattern.date : "+text("string.format.pattern.date"));
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
 		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
 		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));

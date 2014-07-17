@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractWindow;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.table.Table;
 import org.omnifaces.util.Faces;
 
@@ -21,7 +22,9 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	
 	@Inject protected WebManager webManager;
 	@Inject protected WebNavigationManager navigationManager;
-	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,onDocumentReadyJavaScript;
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,onDocumentReadyJavaScript,onDocumentLoadJavaScript,
+		onDocumentBeforeUnLoadJavaScript,onDocumentBeforeUnLoadWarningMessage;
+	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn;
 	private String windowMode;
 	
 	@Override
@@ -32,7 +35,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 		if(StringUtils.isEmpty(windowMode))
 			windowMode = webManager.getRequestParameterWindowModeNormal();
 		url = navigationManager.getRequestUrl();
-		
+		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 	}
 	
 	@Override
@@ -57,6 +60,10 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 			return super.getTitle();
 		return contentTitle;
 	}*/
+	
+	public String getOnDocumentBeforeUnLoadWarnAsString(){
+		return Boolean.TRUE.equals(getOnDocumentBeforeUnLoadWarn())?Boolean.TRUE.toString():Boolean.FALSE.toString();
+	}
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))

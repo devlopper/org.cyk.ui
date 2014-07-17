@@ -176,13 +176,13 @@ border: none;
 }
 
 
-/* tree */
-
-.tree-node-selected-default{
-	background: yellow;
+/*---------------------------------------------------------- Tree  ------------------------------------------------------------------*/
+.cyk-ui-tree-node-selected{
 	font-weight: bold;
+	font-style: italic;
+	text-decoration: underline;
+	
 }
-
 /*---------------------------------------------------------- Editor  ------------------------------------------------------------------*/
 .cyk-ui-editor-dynamic-input-readonly{
 	font-weight: bold;

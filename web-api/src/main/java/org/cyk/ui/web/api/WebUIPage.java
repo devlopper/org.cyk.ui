@@ -16,5 +16,13 @@ public interface WebUIPage<FORM,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extend
 	String getUrl();
 	
 	String getOnDocumentReadyJavaScript();
+	
+	String getOnDocumentLoadJavaScript();
+	
+	String getOnDocumentBeforeUnLoadJavaScript();
+	
+	Boolean getOnDocumentBeforeUnLoadWarn();
+	
+	String getOnDocumentBeforeUnLoadWarningMessage();
 
 }

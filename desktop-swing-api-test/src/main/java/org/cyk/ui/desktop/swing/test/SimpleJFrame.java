@@ -22,7 +22,7 @@ public class SimpleJFrame extends JFrame {
 
 	//private MyEntity myEntity = new MyEntity();
 	
-	@Inject private SwingMessageManager swingMessageManager;
+	//@Inject private SwingMessageManager swingMessageManager;
 	
 	public SimpleJFrame() {
 		// TODO Auto-generated constructor stub
@@ -46,7 +46,7 @@ public class SimpleJFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("SimpleJFrame.SimpleJFrame().new ActionListener() {...}.actionPerformed() : "+swingMessageManager);
-				swingMessageManager.message(SeverityType.INFO, "This is a message", false).showDialog();
+				//swingMessageManager.message(SeverityType.INFO, "This is a message", false).showDialog();
 				//System.out.println(MessageManager.INSTANCE);
 			}
 		});

@@ -14,7 +14,7 @@ public class Debug implements Serializable {
 	
 	private static final Debug INSTANCE = new Debug();
 	
-	private final Boolean inputIgnoreRequired = Boolean.TRUE;
+	private final Boolean inputIgnoreRequired = Boolean.FALSE;
 	
 	/**/
 	

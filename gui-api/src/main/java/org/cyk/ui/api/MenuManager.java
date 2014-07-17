@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.model.pattern.tree.DataTreeType;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
@@ -58,7 +58,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		for(BusinessEntityInfos businessEntityInfos : list){
 			commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 			p.setBusinessEntityInfos(businessEntityInfos);
-			if(DataTreeType.class.isAssignableFrom(businessEntityInfos.getClazz())){
+			if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
 				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);	
 			}else{
 				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
@@ -79,6 +79,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	private UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
+		System.out.println("MenuManager.commandable() : "+labelId);
 		UICommandable commandable = new DefaultCommandable();
 		commandable.setCommandRequestType(aCommandRequestType);
 		commandable.setLabel(languageBusiness.findText(labelId));

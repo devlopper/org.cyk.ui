@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.OneToOne;
@@ -31,10 +32,13 @@ import org.cyk.ui.api.editor.input.InputText;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelect;
 import org.cyk.ui.api.editor.output.OutputSeparator;
+import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.UIField;
 import org.cyk.utility.common.annotation.UIField.BreakLineAfter;
 import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
 import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
+import org.cyk.utility.common.annotation.UIFieldOrder;
+import org.cyk.utility.common.annotation.UIFieldOrders;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @Log
@@ -49,6 +53,14 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 	public UIFieldDiscoverer run(Crud crud){
 		components = new ArrayList<>();
 		build(objectModel);
+		//sorting
+		
+		/*
+		if(orders!=null){
+			for(UIFieldOrder order : orders.values())
+				System.out.println(order.firstFieldName()+" - "+order.secondFieldName());
+		}
+		*/
 		for(UIInputOutputComponent<?> component : components){
 			if(component instanceof UIInputComponent<?>){
 				UIInputComponent<?> input = (UIInputComponent<?>) component;
@@ -66,13 +78,50 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 	private void build(Object objectModel) {
 		//Collection<Class<? extends Annotation>> annotationClasses = new ArrayList<>();
 		//annotationClasses.add(UIField.class);
-		Collection<Field> fields =  commonUtils.getAllFields(objectModel.getClass()); //commonUtils.getAllFields(objectModel.getClass(), annotationClasses);
+		List<Field> fields =  new ArrayList<>(commonUtils.getAllFields(objectModel.getClass())); //commonUtils.getAllFields(objectModel.getClass(), annotationClasses);
+		//filtering
+		for(int i=0;i<fields.size();)
+			if(uiFieldOf(fields.get(i),objectModel.getClass())==null)
+				fields.remove(i);
+			else
+				i++;
+		//sorting
+		UIFieldOrders orders = CommonUtils.getInstance().getAnnotation(objectModel.getClass(), UIFieldOrders.class);
+		if(orders!=null)
+			for(int i=0;i<fields.size();i++){
+				Field field = fields.get(i);
+				String underFieldName = null;
+				for(UIFieldOrder order : orders.values())
+					if(StringUtils.equals(field.getName(),order.fieldName())){
+						underFieldName = order.underFieldName();
+						break;
+					}
+				if(underFieldName==null){
+				
+					continue;
+				}
+				Integer underFieldNameIndex= null;
+				for(int j=0;j<fields.size();j++)
+					if(fields.get(j).getName().equals(underFieldName)){
+						underFieldNameIndex = j;
+						break;
+					}
+				if(underFieldNameIndex==null || i>underFieldNameIndex){
+					
+					continue;
+				}
+				fields.remove(i);
+				if(underFieldNameIndex<fields.size())
+					fields.add(underFieldNameIndex+1, field);
+				else
+					fields.add(field);
+				
+			}
+			//Collections.sort(fields, new UIFieldOrderComparator(fields,orders));
 		
 		for(Field field : fields){
 			Boolean add = Boolean.TRUE;
 			UIFieldInfos uiFieldInfos = uiFieldOf(field,objectModel.getClass());
-			if(uiFieldInfos==null)
-				continue;
 			if(!groups.isEmpty() /*&& ArrayUtils.isNotEmpty(annotation.groups())*/){
 				Boolean found = Boolean.FALSE;
 				for(Class<?> clazz : groups)
@@ -170,5 +219,8 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 			return null;
 		return new UIFieldInfos(annotation, fieldType);
 	}
+
+	
+	/**/
 
 }

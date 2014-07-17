@@ -9,11 +9,11 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.model.table.HierarchyNode;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
 import org.cyk.ui.api.model.table.TableRow;
+import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.editor.input.WebUIInputSelectOne;
@@ -68,6 +68,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 				TableRow<?> row = (TableRow<?>) rowEditEvent.getObject();
 				cancelRowCommand.execute(row.getData());
 			}};
+		
 	}
 	
 	@Override
@@ -76,7 +77,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 			Field field = commonUtils.getField(getWindow(), this);
 			menuModel = CommandBuilder.getInstance().menuModel(menu, window.getClass(), field.getName());
 			if(Boolean.TRUE.equals(getShowHierarchy())){
-				HierarchyNode hierarchyNode = new HierarchyNode(null);
+				WebHierarchyNode hierarchyNode = new WebHierarchyNode(null);
 				hierarchyNode.setLabel(getTitle());
 				primefacesTree = new PrimefacesTree(hierarchyNode);
 				for(DATA d : hierarchyData)
@@ -90,6 +91,16 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 						return null;
 					}
 				});
+				selectObjectMethod = new AbstractMethod<Object, Object>() {
+					private static final long serialVersionUID = -9071786035119019765L;
+					@Override
+					protected Object __execute__(Object parameter) {
+						primefacesTree.expand(parameter,Boolean.TRUE);
+						return null;
+					}
+				};
+				
+				select(master);
 			}
 		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
 			

@@ -10,7 +10,7 @@ public class CascadeStyleSheet implements Serializable {
 
 	private static final long serialVersionUID = 738142431416512052L;
 
-	private String clazz,inline;
+	private String clazz="",inline="";
 	
 	public CascadeStyleSheet addClass(String aClazz){
 		clazz=clazz+" "+aClazz;
