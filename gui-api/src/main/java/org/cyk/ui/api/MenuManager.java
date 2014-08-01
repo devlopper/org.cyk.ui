@@ -79,7 +79,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	private UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
-		System.out.println("MenuManager.commandable() : "+labelId);
 		UICommandable commandable = new DefaultCommandable();
 		commandable.setCommandRequestType(aCommandRequestType);
 		commandable.setLabel(languageBusiness.findText(labelId));

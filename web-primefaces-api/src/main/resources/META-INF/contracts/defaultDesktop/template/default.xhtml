@@ -16,8 +16,14 @@
     	<link href="#{request.contextPath}/contracts/defaultDesktop/css/common.css" rel="stylesheet" type="text/css"/>
 		-->
 		
+		
 		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces" />
 		
+		<!--
+		<ui:repeat var="link" value="#{webManager.headLinks}">
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/#{link}" />
+		</ui:repeat>
+		-->
 		<title><h:outputText value="#{empty pageController.title?'CYK Systems':pageController.title}" /></title>
 
 		<script type="text/javascript">
@@ -42,6 +48,8 @@
     <ui:insert name="metadata"/>
  
 	<h:body>
+		
+		<ui:include src="#{webManager.decoratedTemplateInclude}" />
 		
 		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
 			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" rendered="#{pageController.showMainMenu}"><h:form id="formNorth">

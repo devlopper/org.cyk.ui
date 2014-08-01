@@ -7,6 +7,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
@@ -23,14 +24,16 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Override
 	protected void initialisation() {
-		super.initialisation();
 		INSTANCE = this;
+		super.initialisation();
 	}
 	
 	private final String clientValidationGroupClass = Client.class.getName();
 	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
 	private final String messageDialogWidgetId = "messageDialogWidget";
+	
+	@Setter private String decoratedTemplateInclude;
 	
 	private final String requestParameterClass = "clazz";
 	private final String requestParameterIdentifiable = "identifiable";

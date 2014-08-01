@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test;
+package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
@@ -8,8 +8,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
-
 @Named
 @RequestScoped
 @Getter
@@ -17,14 +15,5 @@ import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 public class IndexController extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-
-			
-	@Override
-	protected void initialisation() { 
-		super.initialisation();
-		//uiManager.registerClassKey(MyEntity.class,MyDetails.class,MyDetails2.class,Master.class);
-	}
-	
-
 
 }

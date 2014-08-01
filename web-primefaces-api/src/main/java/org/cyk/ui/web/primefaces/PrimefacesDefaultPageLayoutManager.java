@@ -1,5 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -10,7 +12,7 @@ import org.cyk.ui.web.api.AbstractWebPageLayoutManager;
 import org.primefaces.extensions.model.layout.LayoutOptions;
 
 @Named("webPageLayoutManager") @SessionScoped @Getter @Setter
-public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutManager {
+public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutManager implements Serializable {
 
 	private static final long serialVersionUID = 2282543573812258638L;
 

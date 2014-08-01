@@ -56,9 +56,11 @@ public class NullStringResolver extends ELResolver implements Serializable {
 
     @Override
     public Object convertToType(ELContext context, Object obj, Class<?> targetType) {
-        if (String.class.equals(targetType) && (obj == null || ((String) obj).isEmpty())) {
+        /*if (String.class.equals(targetType) && (obj == null || ((String) obj).isEmpty())) {
             context.setPropertyResolved(true);
-        }
+        }*/
+    	 if (String.class.equals(targetType) && (obj == null ||  ( (obj instanceof String) && ((String) obj).isEmpty()) )) 
+	         context.setPropertyResolved(true);
         return null;
     }
 }
