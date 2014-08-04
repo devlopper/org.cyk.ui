@@ -24,7 +24,7 @@
 			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/#{link}" />
 		</ui:repeat>
 		-->
-		<title><h:outputText value="#{empty pageController.title?'CYK Systems':pageController.title}" /></title>
+		<title><h:outputText value="#{empty pageController.title?uiManager.businessSystemName:pageController.title}" /></title>
 
 		<script type="text/javascript">
 	        $(document).ready(function() {
@@ -53,15 +53,15 @@
 		
 		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
 			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" rendered="#{pageController.showMainMenu}"><h:form id="formNorth">
-				<p:menubar id="menubar" model="#{pageController.mainMenuModel}" />
+				<ui:include src="#{primefacesDefaultDesktopLayoutManager.northInclude}" />
 			</h:form></pe:layoutPane>
 			
 			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent" rendered="#{pageController.showContextualMenu}">
-				 <h:form id="contextualMenuForm">
-					 <ui:insert name="westContent">
-						<p:tabMenu model="#{pageController.contextualMenuModel}" />
-					 </ui:insert>
-				 </h:form>
+				<h:form id="contextualMenuForm">
+					<ui:insert name="westContent">
+						<ui:include src="#{primefacesDefaultDesktopLayoutManager.westInclude}" />
+					</ui:insert>
+				</h:form>
 			</pe:layoutPane>
 			
 			

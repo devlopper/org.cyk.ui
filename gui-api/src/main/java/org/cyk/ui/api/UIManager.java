@@ -38,6 +38,7 @@ import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.UIField.TextValueType;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
@@ -45,7 +46,9 @@ import org.cyk.utility.common.cdi.AbstractStartupBean;
 public class UIManager extends AbstractStartupBean implements Serializable {
 
 	private static final long serialVersionUID = -9062523105492591265L;
-
+	
+	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
+	
 	private static UIManager INSTANCE;
 	
 	public static UIManager getInstance() {
@@ -69,6 +72,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String crudUpdateParameter="update";
 	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
+	
+	private String businessSystemName;
 	
 	public String getCrudParameterValue(Crud crud){
 		crud=crud==null?Crud.READ:crud;
@@ -95,13 +100,18 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
+		businessSystemName = businessManager.findSystemName();
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
 		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
 		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
 		
-		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos()){
-			registerClassKey(infos);
+		BUSINESS_ENTITIES_INFOS_MAP.clear();
+		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos())
+			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
+		
+		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
+			registerClassKey(entry.getValue());
 		}
 				
 		collectionLoadMethod = new CollectionLoadMethod() {
@@ -122,7 +132,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return l;
 			}
 		};
-		
+		 
 		toStringMethod = new ToStringMethod() {
 			private static final long serialVersionUID = 7479681304478557922L;
 			@Override
@@ -130,6 +140,21 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return parameter.toString();
 			}
 		};
+	}
+	
+	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
+		businessEntityInfos.setUiIconName(iconName);
+		businessEntityInfos.setUiIconExtension(iconExtension);
+		businessEntityInfos.setUiConsultViewId(consultViewId);
+	}
+	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
+		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+"ConsultView");
+	}
+	
+	public String identifiableConsultViewId(AbstractIdentifiable identifiable){
+		return businessEntityInfos(identifiable.getClass()).getUiConsultViewId();
 	}
 	
 	public ComponentCreateMethod getComponentCreateMethod() {
@@ -156,9 +181,12 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
 		for(BusinessEntityInfos infos : theClasses){
-			BusinessEntityInfos clazz = entitiesRequestParameterIdMap.get(infos.getIdentifier());
-			if(clazz==null)
+			BusinessEntityInfos businessEntityInfos = entitiesRequestParameterIdMap.get(infos.getIdentifier());
+			if(businessEntityInfos==null){
 				entitiesRequestParameterIdMap.put(infos.getIdentifier(),infos);
+				if(infos.getModelBeanAnnotation()!=null && CrudStrategy.BUSINESS.equals(infos.getModelBeanAnnotation().crudStrategy()))
+					configBusinessIdentifiable(infos.getClazz(),infos.getModelBeanAnnotation().uiIconName());
+			}
 		}
 	}
 	
@@ -183,7 +211,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	/**/
 	
 	public BusinessEntityInfos businessEntityInfos(Class<?> aClass){
-		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
+		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet())
 			if(entry.getValue().getClazz().equals(aClass))
 				return entry.getValue();
 		//We can call the service for more

@@ -124,6 +124,7 @@ public class CommandBuilder implements Serializable {
 		case ACTION_GO_BACK:return "ui-icon-arrow-e";
 		case ACTION_OK:return "ui-icon-check";
 		case ACTION_SAVE:return "ui-icon-check";
+		case ACTION_SEARCH:return "ui-icon-search";
 		default:return null;
 		}
 	}

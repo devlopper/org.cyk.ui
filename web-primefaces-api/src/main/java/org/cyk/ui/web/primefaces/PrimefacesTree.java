@@ -21,6 +21,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 	
 	private TreeNode root,selected,index;
 	private AbstractMethod<Object, Object> onNodeSelect;
+	private AbstractMethod<Collection<Object>, Object> childrenMethod = CHILDREN_METHOD; 
 
 	{
 		root = new DefaultTreeNode("Root", null);
@@ -68,7 +69,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 	
 	private void populate(Object root,TreeNode node){
 		TreeNode childNode = new DefaultTreeNode(new WebHierarchyNode(root), node);
-		Collection<Object> children = (Collection<Object>) CHILDREN.execute(root);
+		Collection<Object> children = (Collection<Object>) childrenMethod.execute(root);
 		if(children!=null)
 			for(Object child : children)
 				populate(child, childNode);
@@ -97,7 +98,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 		return null;
 	}
 	
-	public static AbstractMethod<Collection<Object>, Object> CHILDREN = new AbstractMethod<Collection<Object>, Object>() {
+	public static AbstractMethod<Collection<Object>, Object> CHILDREN_METHOD = new AbstractMethod<Collection<Object>, Object>() {
 		private static final long serialVersionUID = 6739817055207710222L;
 		@SuppressWarnings("rawtypes")
 		@Override

@@ -192,4 +192,14 @@ border: none;
 .cyk-ui-table-dynamic-selectonemenu{
 	min-width: 150px;
 }
+/* Identifiable link */
+.cyk-ui-identifiable-link-table{
+	width: 100%;
+}
+.cyk-ui-identifiable-link-table-icon-td{
+	
+}
 
+.cyk-ui-identifiable-link-table-text-td{
+	width: 100%;
+}

@@ -1,5 +1,7 @@
 package org.cyk.ui.api;
 
+import java.util.Locale;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
@@ -33,6 +35,8 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	Boolean getShowMainMenu();
 	
 	Boolean getRenderedAsDialog();
+	
+	Locale getLocale();
 	
 	/**
 	 * The UI message manager

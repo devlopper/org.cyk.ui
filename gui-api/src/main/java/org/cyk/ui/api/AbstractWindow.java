@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -40,6 +41,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;
 	
+	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();

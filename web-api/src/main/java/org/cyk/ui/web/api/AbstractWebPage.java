@@ -21,6 +21,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	private static final long serialVersionUID = -7284361545083572063L;
 	
 	@Inject protected WebManager webManager;
+	@Inject protected WebSession session;
 	@Inject protected WebNavigationManager navigationManager;
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,onDocumentReadyJavaScript,onDocumentLoadJavaScript,
 		onDocumentBeforeUnLoadJavaScript,onDocumentBeforeUnLoadWarningMessage;
@@ -30,6 +31,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		locale = session.getLocale();
 		footer="CYK Systems - All rights Reserved.";
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
