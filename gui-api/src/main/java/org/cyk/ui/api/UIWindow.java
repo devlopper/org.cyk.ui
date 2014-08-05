@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.UIMenu;
@@ -23,6 +24,8 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	GenericBusiness getGenericBusiness();
 	
 	DataTreeTypeBusiness getDataTreeTypeBusiness();
+	
+	LanguageBusiness getLanguageBusiness();
 	
 	EventBusiness getEventBusiness();
 	

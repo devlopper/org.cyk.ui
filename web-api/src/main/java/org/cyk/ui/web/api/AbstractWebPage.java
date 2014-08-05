@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +31,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	protected void initialisation() {
 		super.initialisation();
 		locale = session.getLocale();
-		footer="CYK Systems - All rights Reserved.";
+		footer=  getLanguageBusiness().findText("window.layout.footer",new Object[]{UIManager.getInstance().getBusinessSystemName()});
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
 			windowMode = webManager.getRequestParameterWindowModeNormal();

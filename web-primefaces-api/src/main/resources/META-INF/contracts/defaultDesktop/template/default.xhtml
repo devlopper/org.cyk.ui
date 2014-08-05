@@ -24,7 +24,11 @@
 			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/#{link}" />
 		</ui:repeat>
 		-->
-		<title><h:outputText value="#{empty pageController.title?uiManager.businessSystemName:pageController.title}" /></title>
+		<title>
+			<h:outputText value="#{uiManager.businessSystemName}" />
+			<h:outputText value=" - " rendered="#{not empty pageController.title}"/>
+			<h:outputText value="#{pageController.title}" rendered="#{not empty pageController.title}"/>
+		</title>
 
 		<script type="text/javascript">
 	        $(document).ready(function() {

@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
@@ -40,6 +41,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;
+	@Inject @Getter protected LanguageBusiness languageBusiness;
 	
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
@@ -49,7 +51,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
 	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	@Inject protected MenuManager menuManager;
-	@Getter protected String title = "CYK Systems",contentTitle="Content";
+	@Getter protected String title,contentTitle="Content";
 	
 	@Override
 	protected void initialisation() {
