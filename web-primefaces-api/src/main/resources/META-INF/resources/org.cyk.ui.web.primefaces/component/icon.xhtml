@@ -12,6 +12,8 @@
 		<cc:attribute name="extension" default="png" />
 		<cc:attribute name="size" default="32" />
 		<cc:attribute name="title" default="icon" />
+		
+		<cc:attribute name="url" />
 	</cc:interface>
 
 	<cc:implementation>
@@ -19,7 +21,14 @@
 			library="#{cc.attrs.library}" 
 			name="images/icons/#{cc.attrs.size}/#{cc.attrs.name}.#{cc.attrs.extension}" 
 			alt="#{cc.attrs.title}" 
-			title="#{cc.attrs.title}"/>
+			title="#{cc.attrs.title}"
+			rendered="#{empty cc.attrs.url}"/>
+			
+		<p:graphicImage 
+			url="#{cc.attrs.url}" 
+			alt="#{cc.attrs.title}" 
+			title="#{cc.attrs.title}"
+			rendered="#{not empty cc.attrs.url}"/>	
 	</cc:implementation>
 
 </ui:composition>

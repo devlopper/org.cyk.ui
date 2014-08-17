@@ -1,6 +1,10 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
@@ -28,6 +32,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
+	private final Map<Class<? extends AbstractWebPage<?, ?, ?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();
+	
 	private final String clientValidationGroupClass = Client.class.getName();
 	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
@@ -40,6 +46,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterWindowMode = "windowmode";
 	private final String requestParameterWindowModeDialog = "windowmodedialog";
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
+	
+	
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){

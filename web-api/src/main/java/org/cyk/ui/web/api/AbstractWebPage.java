@@ -1,18 +1,24 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.table.Table;
+import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
 public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements WebUIPage<EDITOR,OUTPUTLABEL,INPUT,TABLE>,Serializable {
@@ -27,6 +33,7 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn;
 	private String windowMode;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
@@ -37,6 +44,28 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 			windowMode = webManager.getRequestParameterWindowModeNormal();
 		url = navigationManager.getRequestUrl();
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
+		
+		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());
+		if(fields==null){
+			//scan to find all properties annotated with @RequestParameter
+			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?, ?, ?, ?>>) getClass(), 
+					fields = commonUtils.getAllFields(getClass(), RequestParameter.class));
+		}
+		//System.out.println("AbstractWebPage.initialisation() : "+fields);	
+		for(Field field : fields){
+			RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
+			Class<? extends AbstractIdentifiable> clazz = (Class<? extends AbstractIdentifiable>) (AbstractIdentifiable.class.equals(requestParameter.type())?field.getType():requestParameter.type());
+			try {
+				FieldUtils.writeField(field, this, identifiableFromRequestParameter(clazz), Boolean.TRUE);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public Party getUser() {
+		return session.getUser();
 	}
 	
 	@Override
@@ -53,6 +82,8 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 	public Boolean getRenderedAsDialog() {
 		return webManager.getRequestParameterWindowModeDialog().equals(windowMode);
 	}
+	
+	
 	
 	/*
 	@Override

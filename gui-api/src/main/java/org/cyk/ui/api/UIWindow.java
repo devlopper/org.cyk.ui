@@ -8,6 +8,7 @@ import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
+import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
@@ -40,6 +41,8 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	Boolean getRenderedAsDialog();
 	
 	Locale getLocale();
+	
+	Party getUser();
 	
 	/**
 	 * The UI message manager
