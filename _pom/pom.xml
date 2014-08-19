@@ -34,7 +34,6 @@
 			<version>0.0.1</version>
 			<type>ejb</type>
 			<scope>provided</scope>
-		</dependency>
-		
+		</dependency>		
 	</dependencies>
 </project>

@@ -52,6 +52,12 @@
                             <bundleFileName>primefaces.war</bundleFileName>
                             <contextRoot>/primefaces</contextRoot>
                         </webModule>
+                        <webModule>
+                            <groupId>org.cyk.ui.web</groupId>
+                            <artifactId>web-vaadin-api-test</artifactId>
+                            <bundleFileName>vaadin.war</bundleFileName>
+                            <contextRoot>/vaadin</contextRoot>
+                        </webModule>
                     </modules>
                 </configuration>
             </plugin>
@@ -60,8 +66,20 @@
     
     <dependencies>
     	<dependency>
+			<groupId>org.cyk.system.root.business</groupId>
+			<artifactId>root-business-impl-ejb</artifactId>
+			<version>0.0.1</version>
+			<type>ejb</type>
+		</dependency>
+    	<dependency>
     		<groupId>org.cyk.ui.web</groupId>
     		<artifactId>web-primefaces-api-test</artifactId>
+    		<version>0.0.1</version>
+    		<type>war</type> 
+    	</dependency>
+    	<dependency>
+    		<groupId>org.cyk.ui.web</groupId>
+    		<artifactId>web-vaadin-api-test</artifactId>
     		<version>0.0.1</version>
     		<type>war</type> 
     	</dependency>
