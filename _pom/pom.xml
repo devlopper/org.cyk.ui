@@ -21,9 +21,15 @@
 	<modules>
 		<module>../gui-api</module>
 		<module>../web-api</module>
+		
 		<module>../web-primefaces-api</module>
+		
+		<module>../web-vaadin-api</module>
+		
+		<!--
 		<module>../desktop-api</module>
 		<module>../desktop-swing-api</module>
+		-->
 		<module>../z_test_resources_</module>
 	</modules>
 

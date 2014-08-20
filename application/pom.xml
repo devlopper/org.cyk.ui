@@ -46,18 +46,21 @@
                     <version>${earVersion}</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
                     <modules>
-                        <webModule>
+                    	
+                        <!--webModule>
                             <groupId>org.cyk.ui.web</groupId>
                             <artifactId>web-primefaces-api-test</artifactId>
                             <bundleFileName>primefaces.war</bundleFileName>
                             <contextRoot>/primefaces</contextRoot>
                         </webModule>
+                        
                         <webModule>
                             <groupId>org.cyk.ui.web</groupId>
                             <artifactId>web-vaadin-api-test</artifactId>
                             <bundleFileName>vaadin.war</bundleFileName>
                             <contextRoot>/vaadin</contextRoot>
-                        </webModule>
+                        </webModule-->
+                        
                     </modules>
                 </configuration>
             </plugin>
@@ -65,24 +68,29 @@
     </build>
     
     <dependencies>
+    	<!--
     	<dependency>
 			<groupId>org.cyk.system.root.business</groupId>
 			<artifactId>root-business-impl-ejb</artifactId>
 			<version>0.0.1</version>
 			<type>ejb</type>
 		</dependency>
-    	<dependency>
+    	-->
+    
+    	<!--dependency>
     		<groupId>org.cyk.ui.web</groupId>
     		<artifactId>web-primefaces-api-test</artifactId>
     		<version>0.0.1</version>
     		<type>war</type> 
     	</dependency>
+    	
     	<dependency>
     		<groupId>org.cyk.ui.web</groupId>
     		<artifactId>web-vaadin-api-test</artifactId>
     		<version>0.0.1</version>
     		<type>war</type> 
-    	</dependency>
+    	</dependency-->
+    	
     </dependencies>
 
 </project>

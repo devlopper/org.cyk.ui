@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -21,8 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.business.impl.GenericBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
@@ -67,7 +66,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	@Inject protected LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
-	@EJB protected GenericBusinessImpl genericBusiness;
+	@Inject protected GenericBusiness genericBusiness;
 	
 	/* constants */
 	private final String windowParameter="windowParam";

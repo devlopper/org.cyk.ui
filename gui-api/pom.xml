@@ -13,6 +13,6 @@
 	
 	<groupId>org.cyk.ui.api</groupId>
 	<artifactId>gui-api</artifactId>
-	<packaging>jar</packaging>
+	<packaging>jar</packaging>	
 	
 </project>
