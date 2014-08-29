@@ -6,7 +6,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.model.table.HierarchyNode;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -21,7 +21,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 	
 	private TreeNode root,selected,index;
 	private AbstractMethod<Object, Object> onNodeSelect;
-	private AbstractMethod<Collection<Object>, Object> childrenMethod = CHILDREN_METHOD; 
+	private AbstractMethod<Collection<Object>, Object> childrenMethod = HierarchyNode.CHILDREN_METHOD; 
 
 	{
 		root = new DefaultTreeNode("Root", null);
@@ -44,7 +44,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 			return;
 		TreeNode node = nodeOf(object);
 		if(node==null){
-			System.out.println("PrimefacesTree.expand() : No node to select : "+object);
+			//System.out.println("PrimefacesTree.expand() : No node to select : "+object);
 			return;
 		}
 		if(Boolean.TRUE.equals(selected)){
@@ -98,7 +98,7 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 		return null;
 	}
 	
-	public static AbstractMethod<Collection<Object>, Object> CHILDREN_METHOD = new AbstractMethod<Collection<Object>, Object>() {
+	/*public static AbstractMethod<Collection<Object>, Object> CHILDREN_METHOD = new AbstractMethod<Collection<Object>, Object>() {
 		private static final long serialVersionUID = 6739817055207710222L;
 		@SuppressWarnings("rawtypes")
 		@Override
@@ -107,5 +107,5 @@ public class PrimefacesTree extends AbstractBean implements Serializable {
 				return ((AbstractDataTreeNode)parameter).getChildren();
 			return null;
 		}
-	};
+	};*/
 }

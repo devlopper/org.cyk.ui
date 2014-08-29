@@ -8,10 +8,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.web.primefaces.PrimefacesTable;
 import org.cyk.utility.common.AbstractMethod;
@@ -33,6 +30,8 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz(),UsedFor.ENTITY_INPUT,null);
 		table.setEditable(true);
 		table.setMaster(identifiable);
+		table.fetchData();
+		/*
 		if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
 			@SuppressWarnings("rawtypes")
 			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
@@ -40,7 +39,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 		}else{
 			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
 		}
-		
+		*/
 		table.getSaveRowCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -4698491663673906259L;
 			@Override

@@ -71,7 +71,7 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 		if(uiEditor!=null){
 			layout.setColumnsCount(uiEditor.columnsCount());
 		}
-		if(getEditor().getWindow().getEditorInputsEventListenerMethod()!=null)
+		if(getEditor().getWindow()!=null && getEditor().getWindow().getEditorInputsEventListenerMethod()!=null)
 			getEditor().getWindow().getEditorInputsEventListenerMethod().execute(this);
 		((AbstractBean)layout).postConstruct();
 		layout.addRow();
@@ -119,7 +119,8 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 				}
 				getInputFields().add(iinput);
 				INPUT input = (INPUT) createComponent(iinput);
-				link(currentLabel, input);
+				if(input!=null)
+					link(currentLabel, input);
 				currentLabel = null;
 				currentInput = iinput;
 			}

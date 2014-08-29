@@ -13,6 +13,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
+import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
@@ -91,6 +92,8 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			}
 		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 		
+		menu.getCommandables().add(addRowCommand);
+		
 		openRowCommand = UIManager.getInstance().createCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
@@ -168,6 +171,24 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			setEditable(!Crud.READ.equals(crud));
 			addRowCommand.setShowLabel(Boolean.FALSE);
 			addRowCommand.setRendered(getEditable());
+		}else{
+			UICommandable export = UIManager.getInstance().createCommandable("command.export", IconType.ACTION_EXPORT, new AbstractMethod<Object, Object>() {
+				private static final long serialVersionUID = 1074893365570711794L;
+				@Override
+				protected Object __execute__(Object object) {return null;}
+			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
+			export.getChildren().add(UIManager.getInstance().createCommandable("command.export.pdf", IconType.ACTION_EXPORT_PDF, new AbstractMethod<Object, Object>() {
+				private static final long serialVersionUID = 1074893365570711794L;
+				@Override
+				protected Object __execute__(Object object) {return null;}
+			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM));
+			export.getChildren().add(UIManager.getInstance().createCommandable("command.export.excel", IconType.ACTION_EXPORT_EXCEL, new AbstractMethod<Object, Object>() {
+				private static final long serialVersionUID = 1074893365570711794L;
+				@Override
+				protected Object __execute__(Object object) {return null;}
+			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM));
+			
+			menu.getCommandables().add(export);
 		}
 		
 	}
@@ -251,34 +272,55 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		for(AbstractDataTreeNode node : business.findHierarchies())
 			hierarchyData.add((DATA) node);
 		
-		Collection<DATA> collection = new ArrayList<>();
-		if(master==null)
-			for(DATA node : hierarchyData)
-				collection.add((DATA) node);
-		else{
-			//business.findHierarchy( master);
-			master = (AbstractIdentifiable) getMasterReferenceFromHierarchy(hierarchyData);
-			if( ((AbstractDataTreeNode)master).getChildren()!=null)
-				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)master).getChildren())
-					collection.add((DATA) node);	
-		}
-		
-		for(DATA node : collection)
-			addRow(node);
+		addRowOfRoot(master);
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	private DATA getMasterReferenceFromHierarchy(List<DATA> list){
-		Integer index = list.indexOf(master);
+	protected void addRowOfRoot(AbstractIdentifiable root){
+		Collection<DATA> collection = new ArrayList<>();
+		if(root==null)
+			for(DATA node : hierarchyData)
+				collection.add((DATA) node);
+		else{
+			//business.findHierarchy( master);
+			root = (AbstractIdentifiable) getReferenceFromHierarchy(root,hierarchyData);
+			if( ((AbstractDataTreeNode)root).getChildren()!=null)
+				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)root).getChildren())
+					collection.add((DATA) node);	
+		}
+		
+		clear();
+		for(DATA node : collection)
+			addRow(node);
+		
+		master = root;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private DATA getReferenceFromHierarchy(AbstractIdentifiable identifiable,List<DATA> list){
+		Integer index = list.indexOf(identifiable);
 		if(index>-1)
 			return list.get(index);
 		for(DATA data : list){
-			DATA c = getMasterReferenceFromHierarchy( (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
+			DATA c = getReferenceFromHierarchy(identifiable, (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
 			if(c!=null)
 				return c;
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void fetchData(){
+		if(AbstractDataTreeNode.class.isAssignableFrom(rowDataClass)){
+			@SuppressWarnings("rawtypes")
+			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) rowDataClass);
+			handle(bean);
+		}else{
+			addRow(
+					(Collection<DATA>)
+					UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all());	
+		}
 	}
 	
 	/**/

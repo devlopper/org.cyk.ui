@@ -7068,3 +7068,10 @@ body .mytheme.v-app .v-app-loading {
 	background: transparent repeat-x;
 	background-image: url(../reindeer/window/img/black/content-bg.png);/** sprite-ref: black-verticals; sprite-alignment: repeat */
 }
+
+.cykpage{/*background: red;*/}
+.cyktop{/*background: blue;*/}
+.cykwest{background: white;}
+.cykcenter{/*background: green;*/}
+.cykbottom{background: black;color:white;}
+.cykeast{background: gray;}

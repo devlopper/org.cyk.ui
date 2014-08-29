@@ -33,25 +33,74 @@ public class MenuManager extends AbstractBean implements Serializable {
 	private @Inject LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
 	
-	public UIMenu build(Type type){
+	public UIMenu build(Type type,InternalApplicationModuleType internalApplicationModuleType){
 		UIMenu menu = new DefaultMenu();
 		switch(type){
-		case APPLICATION:application(menu);break;
-		case CONTEXTUAL:contextual(menu); break;
+		case APPLICATION:application(menu,internalApplicationModuleType);break;
+		case CONTEXTUAL:contextual(menu,internalApplicationModuleType); break;
 		}
 		return menu;
 	}
 	
+	public UIMenu build(Type type){
+		return build(type, null);
+	}
+	
 	/**/
 	
-	private void application(UIMenu aMenu){
+	private void application(UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
 		//aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
+		if(internalApplicationModuleType==null){
+			UICommandable commandable,p;
+			
+			aMenu.getCommandables().add(commandable = commandable("command.tools", IconType.THING_TOOLS));
+			commandable.getChildren().add( p = commandable("command.tools.calendar", null));
+			p.setViewType(ViewType.TOOLS_CALENDAR);
+			
+			aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
+			List<BusinessEntityInfos> list = new ArrayList<>(businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION));
+			Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
+			for(BusinessEntityInfos businessEntityInfos : list){
+				commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
+				p.setBusinessEntityInfos(businessEntityInfos);
+				if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
+					p.setViewType(ViewType.DYNAMIC_FORM_TABLE);	
+				}else{
+					p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
+				}
+			}
+				//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
+			aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
+			
+			aMenu.getCommandables().add(commandable = commandable("command.management", IconType.ACTION_HELP));
+			commandable.getChildren().add( p = commandable("command.management.deployment", null));
+			p.setViewType(ViewType.MANAGEMENT_DEPLOYMENT);
+		}else{
+			switch(internalApplicationModuleType){
+			case CRUD:
+				crud(aMenu);
+				break;
+			}
+		}
+		
+	}
+	
+	private void contextual(UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
+		if(internalApplicationModuleType==null){
+			
+		}else{
+			switch(internalApplicationModuleType){
+			case CRUD:
+				crud(aMenu);
+				break;
+			}
+		}
+	}
+	
+	/**/
+	
+	private void crud(UIMenu aMenu){
 		UICommandable commandable,p;
-		
-		aMenu.getCommandables().add(commandable = commandable("command.tools", IconType.THING_TOOLS));
-		commandable.getChildren().add( p = commandable("command.tools.calendar", null));
-		p.setViewType(ViewType.TOOLS_CALENDAR);
-		
 		aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
 		List<BusinessEntityInfos> list = new ArrayList<>(businessManager.findEntitiesInfos(CrudStrategy.ENUMERATION));
 		Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
@@ -64,16 +113,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
 			}
 		}
-			//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
-		aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
-		
-		aMenu.getCommandables().add(commandable = commandable("command.management", IconType.ACTION_HELP));
-		commandable.getChildren().add( p = commandable("command.management.deployment", null));
-		p.setViewType(ViewType.MANAGEMENT_DEPLOYMENT);
-	}
-	
-	private void contextual(UIMenu aMenu){
-		
 	}
 	
 	/**/

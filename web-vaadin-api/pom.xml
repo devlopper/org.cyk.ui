@@ -91,6 +91,13 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+		
+		<dependency>
+	        <groupId>com.vaadin</groupId>
+	        <artifactId>vaadin-cdi</artifactId>
+	        <version>1.0.0.alpha2</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -99,8 +106,8 @@
 		</dependency>	
 		
 		<dependency>
-			<groupId>org.cyk.ui.api</groupId>
-			<artifactId>gui-api</artifactId>
+			<groupId>org.cyk.ui.web</groupId>
+			<artifactId>web-api</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 

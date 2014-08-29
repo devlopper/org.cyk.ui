@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>Web Vaadin User Interface Test</display-name>
+
+	<servlet>
+        <servlet-name>My Vaadin App</servlet-name>
+        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+        <init-param>
+            <description>Vaadin UI</description>
+            <param-name>UIProvider</param-name>
+            <param-value>com.vaadin.cdi.CDIUIProvider</param-value>
+        </init-param>
+    </servlet>
+
+</web-app>

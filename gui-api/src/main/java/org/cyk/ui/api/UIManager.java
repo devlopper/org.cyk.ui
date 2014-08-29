@@ -77,7 +77,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
 	
-	private String businessSystemName;
+	private String businessSystemName,windowFooter;
 	
 	public String getCrudParameterValue(Crud crud){
 		crud=crud==null?Crud.READ:crud;
@@ -105,6 +105,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		super.initialisation();
 		INSTANCE = this;
 		businessSystemName = businessManager.findSystemName();
+		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{UIManager.getInstance().getBusinessSystemName()});
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
 		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
