@@ -3,6 +3,7 @@ package org.cyk.ui.api.component;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +30,7 @@ import org.cyk.ui.api.editor.input.InputMany;
 import org.cyk.ui.api.editor.input.InputNumber;
 import org.cyk.ui.api.editor.input.InputSelectOne;
 import org.cyk.ui.api.editor.input.InputText;
+import org.cyk.ui.api.editor.input.InputUrl;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputSelect;
 import org.cyk.ui.api.editor.output.OutputSeparator;
@@ -184,6 +186,8 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 			component = new InputSelectOne(aField,fieldType,annotation, anObject);
 		else if(String.class.equals(aField.getType()))
 			component = new InputText(aField,fieldType,annotation, anObject);
+		else if(URL.class.equals(aField.getType()))
+			component = new InputUrl(aField,fieldType,annotation, anObject);
 		else if(Date.class.equals(aField.getType()))
 			component = new InputDate(aField,fieldType,annotation, anObject);
 		else if(Boolean.class.equals(ClassUtils.primitiveToWrapper(aField.getType())))

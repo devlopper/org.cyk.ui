@@ -26,6 +26,7 @@ import org.cyk.ui.api.editor.input.UIInputMany;
 import org.cyk.ui.api.editor.input.UIInputNumber;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.api.editor.input.UIInputText;
+import org.cyk.ui.api.editor.input.UIInputUrl;
 import org.cyk.ui.web.api.AbstractWebInputOutputComponent;
 import org.cyk.ui.web.api.editor.WebEditorInputs;
 import org.cyk.utility.common.annotation.UIField;
@@ -47,6 +48,8 @@ public abstract class AbstractWebInputComponent<VALUE_TYPE> extends AbstractWebI
 					component = new InputText(editorInputs,(UIInputText) aComponent);
 				else if(aComponent instanceof UIInputDate)
 					component = new InputDate(editorInputs,(UIInputDate) aComponent);
+				else if(aComponent instanceof UIInputUrl)
+					component = new InputUrl(editorInputs,(UIInputUrl) aComponent);
 				else if(aComponent instanceof UIInputNumber)
 					component = new InputNumber(editorInputs,(UIInputNumber) aComponent);
 				else if(aComponent instanceof UIInputMany){

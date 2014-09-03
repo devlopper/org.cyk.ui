@@ -44,31 +44,41 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 
 	private static final long serialVersionUID = -7832418987283686453L;
 	
+	public enum RowMenuLocation{MAIN_MENU,BY_ROW}
+	
 	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
 	protected ValidationPolicy validationPolicy; 
 	protected AbstractIdentifiable master;
-	protected UIMenu menu = new DefaultMenu();
+	protected UIMenu menu = new DefaultMenu(), rowMenu = new DefaultMenu(),editRowMenu = new DefaultMenu();
 	protected UIWindow<?, ?, ?, ?,?> window;
 	protected String title;
-	protected Boolean editable=Boolean.FALSE;
+	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE;
 	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
-	protected UICommandable addRowCommand,deleteRowCommand,openRowCommand;
-	protected UICommand saveRowCommand,cancelRowCommand;
+	protected UICommandable addRowCommand,deleteRowCommand,editRowCommand,openRowCommand,cancelCommand,saveRowCommand,exportCommand;
+	protected Collection<UICommandable> rowCommandables = new ArrayList<>();
+	protected UICommand /*saveRowCommandOld,*/cancelRowCommand;
 	protected RowSaveEventMethod rowSaveEventMethod;
 	protected RowNavigateEventMethod rowNavigateEventMethod;
 	protected DATA dataAdding;
+	protected TableRow<DATA> selectedRow,editingRow;
 	protected Integer lastEditedRowIndex;
 	protected Boolean showHierarchy,showOpenCommand,showFooterCommandBlock;
 	protected List<DATA> hierarchyData = new ArrayList<>();
 	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
 	protected AbstractMethod<Object, Object> selectObjectMethod;
+	//protected RowEvent rowEvent;
+	protected UICommandable lastExecutedCommandable;
+	
+	protected Collection<TableListener> listeners = new ArrayList<>();
+	protected RowMenuLocation rowMenuLocation = RowMenuLocation.MAIN_MENU;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		nullValue="";
 		
-		addRowCommand = UIManager.getInstance().createCommandable("command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
+		addRowCommand = UIManager.getInstance().createCommandable(menu,"command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -77,12 +87,15 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				}else{
 					
 				}*/
-				if(dataAdding==null)
+				if(editingRow==null)
 					try {
 						addRow(dataAdding = (DATA) rowDataClass.newInstance());
+						editingRow = selectedRow = rows.get(rows.size()-1);
 						if(isDataTreeType() && master!=null ){
 							((DataTreeType)dataAdding).setNode(new NestedSetNode(((DataTreeType)master).getNode().getSet(), ((DataTreeType)master).getNode()));
 						}
+						__createRow__(editingRow);
+						fire(addRowCommand);
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
@@ -92,19 +105,48 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			}
 		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 		
-		menu.getCommandables().add(addRowCommand);
-		
-		openRowCommand = UIManager.getInstance().createCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
+		openRowCommand = rowCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				rowNavigateEventMethod.execute((TableRow<?>) parameter);
 				return null;
 			}
-		},EventListener.NONE,ProcessGroup.FORM);
-		openRowCommand.setShowLabel(Boolean.FALSE);
+		});
 		
-		saveRowCommand = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
+		editRowCommand = rowCommandable("command.edit", IconType.ACTION_EDIT, new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = 1074893365570711794L;
+			@Override
+			protected Object __execute__(Object parameter) {
+				editingRow = selectedRow;
+				fire(editRowCommand);
+				return null;
+			}
+		});
+		
+		saveRowCommand = rowCommandable("command.apply", IconType.ACTION_APPLY, new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = 1074893365570711794L;
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Object __execute__(Object object) {
+				//debug(editingRow.getData());
+				
+				if(UsedFor.FIELD_INPUT.equals(usedFor)){
+					
+				}else{
+					lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
+					getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
+					updateRow(rows.get(lastEditedRowIndex), (DATA) object);
+				}
+				dataAdding = null;
+				
+				editingRow = null;
+				fire(saveRowCommand);
+				return null;
+			}
+		});
+		/*
+		saveRowCommandOld = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4758954266295164539L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -120,7 +162,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				return null;
 			}
 		});
-		
+		*/
 		cancelRowCommand = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4758954266295164539L;
 			@SuppressWarnings("unchecked")
@@ -149,7 +191,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			}
 		});
 		
-		deleteRowCommand = UIManager.getInstance().createCommandable("command.delete", IconType.ACTION_REMOVE, new AbstractMethod<Object, Object>() {
+		deleteRowCommand = UIManager.getInstance().createCommandable(menu,"command.delete", IconType.ACTION_REMOVE, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
 			protected Object __execute__(Object object) {
@@ -165,32 +207,57 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 				return null;
 			}
 		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-		deleteRowCommand.setShowLabel(Boolean.FALSE);
+		
+		cancelCommand = editRowMenu("command.cancel", IconType.ACTION_CANCEL, new AbstractMethod<Object, Object>() {
+			private static final long serialVersionUID = 1074893365570711794L;
+			@Override
+			protected Object __execute__(Object object) {
+				if(lastExecutedCommandable == addRowCommand){
+					deleteRow(editingRow);
+					__deleteRow__(editingRow);
+				}
+				editingRow = null;
+				fire(cancelCommand);
+				return null;
+			}
+		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
+		
+		if(RowMenuLocation.MAIN_MENU.equals(rowMenuLocation))
+			menu.getCommandables().addAll(editRowMenu.getCommandables());
 		
 		if(UsedFor.FIELD_INPUT.equals(usedFor)){
 			setEditable(!Crud.READ.equals(crud));
 			addRowCommand.setShowLabel(Boolean.FALSE);
 			addRowCommand.setRendered(getEditable());
 		}else{
-			UICommandable export = UIManager.getInstance().createCommandable("command.export", IconType.ACTION_EXPORT, new AbstractMethod<Object, Object>() {
+			exportCommand = UIManager.getInstance().createCommandable(menu,"command.export", IconType.ACTION_EXPORT, new AbstractMethod<Object, Object>() {
 				private static final long serialVersionUID = 1074893365570711794L;
 				@Override
 				protected Object __execute__(Object object) {return null;}
 			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-			export.getChildren().add(UIManager.getInstance().createCommandable("command.export.pdf", IconType.ACTION_EXPORT_PDF, new AbstractMethod<Object, Object>() {
+			UIManager.getInstance().createCommandable(exportCommand,"command.export.pdf", IconType.ACTION_EXPORT_PDF, new AbstractMethod<Object, Object>() {
 				private static final long serialVersionUID = 1074893365570711794L;
 				@Override
 				protected Object __execute__(Object object) {return null;}
-			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM));
-			export.getChildren().add(UIManager.getInstance().createCommandable("command.export.excel", IconType.ACTION_EXPORT_EXCEL, new AbstractMethod<Object, Object>() {
+			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
+			UIManager.getInstance().createCommandable(exportCommand,"command.export.excel", IconType.ACTION_EXPORT_EXCEL, new AbstractMethod<Object, Object>() {
 				private static final long serialVersionUID = 1074893365570711794L;
 				@Override
 				protected Object __execute__(Object object) {return null;}
-			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM));
+			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 			
-			menu.getCommandables().add(export);
 		}
 		
+	}
+	
+	protected UICommandable editRowMenu(String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener eventListener,ProcessGroup processGroup){
+		return UIManager.getInstance().createCommandable(editRowMenu,labelId, iconType, executeMethod,eventListener,processGroup);
+	}
+	
+	protected UICommandable rowCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod){
+		UICommandable commandable = editRowMenu(labelId, iconType, executeMethod,EventListener.NONE,ProcessGroup.FORM);
+		rowCommandables.add(commandable);
+		return commandable;
 	}
 	
 	@Override
@@ -310,6 +377,10 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		return null;
 	}
 	
+	protected void __createRow__(TableRow<DATA> row){}
+	
+	protected void __deleteRow__(TableRow<DATA> row){}
+	
 	@SuppressWarnings("unchecked")
 	public void fetchData(){
 		if(AbstractDataTreeNode.class.isAssignableFrom(rowDataClass)){
@@ -321,6 +392,16 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 					(Collection<DATA>)
 					UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all());	
 		}
+	}
+	
+	protected void fire(UICommandable commandable,TableRow<?> row){
+		for(TableListener listener : listeners)
+			listener.rowEvent(commandable,row);
+		lastExecutedCommandable = commandable;
+	}
+	
+	protected void fire(UICommandable commandable){
+		fire(commandable, editingRow);
 	}
 	
 	/**/

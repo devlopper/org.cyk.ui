@@ -10,14 +10,14 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{dynamicEditorController}" />
+ 		<ui:param name="pageController" value="#{editorPage}" />
  		<ui:define name="body">
- 			<cyk:editor value="#{dynamicEditorController.editor}" />
+ 			<cyk:editor value="#{editorPage.editor}" />
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{dynamicEditorController.editor.primefacesSubmitCommand}" executeParameter="#{dynamicEditorController.editor.objectModel}" />
-			<cyk:command value="#{dynamicEditorController.editor.primefacesBackCommand}" rendered="#{not dynamicEditorController.editor.root}"/>
+ 			<cyk:command value="#{editorPage.editor.primefacesSubmitCommand}" executeParameter="#{editorPage.editor.objectModel}" />
+			<cyk:command value="#{editorPage.editor.primefacesBackCommand}" rendered="#{not editorPage.editor.root}"/>
  		</ui:define>
  		
  	</ui:decorate>

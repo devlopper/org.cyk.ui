@@ -20,6 +20,7 @@ public class StartView extends AbstractView<Panel,VerticalLayout,CrudApplication
 	private static final long serialVersionUID = 4894464840887074438L;
 
 	public StartView() {
+		//setContent(new ExampleTableEditingComponent());
 		Tree tree = CommandBuilder.getInstance().tree(application.getMenuManager().build(Type.APPLICATION,application.getInternalApplicationModuleType()));
 		application.getPageLayoutManager().getWest().addComponent(tree);
 		
@@ -37,8 +38,8 @@ public class StartView extends AbstractView<Panel,VerticalLayout,CrudApplication
 						setContent(null);
 					}else{
 						try {
-							//setContent(new EditorComponent(commandable.getBusinessEntityInfos().getClazz().newInstance()));
-							setContent(new TableComponent((Class<AbstractIdentifiable>) commandable.getBusinessEntityInfos().getClazz()));
+							setContent(new EditorComponent(commandable.getBusinessEntityInfos().getClazz().newInstance()));
+							//setContent(new TableComponent((Class<AbstractIdentifiable>) commandable.getBusinessEntityInfos().getClazz()));
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

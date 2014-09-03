@@ -7,17 +7,21 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.omnifaces.util.Faces;
 
-@Log @Deployment(initialisationType=InitialisationType.EAGER)
+@Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	private static final long serialVersionUID = 4432678991321751425L;
@@ -44,12 +48,28 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static final String FILE_STATIC_EXTENSION = ".xhtml";
 	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
 	
+	public static final String OUTCOME_DYNAMIC_EDITOR = "dynamiceditor";
+	
 	@Inject private NavigationHelper navigationHelper;
 	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+	}
+	
+	public String editorCreateUrl(BusinessEntityInfos businessEntityInfos){
+		return url(OUTCOME_DYNAMIC_EDITOR, new Object[]{
+				WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
+				,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudCreateParameter()
+			});
+	}
+	
+	public String editorUrl(Long identifier,String crud){
+		return url(OUTCOME_DYNAMIC_EDITOR, new Object[]{
+				WebManager.getInstance().getRequestParameterIdentifiable(),identifier
+				,UIManager.getInstance().getCrudParameter(),crud
+			});
 	}
 	
 	public String url(String id,Object[] parameters,Boolean actionOutcome,Boolean partial){

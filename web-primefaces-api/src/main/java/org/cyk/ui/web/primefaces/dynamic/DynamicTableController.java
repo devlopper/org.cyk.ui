@@ -40,7 +40,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
 		}
 		*/
-		table.getSaveRowCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
+		table.getSaveRowCommand().getCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -4698491663673906259L;
 			@Override
 			protected Object __execute__(Object parameter) {

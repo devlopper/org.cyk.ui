@@ -30,6 +30,7 @@ public abstract class AbstractApplication<START_VIEW extends AbstractView<?, ?, 
 	@Inject protected UIManager uiManager;
 	@Inject @Getter protected MenuManager menuManager;
 	@Inject protected WebManager webManager;
+	@Inject protected VaadinMessageManager messageManager;
 	protected Navigator navigator;
 	
 	@Override

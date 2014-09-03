@@ -8,22 +8,17 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.web.primefaces.PrimefacesEditor;
-import org.cyk.utility.common.AbstractMethod;
+import org.cyk.system.root.model.AbstractIdentifiable;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimefacesPage implements Serializable {
+public class EditorPage extends AbstractEditorPage<AbstractIdentifiable> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	protected PrimefacesEditor editor;
-	protected Crud crud;
-	
-	@Override
+	/*@Override
 	protected void initialisation() { 
 		super.initialisation();
 		try {
@@ -33,11 +28,11 @@ public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimef
 				private static final long serialVersionUID = -9058153097352454644L;
 				@Override
 				protected Object __execute__(Object parameter) {
-					/*
+					
 					//if(Boolean.TRUE.equals(getRenderedAsDialog()))
 					//	RequestContext.getCurrentInstance().closeDialog(parameter);
 					//else
-					*/
+					
 					if(Boolean.TRUE.equals(editor.getSubmitMethodMainExecuted()))
 						messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
 					return null;
@@ -52,7 +47,7 @@ public class DynamicEditorController extends AbstractDynamicBusinessEntityPrimef
 	@Override
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
-	}
+	}*/
 	/*
 	@Override
 	public Boolean getOnDocumentBeforeUnLoadWarn() {

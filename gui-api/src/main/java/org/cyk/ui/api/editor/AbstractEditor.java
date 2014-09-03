@@ -60,12 +60,20 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		submitMethodMain = new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3528789218248076908L;
 			@Override
-			protected Object __execute__(Object parameter) { 
+			protected Object __execute__(Object parameter) {
+				AbstractIdentifiable identifiable;
+				if(parameter instanceof AbstractFormData<?>){
+					((AbstractFormData<?>)parameter).write();
+					identifiable = ((AbstractFormData<?>)parameter).getIdentifiable();
+				}else if(parameter instanceof AbstractIdentifiable)
+					identifiable = (AbstractIdentifiable) parameter;
+				else	
+					return null;
 				switch(crud){
-				case CREATE:getWindow().getGenericBusiness().create((AbstractIdentifiable) parameter);break;
+				case CREATE:getWindow().getGenericBusiness().create(identifiable);break;
 				case READ:/*nothing to do*/ break;
-				case UPDATE:getWindow().getGenericBusiness().update((AbstractIdentifiable) parameter);break;
-				case DELETE:getWindow().getGenericBusiness().delete((AbstractIdentifiable) parameter);break;
+				case UPDATE:getWindow().getGenericBusiness().update(identifiable);break;
+				case DELETE:getWindow().getGenericBusiness().delete(identifiable);break;
 				}
 				
 				return null;

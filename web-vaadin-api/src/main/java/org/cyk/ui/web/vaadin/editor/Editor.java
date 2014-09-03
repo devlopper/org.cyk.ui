@@ -9,6 +9,7 @@ import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.ui.web.vaadin.CommandBuilder;
 
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
@@ -19,6 +20,7 @@ public class Editor extends AbstractEditor<FormLayout,Label,AbstractField<?>,Obj
 
 	private static final long serialVersionUID = 5514311939767908514L;
 	
+	private FieldGroup fieldGroup;
 	private Button submitButton;
 	
 	@Override
@@ -38,6 +40,7 @@ public class Editor extends AbstractEditor<FormLayout,Label,AbstractField<?>,Obj
 
 	@Override
 	public void targetDependentInitialisation() {
+		fieldGroup = new FieldGroup();
 		submitButton = CommandBuilder.getInstance().button(getSubmitCommand());
 	}
 	

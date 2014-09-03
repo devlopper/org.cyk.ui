@@ -30,4 +30,8 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 				return commandable;
 		throw new IllegalArgumentException("No such commandable <"+anIdentifier+"> exist");
 	}
+	
+	public void addCommandable(UICommandable commandable) {
+		commandables.add(commandable);
+	}
 }

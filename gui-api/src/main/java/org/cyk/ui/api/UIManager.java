@@ -30,6 +30,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
+import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputNumber;
@@ -48,6 +49,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final long serialVersionUID = -9062523105492591265L;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
+	private static final Map<Class<? extends AbstractIdentifiable>,Class<?>> ENTITY_FORM_DATA_MAP = new HashMap<>();
+	//private static final Map<Class<? extends AbstractIdentifiable>,AbstractMethod<Object, Object>> ENTITY_FORM_DATA_INITMETHOD__MAP = new HashMap<>();
+	//private static final Map<Class<?>,AbstractMethod<AbstractIdentifiable, Object>> FORM_DATA_ENTITY_CONVERTER_METHOD_MAP = new HashMap<>();
 	
 	private static UIManager INSTANCE;
 	
@@ -142,6 +146,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			private static final long serialVersionUID = 7479681304478557922L;
 			@Override
 			protected String __execute__(Object parameter) {
+				if(parameter instanceof AbstractIdentifiable)
+					return ((AbstractIdentifiable)parameter).getUiString();
 				return parameter.toString();
 			}
 		};
@@ -220,6 +226,39 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return null;
 	}
 	
+	public Class<?> formData(Class<? extends AbstractIdentifiable> aClass){
+		Class<?> clazz = ENTITY_FORM_DATA_MAP.get(aClass);
+		if(clazz==null)
+			return aClass;
+		return clazz;
+	}
+	
+	public void registerFormData(Class<? extends AbstractIdentifiable> identifiableClass,Class<?> formDataClass){
+		ENTITY_FORM_DATA_MAP.put(identifiableClass, formDataClass);
+	}
+	/*
+	public AbstractMethod<AbstractIdentifiable, Object> formDataConverterMethod(Class<?> aClass){
+		AbstractMethod<AbstractIdentifiable, Object> method = FORM_DATA_ENTITY_CONVERTER_METHOD_MAP.get(aClass);
+		if(method==null)
+			return null;
+		return method;
+	}
+	
+	public void registerFormDataConverter(Class<?> formDataClass,AbstractMethod<AbstractIdentifiable, Object> converterMethod){
+		FORM_DATA_ENTITY_CONVERTER_METHOD_MAP.put(formDataClass, converterMethod);
+	}
+	
+	public AbstractMethod<Object, Object> formDataInitMethod(Class<? extends AbstractIdentifiable> aClass){
+		AbstractMethod<Object, Object> method = ENTITY_FORM_DATA_INITMETHOD__MAP.get(aClass);
+		if(method==null)
+			return null;
+		return method;
+	}
+	
+	public void registerFormDataInitMethod(Class<? extends AbstractIdentifiable> identifiableDataClass,AbstractMethod<Object, Object> initMethod){
+		ENTITY_FORM_DATA_INITMETHOD__MAP.put(identifiableDataClass, initMethod);
+	}
+	*/
 	/**/
 	
 	public BusinessEntityInfos businessEntityInfos(Class<?> aClass){
@@ -267,12 +306,26 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		commandable.setIconType(iconType);
 		commandable.setEventListener(anExecutionPhase);
 		commandable.setProcessGroup(aProcessGroup);
+		
+		return commandable;
+	}
+	
+	public UICommandable createCommandable(UIMenu menu,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
+		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
+		menu.addCommandable(commandable);
+		return commandable;
+	}
+	
+	public UICommandable createCommandable(UICommandable parent,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
+		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
+		parent.getChildren().add(commandable);
 		return commandable;
 	}
 	
 	public UICommand createCommand(AbstractMethod<Object, Object> action){
 		UICommand command = new DefaultCommand();
 		command.setExecuteMethod(action);
+		command.setMessageManager(MessageManager.INSTANCE);
 		return command;
 	}
 	

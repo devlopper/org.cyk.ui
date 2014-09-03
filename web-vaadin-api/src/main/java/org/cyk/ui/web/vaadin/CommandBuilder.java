@@ -3,6 +3,8 @@ package org.cyk.ui.web.vaadin;
 import java.io.Serializable;
 import java.util.Collection;
 
+import lombok.Getter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -12,6 +14,7 @@ import org.cyk.ui.api.model.table.HierarchyNode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 
@@ -50,12 +53,15 @@ public class CommandBuilder implements Serializable {
 		return button;
 	}
 	
-	public MenuItem menuItem(MenuBar menuBar,UICommandable aCommandable,MenuItem parent){
+	public MenuItem menuItem(MenuBar menuBar,UICommandable aCommandable,MenuItem parent,Object param){
 		MenuItem menuItem;
 		if(parent==null)
 			menuItem = menuBar.addItem(aCommandable.getLabel(),icon(aCommandable.getIconType()),null);
 		else
 			menuItem = parent.addItem(aCommandable.getLabel(),icon(aCommandable.getIconType()),null);
+		
+		menuItem.setDescription(aCommandable.getLabel());
+		
 		if(aCommandable.getChildren().isEmpty()){
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
@@ -76,6 +82,7 @@ public class CommandBuilder implements Serializable {
 				}
 				
 			}else{
+				menuItem.setCommand( new VaadinCommandable(aCommandable,param));
 				
 				/*
 				menuItem.setUpdate(":form:contentPanel");
@@ -90,18 +97,18 @@ public class CommandBuilder implements Serializable {
 			}
 		}else{
 			for(UICommandable commandable : aCommandable.getChildren())
-				menuItem(menuBar,commandable, menuItem);
+				menuItem(menuBar,commandable, menuItem,param);
 		}
 		
 		return menuItem;
 	}
 	
-	public MenuBar menuBar(UIMenu aMenu){
+	public MenuBar menuBar(UIMenu aMenu,Object param){
 		if(aMenu==null || aMenu.getCommandables()==null || aMenu.getCommandables().isEmpty())
 			return null;
 		MenuBar menuBar = new MenuBar();
 		for(UICommandable commandable : aMenu.getCommandables())
-			menuItem(menuBar,commandable,null);
+			menuItem(menuBar,commandable,null,param);
 		menuBar.setSizeFull();
 		menuBar.setHeight(MENU_BAR_HEIGHT);
 		return menuBar;
@@ -296,5 +303,23 @@ public class CommandBuilder implements Serializable {
 	}
 	
 	/**/
+	@Getter
+	public static class VaadinCommandable implements Serializable,Command{
+		private static final long serialVersionUID = -3003339900107057907L;
+		private UICommandable commandable;
+		private Object param;
+		
+		public VaadinCommandable(UICommandable commandable,Object param) {
+			super();
+			this.commandable = commandable;
+			this.param = param;
+		}
+
+		@Override
+		public void menuSelected(MenuItem selectedItem) {
+			commandable.getCommand().execute(param);
+		}
+		
+	}
 	
 }

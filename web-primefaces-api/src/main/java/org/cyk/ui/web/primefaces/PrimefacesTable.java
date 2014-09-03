@@ -58,7 +58,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 			protected void onEvent(RowEditEvent rowEditEvent) {
 				TableRow<?> row = (TableRow<?>) rowEditEvent.getObject();
 				row.updateFieldValues();
-				saveRowCommand.execute(row.getData());
+				saveRowCommand.getCommand().execute(row.getData());
 			}};
 		
 		onRowEditCancelMethod = new RowEditEventMethod(){
