@@ -1,11 +1,7 @@
 package org.cyk.ui.desktop.swing.test;
 
-import java.util.Properties;
-
-import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.RemoteConnectivityChecker;
 
 public class SimpleJndi {

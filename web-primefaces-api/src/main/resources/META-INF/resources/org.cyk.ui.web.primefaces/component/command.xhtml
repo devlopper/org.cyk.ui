@@ -17,11 +17,16 @@
 			action="#{cc.value.commandable.command.execute(cc.attrs.executeParameter)}" 
 			process="#{cc.value.commandButton.process}" 
 			update="#{cc.value.commandButton.update}"
-			oncomplete="#{cc.value.commandButton.oncomplete}"
 			value="#{cc.value.commandButton.value}" 
 			icon="#{cc.value.commandButton.icon}"
 			rendered="#{cc.value.commandButton.rendered}"
-			title="#{cc.value.commandButton.title}">
+			type="#{cc.value.commandButton.type}"
+			title="#{cc.value.commandButton.title}"
+			
+			oncomplete="#{cc.value.commandButton.oncomplete}"
+			onclick="#{cc.value.commandButton.onclick}"
+			
+			>
 			
 			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
 			

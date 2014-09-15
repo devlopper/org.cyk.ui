@@ -22,8 +22,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.ui.Component;

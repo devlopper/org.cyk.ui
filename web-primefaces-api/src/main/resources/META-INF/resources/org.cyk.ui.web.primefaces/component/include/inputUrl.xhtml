@@ -16,7 +16,7 @@
 			<ui:param name="forId" value="inputUrl" />
 			<ui:define name="input">
 				<p:inputText id="inputUrl" value="#{data.value}" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" 
-					required="#{data.required}" validator="#{data.validate}" converter="#{data.converter}" title="#{data.label}"
+					required="#{data.required}" validator="#{data.validate}" converter="#{urlConverter}" title="#{data.label}"
 					rendered="#{not data.readOnly}" requiredMessage="#{data.requiredMessage}" pt:placeholder="#{data.label}">
 					<f:attribute name="fieldId" value="#{data.id}" />
 					<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>

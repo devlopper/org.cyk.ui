@@ -2,7 +2,6 @@ package org.cyk.ui.web.vaadin.application.crud;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.table.HierarchyNode;
@@ -26,7 +25,6 @@ public class StartView extends AbstractView<Panel,VerticalLayout,CrudApplication
 		
 		tree.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 6816275173566732882L;
-			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				HierarchyNode hierarchyNode = (HierarchyNode) event.getProperty().getValue();

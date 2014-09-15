@@ -4,14 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.naming.InitialContext;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
-import org.cyk.system.root.business.api.RemoteConnectivityChecker;
-import org.cyk.ui.api.UIMessageManager.SeverityType;
-import org.cyk.ui.desktop.swing.SwingMessageManager;
 
 public class SimpleJFrame extends JFrame {
 

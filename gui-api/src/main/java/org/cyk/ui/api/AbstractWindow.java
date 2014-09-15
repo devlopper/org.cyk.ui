@@ -20,6 +20,9 @@ import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.EventListener;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
@@ -173,6 +176,12 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		if(aCommand==null)
 			return;
 		aCommand.setMessageManager(getMessageManager());
+	}
+	
+	protected UICommandable createCommandable(String labelId, IconType iconType, AbstractMethod<Object, Object> executeMethod, EventListener anExecutionPhase, ProcessGroup aProcessGroup){
+		UICommandable commandable = UIManager.getInstance().createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
+		commandable.getCommand().setMessageManager(getMessageManager());
+		return commandable;
 	}
 		
 }

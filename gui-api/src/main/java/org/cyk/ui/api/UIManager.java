@@ -116,8 +116,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
 		
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
-		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos())
+		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
+			infos.setUiLabel(text(infos.getUiLabelId()));
+		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
 			registerClassKey(entry.getValue());

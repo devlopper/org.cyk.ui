@@ -14,6 +14,7 @@
 		<cc:attribute name="title" default="icon" />
 		
 		<cc:attribute name="url" />
+		<cc:attribute name="styleClass" />
 	</cc:interface>
 
 	<cc:implementation>
@@ -22,12 +23,14 @@
 			name="images/icons/#{cc.attrs.size}/#{cc.attrs.name}.#{cc.attrs.extension}" 
 			alt="#{cc.attrs.title}" 
 			title="#{cc.attrs.title}"
+			styleClass="#{cc.attrs.styleClass}"
 			rendered="#{empty cc.attrs.url}"/>
 			
 		<p:graphicImage 
 			url="#{cc.attrs.url}" 
 			alt="#{cc.attrs.title}" 
 			title="#{cc.attrs.title}"
+			styleClass="#{cc.attrs.styleClass}"
 			rendered="#{not empty cc.attrs.url}"/>	
 	</cc:implementation>
 

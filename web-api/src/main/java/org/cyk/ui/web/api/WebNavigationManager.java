@@ -58,11 +58,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
-	public String editorCreateUrl(BusinessEntityInfos businessEntityInfos){
-		return url(OUTCOME_DYNAMIC_EDITOR, new Object[]{
+	public String editorCreateUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic){
+		return url(Boolean.TRUE.equals(dynamic)?OUTCOME_DYNAMIC_EDITOR:businessEntityInfos.getUiEditViewId(), new Object[]{
 				WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 				,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudCreateParameter()
 			});
+	}
+	
+	public String editorCreateUrl(BusinessEntityInfos businessEntityInfos){
+		return editorCreateUrl(businessEntityInfos, Boolean.TRUE);
 	}
 	
 	public String editorUrl(Long identifier,String crud){

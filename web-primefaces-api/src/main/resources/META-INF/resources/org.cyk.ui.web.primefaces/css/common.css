@@ -1,3 +1,7 @@
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 95%;
+}
+
 .current-view-menuitem{
 	text-decoration: underline;
 }
@@ -195,6 +199,7 @@ border: none;
 /* Identifiable link */
 .cyk-ui-identifiable-link-table{
 	width: 100%;
+	border: none !important;
 }
 .cyk-ui-identifiable-link-table-icon-td{
 	
