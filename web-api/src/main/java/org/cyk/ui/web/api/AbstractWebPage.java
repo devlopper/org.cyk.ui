@@ -21,7 +21,8 @@ import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements WebUIPage<EDITOR,OUTPUTLABEL,INPUT,TABLE>,Serializable {
+public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements 
+	WebUIPage<EDITOR,OUTPUTLABEL,INPUT,TABLE>,Serializable {
 
 	private static final long serialVersionUID = -7284361545083572063L;
 	
@@ -48,9 +49,11 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());
 		if(fields==null){
 			//scan to find all properties annotated with @RequestParameter
-			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?, ?, ?, ?>>) getClass(), 
+			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?,?, ?, ?, ?>>) getClass(), 
 					fields = commonUtils.getAllFields(getClass(), RequestParameter.class));
 		}
+		
+		
 		//System.out.println("AbstractWebPage.initialisation() : "+fields);	
 		for(Field field : fields){
 			RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
@@ -126,5 +129,11 @@ public abstract class AbstractWebPage<EDITOR,OUTPUTLABEL,INPUT,TABLE extends Tab
 			return null;
 		}
 	}
+	
+	/**/
+	
+	
+	
+	/**/
 	
 }

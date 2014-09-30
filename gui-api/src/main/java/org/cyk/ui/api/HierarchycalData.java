@@ -44,7 +44,7 @@ public class HierarchycalData<DATA> extends AbstractBean implements /*UIWindowPa
 		addNodeCommand.setLabel(text("command.add"));
 		addNodeCommand.setShowLabel(Boolean.FALSE);
 		//addNodeCommand.setIcon("ui-icon-plus");
-		addNodeCommand.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
+		/*addNodeCommand.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -60,7 +60,7 @@ public class HierarchycalData<DATA> extends AbstractBean implements /*UIWindowPa
 					addNodeCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "warning.table.canaddoneatatime", true).showDialog();
 				return null;
 			}
-		});
+		});*/
 	}
 	
 	protected void link(DATA parent,DATA child){

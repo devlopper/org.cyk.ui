@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<body>
+	<ui:composition>
+		
+		<pe:dynaForm id="DynaForm" value="#{controls}" var="data">
+			<ui:param name="templateFile" value="#{templateFile}" />
+			
+			<pe:dynaFormControl />
+			
+			<pe:dynaFormControl type="OutputText" for="outputText" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"> 
+	        	<h:outputText id="outputText" value="#{data.value}" escape="false"
+	        		style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" />
+	        </pe:dynaFormControl>
+	        
+	        <pe:dynaFormControl type="OutputSeparator" for="outputSeparator" > 
+	        	<!-- style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" -->
+	        	<table style="width: 100%;" ><tr>
+	        		<td style="width: 1%;font-size: 12px;font-style: italic;"><h:outputText value="#{data.value}" /> </td>
+	        		<td><p:separator   /></td>
+	        	</tr> </table>
+	        </pe:dynaFormControl>
+
+			<!--  ********************************************************** Inputs *********************************************************************** -->
+			<!-- Single Line Text -->
+			<pe:dynaFormControl type="InputText" for="inputText">
+				<ui:include src="inputTextOneLine.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Multiple Line Text -->
+			<pe:dynaFormControl type="InputTextArea" for="inputTextArea">
+				<ui:include src="inputTextManyLine.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Date -->
+			<pe:dynaFormControl type="InputDate" for="calendar">
+				<ui:include src="inputDate.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- URL -->
+			<pe:dynaFormControl type="InputUrl" for="inputUrl">
+				<ui:include src="inputUrl.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Number -->
+			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
+	        	<ui:include src="inputNumber.xhtml" />
+	        </pe:dynaFormControl>
+			
+			<!-- Select One -->
+			<!-- Radio -->
+			<pe:dynaFormControl type="InputSelectOneRadio" for="selectOneRadio">  
+	        	<ui:include src="inputOneRadio.xhtml" />
+	        </pe:dynaFormControl> 
+
+	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu">
+				<ui:include src="inputOneMenu.xhtml" />
+	        </pe:dynaFormControl>
+	        
+	        <!-- Input Many -->
+	        <pe:dynaFormControl type="InputMany" >
+				<ui:include src="inputMany.xhtml" />
+	        </pe:dynaFormControl>
+	        
+		</pe:dynaForm>		
+		
+	</ui:composition>
+</body>
+</html>

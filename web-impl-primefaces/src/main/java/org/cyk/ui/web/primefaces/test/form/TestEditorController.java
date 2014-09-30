@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test.editor;
+package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
 

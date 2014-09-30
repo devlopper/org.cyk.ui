@@ -1,5 +1,7 @@
 package org.cyk.ui.api.editor;
 
+import java.util.Collection;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
@@ -77,4 +79,5 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	
 	Boolean getSubmitMethodMainExecuted();
 	
+	Collection<EditorListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> getListeners();
 }

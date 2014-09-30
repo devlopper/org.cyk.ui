@@ -34,14 +34,14 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		addEventCommand.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
+		/*addEventCommand.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -1864325491109531292L;
 			@Override
 			protected Object __execute__(Object parameter) {
 				editor(null,Boolean.FALSE,Crud.CREATE);
 				return null;
 			}
-		});
+		});*/
 		primefacesAddEventCommand =  new Command(addEventCommand);
 		
 		

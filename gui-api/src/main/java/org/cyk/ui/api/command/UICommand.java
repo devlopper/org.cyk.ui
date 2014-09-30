@@ -1,5 +1,7 @@
 package org.cyk.ui.api.command;
 
+import java.util.Collection;
+
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.utility.common.AbstractMethod;
 
@@ -10,11 +12,13 @@ import org.cyk.utility.common.AbstractMethod;
  */
 public interface UICommand {
 	
+	Collection<CommandListener> getListeners();
+	
 	/**
 	 * Validate data provided by user
 	 * @return true if success else false
 	 */
-	Boolean validate();
+	//Boolean validate(Object object);
 	
 	/**
 	 * The code to be executed when validation has succeed
@@ -24,13 +28,13 @@ public interface UICommand {
 	/**
 	 * The code to be executed on <code>execute()</code> success
 	 */
-	Object onExecuteSucceed(Object object);
+	//Object onExecuteSucceed(Object object);
 	
 	/**
 	 * The code to be executed on <code>execute()</code> failure
 	 * @param throwable
 	 */
-	Object onExecuteFailed(Throwable throwable);
+	//Object onExecuteFailed(Throwable throwable);
 	
 	AbstractNotifyOnSucceedMethod<Object> getNotifyOnSucceedMethod();
 	
@@ -42,19 +46,19 @@ public interface UICommand {
 	 * The code to be executed on error
 	 * @param throwable
 	 */
-	Object failure(Throwable throwable);
+	//Object failure(Throwable throwable);
 	
 	UIMessageManager getMessageManager();
 	
 	void setMessageManager(UIMessageManager messageManager);
 	
-	void setValidateMethod(AbstractValidateMethod<Object> method);
+	//void setValidateMethod(AbstractValidateMethod<Object> method);
 	
-	void setExecuteMethod(AbstractMethod<Object, Object> method);
+	//void setExecuteMethod(AbstractMethod<Object, Object> method);
 	
-	void setAfterFailureMethod(AbstractMethod<Object, Object> method);
+	//void setAfterFailureMethod(AbstractMethod<Object, Object> method);
 	
-	void setAfterSuccessNotificationMessageMethod(AbstractMethod<Object, Object> method);
+	//void setAfterSuccessNotificationMessageMethod(AbstractMethod<Object, Object> method);
 	
 	
 	/**/

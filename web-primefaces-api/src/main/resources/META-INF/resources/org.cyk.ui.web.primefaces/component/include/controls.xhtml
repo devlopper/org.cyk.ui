@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+ 
+		<pe:dynaForm value="#{controls}" var="control">
+			<!-- Outputs -->
+			
+			<pe:dynaFormControl type="OutputText">
+	 			<h:outputText value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}"/>
+			</pe:dynaFormControl>
+			
+			<!-- Inputs -->
+			
+			<pe:dynaFormControl type="InputText" for="InputText">
+				<p:inputText id="InputText" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" converter="#{control.converter}">
+	 				<p:message for="InputText" />
+	 			</p:inputText>
+	 		</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputTextarea" for="InputTextarea">
+				<p:inputTextarea id="InputTextarea" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:inputTextarea>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputPassword" for="InputPassword">
+				<p:password id="InputPassword" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:password>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputEditor" for="InputEditor">
+				<p:editor id="InputEditor" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:editor>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputCalendar" for="InputCalendar">
+				<p:calendar id="InputCalendar" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:calendar>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputBooleanButton" for="InputBooleanButton">
+				<p:selectBooleanButton id="InputBooleanButton" onLabel="#{control.onState.label}" offLabel="#{control.offState.label}" 
+					value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:selectBooleanButton>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputFile" for="InputFile">
+				<p:fileUpload id="InputFile" value="#{control.value}" required="#{control.required}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:fileUpload>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputBooleanCheck" for="InputBooleanCheck">
+				<p:selectBooleanCheckbox id="InputBooleanCheck" value="#{control.value}" required="#{control.required}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</p:selectBooleanCheckbox>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputNumber" for="InputNumber">
+				<pe:inputNumber id="InputNumber" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+					<p:message for="@parent" />
+				</pe:inputNumber>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputOneList" for="InputOneList">
+				<h:panelGroup>
+					<p:message for="InputOneList" />
+					<p:selectOneListbox id="InputOneList" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+						<f:selectItems value="#{control.list}" />
+					</p:selectOneListbox>
+				</h:panelGroup>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputOneCombo" for="InputOneCombo">
+				<h:panelGroup>
+					<p:message for="InputOneCombo" />			
+					<p:selectOneMenu id="InputOneCombo" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+						<f:selectItems value="#{control.list}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputOneButton" for="InputOneButton">
+				<h:panelGroup>
+					<p:message for="InputOneButton" />				
+					<p:selectOneButton id="InputOneButton" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+						<f:selectItems value="#{control.list}" />
+					</p:selectOneButton>
+				</h:panelGroup>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputOneCascadeList" for="InputOneCascadeList">
+				<h:panelGroup>
+					<p:message for="InputOneCascadeList" />				
+					<p:multiSelectListbox id="InputOneCascadeList" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+						<f:selectItems value="#{control.list}" />
+					</p:multiSelectListbox>
+				</h:panelGroup>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputOneRadio" for="InputOneRadio">
+				<h:panelGroup>
+					<p:message for="InputOneRadio" />				
+					<p:selectOneRadio id="InputOneRadio" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+						<f:selectItems value="#{control.list}" />
+					</p:selectOneRadio>
+				</h:panelGroup>
+			</pe:dynaFormControl>
+			
+			<pe:dynaFormControl type="InputManyCombo" for="InputManyCombo">
+				<h:panelGroup>
+					<p:message for="InputManyCombo" />				
+					<p:selectManyMenu id="InputManyCombo" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+		 				<f:selectItems value="#{control.list}" />
+		 			</p:selectManyMenu>
+		 		</h:panelGroup>
+	 		</pe:dynaFormControl>
+	 		
+	 		<pe:dynaFormControl type="InputManyPickList" for="InputManyPickList">
+	 			<p:pickList id="InputManyPickList" value="#{control.dualListModel}" var="choice" itemLabel="#{choice}" itemValue="#{choice}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+	 				<p:message for="@parent" />
+	 			</p:pickList>
+	 		</pe:dynaFormControl>
+	 		
+	 		<pe:dynaFormControl type="InputManyButton" for="InputManyButton">
+				<h:panelGroup>
+					<p:message for="InputManyButton" />		 		
+		 			<p:selectManyButton id="InputManyButton" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+		 				<f:selectItems value="#{control.list}" />
+		 			</p:selectManyButton>
+		 		</h:panelGroup>
+	 		</pe:dynaFormControl>
+	 		
+	 		<pe:dynaFormControl type="InputManyCheck" for="InputManyCheck">
+				<h:panelGroup>
+					<p:message for="InputManyCheck" />		 		
+		 			<p:selectManyCheckbox id="InputManyCheck" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+		 				<f:selectItems value="#{control.list}" />
+		 			</p:selectManyCheckbox>
+		 		</h:panelGroup>
+	 		</pe:dynaFormControl>
+	 		
+	 		<pe:dynaFormControl type="InputManyCheckCombo" for="InputManyCheckCombo">
+				<h:panelGroup>
+					<p:message for="InputManyCheckCombo" />		 		
+		 			<p:selectCheckboxMenu id="InputManyCheckCombo" value="#{control.value}" required="#{control.required}" converter="#{control.converter}" validator="#{control.validate}" style="#{control.css.inline}" styleClass="#{control.css.clazz}">
+		 				<f:selectItems value="#{control.list}" />
+		 			</p:selectCheckboxMenu>
+		 		</h:panelGroup>
+	 		</pe:dynaFormControl>
+			 
+		</pe:dynaForm>	
+			
+
+</ui:composition>

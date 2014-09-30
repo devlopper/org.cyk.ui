@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +42,12 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.UIField.TextValueType;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
+import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
+
+import com.sun.xml.bind.v2.schemagen.xmlschema.Annotated;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -50,11 +56,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,Class<?>> ENTITY_FORM_DATA_MAP = new HashMap<>();
-	//private static final Map<Class<? extends AbstractIdentifiable>,AbstractMethod<Object, Object>> ENTITY_FORM_DATA_INITMETHOD__MAP = new HashMap<>();
-	//private static final Map<Class<?>,AbstractMethod<AbstractIdentifiable, Object>> FORM_DATA_ENTITY_CONVERTER_METHOD_MAP = new HashMap<>();
 	
 	private static UIManager INSTANCE;
-	
 	public static UIManager getInstance() {
 		return INSTANCE;
 	}
@@ -324,9 +327,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return commandable;
 	}
 	
+	//TODO action to be removed
 	public UICommand createCommand(AbstractMethod<Object, Object> action){
 		UICommand command = new DefaultCommand();
-		command.setExecuteMethod(action);
+		//command.setExecuteMethod(action);
 		command.setMessageManager(MessageManager.INSTANCE);
 		return command;
 	}
@@ -338,6 +342,37 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		case VALUE:return null;
 		default : return null;
 		}
+	}
+	
+	public String fieldLabel(Field field,Input annotation) {
+		ValueType type ;
+		String specifiedValue = null;
+		if(annotation==null)
+			type = ValueType.VALUE; 
+		else{
+			specifiedValue = annotation.label().value();
+			type = ValueType.AUTO.equals(annotation.label().type())?ValueType.ID:annotation.label().type();
+		}
+		if(ValueType.VALUE.equals(type) && StringUtils.isNotBlank(specifiedValue))
+			return specifiedValue;
+		String labelId = null;
+		if(ValueType.ID.equals(type))
+			if(StringUtils.isNotBlank(specifiedValue))
+				labelId = specifiedValue;
+			else{
+				StringBuilder s =new StringBuilder();
+				for(int i=0;i<field.getName().length();i++){
+					if(Character.isUpperCase(field.getName().charAt(i)))
+						s.append('.');
+					s.append(Character.toLowerCase(field.getName().charAt(i)));
+				}
+				labelId = s.toString();
+			}
+		return text(labelId);
+	}
+	
+	public String fieldLabel(Field field) {
+		return fieldLabel(field, field.getAnnotation(Input.class));
 	}
 	
 	/**/

@@ -18,14 +18,18 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
+import org.cyk.ui.api.editor.EditorInputsListener;
+import org.cyk.ui.api.editor.EditorListener;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.Table.UsedFor;
@@ -35,7 +39,9 @@ import org.cyk.ui.api.model.table.TableRow;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,Serializable {
+public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean 
+	implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,EditorListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,EditorInputsListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,
+	CommandListener,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
@@ -67,7 +73,9 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		super.afterInitialisation();
 		//if(editors.size()==1)
 		//	contentMenu = editors.iterator().next().getMenu();
-			
+		
+		
+		
 		targetDependentInitialisation();
 		for(Editor<?,?,?,?> editor : editors)
 			editor.targetDependentInitialisation();
@@ -97,9 +105,11 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Override
 	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
 		Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
+		editor.getListeners().add(this);
 		editor.setWindow(this);
 		configureBeforeConstruct(editor);
 		((AbstractBean)editor).postConstruct();
+		editor.getSubmitCommand().getCommand().getListeners().add(this);
 		editor.setCrud(crud);
 		editor.build(anObjectModel);
 		configureAfterConstruct(editor);
@@ -183,5 +193,47 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		commandable.getCommand().setMessageManager(getMessageManager());
 		return commandable;
 	}
+	
+	/* Listeners */
+	
+	@Override
+	public void editorInputsCreated(Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor, EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInputs) {
+		editorInputs.getListeners().add(this);
+	}
+	
+	@Override
+	public void componentsDiscovered(EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInputs,Collection<UIInputOutputComponent<?>> components) {
 		
+	}
+	  
+	// Command
+	
+	@Override
+	public void transfer(UICommand command, Object parameter) throws Exception {
+		System.out.println("AbstractWindow.transfer()");
+	}
+	
+	@Override
+	public Boolean validate(UICommand command, Object parameter) {
+		System.out.println("AbstractWindow.validate()");
+		return null;
+	}
+	
+	@Override
+	public void serve(UICommand command, Object parameter) {
+		System.out.println("AbstractWindow.execute()");
+	}
+	
+	@Override
+	public Object succeed(UICommand command, Object parameter) {
+		System.out.println("AbstractWindow.success()");
+		return null;
+	}
+	
+	@Override
+	public Object fail(UICommand command, Object parameter, Throwable throwable) {
+		System.out.println("AbstractWindow.fail()");
+		return null;
+	}
+	
 }

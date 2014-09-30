@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:budget="http://xmlns.jcp.org/jsf/composite/ci.gouv.budget.primefaces/component">
+	
+ 	<p:dataTable value="#{table.rows}" var="row">
+		<p:columns value="#{table.columns}" var="column" headerText="#{column.label}">
+			
+			<!-- Read only value -->
+			<h:outputText value="#{row.cell(column).value}" rendered="#{not table.editable}"/>
+			<!-- Input for value edit -->
+			<ui:fragment rendered="#{table.editable}">
+				
+				<ui:fragment rendered="#{webApplicationManager.isInputText(row.cell(column).input)}">
+					<ui:include src="/ci.gouv.budget.primefaces/include/layout/controls/inputText.xhtml" >
+						<ui:param name="control" value="#{row.cell(column).input}" />
+					</ui:include>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{webApplicationManager.isInputNumber(row.cell(column).input)}">
+					<ui:include src="/ci.gouv.budget.primefaces/include/layout/controls/inputNumber.xhtml" >
+						<ui:param name="control" value="#{row.cell(column).input}" />
+					</ui:include>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{webApplicationManager.isInputEditor(row.cell(column).input)}">
+					<ui:include src="/ci.gouv.budget.primefaces/include/layout/controls/inputEditor.xhtml" >
+						<ui:param name="control" value="#{row.cell(column).input}" />
+					</ui:include>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{webApplicationManager.isInputTextarea(row.cell(column).input)}">
+					<ui:include src="/ci.gouv.budget.primefaces/include/layout/controls/inputTextarea.xhtml" >
+						<ui:param name="control" value="#{row.cell(column).input}" />
+					</ui:include>
+				</ui:fragment>
+				
+			</ui:fragment>
+		</p:columns>
+	</p:dataTable>
+		
+
+</ui:composition>

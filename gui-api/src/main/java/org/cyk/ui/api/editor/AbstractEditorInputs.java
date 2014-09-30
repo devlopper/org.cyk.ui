@@ -47,6 +47,8 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	
 	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	
+	@Getter protected Collection<EditorInputsListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> listeners = new ArrayList<>();
+	
 	public AbstractEditorInputs() {
 		layout.setOnAddRow(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 4575306741618826683L;
@@ -76,7 +78,11 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 		((AbstractBean)layout).postConstruct();
 		layout.addRow();
 		discoverer.setObjectModel(objectModel);
+		
 		components = new ArrayList<>(discoverer.run(crud).getComponents());
+		for(EditorInputsListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM> listener : listeners)
+			listener.componentsDiscovered(this,components);
+		
 		normalize();
 		for(UIInputOutputComponent<?> component : components){
 			//System.out.println(component.getFamily()+"("+component.getWidth()+" , "+component.getHeight()+")");

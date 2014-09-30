@@ -13,10 +13,12 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.utility.common.annotation.Deployment;
+import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
 
-@Singleton @Named @Getter
+@Singleton @Named @Getter @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebManager extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -1690449792881915040L;
@@ -26,13 +28,15 @@ public class WebManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
+	
+	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
 	}
 	
-	private final Map<Class<? extends AbstractWebPage<?, ?, ?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();
+	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?,?>>, Collection<Field>>();
 	
 	private final String clientValidationGroupClass = Client.class.getName();
 	

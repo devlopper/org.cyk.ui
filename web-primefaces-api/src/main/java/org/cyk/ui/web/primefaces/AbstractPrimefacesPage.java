@@ -16,9 +16,10 @@ import org.cyk.ui.web.api.AbstractWebPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
 
-public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormLabel,DynaFormControl,PrimefacesTable<?>> implements Serializable {
+public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,PrimefacesTable<?>> implements Serializable {
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
@@ -64,7 +65,5 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public String text(String code) {
 		return uiManager.text(code);
 	}
-	
-	
 	
 }

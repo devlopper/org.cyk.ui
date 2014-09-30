@@ -61,4 +61,6 @@ public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart 
 	
 	void setParentField(UIInputComponent<?> aParentField);
 	
+	Collection<EditorInputsListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> getListeners();
+	
 }

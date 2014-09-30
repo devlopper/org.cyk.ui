@@ -55,14 +55,7 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 	public UIFieldDiscoverer run(Crud crud){
 		components = new ArrayList<>();
 		build(objectModel);
-		//sorting
-		
-		/*
-		if(orders!=null){
-			for(UIFieldOrder order : orders.values())
-				System.out.println(order.firstFieldName()+" - "+order.secondFieldName());
-		}
-		*/
+
 		for(UIInputOutputComponent<?> component : components){
 			if(component instanceof UIInputComponent<?>){
 				UIInputComponent<?> input = (UIInputComponent<?>) component;

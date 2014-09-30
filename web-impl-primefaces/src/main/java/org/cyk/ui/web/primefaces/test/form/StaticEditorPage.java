@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test.editor;
+package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
 
@@ -9,28 +9,32 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.model.event.Event;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.web.primefaces.dynamic.EditorPage;
+import org.cyk.ui.web.primefaces.test.model.MyEntity;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class TestDynamicEditorController extends EditorPage implements Serializable {
+public class StaticEditorPage extends EditorPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		editor.debug();
+		
 	}
 	
 	@Override
 	protected BusinessEntityInfos fetchBusinessEntityInfos() {
-		return uiManager.businessEntityInfos(Event.class);
+		return new BusinessEntityInfos(MyEntity.class, languageBusiness);
 	}
 	
-	
+	@Override
+	protected Crud crudFromRequestParameter() {
+		return Crud.CREATE;
+	}
 
 }

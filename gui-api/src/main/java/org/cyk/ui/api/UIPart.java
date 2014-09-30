@@ -9,6 +9,7 @@ public interface UIPart {
 	 */
 	String getTitle();
 	
+	//TODO to be removed - use listener instead
 	void targetDependentInitialisation();
 
 }

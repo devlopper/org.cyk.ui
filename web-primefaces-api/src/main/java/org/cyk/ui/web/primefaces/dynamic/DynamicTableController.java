@@ -40,6 +40,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
 		}
 		*/
+		/*
 		table.getSaveRowCommand().getCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -4698491663673906259L;
 			@Override
@@ -47,7 +48,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 				messageDialogOkButtonOnClick="clickEditButtonRow('"+table.getUpdateStyleClass()+"','"+(table.getLastEditedRowIndex()+1)+"');";
 				return null;
 			}
-		});
+		});*/
 		
 	}
 	

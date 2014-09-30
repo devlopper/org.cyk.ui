@@ -29,6 +29,11 @@ public interface UIMessageManager {
 		private Object text;
 		private Boolean isId;
 		
+		public Text(Object text) {
+			this(text,Boolean.TRUE); 
+		}
+		
+		
 	}
 	
 }

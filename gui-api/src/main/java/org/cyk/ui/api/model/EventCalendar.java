@@ -120,7 +120,7 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 	protected UICommand createCommand(AbstractMethod<Object, Object> action){
 		UICommand command = new DefaultCommand();
 		command.setMessageManager(getWindow().getMessageManager());
-		command.setExecuteMethod(action);
+		//command.setExecuteMethod(action);
 		return command;
 	}
 	

@@ -1,6 +1,7 @@
 package org.cyk.ui.api.editor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -49,6 +50,8 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 	@Getter @Setter protected UIMenu menu = new DefaultMenu();
 	@Getter protected Object objectModel;
 	@Getter @Setter protected Crud crud;
+	
+	@Getter protected Collection<EditorListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> listeners = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -135,6 +138,8 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> inputs = createEditorInputs();
 		inputs.setEditor(this);
 		inputs.setObjectModel(object);
+		for(EditorListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM> listener : listeners)
+			listener.editorInputsCreated(this,inputs);
 		inputs.build(crud);
 		stack.push(inputs);
 		return inputs;

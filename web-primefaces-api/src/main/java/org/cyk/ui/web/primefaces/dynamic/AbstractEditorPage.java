@@ -7,9 +7,9 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.editor.AbstractFormData;
 import org.cyk.ui.web.primefaces.PrimefacesEditor;
-import org.cyk.utility.common.AbstractMethod;
 
 @Getter
 @Setter
@@ -42,6 +42,7 @@ public abstract class AbstractEditorPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});
 		*/
+		/*
 		editor.getSubmitCommand().getCommand().setAfterSuccessNotificationMessageMethod(new AbstractMethod<Object,Object>(){
 			private static final long serialVersionUID = -9058153097352454644L;
 			@Override
@@ -50,7 +51,21 @@ public abstract class AbstractEditorPage<ENTITY extends AbstractIdentifiable> ex
 					messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
 				return null;
 			}
-		});
+		});*/
+	}
+	
+	@Override
+	public void transfer(UICommand command, Object parameter) throws Exception {
+		super.transfer(command, parameter);
+		editor.updateValues();
+	}
+	
+	@Override
+	public Object succeed(UICommand command, Object parameter) {
+		super.succeed(command, parameter);
+		if(Boolean.TRUE.equals(editor.getSubmitMethodMainExecuted()))
+			messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
