@@ -1,10 +1,6 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-public class InputPassword extends AbstractInput<String> implements Serializable {
-
-	private static final long serialVersionUID = 1390099136018097004L;
+public interface InputPassword<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<String,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
 }
-*/

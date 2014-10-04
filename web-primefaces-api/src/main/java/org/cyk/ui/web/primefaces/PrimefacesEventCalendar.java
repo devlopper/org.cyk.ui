@@ -29,7 +29,7 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 	
 	@Getter private MenuModel menuModel;
 	@Getter private ScheduleModel scheduleModel;
-	@Getter private Command primefacesAddEventCommand;
+	@Getter private Commandable primefacesAddEventCommand;
 	
 	@Override
 	protected void afterInitialisation() {
@@ -42,7 +42,7 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 				return null;
 			}
 		});*/
-		primefacesAddEventCommand =  new Command(addEventCommand);
+		primefacesAddEventCommand =  new Commandable(addEventCommand);
 		
 		
 	}

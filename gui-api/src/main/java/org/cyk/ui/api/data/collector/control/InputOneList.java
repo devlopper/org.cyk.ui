@@ -1,14 +1,7 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
+public interface InputOneList<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends InputOneChoice<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
-@Getter @Setter
-public class InputOneList extends AbstractInputOneChoice<Object> implements Serializable {
-
-	private static final long serialVersionUID = 1490472924426610838L;
-
+	
 }
-*/

@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.AbstractBusinessException;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.command.CommandListener.AfterServeState;
 import org.cyk.utility.common.CommonUtils;
 
 @Log
@@ -27,11 +28,11 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	@Setter protected UIMessageManager messageManager;
 	
 	//@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
-	@Getter @Setter protected AbstractNotifyOnSucceedMethod<Object> notifyOnSucceedMethod;
+	//@Getter @Setter protected AbstractNotifyOnSucceedMethod<Object> notifyOnSucceedMethod;
 	//@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod/*,afterSuccessNotificationMessageMethod*/;
-	@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
+	//@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
 	
-	@Getter protected Collection<CommandListener> listeners = new ArrayList<>();
+	@Getter protected Collection<CommandListener> commandListeners = new ArrayList<>();
 	
 	public Object execute(Object object){
 		try {
@@ -51,41 +52,44 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	}
 	
 	private void transfer(Object object) throws Exception {
-		for(CommandListener listener : listeners)
+		for(CommandListener listener : commandListeners)
 			listener.transfer(this, object);
 	}
 	
 	private Boolean validate(Object object) {
 		Boolean valid = Boolean.TRUE;
-		for(int i=0;i<listeners.size() && Boolean.TRUE.equals(valid);i++)
-			valid = ((List<CommandListener>)listeners).get(i).validate(this, object);
+		for(int i=0;i<commandListeners.size() && Boolean.TRUE.equals(valid);i++){
+			Boolean v = ((List<CommandListener>)commandListeners).get(i).validate(this, object);
+			if(v!=null)
+				valid = v;
+		}
 		return Boolean.TRUE.equals(valid);
 	}
 	
 	private void execute_(Object object){
-		for(CommandListener listener : listeners)
+		for(CommandListener listener : commandListeners)
 			listener.serve(this, object);
 	}
 		
 	public Object success(Object object) {
-		Boolean notifyOnSucceed = notifyOnSucceedMethod!=null && notifyOnSucceedMethod.execute(object);
-		if(Boolean.TRUE.equals(notifyOnSucceed)){
-			String message = successNotificationMessage();
-			if(StringUtils.isNotEmpty(message))
-				getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
+		AfterServeState state = AfterServeState.SUCCEED;
+		Boolean notify = Boolean.TRUE;
+		for(int i=0;i<commandListeners.size() && Boolean.TRUE.equals(notify);i++){
+			Boolean v = ((List<CommandListener>)commandListeners).get(i).notifyAfterServe(this, state);
+			if(v!=null)
+				notify = v;
 		}
-		for(CommandListener listener : listeners)
+		
+		if(Boolean.TRUE.equals(notify)){
+			for(int i=0;i<commandListeners.size();i++){
+				String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, object, state);
+				if(StringUtils.isNotEmpty(message))
+					getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
+			}
+		}
+		for(CommandListener listener : commandListeners)
 			listener.succeed(this, object);
-		//if(afterSuccessNotificationMessageMethod!=null)
-		//	afterSuccessNotificationMessageMethod.execute(object);
 		return null;
-	}
-	
-	@Override
-	public String successNotificationMessage() {
-		if(successNotificationMessageMethod==null)
-			return UIManager.getInstance().text("command.execution.succeed");
-		return successNotificationMessageMethod.execute();
 	}
 	
 	private Object fail(Object parameter,Throwable throwable) {
@@ -100,10 +104,23 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 				messages.addAll(((AbstractBusinessException)cause).getMessages());
 		}
 		
-		for(String message : messages)
-			getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+		AfterServeState state = AfterServeState.FAIL;
+		Boolean notify = Boolean.TRUE;
+		for(int i=0;i<commandListeners.size() && Boolean.TRUE.equals(notify);i++){
+			Boolean v = ((List<CommandListener>)commandListeners).get(i).notifyAfterServe(this, state);
+			if(v!=null)
+				notify = v;
+		}
 		
-		for(CommandListener listener : listeners)
+		if(Boolean.TRUE.equals(notify)){
+			for(int i=0;i<commandListeners.size();i++){
+				String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, parameter, state);
+				if(StringUtils.isNotEmpty(message))
+					getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+			}
+		}
+		
+		for(CommandListener listener : commandListeners)
 			listener.fail(this, parameter,throwable);
 		
 		return null;

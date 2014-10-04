@@ -11,14 +11,9 @@ import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
-import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
-import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -40,7 +35,7 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		
+		/*
 		addEventCommand = createCommandable("command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
 			@Override
@@ -49,7 +44,7 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 				return null;
 			}
 		});
-		
+		*/
 		/*
 		openRowCommand = createCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 1074893365570711794L;
@@ -109,20 +104,9 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 		return getWindow().getEventBusiness().findWhereFromDateBetweenByStartDateByEndDate(start, end);
 	}
 	
-	protected UICommandable createCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> action){
-		UICommandable commandable = new DefaultCommandable();
-		commandable.setCommand(createCommand(action));
-		commandable.setLabel(text(labelId));
-		commandable.setIconType(iconType);
-		return commandable;
-	}
 	
-	protected UICommand createCommand(AbstractMethod<Object, Object> action){
-		UICommand command = new DefaultCommand();
-		command.setMessageManager(getWindow().getMessageManager());
-		//command.setExecuteMethod(action);
-		return command;
-	}
+	
+	
 	
 	/**/
 	

@@ -12,8 +12,8 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{dynaFormDemoPage}" />
  		<ui:define name="body">
+ 			<cyk:formOneData value="#{dynaFormDemoPage.form}" />
  			
- 			<cyk:controlSet value="#{dynaFormDemoPage.controlSet}" />
  		</ui:define>
  	</ui:decorate>
  	

@@ -17,7 +17,7 @@ public class PrimefacesHierarchycalData<DATA> /*extends HierarchycalData<DATA>*/
 	
 	@Getter private MenuModel menuModel;
 	@Getter @Setter private NodeEditEventMethod onNodeEditMethod,onNodeEditInitMethod,onNodeEditCancelMethod;
-	@Getter private Command primefacesAddNodeCommand,primefacesSaveNodeCommand,primefacesCancelNodeCommand,primefacesDeleteNodeCommand;
+	@Getter private Commandable primefacesAddNodeCommand,primefacesSaveNodeCommand,primefacesCancelNodeCommand,primefacesDeleteNodeCommand;
 	//@Getter private TreeModel<HierarchycalDataNode> tree;
 	
 	//@Override

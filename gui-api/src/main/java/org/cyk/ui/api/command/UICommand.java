@@ -3,7 +3,6 @@ package org.cyk.ui.api.command;
 import java.util.Collection;
 
 import org.cyk.ui.api.UIMessageManager;
-import org.cyk.utility.common.AbstractMethod;
 
 /**
  * An element on which user can interact to request something
@@ -12,7 +11,7 @@ import org.cyk.utility.common.AbstractMethod;
  */
 public interface UICommand {
 	
-	Collection<CommandListener> getListeners();
+	Collection<CommandListener> getCommandListeners();
 	
 	/**
 	 * Validate data provided by user
@@ -36,11 +35,11 @@ public interface UICommand {
 	 */
 	//Object onExecuteFailed(Throwable throwable);
 	
-	AbstractNotifyOnSucceedMethod<Object> getNotifyOnSucceedMethod();
+	//AbstractNotifyOnSucceedMethod<Object> getNotifyOnSucceedMethod();
 	
-	void setNotifyOnSucceedMethod(AbstractNotifyOnSucceedMethod<Object> aMethod);
+	//void setNotifyOnSucceedMethod(AbstractNotifyOnSucceedMethod<Object> aMethod);
 	
-	String successNotificationMessage();
+	//String successNotificationMessage();
 	
 	/**
 	 * The code to be executed on error
@@ -62,6 +61,7 @@ public interface UICommand {
 	
 	
 	/**/
+	/*
 	public static abstract class AbstractValidateMethod<OBJECT> extends AbstractMethod<Boolean, OBJECT>{
 
 		private static final long serialVersionUID = 87318682837035755L;
@@ -79,7 +79,7 @@ public interface UICommand {
 		private static final long serialVersionUID = 87318682837035755L;
 
 	}
-	
+	*/
 	
 	
 

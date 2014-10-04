@@ -80,8 +80,9 @@ public class EntityWithAnnotation {
 	
 	@Input(setId="p1")
 	@InputFile
-	//@NotNull
+	@NotNull
 	private String inputFile;
+	
 	
 	@Input(setId="p1")
 	@InputBooleanCheck
@@ -146,4 +147,5 @@ public class EntityWithAnnotation {
 	//@NotNull
 	@Size(min=1)
 	private List<String> inputManyCheckCombo;
+	
 }

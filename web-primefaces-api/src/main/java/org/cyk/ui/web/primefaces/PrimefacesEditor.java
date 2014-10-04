@@ -21,18 +21,18 @@ public class PrimefacesEditor extends AbstractWebEditor<DynaFormModel,DynaFormLa
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
-	@Getter private Command primefacesSubmitCommand;
-	@Getter private Command primefacesBackCommand;
-	@Getter private Command primefacesSwitchCommand;
+	@Getter private Commandable primefacesSubmitCommand;
+	@Getter private Commandable primefacesBackCommand;
+	@Getter private Commandable primefacesSwitchCommand;
 	
 	@Getter private MenuModel model = new DefaultMenuModel();
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		primefacesSubmitCommand =  new Command(submitCommand);
-		primefacesBackCommand = new Command(backCommand);
-		primefacesSwitchCommand = new Command(switchCommand);
+		primefacesSubmitCommand =  new Commandable(submitCommand);
+		primefacesBackCommand = new Commandable(backCommand);
+		primefacesSwitchCommand = new Commandable(switchCommand);
 	}
 		
 	@Override

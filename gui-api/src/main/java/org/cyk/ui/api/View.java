@@ -7,9 +7,8 @@ public interface View {
 	String getTitle();
 	void setTitle(String title);
 	
-	//TODO to be changed to template Id
-	String getTemplate();
-	void setTemplate(String template);
+	String getTemplateId();
+	void setTemplateId(String templateId);
 	
 	Collection<View> getChildren();
 	

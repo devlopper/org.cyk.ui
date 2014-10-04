@@ -13,7 +13,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<ui:decorate template="#{cc.value==null?primefacesManager.templateControlSetDefault:cc.value.template}">
+		<ui:decorate template="#{cc.value==null?primefacesManager.templateControlSetDefault:cc.value.templateId}">
 			<ui:param name="controlSet" value="#{cc.value}" />
 		</ui:decorate>	
 	</cc:implementation>

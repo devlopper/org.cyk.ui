@@ -11,8 +11,8 @@ import lombok.Setter;
 
 import org.cyk.ui.api.AbstractView;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.data.collector.control.Control;
-import org.cyk.ui.api.data.collector.control.ControlProvider;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.utility.common.CommonUtils;
@@ -35,11 +35,12 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Getter @Setter protected Boolean showInFrame;
 	
 	@Getter protected Collection<ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> controlSetListeners = new ArrayList<>();
-	
+		
 	/**
 	 * Add a row
 	 * @return
 	 */
+	@Override
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> row(){
 		if(Boolean.TRUE.equals(__collectPositions__)){
 			__rowCount__++;
@@ -54,7 +55,6 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	/**
 	 * Add a control
 	 * @param control
-	 * @param position
 	 * @return
 	 */
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> add(Control<MODEL,ROW, LABEL, CONTROL, SELECTITEM> control){
@@ -75,13 +75,14 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		return this;
 	}
 	
+	@Override
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Field field){
 		@SuppressWarnings("unchecked")
-		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) ControlProvider.getInstance().createLabel(UIManager.getInstance().fieldLabel(field));
+		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(UIManager.getInstance().fieldLabel(field));
 		add(label);
 		
 		@SuppressWarnings("unchecked")
-		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) ControlProvider.getInstance().createFieldControl(formData.getData(), field);
+		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(formData.getData(), field);
 		add(control);
 		return this;
 	}
@@ -120,14 +121,15 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 				((Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control).applyValueToField(formData.getData());
 		
 	}
-	
-	@SuppressWarnings("unchecked")
-	public <T> T findInput(Class<T> aClass,String fieldName){
-		for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls)
+		
+	@Override @SuppressWarnings("unchecked")
+	public <T> T findInputByFieldName(Class<T> aClass, String fieldName) {
+		for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls){
 			if( (control instanceof Input<?,?,?,?,?,?>) 
 					&& ( ((Input<?,?,?,?,?,?>)control).getField().getName().equals(fieldName)) 
 					&& aClass.isAssignableFrom(control.getClass()))
 				return (T) control;
+		}
 		return null;
 	}
 	
@@ -135,7 +137,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 
 	@SuppressWarnings("unchecked")
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addLabel(String label){
-		return add((Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) ControlProvider.getInstance().createLabel(label));
+		return add((Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(label));
 	}	
 	
 }

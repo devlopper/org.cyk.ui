@@ -18,7 +18,6 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.UICommand.AbstractNotifyOnSucceedMethod;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -94,6 +93,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				return null;
 			}
 		},EventListener.NONE,ProcessGroup.FORM);
+		/*
 		submitCommand.getCommand().setNotifyOnSucceedMethod(new AbstractNotifyOnSucceedMethod<Object>() {
 			private static final long serialVersionUID = 8882624469264441089L;
 			@Override
@@ -101,7 +101,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				return Boolean.TRUE.equals(getSubmitMethodMainExecuted());
 			}
 		});
-		
+		*/
 		backCommand = UIManager.getInstance().createCommandable("command.back",IconType.ACTION_GO_BACK, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override

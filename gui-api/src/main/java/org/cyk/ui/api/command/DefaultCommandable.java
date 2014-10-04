@@ -1,4 +1,4 @@
-package org.cyk.ui.api.command;
+/*package org.cyk.ui.api.command;
 
 import java.io.Serializable;
 
@@ -9,3 +9,4 @@ public class DefaultCommandable extends AbstractCommandable implements Serializa
 	
 	
 }
+*/

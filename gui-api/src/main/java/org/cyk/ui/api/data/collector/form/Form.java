@@ -1,27 +1,31 @@
 package org.cyk.ui.api.data.collector.form;
 
-import java.util.Stack;
-
 import org.cyk.ui.api.View;
+import org.cyk.ui.api.command.UICommandable;
 
 public interface Form<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends View {
+	
+	String getFieldsRequiredMessage();
+	void setFieldsRequiredMessage(String message);
+	
+	UICommandable getSubmitCommandable();
+	
+	Boolean getShowCommands();
+	void setShowCommands(Boolean value);
+	
 	/*
 	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> getWindow();
 	void setWindow(UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> aWindow);
 	
 	UIMenu getMenu();
 	void setMenu(UIMenu aMenu);
-	
+	*/
 	void setEditable(Boolean editable);
 	Boolean getEditable();
 	
-	DATA getData();
-	void setData(DATA data);
-	*/
-	
-	FormData<DATA,FORM,ROW, OUTPUTLABEL, INPUT, SELECTITEM> createFormData();
-	Stack<FormData<DATA, FORM, ROW, OUTPUTLABEL, INPUT, SELECTITEM>> getFormDatas();
-	
+	void setDynamic(Boolean value);
+	Boolean getDynamic();
+		
 	/*
 	UICommandable getSubmitCommandable();
 	UICommandable getSwitchCommandable();

@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+ 	
+ 	<ui:insert name="header">
+ 		<table class="form-header" ><tr>
+ 			<td class="col1"><h:outputText value="#{form.title}" /></td>
+ 			<td class="col2"><h:outputText value="#{form.fieldsRequiredMessage}" /></td>
+ 		</tr></table>
+ 	</ui:insert>
+ 	
+ 	<ui:insert name="body"> 
+		<cyk:formData value="#{form.selectedFormData}" />
+ 	</ui:insert>
+ 	
+ 	<ui:insert name="command">
+ 		<ui:fragment rendered="#{form.showCommands}">
+ 			<cyk:command value="#{form.submitCommandable}"/>
+ 		</ui:fragment>
+ 	</ui:insert>
+	
+</ui:composition>

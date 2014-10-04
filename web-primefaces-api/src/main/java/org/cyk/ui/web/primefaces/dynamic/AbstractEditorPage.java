@@ -53,7 +53,7 @@ public abstract class AbstractEditorPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});*/
 	}
-	
+	/*
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		super.transfer(command, parameter);
@@ -67,7 +67,7 @@ public abstract class AbstractEditorPage<ENTITY extends AbstractIdentifiable> ex
 			messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
 		return null;
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	protected Object data(Class<?> aClass){
 		try{

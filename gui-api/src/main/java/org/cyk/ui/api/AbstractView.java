@@ -7,9 +7,10 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter
 public abstract class AbstractView extends AbstractBean implements View,Serializable {
 
 	private static final long serialVersionUID = 898216365028456783L;
@@ -17,10 +18,11 @@ public abstract class AbstractView extends AbstractBean implements View,Serializ
 	/**/
 	protected UIManager uiManager = UIManager.getInstance();
 	
-	protected String title,template;
-	protected Collection<View> children = new ArrayList<>();
+	@Getter @Setter protected String title,templateId;
+	@Getter protected Collection<View> children = new ArrayList<>();
+	@Getter protected Collection<ViewListener> viewListeners = new ArrayList<>();
 	
-	protected Collection<ViewListener> viewListeners = new ArrayList<>();
+	protected UIProvider uiProvider = UIProvider.getInstance();
 	
 	/**/ 
 	
@@ -41,6 +43,24 @@ public abstract class AbstractView extends AbstractBean implements View,Serializ
 	
 	protected String text(String code){
 		return UIManager.getInstance().text(code);
+	}
+	
+	/* Messages */
+	
+	protected void showMessage(SeverityType severityType,String summaryId,String detailsId) {
+		MessageManager.INSTANCE.message(severityType, new Text(summaryId), new Text(detailsId));
+	}
+	
+	protected void showMessage(SeverityType severityType,String id) {
+		showMessage(severityType,id+".summary", id+".details");
+	}
+	
+	protected void showInfoMessage(String id) {
+		showMessage(SeverityType.INFO, id);
+	}
+	
+	protected void showErrorMessage(String id) {
+		showMessage(SeverityType.ERROR, id);
 	}
 	
 	@Override

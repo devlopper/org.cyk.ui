@@ -28,7 +28,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	
 	@Getter private MenuModel menuModel;
 	@Getter @Setter private RowEditEventMethod onRowEditMethod,onRowEditInitMethod,onRowEditCancelMethod;
-	@Getter private Command primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
+	@Getter private Commandable primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
 	@Getter private PrimefacesTree primefacesTree;
 	@Getter private String updateStyleClass;
 	
@@ -36,11 +36,11 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
-		primefacesAddRowCommand =  new Command(addRowCommand,  "@(."+updateStyleClass+")");
-		primefacesAddRowCommand.getCommandButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"');");
+		primefacesAddRowCommand =  new Commandable(addRowCommand,  "@(."+updateStyleClass+")");
+		primefacesAddRowCommand.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"');");
 		
-		primefacesDeleteRowCommand =  new Command(deleteRowCommand);
-		primefacesOpenRowCommand =  new Command(openRowCommand);
+		primefacesDeleteRowCommand =  new Commandable(deleteRowCommand);
+		primefacesOpenRowCommand =  new Commandable(openRowCommand);
 		
 		rowNavigateEventMethod = new RowNavigateEventMethod() {
 			private static final long serialVersionUID = -3334241830659069117L;

@@ -1,10 +1,7 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-public class InputFile extends AbstractInput<byte[]> implements Serializable {
+public interface InputFile<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<Byte[],MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
-	private static final long serialVersionUID = 1390099136018097004L;
-
+	
 }
-*/

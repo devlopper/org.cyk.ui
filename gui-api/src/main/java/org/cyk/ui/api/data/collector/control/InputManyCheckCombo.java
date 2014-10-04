@@ -1,16 +1,8 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
+public interface InputManyCheckCombo<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends InputManyChoice<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
-@Getter @Setter
-public class InputManyCheckCombo extends AbstractInputManyChoice implements Serializable {
-
-	private static final long serialVersionUID = 1490472924426610838L;
-
-	private String _label=text("choix");
-	
+	String getPresentedLabel();
+	void setPresentedLabel(String value);
 }
-*/

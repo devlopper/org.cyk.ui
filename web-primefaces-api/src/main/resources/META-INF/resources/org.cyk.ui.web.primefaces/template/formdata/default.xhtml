@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+ 
+		<ui:fragment rendered="#{not formData.customControlSetPositioning}">
+			<cyk:controlSet value="#{formData.controlSetByIndex(0)}" rendered="#{formData.hasControlSetByIndex(0)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(1)}" rendered="#{formData.hasControlSetByIndex(1)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(2)}" rendered="#{formData.hasControlSetByIndex(2)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(3)}" rendered="#{formData.hasControlSetByIndex(3)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(4)}" rendered="#{formData.hasControlSetByIndex(4)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(5)}" rendered="#{formData.hasControlSetByIndex(5)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(6)}" rendered="#{formData.hasControlSetByIndex(6)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(7)}" rendered="#{formData.hasControlSetByIndex(7)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(8)}" rendered="#{formData.hasControlSetByIndex(8)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(9)}" rendered="#{formData.hasControlSetByIndex(9)}"/>
+			
+			<cyk:controlSet value="#{formData.controlSetByIndex(10)}" rendered="#{formData.hasControlSetByIndex(10)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(11)}" rendered="#{formData.hasControlSetByIndex(11)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(12)}" rendered="#{formData.hasControlSetByIndex(12)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(13)}" rendered="#{formData.hasControlSetByIndex(13)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(14)}" rendered="#{formData.hasControlSetByIndex(14)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(15)}" rendered="#{formData.hasControlSetByIndex(15)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(16)}" rendered="#{formData.hasControlSetByIndex(16)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(17)}" rendered="#{formData.hasControlSetByIndex(17)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(18)}" rendered="#{formData.hasControlSetByIndex(18)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(19)}" rendered="#{formData.hasControlSetByIndex(19)}"/>
+			
+			<cyk:controlSet value="#{formData.controlSetByIndex(20)}" rendered="#{formData.hasControlSetByIndex(20)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(21)}" rendered="#{formData.hasControlSetByIndex(21)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(22)}" rendered="#{formData.hasControlSetByIndex(22)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(23)}" rendered="#{formData.hasControlSetByIndex(23)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(24)}" rendered="#{formData.hasControlSetByIndex(24)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(25)}" rendered="#{formData.hasControlSetByIndex(25)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(26)}" rendered="#{formData.hasControlSetByIndex(26)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(27)}" rendered="#{formData.hasControlSetByIndex(27)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(28)}" rendered="#{formData.hasControlSetByIndex(28)}"/>
+			<cyk:controlSet value="#{formData.controlSetByIndex(29)}" rendered="#{formData.hasControlSetByIndex(29)}"/>		
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{formData.customControlSetPositioning}">
+			<h:panelGrid columns="#{formData.layoutColumnCount}" >
+				<cyk:controlSet value="#{formData.controlSetByIndex(0)}" rendered="#{formData.hasControlSetByIndex(0)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(1)}" rendered="#{formData.hasControlSetByIndex(1)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(2)}" rendered="#{formData.hasControlSetByIndex(2)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(3)}" rendered="#{formData.hasControlSetByIndex(3)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(4)}" rendered="#{formData.hasControlSetByIndex(4)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(5)}" rendered="#{formData.hasControlSetByIndex(5)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(6)}" rendered="#{formData.hasControlSetByIndex(6)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(7)}" rendered="#{formData.hasControlSetByIndex(7)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(8)}" rendered="#{formData.hasControlSetByIndex(8)}"/>
+				<cyk:controlSet value="#{formData.controlSetByIndex(9)}" rendered="#{formData.hasControlSetByIndex(9)}"/>
+			</h:panelGrid>
+		</ui:fragment>
+	
+			
+
+</ui:composition>

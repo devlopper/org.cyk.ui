@@ -1,11 +1,8 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class InputCalendar extends AbstractInput<Date> implements Serializable {
+public interface InputCalendar<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<Date,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
-	private static final long serialVersionUID = 1390099136018097004L;
-
+	
 }
-*/

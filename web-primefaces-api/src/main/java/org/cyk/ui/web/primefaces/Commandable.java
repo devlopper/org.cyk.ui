@@ -3,32 +3,38 @@ package org.cyk.ui.web.primefaces;
 import java.io.Serializable;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.web.api.command.AbstractWebCommandable;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.event.SelectEvent;
 
-@Getter @Setter
-public class Command implements Serializable {
+@NoArgsConstructor
+public class Commandable extends AbstractWebCommandable implements Serializable {
 
 	private static final long serialVersionUID = 6706193290921067166L;
 
-	private UICommandable commandable;
 	private CommandButton commandButton;
-	private String update;
+	@Getter @Setter private String update;
 	
-	public Command(UICommandable aCommandable,String update) {
+	{
+		update = ":form:contentPanel :form:menuPanel";
+	}
+	
+	//TODO Both constructors has to be removed. Customization to be done in listener
+	public Commandable(UICommandable aCommandable,String update) {
 		super();
-		this.commandable = aCommandable;
+		//this.commandable = aCommandable;
 		this.update = update;
 	}
 	
-	public Command(UICommandable aCommandable) {
+	public Commandable(UICommandable aCommandable) {
 		this(aCommandable,":form:contentPanel :form:menuPanel");
 	}
 	
-	public CommandButton getCommandButton(){
+	public CommandButton getButton(){
 		if(commandButton==null)
 			commandButton = CommandBuilder.getInstance().commandButton(this);
 			

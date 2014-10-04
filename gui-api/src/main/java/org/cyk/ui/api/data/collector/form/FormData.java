@@ -6,8 +6,8 @@ import org.cyk.ui.api.View;
 
 public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View  {
 		
-	//Form<DATA,FORM,OUTPUTLABEL,INPUT,SELECTITEM> getForm();
-	//void setForm(Form<DATA,FORM,OUTPUTLABEL,INPUT,SELECTITEM> form);
+	FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> getForm();
+	void setForm(FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> form);
 	
 	DATA getData();
 	void setData(DATA data);
@@ -18,7 +18,14 @@ public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View 
 	
 	Collection<FormDataListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> getFormDataListeners();
 	
-	
 	ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> createControlSet();
+	
+	Boolean getCustomControlSetPositioning();
+	void setCustomControlSetPositioning(Boolean value);
+	
+	ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetByIndex(Integer index);
+	Boolean hasControlSetByIndex(Integer index);
+	
+	<T> T findInputByFieldName(Class<T> aClass,String fieldName);
 	
 }

@@ -18,7 +18,6 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
-import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
@@ -40,8 +39,7 @@ import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean 
-	implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,EditorListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,EditorInputsListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,
-	CommandListener,Serializable {
+	implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,EditorListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,EditorInputsListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
@@ -109,7 +107,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		editor.setWindow(this);
 		configureBeforeConstruct(editor);
 		((AbstractBean)editor).postConstruct();
-		editor.getSubmitCommand().getCommand().getListeners().add(this);
+		//editor.getSubmitCommand().getCommand().getCommandListeners().add(this);
 		editor.setCrud(crud);
 		editor.build(anObjectModel);
 		configureAfterConstruct(editor);
@@ -207,7 +205,7 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	}
 	  
 	// Command
-	
+	/*
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		System.out.println("AbstractWindow.transfer()");
@@ -235,5 +233,5 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		System.out.println("AbstractWindow.fail()");
 		return null;
 	}
-	
+	*/
 }

@@ -1,17 +1,12 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public interface InputTextarea<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<String,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> {
 
-@Getter @Setter @NoArgsConstructor
-public class InputTextarea extends AbstractInput<String> implements Serializable {
-
-	private static final long serialVersionUID = 1390099136018097004L;
-
-	private Integer rows=4,columns=5;
+	Integer getRows();
+	void setRows(Integer rows);
+	
+	Integer getColumns();
+	void setColumns(Integer columns);
 	
 }
-*/

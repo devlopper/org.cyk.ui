@@ -1,23 +1,22 @@
-/*package org.cyk.ui.api.data.collector.control;
-
-import java.io.Serializable;
+package org.cyk.ui.api.data.collector.control;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-*//**
+/**
  * 
  * @author Komenan.Christian
  *
- *//*
-@Getter @Setter @NoArgsConstructor
-public class InputBooleanButton extends AbstractInput<Boolean> implements Serializable {
+ */
+public interface InputBooleanButton<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<Boolean,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM>{
 
-	private static final long serialVersionUID = 1390099136018097004L;
-
-	private State onState=new State(text("oui"),"ui-icon-check"),offState=new State(text("non"),null);
+	State getOnState();
+	void setOnState(State state);
+	
+	State getOffState();
+	void setOffState(State state);
 	
 	@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 	public static class State{
@@ -25,4 +24,3 @@ public class InputBooleanButton extends AbstractInput<Boolean> implements Serial
 	}
 	
 }
-*/

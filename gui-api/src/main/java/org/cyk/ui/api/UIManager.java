@@ -25,7 +25,6 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
@@ -43,11 +42,8 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.UIField.TextValueType;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
-
-import com.sun.xml.bind.v2.schemagen.xmlschema.Annotated;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -241,29 +237,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public void registerFormData(Class<? extends AbstractIdentifiable> identifiableClass,Class<?> formDataClass){
 		ENTITY_FORM_DATA_MAP.put(identifiableClass, formDataClass);
 	}
-	/*
-	public AbstractMethod<AbstractIdentifiable, Object> formDataConverterMethod(Class<?> aClass){
-		AbstractMethod<AbstractIdentifiable, Object> method = FORM_DATA_ENTITY_CONVERTER_METHOD_MAP.get(aClass);
-		if(method==null)
-			return null;
-		return method;
-	}
 	
-	public void registerFormDataConverter(Class<?> formDataClass,AbstractMethod<AbstractIdentifiable, Object> converterMethod){
-		FORM_DATA_ENTITY_CONVERTER_METHOD_MAP.put(formDataClass, converterMethod);
-	}
-	
-	public AbstractMethod<Object, Object> formDataInitMethod(Class<? extends AbstractIdentifiable> aClass){
-		AbstractMethod<Object, Object> method = ENTITY_FORM_DATA_INITMETHOD__MAP.get(aClass);
-		if(method==null)
-			return null;
-		return method;
-	}
-	
-	public void registerFormDataInitMethod(Class<? extends AbstractIdentifiable> identifiableDataClass,AbstractMethod<Object, Object> initMethod){
-		ENTITY_FORM_DATA_INITMETHOD__MAP.put(identifiableDataClass, initMethod);
-	}
-	*/
 	/**/
 	
 	public BusinessEntityInfos businessEntityInfos(Class<?> aClass){
@@ -304,8 +278,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	//
 	//String labelId,IconType iconType,AbstractMethod<Object, Object> action
+	@Deprecated
 	public UICommandable createCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
-		UICommandable commandable = new DefaultCommandable();
+		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, anExecutionPhase, aProcessGroup);
 		commandable.setCommand(createCommand(executeMethod));
 		commandable.setLabel(text(labelId));
 		commandable.setIconType(iconType);
@@ -315,12 +290,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return commandable;
 	}
 	
+	@Deprecated
 	public UICommandable createCommandable(UIMenu menu,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
 		menu.addCommandable(commandable);
 		return commandable;
 	}
 	
+	@Deprecated
 	public UICommandable createCommandable(UICommandable parent,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
 		parent.getChildren().add(commandable);
@@ -335,6 +312,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return command;
 	}
 	
+	@Deprecated
 	public String annotationTextValue(TextValueType textValueType,String textValue,String defaultValue) {
 		switch(textValueType){
 		case I18N_ID:return text(StringUtils.isEmpty(textValue)?defaultValue:textValue);

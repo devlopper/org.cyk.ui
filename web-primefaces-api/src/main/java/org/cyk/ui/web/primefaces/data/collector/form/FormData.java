@@ -16,14 +16,18 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 
 	private static final long serialVersionUID = -8473077267633574874L;
 
+	{
+		templateId = "/org.cyk.ui.web.primefaces/template/formdata/default.xhtml";
+	}
+	
 	@Override
 	public ControlSet<DATA> createControlSet() {
-		ControlSet<DATA> set = new org.cyk.ui.web.primefaces.data.collector.form.ControlSet<DATA>();
+		ControlSet<DATA> set = new ControlSet<DATA>();
 		set.setFormData(this);
 		set.getControlSetListeners().add(this);
-		
 		controlSets.add(set);
-		set.build();
+		children.add(set);
+		//set.build();
 		return set;
 	}
 

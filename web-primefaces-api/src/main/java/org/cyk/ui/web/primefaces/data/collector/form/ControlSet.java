@@ -12,4 +12,8 @@ public class ControlSet<DATA> extends AbstractWebControlSet<DATA,DynaFormModel, 
 
 	private static final long serialVersionUID = -3180633522615710480L;
 
+	{
+		templateId = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
+	}
+	
 }

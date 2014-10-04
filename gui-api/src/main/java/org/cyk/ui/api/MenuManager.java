@@ -11,9 +11,7 @@ import javax.inject.Singleton;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
-import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -30,7 +28,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 
 	public enum Type {APPLICATION,CONTEXTUAL}
 	
-	private @Inject LanguageBusiness languageBusiness;
 	@Inject protected BusinessManager businessManager;
 	
 	public UIMenu build(Type type,InternalApplicationModuleType internalApplicationModuleType){
@@ -117,17 +114,17 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
+	
 	private UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
-		UICommandable commandable = new DefaultCommandable();
+		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, null, null);
 		commandable.setCommandRequestType(aCommandRequestType);
-		commandable.setLabel(languageBusiness.findText(labelId));
-		commandable.setIconType(iconType);
 		return commandable;
 	}
 	
 	private UICommandable commandable(String labelId,IconType iconType){
 		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
 	}
+	
 	
 	private class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
 

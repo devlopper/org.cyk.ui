@@ -28,13 +28,12 @@ public class CommandBuilder implements Serializable {
 		return INSTANCE;
 	}
 	
-	public CommandButton commandButton(Command command){
-		UICommandable aCommandable = command.getCommandable();
+	public CommandButton commandButton(Commandable aCommandable){
 		CommandButton commandButton = new CommandButton();
 		commandButton.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 		if(Boolean.TRUE.equals(aCommandable.getShowLabel()))
 			commandButton.setValue(aCommandable.getLabel());
-		commandButton.setUpdate(command.getUpdate());
+		commandButton.setUpdate(aCommandable.getUpdate());
 		if(aCommandable.getIconType()!=null)
 			commandButton.setIcon(icon(aCommandable.getIconType()));
 		if(StringUtils.isEmpty(aCommandable.getTooltip()))

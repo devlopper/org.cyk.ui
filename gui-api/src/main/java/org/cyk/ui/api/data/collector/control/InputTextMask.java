@@ -1,17 +1,9 @@
-/*package org.cyk.ui.api.data.collector.control;
+package org.cyk.ui.api.data.collector.control;
 
-import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public interface InputTextMask<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends Input<String,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM>{
 
-@Getter @Setter @NoArgsConstructor
-public class InputTextMask extends AbstractInput<String> implements Serializable {
-
-	private static final long serialVersionUID = 1390099136018097004L;
-
-	private String mask;
+	String getMask();
+	void setMask(String mask);
 	
 }
-*/
