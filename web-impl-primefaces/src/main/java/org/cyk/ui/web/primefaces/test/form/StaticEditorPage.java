@@ -10,14 +10,14 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.web.primefaces.dynamic.EditorPage;
+import org.cyk.ui.web.primefaces.page.CrudOnePage;
 import org.cyk.ui.web.primefaces.test.model.MyEntity;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class StaticEditorPage extends EditorPage implements Serializable {
+public class StaticEditorPage extends CrudOnePage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 

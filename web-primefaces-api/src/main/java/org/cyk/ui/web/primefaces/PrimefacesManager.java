@@ -6,24 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
-import org.cyk.ui.api.UIProviderListener;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
-import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -31,7 +27,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
-public class PrimefacesManager extends AbstractBean implements UIProviderListener<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem>, Serializable {
+public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
 
 	private static final long serialVersionUID = -3546850417728323300L;
 
@@ -41,8 +37,9 @@ public class PrimefacesManager extends AbstractBean implements UIProviderListene
 		return INSTANCE;
 	}
 	
-	@Inject private UIProvider uiProvider;
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
+	private String outcomeDynamicCrudOne = "dynamicCrudOne";
+	private String outcomeDynamicCrudMany = "dynamicCrudMany";
 	
 	@Override
 	protected void initialisation() {
@@ -50,6 +47,7 @@ public class PrimefacesManager extends AbstractBean implements UIProviderListene
 		super.initialisation();	
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
+		uiProvider.getUiProviderListeners().add(this);
 	}
 	
 	public String includeFile(UIInputComponent<?> input){
@@ -75,23 +73,8 @@ public class PrimefacesManager extends AbstractBean implements UIProviderListene
 	}
 
 	@Override
-	public Class<? extends Control<?, ?, ?, ?, ?>> controlClassSelected(Class<? extends Control<?, ?, ?, ?, ?>> aClass) {
-		return null;
+	protected SelectItem item(AbstractIdentifiable identifiable) {
+		return new SelectItem(identifiable,identifiable.getUiString());
 	}
 
-	@Override
-	public void controlInstanceCreated(Control<?, ?, ?, ?, ?> control) {
-		
-	}
-
-	@Override
-	public Class<? extends UICommandable> commandableClassSelected(Class<? extends UICommandable> aClass) {
-		return null;
-	}
-
-	@Override
-	public void commandableInstanceCreated(UICommandable aCommandable) {
-		
-	}
-	
 }

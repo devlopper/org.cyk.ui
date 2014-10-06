@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputBooleanButton;
 import org.cyk.ui.api.data.collector.control.InputBooleanCheck;
 import org.cyk.ui.api.data.collector.control.InputCalendar;
+import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputEditor;
 import org.cyk.ui.api.data.collector.control.InputFile;
 import org.cyk.ui.api.data.collector.control.InputManyButton;
@@ -54,7 +56,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	private Package controlBasePackage = getClass().getPackage();
 	private Class<? extends UICommandable> commandableClass;
-	private Collection<UIProviderListener<?,?,?,?,?>> controlProviderListeners = new ArrayList<>();
+	private Collection<UIProviderListener<?,?,?,?,?>> uiProviderListeners = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -79,6 +81,14 @@ public class UIProvider extends AbstractBean implements Serializable {
 			input.setReadOnlyValue(readOnlyValue(field, data));
 			input.setRequired(field.getAnnotation(NotNull.class)!=null);
 		}
+		
+		if(control instanceof InputChoice<?,?,?,?,?,?>){
+			@SuppressWarnings("unchecked")
+			InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
+			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+				listener.choices(data,field, (List<Object>) inputChoice.getList());
+		}
+		
 		return control;
 	}
 	
@@ -91,7 +101,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		Class<? extends UICommandable> commandableClass = this.commandableClass;
-		for(UIProviderListener<?,?,?,?,?> listener : controlProviderListeners){
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends UICommandable> c = listener.commandableClassSelected(commandableClass);
 			if(c!=null)
 				commandableClass = c; 
@@ -107,7 +117,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			commandable.setProcessGroup(aProcessGroup);
 			if(commandListener!=null)
 				commandable.getCommand().getCommandListeners().add(commandListener);
-			for(UIProviderListener<?,?,?,?,?> listener : controlProviderListeners)
+			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
 				listener.commandableInstanceCreated(commandable);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,7 +130,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	/* */
 	
 	private Control<?,?,?,?,?> createControlInstance(Class<? extends Control<?,?,?,?,?>> controlClass){
-		for(UIProviderListener<?,?,?,?,?> listener : controlProviderListeners){
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends Control<?,?,?,?,?>> c = listener.controlClassSelected(controlClass);
 			if(c!=null)
 				controlClass = c; 
@@ -129,7 +139,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		Control<?,?,?,?,?> control;
 		try {
 			control = (Control<?,?,?,?,?>) controlClass.newInstance();
-			for(UIProviderListener<?,?,?,?,?> listener : controlProviderListeners)
+			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
 				listener.controlInstanceCreated(control);
 		} catch (Exception e) {
 			e.printStackTrace();

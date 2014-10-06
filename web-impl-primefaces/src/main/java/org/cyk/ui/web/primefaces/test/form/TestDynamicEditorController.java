@@ -10,20 +10,20 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.event.Event;
-import org.cyk.ui.web.primefaces.dynamic.EditorPage;
+import org.cyk.ui.web.primefaces.page.CrudOnePage;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class TestDynamicEditorController extends EditorPage implements Serializable {
+public class TestDynamicEditorController extends CrudOnePage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		editor.debug();
+		//editor.debug();
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.InputChoice;
@@ -38,8 +39,8 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
-		form = new FormOneData<>();
-		form.setData(entityWithAnnotation);
+		form = (FormOneData<EntityWithAnnotation>) createFormOneData(entityWithAnnotation,Crud.CREATE);
+
 		form.setTitle("Mon Formulaire");
 		form.setFieldsRequiredMessage("Champs obligatoire");
 		form.setDynamic(Boolean.TRUE);
@@ -54,7 +55,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		});
 		((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
 		
-		form.build();
+		//form.build();
 	}
 	
 	@Override

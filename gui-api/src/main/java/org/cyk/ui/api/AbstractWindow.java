@@ -25,6 +25,7 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.component.UIInputOutputComponent;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.EditorInputsListener;
@@ -38,13 +39,13 @@ import org.cyk.ui.api.model.table.TableRow;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends AbstractBean 
-	implements UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE>,EditorListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,EditorInputsListener<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>,Serializable {
+public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE extends Table<?>> extends AbstractBean 
+	implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM,TABLE>,EditorListener<FORM,LABEL,CONTROL,SELECTITEM>,EditorInputsListener<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
 	@Inject @Getter protected ValidationPolicy validationPolicy;
-	@Getter @Setter protected AbstractMethod<Object, EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM>> editorInputsEventListenerMethod;
+	@Getter @Setter protected AbstractMethod<Object, EditorInputs<FORM,LABEL,CONTROL,SELECTITEM>> editorInputsEventListenerMethod;
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;
@@ -53,7 +54,8 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
-	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();
+	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();//TODO to be deleted
+	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<TABLE> tables = new ArrayList<>();
 	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
 	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
@@ -72,7 +74,8 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		//if(editors.size()==1)
 		//	contentMenu = editors.iterator().next().getMenu();
 		
-		
+		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas )
+			form.build();
 		
 		targetDependentInitialisation();
 		for(Editor<?,?,?,?> editor : editors)
@@ -100,9 +103,18 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 		return Boolean.TRUE;
 	}
 	
+	protected abstract <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> __createFormOneData__();
+	
+	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
+		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
+		form.setData(data);
+		formOneDatas.add(form);
+		return form;
+	}
+	
 	@Override
-	public Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
-		Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor = editorInstance();
+	public Editor<FORM,LABEL,CONTROL,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
+		Editor<FORM,LABEL,CONTROL,SELECTITEM> editor = editorInstance();
 		editor.getListeners().add(this);
 		editor.setWindow(this);
 		configureBeforeConstruct(editor);
@@ -195,12 +207,12 @@ public abstract class AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE e
 	/* Listeners */
 	
 	@Override
-	public void editorInputsCreated(Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editor, EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInputs) {
+	public void editorInputsCreated(Editor<FORM,LABEL,CONTROL,SELECTITEM> editor, EditorInputs<FORM,LABEL,CONTROL,SELECTITEM> editorInputs) {
 		editorInputs.getListeners().add(this);
 	}
 	
 	@Override
-	public void componentsDiscovered(EditorInputs<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInputs,Collection<UIInputOutputComponent<?>> components) {
+	public void componentsDiscovered(EditorInputs<FORM,LABEL,CONTROL,SELECTITEM> editorInputs,Collection<UIInputOutputComponent<?>> components) {
 		
 	}
 	  

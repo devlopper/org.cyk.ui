@@ -16,7 +16,6 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.utility.common.AbstractMethod;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
@@ -78,9 +77,9 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 			if(event!=null){
 				params.put(WebManager.getInstance().getRequestParameterIdentifiable(), Arrays.asList(event.getIdentifier().toString()));
 			}
-			PrimefacesManager.getInstance().openDialog("dynamiceditor", map, params);
+			PrimefacesManager.getInstance().openDialog(PrimefacesManager.getInstance().getOutcomeDynamicCrudOne(), map, params);
 		}else{
-			WebNavigationManager.getInstance().redirectTo("dynamiceditor",new Object[]{
+			WebNavigationManager.getInstance().redirectTo(PrimefacesManager.getInstance().getOutcomeDynamicCrudOne(),new Object[]{
 					WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(Event.class),
 					WebManager.getInstance().getRequestParameterIdentifiable(),event==null?null:event.getIdentifier(),
 					UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudParameterValue(crud)

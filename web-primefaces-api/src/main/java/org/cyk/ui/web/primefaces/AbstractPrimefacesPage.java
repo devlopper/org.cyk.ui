@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table.UsedFor;
@@ -34,6 +35,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
+	}
+	
+	@Override
+	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
+		return new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.dynamic;
+package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 

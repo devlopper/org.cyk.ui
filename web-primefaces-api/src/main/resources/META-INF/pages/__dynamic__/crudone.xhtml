@@ -10,14 +10,16 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{editorPage}" />
+ 		<ui:param name="pageController" value="#{crudOnePage}" />
  		<ui:define name="body">
- 			<cyk:editor value="#{editorPage.editor}" />
+ 			<cyk:formOneData value="#{crudOnePage.form}" />
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{editorPage.editor.primefacesSubmitCommand}" executeParameter="#{editorPage.editor.objectModel}" />
-			<cyk:command value="#{editorPage.editor.primefacesBackCommand}" rendered="#{not editorPage.editor.root}"/>
+ 			<cyk:command value="#{crudOnePage.form.submitCommandable}" executeParameter="#{crudOnePage.form.data}" />
+			<!--
+			<cyk:command value="#{crudOnePage.form.backCommandable}" rendered="#{not crudOnePage.form.root}"/>
+			-->
  		</ui:define>
  		
  	</ui:decorate>

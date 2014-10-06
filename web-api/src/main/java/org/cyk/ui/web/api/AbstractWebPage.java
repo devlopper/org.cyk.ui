@@ -21,7 +21,7 @@ import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements 
+public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements 
 	WebUIPage<EDITOR,OUTPUTLABEL,INPUT,TABLE>,Serializable {
 
 	private static final long serialVersionUID = -7284361545083572063L;
