@@ -27,8 +27,6 @@ public class CrudOnePage extends AbstractBusinessEntityFormOnePage<AbstractIdent
 	
 	@Override
 	protected void __serve__(Object parameter) {
-		System.out.println("CrudOnePage.__serve__()");
-		/*
 		AbstractIdentifiable identifiable;
 		if(parameter instanceof AbstractFormData<?>){
 			((AbstractFormData<?>)parameter).write();
@@ -43,7 +41,6 @@ public class CrudOnePage extends AbstractBusinessEntityFormOnePage<AbstractIdent
 		case UPDATE:getGenericBusiness().update(identifiable);break;
 		case DELETE:getGenericBusiness().delete(identifiable);break;
 		}
-		*/
 	}
 
 	

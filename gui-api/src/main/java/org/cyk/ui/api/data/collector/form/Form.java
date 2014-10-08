@@ -3,7 +3,7 @@ package org.cyk.ui.api.data.collector.form;
 import org.cyk.ui.api.View;
 import org.cyk.ui.api.command.UICommandable;
 
-public interface Form<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends View {
+public interface Form<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View {
 	
 	String getFieldsRequiredMessage();
 	void setFieldsRequiredMessage(String message);

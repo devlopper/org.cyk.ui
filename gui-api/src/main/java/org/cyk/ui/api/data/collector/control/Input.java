@@ -9,6 +9,12 @@ public interface Input<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> exten
 	String getLabel();
 	void setLabel(String aLabel);
 	
+	String getDescription();
+	void setDescription(String aDescription);
+	
+	Boolean getReadOnly();
+	void setReadOnly(Boolean aReadOnly);
+	
 	String getReadOnlyValue();
 	void setReadOnlyValue(String aReadOnlyValue);
 	
@@ -23,6 +29,9 @@ public interface Input<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> exten
 	
 	Boolean getRequired();
 	void setRequired(Boolean aValue);
+	
+	String getRequiredMessage();
+	void setRequiredMessage(String aRequiredMessage);
 		
 	void applyValueToField(Object data) throws IllegalAccessException;
 	

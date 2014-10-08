@@ -10,7 +10,6 @@ import lombok.Getter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table.UsedFor;
 import org.cyk.ui.web.api.AbstractWebPage;
@@ -43,11 +42,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 
 	@Override
-	public Editor<DynaFormModel, DynaFormLabel, DynaFormControl, SelectItem> editorInstance() {
-		return new PrimefacesEditor();
-	}
-	
-	@Override
 	public <DATA> PrimefacesTable<DATA> tableInstance() {
 		return new PrimefacesTable<>();
 	}
@@ -57,11 +51,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public <DATA> PrimefacesTable<DATA> tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
 		return (PrimefacesTable<DATA>) super.tableInstance(aDataClass,usedFor,crud);
 	}
-	/*
-	@Override
-	public <DATA> HierarchycalData<DATA> hierarchyInstance() {
-		return new PrimefacesHierarchycalData<>();
-	}*/
 	
 	@Override
 	public EventCalendar eventCalendarInstance() {

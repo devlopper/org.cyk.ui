@@ -11,7 +11,7 @@
 		<ui:fragment rendered="#{controlSet.showInFrame}">
 			<p:fieldset legend="#{controlSet.title}">
 				<ui:insert name="inputs">
-					<ui:include src="/org.cyk.ui.web.primefaces/include/controls.xhtml" >
+					<ui:include src="/org.cyk.ui.web.primefaces/include/control/set.xhtml" >
 						<ui:param name="controls" value="#{controlSet.model}" />
 					</ui:include>
 				</ui:insert>
@@ -21,7 +21,7 @@
 		
 		<ui:fragment rendered="#{not controlSet.showInFrame}">
 			<ui:insert name="inputs">
-				<ui:include src="/org.cyk.ui.web.primefaces/include/controls.xhtml" >
+				<ui:include src="/org.cyk.ui.web.primefaces/include/control/set.xhtml" >
 					<ui:param name="controls" value="#{controlSet.model}" />
 				</ui:include>
 			</ui:insert>

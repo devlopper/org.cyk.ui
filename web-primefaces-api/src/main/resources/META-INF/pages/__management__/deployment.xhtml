@@ -9,16 +9,16 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{deploymentController}" />
+ 		<ui:param name="pageController" value="#{deploymentPage}" />
  		<ui:define name="body">
  			
  			<h:outputText value="#{uiManager.text('management.deployment.description')}" escape="false"/>
- 			<p:dataTable value="#{deploymentController.businessLayers}" var="businessLayer" rowIndexVar="index">
+ 			<p:dataTable value="#{deploymentPage.businessLayers}" var="businessLayer" rowIndexVar="index">
  				<f:facet name="header"><h:outputText value="#{uiManager.text('layer.business')}" /> </f:facet>
  				<p:column headerText="#" ><h:outputText value="#{index+1}" /> </p:column>
  				<p:column headerText="Identifier" ><h:outputText value="#{businessLayer.id}" /> </p:column>
  			</p:dataTable>
- 			<cyk:editor value="#{deploymentController.editor}" />
+ 			<cyk:formOneData value="#{deploymentPage.editor}" />
  			
  		</ui:define>
  	</ui:decorate>

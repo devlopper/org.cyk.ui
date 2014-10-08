@@ -29,11 +29,11 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 
 	private static final long serialVersionUID = 5671513590779656492L;
 
-	protected String label,readOnlyValue;
+	protected String label,readOnlyValue,description,requiredMessage;
 	protected CascadeStyleSheet readOnlyValueCss = new CascadeStyleSheet(); 
 	protected Field field;
 	protected VALUE_TYPE value;
-	protected Boolean required;
+	protected Boolean required,readOnly;
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 		
 	public void applyValueToField(Object data) throws IllegalAccessException{
@@ -51,7 +51,6 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	
 	@Override
 	public Converter getConverter() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

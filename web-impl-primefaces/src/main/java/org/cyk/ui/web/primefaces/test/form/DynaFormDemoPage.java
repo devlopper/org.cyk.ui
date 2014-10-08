@@ -14,7 +14,6 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;

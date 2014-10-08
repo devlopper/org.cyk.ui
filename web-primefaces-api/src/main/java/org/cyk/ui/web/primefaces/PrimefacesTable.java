@@ -36,22 +36,13 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
-		primefacesAddRowCommand =  new Commandable(addRowCommand,  "@(."+updateStyleClass+")");
+		/*primefacesAddRowCommand =  new Commandable(addRowCommand,  "@(."+updateStyleClass+")");
 		primefacesAddRowCommand.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"');");
 		
 		primefacesDeleteRowCommand =  new Commandable(deleteRowCommand);
 		primefacesOpenRowCommand =  new Commandable(openRowCommand);
-		
-		rowNavigateEventMethod = new RowNavigateEventMethod() {
-			private static final long serialVersionUID = -3334241830659069117L;
-
-			@SuppressWarnings("unchecked")
-			@Override
-			protected void onEvent(TableRow<?> row) {
-				redirectTo((DATA) row.getData());
-			}
-		};
-		
+		*/
+		/*
 		onRowEditMethod = new RowEditEventMethod(){
 			private static final long serialVersionUID = -8499327887343205809L;
 			@Override
@@ -68,9 +59,9 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 				TableRow<?> row = (TableRow<?>) rowEditEvent.getObject();
 				cancelRowCommand.execute(row.getData());
 			}};
-		
+		*/
 	}
-	
+	/*
 	@Override
 	public void targetDependentInitialisation() {
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
@@ -107,7 +98,7 @@ public class PrimefacesTable<DATA> extends Table<DATA> implements Serializable {
 		}
 		
 	}
-	
+	*/
 	private void redirectTo(DATA object){
 		WebNavigationManager.getInstance().redirectTo("dynamictable",new Object[]{
 				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(rowDataClass),

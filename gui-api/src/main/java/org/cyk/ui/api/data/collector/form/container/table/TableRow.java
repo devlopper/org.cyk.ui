@@ -1,4 +1,4 @@
-package org.cyk.ui.api.model.table;
+package org.cyk.ui.api.data.collector.form.container.table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +21,11 @@ public class TableRow<DATA> extends DefaultTableRow<DATA> implements Serializabl
 	
 	public TableRow(DATA data, String title) {
 		super(data, title);
+		/*
+		UIInputFieldDiscoverer discoverer = new UIInputFieldDiscoverer();
+		discoverer.setObjectModel(data);
+		inputComponents = discoverer.run().getInputComponents();
+		*/
 	}
 	
 	public void updateFieldValues(){

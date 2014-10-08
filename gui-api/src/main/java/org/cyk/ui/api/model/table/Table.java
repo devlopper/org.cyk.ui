@@ -16,10 +16,7 @@ import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.system.root.model.pattern.tree.DataTreeType;
-import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.DefaultMenu;
@@ -57,8 +54,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected UICommandable addRowCommand,deleteRowCommand,editRowCommand,openRowCommand,cancelCommand,saveRowCommand,exportCommand;
 	protected Collection<UICommandable> rowCommandables = new ArrayList<>();
 	protected UICommand /*saveRowCommandOld,*/cancelRowCommand;
-	protected RowSaveEventMethod rowSaveEventMethod;
-	protected RowNavigateEventMethod rowNavigateEventMethod;
+	
 	protected DATA dataAdding;
 	protected TableRow<DATA> selectedRow,editingRow;
 	protected Integer lastEditedRowIndex;
@@ -78,175 +74,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		super.initialisation();
 		nullValue="";
 		
-		addRowCommand = UIManager.getInstance().createCommandable(menu,"command.add", IconType.ACTION_ADD, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				/*if(UsedFor.FIELD_INPUT.equals(usedFor)){
-					
-				}else{
-					
-				}*/
-				if(editingRow==null)
-					try {
-						addRow(dataAdding = (DATA) rowDataClass.newInstance());
-						editingRow = selectedRow = rows.get(rows.size()-1);
-						if(isDataTreeType() && master!=null ){
-							((DataTreeType)dataAdding).setNode(new NestedSetNode(((DataTreeType)master).getNode().getSet(), ((DataTreeType)master).getNode()));
-						}
-						__createRow__(editingRow);
-						fire(addRowCommand);
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				else
-					addRowCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "warning.table.canaddoneatatime", true).showDialog();
-				return null;
-			}
-		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
 		
-		openRowCommand = rowCommandable("command.open", IconType.ACTION_OPEN, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				rowNavigateEventMethod.execute((TableRow<?>) parameter);
-				return null;
-			}
-		});
-		
-		editRowCommand = rowCommandable("command.edit", IconType.ACTION_EDIT, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				editingRow = selectedRow;
-				fire(editRowCommand);
-				return null;
-			}
-		});
-		
-		saveRowCommand = rowCommandable("command.apply", IconType.ACTION_APPLY, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@SuppressWarnings("unchecked")
-			@Override
-			protected Object __execute__(Object object) {
-				//debug(editingRow.getData());
-				
-				if(UsedFor.FIELD_INPUT.equals(usedFor)){
-					
-				}else{
-					lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
-					getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
-					updateRow(rows.get(lastEditedRowIndex), (DATA) object);
-				}
-				dataAdding = null;
-				
-				editingRow = null;
-				fire(saveRowCommand);
-				return null;
-			}
-		});
-		/*
-		saveRowCommandOld = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 4758954266295164539L;
-			@SuppressWarnings("unchecked")
-			@Override
-			protected Object __execute__(Object object) {
-				if(UsedFor.FIELD_INPUT.equals(usedFor)){
-						
-				}else{
-					lastEditedRowIndex = (object==dataAdding)?rows.size()-1:rowIndex((DATA)object);
-					getWindow().getGenericBusiness().save((AbstractIdentifiable)object);
-					updateRow(rows.get(lastEditedRowIndex), (DATA) object);
-				}
-				dataAdding = null;
-				return null;
-			}
-		});
-		*/
-		cancelRowCommand = UIManager.getInstance().createCommand(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 4758954266295164539L;
-			@SuppressWarnings("unchecked")
-			@Override
-			protected Object __execute__(Object object) {
-				
-				if(object==dataAdding){
-					if(UsedFor.FIELD_INPUT.equals(usedFor)){
-						
-					}else{
-						
-					}
-					deleteRow(rows.size()-1);
-					dataAdding = null;
-				}else{
-					if(UsedFor.FIELD_INPUT.equals(usedFor)){
-						
-					}else{
-						DATA initialData = (DATA) getWindow().getGenericBusiness().find( ((AbstractIdentifiable)object).getIdentifier() );
-						updateRow(rows.get(rowIndex((DATA) object).intValue()), initialData);
-					}
-					
-				}	
-				
-				return null;
-			}
-		});
-		
-		deleteRowCommand = UIManager.getInstance().createCommandable(menu,"command.delete", IconType.ACTION_REMOVE, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@Override
-			protected Object __execute__(Object object) {
-				@SuppressWarnings("unchecked")
-				TableRow<DATA> row = (TableRow<DATA>) object;
-				if(UsedFor.FIELD_INPUT.equals(usedFor)){
-					
-				}else{
-					getWindow().getGenericBusiness().delete((AbstractIdentifiable) row.getData());
-					//deleteRowCommand.getCommand().getMessageManager().message(SeverityType.WARNING, "SUCCES", false).showDialog();	
-				}
-				deleteRow(row);
-				return null;
-			}
-		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-		
-		cancelCommand = editRowMenu("command.cancel", IconType.ACTION_CANCEL, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 1074893365570711794L;
-			@Override
-			protected Object __execute__(Object object) {
-				if(lastExecutedCommandable == addRowCommand){
-					deleteRow(editingRow);
-					__deleteRow__(editingRow);
-				}
-				editingRow = null;
-				fire(cancelCommand);
-				return null;
-			}
-		},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-		
-		if(RowMenuLocation.MAIN_MENU.equals(rowMenuLocation))
-			menu.getCommandables().addAll(editRowMenu.getCommandables());
-		
-		if(UsedFor.FIELD_INPUT.equals(usedFor)){
-			setEditable(!Crud.READ.equals(crud));
-			addRowCommand.setShowLabel(Boolean.FALSE);
-			addRowCommand.setRendered(getEditable());
-		}else{
-			exportCommand = UIManager.getInstance().createCommandable(menu,"command.export", IconType.ACTION_EXPORT, new AbstractMethod<Object, Object>() {
-				private static final long serialVersionUID = 1074893365570711794L;
-				@Override
-				protected Object __execute__(Object object) {return null;}
-			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-			UIManager.getInstance().createCommandable(exportCommand,"command.export.pdf", IconType.ACTION_EXPORT_PDF, new AbstractMethod<Object, Object>() {
-				private static final long serialVersionUID = 1074893365570711794L;
-				@Override
-				protected Object __execute__(Object object) {return null;}
-			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-			UIManager.getInstance().createCommandable(exportCommand,"command.export.excel", IconType.ACTION_EXPORT_EXCEL, new AbstractMethod<Object, Object>() {
-				private static final long serialVersionUID = 1074893365570711794L;
-				@Override
-				protected Object __execute__(Object object) {return null;}
-			},EventListener.NONE,UsedFor.FIELD_INPUT.equals(usedFor)?ProcessGroup.THIS:ProcessGroup.FORM);
-			
-		}
 		
 	}
 	
@@ -405,23 +233,5 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	}
 	
 	/**/
-	
-	public static abstract class RowAddEventMethod extends AbstractMethod<Object, Object>{
-		private static final long serialVersionUID = -145475519122234694L;
-		@Override protected final Object __execute__(Object object) {onEvent();return null;}
-		protected abstract void onEvent();
-	}
-	
-	public static abstract class RowSaveEventMethod extends AbstractMethod<Object, TableRow<?>>{
-		private static final long serialVersionUID = -145475519122234694L;
-		@Override protected final Object __execute__(TableRow<?> row) {onEvent();return null;}
-		protected abstract void onEvent();
-	}
-	
-	public static abstract class RowNavigateEventMethod extends AbstractMethod<Object, TableRow<?>>{
-		private static final long serialVersionUID = -145475519122234694L;
-		@Override protected final Object __execute__(TableRow<?> row) {onEvent(row);return null;}
-		protected abstract void onEvent(TableRow<?> row);
-	}
 	
 }

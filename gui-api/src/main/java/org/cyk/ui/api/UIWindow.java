@@ -10,7 +10,6 @@ import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
@@ -63,10 +62,6 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	UIMenu getContentMenu();
 	
 	void setContentMenu(UIMenu aMenu);
-	
-	Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance();
-	
-	Editor<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> editorInstance(Object anObjectModel,Crud crud);
 	
 	<DATA> TABLE tableInstance();
 	

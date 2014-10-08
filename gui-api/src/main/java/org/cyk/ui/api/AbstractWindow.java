@@ -20,16 +20,9 @@ import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.component.UIInputOutputComponent;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.editor.Editor;
 import org.cyk.ui.api.editor.EditorInputs;
-import org.cyk.ui.api.editor.EditorInputsListener;
-import org.cyk.ui.api.editor.EditorListener;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.api.model.table.Table.UsedFor;
@@ -39,8 +32,7 @@ import org.cyk.ui.api.model.table.TableRow;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE extends Table<?>> extends AbstractBean 
-	implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM,TABLE>,EditorListener<FORM,LABEL,CONTROL,SELECTITEM>,EditorInputsListener<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
+public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE extends Table<?>> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM,TABLE>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
@@ -54,7 +46,6 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
-	protected Collection<Editor<?,?,?,?>> editors = new ArrayList<>();//TODO to be deleted
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<TABLE> tables = new ArrayList<>();
 	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
@@ -78,8 +69,6 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 			form.build();
 		
 		targetDependentInitialisation();
-		for(Editor<?,?,?,?> editor : editors)
-			editor.targetDependentInitialisation();
 		
 		for(TABLE table : tables)
 			table.targetDependentInitialisation();
@@ -110,21 +99,6 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 		form.setData(data);
 		formOneDatas.add(form);
 		return form;
-	}
-	
-	@Override
-	public Editor<FORM,LABEL,CONTROL,SELECTITEM> editorInstance(Object anObjectModel,Crud crud) {
-		Editor<FORM,LABEL,CONTROL,SELECTITEM> editor = editorInstance();
-		editor.getListeners().add(this);
-		editor.setWindow(this);
-		configureBeforeConstruct(editor);
-		((AbstractBean)editor).postConstruct();
-		//editor.getSubmitCommand().getCommand().getCommandListeners().add(this);
-		editor.setCrud(crud);
-		editor.build(anObjectModel);
-		configureAfterConstruct(editor);
-		editors.add(editor);
-		return editor;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -198,52 +172,5 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 		aCommand.setMessageManager(getMessageManager());
 	}
 	
-	protected UICommandable createCommandable(String labelId, IconType iconType, AbstractMethod<Object, Object> executeMethod, EventListener anExecutionPhase, ProcessGroup aProcessGroup){
-		UICommandable commandable = UIManager.getInstance().createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
-		commandable.getCommand().setMessageManager(getMessageManager());
-		return commandable;
-	}
-	
-	/* Listeners */
-	
-	@Override
-	public void editorInputsCreated(Editor<FORM,LABEL,CONTROL,SELECTITEM> editor, EditorInputs<FORM,LABEL,CONTROL,SELECTITEM> editorInputs) {
-		editorInputs.getListeners().add(this);
-	}
-	
-	@Override
-	public void componentsDiscovered(EditorInputs<FORM,LABEL,CONTROL,SELECTITEM> editorInputs,Collection<UIInputOutputComponent<?>> components) {
-		
-	}
-	  
-	// Command
-	/*
-	@Override
-	public void transfer(UICommand command, Object parameter) throws Exception {
-		System.out.println("AbstractWindow.transfer()");
-	}
-	
-	@Override
-	public Boolean validate(UICommand command, Object parameter) {
-		System.out.println("AbstractWindow.validate()");
-		return null;
-	}
-	
-	@Override
-	public void serve(UICommand command, Object parameter) {
-		System.out.println("AbstractWindow.execute()");
-	}
-	
-	@Override
-	public Object succeed(UICommand command, Object parameter) {
-		System.out.println("AbstractWindow.success()");
-		return null;
-	}
-	
-	@Override
-	public Object fail(UICommand command, Object parameter, Throwable throwable) {
-		System.out.println("AbstractWindow.fail()");
-		return null;
-	}
-	*/
+
 }
