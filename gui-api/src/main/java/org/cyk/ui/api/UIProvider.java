@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 
@@ -46,8 +47,7 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter @Singleton @Deployment(initialisationType=InitialisationType.EAGER) 
-//TODO to be merge with UIManager -> UIManagerListener
+@Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
 public class UIProvider extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4968509852930057567L;
@@ -60,7 +60,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	@Override
 	protected void initialisation() {
-		INSTANCE = this;
+		INSTANCE = this; 
 		super.initialisation();
 	}
 		
@@ -93,7 +93,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	}
 	
 	public OutputLabel<?,?,?,?,?> createLabel(String value){
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") 
 		OutputLabel<?,?,?,?,?> outputLabel = (OutputLabel<?, ?, ?, ?, ?>) createControlInstance(controlClass((Class<? extends Control<?,?,?,?,?>>)OutputLabel.class));
 		outputLabel.setValue(value);
 		return outputLabel;
@@ -215,6 +215,10 @@ public class UIProvider extends AbstractBean implements Serializable {
 		if(value==null)
 			return "";
 		return value.toString();
+	}
+	
+	public Boolean isControl(Control<?, ?, ?, ?, ?> control,String interfaceName){
+		return control!=null && control.getClass().getSimpleName().equals(interfaceName);
 	}
 	
 	public static UIProvider getInstance() {

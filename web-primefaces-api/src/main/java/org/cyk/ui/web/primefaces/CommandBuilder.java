@@ -62,8 +62,8 @@ public class CommandBuilder implements Serializable {
 					
 				}else{
 					switch(aCommandable.getViewType()){
-					case DYNAMIC_FORM_EDITOR:menuItem.setOutcome(PrimefacesManager.getInstance().getOutcomeDynamicCrudOne());break;
-					case DYNAMIC_FORM_TABLE:menuItem.setOutcome("dynamictable");break;
+					case DYNAMIC_FORM_EDITOR:menuItem.setOutcome(WebManager.getInstance().getOutcomeDynamicCrudOne());break;
+					case DYNAMIC_FORM_TABLE:menuItem.setOutcome(WebManager.getInstance().getOutcomeDynamicCrudMany());break;
 					case DYNAMIC_FORM_HIERARCHY:menuItem.setOutcome("dynamichierarchy");break;
 					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome("deploymentmanagement");break;
 					case TOOLS_CALENDAR:menuItem.setOutcome("toolscalendar");break;

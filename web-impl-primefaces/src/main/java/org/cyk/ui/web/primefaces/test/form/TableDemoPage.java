@@ -1,19 +1,23 @@
 package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
 
-import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.model.table.Table;
-import org.cyk.ui.test.model.MyEntity;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.geography.PhoneNumberType;
+import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.Column;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.Table;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.model.table.TableAdapter;
 
 @Named
 @ViewScoped
@@ -22,19 +26,25 @@ import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 public class TableDemoPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-
-	private static List<SelectItem> CHOICES = new ArrayList<>();
-	static{
-		for(int i=1;i<=6;i++)
-			CHOICES.add(new SelectItem("Choix "+i));
-	}
 	
-	private Table<MyEntity> table = new Table<>();
+	private Table<PhoneNumberType> table;
 
-	
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
+		table = (Table<PhoneNumberType>) createTable(PhoneNumberType.class);
+		table.getTableListeners().add(new TableAdapter<Row<PhoneNumberType>, Column, PhoneNumberType, String, Cell, String>(){
+			@Override
+			public Boolean ignore(Field field) {
+				Input input = field.getAnnotation(Input.class);
+				return input == null;
+			}
+		});
+		
+		table.addColumnFromDataClass();
+		for(AbstractIdentifiable i : getGenericBusiness().use(PhoneNumberType.class).find().all())
+			table.addRow((PhoneNumberType)i);
+		
 		
 	}
 	

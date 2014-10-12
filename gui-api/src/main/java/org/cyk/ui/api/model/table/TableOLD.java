@@ -1,4 +1,5 @@
 package org.cyk.ui.api.model.table;
+/*package org.cyk.ui.api.model.table;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -53,7 +54,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 	protected UIFieldDiscoverer discoverer = new UIFieldDiscoverer();
 	protected UICommandable addRowCommand,deleteRowCommand,editRowCommand,openRowCommand,cancelCommand,saveRowCommand,exportCommand;
 	protected Collection<UICommandable> rowCommandables = new ArrayList<>();
-	protected UICommand /*saveRowCommandOld,*/cancelRowCommand;
+	protected UICommand saveRowCommandOld,cancelRowCommand;
 	
 	protected DATA dataAdding;
 	protected TableRow<DATA> selectedRow,editingRow;
@@ -123,14 +124,14 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 			}
 		return super.addCell(row, column, cell);
 	}
-	/*
+	
 	@Override
 	protected String valueOf(TableCell cell, Object object) {
 		cell.getInputComponent().updateReadOnlyValue();
 		return AbstractInputComponent.COMPUTE_READ_ONLY_VALUE_METHOD.execute(new Object[]{cell.get});
 	}
-	*/
-	/**/
+	
+	
 	
 	protected Boolean isDataTreeType(){
 		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);
@@ -232,6 +233,7 @@ public class Table<DATA> extends AbstractClassFieldValueTable<DATA, TableRow<DAT
 		fire(commandable, editingRow);
 	}
 	
-	/**/
+	
 	
 }
+*/

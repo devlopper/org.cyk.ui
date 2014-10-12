@@ -1,4 +1,4 @@
-package org.cyk.ui.api.editor;
+/*package org.cyk.ui.api.editor;
 
 import java.util.Collection;
 
@@ -9,3 +9,4 @@ public interface EditorInputsListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM> {
 	void componentsDiscovered(EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> editorInputs,Collection<UIInputOutputComponent<?>> components);
 	
 }
+*/

@@ -1,4 +1,4 @@
-package org.cyk.ui.api.editor;
+/*package org.cyk.ui.api.editor;
 
 import java.util.Collection;
 
@@ -10,7 +10,7 @@ import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
 import org.cyk.utility.common.AbstractMethod;
 
-/**
+*//**
  * An editor is a window part that allows a user to edit an object. 
  * An editor is always associated with an input object (POJO). 
  * Changes made in an editor are not committed until the user saves them. 
@@ -20,7 +20,7 @@ import org.cyk.utility.common.AbstractMethod;
  * @param <OUTPUTLABEL>
  * @param <INPUT>
  * @param <SELECTITEM>
- */
+ *//*
 public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart {
 	
 	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> getWindow();
@@ -81,3 +81,4 @@ public interface Editor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIWindowPart 
 	
 	Collection<EditorListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> getListeners();
 }
+*/

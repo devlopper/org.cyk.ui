@@ -17,12 +17,11 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.model.table.Table;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,TABLE extends Table<?>> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem,TABLE> implements 
-	WebUIPage<EDITOR,OUTPUTLABEL,INPUT,TABLE>,Serializable {
+public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem> implements 
+	WebUIPage<EDITOR,OUTPUTLABEL,INPUT>,Serializable { 
 
 	private static final long serialVersionUID = -7284361545083572063L;
 	
@@ -49,7 +48,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,TABLE extends
 		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());
 		if(fields==null){
 			//scan to find all properties annotated with @RequestParameter
-			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?,?, ?, ?, ?>>) getClass(), 
+			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?,?, ?, ?>>) getClass(), 
 					fields = commonUtils.getAllFields(getClass(), RequestParameter.class));
 		}
 		

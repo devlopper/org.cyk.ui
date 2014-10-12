@@ -1,4 +1,4 @@
-package org.cyk.ui.api.editor;
+/*package org.cyk.ui.api.editor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,15 +33,15 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 
 	private static final long serialVersionUID = -3666969590470758214L;
 	
-	/**
+	*//**
 	 * to keep navigation trace
-	 */
+	 *//*
 	protected Stack<EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> stack = new Stack<>();
 	@Setter @Getter protected ValidationPolicy validationPolicy;
 	
 	@Getter protected UICommandable submitCommand,backCommand,resetValuesCommand,closeCommand,switchCommand;
 	@Getter protected Collection<UICommand> commands;
-	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain/*,submitDetails*/,onDebugSubmitMethodMain;
+	@Setter @Getter protected AbstractMethod<Object, Object> submitMethodMain,submitDetails,onDebugSubmitMethodMain;
 	@Getter @Setter protected Boolean showCommands = Boolean.TRUE,submitMethodMainExecuted=Boolean.FALSE;
 	
 	@Getter @Setter protected UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> window;
@@ -73,7 +73,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 					return null;
 				switch(crud){
 				case CREATE:getWindow().getGenericBusiness().create(identifiable);break;
-				case READ:/*nothing to do*/ break;
+				case READ:nothing to do break;
 				case UPDATE:getWindow().getGenericBusiness().update(identifiable);break;
 				case DELETE:getWindow().getGenericBusiness().delete(identifiable);break;
 				}
@@ -93,7 +93,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				return null;
 			}
 		},EventListener.NONE,ProcessGroup.FORM);
-		/*
+		
 		submitCommand.getCommand().setNotifyOnSucceedMethod(new AbstractNotifyOnSucceedMethod<Object>() {
 			private static final long serialVersionUID = 8882624469264441089L;
 			@Override
@@ -101,7 +101,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				return Boolean.TRUE.equals(getSubmitMethodMainExecuted());
 			}
 		});
-		*/
+		
 		backCommand = UIManager.getInstance().createCommandable("command.back",IconType.ACTION_GO_BACK, new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -3554292967012003944L;
 			@Override
@@ -145,7 +145,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		return inputs;
 	}
 	
-	/* Command Events */
+	 Command Events 
 	
 	@Override
 	public void onSubmit(Object object) throws Exception {
@@ -176,9 +176,9 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 				throw new RuntimeException(e);
 			}
 			
-			/*if(Boolean.TRUE.equals(((IInputSelectOne<?,SELECTITEM>) form.getParentField()).getAddable())){
+			if(Boolean.TRUE.equals(((IInputSelectOne<?,SELECTITEM>) form.getParentField()).getAddable())){
 				addItem((IInputSelectOne<?,SELECTITEM>) form.getParentField(), form.getObjectModel());
-			}*/
+			}
 		}
 	}
 	
@@ -219,7 +219,7 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		
 	}
 	
-	/**/
+	
 	
 	@Override
 	public EditorInputs<FORM, OUTPUTLABEL, INPUT, SELECTITEM> getSelected() {
@@ -236,13 +236,13 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		return stack.size()==1;
 	}
 	
-	/**/
+	
 	
 	protected String text(String id){
 		return getWindow().getUiManager().getLanguageBusiness().findText(id);
 	}
 	
-	/**/
+	
 	
 	public void debug(){
 		submitMethodMain = new AbstractMethod<Object, Object>() {
@@ -257,3 +257,4 @@ public abstract class AbstractEditor<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends 
 		};
 	}
 }
+*/

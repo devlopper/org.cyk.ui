@@ -13,8 +13,8 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>dynamictable</from-outcome>
-			<to-view-id>/__dynamic__/table.xhtml</to-view-id>
+			<from-outcome>dynamicCrudMany</from-outcome>
+			<to-view-id>/__dynamic__/crudmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 

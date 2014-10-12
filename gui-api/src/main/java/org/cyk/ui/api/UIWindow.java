@@ -2,7 +2,6 @@ package org.cyk.ui.api;
 
 import java.util.Locale;
 
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -10,14 +9,10 @@ import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.model.EventCalendar;
-import org.cyk.ui.api.model.table.Table;
-import org.cyk.ui.api.model.table.Table.UsedFor;
-import org.cyk.utility.common.AbstractMethod;
 
 
-public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Table<?>> extends UIPart {
+public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	ValidationPolicy getValidationPolicy();
 	
@@ -63,9 +58,6 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	
 	void setContentMenu(UIMenu aMenu);
 	
-	<DATA> TABLE tableInstance();
-	
-	<DATA> TABLE tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud);
 	/*
 	<DATA> HierarchycalData<DATA> hierarchyInstance();
 	
@@ -74,9 +66,5 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM,TABLE extends Tabl
 	EventCalendar eventCalendarInstance(Class<?> aDataClass);
 	
 	EventCalendar eventCalendarInstance();
-	
-	AbstractMethod<Object, EditorInputs<EDITOR, OUTPUTLABEL,INPUT,SELECTITEM>> getEditorInputsEventListenerMethod();
-	
-	void setEditorInputsEventListenerMethod(AbstractMethod<Object, EditorInputs<EDITOR, OUTPUTLABEL,INPUT,SELECTITEM>> aMethod);
 	
 }

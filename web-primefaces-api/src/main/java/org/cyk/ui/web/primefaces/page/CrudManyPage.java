@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -9,37 +10,42 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.model.table.Table.UsedFor;
-import org.cyk.ui.web.primefaces.PrimefacesTable;
-import org.cyk.utility.common.AbstractMethod;
+import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.Column;
+import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.web.primefaces.Table;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.model.table.TableAdapter;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefacesPage implements Serializable {
+public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private PrimefacesTable<AbstractIdentifiable> table;
+	private Table<AbstractIdentifiable> table;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		table = (PrimefacesTable<AbstractIdentifiable>) tableInstance(businessEntityInfos.getClazz(),UsedFor.ENTITY_INPUT,null);
+		table = (Table<AbstractIdentifiable>) createTable(businessEntityInfos.getClazz());
+		table.getTableListeners().add(new TableAdapter<Row<AbstractIdentifiable>, Column, AbstractIdentifiable, String, Cell, String>(){
+			@Override
+			public Boolean ignore(Field field) {
+				Input input = field.getAnnotation(Input.class);
+				return input == null;
+			}
+		});
+		
+		table.addColumnFromDataClass();
+		
 		table.setEditable(true);
 		table.setMaster(identifiable);
 		table.fetchData();
-		/*
-		if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
-			@SuppressWarnings("rawtypes")
-			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
-			table.handle(bean);
-		}else{
-			table.addRow(genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).find().all());	
-		}
-		*/
+		
 		/*
 		table.getSaveRowCommand().getCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = -4698491663673906259L;
@@ -59,7 +65,7 @@ public class DynamicTableController extends AbstractDynamicBusinessEntityPrimefa
 	
 	@Override
 	public Boolean getShowContextualMenu() {
-		return table.getShowHierarchy();
+		return Boolean.TRUE.equals(table.getShowHierarchy());
 	}
 
 }

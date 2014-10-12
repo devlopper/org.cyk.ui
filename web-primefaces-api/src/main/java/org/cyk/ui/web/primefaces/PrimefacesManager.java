@@ -38,8 +38,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
-	private String outcomeDynamicCrudOne = "dynamicCrudOne";
-	private String outcomeDynamicCrudMany = "dynamicCrudMany";
 	
 	@Override
 	protected void initialisation() {

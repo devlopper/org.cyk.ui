@@ -22,22 +22,17 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.model.EventCalendar;
-import org.cyk.ui.api.model.table.Table;
-import org.cyk.ui.api.model.table.Table.UsedFor;
-import org.cyk.ui.api.model.table.TableCell;
-import org.cyk.ui.api.model.table.TableColumn;
-import org.cyk.ui.api.model.table.TableRow;
-import org.cyk.utility.common.AbstractMethod;
+import org.cyk.ui.api.model.table.AbstractTable;
+import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE extends Table<?>> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM,TABLE>,Serializable {
+public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
 	@Inject @Getter protected ValidationPolicy validationPolicy;
-	@Getter @Setter protected AbstractMethod<Object, EditorInputs<FORM,LABEL,CONTROL,SELECTITEM>> editorInputsEventListenerMethod;
+	
 	@Inject @Getter protected GenericBusiness genericBusiness;
 	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter protected EventBusiness eventBusiness;
@@ -47,7 +42,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
-	protected Collection<TABLE> tables = new ArrayList<>();
+	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
 	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
 	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	@Inject protected MenuManager menuManager;
@@ -70,8 +65,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 		
 		targetDependentInitialisation();
 		
-		for(TABLE table : tables)
-			table.targetDependentInitialisation();
+		for(AbstractTable<?,?,?> table : tables)
+			table.build();
 		/*
 		for(HierarchycalData<?> hierarchicalData : hierarchicalDatas)
 			hierarchicalData.targetDependentInitialisation();
@@ -101,25 +96,29 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 		return form;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public <DATA> TABLE tableInstance(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
-		@SuppressWarnings("rawtypes")
-		Table table = tableInstance();
+	protected abstract <DATA> AbstractTable<DATA,?,?> __createTable__();
+	
+	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
+		AbstractTable<DATA,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
-		table.setCrud(crud);
-		table.setWindow(this);
-		configureBeforeConstruct(table);
+		table.setRowDataClass(aDataClass);
+		//table.setCrud(crud);
+		//table.setWindow(this);
+		//configureBeforeConstruct(table);
 		((AbstractBean)table).postConstruct();
-		table.build(aDataClass, TableRow.class, TableColumn.class, TableCell.class);
-		configureAfterConstruct(table);
+		//table.build();
+		//configureAfterConstruct(table);
 		//table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
 		//table.getSaveRowCommand().setMessageManager(getMessageManager());
 		//table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
 		//table.getCancelRowCommand().setMessageManager(getMessageManager());
 		
-		tables.add((TABLE) table);
-		return (TABLE) table;
+		tables.add(table);
+		return table;
+	}
+	
+	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass) {
+		return createTable(aDataClass, UsedFor.ENTITY_INPUT, Crud.READ);
 	}
 	
 	/*
@@ -137,7 +136,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 	@Override
 	public EventCalendar eventCalendarInstance(Class<?> aClass) {
 		EventCalendar eventCalendar = eventCalendarInstance();
-		eventCalendar.setWindow(this);
+		//eventCalendar.setWindow(this);
 		configureBeforeConstruct(eventCalendar);
 		((AbstractBean)eventCalendar).postConstruct();
 		configureAfterConstruct(eventCalendar);
@@ -172,5 +171,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,TABLE ext
 		aCommand.setMessageManager(getMessageManager());
 	}
 	
+	public String text(String code) {
+		return UIManager.getInstance().text(code);
+	}
 
 }

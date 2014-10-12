@@ -1,12 +1,12 @@
 package org.cyk.ui.api.editor.input;
 
-import org.cyk.ui.api.model.table.Table;
+import org.cyk.ui.api.model.table.AbstractTable;
 
 @SuppressWarnings("rawtypes")
-public interface UIInputMany extends UIInputComponent<Table> {
+public interface UIInputMany extends UIInputComponent<AbstractTable> {
 	
-	Table getTable();
+	AbstractTable<?,?,?> getTable();
 	
-	void setTable(Table aTable);
+	void setTable(AbstractTable<?,?,?> aTable);
 
 }

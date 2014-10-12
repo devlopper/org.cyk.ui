@@ -24,14 +24,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.api.command.UICommandable.ProcessGroup;
-import org.cyk.ui.api.command.UIMenu;
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.editor.input.UIInputNumber;
 import org.cyk.ui.api.editor.input.UIInputSelectOne;
@@ -40,7 +32,6 @@ import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
-import org.cyk.utility.common.annotation.UIField.TextValueType;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
@@ -63,7 +54,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String editViewSuffix="EditView";
 	
 	private CollectionLoadMethod collectionLoadMethod;
-	public static ComponentCreateMethod componentCreateMethod;
 	private ToStringMethod toStringMethod;
 	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
 	
@@ -176,10 +166,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return businessEntityInfos(identifiable.getClass()).getUiEditViewId();
 	}
 	
-	public ComponentCreateMethod getComponentCreateMethod() {
-		return componentCreateMethod;
-	}
-	
 	public String text(String code){
 		return languageBusiness.findText(code);
 	}
@@ -276,52 +262,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
-	//
-	//String labelId,IconType iconType,AbstractMethod<Object, Object> action
-	@Deprecated
-	public UICommandable createCommandable(String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
-		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, anExecutionPhase, aProcessGroup);
-		commandable.setCommand(createCommand(executeMethod));
-		commandable.setLabel(text(labelId));
-		commandable.setIconType(iconType);
-		commandable.setEventListener(anExecutionPhase);
-		commandable.setProcessGroup(aProcessGroup);
-		
-		return commandable;
-	}
-	
-	@Deprecated
-	public UICommandable createCommandable(UIMenu menu,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
-		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
-		menu.addCommandable(commandable);
-		return commandable;
-	}
-	
-	@Deprecated
-	public UICommandable createCommandable(UICommandable parent,String labelId,IconType iconType,AbstractMethod<Object, Object> executeMethod,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
-		UICommandable commandable = createCommandable(labelId, iconType, executeMethod, anExecutionPhase, aProcessGroup);
-		parent.getChildren().add(commandable);
-		return commandable;
-	}
-	
-	//TODO action to be removed
-	public UICommand createCommand(AbstractMethod<Object, Object> action){
-		UICommand command = new DefaultCommand();
-		//command.setExecuteMethod(action);
-		command.setMessageManager(MessageManager.INSTANCE);
-		return command;
-	}
-	
-	@Deprecated
-	public String annotationTextValue(TextValueType textValueType,String textValue,String defaultValue) {
-		switch(textValueType){
-		case I18N_ID:return text(StringUtils.isEmpty(textValue)?defaultValue:textValue);
-		case I18N_VALUE:return StringUtils.isEmpty(textValue)?defaultValue:textValue;
-		case VALUE:return null;
-		default : return null;
-		}
-	}
-	
 	public String fieldLabel(Field field,Input annotation) {
 		ValueType type ;
 		String specifiedValue = null;
@@ -367,19 +307,5 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static abstract class ToStringMethod extends AbstractMethod<String, Object> {
 		private static final long serialVersionUID = 1175379361365502915L;
 	}
-	
-	
-	public static abstract class ComponentCreateMethod extends AbstractMethod<UIInputComponent<?>, Object[]> {
-		private static final long serialVersionUID = 4855972832374849032L;
-		
-		@Override
-		protected final UIInputComponent<?> __execute__(Object[] parameter) {
-			return component((EditorInputs<?, ?, ?, ?>)parameter[0], (UIInputComponent<?>)parameter[1]);
-		}
-		
-		protected abstract UIInputComponent<?> component(EditorInputs<?, ?, ?, ?> anEditorInputs,UIInputComponent<?> aComponent);
-		
-	}
-	
 	
 }

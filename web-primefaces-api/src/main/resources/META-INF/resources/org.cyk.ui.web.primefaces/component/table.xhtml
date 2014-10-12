@@ -8,12 +8,13 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
-	<cc:interface componentType="org.cyk.ui.primefaces.Table">
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Table">
 		<cc:attribute name="value" required="true" />
 	</cc:interface>
 
 	<cc:implementation>
 		<ui:param name="updateDataTableStyleClass" value="#{cc.value.updateStyleClass}" />
+		<ui:param name="controlDir" value="/org.cyk.ui.web.primefaces/include/control" />
 		<!--
 		<p:menubar model="#{cc.value.menuModel}" /> 
 		-->
@@ -39,30 +40,30 @@
 				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
 		            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
-		  			<ui:param name="templateFile" value="template/editor/inputMessageAtTop.xhtml" />
+		  			<ui:param name="templateFile" value="/org.cyk.ui.web.primefaces/template/control/messageAtTop.xhtml" />
 		  			<!--
-		  			<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  			<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
 		  			-->
 		  			
 		  			<p:cellEditor>
 		  				<f:facet name="input">
 		  					
 		  					<!-- 
-		  					<ui:include src="#{primefacesManager.includeFile(cc.value.cell(row,column).inputComponent)}" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  					<ui:include src="#{primefacesManager.includeFile(cc.value.cell(row,column).control)}" >
+		  						<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include>
 		  					-->
 		  					
-		  					<ui:fragment rendered="#{uiManager.isInputText(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputTextOneLine.xhtml" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputText')}" ><ui:include src="#{controlDir}/input/inputText.xhtml" >
+		  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
-		  					<ui:fragment rendered="#{uiManager.isInputSelectOne(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputOneMenu.xhtml" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneCombo')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneCombo.xhtml" >
+		  						<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
-		  					<ui:fragment rendered="#{uiManager.isInputNumber(cc.value.cell(row,column).inputComponent)}" ><ui:include src="include/inputNumber.xhtml" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).inputComponent}" />
+		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputNumber')}" ><ui:include src="#{controlDir}/input/inputNumber.xhtml" >
+		  						<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
 		  				</f:facet>
@@ -76,11 +77,11 @@
 		        	<p:rowEditor />
 		        </p:column>
 		        
-		        <p:column rendered="#{cc.value.editable}" width="1%">
+		        <p:column rendered="#{cc.value.editable}" >
 		        	<table><tr>
-		        		<td style="border: none;"><cyk:command value="#{cc.value.primefacesDeleteRowCommand}" executeParameter="#{row}" /></td>
+		        		<td style="border: none;"><cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" /></td>
 		        		<ui:fragment rendered="#{cc.value.showOpenCommand}" ><td style="border: none;">
-		        			<cyk:command value="#{cc.value.primefacesOpenRowCommand}" executeParameter="#{row}" />
+		        			<cyk:command value="#{cc.value.openRowCommandable}" executeParameter="#{row}" />
 		        		</td></ui:fragment>
 		        	</tr></table>
 		        </p:column>
@@ -89,7 +90,7 @@
 		
 		<!--</tr> </table>-->
 		<p:outputPanel rendered="#{cc.value.showFooterCommandBlock}" >
-			<cyk:command value="#{cc.value.primefacesAddRowCommand}" />	
+			<cyk:command value="#{cc.value.addRowCommandable}" />	
 		</p:outputPanel>
 				
 	</cc:implementation>

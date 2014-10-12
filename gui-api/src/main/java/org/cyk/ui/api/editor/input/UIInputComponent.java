@@ -4,12 +4,10 @@ import java.lang.reflect.Field;
 
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.component.UIInputOutputComponent;
-import org.cyk.ui.api.editor.EditorInputs;
 import org.cyk.utility.common.annotation.UIField;
 
 public interface UIInputComponent<VALUE_TYPE> extends UIInputOutputComponent<VALUE_TYPE> {
 
-	EditorInputs<?, ?, ?, ?> getEditorInputs();
 	
 	ValidationPolicy getValidationPolicy();
 	

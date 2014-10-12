@@ -23,7 +23,7 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 	
 	protected ValidationPolicy validationPolicy; 
 	protected UIMenu menu = new DefaultMenu();
-	protected UIWindow<?, ?, ?, ?,?> window;
+	protected UIWindow<?, ?, ?, ?> window;
 	protected String title;
 	protected Boolean editable=Boolean.FALSE;
 	protected UICommandable addEventCommand,deleteEventCommand,openEventCommand,saveEventCommand,cancelEventCommand;

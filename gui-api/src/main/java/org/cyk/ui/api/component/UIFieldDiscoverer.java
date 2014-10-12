@@ -136,9 +136,9 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 				
 				if(OneRelationshipInputType.FIELDS.equals(oneRelationshipInputType)){
 					if(SeparatorAfter.AUTO.equals(uiFieldInfos.getAnnotation().separatorAfter())){
-						if(!field.isAnnotationPresent(Embedded.class))
+						/*if(!field.isAnnotationPresent(Embedded.class))
 							components.add(new OutputSeparator(UIManager.getInstance().annotationTextValue(uiFieldInfos.getAnnotation().separatorLabelValueType(), 
-									uiFieldInfos.getAnnotation().separatorLabel(), UIManager.getInstance().uiLabelIdOfClass(field.getType()))));
+									uiFieldInfos.getAnnotation().separatorLabel(), UIManager.getInstance().uiLabelIdOfClass(field.getType()))));*/
 					}
 					
 					build(commonUtils.readField(objectModel,field, true));
@@ -153,10 +153,10 @@ public class UIFieldDiscoverer extends AbstractBean implements Serializable {
 						input.setHeight(uiFieldInfos.getAnnotation().rowSpan());
 						if(BreakLineAfter.TRUE.equals(uiFieldInfos.getAnnotation().breakLineAfter()))
 							input.setWidth(1000);
-						if(SeparatorAfter.TRUE.equals(uiFieldInfos.getAnnotation().separatorAfter())){
+						/*if(SeparatorAfter.TRUE.equals(uiFieldInfos.getAnnotation().separatorAfter())){
 							components.add(new OutputSeparator(UIManager.getInstance().annotationTextValue(uiFieldInfos.getAnnotation().separatorLabelValueType(), 
 									uiFieldInfos.getAnnotation().separatorLabel(), "SEP")));
-						}
+						}*/
 						if(input instanceof UIInputSelect<?, ?>){
 							UIInputSelect<?, ?> inputSelect = (UIInputSelect<?, ?>)input;
 							if(inputSelect.isBoolean() || inputSelect.isEnum() || inputSelect.isSelectItemForeign() || inputSelect.getAddable())

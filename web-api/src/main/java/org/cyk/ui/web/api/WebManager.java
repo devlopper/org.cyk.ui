@@ -28,7 +28,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
-	
+	private String outcomeDynamicCrudOne = "dynamicCrudOne";
+	private String outcomeDynamicCrudMany = "dynamicCrudMany";
 	
 	@Override
 	protected void initialisation() {
@@ -36,7 +37,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
-	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?,?>>, Collection<Field>>();
+	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();
 	
 	private final String clientValidationGroupClass = Client.class.getName();
 	

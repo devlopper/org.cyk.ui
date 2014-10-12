@@ -1,4 +1,4 @@
-package org.cyk.ui.api.editor;
+/*package org.cyk.ui.api.editor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -157,3 +157,4 @@ public abstract class AbstractEditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> ex
 	
 	
 }
+*/

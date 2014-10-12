@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.data.collector.form.container.table.Table;
+import org.cyk.ui.api.model.table.AbstractTable;
 
 public interface FormManyData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends Form<List<DATA>,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 	
-	Table<DATA> getTable();
+	AbstractTable<DATA,?,?> getTable();
 
 	Class<DATA> getDataType();
 	

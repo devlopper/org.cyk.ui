@@ -15,6 +15,7 @@ import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -136,6 +137,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	public void redirectTo(String outcome){
 		redirectTo(outcome, null);
+	}
+	
+	public void redirectToDynamicCrudMany(Class<AbstractIdentifiable> dataClass,AbstractIdentifiable data){
+		WebNavigationManager.getInstance().redirectTo(WebManager.getInstance().getOutcomeDynamicCrudMany(),new Object[]{
+				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(dataClass),
+				WebManager.getInstance().getRequestParameterIdentifiable(), data==null?null:((AbstractIdentifiable)data).getIdentifier()
+		});
 	}
 	
 	public void redirectToUrl(String url){

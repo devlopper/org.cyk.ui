@@ -1,4 +1,4 @@
-package org.cyk.ui.api.editor;
+/*package org.cyk.ui.api.editor;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import org.cyk.ui.api.component.output.UIOutputComponent;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.api.layout.UILayout;
 
-/**
+*//**
  * A form data is a special kind of view.
  * It use input field to present data
  * @author Komenan Y .Christian
@@ -18,7 +18,7 @@ import org.cyk.ui.api.layout.UILayout;
  * @param <OUTPUTLABEL>
  * @param <INPUT>
  * @param <SELECTITEM>
- */
+ *//*
 public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart  {
 	
 	UILayout getLayout();
@@ -64,3 +64,4 @@ public interface EditorInputs<FORM,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart 
 	Collection<EditorInputsListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> getListeners();
 	
 }
+*/

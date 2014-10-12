@@ -1,4 +1,4 @@
-package org.cyk.ui.api.model.table;
+/*package org.cyk.ui.api.model.table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,3 +34,4 @@ public class TableRow<DATA> extends DefaultTableRow<DATA> implements Serializabl
 	}
 
 }
+*/
