@@ -2,24 +2,27 @@
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="outcomenotfound::#__public__#unknowoutcome.xhtml" NAME="output"
+    PATH="/__public__/unknowoutcome.xhtml"
+    TARGET="rules:#__public__#unknowoutcome.xhtml"
+    TITLE="outcomenotfound" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="home::#private#index.xhtml" NAME="output1"
+    PATH="/private/index.xhtml" TARGET="rules:#private#index.xhtml"
+    TITLE="home" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="dynamicCrudOne::#__dynamic__#crudone.xhtml"
-    NAME="output" PATH="/__dynamic__/crudone.xhtml"
+    NAME="output2" PATH="/__dynamic__/crudone.xhtml"
     TARGET="rules:#__dynamic__#crudone.xhtml" TITLE="dynamicCrudOne" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="dynamicCrudMany::#__dynamic__#crudmany.xhtml" NAME="output1"
+    ID="dynamicCrudMany::#__dynamic__#crudmany.xhtml" NAME="output3"
     PATH="/__dynamic__/crudmany.xhtml"
     TARGET="rules:#__dynamic__#crudmany.xhtml" TITLE="dynamicCrudMany" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="dynamichierarchy::#__dynamic__#hierarchy.xhtml" NAME="output2"
+    ID="dynamichierarchy::#__dynamic__#hierarchy.xhtml" NAME="output4"
     PATH="/__dynamic__/hierarchy.xhtml"
     TARGET="rules:#__dynamic__#hierarchy.xhtml" TITLE="dynamichierarchy" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT
-    ID="deploymentmanagement::#__management__#deployment.xhtml"
-    NAME="output3" PATH="/__management__/deployment.xhtml"
-    TARGET="rules:#__management__#deployment.xhtml"
-    TITLE="deploymentmanagement" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="toolscalendar::#__tools__#calendar.xhtml"
-    NAME="output4" PATH="/__tools__/calendar.xhtml"
+    NAME="output5" PATH="/__tools__/calendar.xhtml"
     TARGET="rules:#__tools__#calendar.xhtml" TITLE="toolscalendar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
@@ -33,4 +36,8 @@
   PATH="/__dynamic__/crudone.xhtml" SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#__dynamic__#crudmany.xhtml"
   PATH="/__dynamic__/crudmany.xhtml" SHAPE="304,385,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#__public__#unknowoutcome.xhtml"
+  PATH="/__public__/unknowoutcome.xhtml" SHAPE="304,385,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#private#index.xhtml"
+  PATH="/private/index.xhtml" SHAPE="304,417,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

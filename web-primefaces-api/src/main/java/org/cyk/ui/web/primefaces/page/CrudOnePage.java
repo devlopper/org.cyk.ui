@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.editor.AbstractFormData;
 
 @Named
@@ -26,7 +27,7 @@ public class CrudOnePage extends AbstractBusinessEntityFormOnePage<AbstractIdent
 	}
 	
 	@Override
-	protected void __serve__(Object parameter) {
+	public void serve(UICommand command, Object parameter) {
 		AbstractIdentifiable identifiable;
 		if(parameter instanceof AbstractFormData<?>){
 			((AbstractFormData<?>)parameter).write();

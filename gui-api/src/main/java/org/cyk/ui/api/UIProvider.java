@@ -91,10 +91,9 @@ public class UIProvider extends AbstractBean implements Serializable {
 		
 		return control;
 	}
-	
+	 
 	public OutputLabel<?,?,?,?,?> createLabel(String value){
-		@SuppressWarnings("unchecked") 
-		OutputLabel<?,?,?,?,?> outputLabel = (OutputLabel<?, ?, ?, ?, ?>) createControlInstance(controlClass((Class<? extends Control<?,?,?,?,?>>)OutputLabel.class));
+		OutputLabel<?,?,?,?,?> outputLabel = (OutputLabel<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputLabel.class));
 		outputLabel.setValue(value);
 		return outputLabel;
 	}
@@ -195,13 +194,9 @@ public class UIProvider extends AbstractBean implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Class<? extends Control<?,?,?,?,?>> controlClass(Class<? extends Control<?,?,?,?,?>> anInterface){
-		try {
-			return (Class<? extends Control<?, ?, ?, ?, ?>>) Class.forName(controlBasePackage.getName()+"."+anInterface.getSimpleName());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+	private Class<? extends Control<?,?,?,?,?>> controlClass(@SuppressWarnings("rawtypes") Class<? extends Control> anInterface){
+		//return (Class<? extends Control<?, ?, ?, ?, ?>>) Class.forName(controlBasePackage.getName()+"."+anInterface.getSimpleName());
+		return (Class<? extends Control<?, ?, ?, ?, ?>>) commonUtils.classFormName(controlBasePackage.getName()+"."+anInterface.getSimpleName());
 	}
 	
 	public String readOnlyValue(Field field,Object object){

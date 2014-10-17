@@ -81,6 +81,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		}
 		
 		if(Boolean.TRUE.equals(notify)){
+			//getMessageManager().message(SeverityType.INFO, UIManager.getInstance().text("command.execution.success"),Boolean.FALSE).showInline();
 			for(int i=0;i<commandListeners.size();i++){
 				String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, object, state);
 				if(StringUtils.isNotEmpty(message))
@@ -113,10 +114,12 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		}
 		
 		if(Boolean.TRUE.equals(notify)){
+			for(String message : messages)
+				getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
 			for(int i=0;i<commandListeners.size();i++){
-				String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, parameter, state);
-				if(StringUtils.isNotEmpty(message))
-					getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
+				//String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, parameter, state);
+				//if(StringUtils.isNotEmpty(message))
+				//	getMessageManager().message(SeverityType.ERROR, message,Boolean.FALSE).showInline();
 			}
 		}
 		

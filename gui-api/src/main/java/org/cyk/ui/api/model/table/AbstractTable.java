@@ -51,7 +51,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
-		super((Class<? extends Row<DATA>>) Row.class, null, Column.class, Cell.class);
+		super(null/*(Class<? extends Row<DATA>>) Row.class*/, null, Column.class, Cell.class);
+		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
+		rowClass = (Class<Row<DATA>>) commonUtils.classFormName(Row.class.getName());
 		addRowCommandable = UIProvider.getInstance().createCommandable(this, "command.add", IconType.ACTION_ADD, null, null);
 		initRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
 		cancelRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.cancel", IconType.ACTION_CANCEL, null, null);

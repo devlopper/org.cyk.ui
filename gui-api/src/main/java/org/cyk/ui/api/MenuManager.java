@@ -2,6 +2,7 @@ package org.cyk.ui.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,12 +31,16 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	@Inject protected BusinessManager businessManager;
 	
+	private Collection<MenuListener> menuListeners = new ArrayList<>();
+	
 	public UIMenu build(Type type,InternalApplicationModuleType internalApplicationModuleType){
 		UIMenu menu = new DefaultMenu();
 		switch(type){
 		case APPLICATION:application(menu,internalApplicationModuleType);break;
 		case CONTEXTUAL:contextual(menu,internalApplicationModuleType); break;
 		}
+		//for(MenuListener listener : menuListeners)
+		//	listener.menu(menu, type);
 		return menu;
 	}
 	

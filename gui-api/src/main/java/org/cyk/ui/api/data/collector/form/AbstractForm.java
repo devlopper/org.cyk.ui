@@ -45,8 +45,8 @@ public abstract class AbstractForm<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> exte
 
 	@Override
 	public Object fail(UICommand command, Object parameter,Throwable throwable) {
-		if(Boolean.TRUE.equals(notifyAfterServe(command, AfterServeState.FAIL)))
-			showErrorMessage(notificationMessageIdAfterServe(command, parameter, AfterServeState.FAIL));
+		//if(Boolean.TRUE.equals(notifyAfterServe(command, AfterServeState.FAIL)))
+		//	showErrorMessage(notificationMessageIdAfterServe(command, parameter, AfterServeState.FAIL));
 		return null;
 	}
 	

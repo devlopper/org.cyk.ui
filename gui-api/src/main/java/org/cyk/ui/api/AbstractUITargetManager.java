@@ -13,7 +13,8 @@ import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIProviderListener<MODEL,ROW,LABEL,CONTROL,SELECTITEM>, Serializable {
+public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements 
+	UIProviderListener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -2692873330809223761L;
 

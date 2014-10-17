@@ -120,11 +120,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			@Override
 			protected Collection<Object> __execute__(Class<Object> parameter) {
 				Class<AbstractIdentifiable> c = null;
-				try {
-					c = (Class<AbstractIdentifiable>) Class.forName(parameter.getName());
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
+				c = (Class<AbstractIdentifiable>) commonUtils.classFormName(parameter.getName());
 				Collection<AbstractIdentifiable> r = genericBusiness.use(c).find().all();
 				Collection<Object> l = new ArrayList<>();
 				for(AbstractIdentifiable i : r)

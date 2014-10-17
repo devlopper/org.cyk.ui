@@ -9,7 +9,7 @@ public interface Control<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> {
 	void setSet(AbstractControlSet<?,MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> aSet);
 
 	Position getPosition();
-	void setPosition(Position aPosition);
+	void setPosition(Position aPosition); 
 
 	String getType();
 	void setType(String aType);
@@ -17,4 +17,4 @@ public interface Control<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> {
 	String getId();
 	void setId(String anId);
 	
-}
+} 

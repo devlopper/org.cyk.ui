@@ -7,14 +7,14 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.command.CommandAdapter;
+import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.editor.AbstractFormData;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
 @Getter
 @Setter
-public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> implements Serializable {
+public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> implements CommandListener, Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
@@ -28,6 +28,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		crud = crudFromRequestParameter();
 		form = (FormOneData<Object>) createFormOneData(data(uiManager.formData((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz())),crud);
 		form.setShowCommands(Boolean.FALSE);
+		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
+		/*
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4119943624542439662L;
 			@Override
@@ -46,9 +48,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 				return super.succeed(command, parameter);
 			}
 		});
+		*/
 	}
 	
-	protected abstract void __serve__(Object parameter);
+	//protected abstract void __serve__(Object parameter);
 	
 	@SuppressWarnings("unchecked")
 	protected Object data(Class<?> aClass){
@@ -77,5 +80,35 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
+	}
+	
+	/**/
+	
+	@Override
+	public void transfer(UICommand command, Object parameter) throws Exception {}
+
+	@Override
+	public Boolean validate(UICommand command, Object parameter) {
+		return null;
+	}
+
+	@Override
+	public Object succeed(UICommand command, Object parameter) {
+		return null;
+	}
+
+	@Override
+	public Object fail(UICommand command, Object parameter, Throwable throwable) {
+		return null;
+	}
+
+	@Override
+	public Boolean notifyAfterServe(UICommand command, AfterServeState state) {
+		return null;
+	}
+
+	@Override
+	public String notificationMessageIdAfterServe(UICommand command, Object parameter, AfterServeState state) {
+		return null;
 	}
 }

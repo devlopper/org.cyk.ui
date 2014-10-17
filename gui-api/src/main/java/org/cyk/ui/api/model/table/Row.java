@@ -11,5 +11,5 @@ import org.cyk.utility.common.model.table.AbstractRow;
 public class Row<DATA> extends AbstractRow<DATA,Cell,String> implements Serializable {
 
 	private static final long serialVersionUID = -3855944230298132423L;
-
+ 
 }
