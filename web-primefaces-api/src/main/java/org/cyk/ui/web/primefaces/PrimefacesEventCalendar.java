@@ -77,9 +77,9 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 			if(event!=null){
 				params.put(WebManager.getInstance().getRequestParameterIdentifiable(), Arrays.asList(event.getIdentifier().toString()));
 			}
-			PrimefacesManager.getInstance().openDialog(WebManager.getInstance().getOutcomeDynamicCrudOne(), map, params);
+			PrimefacesManager.getInstance().openDialog(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne(), map, params);
 		}else{
-			WebNavigationManager.getInstance().redirectTo(WebManager.getInstance().getOutcomeDynamicCrudOne(),new Object[]{
+			WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne(),new Object[]{
 					WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(Event.class),
 					WebManager.getInstance().getRequestParameterIdentifiable(),event==null?null:event.getIdentifier(),
 					UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudParameterValue(crud)

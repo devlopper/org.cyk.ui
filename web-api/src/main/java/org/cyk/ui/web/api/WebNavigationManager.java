@@ -2,6 +2,7 @@ package org.cyk.ui.web.api;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
@@ -11,6 +12,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +51,16 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static final String FILE_STATIC_EXTENSION = ".xhtml";
 	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
 	
-	public static final String OUTCOME_DYNAMIC_EDITOR = "dynamiceditor";
+	@Getter private String outcomePublicIndex = "publicindex";
+	@Getter private String outcomePrivateIndex = "privateindex";
+	
+	@Getter private String outcomeDynamicCrudOne = "dynamicCrudOne";
+	@Getter private String outcomeDynamicCrudMany = "dynamicCrudMany";
+	@Getter private String outcomeLogout = "useraccountlogout";
+	
+	@Getter private String outcomeToolsCalendar = "toolscalendar";
+	
+	@Getter private String outcomeDeploymentManagement = "deploymentmanagement";
 	
 	@Inject private NavigationHelper navigationHelper;
 	
@@ -60,7 +71,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String editorCreateUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic){
-		return url(Boolean.TRUE.equals(dynamic)?OUTCOME_DYNAMIC_EDITOR:businessEntityInfos.getUiEditViewId(), new Object[]{
+		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudOne:businessEntityInfos.getUiEditViewId(), new Object[]{
 				WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 				,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudCreateParameter()
 			});
@@ -71,7 +82,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String editorUrl(Long identifier,String crud){
-		return url(OUTCOME_DYNAMIC_EDITOR, new Object[]{
+		return url(outcomeDynamicCrudOne, new Object[]{
 				WebManager.getInstance().getRequestParameterIdentifiable(),identifier
 				,UIManager.getInstance().getCrudParameter(),crud
 			});
@@ -83,7 +94,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		//System.out.println(id+" / "+navigationCase);
 		if(navigationCase==null){
 			log.severe("No Navigation Case found for "+id);
-			return url(OUTCOME_NOT_FOUND, new Object[]{"oc",id});
+			return url(OUTCOME_NOT_FOUND, new Object[]{"oc",id},Boolean.FALSE,Boolean.FALSE);
 		}
 		String s = navigationCase.getToViewId(facesContext);
 		StringBuilder url;
@@ -133,25 +144,24 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public void redirectTo(String outcome,Object[] parameters){
-		redirectToUrl(url(outcome,parameters,Boolean.FALSE));
+		redirectToUrl(url(outcome,parameters,Boolean.FALSE,Boolean.FALSE));
 	}
 	public void redirectTo(String outcome){
 		redirectTo(outcome, null);
 	}
 	
 	public void redirectToDynamicCrudMany(Class<AbstractIdentifiable> dataClass,AbstractIdentifiable data){
-		WebNavigationManager.getInstance().redirectTo(WebManager.getInstance().getOutcomeDynamicCrudMany(),new Object[]{
+		WebNavigationManager.getInstance().redirectTo(outcomeDynamicCrudMany,new Object[]{
 				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(dataClass),
 				WebManager.getInstance().getRequestParameterIdentifiable(), data==null?null:((AbstractIdentifiable)data).getIdentifier()
 		});
 	}
 	
 	public void redirectToUrl(String url){
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		try {
-			Faces.redirect(request.getContextPath()+url);
+			Faces.redirect(url);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE,e.toString(),e);
 		}
 	}
 	

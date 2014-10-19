@@ -7,29 +7,32 @@
     PATH="/__public__/unknowoutcome.xhtml"
     TARGET="rules:#__public__#unknowoutcome.xhtml"
     TITLE="outcomenotfound" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="home::#private#index.xhtml" NAME="output1"
-    PATH="/private/index.xhtml" TARGET="rules:#private#index.xhtml"
-    TITLE="home" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="dynamicCrudOne::#__dynamic__#crudone.xhtml"
-    NAME="output2" PATH="/__dynamic__/crudone.xhtml"
-    TARGET="rules:#__dynamic__#crudone.xhtml" TITLE="dynamicCrudOne" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="publicindex::#index.xhtml" NAME="output1"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="publicindex" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="privateindex::#private#index.xhtml"
+    NAME="output2" PATH="/private/index.xhtml"
+    TARGET="rules:#private#index.xhtml" TITLE="privateindex" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
     ID="dynamicCrudMany::#__dynamic__#crudmany.xhtml" NAME="output3"
     PATH="/__dynamic__/crudmany.xhtml"
     TARGET="rules:#__dynamic__#crudmany.xhtml" TITLE="dynamicCrudMany" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="dynamichierarchy::#__dynamic__#hierarchy.xhtml" NAME="output4"
-    PATH="/__dynamic__/hierarchy.xhtml"
-    TARGET="rules:#__dynamic__#hierarchy.xhtml" TITLE="dynamichierarchy" model-entity="JSFProcessItemOutput"/>
+    ID="deploymentmanagement::#__management__#deployment.xhtml"
+    NAME="output5" PATH="/__management__/deployment.xhtml"
+    TARGET="rules:#__management__#deployment.xhtml"
+    TITLE="deploymentmanagement" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="toolscalendar::#__tools__#calendar.xhtml"
-    NAME="output5" PATH="/__tools__/calendar.xhtml"
+    NAME="output4" PATH="/__tools__/calendar.xhtml"
     TARGET="rules:#__tools__#calendar.xhtml" TITLE="toolscalendar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="useraccountlogout::#__useraccount__#logout.xhtml" NAME="output6"
+    PATH="/__useraccount__/logout.xhtml"
+    TARGET="rules:#__useraccount__#logout.xhtml"
+    TITLE="useraccountlogout" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#__management__#deployment.xhtml"
   PATH="/__management__/deployment.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#__dynamic__#hierarchy.xhtml"
-  PATH="/__dynamic__/hierarchy.xhtml" SHAPE="272,433,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#__tools__#calendar.xhtml"
   PATH="/__tools__/calendar.xhtml" SHAPE="304,609,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#__dynamic__#crudone.xhtml"
@@ -40,4 +43,8 @@
   PATH="/__public__/unknowoutcome.xhtml" SHAPE="304,385,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#private#index.xhtml"
   PATH="/private/index.xhtml" SHAPE="304,417,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#__useraccount__#logout.xhtml"
+  PATH="/__useraccount__/logout.xhtml" SHAPE="304,449,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#index.xhtml" PATH="/index.xhtml"
+  SHAPE="304,449,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

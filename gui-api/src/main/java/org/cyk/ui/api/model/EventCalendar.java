@@ -110,10 +110,6 @@ public class EventCalendar extends AbstractBean implements UIWindowPart,Serializ
 	
 	/**/
 	
-	private String text(String id){
-		return getWindow().getUiManager().getLanguageBusiness().findText(id);
-	}
-	
 	public void targetDependentInitialisation(){}
 	
 	/**/

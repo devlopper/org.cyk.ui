@@ -1,9 +1,11 @@
-package org.cyk.ui.web.primefaces;
+package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+
+import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @RequestScoped
 @Getter
 @Setter
-public class IndexController extends AbstractPrimefacesPage implements Serializable {
+public class PrivateIndexPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 

@@ -28,9 +28,6 @@ public class WebManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
-	private String outcomeDynamicCrudOne = "dynamicCrudOne";
-	private String outcomeDynamicCrudMany = "dynamicCrudMany";
-	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
@@ -52,8 +49,6 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterWindowModeDialog = "windowmodedialog";
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
 	
-	
-	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){
 		case 0:return "info";
@@ -70,4 +65,5 @@ public class WebManager extends AbstractBean implements Serializable {
 		return "window.location='"+url+"'";
 	}
 
+	
 }

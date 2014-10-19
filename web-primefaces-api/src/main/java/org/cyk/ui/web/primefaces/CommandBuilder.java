@@ -11,6 +11,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.web.api.WebManager;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -62,11 +63,11 @@ public class CommandBuilder implements Serializable {
 					
 				}else{
 					switch(aCommandable.getViewType()){
-					case DYNAMIC_FORM_EDITOR:menuItem.setOutcome(WebManager.getInstance().getOutcomeDynamicCrudOne());break;
-					case DYNAMIC_FORM_TABLE:menuItem.setOutcome(WebManager.getInstance().getOutcomeDynamicCrudMany());break;
-					case DYNAMIC_FORM_HIERARCHY:menuItem.setOutcome("dynamichierarchy");break;
-					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome("deploymentmanagement");break;
-					case TOOLS_CALENDAR:menuItem.setOutcome("toolscalendar");break;
+					case DYNAMIC_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());break;
+					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudMany());break;
+					case USERACCOUNT_LOGOUT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLogout());break;
+					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDeploymentManagement());break;
+					case TOOLS_CALENDAR:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsCalendar());break;
 					default:break;
 					}
 					if(aCommandable.getBusinessEntityInfos()!=null)
@@ -79,7 +80,15 @@ public class CommandBuilder implements Serializable {
 				menuItem.setOnsuccess(WebManager.getInstance().getBlockUIDialogWidgetId()+".hide();");
 				menuItem.setGlobal(true);
 				
-				menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
+				switch(aCommandable.getViewType()){
+				case USERACCOUNT_LOGOUT:
+					menuItem.setCommand("#{webSession.logout()}");
+					menuItem.setAjax(Boolean.FALSE);
+					break;
+				default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
+				}
+				
+				
 				if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 					menuItem.setProcess("@this");	
 			}

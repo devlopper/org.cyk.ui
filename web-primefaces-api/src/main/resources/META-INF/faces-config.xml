@@ -14,7 +14,13 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>home</from-outcome>
+			<from-outcome>publicindex</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>privateindex</from-outcome>
 			<to-view-id>/private/index.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -32,12 +38,6 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>dynamichierarchy</from-outcome>
-			<to-view-id>/__dynamic__/hierarchy.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-
-		<navigation-case>
 			<from-outcome>deploymentmanagement</from-outcome>
 			<to-view-id>/__management__/deployment.xhtml</to-view-id>
 			<redirect />
@@ -48,6 +48,13 @@
 			<to-view-id>/__tools__/calendar.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>useraccountlogout</from-outcome>
+			<to-view-id>/__useraccount__/logout.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 	</navigation-rule>
 
 	<application>

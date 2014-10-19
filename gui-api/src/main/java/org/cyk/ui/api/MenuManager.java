@@ -66,17 +66,24 @@ public class MenuManager extends AbstractBean implements Serializable {
 				commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 				p.setBusinessEntityInfos(businessEntityInfos);
 				if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
-					p.setViewType(ViewType.DYNAMIC_FORM_TABLE);	
+					p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
 				}else{
-					p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
+					p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 				}
 			}
 				//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
 			aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
 			
-			aMenu.getCommandables().add(commandable = commandable("command.management", IconType.ACTION_HELP));
+			aMenu.getCommandables().add(commandable = commandable("command.management", IconType.ACTION_ADMINISTRATE));
 			commandable.getChildren().add( p = commandable("command.management.deployment", null));
 			p.setViewType(ViewType.MANAGEMENT_DEPLOYMENT);
+			
+			aMenu.getCommandables().add(commandable = commandable("command.useraccount", IconType.THING_USERACCOUNT));
+			commandable.getChildren().add( p = commandable("command.useraccount.logout", null));
+			p.setViewType(ViewType.USERACCOUNT_LOGOUT);
+			p.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+			
+			
 		}else{
 			switch(internalApplicationModuleType){
 			case CRUD:
@@ -110,9 +117,9 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 			p.setBusinessEntityInfos(businessEntityInfos);
 			if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
-				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);	
+				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
 			}else{
-				p.setViewType(ViewType.DYNAMIC_FORM_TABLE);
+				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 			}
 		}
 	}
