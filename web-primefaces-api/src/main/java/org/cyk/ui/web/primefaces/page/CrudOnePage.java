@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.editor.AbstractFormData;
 
 @Named
 @ViewScoped
@@ -28,14 +27,6 @@ public class CrudOnePage extends AbstractBusinessEntityFormOnePage<AbstractIdent
 	
 	@Override
 	public void serve(UICommand command, Object parameter) {
-		AbstractIdentifiable identifiable;
-		if(parameter instanceof AbstractFormData<?>){
-			((AbstractFormData<?>)parameter).write();
-			identifiable = ((AbstractFormData<?>)parameter).getIdentifiable();
-		}else if(parameter instanceof AbstractIdentifiable)
-			identifiable = (AbstractIdentifiable) parameter;
-		else	
-			return;
 		switch(crud){
 		case CREATE:getGenericBusiness().create(identifiable);break;
 		case READ:break;

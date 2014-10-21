@@ -7,62 +7,51 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 public interface UICommandable {
 	 
 	UICommand getCommand();
-	
 	void setCommand(UICommand aCommand);
 	
 	String getIdentifier();
-	
 	void setIdentifier(String anIdentifier);
 	
 	String getLabel();
-	
 	void setLabel(String label);
 	
 	Boolean getShowLabel();
-	
 	void setShowLabel(Boolean show);
 	
 	IconType getIconType();
-	
 	void setIconType(IconType anIconType);
 
 	String getTooltip();
-	
 	void setTooltip(String label);
 	
 	RenderType getRenderType();
-	
 	void setRenderType(RenderType aRenderType);
 	
 	Boolean getRendered();
-	
 	void setRendered(Boolean aValue);
 	
 	CommandRequestType getCommandRequestType();
-	
 	void setCommandRequestType(CommandRequestType aCommandRequestType);
 	
 	EventListener getEventListener();
-	
 	void setEventListener(EventListener anEventListener);
 	
 	ProcessGroup getProcessGroup();
-	
 	void setProcessGroup(ProcessGroup aProcessGroup);
 	
 	Boolean getIsNavigationCommand();
 	
 	Collection<UICommandable> getChildren();
-	
 	void setChildren(Collection<UICommandable> commandables);
 	
 	BusinessEntityInfos getBusinessEntityInfos();
-	
 	void setBusinessEntityInfos(BusinessEntityInfos aBusinessEntityInfos);
 	
 	ViewType getViewType();
-	
 	void setViewType(ViewType aViewType);
+	
+	Object getViewId();
+	void setViewId(Object aViewId);
 	
 	/**/
 	

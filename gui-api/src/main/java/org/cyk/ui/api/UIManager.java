@@ -24,10 +24,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.editor.input.UIInputComponent;
-import org.cyk.ui.api.editor.input.UIInputNumber;
-import org.cyk.ui.api.editor.input.UIInputSelectOne;
-import org.cyk.ui.api.editor.input.UIInputText;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -42,7 +38,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final long serialVersionUID = -9062523105492591265L;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
-	private static final Map<Class<? extends AbstractIdentifiable>,Class<?>> ENTITY_FORM_DATA_MAP = new HashMap<>();
+	private static final Map<Class<? extends AbstractIdentifiable>,CrudConfig> IDENTIFIABLE_FORM_MAP = new HashMap<>();
 	
 	private static UIManager INSTANCE;
 	public static UIManager getInstance() {
@@ -97,7 +93,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
-		businessSystemName = businessManager.findSystemName();
 		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{UIManager.getInstance().getBusinessSystemName()});
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
@@ -107,7 +102,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
 		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
-			infos.setUiLabel(text(infos.getUiLabelId()));
+			//infos.setUiLabel(text(infos.getUiLabelId()));
 		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
@@ -138,6 +133,12 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return parameter.toString();
 			}
 		};
+	}
+	
+	public String getBusinessSystemName(){
+		if(businessSystemName==null)
+			businessSystemName = businessManager.findSystemName();
+		return businessSystemName;
 	}
 	
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId){
@@ -209,15 +210,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return null;
 	}
 	
-	public Class<?> formData(Class<? extends AbstractIdentifiable> aClass){
-		Class<?> clazz = ENTITY_FORM_DATA_MAP.get(aClass);
-		if(clazz==null)
-			return aClass;
-		return clazz;
+	public CrudConfig crudConfig(Class<? extends AbstractIdentifiable> aClass){
+		CrudConfig config = IDENTIFIABLE_FORM_MAP.get(aClass);
+		return config;
 	}
 	
-	public void registerFormData(Class<? extends AbstractIdentifiable> identifiableClass,Class<?> formDataClass){
-		ENTITY_FORM_DATA_MAP.put(identifiableClass, formDataClass);
+	public void registerCrudConfig(CrudConfig config){
+		IDENTIFIABLE_FORM_MAP.put(config.getIdentifiableClass(), config);
 	}
 	
 	/**/
@@ -232,18 +231,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public Integer collectionSize(Collection<?> collection){
 		return collection.size();
-	}
-	
-	public Boolean isInputText(UIInputComponent<?> inputComponent){
-		return inputComponent instanceof UIInputText;
-	}
-	
-	public Boolean isInputSelectOne(UIInputComponent<?> inputComponent){
-		return inputComponent instanceof UIInputSelectOne;
-	}
-	
-	public Boolean isInputNumber(UIInputComponent<?> inputComponent){
-		return inputComponent instanceof UIInputNumber;
 	}
 	
 	/**/

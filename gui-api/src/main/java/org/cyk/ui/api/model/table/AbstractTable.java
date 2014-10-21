@@ -14,6 +14,7 @@ import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractTree;
+import org.cyk.ui.api.CrudConfig;
 import org.cyk.ui.api.TreeAdapter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -22,6 +23,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.model.table.Table;
 import org.cyk.utility.common.model.table.TableAdapter;
 
@@ -38,10 +40,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
+	protected CrudConfig crudConfig;
 	protected String title;
-	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE;
+	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
-	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable;
+	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
+		crudOneRowCommandable;
 	protected Boolean showHierarchy,showOpenCommand=Boolean.TRUE,showFooterCommandBlock=Boolean.TRUE;
 	
 	protected AbstractIdentifiable master;
@@ -68,15 +72,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				super.columnAdded(column);
 				column.setTitle(UIManager.getInstance().fieldLabel(column.getField()));
 			}
-			
 			@Override
 			public void cellAdded(Row<DATA> row, Column column, Cell cell) {
 				cell.setControl(UIProvider.getInstance().createFieldControl(row.getData(), column.getField()));
 			}
-			
-			
-		
 		});	
+		
+		crudOneRowCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
+		crudOneRowCommandable.setShowLabel(Boolean.FALSE);
 	}
 	
 	@Override
@@ -214,9 +217,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) rowDataClass);
 			handle(bean);
 		}else{
-			addRow(
-					(Collection<DATA>)
-					UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all());	
+			Collection<? extends AbstractIdentifiable> records;
+			if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
+				records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all();
+				addRow((Collection<DATA>)records);
+			}else{
+				records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) crudConfig.getIdentifiableClass()).find().all();
+				for(AbstractIdentifiable identifiable : records)	
+					addRow((DATA) AbstractFormModel.instance(rowDataClass, identifiable));
+
+			}
 		}
 	}
 	
@@ -278,10 +288,15 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				deleteRowAt(row.getIndex().intValue());
 			}
 			
+		}else if(command==crudOneRowCommandable.getCommand()){
+			Row<DATA> row = (Row<DATA>) parameter;
+			redirectToCrudOnePage(row.getData());
 		}
 		
 	}
 	
+	protected abstract void redirectToCrudOnePage(DATA data);
+
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
 		// TODO Auto-generated method stub

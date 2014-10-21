@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.AbstractControlSet;
 import org.cyk.ui.api.data.collector.layout.Position;
@@ -22,6 +23,7 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	protected UIManager uiManager = UIManager.getInstance();
 	
 	{
+		id = System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(2);
 		type = getClass().getSimpleName();
 	}
 	

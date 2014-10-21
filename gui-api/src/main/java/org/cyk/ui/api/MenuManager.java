@@ -10,6 +10,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -29,28 +31,42 @@ public class MenuManager extends AbstractBean implements Serializable {
 
 	public enum Type {APPLICATION,CONTEXTUAL}
 	
+	private static MenuManager INSTANCE;
+	public static MenuManager getInstance() {
+		return INSTANCE;
+	}
+	
 	@Inject protected BusinessManager businessManager;
 	
-	private Collection<MenuListener> menuListeners = new ArrayList<>();
+	@Getter private Collection<MenuListener> menuListeners = new ArrayList<>();
 	
-	public UIMenu build(Type type,InternalApplicationModuleType internalApplicationModuleType){
-		UIMenu menu = new DefaultMenu();
-		switch(type){
-		case APPLICATION:application(menu,internalApplicationModuleType);break;
-		case CONTEXTUAL:contextual(menu,internalApplicationModuleType); break;
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+	}
+	
+	public UIMenu build(UserSession userSession,Type type,InternalApplicationModuleType internalApplicationModuleType){
+		UIMenu menu = null;
+		if(Boolean.TRUE.equals(userSession.getLoggedIn())){
+			menu = new DefaultMenu();
+			switch(type){
+			case APPLICATION:application(userSession,menu,internalApplicationModuleType);break;
+			case CONTEXTUAL:contextual(menu,internalApplicationModuleType); break;
+			}
+			for(MenuListener listener : menuListeners)
+				listener.menu(userSession,menu, type);
 		}
-		//for(MenuListener listener : menuListeners)
-		//	listener.menu(menu, type);
 		return menu;
 	}
 	
-	public UIMenu build(Type type){
-		return build(type, null);
+	public UIMenu build(UserSession userSession,Type type){
+		return build(userSession,type, null);
 	}
 	
 	/**/
 	
-	private void application(UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
+	private void application(UserSession userSession,UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
 		//aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
 		if(internalApplicationModuleType==null){
 			UICommandable commandable,p;

@@ -17,6 +17,7 @@ import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.Deployment;
@@ -50,6 +51,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static final String QUERY_PARAMETER_FACES_REDIRECT_NAME = "faces-redirect";
 	private static final String FILE_STATIC_EXTENSION = ".xhtml";
 	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
+	
+	@Getter private String dynamicDirectory = "__dynamic__";
 	
 	@Getter private String outcomePublicIndex = "publicindex";
 	@Getter private String outcomePrivateIndex = "privateindex";
@@ -148,6 +151,14 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	public void redirectTo(String outcome){
 		redirectTo(outcome, null);
+	}
+	
+	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
+		WebNavigationManager.getInstance().redirectTo(outcomeDynamicCrudOne,new Object[]{
+				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(data.getClass()),
+				WebManager.getInstance().getRequestParameterIdentifiable(), data.getIdentifier(),
+				UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudParameterValue(crud)
+		});
 	}
 	
 	public void redirectToDynamicCrudMany(Class<AbstractIdentifiable> dataClass,AbstractIdentifiable data){

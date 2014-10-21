@@ -73,11 +73,12 @@
 		  			</p:cellEditor>
 		        </p:columns> 
 		        
-		        <p:column rendered="#{cc.value.editable}" width="1%">
-		        	<p:rowEditor />
+		        <p:column rendered="#{cc.value.editable}" width="30">
+		        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" />
+		        	<cyk:command value="#{cc.value.crudOneRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
 		        </p:column>
 		        
-		        <p:column rendered="#{cc.value.editable}" >
+		        <p:column rendered="#{cc.value.editable}" width="60">
 		        	<table><tr>
 		        		<td style="border: none;"><cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" /></td>
 		        		<ui:fragment rendered="#{cc.value.showOpenCommand}" ><td style="border: none;">

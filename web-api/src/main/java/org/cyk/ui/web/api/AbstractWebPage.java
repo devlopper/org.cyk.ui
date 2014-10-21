@@ -14,9 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UserSession;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
@@ -66,8 +66,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	
 	@Override
-	public Party getUser() {
-		return session.getUser();
+	public UserSession getUserSession() {
+		return session;
 	}
 	
 	@Override

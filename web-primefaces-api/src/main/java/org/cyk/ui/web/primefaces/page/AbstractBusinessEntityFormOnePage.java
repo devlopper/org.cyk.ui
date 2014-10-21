@@ -7,9 +7,10 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CrudConfig;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.editor.AbstractFormData;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
 @Getter
@@ -26,29 +27,14 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected void initialisation() { 
 		super.initialisation();
 		crud = crudFromRequestParameter();
-		form = (FormOneData<Object>) createFormOneData(data(uiManager.formData((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz())),crud);
+		CrudConfig config = uiManager.crudConfig((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+		Object data = data(config==null?businessEntityInfos.getClazz():config.getFormClass());
+		//if(AbstractIdentifiableForm.class.isAssignableFrom(data.getClass())){
+		//	((AbstractIdentifiableForm<?>)data).read();
+		//}
+		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
-		/*
-		form.getSubmitCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
-			private static final long serialVersionUID = -4119943624542439662L;
-			@Override
-			public void serve(UICommand command, Object parameter) {
-				super.serve(command, parameter);
-				try {
-					__serve__(parameter);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-			
-			@Override
-			public Object succeed(UICommand command, Object parameter) {
-				messageDialogOkButtonOnClick=webManager.javaScriptWindowHref(url);
-				return super.succeed(command, parameter);
-			}
-		});
-		*/
 	}
 	
 	//protected abstract void __serve__(Object parameter);
@@ -66,12 +52,14 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
-		if(AbstractFormData.class.isAssignableFrom(dataClass)){
+		if(AbstractFormModel.class.isAssignableFrom(dataClass)){
+			/*
 			@SuppressWarnings("unchecked")
-			AbstractFormData<AbstractIdentifiable> data = (AbstractFormData<AbstractIdentifiable>) dataClass.newInstance();
+			AbstractFormModel<AbstractIdentifiable> data = (AbstractFormModel<AbstractIdentifiable>) dataClass.newInstance();
 			data.setIdentifiable(identifiable);
 			data.read();
-			return data;
+			*/
+			return AbstractFormModel.instance(dataClass,identifiable);
 		}else{
 			return identifiable;
 		}
@@ -85,7 +73,13 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	/**/
 	
 	@Override
-	public void transfer(UICommand command, Object parameter) throws Exception {}
+	public void transfer(UICommand command, Object parameter) throws Exception {
+		if(form.getSubmitCommandable().getCommand()==command){
+			if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
+				((AbstractFormModel<?>)parameter).write();
+			}
+		}
+	}
 
 	@Override
 	public Boolean validate(UICommand command, Object parameter) {

@@ -15,7 +15,6 @@ public class WebSession extends AbstractUserSession implements Serializable {
 
 	private static final long serialVersionUID = 7799444210756287076L;
 
-	
 	@Inject transient protected WebNavigationManager navigationManager; 
 	
 	@Override

@@ -51,7 +51,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		mainMenu = menuManager.build(Type.APPLICATION);
+		mainMenu = menuManager.build(getUserSession(),Type.APPLICATION);
 	}
 	
 	@Override
@@ -60,8 +60,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		//if(editors.size()==1)
 		//	contentMenu = editors.iterator().next().getMenu();
 		
-		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas )
+		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
 			form.build();
+		}
 		
 		targetDependentInitialisation();
 		
@@ -98,11 +99,13 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	protected abstract <DATA> AbstractTable<DATA,?,?> __createTable__();
 	
-	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,UsedFor usedFor,Crud crud) {
+	@SuppressWarnings("unchecked")
+	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,CrudConfig crudConfig,UsedFor usedFor,Crud crud) {
 		AbstractTable<DATA,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
-		table.setRowDataClass(aDataClass);
-		//table.setCrud(crud);
+		table.setRowDataClass((Class<DATA>) (crudConfig==null?aDataClass:crudConfig.getFormClass()));
+		table.setCrudConfig(crudConfig);
+		table.setCrud(crud);
 		//table.setWindow(this);
 		//configureBeforeConstruct(table);
 		((AbstractBean)table).postConstruct();
@@ -117,8 +120,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return table;
 	}
 	
-	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass) {
-		return createTable(aDataClass, UsedFor.ENTITY_INPUT, Crud.READ);
+	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,CrudConfig crudConfig) {
+		return createTable(aDataClass, crudConfig,UsedFor.ENTITY_INPUT, Crud.READ);
 	}
 	
 	/*

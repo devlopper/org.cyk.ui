@@ -5,7 +5,9 @@ import java.io.Serializable;
 import lombok.Getter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -59,7 +61,11 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 		cancelRowEditCommandable.getCommand().execute(rowEditEvent.getObject());
 	}
 
-	
+	@Override
+	protected void redirectToCrudOnePage(DATA data) {
+		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
+		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,Crud.UPDATE);
+	}
 
 	/**/
 	

@@ -7,7 +7,10 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
  
 		<ui:fragment rendered="#{not formData.customControlSetPositioning}">
+			
 			<cyk:controlSet value="#{formData.controlSetByIndex(0)}" rendered="#{formData.hasControlSetByIndex(0)}"/>
+			<!-- Taking too much time to render when more -->
+			<!--
 			<cyk:controlSet value="#{formData.controlSetByIndex(1)}" rendered="#{formData.hasControlSetByIndex(1)}"/>
 			<cyk:controlSet value="#{formData.controlSetByIndex(2)}" rendered="#{formData.hasControlSetByIndex(2)}"/>
 			<cyk:controlSet value="#{formData.controlSetByIndex(3)}" rendered="#{formData.hasControlSetByIndex(3)}"/>
@@ -38,11 +41,13 @@
 			<cyk:controlSet value="#{formData.controlSetByIndex(26)}" rendered="#{formData.hasControlSetByIndex(26)}"/>
 			<cyk:controlSet value="#{formData.controlSetByIndex(27)}" rendered="#{formData.hasControlSetByIndex(27)}"/>
 			<cyk:controlSet value="#{formData.controlSetByIndex(28)}" rendered="#{formData.hasControlSetByIndex(28)}"/>
-			<cyk:controlSet value="#{formData.controlSetByIndex(29)}" rendered="#{formData.hasControlSetByIndex(29)}"/>		
+			<cyk:controlSet value="#{formData.controlSetByIndex(29)}" rendered="#{formData.hasControlSetByIndex(29)}"/>
+			-->		
 		</ui:fragment>
 		
 		<ui:fragment rendered="#{formData.customControlSetPositioning}">
 			<h:panelGrid columns="#{formData.layoutColumnCount}" >
+				<!--
 				<cyk:controlSet value="#{formData.controlSetByIndex(0)}" rendered="#{formData.hasControlSetByIndex(0)}"/>
 				<cyk:controlSet value="#{formData.controlSetByIndex(1)}" rendered="#{formData.hasControlSetByIndex(1)}"/>
 				<cyk:controlSet value="#{formData.controlSetByIndex(2)}" rendered="#{formData.hasControlSetByIndex(2)}"/>
@@ -53,6 +58,7 @@
 				<cyk:controlSet value="#{formData.controlSetByIndex(7)}" rendered="#{formData.hasControlSetByIndex(7)}"/>
 				<cyk:controlSet value="#{formData.controlSetByIndex(8)}" rendered="#{formData.hasControlSetByIndex(8)}"/>
 				<cyk:controlSet value="#{formData.controlSetByIndex(9)}" rendered="#{formData.hasControlSetByIndex(9)}"/>
+				-->
 			</h:panelGrid>
 		</ui:fragment>
 	

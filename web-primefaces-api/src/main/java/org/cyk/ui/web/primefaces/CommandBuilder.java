@@ -60,7 +60,8 @@ public class CommandBuilder implements Serializable {
 				menuItem.setIcon(icon(aCommandable.getIconType()));
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
-					
+					if(aCommandable.getViewId()!=null)
+						menuItem.setOutcome(aCommandable.getViewId().toString());
 				}else{
 					switch(aCommandable.getViewType()){
 					case DYNAMIC_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());break;
@@ -75,17 +76,22 @@ public class CommandBuilder implements Serializable {
 				}
 				
 			}else{
+				
 				menuItem.setUpdate(":form:contentPanel");
 				menuItem.setOnstart(WebManager.getInstance().getBlockUIDialogWidgetId()+".show();");
 				menuItem.setOnsuccess(WebManager.getInstance().getBlockUIDialogWidgetId()+".hide();");
 				menuItem.setGlobal(true);
 				
-				switch(aCommandable.getViewType()){
-				case USERACCOUNT_LOGOUT:
-					menuItem.setCommand("#{webSession.logout()}");
-					menuItem.setAjax(Boolean.FALSE);
-					break;
-				default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
+				if(aCommandable.getViewType()==null){
+					
+				}else{
+					switch(aCommandable.getViewType()){
+					case USERACCOUNT_LOGOUT:
+						menuItem.setCommand("#{webSession.logout()}");
+						menuItem.setAjax(Boolean.FALSE);
+						break;
+					default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
+					}
 				}
 				
 				

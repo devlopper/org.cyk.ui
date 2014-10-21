@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CrudConfig;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 @Getter
@@ -16,13 +17,15 @@ public abstract class AbstractDynamicBusinessEntityPrimefacesPage extends Abstra
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	protected BusinessEntityInfos businessEntityInfos;
+	protected CrudConfig crudConfig ;
 	protected AbstractIdentifiable identifiable;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		businessEntityInfos = fetchBusinessEntityInfos(); //uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
+		businessEntityInfos = fetchBusinessEntityInfos();
+		crudConfig = uiManager.crudConfig((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		identifiable = identifiableFromRequestParameter((Class<AbstractIdentifiable>)businessEntityInfos.getClazz());
 		contentTitle = text(businessEntityInfos.getUiLabelId());
 	}

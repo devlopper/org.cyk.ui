@@ -29,10 +29,11 @@ public class TableDemoPage extends AbstractPrimefacesPage implements Serializabl
 	
 	private Table<PhoneNumberType> table;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
-		table = (Table<PhoneNumberType>) createTable(PhoneNumberType.class);
+		table = (Table<PhoneNumberType>) createTable(PhoneNumberType.class,null);
 		table.getTableListeners().add(new TableAdapter<Row<PhoneNumberType>, Column, PhoneNumberType, String, Cell, String>(){
 			@Override
 			public Boolean ignore(Field field) {

@@ -26,6 +26,11 @@ public abstract class AbstractUserSession extends AbstractBean implements UserSe
 		return userAccount == null?null:userAccount.getUser();
 	}
 	
+	@Override
+	public Boolean getLoggedIn() {
+		return userAccount!=null;
+	}
+	
 	protected abstract void __logout__();
 	
 	public void logout(){

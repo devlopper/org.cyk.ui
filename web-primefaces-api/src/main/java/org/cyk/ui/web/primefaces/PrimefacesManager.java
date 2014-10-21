@@ -14,8 +14,6 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.utility.common.annotation.Deployment;
@@ -46,16 +44,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
-	}
-	
-	public String includeFile(UIInputComponent<?> input){
-		if(UIManager.getInstance().isInputText(input))
-			return "include/inputTextOneLine.xhtml";
-		else if(UIManager.getInstance().isInputSelectOne(input))
-			return "include/inputOneMenu.xhtml";
-		else if(UIManager.getInstance().isInputNumber(input))
-			return "include/inputNumber.xhtml";
-		return null;
 	}
 	
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){

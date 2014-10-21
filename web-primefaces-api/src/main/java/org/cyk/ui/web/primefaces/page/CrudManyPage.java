@@ -9,7 +9,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
@@ -25,14 +24,16 @@ public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage im
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private Table<AbstractIdentifiable> table;
+	private Table<Object> table;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		table = (Table<AbstractIdentifiable>) createTable(businessEntityInfos.getClazz());
-		table.getTableListeners().add(new TableAdapter<Row<AbstractIdentifiable>, Column, AbstractIdentifiable, String, Cell, String>(){
+		//crudConfig = null;
+		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),crudConfig);
+		
+		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
 			public Boolean ignore(Field field) {
 				Input input = field.getAnnotation(Input.class);
@@ -42,7 +43,8 @@ public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage im
 		
 		table.addColumnFromDataClass();
 		
-		table.setEditable(true);
+		table.setEditable(Boolean.TRUE);
+		table.setInplaceEdit(Boolean.FALSE);
 		table.setMaster(identifiable);
 		table.fetchData();
 		
@@ -55,7 +57,6 @@ public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage im
 				return null;
 			}
 		});*/
-		
 	}
 	
 	@Override

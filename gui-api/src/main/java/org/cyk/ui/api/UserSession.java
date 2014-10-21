@@ -12,5 +12,7 @@ public interface UserSession {
 	Locale getLocale();
 	void setLocale(Locale locale);
 	
+	Boolean getLoggedIn();
+	
 	void logout();
 }

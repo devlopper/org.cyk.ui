@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.web.primefaces.page.CrudOnePage;
-import org.cyk.ui.web.primefaces.test.model.MyEntity;
+import org.cyk.ui.web.primefaces.test.model.MyIdentifiable;
 
 @Named
 @ViewScoped
@@ -29,7 +29,7 @@ public class StaticEditorPage extends CrudOnePage implements Serializable {
 	
 	@Override
 	protected BusinessEntityInfos fetchBusinessEntityInfos() {
-		return new BusinessEntityInfos(MyEntity.class, languageBusiness);
+		return new BusinessEntityInfos(MyIdentifiable.class, languageBusiness);
 	}
 	
 	@Override
