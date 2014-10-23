@@ -8,21 +8,16 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.cyk.utility.common.annotation.UIEditor;
-import org.cyk.utility.common.annotation.UIField;
-import org.cyk.utility.common.annotation.UIField.OneRelationshipInputType;
-import org.cyk.utility.common.annotation.UIField.SeparatorAfter;
-import org.cyk.utility.common.validation.Client;
 
-@Getter @Setter @UIEditor(columnsCount=2)
+@Getter @Setter //@UIEditor(columnsCount=2)
 public class MyEntity {
 	
 	public enum MyEnum{V1,V2,V3,v55}
 	
-	@UIField(groups=Client.class,description="Une chaine de caracteres",separatorAfter=SeparatorAfter.TRUE)
+	//@UIField(groups=Client.class,description="Une chaine de caracteres",separatorAfter=SeparatorAfter.TRUE)
 	private String string="Jesus";
 	
-	@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
+	//@UIField(textArea=true,textRowCount=5,textColumnCount=60,description="Ceci est un texte multiligne")
 	private String textArea="1";
 	
 	//@UIField(groups=System.class,required=true)
@@ -52,7 +47,7 @@ public class MyEntity {
 	//@UIField(required=true)
 	private MyEnum myEnum;
 	
-	@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
+	//@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
 	private MyDetails details1;// = new MyDetails();
 	/*
 	@UIField(compositionRelationshipInputType=CompositionRelationshipInputType.FORM)
@@ -72,16 +67,16 @@ public class MyEntity {
 	@Setter @Getter
 	public static class MyDetails{
 		
-		@UIField
+		//@UIField
 		private String detailsName;// = "Zouzoua Lingue";
 		
-		@UIField
+		//@UIField
 		private Boolean detailsYesOrNo;
 		
 		//@UIField
 		private Integer detailsMyInt;
 		
-		@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
+		//@UIField(oneRelationshipInputType=OneRelationshipInputType.FIELDS)
 		private MyDetails2 details2;
 		
 		
@@ -100,10 +95,10 @@ public class MyEntity {
 		//@UIField
 		private BigDecimal detailsMyBigDecimal;
 		
-		@UIField
+		//@UIField
 		private Date detailsDate;
 		
-		@UIField
+		//@UIField
 		private MyEnum detailsMyEnum=MyEnum.V3;
 		
 		@Override

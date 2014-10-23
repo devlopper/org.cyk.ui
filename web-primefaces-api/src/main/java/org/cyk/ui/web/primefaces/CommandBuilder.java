@@ -64,7 +64,10 @@ public class CommandBuilder implements Serializable {
 						menuItem.setOutcome(aCommandable.getViewId().toString());
 				}else{
 					switch(aCommandable.getViewType()){
-					case DYNAMIC_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());break;
+					case DYNAMIC_CRUD_ONE:
+						menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());
+						menuItem.setParam(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
+						break;
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLogout());break;
 					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDeploymentManagement());break;

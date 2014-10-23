@@ -17,12 +17,10 @@ public class PersonFormModel extends AbstractFormModel<Person> implements Serial
 
 	@Input
 	@InputText
-	private String nom;
+	private String name;
 	
-	@Override
-	public void read() {
-		super.read();
-		nom = identifiable.getName();
-	}
+	@Input
+	@InputText
+	private String lastName;
 
 }

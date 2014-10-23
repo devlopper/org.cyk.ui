@@ -1,5 +1,7 @@
 package org.cyk.ui.web.api;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -10,7 +12,7 @@ import org.cyk.ui.api.MenuManager;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener {
+public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener,Serializable {
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
@@ -26,8 +28,12 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		
+		crudConfig(event);
 	}
+	
+	protected void crudConfig(ServletContextEvent event){}
+	
+	/**/
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {

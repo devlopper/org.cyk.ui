@@ -28,10 +28,24 @@
 			<ui:fragment rendered="#{cc.value.showHierarchy}"><td style="width: 1%;">
 				<cyk:tree value="#{cc.value.primefacesTree}" />
 			</td></ui:fragment>
-			-->
-			<!--<td>--><p:dataTable id="dataTable" var="row" value="#{cc.value.rows}" editable="#{cc.value.editable}" 
-				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index"
-				emptyMessage="#{uiManager.text('record.list.empty')}">
+			--> 
+			<!--<td>--><p:dataTable id="dataTable" widgetVar="dataTableWidgetVar" var="row" value="#{cc.value.value}" editable="#{cc.value.editable}" 
+				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index" 
+				emptyMessage="#{uiManager.text('record.list.empty')}" lazy="#{cc.value.lazyLoad}"			
+				paginator="#{cc.value.lazyLoad}" rows="#{cc.value.rows.size()}" paginatorPosition="bottom" sortMode="single"
+				
+				>
+				
+				<f:facet name="header">
+       				<p:toolbar>
+       					<f:facet name="right">
+       						<p:inputText id="globalFilter" >
+       				
+       						</p:inputText>
+       						<cyk:command value="#{cc.value.searchCommandable}" />
+       					</f:facet>
+       				</p:toolbar>
+       			</f:facet>
 				
 				<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
 				<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />

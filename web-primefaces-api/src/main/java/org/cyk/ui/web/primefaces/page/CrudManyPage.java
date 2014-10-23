@@ -30,7 +30,6 @@ public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage im
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		//crudConfig = null;
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),crudConfig);
 		
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
@@ -46,7 +45,12 @@ public class CrudManyPage extends AbstractDynamicBusinessEntityPrimefacesPage im
 		table.setEditable(Boolean.TRUE);
 		table.setInplaceEdit(Boolean.FALSE);
 		table.setMaster(identifiable);
-		table.fetchData();
+		table.setLazyLoad(crudConfig!=null);
+		
+		if(!Boolean.TRUE.equals(table.getLazyLoad()))
+			table.fetchData(null,null,null,null,null);
+		
+		
 		
 		/*
 		table.getSaveRowCommand().getCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {

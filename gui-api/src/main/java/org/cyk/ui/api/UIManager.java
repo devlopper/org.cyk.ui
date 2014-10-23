@@ -19,11 +19,13 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -38,12 +40,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final long serialVersionUID = -9062523105492591265L;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
-	private static final Map<Class<? extends AbstractIdentifiable>,CrudConfig> IDENTIFIABLE_FORM_MAP = new HashMap<>();
+	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	
 	private static UIManager INSTANCE;
 	public static UIManager getInstance() {
 		return INSTANCE;
 	}
+	
+	private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
 	
 	private final String consultViewSuffix="ConsultView";
 	private final String listViewSuffix="ListView";
@@ -210,13 +214,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return null;
 	}
 	
-	public CrudConfig crudConfig(Class<? extends AbstractIdentifiable> aClass){
-		CrudConfig config = IDENTIFIABLE_FORM_MAP.get(aClass);
+	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass){
+		IdentifiableConfiguration config = IDENTIFIABLE_CONFIGURATION_MAP.get(aClass);
 		return config;
 	}
 	
-	public void registerCrudConfig(CrudConfig config){
-		IDENTIFIABLE_FORM_MAP.put(config.getIdentifiableClass(), config);
+	public void registerConfiguration(IdentifiableConfiguration configuration){
+		IDENTIFIABLE_CONFIGURATION_MAP.put(configuration.getIdentifiableClass(), configuration);
 	}
 	
 	/**/
@@ -289,6 +293,38 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public static abstract class ToStringMethod extends AbstractMethod<String, Object> {
 		private static final long serialVersionUID = 1175379361365502915L;
+	}
+
+
+	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, Map<String, Object> filters) {
+		for(BusinessListener listener : businessListeners){
+			Long count = listener.count(aClass, filters);
+			if(count!=null)
+				return count;
+		}	
+		return null;
+	}
+
+	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, String filter) {
+		for(BusinessListener listener : businessListeners){
+			Long count = listener.count(aClass,filter);
+			if(count!=null)
+				return count;
+		}	
+		return null;
+	}
+
+	public <T extends AbstractIdentifiable> Collection<T> find(Class<T> aClass, Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,Map<String, Object> filters) {
+		for(BusinessListener listener : businessListeners){
+			Collection<T> collection = listener.find(aClass, first, pageSize, sortField, ascendingOrder, filters);
+			if(collection!=null)
+				return collection;
+		}
+		return null;
+	}
+	 
+	public Collection<BusinessListener> getBusinesslisteners() {
+		return businessListeners;
 	}
 	
 }

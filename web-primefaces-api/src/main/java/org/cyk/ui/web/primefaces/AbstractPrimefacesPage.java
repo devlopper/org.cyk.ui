@@ -41,8 +41,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 
 	@Override
-	protected <DATA> AbstractTable<DATA,?,?> __createTable__() {
-		return new Table<DATA>();
+	protected AbstractTable<Object,?,?> __createTable__() {
+		return new Table<Object>();
 	}
 	
 	@Override

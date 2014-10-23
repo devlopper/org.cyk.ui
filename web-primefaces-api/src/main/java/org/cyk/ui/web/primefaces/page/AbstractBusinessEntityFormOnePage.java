@@ -7,9 +7,9 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CrudConfig;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
@@ -27,8 +27,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected void initialisation() { 
 		super.initialisation();
 		crud = crudFromRequestParameter();
-		CrudConfig config = uiManager.crudConfig((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
-		Object data = data(config==null?businessEntityInfos.getClazz():config.getFormClass());
+		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+		Object data = data(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass());
 		//if(AbstractIdentifiableForm.class.isAssignableFrom(data.getClass())){
 		//	((AbstractIdentifiableForm<?>)data).read();
 		//}
@@ -52,15 +52,9 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
-		if(AbstractFormModel.class.isAssignableFrom(dataClass)){
-			/*
-			@SuppressWarnings("unchecked")
-			AbstractFormModel<AbstractIdentifiable> data = (AbstractFormModel<AbstractIdentifiable>) dataClass.newInstance();
-			data.setIdentifiable(identifiable);
-			data.read();
-			*/
+		if(AbstractFormModel.class.isAssignableFrom(dataClass))
 			return AbstractFormModel.instance(dataClass,identifiable);
-		}else{
+		else{
 			return identifiable;
 		}
 	}
@@ -75,8 +69,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		if(form.getSubmitCommandable().getCommand()==command){
-			if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
-				((AbstractFormModel<?>)parameter).write();
+			if(parameter!=null){
+				if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
+					((AbstractFormModel<?>)parameter).write();
+				}
 			}
 		}
 	}

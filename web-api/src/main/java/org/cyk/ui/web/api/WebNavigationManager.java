@@ -161,6 +161,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
+	public void redirectToDynamicCrudOne(Class<AbstractIdentifiable> aClass){
+		WebNavigationManager.getInstance().redirectTo(outcomeDynamicCrudOne,new Object[]{
+				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(aClass),
+				UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()
+		});
+	}
+	
 	public void redirectToDynamicCrudMany(Class<AbstractIdentifiable> dataClass,AbstractIdentifiable data){
 		WebNavigationManager.getInstance().redirectTo(outcomeDynamicCrudMany,new Object[]{
 				WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(dataClass),

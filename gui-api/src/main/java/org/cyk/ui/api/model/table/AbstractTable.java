@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,6 @@ import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractTree;
-import org.cyk.ui.api.CrudConfig;
 import org.cyk.ui.api.TreeAdapter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -22,6 +22,7 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.model.table.Table;
@@ -40,12 +41,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
-	protected CrudConfig crudConfig;
+	protected IdentifiableConfiguration identifiableConfiguration;
 	protected String title;
-	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE;
+	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=Boolean.FALSE;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
-		crudOneRowCommandable;
+		crudOneRowCommandable,searchCommandable;
 	protected Boolean showHierarchy,showOpenCommand=Boolean.TRUE,showFooterCommandBlock=Boolean.TRUE;
 	
 	protected AbstractIdentifiable master;
@@ -80,6 +81,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		crudOneRowCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
 		crudOneRowCommandable.setShowLabel(Boolean.FALSE);
+		
+		searchCommandable = UIProvider.getInstance().createCommandable(this, "command.search", IconType.ACTION_SEARCH, null, null);
+		searchCommandable.setShowLabel(Boolean.FALSE);
 	}
 	
 	@Override
@@ -210,24 +214,39 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void fetchData(){
+	protected Class<? extends AbstractIdentifiable> identifiableClass(){
+		return (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void fetchData(Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,Map<String, Object> filters){
+		rows.clear();
 		if(AbstractDataTreeNode.class.isAssignableFrom(rowDataClass)){
 			showHierarchy = Boolean.TRUE;
 			@SuppressWarnings("rawtypes")
 			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) rowDataClass);
 			handle(bean);
 		}else{
-			Collection<? extends AbstractIdentifiable> records;
+			Collection<? extends AbstractIdentifiable> records = null;
 			if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
 				records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all();
 				addRow((Collection<DATA>)records);
 			}else{
-				records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) crudConfig.getIdentifiableClass()).find().all();
-				for(AbstractIdentifiable identifiable : records)	
-					addRow((DATA) AbstractFormModel.instance(rowDataClass, identifiable));
+				if(Boolean.TRUE.equals(lazyLoad)){
+					records = UIManager.getInstance().find(identifiableClass(), first, pageSize, sortField, ascendingOrder, filters);
+				}else
+					records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) identifiableConfiguration.getIdentifiableClass()).find().all();
+				if(records!=null)
+					for(AbstractIdentifiable identifiable : records)	
+						addRow((DATA) AbstractFormModel.instance(rowDataClass, identifiable));
 
 			}
 		}
+	}
+	
+	@Override
+	public Long count(String filter) {
+		return UIManager.getInstance().count(identifiableClass(), filter);
 	}
 	
 	@Override
@@ -255,9 +274,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public void serve(UICommand command, Object parameter) {
 		lastExecutedCommand = command;
 		if(command==addRowCommandable.getCommand()){
-			DATA d = newInstance(rowDataClass);
-			editing.add(d);
-			addRow(d);
+			if(identifiableConfiguration==null){
+				DATA d = newInstance(rowDataClass);
+				editing.add(d);
+				addRow(d);
+			}else
+				crudOnePage();
 		}else if(command==initRowEditCommandable.getCommand()){
 			Row<DATA> row = (Row<DATA>) parameter;
 			editing.add(row.getData());
@@ -282,21 +304,27 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			editing.clear();
 		}else if(command==removeRowCommandable.getCommand()){
 			Row<DATA> row = (Row<DATA>) parameter;
-			if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
-				AbstractIdentifiable identifiable = (AbstractIdentifiable) row.getData();
-				UIManager.getInstance().getGenericBusiness().delete(identifiable);
-				deleteRowAt(row.getIndex().intValue());
+			if(identifiableConfiguration==null){
+				if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
+					AbstractIdentifiable identifiable = (AbstractIdentifiable) row.getData();
+					UIManager.getInstance().getGenericBusiness().delete(identifiable);
+					deleteRowAt(row.getIndex().intValue());
+				}
+			}else{
+				crudOnePage(row.getData(),Crud.DELETE);
 			}
 			
 		}else if(command==crudOneRowCommandable.getCommand()){
 			Row<DATA> row = (Row<DATA>) parameter;
-			redirectToCrudOnePage(row.getData());
+			crudOnePage(row.getData(),Crud.UPDATE);
 		}
 		
 	}
 	
-	protected abstract void redirectToCrudOnePage(DATA data);
+	protected abstract void crudOnePage(DATA data,Crud crud);
 
+	protected abstract void crudOnePage();
+	
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
 		// TODO Auto-generated method stub

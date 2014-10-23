@@ -21,6 +21,7 @@ import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
@@ -97,14 +98,14 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return form;
 	}
 	
-	protected abstract <DATA> AbstractTable<DATA,?,?> __createTable__();
+	protected abstract AbstractTable<Object,?,?> __createTable__();
 	
 	@SuppressWarnings("unchecked")
-	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,CrudConfig crudConfig,UsedFor usedFor,Crud crud) {
-		AbstractTable<DATA,?,?> table = __createTable__();
+	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,UsedFor usedFor,Crud crud) {
+		AbstractTable<Object,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
-		table.setRowDataClass((Class<DATA>) (crudConfig==null?aDataClass:crudConfig.getFormClass()));
-		table.setCrudConfig(crudConfig);
+		table.setRowDataClass((Class<Object>) (configuration==null?aDataClass:configuration.getFormModelClass()));
+		table.setIdentifiableConfiguration(configuration);
 		table.setCrud(crud);
 		//table.setWindow(this);
 		//configureBeforeConstruct(table);
@@ -120,7 +121,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return table;
 	}
 	
-	public <DATA> AbstractTable<DATA,?,?> createTable(Class<DATA> aDataClass,CrudConfig crudConfig) {
+	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig) {
 		return createTable(aDataClass, crudConfig,UsedFor.ENTITY_INPUT, Crud.READ);
 	}
 	
