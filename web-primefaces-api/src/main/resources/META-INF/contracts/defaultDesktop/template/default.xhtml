@@ -25,8 +25,8 @@
 		</ui:repeat>
 		-->
 		<title>
-			<h:outputText value="#{uiManager.businessSystemName}" />
-			<h:outputText value=" - " rendered="#{not empty pageController.title}"/>
+			<h:outputText value="#{uiManager.application.name}" rendered="#{not empty uiManager.application.name}"/>
+			<h:outputText value=" - " rendered="#{not empty uiManager.application.name and not empty pageController.title}" />
 			<h:outputText value="#{pageController.title}" rendered="#{not empty pageController.title}"/>
 		</title>
 
@@ -57,13 +57,13 @@
 		
 		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
 			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" rendered="#{pageController.showMainMenu}"><h:form id="formNorth">
-				<ui:include src="#{primefacesDefaultDesktopLayoutManager.northInclude}" />
+				<ui:include src="#{defaultDesktopLayoutManager.northInclude}" />
 			</h:form></pe:layoutPane>
 			
 			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent" rendered="#{pageController.showContextualMenu}">
 				<h:form id="contextualMenuForm">
 					<ui:insert name="westContent">
-						<ui:include src="#{primefacesDefaultDesktopLayoutManager.westInclude}" />
+						<ui:include src="#{defaultDesktopLayoutManager.westInclude}" />
 					</ui:insert>
 				</h:form>
 			</pe:layoutPane>
@@ -143,6 +143,7 @@
 	    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
 					 $(this).click();	
 				});
+				
 			}
 			
 			function clickEditButtonAllRow(dataTableStyleClass){
@@ -163,9 +164,29 @@
 				$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
 					 $(this).click();	
 				});
+			}
+			
+			
+			function confirmDialog(){
+	    		PF('confirmDialogWidgetVar').show();
+			}
+			
+			function blockUIStart() {
+			    PF('#{webManager.blockUIDialogWidgetId}').show();
+			}
+			 
+			function blockUIStop() {
+			    PF('#{webManager.blockUIDialogWidgetId}').hide();
 			}	
 			
 		</h:outputScript>
+ 		
+ 		<!--p:confirmDialog widgetVar="confirmDialogWidgetVar" header="#{uiManager.text('confirmation')}" closable="false" 
+ 			message="#{uiManager.text('command.execution.confirmation.question')}" >
+	        <p:commandButton value="#{uiManager.text('yes')}" action="#{pageController.onConfirm}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+	        	onclick="#{cc.value.command.execute(cc.attrs.executeParameter)}"/>
+	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('confirmDialogWidgetVar').hide();" />
+	    </p:confirmDialog-->
  		
     </h:body>
 </html>

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.data.collector.form.AbstractControlSet;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.primefaces.extensions.component.dynaform.DynaForm;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;

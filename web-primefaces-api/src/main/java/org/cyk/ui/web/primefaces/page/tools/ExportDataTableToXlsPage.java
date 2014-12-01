@@ -1,0 +1,17 @@
+package org.cyk.ui.web.primefaces.page.tools;
+
+import java.io.Serializable;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+@Named @RequestScoped
+public class ExportDataTableToXlsPage extends AbstractExportDataTablePage implements Serializable {
+
+	private static final long serialVersionUID = 3274187086682750183L;
+
+	@Override
+	protected String fileExtension() {
+		return "xls";
+	}
+}

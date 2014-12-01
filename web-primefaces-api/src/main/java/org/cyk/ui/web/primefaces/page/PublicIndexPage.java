@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
-
 import lombok.Getter;
 import lombok.Setter;
 

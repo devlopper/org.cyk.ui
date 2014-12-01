@@ -20,7 +20,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
 	@Getter @Setter protected String identifier,label,tooltip;
 	@Getter @Setter protected IconType iconType;
-	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE;
+	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
 	@Getter @Setter protected Class<?> dynamicClass; 
@@ -35,6 +35,8 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return super.add(aCommandable);
 		}
 	};
+	
+	@Getter @Setter protected Collection<Parameter> parameters = new ArrayList<>();
 	
 	@Override
 	public Boolean getIsNavigationCommand() {

@@ -3,11 +3,14 @@ package org.cyk.ui.api;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
@@ -40,6 +43,13 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 				AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
 				list.add(item(identifiable));
 			}
+		}else if(type.isEnum()){
+			try {
+				for(Enum<?> value : (Enum<?>[])type.getEnumConstants())
+					list.add(item(value));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -49,6 +59,8 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	
 	protected abstract SELECTITEM item(AbstractIdentifiable identifiable);
 
+	protected abstract SELECTITEM item(Enum<?> anEnum);
+	
 	@Override
 	public Class<? extends UICommandable> commandableClassSelected(Class<? extends UICommandable> aClass) {
 		return null;
@@ -57,6 +69,24 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Override
 	public void commandableInstanceCreated(UICommandable aCommandable) {
 		
+	}
+	
+	@Override
+	public String readOnlyValue(Field field, Object object) {
+		Object value = null;
+		try {
+			value = FieldUtils.readField(field, object, Boolean.TRUE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		if(value==null)
+			return "";
+		if(value.getClass().getName().startsWith("org.cyk."))
+			return ((AbstractModelElement)value).getUiString();
+		if(value instanceof Date)
+			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
+		return value.toString();
 	}
 
 }

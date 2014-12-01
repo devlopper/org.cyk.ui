@@ -3,59 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
-
-	<navigation-rule>
-		<from-view-id>*</from-view-id>
-		
-		<navigation-case>
-			<from-outcome>outcomenotfound</from-outcome>
-			<to-view-id>/__public__/unknowoutcome.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>publicindex</from-outcome>
-			<to-view-id>/index.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>privateindex</from-outcome>
-			<to-view-id>/private/index.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>dynamicCrudOne</from-outcome>
-			<to-view-id>/__dynamic__/crudone.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>dynamicCrudMany</from-outcome>
-			<to-view-id>/__dynamic__/crudmany.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>deploymentmanagement</from-outcome>
-			<to-view-id>/__management__/deployment.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>toolscalendar</from-outcome>
-			<to-view-id>/__tools__/calendar.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>useraccountlogout</from-outcome>
-			<to-view-id>/__useraccount__/logout.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-	</navigation-rule>
+	
+	<!-- Primefaces specific configuration -->
 
 	<application>
 		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
@@ -65,9 +14,7 @@
 		<message-bundle>ci.gouv.budget.solde.sigdcp.controller.resources.primefaces.i18n</message-bundle>
 		<message-bundle>ci.gouv.budget.solde.sigdcp.controller.resources.i18n</message-bundle>
 		-->
-		<locale-config>
-			<supported-locale>fr</supported-locale>
-		</locale-config>
+		
 	</application>
 
 </faces-config>

@@ -26,10 +26,62 @@
 	<welcome-file-list>
 		<welcome-file>index.jsf</welcome-file>
 	</welcome-file-list>
+	
+	<error-page>
+		<error-code>401</error-code>
+		<location>/public/__error__/401.jsf</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/public/__error__/404.jsf</location>
+	</error-page>
+	
+	<!-- pretty faces -->
+
+	<filter>
+		<filter-name>OCPsoft Rewrite Filter</filter-name>
+		<filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter-mapping>
+		<filter-name>OCPsoft Rewrite Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
+	<context-param>
+	   <param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
+	   <param-value>org.cyk.ui.web</param-value>
+	</context-param>
+	
+	<filter>
+		<filter-name>applicationSecurityFilter</filter-name>
+		<filter-class>org.cyk.ui.web.api.servlet.SecurityFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>applicationSecurityFilter</filter-name>
+		<url-pattern>/private/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!-- shiro -->
+	
+	<context-param>
+    	<param-name>shiroEnvironmentClass</param-name>
+    	<param-value>org.cyk.ui.web.api.security.shiro.WebEnvironment</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
 	</listener>
+	
 	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
@@ -42,4 +94,5 @@
 		<dispatcher>INCLUDE</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	
 </web-fragment>

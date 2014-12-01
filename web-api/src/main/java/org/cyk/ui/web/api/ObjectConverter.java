@@ -1,4 +1,5 @@
 package org.cyk.ui.web.api;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,9 @@ import javax.inject.Singleton;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.annotation.Deployment;
+import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.extern.java.Log;
 
@@ -19,9 +23,10 @@ import lombok.extern.java.Log;
  * @author christian
  *
  */
-@Named @Singleton @Log
-public class ObjectConverter implements Converter {
+@Named @Singleton @Log @Deployment(initialisationType=InitialisationType.EAGER)
+public class ObjectConverter extends AbstractBean implements Converter,Serializable {
 	
+	private static final long serialVersionUID = -1615078449226502960L;
 	private static final String OBJECT_MAP_KEY = ObjectConverter.class.getSimpleName();
 	private static final String NULL_STRING_VALUE = "";
 	private static AbstractMethod<String, Object> GET_IDENTIFIER_METHOD = new AbstractMethod<String, Object>() {
@@ -31,6 +36,17 @@ public class ObjectConverter implements Converter {
 			return RandomStringUtils.randomAlphabetic(3)+RandomStringUtils.randomAlphanumeric(3);
 		}
 	};
+	
+	private static ObjectConverter INSTANCE;
+	public static ObjectConverter getInstance() {
+		return INSTANCE;
+	}
+	
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+	}
 	
 	private Map<String, Object> getObjectMap(FacesContext context) {
 		Map<String, Object> viewMap = context.getViewRoot().getViewMap();

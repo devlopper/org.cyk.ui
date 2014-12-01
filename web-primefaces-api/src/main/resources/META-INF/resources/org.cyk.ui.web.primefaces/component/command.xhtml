@@ -21,7 +21,7 @@
 			
 			process="#{cc.value.button.process}" 
 			
-			rendered="#{cc.value.button.rendered}"
+			rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"
 			type="#{cc.value.button.type}"
 			title="#{cc.value.button.title}"
 			
@@ -31,19 +31,57 @@
 			oncomplete="#{cc.value.button.oncomplete}"
 			onclick="#{cc.value.button.onclick}"
 			
+			widgetVar="#{cc.value.button.widgetVar}"
 			>
 			
 			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
 			
-			<!--
-			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.execution.confirmation.question')}" icon="ui-icon-alert" />
-			-->
 		</p:commandButton>
-		
+
+		<p:commandButton id="#{cc.id}ButtonWithConfirm"
+			action="#{cc.value.command.execute(cc.attrs.executeParameter)}" 
+			ajax="#{cc.value.button.ajax}"
+			
+			icon="#{cc.value.button.icon}"
+			
+			process="#{cc.value.button.process}" 
+			
+			rendered="#{cc.value.menu==null and cc.value.command.confirm and cc.value.button.rendered}"
+			type="#{cc.value.button.type}"
+			title="#{cc.value.button.title}"
+			
+			update="#{cc.value.button.update}"
+			value="#{cc.value.button.value}" 
+			
+			oncomplete="#{cc.value.button.oncomplete}"
+			onclick="#{cc.value.button.onclick}"
+			
+			widgetVar="#{cc.value.button.widgetVar}"
+			>
+			
+			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
+
+			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />
+			
+		</p:commandButton>
+				
 		<p:confirmDialog global="true">
 	        <p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 	    </p:confirmDialog>
+	    
+	    <p:menuButton id="#{cc.id}ButtonMenu"
+	    	
+	    	model="#{cc.value.menu}"
+	    	
+	    	rendered="#{cc.value.menu!=null}"
+	    	 
+	    	title="#{cc.value.button.title}"
+	    	
+	    	value="#{cc.value.button.value}" 
+	    >
+	    	
+	    </p:menuButton>
 			
 	</cc:implementation>
 

@@ -7,14 +7,17 @@ import java.util.Map;
 import lombok.Getter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
+import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -25,26 +28,41 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
+	private static final String HIGHLIGHT_MATCH_FORMAT = "<span class=\"cyk-ui-table-search-match\">%s</span>";
+	
 	@Getter private MenuModel menuModel;
 	@Getter private Commandable primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
 	@Getter private String updateStyleClass;
 	
 	protected TypedBusiness<?> business;
 	protected LazyDataModel<Row<DATA>> dataModel;
+	protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l;
+	@Getter protected DataTable dataTable;
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		dataTable = new DataTable();
 		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
 		Commandable commandable = (Commandable) addRowCommandable;
 		commandable.getButton().setUpdate("@(."+updateStyleClass+")");
-		commandable.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"');");
+		commandable.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"')");
 		
 		commandable = (Commandable) searchCommandable;
 		commandable.getButton().setType("button");
 		commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
 		
+		dataTable.setEditable(getEditable());
+
+		commandable.getButton().setWidgetVar("searchCommandWidgetVar");
+		
+	}
+	
+	@Override
+	public void build() {
+		super.build();
+		((Commandable)exportCommandable).setMenu(CommandBuilder.getInstance().menuModel(exportMenu, Table.class, ""));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -86,6 +104,24 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	protected void crudOnePage() {
 		WebNavigationManager.getInstance().redirectToDynamicCrudOne((Class<AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void exportDataTableToPdfPage() {
+		WebNavigationManager.getInstance().redirectToExportDataTableToPdf((Class<AbstractIdentifiable>) identifiableClass());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void exportDataTableToXlsPage() {
+		WebNavigationManager.getInstance().redirectToExportDataTableToXls((Class<AbstractIdentifiable>) identifiableClass());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void printDataPage() {
+		WebNavigationManager.getInstance().redirectToPrintData((Class<AbstractIdentifiable>) identifiableClass());
+	}
 
 	/**/
 	
@@ -113,10 +149,25 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 				private static final long serialVersionUID = -5029807106028522292L;
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
-					//business.getDataReadConfig().setFirstResultIndex((long) first);
-					fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters);
-					//List<Object> list = (List<Object>) (collection instanceof List?collection:new ArrayList<>(collection));
-					resultsCount =  count((String) filters.get("globalFilter")); //10;//__count__(first, pageSize, sortField, sortOrder, filters);
+					String filter = (String)filters.get("globalFilter");
+					fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters,filter);
+					if(StringUtils.isNotBlank(filter)){
+						filter = filter.toLowerCase();
+						for(Row<DATA> row : rows)
+							for(Cell cell : row.getCells()){
+								String temp = StringUtils.lowerCase(cell.getValue());
+								Integer index = StringUtils.indexOf(temp, filter); 
+								if(index==-1){
+								
+								}else if(index>=0){
+									cell.setValue(StringUtils.substring(cell.getValue(), 0,index)
+											+String.format(HIGHLIGHT_MATCH_FORMAT, StringUtils.substring(cell.getValue(), index, index+filter.length()))
+													+StringUtils.substring(cell.getValue(), index+filter.length()));
+								}
+							
+							}
+					}
+					resultsCount =  count(filter);
 					return rows;
 				}
 				

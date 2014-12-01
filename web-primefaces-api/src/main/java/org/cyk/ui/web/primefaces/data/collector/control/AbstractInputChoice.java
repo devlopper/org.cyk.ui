@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.web.api.ObjectConverter;
 import org.cyk.ui.web.api.data.collector.control.WebInputChoice;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -23,6 +25,9 @@ org.cyk.ui.api.data.collector.control.InputChoice<VALUE_TYPE,DynaFormModel,DynaF
 
 	protected List<SelectItem> list = new ArrayList<SelectItem>();
 
-	
+	@Override
+	public Converter getConverter() {
+		return ObjectConverter.getInstance();
+	}
 	
 }

@@ -41,13 +41,24 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	 * @return
 	 */
 	@Override
-	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> row(){
+	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> row(Object object){
 		if(Boolean.TRUE.equals(__collectPositions__)){
-			__rowCount__++;
-			__columnCount__=0;
+			Boolean create = null;
+			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
+				Boolean c = listener.canCreateRow(this, object);
+				if(c!=null)
+					create = c;
+			}
+			if(controls.isEmpty() || Boolean.TRUE.equals(create)){
+				__rowCount__++;
+				__columnCount__=0;
+			}
 		}else{
-			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
-				__row__ = listener.createRow(this);
+			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
+				ROW c = listener.createRow(this);
+				if(c!=null)
+					__row__ = c;
+			}
 		}
 		return this;
 	}
@@ -64,9 +75,11 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			controls.add(control);
 		}else{
 			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners)
-				if(control instanceof OutputLabel)
-					__label__ = listener.createLabel(this,(OutputLabel<MODEL,ROW, LABEL, CONTROL, SELECTITEM>) control,__row__);
-				else{
+				if(control instanceof OutputLabel){
+					LABEL l = listener.createLabel(this,(OutputLabel<MODEL,ROW, LABEL, CONTROL, SELECTITEM>) control,__row__);
+					if(l!=null)
+						__label__ = l;
+				}else{
 					__control__ = listener.createControl(this,control,__row__);
 					if(__label__!=null && __control__!=null)
 						setControlLabel(__label__, __control__);
@@ -76,19 +89,37 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	}
 	
 	@Override
-	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Field field){
+	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,Field field){
 		@SuppressWarnings("unchecked")
 		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(UIManager.getInstance().fieldLabel(field));
 		add(label);
 		
 		@SuppressWarnings("unchecked")
-		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(formData.getData(), field);
+		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(object, field);
+		if(control instanceof Input<?,?,?,?,?,?>){
+			((Input<?,?,?,?,?,?>)control).setReadOnly(!Boolean.TRUE.equals(getFormData().getForm().getEditable()));
+			if(Boolean.TRUE.equals(((Input<?,?,?,?,?,?>)control).getReadOnly()))
+				((Input<?,?,?,?,?,?>)control).setRequired(Boolean.FALSE);
+		}
+			
 		add(control);
 		return this;
 	}
 	
+	@Override
+	public ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> addSeperator(String label) {
+		@SuppressWarnings("unchecked")
+		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createSeparator(label);
+		control.getPosition().getColumn().setSpan(2);//TODO to be done automatically
+		add(control);
+		return this;
+	}
+	
+	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,String fieldName){
+		return addField(object, fieldName);//TODO recursive?
+	}
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(String fieldName){
-		return addField(CommonUtils.getInstance().getFieldFromClass(formData.getData().getClass(), fieldName));
+		return addField(CommonUtils.getInstance().getFieldFromClass(formData.getData().getClass(), fieldName),fieldName);
 	}
 	
 	public void setControlLabel(LABEL label,CONTROL control){
@@ -102,10 +133,13 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	public void __build__() {
 		super.__build__();
 		__collectPositions__ = Boolean.FALSE;
-		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
-			model = listener.createModel(this);
+		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
+			MODEL m = listener.createModel(this);
+			if(m!=null)
+				model = m;
+		}
 		for(int rowIndex = 0;rowIndex < __rowCount__; rowIndex++){
-			row();
+			row(null);
 			for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls){
 				if(control.getPosition().getRow().getIndex()==rowIndex)
 					add(control);
@@ -118,7 +152,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	public void applyValuesToFields() throws Exception {
 		for(Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control : controls)
 			if(control instanceof Input)
-				((Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control).applyValueToField(formData.getData());
+				((Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control).applyValueToField();
 		
 	}
 		

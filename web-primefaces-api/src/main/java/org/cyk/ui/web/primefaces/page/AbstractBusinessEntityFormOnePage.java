@@ -29,15 +29,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		crud = crudFromRequestParameter();
 		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		Object data = data(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass());
-		//if(AbstractIdentifiableForm.class.isAssignableFrom(data.getClass())){
-		//	((AbstractIdentifiableForm<?>)data).read();
-		//}
+
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);
+		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 	}
-	
-	//protected abstract void __serve__(Object parameter);
 	
 	@SuppressWarnings("unchecked")
 	protected Object data(Class<?> aClass){
@@ -69,11 +66,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		if(form.getSubmitCommandable().getCommand()==command){
-			if(parameter!=null){
-				if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
-					((AbstractFormModel<?>)parameter).write();
+			if(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud))
+				if(parameter!=null){
+					if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
+						((AbstractFormModel<?>)parameter).write();
+					}
 				}
-			}
 		}
 	}
 

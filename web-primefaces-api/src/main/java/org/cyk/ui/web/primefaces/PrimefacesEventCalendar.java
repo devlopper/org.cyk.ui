@@ -41,7 +41,7 @@ public class PrimefacesEventCalendar extends EventCalendar implements Serializab
 				return null;
 			}
 		});*/
-		primefacesAddEventCommand =  new Commandable(addEventCommand);
+		//primefacesAddEventCommand =  new Commandable(addEventCommand);
 		
 		
 	}

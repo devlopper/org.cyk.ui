@@ -1,24 +1,34 @@
 package org.cyk.ui.api.data.collector.form;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
 import lombok.Getter;
+import lombok.Setter;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = -1043478880255116994L;
 
 	@Getter protected Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
+	@Setter protected ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetListener;//TODO a temporary solution
 	
 	/**/
 	
@@ -40,13 +50,53 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	@Override
 	public void __build__() {
 		if(Boolean.TRUE.equals(getDynamic())){
+			Collection<Class<? extends Annotation>> annotations = new ArrayList<>();
+			annotations.add(Input.class);
+			annotations.add(IncludeInputs.class);
 			FormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> formData = createFormData();
 			formData.setData(getData());
 			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet = formData.createControlSet();
-			for(Field field : commonUtils.getAllFields(getData().getClass(), Input.class))
-				controlSet.row().addField(field);
+			if(controlSetListener!=null)
+				controlSet.getControlSetListeners().add(controlSetListener);
+			/*
+			for(Field field : commonUtils.getAllFields(getData().getClass(), annotations)){
+				if(field.getAnnotation(Input.class)!=null)
+					controlSet.row().addField(field);
+				else if(field.getAnnotation(IncludeInputs.class)!=null){
+					
+				}
+			}
+			*/
+			
+			__autoBuild__(annotations, controlSet, getData());
 		}
 		super.__build__();
+	}
+	
+	private void __autoBuild__(Collection<Class<? extends Annotation>> annotations,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data){
+		for(Field field : commonUtils.getAllFields(data.getClass(), annotations)){
+			OutputSeperator outputSeparator = field.getAnnotation(OutputSeperator.class);
+			if(outputSeparator!=null){
+				String label = null;
+				if(ValueType.VALUE.equals(outputSeparator.label().type()))
+					label = outputSeparator.label().value();
+				else
+					label = UIManager.getInstance().textAnnotationValue(field,outputSeparator.label());
+				controlSet.row(null).addSeperator(label);
+			}
+			
+			if(field.getAnnotation(Input.class)!=null){
+				controlSet.row(field).addField(data,field);
+			}else if(field.getAnnotation(IncludeInputs.class)!=null){
+				Object details = commonUtils.readField(data, field, Boolean.TRUE);
+				try {
+					FieldUtils.writeField(field, data, details, Boolean.TRUE);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				__autoBuild__(annotations, controlSet, details);
+			}
+		}
 	}
 	
 	@Override
@@ -58,11 +108,12 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	
 	@Override
 	public void transfer(UICommand command, Object parameter) {
-		try {
-			getFormDatas().peek().applyValuesToFields();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		if(Boolean.TRUE.equals(getEditable()))
+			try {
+				getFormDatas().peek().applyValuesToFields();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 	}
 	
 }

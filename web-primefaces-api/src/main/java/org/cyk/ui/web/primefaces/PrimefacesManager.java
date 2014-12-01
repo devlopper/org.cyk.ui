@@ -62,5 +62,10 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	protected SelectItem item(AbstractIdentifiable identifiable) {
 		return new SelectItem(identifiable,identifiable.getUiString());
 	}
+	
+	@Override
+	protected SelectItem item(Enum<?> anEnum) {
+		return new SelectItem(anEnum,anEnum.toString());
+	}
 
 }

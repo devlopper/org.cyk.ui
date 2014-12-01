@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.AbstractBusinessException;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.command.CommandListener.AfterServeState;
 import org.cyk.utility.common.CommonUtils;
 
@@ -26,12 +27,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	private static final long serialVersionUID = 3245517653342272298L;
 
 	@Setter protected UIMessageManager messageManager;
-	
-	//@Getter @Setter protected AbstractValidateMethod<Object> validateMethod;
-	//@Getter @Setter protected AbstractNotifyOnSucceedMethod<Object> notifyOnSucceedMethod;
-	//@Getter @Setter protected AbstractMethod<Object, Object> executeMethod,afterFailureMethod/*,afterSuccessNotificationMessageMethod*/;
-	//@Getter @Setter protected AbstractSucessNotificationMessageMethod<Object> successNotificationMessageMethod;
-	
+	@Getter @Setter protected Boolean confirm=Boolean.FALSE;
 	@Getter protected Collection<CommandListener> commandListeners = new ArrayList<>();
 	
 	public Object execute(Object object){
@@ -42,7 +38,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		}
 		if(validate(object)){
 			try {
-				execute_(object);
+				serve_(object);
 				return success(object);
 			} catch (Exception exception) {
 				return fail(object,exception);
@@ -66,7 +62,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		return Boolean.TRUE.equals(valid);
 	}
 	
-	private void execute_(Object object){
+	private void serve_(Object object){
 		for(CommandListener listener : commandListeners)
 			listener.serve(this, object);
 	}
@@ -83,9 +79,9 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		if(Boolean.TRUE.equals(notify)){
 			//getMessageManager().message(SeverityType.INFO, UIManager.getInstance().text("command.execution.success"),Boolean.FALSE).showInline();
 			for(int i=0;i<commandListeners.size();i++){
-				String message = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, object, state);
-				if(StringUtils.isNotEmpty(message))
-					getMessageManager().message(SeverityType.INFO, message,Boolean.FALSE).showInline();
+				String messageId = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, object, state);
+				if(StringUtils.isNotEmpty(messageId))
+					getMessageManager().message(SeverityType.INFO, new Text(messageId+".summary"),new Text(messageId+".details")).showInline();
 			}
 		}
 		for(CommandListener listener : commandListeners)
@@ -99,7 +95,7 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 		if(cause==null){
 			if(throwable!=null)
 				log.log(Level.SEVERE, throwable.getMessage(),throwable);
-			messages.add(UIManager.getInstance().text("command.execution.failure"));
+			messages.add(UIManager.getInstance().text("command.serve.failure.summary"));
 		}else{
 			if(cause instanceof AbstractBusinessException)
 				messages.addAll(((AbstractBusinessException)cause).getMessages());

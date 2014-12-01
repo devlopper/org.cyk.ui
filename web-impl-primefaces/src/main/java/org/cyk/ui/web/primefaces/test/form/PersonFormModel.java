@@ -22,5 +22,5 @@ public class PersonFormModel extends AbstractFormModel<Person> implements Serial
 	@Input
 	@InputText
 	private String lastName;
-
+	
 }

@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import org.apache.shiro.SecurityUtils;
 import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Faces;
 
 @SessionScoped @Named
@@ -24,12 +25,22 @@ public class WebSession extends AbstractUserSession implements Serializable {
 
 	@Override
 	protected void __navigateToPublicIndex__() {
-		navigationManager.redirectTo(WebNavigationManager.getInstance().getOutcomePublicIndex());
+		navigationManager.redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
 	}
 
 	@Override
 	protected void __invalidateSession__() {
 		Faces.invalidateSession();
+	}
+
+	@Override
+	public Boolean getIsAdministrator() {
+		return RoleManager.getInstance().isAdministrator(null);
+	}
+
+	@Override
+	public Boolean getIsManager() {
+		return RoleManager.getInstance().isManager(null);
 	}
 	
 }

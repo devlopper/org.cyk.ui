@@ -43,6 +43,7 @@ import org.cyk.ui.api.data.collector.control.InputPassword;
 import org.cyk.ui.api.data.collector.control.InputText;
 import org.cyk.ui.api.data.collector.control.InputTextarea;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
+import org.cyk.ui.api.data.collector.control.OutputSeparator;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -71,6 +72,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		*/
 		if(control instanceof Input<?,?,?,?,?,?>){
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
+			input.setObject(data);
 			input.setLabel(UIManager.getInstance().fieldLabel(field));
 			input.setField(field);
 			try {
@@ -80,13 +82,25 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}
 			input.setReadOnlyValue(readOnlyValue(field, data));
 			input.setRequired(field.getAnnotation(NotNull.class)!=null);
-		}
-		
-		if(control instanceof InputChoice<?,?,?,?,?,?>){
-			@SuppressWarnings("unchecked")
-			InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
-			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
-				listener.choices(data,field, (List<Object>) inputChoice.getList());
+			
+			if(input instanceof InputCalendar<?,?,?,?,?>){
+				InputCalendar<?, ?, ?, ?, ?> calendar = (InputCalendar<?, ?, ?, ?, ?>) input;
+				calendar.setPattern(UIManager.getInstance().findDateFormatter(field).toPattern());
+				/*
+				Temporal temporal = field.getAnnotation(Temporal.class);
+				if(temporal==null || TemporalType.DATE.equals(temporal.value()))
+					calendar.setPattern(UIManager.getInstance().getDateFormat().toPattern());
+				else if(TemporalType.TIME.equals(temporal.value()))
+					calendar.setPattern(UIManager.getInstance().getTimeFormat().toPattern());
+				else
+					calendar.setPattern(UIManager.getInstance().getDateTimeFormat().toPattern());
+					*/
+			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
+				@SuppressWarnings("unchecked")
+				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
+				for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+					listener.choices(data,field, (List<Object>) inputChoice.getList());
+			}
 		}
 		
 		return control;
@@ -96,6 +110,12 @@ public class UIProvider extends AbstractBean implements Serializable {
 		OutputLabel<?,?,?,?,?> outputLabel = (OutputLabel<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputLabel.class));
 		outputLabel.setValue(value);
 		return outputLabel;
+	}
+	
+	public OutputSeparator<?,?,?,?,?> createSeparator(String value){
+		OutputSeparator<?,?,?,?,?> outputSeperator = (OutputSeparator<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputSeparator.class));
+		outputSeperator.setValue(value);
+		return outputSeperator;
 	}
 	
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
@@ -128,7 +148,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	/* */
 	
-	private Control<?,?,?,?,?> createControlInstance(Class<? extends Control<?,?,?,?,?>> controlClass){
+	public Control<?,?,?,?,?> createControlInstance(Class<? extends Control<?,?,?,?,?>> controlClass){
 		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends Control<?,?,?,?,?>> c = listener.controlClassSelected(controlClass);
 			if(c!=null)
@@ -200,16 +220,13 @@ public class UIProvider extends AbstractBean implements Serializable {
 	}
 	
 	public String readOnlyValue(Field field,Object object){
-		Object value = null;
-		try {
-			value = FieldUtils.readField(field, object, Boolean.TRUE);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		String value = null;
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+			String v = listener.readOnlyValue(field, object);
+			if(v!=null)
+				value = v; 
 		}
-		if(value==null)
-			return "";
-		return value.toString();
+		return value;
 	}
 	
 	public Boolean isControl(Control<?, ?, ?, ?, ?> control,String interfaceName){

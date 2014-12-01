@@ -1,0 +1,74 @@
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+                                   		http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+
+   <!-- Begin Example RewriteRules 
+   
+      // These are custom rewrite-rules, and are probably not necessary for your application.
+
+      <rewrite match="^/old-url/(\w+)/$" substitute="/new_url/$1/" redirect="301" />
+
+   -->
+
+	<!-- Not secured -->   
+
+	<url-mapping id="install">
+		<pattern value="/install" />
+		<view-id value="/public/__application__/install.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="expireLicense">
+		<pattern value="/license/expired" />
+		<view-id value="/public/__security__/license/expired.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="expandLicense">
+		<pattern value="/license/expand" />
+		<view-id value="/__administration__/__security__/license/expand.jsf" />
+	</url-mapping> 
+
+	<url-mapping id="login">
+		<pattern value="/login" />
+		<view-id value="/public/__security__/login.jsf" />
+	</url-mapping>    
+	
+	<!-- Secured -->
+	   
+	<url-mapping id="home1">
+		<pattern value="/" />
+		<view-id value="/private/index.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="home2">
+		<pattern value="/index.jsf" />
+		<view-id value="/private/index.jsf" />
+	</url-mapping> 
+		
+	<url-mapping id="crudmany">
+		<pattern value="/crudmany/#{clazz}" />
+		<view-id value="/private/__dynamic__/crudmany.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="editone">
+		<pattern value="/crudone/#{clazz}/#{identifiable}/#{crud}" />
+		<view-id value="/private/__dynamic__/crudone.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="createone">
+		<pattern value="/crudone/#{clazz}/#{crud}" />
+		<view-id value="/private/__dynamic__/crudone.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="exportdata">
+		<pattern value="/export/#{clazz}" />
+		<view-id value="/private/__tools__/exportdata.jsf" />
+	</url-mapping> 
+	
+	<url-mapping id="printdata">
+		<pattern value="/print/#{clazz}" />
+		<view-id value="/private/__tools__/printdata.jsf" />
+	</url-mapping> 
+	
+
+</pretty-config>

@@ -38,31 +38,39 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> imp
 	}
 
 	public void read() {
-		for (Field field : formFields)
-			for (Field f : identifiableFields)
-				if (equals(field, f)) {
-					try {
-						FieldUtils.writeField(field, this, FieldUtils.readField(f, identifiable, Boolean.TRUE), Boolean.TRUE);
-					} catch (IllegalAccessException e) {
-						throw new RuntimeException(e);
-					}
-				}
+		if(formFields!=null)
+			for (Field field : formFields)
+				for (Field f : identifiableFields)
+					if (equals(field, f))
+						read(field, f);
 		for(FormModelListener<ENTITY> listener : formModelListeners)
 			listener.read(this);
 	}
+	
+	protected void read(Field field,Field f) {
+		try {
+			FieldUtils.writeField(field, this, FieldUtils.readField(f, identifiable, Boolean.TRUE), Boolean.TRUE);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}		
+	}
 
 	public void write() {
-		for (Field field : formFields)
-			for (Field f : identifiableFields)
-				if (equals(field, f)) {
-					try {
-						FieldUtils.writeField(f, identifiable, FieldUtils.readField(field, this, Boolean.TRUE), Boolean.TRUE);
-					} catch (IllegalAccessException e) {
-						throw new RuntimeException(e);
-					}
-				}
+		if(formFields!=null)
+			for (Field field : formFields)
+				for (Field f : identifiableFields)
+					if (equals(field, f))
+						write(field, f);
 		for(FormModelListener<ENTITY> listener : formModelListeners)
 			listener.write(this);
+	}
+	
+	protected void write(Field field,Field f) {
+		try {
+			FieldUtils.writeField(f, identifiable, FieldUtils.readField(field, this, Boolean.TRUE), Boolean.TRUE);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	protected Boolean equals(Field f1, Field f2) {

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-fragment>
-	
-	  <context-param>
-    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-    <param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>
-  </context-param>
-  <context-param>
-    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-    <param-value>6Ld7pMESAAAAAMhr5WSk5bcRrff8Y08NtDi8Buoq</param-value>
-  </context-param>
-  
-   <filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-  </filter-mapping>
+
+	<context-param>
+		<param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+		<param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+		<param-value>6Ld7pMESAAAAAMhr5WSk5bcRrff8Y08NtDi8Buoq</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
 	
 	<!-- Should be removed when using JSF 2.2 or above -->
 	

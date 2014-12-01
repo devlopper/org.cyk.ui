@@ -196,6 +196,10 @@ border: none;
 .cyk-ui-table-dynamic-selectonemenu{
 	min-width: 150px;
 }
+.cyk-ui-table-search-match{
+	font-weight: bold;
+	text-decoration: underline;
+}
 /* Identifiable link */
 .cyk-ui-identifiable-link-table{
 	width: 100%;
@@ -209,4 +213,13 @@ border: none;
 .cyk-ui-identifiable-link-table-text-td{
 	width: 100%;
 	border: 0px solid red !important;
+}
+/*---------------------------------------------------------  Page   ----------------------------------------------------------------------*/
+.cyk-page-login{
+	
+}
+
+.cyk-page-login-table{
+	margin: auto;
+	margin-top: 200px;
 }

@@ -59,6 +59,11 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 			DynaFormControl control, DynaFormLabel label) {
 		label.setForControl(control);
 	}
+	
+	@Override
+	public Boolean canCreateRow(org.cyk.ui.api.data.collector.form.ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object object) {
+		return Boolean.TRUE;
+	}
 
 
 

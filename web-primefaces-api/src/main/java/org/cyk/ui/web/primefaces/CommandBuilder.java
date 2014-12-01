@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -43,12 +44,7 @@ public class CommandBuilder implements Serializable {
 			commandButton.setTitle(aCommandable.getTooltip());
 		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			commandButton.setProcess("@this");		
-		/*
-		ConfirmBehavior confirmBehavior = new ConfirmBehavior();
-		confirmBehavior.setHeader("Hello Titke");
-		confirmBehavior.setMessage("Message");
-		commandButton.addClientBehavior("org.primefaces.behavior.ConfirmBehavior", confirmBehavior);
-		*/
+		
 		return commandButton;
 	}
 	
@@ -70,12 +66,19 @@ public class CommandBuilder implements Serializable {
 						break;
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLogout());break;
-					case MANAGEMENT_DEPLOYMENT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDeploymentManagement());break;
+					case LICENCE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLicense());break;
 					case TOOLS_CALENDAR:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsCalendar());break;
+					case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToPdf());break;
+					case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToXls());break;
+					case TOOLS_PRINT_DATA_TABLE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsPrintDataTable());break;
 					default:break;
 					}
+					
 					if(aCommandable.getBusinessEntityInfos()!=null)
 						menuItem.setParam(WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(aCommandable.getBusinessEntityInfos()));
+				}
+				for(Parameter parameter : aCommandable.getParameters()){
+					menuItem.setParam(parameter.getName(), parameter.getValue());
 				}
 				
 			}else{
@@ -96,8 +99,7 @@ public class CommandBuilder implements Serializable {
 					default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
 					}
 				}
-				
-				
+								
 				if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 					menuItem.setProcess("@this");	
 			}
@@ -143,6 +145,11 @@ public class CommandBuilder implements Serializable {
 		case ACTION_SAVE:return "ui-icon-check";
 		case ACTION_SEARCH:return "ui-icon-search";
 		case ACTION_PREVIEW:return "ui-icon-image";
+		case ACTION_LOGOUT:return "ui-icon-logout";
+		case ACTION_EXPORT:return "ui-icon-document";
+		case ACTION_PRINT:return "ui-icon-print";
+		
+		case PERSON:return "ui-icon-person";
 		default:return null;
 		}
 	}

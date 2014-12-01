@@ -14,8 +14,8 @@ import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.model.table.TableAdapter;
 

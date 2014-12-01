@@ -12,7 +12,10 @@ import org.cyk.ui.api.UIMessageManager;
 public interface UICommand {
 	
 	Collection<CommandListener> getCommandListeners();
-		
+	
+	Boolean getConfirm();
+	void setConfirm(Boolean value);
+	
 	/**
 	 * The code to be executed when validation has succeed
 	 */

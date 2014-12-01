@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.web.api.command.AbstractWebCommandable;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.menu.MenuModel;
 
 @NoArgsConstructor
 public class Commandable extends AbstractWebCommandable implements Serializable {
@@ -17,21 +17,11 @@ public class Commandable extends AbstractWebCommandable implements Serializable 
 	private static final long serialVersionUID = 6706193290921067166L;
 
 	private CommandButton commandButton;
+	@Getter @Setter private MenuModel menu;
 	@Getter @Setter private String update;
 	
 	{
 		update = ":form:contentPanel :form:menuPanel";
-	}
-	
-	//TODO Both constructors has to be removed. Customization to be done in listener
-	public Commandable(UICommandable aCommandable,String update) {
-		super();
-		//this.commandable = aCommandable;
-		this.update = update;
-	}
-	
-	public Commandable(UICommandable aCommandable) {
-		this(aCommandable,":form:contentPanel :form:menuPanel");
 	}
 	
 	public CommandButton getButton(){

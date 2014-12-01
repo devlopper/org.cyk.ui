@@ -25,10 +25,12 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 
 	private static final long serialVersionUID = -7284361545083572063L;
 	
-	@Inject protected WebManager webManager;
+	@Inject transient protected WebManager webManager;
 	@Inject protected WebSession session;
-	@Inject protected WebNavigationManager navigationManager;
-	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,onDocumentReadyJavaScript,onDocumentLoadJavaScript,
+	@Inject transient protected WebNavigationManager navigationManager;
+	@Inject transient protected JavaScriptHelper javaScriptHelper;
+	
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,previousUrl,onDocumentReadyJavaScript,onDocumentLoadJavaScript,
 		onDocumentBeforeUnLoadJavaScript,onDocumentBeforeUnLoadWarningMessage;
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn;
 	private String windowMode;
@@ -38,11 +40,12 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	protected void initialisation() {
 		super.initialisation();
 		locale = session.getLocale();
-		footer=  getLanguageBusiness().findText("window.layout.footer",new Object[]{UIManager.getInstance().getBusinessSystemName()});
+		footer=  UIManager.getInstance().getWindowFooter();
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
 			windowMode = webManager.getRequestParameterWindowModeNormal();
 		url = navigationManager.getRequestUrl();
+		previousUrl = requestParameter(webManager.getRequestParameterPreviousUrl());
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		
 		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());

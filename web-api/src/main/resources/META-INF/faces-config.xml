@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
- <application>
-  <resource-handler>org.cyk.ui.web.api.handler.DynamicResourceHandler</resource-handler>
-  <!-- Because of glassfish Null String Issue -->
-  <el-resolver>org.cyk.ui.web.api.resolver.NullStringResolver</el-resolver>
- </application>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<!-- Do use PrettyFaces ONLY for navigation -->
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>outcomenotfound</from-outcome>
+			<to-view-id>/public/unknowoutcome.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>publicindex</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>privateindex</from-outcome>
+			<to-view-id>/private/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>administratorindex</from-outcome>
+			<to-view-id>/__administration__/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>dynamicCrudOne</from-outcome>
+			<to-view-id>/private/__dynamic__/crudone.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>dynamicCrudMany</from-outcome>
+			<to-view-id>/private/__dynamic__/crudmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>deploymentmanagement</from-outcome>
+			<to-view-id>/private/__management__/deployment.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!-- tools -->
+
+		<navigation-case>
+			<from-outcome>toolscalendar</from-outcome>
+			<to-view-id>/private/__tools__/calendar.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsexportdatatabletopdf</from-outcome>
+			<to-view-id>/private/__tools__/exportdatatabletopdf.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsexportdatatabletoxls</from-outcome>
+			<to-view-id>/private/__tools__/exportdatatabletoxls.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsprintdatatable</from-outcome>
+			<to-view-id>/private/__tools__/printdatatable.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<!-- security -->
+
+		<navigation-case>
+			<from-outcome>useraccountlogout</from-outcome>
+			<to-view-id>/public/__useraccount__/logout.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!--  -->
+		<navigation-case>
+			<from-outcome>exportdatatableservlet</from-outcome>
+			<to-view-id>/_cyk_report_/_datatable_/_jasper_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>applicationSetup</from-outcome>
+			<to-view-id>/public/__application__/setup.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>license</from-outcome>
+			<to-view-id>/private/__security__/license.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+	</navigation-rule>
+
+	<application>
+		<resource-handler>org.cyk.ui.web.api.handler.DynamicResourceHandler</resource-handler>
+		<!-- Because of glassfish Null String Issue -->
+		<el-resolver>org.cyk.ui.web.api.resolver.NullStringResolver</el-resolver>
+	</application>
+
+	<locale-config>
+		<supported-locale>fr</supported-locale>
+	</locale-config>
+
 </faces-config>

@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -43,11 +44,13 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Setter private String decoratedTemplateInclude;
 	
-	private final String requestParameterClass = "clazz";
-	private final String requestParameterIdentifiable = "identifiable";
+	private final String requestParameterClass = UIManager.getInstance().getClassParameter();
+	private final String requestParameterIdentifiable = UIManager.getInstance().getIdentifiableParameter();
 	private final String requestParameterWindowMode = "windowmode";
 	private final String requestParameterWindowModeDialog = "windowmodedialog";
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
+	private final String requestParameterPreviousUrl = "previousurl";
+	private final String requestParameterPrint = "print";
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){
@@ -59,11 +62,5 @@ public class WebManager extends AbstractBean implements Serializable {
 		}
 	}
 	
-	/* Java Script stuff */
-	
-	public String javaScriptWindowHref(String url){
-		return "window.location='"+url+"'";
-	}
-
 	
 }

@@ -33,16 +33,32 @@
 				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index" 
 				emptyMessage="#{uiManager.text('record.list.empty')}" lazy="#{cc.value.lazyLoad}"			
 				paginator="#{cc.value.lazyLoad}" rows="#{cc.value.rows.size()}" paginatorPosition="bottom" sortMode="single"
+				paginatorTemplate="#{cc.value.dataTable.paginatorTemplate}" currentPageReportTemplate="#{cc.value.dataTable.currentPageReportTemplate}"
 				
 				>
 				
 				<f:facet name="header">
-       				<p:toolbar>
+       				<p:toolbar id="toolbar" rendered="#{cc.value.showToolBar}">
+       					<f:facet name="left">
+       						
+       						<cyk:command value="#{cc.value.addRowCommandable}" />
+       						
+       						<span class="ui-separator">
+				                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+				            </span>
+       						<cyk:command value="#{cc.value.exportCommandable}" />
+       						<cyk:command value="#{cc.value.printCommandable}" />
+       					</f:facet>       					
+       					
        					<f:facet name="right">
-       						<p:inputText id="globalFilter" >
-       				
-       						</p:inputText>
-       						<cyk:command value="#{cc.value.searchCommandable}" />
+       						<ui:fragment rendered="#{cc.value.globalFilter}">
+	       						<p:inputText id="globalFilter">
+	       				
+	       						</p:inputText>
+	       						<cyk:command id="searchCommand" value="#{cc.value.searchCommandable}" />
+	       						
+       						</ui:fragment>
+       						
        					</f:facet>
        				</p:toolbar>
        			</f:facet>
@@ -50,6 +66,8 @@
 				<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
 				<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />
 				<p:ajax event="rowEditCancel" listener="#{cc.value.onRowEditCancel}" />
+				
+				<p:column headerText="#" width="1"><h:outputText value="#{index+1}" /> </p:column>
 				
 				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
@@ -107,6 +125,13 @@
 		<p:outputPanel rendered="#{cc.value.showFooterCommandBlock}" >
 			<cyk:command value="#{cc.value.addRowCommandable}" />	
 		</p:outputPanel>
+		
+		<h:outputScript>
+			function search() {
+				alert(searchCommandWidgetVar);
+				searchCommandWidgetVar.jq.click();
+			}	
+		</h:outputScript>
 				
 	</cc:implementation>
 

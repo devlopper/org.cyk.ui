@@ -18,4 +18,6 @@ public interface UIProviderListener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 	
 	void commandableInstanceCreated(UICommandable aCommandable);
 	
+	String readOnlyValue(Field field,Object object);
+	
 }

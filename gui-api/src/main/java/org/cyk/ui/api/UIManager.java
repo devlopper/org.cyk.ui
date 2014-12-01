@@ -13,25 +13,27 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
-import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
@@ -58,11 +60,15 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
 	
 	@Inject protected LanguageBusiness languageBusiness;
+	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected GenericBusiness genericBusiness;
 	
 	/* constants */
+	private final String classParameter = "clazz";
+	private final String identifiableParameter = "identifiable";
 	private final String windowParameter="windowParam";
+	private final String fileExtensionParameter="fileExtensionParam";
 	private final String crudParameter="crud";
 	private final String crudCreateParameter="create";
 	private final String crudReadParameter="read";
@@ -70,7 +76,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
 	
-	private String businessSystemName,windowFooter;
+	private String windowFooter;
 	
 	public String getCrudParameterValue(Crud crud){
 		crud=crud==null?Crud.READ:crud;
@@ -97,16 +103,21 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
-		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{UIManager.getInstance().getBusinessSystemName()});
+		
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
+		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
+		
+		//System.out.println("UIManager.initialisation() : "+businessManager.toString());
+		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
+		
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
 		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
 		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
 		
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
-		for(BusinessEntityInfos infos : businessManager.findEntitiesInfos()){
+		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
-			//infos.setUiLabel(text(infos.getUiLabelId()));
+			infos.setUiLabel(text(infos.getUiLabelId()));//for those registered late
 		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
@@ -139,10 +150,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		};
 	}
 	
-	public String getBusinessSystemName(){
-		if(businessSystemName==null)
-			businessSystemName = businessManager.findSystemName();
-		return businessSystemName;
+	public Application getApplication(){
+		return applicationBusiness.findCurrentInstance();
 	}
 	
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId){
@@ -249,14 +258,15 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
-	public String fieldLabel(Field field,Input annotation) {
+	public String textAnnotationValue(Field field,Text text) {
+		/*
 		ValueType type ;
 		String specifiedValue = null;
-		if(annotation==null)
+		if(text==null)
 			type = ValueType.VALUE; 
 		else{
-			specifiedValue = annotation.label().value();
-			type = ValueType.AUTO.equals(annotation.label().type())?ValueType.ID:annotation.label().type();
+			specifiedValue = text.value();
+			type = ValueType.AUTO.equals(text.type())?ValueType.ID:text.type();
 		}
 		if(ValueType.VALUE.equals(type) && StringUtils.isNotBlank(specifiedValue))
 			return specifiedValue;
@@ -265,7 +275,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			if(StringUtils.isNotBlank(specifiedValue))
 				labelId = specifiedValue;
 			else{
-				StringBuilder s =new StringBuilder();
+				StringBuilder s =new StringBuilder("field.");
 				for(int i=0;i<field.getName().length();i++){
 					if(Character.isUpperCase(field.getName().charAt(i)))
 						s.append('.');
@@ -274,10 +284,29 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				labelId = s.toString();
 			}
 		return text(labelId);
+		*/
+		return languageBusiness.findAnnotationText(field, text);
 	}
 	
 	public String fieldLabel(Field field) {
-		return fieldLabel(field, field.getAnnotation(Input.class));
+		/*
+		if(field.getAnnotation(Input.class)!=null)
+			return textAnnotationValue(field,field.getAnnotation(Input.class).label());
+		if(field.getAnnotation(IncludeInputs.class)!=null)
+			return textAnnotationValue(field,field.getAnnotation(IncludeInputs.class).label());
+		return null;
+		*/
+		return languageBusiness.findFieldLabelText(field);
+	}
+	
+	public SimpleDateFormat findDateFormatter(Field field){
+		Temporal temporal = field.getAnnotation(Temporal.class);
+		if(temporal==null || TemporalType.DATE.equals(temporal.value()))
+			return dateFormat;
+		else if(TemporalType.TIME.equals(temporal.value()))
+			return timeFormat;
+		else
+			return dateTimeFormat;
 	}
 	
 	/**/
@@ -322,7 +351,16 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		}
 		return null;
 	}
-	 
+	
+	public <T extends AbstractIdentifiable> Collection<T> find(Class<T> aClass, Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,String filter) {
+		for(BusinessListener listener : businessListeners){
+			Collection<T> collection = listener.find(aClass, first, pageSize, sortField, ascendingOrder, filter);
+			if(collection!=null)
+				return collection;
+		}
+		return null;
+	}
+	
 	public Collection<BusinessListener> getBusinesslisteners() {
 		return businessListeners;
 	}

@@ -14,9 +14,9 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
-import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named
 @ViewScoped
@@ -32,13 +32,13 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			CHOICES.add(new SelectItem("Choix "+i));
 	}
 	
-	private EntityWithAnnotation entityWithAnnotation = new EntityWithAnnotation();
-	private FormOneData<EntityWithAnnotation> form;
+	private MyIdentifiable entityWithAnnotation = new MyIdentifiable();
+	private FormOneData<MyIdentifiable> form;
 	
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
-		form = (FormOneData<EntityWithAnnotation>) createFormOneData(entityWithAnnotation,Crud.CREATE);
+		form = (FormOneData<MyIdentifiable>) createFormOneData(entityWithAnnotation,Crud.CREATE);
 
 		form.setTitle("Mon Formulaire");
 		form.setFieldsRequiredMessage("Champs obligatoire");
@@ -49,10 +49,10 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
-				System.out.println("DynaFormDemoPage.initialisation().new CommandAdapter() {...}.serve()");
+				System.out.println(entityWithAnnotation);
 			}
 		});
-		((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
+		//((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
 		
 		//form.build();
 	}
@@ -60,7 +60,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		
+		/*
 		form.addChoices("inputOneList",CHOICES);
 		form.addChoices("inputOneCombo",CHOICES);
 		form.addChoices("inputOneButton",CHOICES);
@@ -72,7 +72,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		form.addChoices("inputManyButton",CHOICES);
 		form.addChoices("inputManyCheck",CHOICES);
 		form.addChoices("inputManyCheckCombo",CHOICES);
-		
+		*/
 		
 	}
 

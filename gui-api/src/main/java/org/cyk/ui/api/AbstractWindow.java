@@ -32,12 +32,13 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
-	@Inject @Getter protected ValidationPolicy validationPolicy;
+	@Inject @Getter transient protected ValidationPolicy validationPolicy;
 	
-	@Inject @Getter protected GenericBusiness genericBusiness;
-	@Inject @Getter protected DataTreeTypeBusiness dataTreeTypeBusiness;
-	@Inject @Getter protected EventBusiness eventBusiness;
-	@Inject @Getter protected LanguageBusiness languageBusiness;
+	@Inject @Getter transient protected GenericBusiness genericBusiness;
+	@Inject @Getter transient protected DataTreeTypeBusiness dataTreeTypeBusiness;
+	@Inject @Getter transient protected EventBusiness eventBusiness;
+	@Inject @Getter transient protected LanguageBusiness languageBusiness;
+	@Inject transient protected MenuManager menuManager;
 	
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
@@ -46,7 +47,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
 	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
 	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
-	@Inject protected MenuManager menuManager;
+	
 	@Getter protected String title,contentTitle="Content";
 	
 	@Override
@@ -93,6 +94,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
 		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
+		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
 		formOneDatas.add(form);
 		return form;
@@ -107,6 +109,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		table.setRowDataClass((Class<Object>) (configuration==null?aDataClass:configuration.getFormModelClass()));
 		table.setIdentifiableConfiguration(configuration);
 		table.setCrud(crud);
+		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
 		//table.setWindow(this);
 		//configureBeforeConstruct(table);
 		((AbstractBean)table).postConstruct();

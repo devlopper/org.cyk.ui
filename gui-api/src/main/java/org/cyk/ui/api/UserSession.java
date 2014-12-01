@@ -14,5 +14,9 @@ public interface UserSession {
 	
 	Boolean getLoggedIn();
 	
+	Boolean getIsAdministrator();
+	
+	Boolean getIsManager();
+	
 	void logout();
 }
