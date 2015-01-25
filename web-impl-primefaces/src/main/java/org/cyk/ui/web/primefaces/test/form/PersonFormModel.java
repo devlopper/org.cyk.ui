@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.party.Person;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;

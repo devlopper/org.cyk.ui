@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.party.Application;
-import org.cyk.system.root.model.party.Person;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.Installation;
 import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;

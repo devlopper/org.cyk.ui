@@ -48,7 +48,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
-		WebEnvironmentAdapter.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
+		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
 	}
 	
 	protected void identifiableConfiguration(ServletContextEvent event){}

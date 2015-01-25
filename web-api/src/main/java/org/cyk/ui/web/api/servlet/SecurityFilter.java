@@ -45,7 +45,8 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 					if(!Boolean.TRUE.equals(license.getExpired()))
 						licenseBusiness.expire(license);
 				}
-			}
+			}else
+				filterChain.doFilter(servletRequest, servletResponse);
 		}
 	}
 	
