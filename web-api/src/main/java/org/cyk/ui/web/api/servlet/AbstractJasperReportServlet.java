@@ -9,7 +9,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.file.JasperReportBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.EventType;
-import org.cyk.system.root.model.file.report.Report;
+import org.cyk.system.root.model.file.report.ReportTable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.WebManager;
 
@@ -20,18 +20,18 @@ public abstract class AbstractJasperReportServlet extends AbstractFileServlet im
 	@Inject protected JasperReportBusinessImpl reportBusiness;
 	@Inject protected LanguageBusiness languageBusiness;
 	
-	protected Report<AbstractIdentifiable> report;
+	protected ReportTable<AbstractIdentifiable> report;
 	
 	@Override
 	protected final void initialisation(HttpServletRequest request, HttpServletResponse response) {
-		report = new Report<>();
+		report = new ReportTable<>();
 		report.setColumns(reportBusiness.findColumns(EventType.class));
 		report.setFileExtension(request.getParameter(UIManager.getInstance().getFileExtensionParameter()));
 		build(request,response);
 	}
 	
 	protected void build(HttpServletRequest request, HttpServletResponse response){
-		reportBusiness.build(report,print(request, response));
+		reportBusiness.buildTable(report,print(request, response));
 	}
 	
 	@Override
