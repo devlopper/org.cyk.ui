@@ -110,6 +110,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		table.setIdentifiableConfiguration(configuration);
 		table.setCrud(crud);
 		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
+		if(UsedFor.FIELD_INPUT.equals(usedFor))
+			table.setLazyLoad(Boolean.FALSE);
 		//table.setWindow(this);
 		//configureBeforeConstruct(table);
 		((AbstractBean)table).postConstruct();

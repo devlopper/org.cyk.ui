@@ -19,6 +19,7 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
@@ -68,13 +69,35 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			}
 			*/
 			
-			__autoBuild__(annotations, controlSet, getData());
+			Collection<Object> controls = new ArrayList<>();
+			__controlSetControls__(controls,annotations,getData());
+			System.out.println(controls);
+			
+			__autoBuild__(annotations, controlSet, getData(),null);
 		}
 		super.__build__();
 	}
-	
-	private void __autoBuild__(Collection<Class<? extends Annotation>> annotations,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data){
+
+	private void __controlSetControls__(Collection<Object> controls,Collection<Class<? extends Annotation>> annotations,Object data){
 		for(Field field : commonUtils.getAllFields(data.getClass(), annotations)){
+			controls.add(field);
+			if(field.getAnnotation(IncludeInputs.class)!=null){
+				Object details = commonUtils.readField(data, field, Boolean.TRUE);
+				try {
+					FieldUtils.writeField(field, data, details, Boolean.TRUE);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				__controlSetControls__(controls,annotations, details);
+			}
+		}
+	}
+	
+	private void __autoBuild__(Collection<Class<? extends Annotation>> annotations,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data,IncludeInputs includeInputs){
+		Boolean addRow = null;
+		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
+	
+		for(Field field : fields){
 			OutputSeperator outputSeparator = field.getAnnotation(OutputSeperator.class);
 			if(outputSeparator!=null){
 				String label = null;
@@ -86,7 +109,21 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			}
 			
 			if(field.getAnnotation(Input.class)!=null){
-				controlSet.row(field).addField(data,field);
+				if(includeInputs==null)
+					addRow = Boolean.TRUE;
+				else{
+					Layout layout = includeInputs.layout();
+					if(Layout.AUTO.equals(layout))
+						layout = Layout.HORIZONTAL;
+					
+					if(Layout.HORIZONTAL.equals(layout))
+						addRow = addRow == null;
+					else
+						addRow = Boolean.TRUE;
+				}
+				if(Boolean.TRUE.equals(addRow))
+					controlSet.row(field);
+				controlSet.addField(data,field);
 			}else if(field.getAnnotation(IncludeInputs.class)!=null){
 				Object details = commonUtils.readField(data, field, Boolean.TRUE);
 				try {
@@ -94,7 +131,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
-				__autoBuild__(annotations, controlSet, details);
+				__autoBuild__(annotations, controlSet, details,field.getAnnotation(IncludeInputs.class));
 			}
 		}
 	}

@@ -47,14 +47,17 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
 		Commandable commandable = (Commandable) addRowCommandable;
 		commandable.getButton().setUpdate("@(."+updateStyleClass+")");
-		commandable.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"')");
+		//if(UsedFor.ENTITY_INPUT.equals(usedFor))
+			commandable.getButton().setOncomplete("clickEditButtonLastRow('"+updateStyleClass+"')");
+		//else
+		//	commandable.getButton().setOncomplete("clickEditButtonAllRow('"+updateStyleClass+"')");
 		
 		commandable = (Commandable) searchCommandable;
 		commandable.getButton().setType("button");
 		commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
 		
 		dataTable.setEditable(getEditable());
-
+		
 		commandable.getButton().setWidgetVar("searchCommandWidgetVar");
 		
 	}

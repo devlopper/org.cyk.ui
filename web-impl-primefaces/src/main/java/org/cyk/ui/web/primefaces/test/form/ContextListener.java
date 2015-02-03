@@ -7,10 +7,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.BusinessAdapter;
-import org.cyk.system.root.business.api.party.PersonBusiness;
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
+import org.cyk.ui.api.MenuManager;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.command.UICommandable;
@@ -18,6 +19,7 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.model.PersonFormModel;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -58,13 +60,14 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	public void menu(UserSession userSession, UIMenu menu, Type type) {
 		UICommandable commandable;
-		menu.getCommandables().add(menuManager.crudMany(Person.class, IconType.PERSON));
-		menu.getCommandables().add(commandable = menuManager.commandable("command.search", IconType.ACTION_SEARCH));
+		menu.getCommandables().add(MenuManager.crudMany(Person.class, IconType.PERSON));
+		menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		commandable.setViewId("personsearch");
 	}
 	
 	@Override
 	public String homeUrl(UserSession userSession) {
+		//return webNavigationManager.url("test",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		return webNavigationManager.createManyUrl(uiManager.businessEntityInfos(Person.class),Boolean.FALSE,Boolean.FALSE);
 	}
 

@@ -289,13 +289,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String fieldLabel(Field field) {
-		/*
-		if(field.getAnnotation(Input.class)!=null)
-			return textAnnotationValue(field,field.getAnnotation(Input.class).label());
-		if(field.getAnnotation(IncludeInputs.class)!=null)
-			return textAnnotationValue(field,field.getAnnotation(IncludeInputs.class).label());
-		return null;
-		*/
 		return languageBusiness.findFieldLabelText(field);
 	}
 	

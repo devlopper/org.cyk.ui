@@ -91,11 +91,11 @@
 		  					</ui:include></ui:fragment>
 		  					
 		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneCombo')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneCombo.xhtml" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
+		  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
 		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputNumber')}" ><ui:include src="#{controlDir}/input/inputNumber.xhtml" >
-		  						<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
+		  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
 		  				</f:facet>
@@ -105,12 +105,12 @@
 		  			</p:cellEditor>
 		        </p:columns> 
 		        
-		        <p:column rendered="#{cc.value.editable}" width="30">
+		        <p:column rendered="#{cc.value.showEditColumn}" width="30">
 		        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" />
 		        	<cyk:command value="#{cc.value.crudOneRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
 		        </p:column>
 		        
-		        <p:column rendered="#{cc.value.editable}" width="60">
+		        <p:column rendered="#{cc.value.showAddRemoveColumn}" width="60">
 		        	<table><tr>
 		        		<td style="border: none;"><cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" /></td>
 		        		<ui:fragment rendered="#{cc.value.showOpenCommand}" ><td style="border: none;">

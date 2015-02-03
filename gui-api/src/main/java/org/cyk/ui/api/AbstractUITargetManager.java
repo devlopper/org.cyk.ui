@@ -83,7 +83,10 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		if(value==null)
 			return "";
 		if(value.getClass().getName().startsWith("org.cyk."))
-			return ((AbstractModelElement)value).getUiString();
+			if(value instanceof AbstractModelElement)
+				return ((AbstractModelElement)value).getUiString();
+			else
+				value.toString();
 		if(value instanceof Date)
 			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
 		return value.toString();

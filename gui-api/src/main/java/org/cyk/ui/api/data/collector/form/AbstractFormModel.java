@@ -12,6 +12,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.annotation.user.interfaces.Binding;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 
 public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> implements Serializable,FormModelListener<ENTITY> {
@@ -74,7 +75,10 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> imp
 	}
 
 	protected Boolean equals(Field f1, Field f2) {
-		return f1.getName().equals(f2.getName()) && f1.getType().equals(f2.getType());
+		if(f1.getName().equals(f2.getName()) && f1.getType().equals(f2.getType()))
+			return Boolean.TRUE;
+		Binding binding = f1.getAnnotation(Binding.class);
+		return binding != null && f2.getName().equals(binding.field());
 	}
 
 	@Override

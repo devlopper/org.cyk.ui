@@ -5,8 +5,12 @@
    <PROCESS-ITEM-OUTPUT ID="personsearch::#search#person.xhtml"
     NAME="output" PATH="/search/person.xhtml"
     TARGET="rules:#search#person.xhtml" TITLE="personsearch" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="test::#test.xhtml" NAME="output1"
+    PATH="/test.xhtml" TARGET="rules:#test.xhtml" TITLE="test" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#search#person.xhtml"
   PATH="/search/person.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#test.xhtml" PATH="/test.xhtml"
+  SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

@@ -6,28 +6,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{testPage}" />
+ 		<ui:define name="body">
+ 			
+ 			<cyk:formOneData value="#{testPage.form}"/>
+ 			
+ 			
+ 		</ui:define>
+ 	</ui:decorate>
  
-	<h:body>
-		<f:view contracts="rootDesktop" >
-			<ui:composition template="/template/default.xhtml">
-				<ui:define name="body">
-
-				<h:form>
-					<p:messages globalOnly="true" />
-					<p:separator/>
-					<p:panelGrid columns="3">
-						<h:outputText value="Name" />
-						<p:inputText value="#{testController.name}"/>
-						<p:commandButton value="OK" action="#{testController.action}" update="@form"/>
-						<p:commandButton value="OK" action="#{testController.command.execute(null)}" update="@form"/>
-					</p:panelGrid>
-				</h:form>
-				
-				</ui:define>
-
-				
-			</ui:composition>
-		</f:view>
-    </h:body>
 </html>

@@ -150,42 +150,42 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	
-	public UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
+	public static UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, null, null);
 		commandable.setCommandRequestType(aCommandRequestType);
 		return commandable;
 	}
 	
-	public UICommandable commandable(String labelId,IconType iconType){
+	public static UICommandable commandable(String labelId,IconType iconType){
 		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
 	}
 	
-	private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,IconType iconType){
+	private static UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,IconType iconType){
 		UICommandable commandable = commandable(businessEntityInfos.getUiLabelId(), iconType);
 		commandable.setBusinessEntityInfos(businessEntityInfos);
 		commandable.setViewType(viewType);
 		return commandable;
 	}
 	
-	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
+	public static UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		return crud(businessEntityInfos, ViewType.DYNAMIC_CRUD_ONE, iconType);
 	}
 	
-	public UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+	public static UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
 		return crudOne(UIManager.getInstance().businessEntityInfos(aClass), iconType);
 	}
 	
-	public UICommandable crudMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
+	public static UICommandable crudMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		return crud(businessEntityInfos, ViewType.DYNAMIC_CRUD_MANY, iconType);
 	}
 	
-	public UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+	public static UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
 		return crudMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
 	}
 	
 	/**/
 	
-	public UICommandable menuItemUserAccount(){
+	public static UICommandable menuItemUserAccount(){
 		UICommandable userAccount = commandable("command.useraccount", IconType.THING_USERACCOUNT);
 				
 		UICommandable logout = commandable("command.useraccount.logout", IconType.ACTION_LOGOUT);
