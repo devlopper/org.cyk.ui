@@ -12,7 +12,36 @@
  		<ui:param name="pageController" value="#{testPage}" />
  		<ui:define name="body">
  			
- 			<cyk:formOneData value="#{testPage.form}"/>
+ 			<script type="text/javascript">
+	 			
+	 			
+	 			$(document).on('change','.fileUploadStyleClass' , function(){
+	 				preview(this, 'image_preview');
+	 			});
+	 			
+ 			</script>
+ 			
+ 			<table border="1" class="cyk-ui-input-file">
+ 				<!-- input button -->
+ 				<tr><td class="cyk-ui-input-file-input">
+					<p:fileUpload value="#{testPage.uploadedFile}" required="true" rendered="#{testPage.showUploadedFile}" 
+						requiredMessage="Obligatoire" mode="simple" skinSimple="true" styleClass="fileUploadStyleClass">
+						<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
+					</p:fileUpload>	
+				</td></tr>
+				
+				<!-- preview -->	
+				<tr><td class="cyk-ui-input-file-preview">
+					<img id="image_preview" alt="#{uiManager.text('preview')}" src="" width="150px" height="150px"/> 
+				</td></tr>
+					
+				<!-- clear button -->	
+				<tr><td class="cyk-ui-input-file-delete">
+					<p:commandButton value="#{uiManager.text('command.remove')}" title="#{uiManager.text('command.remove')}" icon="ui-icon-trash" >
+					
+					</p:commandButton>
+				</td></tr>						
+			</table>
  			
  			
  		</ui:define>

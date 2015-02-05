@@ -51,6 +51,9 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 	public DynaFormControl createControl(
 			org.cyk.ui.api.data.collector.form.ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
 			Control<DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> control, DynaFormRow row) {
+		//if(control instanceof InputFile<?,?,?,?,?>)
+		//	((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
+		
 		return row.addControl(control,control.getType(), control.getPosition().getColumn().getSpan(), control.getPosition().getRow().getSpan());
 	}
 

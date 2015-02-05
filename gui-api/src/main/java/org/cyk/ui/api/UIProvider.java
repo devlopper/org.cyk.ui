@@ -44,6 +44,7 @@ import org.cyk.ui.api.data.collector.control.InputText;
 import org.cyk.ui.api.data.collector.control.InputTextarea;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.control.OutputSeparator;
+import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -86,20 +87,23 @@ public class UIProvider extends AbstractBean implements Serializable {
 			if(input instanceof InputCalendar<?,?,?,?,?>){
 				InputCalendar<?, ?, ?, ?, ?> calendar = (InputCalendar<?, ?, ?, ?, ?>) input;
 				calendar.setPattern(UIManager.getInstance().findDateFormatter(field).toPattern());
-				/*
-				Temporal temporal = field.getAnnotation(Temporal.class);
-				if(temporal==null || TemporalType.DATE.equals(temporal.value()))
-					calendar.setPattern(UIManager.getInstance().getDateFormat().toPattern());
-				else if(TemporalType.TIME.equals(temporal.value()))
-					calendar.setPattern(UIManager.getInstance().getTimeFormat().toPattern());
-				else
-					calendar.setPattern(UIManager.getInstance().getDateTimeFormat().toPattern());
-				*/
 			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
 				for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
 					listener.choices(data,field, (List<Object>) inputChoice.getList());
+			}else if(control instanceof InputFile){
+				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;
+				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
+				
+				inputFile.setPreviewable(annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]));
+				
+				if(annotation.extensions().values().length==0)
+					for(FileExtensionGroup group : annotation.extensions().groups())
+						inputFile.getExtensions().addAll(group.getExtensions());
+				inputFile.setMinimumSize(annotation.size().from().integer());
+				inputFile.setMaximumSize(annotation.size().to().integer());
+				
 			}
 		}
 		

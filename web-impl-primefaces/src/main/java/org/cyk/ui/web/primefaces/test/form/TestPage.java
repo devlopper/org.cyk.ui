@@ -7,6 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.event.EventCalendar;
@@ -26,8 +27,9 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.model.table.TableAdapter;
+import org.primefaces.model.UploadedFile;
 
-@Named @ViewScoped @Getter
+@Named @ViewScoped @Getter @Setter
 public class TestPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = -8787434348857586666L;
@@ -37,6 +39,10 @@ public class TestPage extends AbstractPrimefacesPage implements Serializable {
 	
 	protected Table<Object> t1,t2,t3;
 	private FormOneData<PersonFormModel> form;
+	
+	@Setter
+	private UploadedFile uploadedFile;
+	private Boolean showUploadedFile=true;
 	
 	@SuppressWarnings("unchecked")
 	@Override

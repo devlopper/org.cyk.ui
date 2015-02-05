@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,8 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.Sequence;
+import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -69,18 +72,18 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			}
 			*/
 			
-			Collection<Object> controls = new ArrayList<>();
-			__controlSetControls__(controls,annotations,getData());
-			System.out.println(controls);
+			List<ObjectField> objectFields = new ArrayList<>();
+			__objectFields__(objectFields,annotations,getData());
 			
-			__autoBuild__(annotations, controlSet, getData(),null);
+			__autoBuild__(objectFields, controlSet);
 		}
 		super.__build__();
 	}
 
-	private void __controlSetControls__(Collection<Object> controls,Collection<Class<? extends Annotation>> annotations,Object data){
+	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,Object data){
 		for(Field field : commonUtils.getAllFields(data.getClass(), annotations)){
-			controls.add(field);
+			objectFields.add(new ObjectField(data, field));
+			
 			if(field.getAnnotation(IncludeInputs.class)!=null){
 				Object details = commonUtils.readField(data, field, Boolean.TRUE);
 				try {
@@ -88,50 +91,59 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
-				__controlSetControls__(controls,annotations, details);
+				__objectFields__(objectFields,annotations, details);
 			}
 		}
 	}
 	
-	private void __autoBuild__(Collection<Class<? extends Annotation>> annotations,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data,IncludeInputs includeInputs){
+	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
+		Collection<ObjectField> reorders = new ArrayList<>();
+		for(int i=0;i<objectFields.size();)
+			if(objectFields.get(i).field.getAnnotation(Sequence.class)==null)
+				i++;
+			else
+				reorders.add(objectFields.remove(i));
+		
+		for(ObjectField reorder : reorders){
+			Sequence sequence = reorder.field.getAnnotation(Sequence.class);
+			for(int position=0;position<objectFields.size();)
+				if(sequence.field().equals(objectFields.get(position).field.getName())){
+					if(Direction.BEFORE.equals(sequence.direction()))
+						objectFields.add(position, reorder);
+					else
+						objectFields.add(position+1, reorder);
+					break;
+				}else
+					position++;
+		}
+		
 		Boolean addRow = null;
-		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
-	
-		for(Field field : fields){
-			OutputSeperator outputSeparator = field.getAnnotation(OutputSeperator.class);
+		for(ObjectField objectField : objectFields){
+			OutputSeperator outputSeparator = objectField.field.getAnnotation(OutputSeperator.class);
 			if(outputSeparator!=null){
 				String label = null;
 				if(ValueType.VALUE.equals(outputSeparator.label().type()))
 					label = outputSeparator.label().value();
 				else
-					label = UIManager.getInstance().textAnnotationValue(field,outputSeparator.label());
+					label = UIManager.getInstance().textAnnotationValue(objectField.field,outputSeparator.label());
 				controlSet.row(null).addSeperator(label);
 			}
 			
-			if(field.getAnnotation(Input.class)!=null){
-				if(includeInputs==null)
+			if(objectField.field.getAnnotation(Input.class)!=null){
+				if(addRow==null)
 					addRow = Boolean.TRUE;
-				else{
-					Layout layout = includeInputs.layout();
-					if(Layout.AUTO.equals(layout))
-						layout = Layout.HORIZONTAL;
-					
-					if(Layout.HORIZONTAL.equals(layout))
-						addRow = addRow == null;
-					else
-						addRow = Boolean.TRUE;
-				}
+				
 				if(Boolean.TRUE.equals(addRow))
-					controlSet.row(field);
-				controlSet.addField(data,field);
-			}else if(field.getAnnotation(IncludeInputs.class)!=null){
-				Object details = commonUtils.readField(data, field, Boolean.TRUE);
-				try {
-					FieldUtils.writeField(field, data, details, Boolean.TRUE);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-				__autoBuild__(annotations, controlSet, details,field.getAnnotation(IncludeInputs.class));
+					controlSet.row(objectField.field);
+				controlSet.addField(objectField.object,objectField.field);
+			}else if(objectField.field.getAnnotation(IncludeInputs.class)!=null){
+				Layout layout = objectField.field.getAnnotation(IncludeInputs.class).layout();
+				if(Layout.AUTO.equals(layout))
+					layout = Layout.HORIZONTAL;
+				if(Layout.HORIZONTAL.equals(layout))
+					addRow = addRow == null;
+				else
+					addRow = Boolean.TRUE;
 			}
 		}
 	}
@@ -151,6 +163,17 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+	}
+	
+	/**/
+	
+	@AllArgsConstructor
+	private static class ObjectField implements Serializable {
+		
+		private static final long serialVersionUID = -4424267370983658359L;
+		private Object object;
+		private Field field;
+		
 	}
 	
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import lombok.Getter;
@@ -18,8 +17,6 @@ import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.utility.common.CommonUtils;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
  
 @NoArgsConstructor
 public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractView implements ControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -219,37 +216,5 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addLabel(String label){
 		return add((Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(label));
 	}
-	
-	private class ControlComparator implements Comparator<Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>>,Serializable {
-
-		private static final long serialVersionUID = -7637120052702129609L;
-
-		@Override
-		public int compare(Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> o1, Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> o2) {
-			if(o1 instanceof Input){
-				System.out.println("AbstractControlSet.ControlComparator.compare() "+o1.getClass().getSimpleName()+" : "+o2.getClass().getSimpleName());
-				Input<?,?,?,?,?,?> i1 = (Input<?,?,?,?,?,?>) o1;
-				Sequence s1 = i1.getField().getAnnotation(Sequence.class);
-				if(o2 instanceof Input){
-					Input<?,?,?,?,?,?> i2 = (Input<?,?,?,?,?,?>) o2;
-					Sequence s2 = i2.getField().getAnnotation(Sequence.class);
-					System.out.println("AbstractControlSet.ControlComparator.compare() "+i1.getField().getName()+" : "+i2.getField().getName());
-					if(s1.field().equals(i2.getField().getName()))
-						if(Direction.BEFORE.equals(s1.direction()))
-							return -1;
-						else
-							return 1;
-					else
-						if(s2.field().equals(i1.getField().getName()))
-							if(Direction.AFTER.equals(s1.direction()))
-								return -1;
-							else
-								return 1;
-				}
-			}
-			return 0;
-		}
 		
-	}
-	
 }

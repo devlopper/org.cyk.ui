@@ -27,8 +27,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
 @Getter @Setter @NoArgsConstructor
@@ -41,12 +39,10 @@ public class PersonFormModel extends AbstractFormModel<Person>  implements Seria
 	private String firstName;
 	
 	@Input @InputText
-	
 	private String lastName;
 	 
 	@Input @InputCalendar 
 	@Valid
-	@Sequence(direction=Direction.AFTER,field="sex")
 	private Date birthDate;
 	
 	@Input @InputText 

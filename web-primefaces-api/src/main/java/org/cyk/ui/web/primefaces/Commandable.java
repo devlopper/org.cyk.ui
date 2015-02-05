@@ -27,7 +27,6 @@ public class Commandable extends AbstractWebCommandable implements Serializable 
 	public CommandButton getButton(){
 		if(commandButton==null)
 			commandButton = CommandBuilder.getInstance().commandButton(this);
-			
 		return commandButton;
 	}
 	
