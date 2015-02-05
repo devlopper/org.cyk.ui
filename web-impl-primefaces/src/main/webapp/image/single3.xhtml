@@ -5,18 +5,28 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{crudOnePage}" />
+ 		<ui:param name="pageController" value="#{inputBean}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{crudOnePage.form}" />
+ 			
+			<h:inputFile id="file" label="file" value="#{inputBean.part}" required="true" requiredMessage="File not selected !!" >
+				<!--f:validator validatorId="FileUploadValidator" /-->
+			</h:inputFile><br />
+	
+			<p:commandButton id="submit" action="#{inputBean.uploadFile}" value="upload file" ajax="false" /><br />
+	
+			<p:separator/>
+			
+			<cyk:formOneData value="#{inputBean.form}" />
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{crudOnePage.form.submitCommandable}" executeParameter="#{crudOnePage.form.data}" />
+ 			<cyk:command value="#{inputBean.form.submitCommandable}" executeParameter="#{inputBean.form.data}" />
  		</ui:define>
  		
  	</ui:decorate>
- 	
+ 
 </html>

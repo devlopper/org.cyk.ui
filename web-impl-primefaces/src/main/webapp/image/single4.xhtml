@@ -8,15 +8,17 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{crudOnePage}" />
+ 		<ui:param name="pageController" value="#{inputBean}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{crudOnePage.form}" />
+			AJAX : #{inputBean.form.submitCommandable.button.ajax}
+			<cyk:formOneData value="#{inputBean.form}" />
+			
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{crudOnePage.form.submitCommandable}" executeParameter="#{crudOnePage.form.data}" />
+ 			<cyk:command value="#{inputBean.form.submitCommandable}" executeParameter="#{inputBean.form.data}" />
  		</ui:define>
  		
  	</ui:decorate>
- 	
+ 
 </html>

@@ -47,6 +47,11 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 			return fail(object,null);
 	}
 	
+	@Override
+	public Object execute() {
+		return execute(null);
+	}
+	
 	private void transfer(Object object) throws Exception {
 		for(CommandListener listener : commandListeners)
 			listener.transfer(this, object);

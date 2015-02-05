@@ -38,7 +38,7 @@ public class CrudOnePage extends AbstractBusinessEntityFormOnePage<AbstractIdent
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			switch(crud){
-			case CREATE:getGenericBusiness().create(identifiable);break;
+			case CREATE:/*getGenericBusiness().create(identifiable);*/break;
 			case READ:break;
 			case UPDATE:getGenericBusiness().update(identifiable);break;
 			case DELETE:getGenericBusiness().delete(identifiable);break;

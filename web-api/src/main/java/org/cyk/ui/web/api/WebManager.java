@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.servlet.http.Part;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -60,6 +61,15 @@ public class WebManager extends AbstractBean implements Serializable {
 		case 3:return "fatal";
 		default: return "info";
 		}
+	}
+	
+	public String fileName(Part part) {
+		if(part==null || part.getHeader("content-disposition")==null)
+			return null;
+		for (String content : part.getHeader("content-disposition").split(";"))
+			if (content.trim().startsWith("filename"))
+				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+		return null;
 	}
 	
 	

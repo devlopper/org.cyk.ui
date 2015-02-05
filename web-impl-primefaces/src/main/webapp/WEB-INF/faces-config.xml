@@ -8,6 +8,12 @@
 		<from-view-id>*</from-view-id>
 
 		<navigation-case>
+			<from-outcome>crudperson</from-outcome>
+			<to-view-id>/crud/person.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>personsearch</from-outcome>
 			<to-view-id>/search/person.xhtml</to-view-id>
 			<redirect />

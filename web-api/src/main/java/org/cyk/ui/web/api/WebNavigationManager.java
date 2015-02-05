@@ -65,6 +65,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeApplicationSetup = "applicationSetup";
 	
 	@Getter private String outcomeDynamicCrudOne = "dynamicCrudOne";
+	@Getter private String outcomeDynamicCrudOneWithFileSupport = "dynamicCrudOneWithFileSupport";
 	@Getter private String outcomeDynamicCrudMany = "dynamicCrudMany";
 	@Getter private String outcomeLogout = "useraccountlogout";
 	
@@ -260,8 +261,21 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
+	public String editOneOutcome(Class<AbstractIdentifiable> aClass){
+		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
+		//IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+			//if(Boolean.TRUE.equals(identifiableConfiguration.getFileSupport()))
+				//return outcomeDynamicCrudOneWithFileSupport;
+			//else
+				return outcomeDynamicCrudOne;
+		else
+			return businessEntityInfos.getUiEditViewId();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
-		redirectTo(outcomeDynamicCrudOne,new Object[]{
+		redirectTo(editOneOutcome((Class<AbstractIdentifiable>) data.getClass()),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
 				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(crud)
@@ -269,7 +283,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public void redirectToDynamicCrudOne(Class<AbstractIdentifiable> aClass){
-		redirectTo(outcomeDynamicCrudOne,new Object[]{
+		redirectTo(editOneOutcome(aClass),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass),
 				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
 		});

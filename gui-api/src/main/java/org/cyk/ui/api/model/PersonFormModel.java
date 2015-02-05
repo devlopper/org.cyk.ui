@@ -72,7 +72,8 @@ public class PersonFormModel extends AbstractFormModel<Person>  implements Seria
 	@Override
 	public void read() {
 		super.read();
-		//birthLocation = identifiable.getBirthLocation().toString();
+		if(identifiable.getBirthLocation()!=null)
+			birthLocation = identifiable.getBirthLocation().toString();
 	}
 
 }

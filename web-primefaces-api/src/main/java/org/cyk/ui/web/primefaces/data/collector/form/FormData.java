@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.faces.model.SelectItem;
 
 import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.InputFile;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.web.api.data.collector.form.AbstractWebFormData;
+import org.cyk.ui.web.primefaces.Commandable;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -51,8 +53,8 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 	public DynaFormControl createControl(
 			org.cyk.ui.api.data.collector.form.ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
 			Control<DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> control, DynaFormRow row) {
-		//if(control instanceof InputFile<?,?,?,?,?>)
-		//	((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
+		if(control instanceof InputFile<?,?,?,?,?>)
+			((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
 		
 		return row.addControl(control,control.getType(), control.getPosition().getColumn().getSpan(), control.getPosition().getRow().getSpan());
 	}

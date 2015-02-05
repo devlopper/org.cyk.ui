@@ -15,7 +15,7 @@ public class IdentifiableConfiguration implements Serializable {
 
 	private Class<? extends AbstractIdentifiable> identifiableClass;
 	private Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass;
-	private Boolean oneEdit = Boolean.TRUE,globalFiltering=Boolean.TRUE;
+	private Boolean oneEdit = Boolean.TRUE,globalFiltering=Boolean.TRUE,fileSupport=Boolean.FALSE;
 	
 	public IdentifiableConfiguration(Class<? extends AbstractIdentifiable> identifiableClass, 
 			Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass) {

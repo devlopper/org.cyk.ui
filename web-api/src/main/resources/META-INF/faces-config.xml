@@ -37,6 +37,12 @@
 			<to-view-id>/private/__dynamic__/crudone.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>dynamicCrudOneWithFileSupport</from-outcome>
+			<to-view-id>/private/__dynamic__/crudonewithfilesupport.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>dynamicCrudMany</from-outcome>

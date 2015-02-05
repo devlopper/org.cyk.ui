@@ -20,6 +20,8 @@ public interface UICommand {
 	 * The code to be executed when validation has succeed
 	 */
 	Object execute(Object object);
+	
+	Object execute();
 		
 	UIMessageManager getMessageManager();
 	void setMessageManager(UIMessageManager messageManager);

@@ -10,29 +10,33 @@
 		<param-value>6Ld7pMESAAAAAMhr5WSk5bcRrff8Y08NtDi8Buoq</param-value>
 	</context-param>
 	
-	<context-param>
+	<!--context-param>
 		<param-name>primefaces.UPLOADER</param-name>
 		<param-value>auto|native|commons</param-value>
 	</context-param>
 
 	<filter>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<filter-class>org.primefaces.webapp.filter.FileUploadFilter
-		</filter-class>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
-	</filter-mapping>
+	</filter-mapping-->
 	
-	<!-- Should be removed when using JSF 2.2 or above -->
+	<!-- 
+	Since PrettyFaces intercepts mapped HttpRequests then forwards those requests to JSF, 
+	it is necessary to enable any additional filters between PrettyFaces and JSF to listen 
+	to Servlet Forwards. This is done in the web.xml deployment descriptor by adding the 
+	following dispatcher elements to any needed Filters
+	 -->
+	<!--filter-mapping>
+	    <filter-name>PrimeFaces FileUpload Filter</filter-name>
+	    <servlet-name>Faces Servlet</servlet-name>
+	    <dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping-->
 	
-	<!-- Will be build automatically
-	<context-param>
-		<param-name>javax.faces.FULL_STATE_SAVING_VIEW_IDS</param-name>
-		<param-value>/administration/form.xhtml,/settings/index.xhtml,/settings/emailserver.xhtml</param-value>
-	</context-param>
-	-->
 	<!--
 	<servlet>
 		<servlet-name>Push Servlet</servlet-name>

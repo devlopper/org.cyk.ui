@@ -31,7 +31,9 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
+		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("crudperson");
 		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
+		config.setFileSupport(Boolean.TRUE);
 		uiManager.registerConfiguration(config);
 		
 		uiManager.getBusinesslisteners().add(new BusinessAdapter(){

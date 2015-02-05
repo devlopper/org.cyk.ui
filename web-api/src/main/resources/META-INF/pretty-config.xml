@@ -54,15 +54,27 @@
 		<view-id value="/private/__dynamic__/crudmany.jsf" />
 	</url-mapping> 
 	
-	<url-mapping id="editone">
+	<!-- Because of file upload Issue -->
+	
+	<!--url-mapping id="editone">
 		<pattern value="/crudone/#{clazz}/#{identifiable}/#{crud}" />
 		<view-id value="/private/__dynamic__/crudone.jsf" />
-	</url-mapping> 
+	</url-mapping--> 
 	
-	<url-mapping id="createone">
+	<!--url-mapping id="editonewithfilesupport">
+		<pattern value="/crudonewithfilesupport/#{clazz}/#{identifiable}/#{crud}" />
+		<view-id value="/private/__dynamic__/crudonewithfilesupport.jsf" />
+	</url-mapping--> 
+	
+	<!--url-mapping id="createone">
 		<pattern value="/crudone/#{clazz}/#{crud}" />
 		<view-id value="/private/__dynamic__/crudone.jsf" />
-	</url-mapping> 
+	</url-mapping--> 
+	
+	<!--url-mapping id="createonewithfilesupport">
+		<pattern value="/crudonewithfilesupport/#{clazz}/#{crud}" />
+		<view-id value="/private/__dynamic__/crudonewithfilesupport.jsf" />
+	</url-mapping--> 
 	
 	<url-mapping id="exportdata">
 		<pattern value="/export/#{clazz}" />

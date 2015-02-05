@@ -29,7 +29,8 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 
 	private static final long serialVersionUID = 1390099136018097004L;
 
-	private UploadedFile uploadedFile;
+	//private Part file;
+	private UploadedFile file;
 	
 	private UICommandable clearCommandable;
 	
@@ -65,7 +66,37 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	
 	@Override
 	public void applyValueToField() throws IllegalAccessException {
-		debug(uploadedFile);
+		/*
+		if(file==null)
+			return;
+		String fileName = "INPUTFILE"+WebManager.getInstance().fileName(file);
+		System.out.println("***** fileName: " + fileName);
+	
+		String basePath = "C:" + java.io.File.separator + "temp" + java.io.File.separator;
+		java.io.File outputFilePath = new java.io.File(basePath + fileName);
+
+		// Copy uploaded file to destination path
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		try {
+			inputStream = file.getInputStream();
+			outputStream = new FileOutputStream(outputFilePath);
+
+			int read = 0;
+			final byte[] bytes = new byte[1024];
+			while ((read = inputStream.read(bytes)) != -1)
+				outputStream.write(bytes, 0, read);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (outputStream != null)
+				IOUtils.closeQuietly(outputStream);
+			if (inputStream != null)
+				IOUtils.closeQuietly(inputStream);
+		}
+		*/
+		debug(file);
 	}
 	
 	
