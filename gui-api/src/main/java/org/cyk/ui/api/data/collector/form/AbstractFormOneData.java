@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,13 +17,14 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
+import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.FieldSorter;
+import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.ObjectField;
+import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence;
-import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -81,7 +81,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 
 	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,Object data){
-		for(Field field : commonUtils.getAllFields(data.getClass(), annotations)){
+		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
+		
+		new FieldSorter(fields,data.getClass()).sort();
+		
+		for(Field field : fields){
 			objectFields.add(new ObjectField(data, field));
 			
 			if(field.getAnnotation(IncludeInputs.class)!=null){
@@ -97,52 +101,44 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
-		Collection<ObjectField> reorders = new ArrayList<>();
-		for(int i=0;i<objectFields.size();)
-			if(objectFields.get(i).field.getAnnotation(Sequence.class)==null)
-				i++;
-			else
-				reorders.add(objectFields.remove(i));
 		
-		for(ObjectField reorder : reorders){
-			Sequence sequence = reorder.field.getAnnotation(Sequence.class);
-			for(int position=0;position<objectFields.size();)
-				if(sequence.field().equals(objectFields.get(position).field.getName())){
-					if(Direction.BEFORE.equals(sequence.direction()))
-						objectFields.add(position, reorder);
-					else
-						objectFields.add(position+1, reorder);
-					break;
-				}else
-					position++;
-		}
+		new ObjectFieldSorter(objectFields,null).sort();
 		
-		Boolean addRow = null;
+		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
-			OutputSeperator outputSeparator = objectField.field.getAnnotation(OutputSeperator.class);
+			OutputSeperator outputSeparator = objectField.getField().getAnnotation(OutputSeperator.class);
 			if(outputSeparator!=null){
 				String label = null;
 				if(ValueType.VALUE.equals(outputSeparator.label().type()))
 					label = outputSeparator.label().value();
 				else
-					label = UIManager.getInstance().textAnnotationValue(objectField.field,outputSeparator.label());
+					label = UIManager.getInstance().textAnnotationValue(objectField.getField(),outputSeparator.label());
 				controlSet.row(null).addSeperator(label);
+				//seperatorAdded = Boolean.TRUE;
+				//controlSet.row(null);
+				addRow = null;
 			}
 			
-			if(objectField.field.getAnnotation(Input.class)!=null){
+			if(objectField.getField().getAnnotation(Input.class)!=null){
 				if(addRow==null)
 					addRow = Boolean.TRUE;
 				
 				if(Boolean.TRUE.equals(addRow))
-					controlSet.row(objectField.field);
-				controlSet.addField(objectField.object,objectField.field);
-			}else if(objectField.field.getAnnotation(IncludeInputs.class)!=null){
-				Layout layout = objectField.field.getAnnotation(IncludeInputs.class).layout();
+					controlSet.row(objectField.getField());
+				/*if(Boolean.TRUE.equals(seperatorAdded)){
+					controlSet.row(null);
+					seperatorAdded = Boolean.FALSE;
+				}*/
+				controlSet.addField(objectField.getObject(),objectField.getField());
+				
+			}else if(objectField.getField().getAnnotation(IncludeInputs.class)!=null){
+				Layout layout = objectField.getField().getAnnotation(IncludeInputs.class).layout();
 				if(Layout.AUTO.equals(layout))
 					layout = Layout.HORIZONTAL;
-				if(Layout.HORIZONTAL.equals(layout))
+				
+				if(Layout.HORIZONTAL.equals(layout)){
 					addRow = addRow == null;
-				else
+				}else
 					addRow = Boolean.TRUE;
 			}
 		}
@@ -167,13 +163,8 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	
 	/**/
 	
-	@AllArgsConstructor
-	private static class ObjectField implements Serializable {
-		
-		private static final long serialVersionUID = -4424267370983658359L;
-		private Object object;
-		private Field field;
-		
-	}
 	
+	
+	/**/
+			
 }

@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractTree;
@@ -117,8 +118,13 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			}
 			@Override
 			public void cellAdded(Row<DATA> row, Column column, Cell cell) {
-				cell.setValue(UIProvider.getInstance().readOnlyValue(column.getField(), row.getData()));
-				if(!Boolean.TRUE.equals(lazyLoad)){
+				cell.setValue(UIProvider.getInstance().readOnlyValue(column.getField(), row.getData()));	
+				cell.setIsFile(UIProvider.getInstance().isFile(column.getField()));
+				if(Boolean.TRUE.equals(cell.getIsFile()))
+					cell.setIsImage(UIProvider.getInstance().isImage(column.getField()));
+				if(Boolean.TRUE.equals(lazyLoad)){
+					
+				}else{
 					cell.setControl(UIProvider.getInstance().createFieldControl(row.getData(), column.getField()));
 				}
 			}
@@ -137,9 +143,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		showEditColumn = true;//UsedFor.ENTITY_INPUT.equals(usedFor);
 		showAddRemoveColumn = Boolean.TRUE;
 		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
-		editable = Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
+		editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
+			if(!Boolean.TRUE.equals(getLazyLoad()))
+				fetchData(null,null,null,null,null,null);
+			
 			if(Boolean.TRUE.equals(getShowHierarchy())){
 				MODEL hierarchyNode = createHierarchyNode();
 				hierarchyNode.setLabel(getTitle());
@@ -164,8 +173,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				//select(master);
 				tree.expand(master, Boolean.TRUE);
 			}
-			if(!Boolean.TRUE.equals(getLazyLoad()))
-				fetchData(null,null,null,null,null,null);
+			
 		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
 			
 		}
@@ -223,14 +231,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public Boolean getShowFooterCommandBlock(){
 		return UsedFor.FIELD_INPUT.equals(usedFor);
 	}
-	/*
-	@SuppressWarnings("unchecked")
+	
+	//TODO to be moved later in CrudManyPage i think. For now I need it to work
+	
+	
 	public <B extends AbstractDataTreeNodeBusiness<? extends AbstractDataTreeNode>> void handle(B business,Collection<Object> rows){
 		//for(AbstractDataTreeNode node : business.findHierarchies())
 		//	hierarchyData.add((DATA) node);
 		addRowOfRoot(master,rows);
-	}*/
-	/*
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected void addRowOfRoot(AbstractIdentifiable root,Collection<Object> rows){
 		Collection<DATA> collection = new ArrayList<>();
@@ -251,7 +261,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			//addRow(node);
 		
 		master = root;
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public DATA getReferenceFromHierarchy(AbstractIdentifiable identifiable,List<DATA> list){

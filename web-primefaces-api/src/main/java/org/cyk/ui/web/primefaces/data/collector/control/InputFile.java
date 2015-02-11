@@ -1,5 +1,6 @@
 package org.cyk.ui.web.primefaces.data.collector.control;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +10,11 @@ import javax.faces.model.SelectItem;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.file.File;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
@@ -29,7 +33,6 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 
 	private static final long serialVersionUID = 1390099136018097004L;
 
-	//private Part file;
 	private UploadedFile file;
 	
 	private UICommandable clearCommandable;
@@ -38,10 +41,12 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	private Long minimumSize,maximumSize;
 	private Set<String> extensions = new HashSet<>();
 	private String allowTypes,extensionsAsString,mode="simple";
+	private Integer previewWidth=150,previewHeight=150;
 	
 	public InputFile() {
 		clearCommandable = UIProvider.getInstance().createCommandable(null, "command.delete", IconType.ACTION_CLEAR, null, null);
 		((Commandable)clearCommandable).getButton().setProcess("@this");
+		((Commandable)clearCommandable).getButton().setRendered(value!=null);
 		clearCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 1247729459254167284L;
 			@Override
@@ -49,7 +54,17 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 				value = null;
 				((Commandable)clearCommandable).getButton().setRendered(Boolean.FALSE);
 			}
+			
 		});
+		
+		description = null;
+	}
+	
+	public String getDescription(){
+		if(description==null)
+			description = uiManager.getLanguageBusiness().findText("input.file.upload.extension.allowed",new Object[]{getExtensionsAsString()})+"<br/>"
+					+uiManager.getLanguageBusiness().findText("input.file.upload.size.allowed",new Object[]{maximumSize});
+		return description;
 	}
 	
 	public String getAllowTypes(){
@@ -64,41 +79,24 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 		return extensionsAsString;
 	}
 	
+	/*
+	@Override
+	public void validate(FacesContext facesContext, UIComponent uiComponent,Object value) throws ValidatorException {
+		UploadedFile uploadedFile = (UploadedFile) value;
+		if(uploadedFile.getSize()<minimumSize)
+			validationException("");
+			
+		UIManager.getInstance().getFileBusiness().findMime(uploadedFile.getFileName());
+	}*/
+	
 	@Override
 	public void applyValueToField() throws IllegalAccessException {
-		/*
-		if(file==null)
-			return;
-		String fileName = "INPUTFILE"+WebManager.getInstance().fileName(file);
-		System.out.println("***** fileName: " + fileName);
-	
-		String basePath = "C:" + java.io.File.separator + "temp" + java.io.File.separator;
-		java.io.File outputFilePath = new java.io.File(basePath + fileName);
-
-		// Copy uploaded file to destination path
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
 		try {
-			inputStream = file.getInputStream();
-			outputStream = new FileOutputStream(outputFilePath);
-
-			int read = 0;
-			final byte[] bytes = new byte[1024];
-			while ((read = inputStream.read(bytes)) != -1)
-				outputStream.write(bytes, 0, read);
-			
+			value = UIManager.getInstance().getFileBusiness().process(IOUtils.toByteArray(file.getInputstream()), file.getFileName());
+			FieldUtils.writeField(field, getObject(), value, Boolean.TRUE);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			if (outputStream != null)
-				IOUtils.closeQuietly(outputStream);
-			if (inputStream != null)
-				IOUtils.closeQuietly(inputStream);
 		}
-		*/
-		debug(file);
 	}
-	
-	
-	
+		
 }

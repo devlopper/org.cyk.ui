@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.ui.api.UIMessageManager;
+import org.cyk.ui.api.UIProvider;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -43,5 +44,15 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		return CommandRequestType.UI_VIEW.equals(commandRequestType);
 	}
 	
-	 
+	@Override
+	public UICommandable addChild(String labelId, IconType iconType,String viewId,Parameter[] parameters) {
+		UICommandable child = UIProvider.getInstance().createCommandable(labelId, iconType);
+		child.setViewId(viewId);
+		child.setCommandRequestType(CommandRequestType.UI_VIEW);
+		if(parameters != null)
+			for(Parameter parameter : parameters)
+				child.getParameters().add(parameter);
+		children.add(child);
+		return child;
+	} 
 }

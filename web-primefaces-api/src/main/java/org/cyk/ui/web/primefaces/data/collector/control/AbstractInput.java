@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.data.collector.control;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
@@ -48,13 +50,15 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	}
 
 	@Override
-	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
-		// TODO Auto-generated method stub	
-	}
+	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {}
 	
 	@Override
 	public Converter getConverter() {
 		return null;
+	}
+	
+	protected void validationException(String messageId){
+		new ValidatorException(new FacesMessage(UIManager.getInstance().text(messageId)));
 	}
 	
 }

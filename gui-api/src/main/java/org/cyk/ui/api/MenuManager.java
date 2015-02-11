@@ -74,17 +74,21 @@ public class MenuManager extends AbstractBean implements Serializable {
 			administration(userSession, aMenu);
 		}else{
 			if(internalApplicationModuleType==null){
-				UICommandable commandable,p;
+				//UICommandable commandable,p;
 				
+				/*
 				aMenu.getCommandables().add(commandable = commandable("command.tools", IconType.THING_TOOLS));
 				commandable.getChildren().add( p = commandable("command.tools.calendar", null));
 				p.setViewType(ViewType.TOOLS_CALENDAR);
-				
-				aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
+				*/
+				/*
+				aMenu.getCommandables().add(commandable = commandable("command.controlpanel", IconType.THING_CONTROLPANEL));
+				UICommandable re = commandable("command.referenceentity", null);
+				commandable.getChildren().add(re);
 				List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
 				Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
 				for(BusinessEntityInfos businessEntityInfos : list){
-					commandable.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
+					re.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
 					p.setBusinessEntityInfos(businessEntityInfos);
 					if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
 						p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
@@ -92,9 +96,12 @@ public class MenuManager extends AbstractBean implements Serializable {
 						p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 					}
 				}
+				*/
 					//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
-				aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
 				
+				//aMenu.getCommandables().add(menuItemControlPanel(applicationBusiness));
+				aMenu.getCommandables().add(menuItemReferenceEntity(applicationBusiness));
+				aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
 				aMenu.getCommandables().add(menuItemUserAccount());
 				
 			}else{
@@ -136,15 +143,18 @@ public class MenuManager extends AbstractBean implements Serializable {
 		aMenu.getCommandables().add(commandable = commandable("command.administration", IconType.ACTION_ADMINISTRATE));
 		List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
 		Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
-		for(BusinessEntityInfos businessEntityInfos : list){
-			commandable.getChildren().add(crudMany(businessEntityInfos, null));
+		
+		commandable.getChildren().add(commandable("command.administration", IconType.ACTION_ADMINISTRATE));
+		//for(BusinessEntityInfos businessEntityInfos : list){
+			//commandable.getChildren().add(crudMany(businessEntityInfos, null));
+			//commandable.getChildren().add(commandable("command.administration", IconType.ACTION_ADMINISTRATE));
 			/*p.setBusinessEntityInfos(businessEntityInfos);
 			if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
 				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
 			}else{
 				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 			}*/
-		}
+		//}
 	}
 	
 	/**/
@@ -185,6 +195,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
+	public static UICommandable menuItemReferenceEntity(ApplicationBusiness applicationBusiness){
+		UICommandable p;
+		UICommandable referenceEntity = commandable("command.referenceentity", null);
+		
+		List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
+		Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
+		for(BusinessEntityInfos businessEntityInfos : list){
+			referenceEntity.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
+			p.setBusinessEntityInfos(businessEntityInfos);
+			if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
+				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
+			}else{
+				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
+			}
+		}
+		return referenceEntity;
+	}
+	
+	public static UICommandable menuItemControlPanel(ApplicationBusiness applicationBusiness){
+		UICommandable commandable = commandable("command.controlpanel", IconType.THING_CONTROLPANEL);
+		commandable.getChildren().add(menuItemReferenceEntity(applicationBusiness));
+		return commandable;
+	}
+	
 	public static UICommandable menuItemUserAccount(){
 		UICommandable userAccount = commandable("command.useraccount", IconType.THING_USERACCOUNT);
 				
@@ -199,7 +233,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	private class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
+	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
 
 		@Override
 		public int compare(BusinessEntityInfos o1, BusinessEntityInfos o2) {

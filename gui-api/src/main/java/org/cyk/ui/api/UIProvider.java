@@ -65,6 +65,15 @@ public class UIProvider extends AbstractBean implements Serializable {
 		INSTANCE = this; 
 		super.initialisation();
 	}
+	
+	public Boolean isFile(Field field){
+		return field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class)!=null;
+	}
+	
+	public Boolean isImage(Field field){
+		org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
+		return annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]);
+	}
 		
 	public Control<?,?,?,?,?> createFieldControl(Object data,Field field){
 		Control<?,?,?,?,?> control = createControlInstance(controlClass(field));
@@ -94,9 +103,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 					listener.choices(data,field, (List<Object>) inputChoice.getList());
 			}else if(control instanceof InputFile){
 				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;
-				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
-				
-				inputFile.setPreviewable(annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]));
+				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);				
+				inputFile.setPreviewable(isImage(inputFile.getField()));
 				
 				if(annotation.extensions().values().length==0)
 					for(FileExtensionGroup group : annotation.extensions().groups())
@@ -129,25 +137,23 @@ public class UIProvider extends AbstractBean implements Serializable {
 			if(c!=null)
 				commandableClass = c; 
 		}
-		UICommandable commandable;
-		try {
-			commandable = commandableClass.newInstance();
-			commandable.setCommand(new DefaultCommand());
-			commandable.getCommand().setMessageManager(MessageManager.INSTANCE);
-			commandable.setLabel(UIManager.getInstance().text(labelId));
-			commandable.setIconType(iconType);
-			commandable.setEventListener(anExecutionPhase);
-			commandable.setProcessGroup(aProcessGroup);
-			if(commandListener!=null)
-				commandable.getCommand().getCommandListeners().add(commandListener);
-			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
-				listener.commandableInstanceCreated(commandable);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
+		UICommandable commandable = newInstance(commandableClass);
+		commandable.setCommand(new DefaultCommand());
+		commandable.getCommand().setMessageManager(MessageManager.INSTANCE);
+		commandable.setLabel(UIManager.getInstance().text(labelId));
+		commandable.setIconType(iconType);
+		commandable.setEventListener(anExecutionPhase);
+		commandable.setProcessGroup(aProcessGroup);
+		if(commandListener!=null)
+			commandable.getCommand().getCommandListeners().add(commandListener);
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+			listener.commandableInstanceCreated(commandable);
+
 		return commandable;
+	}
+	
+	public UICommandable createCommandable(String labelId,IconType iconType){
+		return createCommandable(null, labelId, iconType, null, null);
 	}
 	
 	/* */

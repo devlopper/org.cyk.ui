@@ -1,25 +1,16 @@
 package org.cyk.ui.web.primefaces.test.form.image;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.servlet.http.Part;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.api.command.CommandAdapter;
-import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-import org.cyk.ui.web.primefaces.model.PersonFormModel;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named

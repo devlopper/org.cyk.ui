@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<cc:interface>
+		<cc:attribute name="identifier" required="true" />
+		<cc:attribute name="width" default="32" />
+		<cc:attribute name="height" default="32" />
+		<cc:attribute name="title" default="icon" />
+		
+		<cc:attribute name="styleClass" />
+	</cc:interface>
+
+	<cc:implementation>
+		<img src="#{request.contextPath}/_cyk_file_image/?identifier=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
+			class="#{cc.attrs.styleClass}"
+		/>
+	</cc:implementation>
+
+</ui:composition>

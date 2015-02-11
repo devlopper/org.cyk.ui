@@ -56,8 +56,10 @@ public class CommandBuilder implements Serializable {
 				menuItem.setIcon(icon(aCommandable.getIconType()));
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
-					if(aCommandable.getViewId()!=null)
+					if(aCommandable.getViewId()!=null){
 						menuItem.setOutcome(aCommandable.getViewId().toString());
+					
+					}
 				}else{
 					switch(aCommandable.getViewType()){
 					case DYNAMIC_CRUD_ONE:

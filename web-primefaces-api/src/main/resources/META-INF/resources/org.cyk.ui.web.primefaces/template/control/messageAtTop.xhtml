@@ -9,7 +9,7 @@
  	
  	<ui:fragment rendered="#{not input.readOnly}"><table border="1" style="border: none;">
  		<ui:fragment rendered="#{not empty input.description}"><tr>
- 			<td><h:outputText value="#{input.description}" /> </td>
+ 			<td><h:outputText value="#{input.description}" escape="false" /> </td>
  		</tr></ui:fragment>
  		<tr>
  			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>

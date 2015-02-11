@@ -18,8 +18,9 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.model.PersonFormModel;
+import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
-import org.cyk.ui.web.primefaces.model.PersonFormModel;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -35,6 +36,8 @@ public class ContextListener extends AbstractContextListener {
 		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
 		config.setFileSupport(Boolean.TRUE);
 		uiManager.registerConfiguration(config);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorFormModel.class));
 		
 		uiManager.getBusinesslisteners().add(new BusinessAdapter(){
 			private static final long serialVersionUID = 4605368263736933413L;
@@ -62,7 +65,7 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	public void menu(UserSession userSession, UIMenu menu, Type type) {
 		UICommandable commandable;
-		menu.getCommandables().add(MenuManager.crudMany(Person.class, IconType.PERSON));
+		menu.getCommandables().add(MenuManager.crudMany(Actor.class, IconType.PERSON));
 		menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		commandable.setViewId("personsearch");
 	}

@@ -24,6 +24,7 @@ import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -63,6 +64,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected GenericBusiness genericBusiness;
+	@Inject private FileBusiness fileBusiness;
 	
 	/* constants */
 	private final String classParameter = "clazz";

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -31,7 +33,15 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 		throw new IllegalArgumentException("No such commandable <"+anIdentifier+"> exist");
 	}
 	
-	public void addCommandable(UICommandable commandable) {
+	@Override
+	public UICommandable addCommandable(String labelId,IconType iconType) {
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType);
+		return addCommandable(commandable);
+	}
+
+	@Override
+	public UICommandable addCommandable(UICommandable commandable) {
 		commandables.add(commandable);
+		return commandable;
 	}
 }

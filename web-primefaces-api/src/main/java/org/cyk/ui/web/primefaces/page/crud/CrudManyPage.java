@@ -60,7 +60,6 @@ public class CrudManyPage extends AbstractBusinessEntityFormManyPage<AbstractIde
 								results.add(node);	
 					}
 					
-					//table.handle(business,results);
 				}else{
 					Collection<AbstractIdentifiable> records = null;
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();

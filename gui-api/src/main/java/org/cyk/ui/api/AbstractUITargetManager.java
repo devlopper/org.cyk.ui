@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
+import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
@@ -82,11 +83,15 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		}
 		if(value==null)
 			return "";
+		
 		if(value.getClass().getName().startsWith("org.cyk."))
-			if(value instanceof AbstractModelElement)
+			if(value instanceof File)
+				return ((File)value).getIdentifier().toString();// A mechanism, will be used to retrieve file data from business
+			else if(value instanceof AbstractModelElement)
 				return ((AbstractModelElement)value).getUiString();
 			else
 				value.toString();
+		
 		if(value instanceof Date)
 			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
 		return value.toString();

@@ -11,6 +11,7 @@ import org.cyk.system.root.model.security.Installation;
 import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
@@ -27,7 +28,7 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 	@OutputSeperator(label=@Text(value="manager"))
 	private UserCredentials managerCredentials = new UserCredentials();
 	
-	@IncludeInputs(label=@Text(value="field.license"))
+	@IncludeInputs(label=@Text(value="field.license"),layout=Layout.VERTICAL)
 	@OutputSeperator(label=@Text(value="field.license"))
 	private License license = new License();
 	

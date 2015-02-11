@@ -79,7 +79,6 @@ public abstract class AbstractFileServlet extends HttpServlet implements Seriali
 			}*/
 			
 			IOUtils.copy(input, output);
-			
 		} finally {
 			// Gently close streams.
 			IOUtils.closeQuietly(output);

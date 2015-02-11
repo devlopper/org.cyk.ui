@@ -1,5 +1,11 @@
 package org.cyk.ui.api;
 
+import java.lang.reflect.Field;
+
+import org.cyk.ui.api.model.AbstractPartyFormModel;
+import org.cyk.ui.api.model.PersonFormModel;
+import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.test.AbstractUnitTest;
 
 public class BuildUT extends AbstractUnitTest {
@@ -19,6 +25,11 @@ public class BuildUT extends AbstractUnitTest {
 		controlSet1.getChildren().add(controlSet2);
 		
 		controlSet1.build();*/
+		Field field = CommonUtils.getInstance().getFieldFromClass(PersonFormModel.class, "contactCollectionFormModel");
+		System.out.println(field);
+		System.out.println(CommonUtils.getInstance().getFieldAnnotation(field,AbstractPartyFormModel.class, Sequence.class, Boolean.TRUE));
+		
+		System.out.println(CommonUtils.getInstance().getFieldAnnotation(field,PersonFormModel.class, Sequence.class, Boolean.TRUE));
 	}
 	
 	

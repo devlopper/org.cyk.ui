@@ -43,12 +43,12 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonFor
 
 	@Override
 	protected Collection<Person> __query__() {
-		return personBusiness.findByCriteria(new PersonSearchCriteria(query.getFirstName()));
+		return personBusiness.findByCriteria(new PersonSearchCriteria(query.getName()));
 	}
 
 	@Override
 	protected Long __count__() {
-		return personBusiness.countByCriteria(new PersonSearchCriteria(query.getFirstName()));
+		return personBusiness.countByCriteria(new PersonSearchCriteria(query.getName()));
 	}	
 	
 	
