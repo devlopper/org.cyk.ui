@@ -15,5 +15,9 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	public String windowHref(String url){
 		return "window.location='"+url+"'";
 	}
+	
+	protected String hide(String path){
+		return "$('"+path+"').hide();";
+	}
 
 }

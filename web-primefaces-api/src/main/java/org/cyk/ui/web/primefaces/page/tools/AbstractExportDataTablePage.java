@@ -6,21 +6,31 @@ import lombok.Getter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 
 public abstract class AbstractExportDataTablePage extends AbstractBusinessEntityFormManyPage<AbstractIdentifiable> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	@Getter protected String fileUrl;
+	@Getter protected Exporter exporter = new Exporter();
+	protected String fileExtension;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		fileUrl = WebNavigationManager.getInstance().exportDataTableFileUrl(businessEntityInfos.getClazz(),fileExtension(),print());
+		fileExtension = requestParameter(webManager.getRequestParameterFileExtension());
+		exporter.setFileUrl(url());
+		exporter.setType("application/"+fileExtension());
 	}
 	
-	protected abstract String fileExtension();
+	protected String fileExtension(){
+		return fileExtension;
+	}
+	
+	protected String url(){
+		return WebNavigationManager.getInstance().exportDataTableFileUrl(businessEntityInfos.getClazz(),fileExtension(),print());
+	}
 	
 	protected Boolean print(){
 		return Boolean.FALSE;

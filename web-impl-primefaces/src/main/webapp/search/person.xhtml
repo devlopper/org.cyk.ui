@@ -11,14 +11,14 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{personSearchPage}" />
  		<ui:define name="body">
- 			<cyk:businessQuery id="query" value="#{personSearchPage}" />
- 			<!--
- 			<cyk:formOneData value="#{personSearchPage.form}" />
- 			<p:separator/>
- 			<p:outputPanel id="resultsOutputPanel" >
- 				<cyk:table value="#{personSearchPage.table}" />	
- 			</p:outputPanel>
- 			-->
+ 			<cyk:businessQuery id="query" value="#{personSearchPage}" >
+ 				<f:facet name="graphics"><h1>Here</h1> </f:facet>
+ 				<f:facet name="tabs">
+ 					<p:tab title="ANOTHER">
+ 						<h1>MyTab</h1>
+ 					</p:tab>
+ 				</f:facet>
+ 			</cyk:businessQuery>
  		</ui:define>
  		
  		

@@ -178,6 +178,10 @@ border: none;
     margin: 0px !important;
     background: transparent !important; 
 }
+/**/
+.cyk-ui-verticalaligntop{
+	vertical-align: top;
+}
 
 
 /*---------------------------------------------------------- Tree  ------------------------------------------------------------------*/

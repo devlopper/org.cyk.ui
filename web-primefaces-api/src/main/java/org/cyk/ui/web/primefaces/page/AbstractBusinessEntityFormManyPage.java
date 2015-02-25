@@ -37,7 +37,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration);
+		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) __formModelClass__());
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
 			public Boolean ignore(Field field) {
@@ -74,6 +74,27 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		title = contentTitle;
 		
 		paginatorTemplate();
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		if(!Boolean.TRUE.equals(table.getShowHeader()))
+			hideTableHeader(".dataTableStyleClass");
+			//hide(".dataTableStyleClass > .ui-datatable-header");
+			//onDocumentLoadJavaScript += "$('.dataTableStyleClass > .ui-datatable-header').hide();";
+		if(!Boolean.TRUE.equals(table.getShowFooter()))
+			hideTableFooter(".dataTableStyleClass");
+			//hide(".dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot");
+			//onDocumentLoadJavaScript += "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();";
+	}
+	
+	protected void hideTableHeader(String parentPath) {
+		hide(parentPath+" > .ui-datatable-header");
+	}
+	
+	protected void hideTableFooter(String parentPath) {
+		hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot");
 	}
 	
 	protected void paginatorTemplate(){

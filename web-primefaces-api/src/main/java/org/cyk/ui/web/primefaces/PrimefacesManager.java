@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,14 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.web.api.WebManager;
+import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -36,6 +42,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
+	private String formId = ":form:contentPanel";
 	
 	@Override
 	protected void initialisation() {
@@ -44,6 +51,11 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
+	}
+	
+	@Override
+	public ContentType contentType() {
+		return ContentType.HTML;
 	}
 	
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){
@@ -57,10 +69,34 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		
 		RequestContext.getCurrentInstance().openDialog(outcome, dialogParams, urlParams); 
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void choices(InputChoice<?, ?, ?, ?, ?, ?> inputChoice, Object data,Field field, List<Object> list) {
+		super.choices(inputChoice, data, field, list);
+		if(inputChoice instanceof InputManyPickList){
+			InputManyPickList<Object> pickList = (InputManyPickList<Object>) inputChoice;
+			pickList.getDualListModel().setSource(list);
+			List<Object> targetList = (List<Object>) commonUtils.readField(data, field, Boolean.TRUE);
+			try {
+				FieldUtils.writeField(field, data, targetList);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			pickList.getDualListModel().setTarget(targetList);
+		}
+	}
+	
+	
+	
+	@Override
+	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice) {
+		return !(inputChoice instanceof InputManyPickList<?>);
+	}
 
 	@Override
 	protected SelectItem item(AbstractIdentifiable identifiable) {
-		return new SelectItem(identifiable,identifiable.getUiString());
+		return new SelectItem(identifiable,identifiable instanceof AbstractEnumeration?((AbstractEnumeration)identifiable).getName():identifiable.getUiString());
 	}
 	
 	@Override

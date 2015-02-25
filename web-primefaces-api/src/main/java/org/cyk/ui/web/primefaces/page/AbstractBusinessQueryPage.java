@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -28,6 +29,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
+@Getter @Setter
 public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifiable,QUERY,RESULT> extends AbstractBusinessEntityFormManyPage<ENTITY> 
 	implements ControlSetListener<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>,Serializable {
 
@@ -36,6 +38,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	protected Class<ENTITY> entityClass;
 	protected Class<QUERY> queryClass;
 	protected Class<RESULT> resultClass;
+	protected Boolean showGraphics=Boolean.FALSE;
 	
 	protected QUERY query;
 	//protected Integer pageSize = 10;
@@ -87,12 +90,24 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		});
 	}
 	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		form.getSubmitCommandable().setRequested(autoLoad());
+		if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
+			serve(form.getSubmitCommandable().getCommand(), null);
+	}
+	
 	protected abstract Class<ENTITY> __entityClass__();
 	protected abstract Class<QUERY> __queryClass__();
 	protected abstract Class<RESULT> __resultClass__();
 	
 	protected abstract Collection<ENTITY> __query__();
 	protected abstract Long __count__();
+	
+	protected Boolean autoLoad(){
+		return Boolean.FALSE;
+	}
 	
 	protected String componentId(){
 		return "query";
@@ -101,6 +116,14 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	protected BusinessEntityInfos fetchBusinessEntityInfos() {
 		return uiManager.businessEntityInfos(entityClass);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Class<? extends AbstractFormModel<?>> __formModelClass__() {
+		if(AbstractFormModel.class.isAssignableFrom(resultClass))
+			return (Class<? extends AbstractFormModel<?>>)resultClass;
+		return super.__formModelClass__();
 	}
 	
 	@Override

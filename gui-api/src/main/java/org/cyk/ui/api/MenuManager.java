@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -20,6 +21,7 @@ import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -178,7 +180,15 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public static UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
-		return crud(businessEntityInfos, ViewType.DYNAMIC_CRUD_ONE, iconType);
+		UICommandable c = crud(businessEntityInfos,null, iconType);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
+		else{
+			c.setViewId(businessEntityInfos.getUiEditViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		}
+		return c;
 	}
 	
 	public static UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
@@ -186,11 +196,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public static UICommandable crudMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
-		return crud(businessEntityInfos, ViewType.DYNAMIC_CRUD_MANY, iconType);
+		UICommandable c = crud(businessEntityInfos, null, iconType);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
+			c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
+		else{
+			c.setViewId(businessEntityInfos.getUiListViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+		}
+		return c;
 	}
 	
 	public static UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
 		return crudMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
+	public static UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
+		UICommandable commandable,p;
+		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
+		commandable = commandable(businessEntityInfos.getUiLabelId(), null);
+		commandable.getChildren().add(p=crudOne(aClass, IconType.ACTION_ADD));
+		p.setLabel(UIManager.getInstance().text("command.item.add"));
+		commandable.getChildren().add(p=crudMany(aClass, IconType.THING_LIST));
+		p.setLabel(UIManager.getInstance().text("command.list"));
+		
+		return commandable;
 	}
 	
 	/**/
@@ -232,7 +261,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	/**/
-	
+		
 	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
 
 		@Override

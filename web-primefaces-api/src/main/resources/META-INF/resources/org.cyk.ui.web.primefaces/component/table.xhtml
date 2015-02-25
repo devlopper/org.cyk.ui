@@ -15,6 +15,7 @@
 	<cc:implementation>
 		<ui:param name="updateDataTableStyleClass" value="#{cc.value.updateStyleClass}" />
 		<ui:param name="controlDir" value="/org.cyk.ui.web.primefaces/include/control" />
+		
 		<!--
 		<p:menubar model="#{cc.value.menuModel}" /> 
 		-->
@@ -38,14 +39,13 @@
 				>
 				
 				<f:facet name="header">
+       				<h:outputText value="#{cc.value.title}" rendered="#{not empty cc.value.title}" />
        				<p:toolbar id="toolbar" rendered="#{cc.value.showToolBar}">
        					<f:facet name="left">
-       						
        						<cyk:command value="#{cc.value.addRowCommandable}" />
-       						
-       						<span class="ui-separator">
+       						<ui:fragment rendered="#{cc.value.addRowCommandable.button.rendered}" ><span class="ui-separator">
 				                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-				            </span>
+				            </span></ui:fragment>
        						<cyk:command value="#{cc.value.exportCommandable}" />
        						<cyk:command value="#{cc.value.printCommandable}" />
        					</f:facet>       					
@@ -70,8 +70,9 @@
 				<p:column headerText="#" width="1"><h:outputText value="#{index+1}" /> </p:column>
 				
 				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
-				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" >  
+				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex">  
 		            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
+		            <f:facet name="footer"><h:outputText value="#{column.footer}" /></f:facet>  
 		  			<ui:param name="templateFile" value="/org.cyk.ui.web.primefaces/template/control/messageAtTop.xhtml" />
 		  			<!--
 		  			<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
@@ -141,6 +142,8 @@
 				searchCommandWidgetVar.jq.click();
 			}	
 		</h:outputScript>
+		
+		
 				
 	</cc:implementation>
 

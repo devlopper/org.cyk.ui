@@ -37,7 +37,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Override
 	public void targetDependentInitialisation() {
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
+		
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
+		
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
 	}
 	

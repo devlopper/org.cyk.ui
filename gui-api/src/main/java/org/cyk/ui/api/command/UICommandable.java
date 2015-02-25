@@ -63,8 +63,9 @@ public interface UICommandable {
 	
 	Collection<Parameter> getParameters();
 	void setParameters(Collection<Parameter> theParameters);
-	
-	UICommandable addChild(String labelId,IconType iconType,String viewId,Parameter[] parameters);
+	 
+	UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
+	void addChild(UICommandable aCommandable);
 	
 	/**/
 	
@@ -90,14 +91,14 @@ public interface UICommandable {
 		ACTION_GO_BACK,ACTION_OK,ACTION_APPLY,ACTION_SAVE,ACTION_ADD,ACTION_CLEAR,ACTION_EDIT,ACTION_CANCEL,ACTION_REMOVE,ACTION_OPEN,ACTION_ADMINISTRATE,ACTION_HELP,ACTION_PREVIEW,
 		ACTION_SEARCH,ACTION_EXPORT,ACTION_EXPORT_PDF,ACTION_EXPORT_EXCEL,ACTION_LOGOUT,ACTION_PRINT,
 		
-		THING_APPLICATION,THING_LICENCE,THING_TOOLS,THING_CALENDAR,THING_USERACCOUNT,THING_CONTROLPANEL,
+		THING_APPLICATION,THING_LICENCE,THING_TOOLS,THING_CALENDAR,THING_USERACCOUNT,THING_CONTROLPANEL,THING_LIST,
 		
 		PERSON,
 	}
 	
 	
 	@Getter @Setter @AllArgsConstructor
-	public class Parameter implements Serializable{
+	public static class Parameter implements Serializable{
 
 		private static final long serialVersionUID = -9159625678100456054L;
 		

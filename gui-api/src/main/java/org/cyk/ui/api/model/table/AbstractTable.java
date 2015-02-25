@@ -1,6 +1,8 @@
 package org.cyk.ui.api.model.table;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.ui.api.AbstractTree;
 import org.cyk.ui.api.TreeAdapter;
 import org.cyk.ui.api.UIManager;
@@ -27,8 +30,11 @@ import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.FieldSorter;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.model.table.Table;
 import org.cyk.utility.common.model.table.TableAdapter;
 
@@ -55,9 +61,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		crudOneRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
-	protected Boolean showHierarchy,showOpenCommand=Boolean.TRUE,showFooterCommandBlock=Boolean.TRUE;
-	
-	
+	protected Boolean showHierarchy,showOpenCommand=Boolean.TRUE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE;
 	
 	protected AbstractIdentifiable master;
 	protected List<DATA> hierarchyData = new ArrayList<>();
@@ -72,16 +76,19 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@Override
 	protected void initialisation() {
-		// TODO Auto-generated method stub
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
+		
 		addRowCommandable = UIProvider.getInstance().createCommandable(this, "command.add", IconType.ACTION_ADD, null, null);
 		initRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
 		cancelRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.cancel", IconType.ACTION_CANCEL, null, null);
 		applyRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.apply", IconType.ACTION_APPLY, null, null);
 		removeRowCommandable = UIProvider.getInstance().createCommandable(this, "command.remove", IconType.ACTION_REMOVE, null, null);
 		removeRowCommandable.setShowLabel(Boolean.FALSE);
-		removeRowCommandable.getCommand().setConfirm( CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) );
+		
+		if(businessEntityInfos!=null)
+			removeRowCommandable.getCommand().setConfirm( CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) );
+		
 		openRowCommandable = UIProvider.getInstance().createCommandable(this, "command.open", IconType.ACTION_OPEN, null, null);
 		openRowCommandable.setShowLabel(Boolean.FALSE);
 		
@@ -112,13 +119,36 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		getTableListeners().add(new TableAdapter<Row<DATA>, Column, DATA, String, Cell, String>(){
 			@Override
+			public void addColumnFromDataClass(Class<?> aClass,Collection<Field> fields) {
+				List<Field> f = new ArrayList<>();
+				__fields__(f, rowDataClass,UIProvider.getInstance().annotationClasses());
+				fields.addAll(f);
+			}
+			@Override
 			public void columnAdded(Column column) {
 				super.columnAdded(column);
 				column.setTitle(UIManager.getInstance().fieldLabel(column.getField()));
 			}
+			
+			@Override
+			public String cellValue(Row<DATA> row, Column column) {
+				Object value = commonUtils.readField(row.getData(), column.getField(),!column.getField().getDeclaringClass().isAssignableFrom(rowDataClass),Boolean.FALSE,
+						UIProvider.getInstance().annotationClasses());
+				//if( value!=null )
+					//System.out.println(column.getField().getName()+" - "+value);
+				return UIProvider.getInstance().formatValue(column.getField(), value);
+			}
+			
 			@Override
 			public void cellAdded(Row<DATA> row, Column column, Cell cell) {
-				cell.setValue(UIProvider.getInstance().readOnlyValue(column.getField(), row.getData()));	
+				/*
+				Object object = null;
+				if(column.getField().getDeclaringClass().equals(rowDataClass)){
+					object = row.getData();
+				}
+				if(object!=null)
+					cell.setValue(UIProvider.getInstance().readOnlyValue(column.getField(), object));
+				*/
 				cell.setIsFile(UIProvider.getInstance().isFile(column.getField()));
 				if(Boolean.TRUE.equals(cell.getIsFile()))
 					cell.setIsImage(UIProvider.getInstance().isImage(column.getField()));
@@ -135,15 +165,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@Override
 	public void build() {
-		lazyLoad = lazyLoad==null?!CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()):lazyLoad;
+		lazyLoad = lazyLoad==null?businessEntityInfos!=null && !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()):lazyLoad;
 		//globalFilter = lazyLoad;
 		if(globalFilter==null)
 			globalFilter = identifiableConfiguration==null?lazyLoad:identifiableConfiguration.getGlobalFiltering();
 		inplaceEdit = !lazyLoad;
-		showEditColumn = true;//UsedFor.ENTITY_INPUT.equals(usedFor);
-		showAddRemoveColumn = Boolean.TRUE;
+		showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
+		showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
 		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
 		editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
+		
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
 			if(!Boolean.TRUE.equals(getLazyLoad()))
@@ -156,22 +187,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				tree.build(hierarchyNode);
 				for(DATA d : hierarchyData)
 					tree.populate(d);	
-				
-				/*
-				
-				
-				selectObjectMethod = new AbstractMethod<Object, Object>() {
-					private static final long serialVersionUID = -9071786035119019765L;
-					@Override
-					protected Object __execute__(Object parameter) {
-						primefacesTree.expand(parameter,Boolean.TRUE);
-						return null;
-					}
-				};
-				*/
-				
-				//select(master);
 				tree.expand(master, Boolean.TRUE);
+				showOpenCommand = getShowHierarchy();
 			}
 			
 		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
@@ -211,21 +228,17 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected abstract void open(DATA data);
 	
 	public Boolean isDataTreeType(){
-		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);
+		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);//TODO should be businessEntityInfos.getClazz()
 	}
-	
+	/*
 	public String getTitle(){
 		if(title==null)
 			title = UIManager.getInstance().textOfClass(rowDataClass);
 		return title;
-	}
+	}*/
 	
 	public Boolean getShowHierarchy(){
 		return Boolean.TRUE.equals(isDataTreeType());
-	}
-	
-	public Boolean getShowOpenCommand(){
-		return getShowHierarchy();
 	}
 	
 	public Boolean getShowFooterCommandBlock(){
@@ -280,41 +293,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected Class<? extends AbstractIdentifiable> identifiableClass(){
 		return (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass());
 	}
-	/*
-	@SuppressWarnings("unchecked")
-	@Override
-	public void fetchData(Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,Map<String, Object> filters,String globalFilter){
-		System.out.println("AbstractTable.fetchData()");
-		rows.clear();
-		if(AbstractDataTreeNode.class.isAssignableFrom(rowDataClass)){
-			showHierarchy = Boolean.TRUE;
-			@SuppressWarnings("rawtypes")
-			AbstractDataTreeNodeBusiness bean = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>) rowDataClass);
-			handle(bean);
-		}else{
-			Collection<? extends AbstractIdentifiable> records = null;
-			//if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
-			//	records = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) rowDataClass).find().all();
-			//	addRow((Collection<DATA>)records);
-			//}else{
-				if(Boolean.TRUE.equals(lazyLoad)){
-					if(Boolean.TRUE.equals(identifiableConfiguration==null?this.globalFilter:identifiableConfiguration.getGlobalFiltering()))
-						records = UIManager.getInstance().find(identifiableClass(), first, pageSize, sortField, ascendingOrder, globalFilter);
-					else
-						records = UIManager.getInstance().find(identifiableClass(), first, pageSize, sortField, ascendingOrder, filters);
-				}else
-					records = UIManager.getInstance().getGenericBusiness().use(identifiableClass()).find().all();
-				
-				if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass))
-					addRow((Collection<DATA>)records);
-				else	
-					if(records!=null)
-						for(AbstractIdentifiable identifiable : records)	
-							addRow((DATA) AbstractFormModel.instance(rowDataClass, identifiable));
-
-			//}
-		}
-	}*/
 	
 	//TODO commands should be treated in specific pages
 	
@@ -390,7 +368,18 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			if(Boolean.TRUE.equals(lazyLoad)){
 				crudOnePage();
 			}else{
-				DATA d = newInstance(rowDataClass);
+				DATA d;
+				if(AbstractFormModel.class.isAssignableFrom(rowDataClass)){
+					d = (DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz()));
+				}else{
+					d = newInstance(rowDataClass);
+					if(isDataTreeType())
+						if(master==null)
+							;
+						else
+							((AbstractDataTreeNode)d).setNode(new NestedSetNode( ((AbstractDataTreeNode)master).getNode().getSet(), 
+								((AbstractDataTreeNode)master).getNode()));// debug(master);
+				}
 				editing.add(d);
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;
@@ -402,7 +391,13 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		}else if(command==applyRowEditCommandable.getCommand()){
 			if(Boolean.TRUE.equals(persistOnApplyRowEdit))
 				for(DATA data : editing){
-					UIManager.getInstance().getGenericBusiness().save((AbstractIdentifiable) data);//TODO should not be here. specific to CrudMany
+					AbstractIdentifiable identifiable = null;
+					if(data instanceof AbstractFormModel<?>){
+						((AbstractFormModel<?>)data).write();
+						identifiable = ((AbstractFormModel<?>)data).getIdentifiable();
+					}else
+						identifiable = (AbstractIdentifiable) data;
+					UIManager.getInstance().getGenericBusiness().save(identifiable);//TODO should not be here. specific to CrudMany
 				}
 			Row<DATA> row = (Row<DATA>) parameter;
 			updateRow(row, row.getData());
@@ -421,12 +416,15 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		}else if(command==removeRowCommandable.getCommand()){
 			Row<DATA> row = (Row<DATA>) parameter;
 			if(!Boolean.TRUE.equals(lazyLoad)){
+				AbstractIdentifiable identifiable = null;
 				if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
-					AbstractIdentifiable identifiable = (AbstractIdentifiable) row.getData();
-					if(Boolean.TRUE.equals(persistOnRemoveRow))
-						UIManager.getInstance().getGenericBusiness().delete(identifiable);
-					deleteRowAt(row.getIndex().intValue());
+					identifiable = (AbstractIdentifiable) row.getData();
+				}else{
+					identifiable = ((AbstractFormModel<?>)row.getData()).getIdentifiable();
 				}
+				if(Boolean.TRUE.equals(persistOnRemoveRow))
+					UIManager.getInstance().getGenericBusiness().delete(identifiable);
+				deleteRowAt(row.getIndex().intValue());
 			}else{
 				crudOnePage(row.getData(),Crud.DELETE);
 			}
@@ -470,5 +468,21 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public String notificationMessageIdAfterServe(UICommand command, Object parameter, AfterServeState state) {
 		return null;
 	}	
+	 
+	/**/
+	
+	private void __fields__(List<Field> fields,Class<?> aClass,Collection<Class<? extends Annotation>> annotations){
+		List<Field> candidates = new ArrayList<>(commonUtils.getAllFields(aClass, annotations));
+		
+		new FieldSorter(candidates,aClass).sort();
+		
+		for(Field field : candidates){
+			if(field.getAnnotation(Input.class)!=null){
+				fields.add(field);
+			} else if(field.getAnnotation(IncludeInputs.class)!=null){
+				__fields__(fields,field.getType(),annotations);
+			}
+		}
+	}
 	
 }

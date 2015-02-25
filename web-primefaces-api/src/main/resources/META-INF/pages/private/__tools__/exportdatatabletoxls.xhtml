@@ -12,11 +12,7 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{exportDataTableToXlsPage}" />
  		<ui:define name="body">	
- 			
- 			<object type="application/xls" data="#{exportDataTableToXlsPage.fileUrl}" height="700px" width="100%">
-	            Your browser can't display xls, <a href="#{exportDataTableToXlsPage.fileUrl}">click</a> to download xls instead.
-	        </object>
-	        
+ 			<cyk:exporter value="#{exportDataTableToXlsPage.exporter}"/>
  		</ui:define>
  	</ui:decorate>
  	

@@ -28,7 +28,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		super.initialisation();
 		crud = crudFromRequestParameter();
 		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
-		Object data = data(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass());
+		
+		Object data = data(formModelClass==null?(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass()):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);

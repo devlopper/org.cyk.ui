@@ -11,5 +11,9 @@ import org.cyk.utility.common.model.table.AbstractColumn;
 public class Column extends AbstractColumn<String, Cell, String> implements Serializable {
 
 	private static final long serialVersionUID = 8311076255598465773L;
+	
+	{
+		//footer = "MyFoot";
+	}
 
 }

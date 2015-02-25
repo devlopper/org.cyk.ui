@@ -80,7 +80,10 @@ public class CommandBuilder implements Serializable {
 						menuItem.setParam(WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(aCommandable.getBusinessEntityInfos()));
 				}
 				for(Parameter parameter : aCommandable.getParameters()){
-					menuItem.setParam(parameter.getName(), parameter.getValue());
+					if(StringUtils.isBlank(parameter.getName()) || parameter.getValue()==null)
+						;
+					else
+						menuItem.setParam(parameter.getName(), parameter.getValue());
 				}
 				
 			}else{

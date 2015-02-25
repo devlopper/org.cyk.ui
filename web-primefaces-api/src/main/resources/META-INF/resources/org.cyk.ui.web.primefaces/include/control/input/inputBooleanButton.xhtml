@@ -15,7 +15,7 @@
 		<ui:define name="input">
 			<p:selectBooleanButton id="inputBooleanButton" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
-				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" 
+				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}"
 				onLabel="#{control.onState.label}" offLabel="#{control.offState.label}" >
 				<f:attribute name="fieldId" value="#{control.id}" />
 				<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>

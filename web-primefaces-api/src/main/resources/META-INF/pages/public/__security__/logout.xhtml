@@ -10,7 +10,7 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{logoutPage}" />
  		<ui:define name="body">
- 			#{webSession.logout()}
+ 			<p:commandButton value="Logout" action="#{webSession.logout}" />
  		</ui:define>
  	</ui:decorate>
  

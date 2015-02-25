@@ -12,10 +12,10 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{exportDataTableToPdfPage}" />
  		<ui:define name="body">	
- 			
- 			<object type="application/pdf" data="#{exportDataTableToPdfPage.fileUrl}" height="700px" width="100%">
+ 			<cyk:exporter value="#{exportDataTableToPdfPage.exporter}"/>
+ 			<!--object type="application/pdf" data="#{exportDataTableToPdfPage.fileUrl}" height="700px" width="100%">
 	            Your browser can't display pdf, <a href="#{exportDataTableToPdfPage.fileUrl}">click</a> to download pdf instead.
-	        </object>
+	        </object-->
 	        
  		</ui:define>
  	</ui:decorate>

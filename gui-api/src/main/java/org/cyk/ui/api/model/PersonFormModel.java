@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.party.person.MaritalStatus;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.Sex;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
@@ -70,7 +68,7 @@ public class PersonFormModel extends AbstractPartyFormModel<Person>  implements 
 	}
 	
 	@Override @Sequence(direction=Direction.AFTER,field="image")
-	public AbstractFormModel<ContactCollection> getContactCollectionFormModel() {
+	public SimpleContactCollectionFormModel getContactCollectionFormModel() {
 		return super.getContactCollectionFormModel();
 	}
 		

@@ -1,11 +1,13 @@
 package org.cyk.ui.web.primefaces.page.application;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -28,6 +30,19 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 		super.initialisation();
 		title=text("page.application.installation.title");
 		contentTitle = text("page.application.installation.title");
+		
+		//TODO to be removed 
+		formModel.getAdministratorCredentials().getCredentialsInputs().getCredentials().setUsername("admin");
+		formModel.getAdministratorCredentials().getCredentialsInputs().getCredentials().setPassword("123");
+		formModel.getAdministratorCredentials().getCredentialsInputs().setPasswordConfirmation("123");
+		
+		formModel.getManagerCredentials().setName("TheManager");
+		formModel.getManagerCredentials().getCredentialsInputs().getCredentials().setUsername("manager");
+		formModel.getManagerCredentials().getCredentialsInputs().getCredentials().setPassword("123");
+		formModel.getManagerCredentials().getCredentialsInputs().setPasswordConfirmation("123");
+		
+		formModel.getLicense().getPeriod().setFromDate(DateUtils.addDays(new Date(), -1));
+		formModel.getLicense().getPeriod().setToDate(DateUtils.addDays(new Date(), 30));
 	}
 
 	@Override

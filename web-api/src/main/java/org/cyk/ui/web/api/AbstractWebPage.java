@@ -30,8 +30,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@Inject transient protected WebNavigationManager navigationManager;
 	@Inject transient protected JavaScriptHelper javaScriptHelper;
 	
-	@Getter @Setter protected String footer,messageDialogOkButtonOnClick,url,previousUrl,onDocumentReadyJavaScript,onDocumentLoadJavaScript,
-		onDocumentBeforeUnLoadJavaScript,onDocumentBeforeUnLoadWarningMessage;
+	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
+		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage;
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn;
 	private String windowMode;
 	
@@ -100,6 +100,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	public String getOnDocumentBeforeUnLoadWarnAsString(){
 		return Boolean.TRUE.equals(getOnDocumentBeforeUnLoadWarn())?Boolean.TRUE.toString():Boolean.FALSE.toString();
+	}
+	
+	protected void hide(String path){
+		onDocumentLoadJavaScript += javaScriptHelper.hide(path);
 	}
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){

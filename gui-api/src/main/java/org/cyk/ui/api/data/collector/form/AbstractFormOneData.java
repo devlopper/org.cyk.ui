@@ -77,6 +77,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			
 			__autoBuild__(objectFields, controlSet);
 		}
+		//submitCommandable.setRendered(Crud.READ.equals(controlSet.get));
 		super.__build__();
 	}
 

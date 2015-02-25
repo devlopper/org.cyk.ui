@@ -10,6 +10,8 @@
 
 	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.BusinessQuery">
 		<cc:attribute name="value" required="true" />
+		<cc:renderFacet name="graphics" />
+		<cc:renderFacet name="tabs" />
 	</cc:interface>
 
 	<cc:implementation>
@@ -20,7 +22,23 @@
 		
 		<p:separator/>
 		<p:outputPanel id="resultsOutputPanel" >
-			<cyk:table value="#{cc.value.table}" />	
+			<!--cyk:table value="#{cc.value.table}" /-->
+			
+			<p:outputPanel rendered="#{cc.value.showGraphics}" >
+				<p:tabView id="saletabview">
+	 				<p:tab id="tabletab" title="#{uiManager.text('datatable')}" >
+	 					<cyk:table value="#{cc.value.table}" />	
+	 				</p:tab>
+	 				<p:tab title="#{uiManager.text('graphic')}" rendered="#{cc.value.showGraphics}">
+	 					<cc:renderFacet name="graphics" />
+	 				</p:tab>
+	 			</p:tabView>
+ 			</p:outputPanel>
+			
+			<p:outputPanel rendered="#{not cc.value.showGraphics}" >
+				<cyk:table value="#{cc.value.table}" />	
+			</p:outputPanel>
+				
 		</p:outputPanel>
 	</cc:implementation>
 

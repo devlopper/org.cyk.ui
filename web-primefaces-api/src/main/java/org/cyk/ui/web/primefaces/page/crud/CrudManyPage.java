@@ -102,6 +102,9 @@ public class CrudManyPage extends AbstractBusinessEntityFormManyPage<AbstractIde
 				return super.count(filter);
 			}
 		});	
+		
+		//onDocumentLoadJavaScript = "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();"
+		//		+ "$('.dataTableStyleClass > .ui-datatable-header').hide();";
 	}
 	
 	@Override

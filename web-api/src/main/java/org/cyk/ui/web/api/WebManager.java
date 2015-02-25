@@ -45,6 +45,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Setter private String decoratedTemplateInclude;
 	
+	private final String requestParameterFormModel = UIManager.getInstance().getFormModelParameter();
 	private final String requestParameterClass = UIManager.getInstance().getClassParameter();
 	private final String requestParameterIdentifiable = UIManager.getInstance().getIdentifiableParameter();
 	private final String requestParameterWindowMode = "windowmode";
@@ -52,6 +53,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
 	private final String requestParameterPreviousUrl = "previousurl";
 	private final String requestParameterPrint = "print";
+	private final String requestParameterFileExtension = "fileextension";
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){

@@ -30,6 +30,7 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -44,6 +45,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
+	public static final Map<String, Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> FORM_MODEL_MAP = new HashMap<>();
 	
 	private static UIManager INSTANCE;
 	public static UIManager getInstance() {
@@ -60,13 +62,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private ToStringMethod toStringMethod;
 	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
 	
-	@Inject protected LanguageBusiness languageBusiness;
-	@Inject protected ApplicationBusiness applicationBusiness;
-	@Inject protected BusinessManager businessManager;
-	@Inject protected GenericBusiness genericBusiness;
+	@Inject private LanguageBusiness languageBusiness;
+	@Inject private ApplicationBusiness applicationBusiness;
+	@Inject private BusinessManager businessManager;
+	@Inject private GenericBusiness genericBusiness;
 	@Inject private FileBusiness fileBusiness;
 	
 	/* constants */
+	private final String formModelParameter = "formmodel";
 	private final String classParameter = "clazz";
 	private final String identifiableParameter = "identifiable";
 	private final String windowParameter="windowParam";
@@ -120,6 +123,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
 			infos.setUiLabel(text(infos.getUiLabelId()));//for those registered late
+			
 		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
@@ -180,6 +184,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public String text(String code){
 		return languageBusiness.findText(code);
+	}
+	
+	public String textOneParam(String code,Object value){
+		return languageBusiness.findText(code,new Object[]{value});
+	}
+	
+	public String textInputValueRequired(String nameId){
+		return languageBusiness.findText("input.value.required", new Object[]{text(nameId)});
 	}
 	
 	public String textOfClass(Class<?> aClass){
@@ -261,32 +273,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	/**/
 	
 	public String textAnnotationValue(Field field,Text text) {
-		/*
-		ValueType type ;
-		String specifiedValue = null;
-		if(text==null)
-			type = ValueType.VALUE; 
-		else{
-			specifiedValue = text.value();
-			type = ValueType.AUTO.equals(text.type())?ValueType.ID:text.type();
-		}
-		if(ValueType.VALUE.equals(type) && StringUtils.isNotBlank(specifiedValue))
-			return specifiedValue;
-		String labelId = null;
-		if(ValueType.ID.equals(type))
-			if(StringUtils.isNotBlank(specifiedValue))
-				labelId = specifiedValue;
-			else{
-				StringBuilder s =new StringBuilder("field.");
-				for(int i=0;i<field.getName().length();i++){
-					if(Character.isUpperCase(field.getName().charAt(i)))
-						s.append('.');
-					s.append(Character.toLowerCase(field.getName().charAt(i)));
-				}
-				labelId = s.toString();
-			}
-		return text(labelId);
-		*/
 		return languageBusiness.findAnnotationText(field, text);
 	}
 	

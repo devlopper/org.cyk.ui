@@ -2,18 +2,22 @@ package org.cyk.ui.api;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -36,26 +40,40 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void choices(Object data, Field field, List<Object> list) {
+	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
 		FieldOverride fieldOverride = data.getClass().getAnnotation(FieldOverride.class);
-		Class<?> type = fieldOverride==null?field.getType():fieldOverride.type();
+		Class<?> type = null;
+		if(fieldOverride==null || !field.getName().equals(fieldOverride.name())){
+			type = field.getType();
+		}else{
+			type = fieldOverride.type();
+		}
+		
+		if(List.class.equals(type))
+	        type = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+		
+		Boolean itemWrapper = itemWrapper(inputChoice);
+		
 		if(AbstractIdentifiable.class.isAssignableFrom(type)){
 			for(Object object : findAll((Class<? extends AbstractIdentifiable>)type)){
 				AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
-				list.add(item(identifiable));
+				list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
 			}
 		}else if(type.isEnum()){
-			try {
-				for(Enum<?> value : (Enum<?>[])type.getEnumConstants())
-					list.add(item(value));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())
+				list.add(item(value));
 		}
+		
+		
+		
 	}
 	
 	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass){
 		return UIManager.getInstance().getGenericBusiness().use(aClass).find().all();
+	}
+	
+	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice){
+		return Boolean.TRUE;
 	}
 	
 	protected abstract SELECTITEM item(AbstractIdentifiable identifiable);
@@ -75,25 +93,32 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Override
 	public String readOnlyValue(Field field, Object object) {
 		Object value = null;
-		try {
-			value = FieldUtils.readField(field, object, Boolean.TRUE);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		value = CommonUtils.getInstance().readField(object,field,Boolean.FALSE);
 		if(value==null)
-			return "";
-		
-		if(value.getClass().getName().startsWith("org.cyk."))
+			value = "";
+		return formatValue(field, value);
+	}
+	
+	@Override
+	public String formatValue(Field field, Object value) {
+		if(value.getClass().getName().startsWith("org.cyk.")){//TODO make org.cyk. as constant
 			if(value instanceof File)
-				return ((File)value).getIdentifier().toString();// A mechanism, will be used to retrieve file data from business
+				return ((File)value).getIdentifier().toString();// A mechanism, will be used to retrieve file data from business using file identifier
 			else if(value instanceof AbstractModelElement)
 				return ((AbstractModelElement)value).getUiString();
 			else
-				value.toString();
-		
-		if(value instanceof Date)
+				return value.toString();
+		}else if(value instanceof Date)
 			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
+		else if(value instanceof Collection<?>){
+			Collection<?> collection = (Collection<?>) value;
+			Collection<String> strings = new ArrayList<>();
+			int i = 0;
+			for(Object object : collection)
+				strings.add( (collection.size()>1?++i+" - ":"")+formatValue(field,object));
+			return StringUtils.join(strings,contentType().getNewLineMarker());
+		}
+			
 		return value.toString();
 	}
 

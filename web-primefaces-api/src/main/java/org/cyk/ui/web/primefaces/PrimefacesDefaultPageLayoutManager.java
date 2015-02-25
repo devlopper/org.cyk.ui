@@ -48,7 +48,7 @@ public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutMan
         
         // west pane  
         LayoutOptions west = new LayoutOptions();   
-        west.addOption("size", 350);
+        west.addOption("size", 220);
         options.setWestOptions(west);  
   		
         //center pane

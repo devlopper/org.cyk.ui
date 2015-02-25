@@ -26,6 +26,10 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonFor
 
 	@Inject private PersonBusiness personBusiness;
 	
+	{
+		showGraphics = Boolean.TRUE;
+	}
+	
 	@Override
 	protected Class<Person> __entityClass__() {
 		return Person.class;

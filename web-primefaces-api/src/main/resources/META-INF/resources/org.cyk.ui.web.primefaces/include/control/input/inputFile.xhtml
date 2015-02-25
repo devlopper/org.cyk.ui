@@ -39,7 +39,7 @@
 					<!-- Primefaces -->
 					<p:fileUpload id="inputFile" value="#{control.file}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" 
 						title="#{control.label}" requiredMessage="#{control.requiredMessage}" mode="#{control.mode}" styleClass="fileUploadStyleClass"
-						allowTypes="#{control.allowTypes}" sizeLimit="#{control.maximumSize}" rendered="#{control.value == null}" >
+						allowTypes="#{control.allowTypes}" sizeLimit="#{control.maximumSize}" rendered="#{control.value == null}" label="#{control.label}">
 						<f:attribute name="fieldId" value="#{control.id}" />
 						<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
 					</p:fileUpload>	

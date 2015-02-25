@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
@@ -37,6 +36,6 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
-	protected AbstractFormModel<ContactCollection> contactCollectionFormModel = new SimpleContactCollectionFormModel();
-	
+	//protected AbstractFormModel<ContactCollection> contactCollectionFormModel = new SimpleContactCollectionFormModel();
+	protected SimpleContactCollectionFormModel contactCollectionFormModel = new SimpleContactCollectionFormModel();
 }

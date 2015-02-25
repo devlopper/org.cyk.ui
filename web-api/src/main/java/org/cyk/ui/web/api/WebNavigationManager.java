@@ -24,6 +24,8 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserSession;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -65,7 +67,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeApplicationSetup = "applicationSetup";
 	
 	@Getter private String outcomeDynamicCrudOne = "dynamicCrudOne";
-	@Getter private String outcomeDynamicCrudOneWithFileSupport = "dynamicCrudOneWithFileSupport";
 	@Getter private String outcomeDynamicCrudMany = "dynamicCrudMany";
 	@Getter private String outcomeLogout = "useraccountlogout";
 	
@@ -178,8 +179,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		
 	public String getRequestUrl(){
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()
-				+(String) FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
+		String url,path = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
+		if(path==null){
+			url = request.getRequestURL().toString();
+			if(StringUtils.isNotEmpty(request.getQueryString()))
+				url += "?"+request.getQueryString();
+		}else{
+			url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+		}
+		
 		
 		//if(StringUtils.isNotEmpty(PrettyContext.getCurrentInstance().getRequestQueryString().toQueryString()))
 		//	url += NavigationHelper.QUERY_START+PrettyContext.getCurrentInstance().getRequestQueryString().toQueryString();
@@ -196,6 +204,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public void redirectToUrl(String url){
 		try {
 			Faces.redirect(url);
+			//Faces.responseComplete();
 		} catch (IOException e) {
 			log.log(Level.SEVERE,e.toString(),e);
 		}
@@ -312,6 +321,22 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		redirectTo(outcomeToolsPrintDataTable,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
 		});
+	}
+	
+	/**/
+	
+	public Collection<Parameter> crudOneParameters(Class<? extends AbstractIdentifiable> aClass){
+		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
+		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass)));
+		parameters.add(new Parameter(uiManager.getCrudParameter(),uiManager.getCrudCreateParameter()));
+		return parameters;
+	}
+	
+	public Collection<Parameter> crudManyParameters(AbstractIdentifiable anIdentifiable){
+		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
+		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(anIdentifiable.getClass())));
+		parameters.add(new Parameter(webManager.getRequestParameterIdentifiable(), anIdentifiable==null?null:anIdentifiable.getIdentifier()));
+		return parameters;
 	}
 	
 }

@@ -19,5 +19,5 @@ public abstract class AbstractOutput extends AbstractControl implements Output<D
 
 	private static final long serialVersionUID = 5671513590779656492L;
 
-	
+	private String label;
 }

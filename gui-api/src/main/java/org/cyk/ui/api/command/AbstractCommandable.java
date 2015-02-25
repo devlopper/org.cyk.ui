@@ -45,14 +45,18 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	}
 	
 	@Override
-	public UICommandable addChild(String labelId, IconType iconType,String viewId,Parameter[] parameters) {
+	public UICommandable addChild(String labelId, IconType iconType,String viewId,Collection<Parameter> parameters) {
 		UICommandable child = UIProvider.getInstance().createCommandable(labelId, iconType);
 		child.setViewId(viewId);
 		child.setCommandRequestType(CommandRequestType.UI_VIEW);
 		if(parameters != null)
-			for(Parameter parameter : parameters)
-				child.getParameters().add(parameter);
+			child.getParameters().addAll(parameters);
 		children.add(child);
 		return child;
-	} 
+	}
+	
+	@Override
+	public void addChild(UICommandable aCommandable) {
+		children.add(aCommandable);
+	}
 }

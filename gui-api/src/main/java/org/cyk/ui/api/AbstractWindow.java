@@ -18,10 +18,12 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.EventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
@@ -59,8 +61,15 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		//if(editors.size()==1)
-		//	contentMenu = editors.iterator().next().getMenu();
+		Collection<UICommandable> contextualCommandables = contextualCommandables();
+		if(contextualCommandables!=null){
+			if(contextualMenu==null)
+				contextualMenu = new DefaultMenu();
+			for(UICommandable subMenu : contextualCommandables){
+				contextualMenu.addCommandable(subMenu);
+				
+			}
+		}
 		
 		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
 			form.build();
@@ -70,10 +79,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		
 		for(AbstractTable<?,?,?> table : tables)
 			table.build();
-		/*
-		for(HierarchycalData<?> hierarchicalData : hierarchicalDatas)
-			hierarchicalData.targetDependentInitialisation();
-		*/
+
 		for(EventCalendar eventCalendar : eventCalendars)
 			eventCalendar.targetDependentInitialisation();
 	}
@@ -103,10 +109,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected abstract AbstractTable<Object,?,?> __createTable__();
 	
 	@SuppressWarnings("unchecked")
-	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,UsedFor usedFor,Crud crud) {
+	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<AbstractFormModel<?>> customFormModelClass,UsedFor usedFor,Crud crud) {
 		AbstractTable<Object,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
-		table.setRowDataClass((Class<Object>) (configuration==null?aDataClass:configuration.getFormModelClass()));
+		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormModelClass()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
 		table.setCrud(crud);
 		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
@@ -126,21 +132,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return table;
 	}
 	
-	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig) {
-		return createTable(aDataClass, crudConfig,UsedFor.ENTITY_INPUT, Crud.READ);
+	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<AbstractFormModel<?>> customFormModelClass) {
+		return createTable(aDataClass, crudConfig,customFormModelClass,UsedFor.ENTITY_INPUT, Crud.READ);
 	}
-	
-	/*
-	@Override
-	public <DATA> HierarchycalData<DATA> hierarchyInstance(Class<DATA> aNodeClass) {
-		HierarchycalData<DATA> hierarchicalData = hierarchyInstance();
-		hierarchicalData.setWindow(this);
-		hierarchicalData.setNodeDataClass(aNodeClass);
-		((AbstractBean)hierarchicalData).postConstruct();
-		hierarchicalData.getAddNodeCommand().getCommand().setMessageManager(getMessageManager());
-		hierarchicalDatas.add(hierarchicalData);
-		return hierarchicalData;
-	}*/
 	
 	@Override
 	public EventCalendar eventCalendarInstance(Class<?> aClass) {
@@ -182,6 +176,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	public String text(String code) {
 		return UIManager.getInstance().text(code);
+	}
+	
+	protected Collection<UICommandable> contextualCommandables(){
+		return null;
 	}
 
 }

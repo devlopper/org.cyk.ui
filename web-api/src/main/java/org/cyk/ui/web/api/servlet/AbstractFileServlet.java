@@ -42,14 +42,7 @@ public abstract class AbstractFileServlet extends HttpServlet implements Seriali
 	protected abstract Boolean isAttachment(HttpServletRequest request,HttpServletResponse response);
 	
 	public static void send(ServletContext servletContext,HttpServletRequest request, HttpServletResponse response,String fileName, int contentLength, InputStream inputStream,boolean inline,int bufferSize) throws IOException {
-		// Get content type by filename.
-		
 		String contentType = servletContext.getMimeType(fileName);
-
-		// If content type is unknown, then set the default value.
-		// For all content types, see:
-		// http://www.w3schools.com/media/media_mimeref.asp
-		// To add new content types, add new mime-mapping entry in web.xml.
 		if (contentType == null) {
 			//log.warning("Unknown content type of file : " + fileName);
 			contentType = "application/octet-stream";
@@ -61,30 +54,16 @@ public abstract class AbstractFileServlet extends HttpServlet implements Seriali
 		response.setHeader("Content-Length", String.valueOf(contentLength));
 		response.setHeader("Content-Disposition", (inline?"inline":"attachment")+"; filename=\""+ fileName + "\"");
 
-		// Prepare streams.
 		BufferedInputStream input = null;
 		BufferedOutputStream output = null;
 
 		try {
-			// Open streams.
 			input = new BufferedInputStream(inputStream, bufferSize);
 			output = new BufferedOutputStream(response.getOutputStream(),bufferSize);
-			
-			// Write file contents to response.
-			/*
-			byte[] buffer = new byte[bufferSize];
-			int length;
-			while ((length = input.read(buffer)) > 0) {
-				output.write(buffer, 0, length);
-			}*/
-			
 			IOUtils.copy(input, output);
 		} finally {
-			// Gently close streams.
 			IOUtils.closeQuietly(output);
 			IOUtils.closeQuietly(input);
-			//close(output);
-			//close(input);
 		}
 	}
 }

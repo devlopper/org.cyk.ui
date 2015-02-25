@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,6 +93,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}
 			input.setReadOnlyValue(readOnlyValue(field, data));
 			input.setRequired(field.getAnnotation(NotNull.class)!=null);
+			if(Boolean.TRUE.equals(input.getRequired()))
+				input.setRequiredMessage(UIManager.getInstance().getLanguageBusiness().findText("input.value.required", new Object[]{input.getLabel()}));
 			
 			if(input instanceof InputCalendar<?,?,?,?,?>){
 				InputCalendar<?, ?, ?, ?, ?> calendar = (InputCalendar<?, ?, ?, ?, ?>) input;
@@ -100,7 +103,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
 				for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
-					listener.choices(data,field, (List<Object>) inputChoice.getList());
+					listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
 			}else if(control instanceof InputFile){
 				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;
 				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);				
@@ -230,6 +233,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 	}
 	
 	public String readOnlyValue(Field field,Object object){
+		if(object==null)
+			return null;
 		String value = null;
 		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
 			String v = listener.readOnlyValue(field, object);
@@ -237,6 +242,25 @@ public class UIProvider extends AbstractBean implements Serializable {
 				value = v; 
 		}
 		return value;
+	}
+	
+	public String formatValue(Field field,Object object){
+		if(object==null)
+			return null;
+		String value = null;
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+			String v = listener.formatValue(field, object);
+			if(v!=null)
+				value = v; 
+		}
+		return value;
+	}
+	
+	public Collection<Class<? extends Annotation>> annotationClasses(){
+		Collection<Class<? extends Annotation>> annotations = new ArrayList<>();
+		annotations.add(org.cyk.utility.common.annotation.user.interfaces.Input.class);
+		annotations.add(org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.class);
+		return annotations;
 	}
 	
 	public Boolean isControl(Control<?, ?, ?, ?, ?> control,String interfaceName){
