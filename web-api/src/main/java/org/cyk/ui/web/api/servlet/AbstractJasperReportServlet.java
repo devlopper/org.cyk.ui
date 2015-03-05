@@ -8,30 +8,36 @@ import javax.servlet.http.HttpServletResponse;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.file.JasperReportBusinessImpl;
 import org.cyk.system.root.model.file.report.AbstractReport;
-import org.cyk.ui.api.UIManager;
+import org.cyk.system.root.model.file.report.AbstractReportConfiguration;
 import org.cyk.ui.web.api.WebManager;
 
-public abstract class AbstractJasperReportServlet<REPORT extends AbstractReport<?>> extends AbstractFileServlet implements Serializable {
+public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractReport<?>/*,CONFIGURATION extends AbstractReportConfiguration<?, AbstractReport<?>>*/> extends AbstractFileServlet implements Serializable {
 
 	private static final long serialVersionUID = 2265523854362373567L;
 
 	@Inject protected JasperReportBusinessImpl reportBusiness;
 	@Inject protected LanguageBusiness languageBusiness;
 	
-	//protected ReportTable<AbstractIdentifiable> report;
 	protected REPORT report;
+	//protected String url;
+	//protected Class<?> clazz;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected final void initialisation(HttpServletRequest request, HttpServletResponse response) {
-		report = createReport();
-		//report.setColumns(reportBusiness.findColumns(EventType.class));
-		report.setFileExtension(request.getParameter(UIManager.getInstance().getFileExtensionParameter()));
-		build(request,response);
+		//clazz = classParameter(request);
+		AbstractReportConfiguration<MODEL, AbstractReport<?>> configuration = configuration(reportIdentifierRequestParameter(request));
+		if(configuration==null)
+			;
+		else
+			report = createReport(request,(AbstractReportConfiguration<MODEL, REPORT>) configuration );
 	}
 	
-	protected abstract REPORT createReport();
+	protected AbstractReportConfiguration<MODEL, AbstractReport<?>> configuration(String identifier){
+		return reportBusiness.findConfiguration(identifier);
+	}
 	
-	protected abstract void build(HttpServletRequest request, HttpServletResponse response);
+	protected abstract REPORT createReport(HttpServletRequest request,AbstractReportConfiguration<MODEL, REPORT> configuration);
 	
 	@Override
 	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response) {
@@ -53,12 +59,16 @@ public abstract class AbstractJasperReportServlet<REPORT extends AbstractReport<
 		return Boolean.FALSE;
 	}
 
-	protected Boolean print(HttpServletRequest request, HttpServletResponse response){
+	protected Boolean printRequestParameter(HttpServletRequest request){
 		try {
 			return Boolean.parseBoolean(request.getParameter(WebManager.getInstance().getRequestParameterPrint()));
 		} catch (Exception e) {
 			return Boolean.FALSE;
 		}
+	}
+	
+	protected String reportIdentifierRequestParameter(HttpServletRequest request){
+		return requestParameter(request, uiManager.getReportIdentifierParameter());
 	}
 
 

@@ -9,14 +9,13 @@ import java.io.Serializable;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
 
-public abstract class AbstractFileServlet extends HttpServlet implements Serializable {
+public abstract class AbstractFileServlet extends AbstractServlet implements Serializable {
 
 	private static final long serialVersionUID = 2265523854362373567L;
 	
@@ -65,5 +64,11 @@ public abstract class AbstractFileServlet extends HttpServlet implements Seriali
 			IOUtils.closeQuietly(output);
 			IOUtils.closeQuietly(input);
 		}
+	}
+	
+	/**/
+	
+	protected String fileExtensionRequestParameter(HttpServletRequest request){
+		return requestParameter(request, uiManager.getFileExtensionParameter());
 	}
 }

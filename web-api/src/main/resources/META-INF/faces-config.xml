@@ -92,6 +92,12 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>reportservlet</from-outcome>
+			<to-view-id>/_cyk_report_/_business_/_jasper_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>applicationSetup</from-outcome>
 			<to-view-id>/public/__application__/setup.jsf</to-view-id>
 			<redirect />
@@ -100,6 +106,12 @@
 		<navigation-case>
 			<from-outcome>license</from-outcome>
 			<to-view-id>/private/__security__/license.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsreport</from-outcome>
+			<to-view-id>/private/__tools__/report.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 

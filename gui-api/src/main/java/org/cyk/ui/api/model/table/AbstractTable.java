@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
@@ -54,7 +55,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected Crud crud;
 	protected IdentifiableConfiguration identifiableConfiguration;
 	protected BusinessEntityInfos businessEntityInfos;
-	protected String title;
+	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericObjectReportTable();
 	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow;
 	protected AbstractTree<NODE,MODEL> tree;
@@ -101,17 +102,23 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		exportCommandable = UIProvider.getInstance().createCommandable(null, "command.export", IconType.ACTION_EXPORT, null, null);
 		
 		exportToPdfCommandable = UIProvider.getInstance().createCommandable(this, "command.export.pdf", IconType.ACTION_EXPORT_PDF, null, null);
-		exportToPdfCommandable.setViewType(ViewType.TOOLS_EXPORT_DATA_TABLE_TO_PDF);
+		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
+		/*
+		exportToPdfCommandable.setViewType(ViewType.TOOLS_REPORT);
 		exportToPdfCommandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		exportToPdfCommandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
-		
+		exportToPdfCommandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),UIManager.getInstance().getPdfParameter()));
+		*/
 		exportMenu.getCommandables().add(exportToPdfCommandable);
 		
 		exportToXlsCommandable = UIProvider.getInstance().createCommandable(this, "command.export.excel", IconType.ACTION_EXPORT_EXCEL, null, null);
-		exportToXlsCommandable.setViewType(ViewType.TOOLS_EXPORT_DATA_TABLE_TO_XLS);
+		reportCommandable(exportToXlsCommandable, UIManager.getInstance().getXlsParameter());
+		/*
+		exportToXlsCommandable.setViewType(ViewType.TOOLS_REPORT);
 		exportToXlsCommandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		exportToXlsCommandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
-		
+		exportToXlsCommandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),UIManager.getInstance().getXlsParameter()));
+		*/
 		exportMenu.getCommandables().add(exportToXlsCommandable);
 		
 		printCommandable = UIProvider.getInstance().createCommandable(this, "command.print", IconType.ACTION_PRINT, null, null);
@@ -161,6 +168,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		});	
 		
 		showToolBar = UsedFor.ENTITY_INPUT.equals(usedFor);
+	}
+	
+	protected void reportCommandable(UICommandable commandable,String fileExtension){
+		commandable.setViewType(ViewType.TOOLS_REPORT);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
+		commandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),fileExtension));
+		commandable.getParameters().add(new Parameter(UIManager.getInstance().getReportIdentifierParameter(),reportIdentifier));
 	}
 	
 	@Override

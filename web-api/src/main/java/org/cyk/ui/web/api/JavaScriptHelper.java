@@ -13,7 +13,7 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 4662624027559597185L;
 	
 	public String windowHref(String url){
-		return "window.location='"+url+"'";
+		return "window.location='"+url+"';";
 	}
 	
 	protected String hide(String path){

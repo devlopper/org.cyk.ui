@@ -14,6 +14,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
@@ -43,6 +44,16 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l;
 	@Getter protected DataTable dataTable;
+	
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		exportToPdfCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(), 
+				WebNavigationManager.getInstance().getOutcomeReportTable()));
+		
+		exportToXlsCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(), 
+				WebNavigationManager.getInstance().getOutcomeReportTable()));
+	}
 	
 	@Override
 	protected void afterInitialisation() {

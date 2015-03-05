@@ -42,6 +42,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
 	private final String messageDialogWidgetId = "messageDialogWidget";
+	private final String reportDataTableServletUrl = "/_cyk_report_/_datatable_/_jasper_/";
 	
 	@Setter private String decoratedTemplateInclude;
 	
@@ -53,7 +54,13 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
 	private final String requestParameterPreviousUrl = "previousurl";
 	private final String requestParameterPrint = "print";
+	/*
 	private final String requestParameterFileExtension = "fileextension";
+	private final String requestParameterPdf = "pdf";
+	private final String requestParameterXls = "xls";
+	*/
+	private final String requestParameterUrl = "url";
+	private final String requestParameterOutcome = "outcome";
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){

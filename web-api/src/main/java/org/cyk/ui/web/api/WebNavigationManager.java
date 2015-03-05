@@ -71,6 +71,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeLogout = "useraccountlogout";
 	
 	@Getter private String outcomeToolsCalendar = "toolscalendar";
+	@Getter private String outcomeToolsReport = "toolsreport";
 	@Getter private String outcomeToolsExportDataTableToPdf = "toolsexportdatatabletopdf";
 	@Getter private String outcomeToolsExportDataTableToXls = "toolsexportdatatabletoxls";
 	@Getter private String outcomeToolsPrintDataTable = "toolsprintdatatable";
@@ -78,6 +79,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeLicense = "license";
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
+	@Getter private String outcomeReportTable = "exportdatatableservlet";
+	@Getter private String outcomeReport = "reportservlet";
 	
 	@Inject private NavigationHelper navigationHelper;
 	@Inject private WebManager webManager;
@@ -244,7 +247,17 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return url(outcomeExportDataTable, new Object[]{
 				webManager.getRequestParameterClass(),uiManager.keyFromClass(aClass)
 				,uiManager.getFileExtensionParameter(),fileExtension
-				,webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print)
+				,webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print),
+				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+			},Boolean.FALSE,Boolean.FALSE);
+	}
+	
+	public String reportFileUrl(Class<?> aClass,String servletUrl,String fileExtension,Boolean print){
+		return url(outcomeReport, new Object[]{
+				webManager.getRequestParameterClass(),uiManager.keyFromClass(aClass)
+				,uiManager.getFileExtensionParameter(),fileExtension
+				,webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print),
+				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
@@ -282,6 +295,22 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			return businessEntityInfos.getUiEditViewId();
 	}
 	
+	public String reportUrl(AbstractIdentifiable identifiable,String reportIdentifier,String fileExtension,Boolean print){
+		Collection<UICommandable.Parameter> parameters = reportParameters(identifiable, reportIdentifier, fileExtension,print);
+		return url(outcomeToolsReport, parametersToArray(parameters), Boolean.FALSE, Boolean.FALSE);
+	}
+	
+	public Object[] parametersToArray(Collection<UICommandable.Parameter> parameters){
+		Object[] objects = new Object[parameters.size()*2];
+		int i=0;
+		for(UICommandable.Parameter parameter : parameters){
+			objects[i] = parameter.getName();
+			objects[i+1] = parameter.getValue();
+			i += 2;
+		}
+		return objects;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
 		redirectTo(editOneOutcome((Class<AbstractIdentifiable>) data.getClass()),new Object[]{
@@ -307,13 +336,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToExportDataTableToPdf(Class<AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToPdf,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
+				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
+				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
 		});
 	}
 	
 	public void redirectToExportDataTableToXls(Class<AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToXls,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
+				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
+				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
 		});
 	}
 	
@@ -339,4 +370,19 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return parameters;
 	}
 	
+	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print){
+		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
+		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterClass(),uiManager.keyFromClass(anIdentifiable.getClass())));
+		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterIdentifiable(),anIdentifiable.getIdentifier()));
+		parameters.add(new UICommandable.Parameter(uiManager.getFileExtensionParameter(),fileExtension));
+		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterWindowMode(),webManager.getRequestParameterWindowModeDialog()));
+		parameters.add(new UICommandable.Parameter(uiManager.getReportIdentifierParameter(),reportIdentifier));
+		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterOutcome(),outcomeReport));
+		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print)));
+		return parameters;
+	}
+	
+	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,Boolean print){
+		return reportParameters(anIdentifiable, reportIdentifier, uiManager.getPdfParameter(),print);
+	}
 }

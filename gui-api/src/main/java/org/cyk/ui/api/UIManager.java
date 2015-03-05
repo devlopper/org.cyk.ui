@@ -69,11 +69,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private FileBusiness fileBusiness;
 	
 	/* constants */
+	private final String reportIdentifierParameter = "ridp";
 	private final String formModelParameter = "formmodel";
 	private final String classParameter = "clazz";
 	private final String identifiableParameter = "identifiable";
 	private final String windowParameter="windowParam";
 	private final String fileExtensionParameter="fileExtensionParam";
+	private final String pdfParameter="pdf";
+	private final String xlsParameter="xls";
 	private final String crudParameter="crud";
 	private final String crudCreateParameter="create";
 	private final String crudReadParameter="read";
