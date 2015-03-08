@@ -11,13 +11,8 @@ import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
-import org.cyk.ui.api.MenuManager;
-import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserSession;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
@@ -74,14 +69,14 @@ public class ContextListener extends AbstractContextListener {
 		
 		
 	}
-	
+	/*
 	@Override
 	public void menu(UserSession userSession, UIMenu menu, Type type) {
 		UICommandable commandable;
 		menu.getCommandables().add(MenuManager.crudMany(Actor.class, IconType.PERSON));
 		menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		commandable.setViewId("personsearch");
-	}
+	}*/
 	
 	@Override
 	public String homeUrl(UserSession userSession) {

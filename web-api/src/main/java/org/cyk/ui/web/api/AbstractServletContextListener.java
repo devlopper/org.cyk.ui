@@ -1,6 +1,7 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
@@ -17,6 +18,9 @@ import org.cyk.ui.api.MenuListener;
 import org.cyk.ui.api.MenuManager;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserSession;
+import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
@@ -101,6 +105,21 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass){
 		businessClassConfig(aClass,formModelClass,null);
+	}
+	
+	@Override
+	public void menu(UserSession userSession, UIMenu menu, Type type) {
+			
+	}
+	
+	@Override
+	public UICommandable module(UserSession userSession, UIMenu menu,UICommandable module, ModuleType type) {
+		return module;
+	}
+	
+	@Override
+	public Collection<UICommandable> modules(UserSession userSession,UIMenu aMenu, Collection<UICommandable> modules, ModuleType type) {
+		return modules;
 	}
 	
 	/**/

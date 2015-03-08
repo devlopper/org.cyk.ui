@@ -86,6 +86,7 @@ public interface UICommandable {
 		TOOLS_EXPORT_DATA_TABLE_TO_PDF,
 		TOOLS_EXPORT_DATA_TABLE_TO_XLS,
 		TOOLS_PRINT_DATA_TABLE,
+		MODULE_REFERENCE_ENTITY,
 	}
 	
 	public enum IconType{

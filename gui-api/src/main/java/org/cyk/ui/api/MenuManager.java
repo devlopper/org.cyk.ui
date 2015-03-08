@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.MenuListener.ModuleType;
 import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -40,7 +41,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	@Inject protected ApplicationBusiness applicationBusiness;
-	
 	@Getter private Collection<MenuListener> menuListeners = new ArrayList<>();
 	
 	@Override
@@ -71,40 +71,15 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	private void application(UserSession userSession,UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
-		//aMenu.getCommandables().add(commandable("command.file", "ui-icon-file"));
 		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
 			administration(userSession, aMenu);
 		}else{
 			if(internalApplicationModuleType==null){
-				//UICommandable commandable,p;
-				
-				/*
-				aMenu.getCommandables().add(commandable = commandable("command.tools", IconType.THING_TOOLS));
-				commandable.getChildren().add( p = commandable("command.tools.calendar", null));
-				p.setViewType(ViewType.TOOLS_CALENDAR);
-				*/
-				/*
-				aMenu.getCommandables().add(commandable = commandable("command.controlpanel", IconType.THING_CONTROLPANEL));
-				UICommandable re = commandable("command.referenceentity", null);
-				commandable.getChildren().add(re);
-				List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
-				Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
-				for(BusinessEntityInfos businessEntityInfos : list){
-					re.getChildren().add( p = commandable(businessEntityInfos.getUiLabelId(), null));
-					p.setBusinessEntityInfos(businessEntityInfos);
-					if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
-						p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
-					}else{
-						p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
-					}
-				}
-				*/
-					//aMenu.getCommandables().add(commandable(aClass.getSimpleName(), null));
-				
-				//aMenu.getCommandables().add(menuItemControlPanel(applicationBusiness));
-				aMenu.getCommandables().add(menuItemReferenceEntity(applicationBusiness));
-				aMenu.getCommandables().add(commandable("command.help", IconType.ACTION_HELP));
-				aMenu.getCommandables().add(menuItemUserAccount());
+				aMenu.getCommandables().addAll(menuItemBusinessModules(userSession,aMenu));
+				aMenu.getCommandables().add(menuItemControlPanelModule(userSession,aMenu));
+				//aMenu.getCommandables().add(menuItemReferenceEntity(applicationBusiness));
+				aMenu.getCommandables().add(menuItemHelpModule(userSession,aMenu));
+				aMenu.getCommandables().add(menuItemUserAccountModule(userSession,aMenu));
 				
 			}else{
 				switch(internalApplicationModuleType){
@@ -117,13 +92,56 @@ public class MenuManager extends AbstractBean implements Serializable {
 		
 	}
 	
+	private UICommandable moduleEvent(UserSession userSession,UIMenu aMenu,UICommandable module,ModuleType type){
+		for(MenuListener listener : menuListeners)
+			module = listener.module(userSession, aMenu, module, type);
+		return module;
+	}
+	
+	private Collection<UICommandable> moduleEvent(UserSession userSession,UIMenu aMenu,Collection<UICommandable> modules,ModuleType type){
+		for(MenuListener listener : menuListeners)
+			modules = listener.modules(userSession, aMenu, modules, type);
+		return modules;
+	}
+	
+	public Collection<UICommandable> menuItemBusinessModules(UserSession userSession,UIMenu aMenu){
+		Collection<UICommandable> modules = new ArrayList<>();
+		
+		return moduleEvent(userSession, aMenu, modules, ModuleType.BUSINESS);
+	}
+	
+	public UICommandable menuItemControlPanelModule(UserSession userSession,UIMenu aMenu){
+		UICommandable module = UIProvider.getInstance().createCommandable("command.controlpanel", null),p;
+		//module.addChild(p = commandable("command.referenceentity",null));
+		//p.setViewType(ViewType.MODULE_REFERENCE_ENTITY);
+		return moduleEvent(userSession, aMenu, module, ModuleType.CONTROL_PANEL);
+	}
+	
+	public UICommandable menuItemHelpModule(UserSession userSession,UIMenu aMenu){
+		UICommandable module = UIProvider.getInstance().createCommandable("command.help", IconType.ACTION_HELP);
+		
+		return moduleEvent(userSession, aMenu, module, ModuleType.HELP);
+	}
+	
+	public UICommandable menuItemUserAccountModule(UserSession userSession,UIMenu aMenu){
+		UICommandable module = commandable("command.useraccount", IconType.THING_USERACCOUNT);
+				
+		UICommandable logout = commandable("command.useraccount.logout", IconType.ACTION_LOGOUT);
+		logout.setViewType(ViewType.USERACCOUNT_LOGOUT);
+		logout.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+		
+		module.getChildren().add(logout);
+		
+		return moduleEvent(userSession, aMenu, module, ModuleType.USER_ACCOUNT);
+	}
+	
 	private void administration(UserSession userSession,UIMenu aMenu){
 		UICommandable commandable,p;
 		aMenu.getCommandables().add(commandable = commandable("command.application", IconType.THING_APPLICATION));
 		commandable.getChildren().add( p = commandable("command.application.license", null));
 		p.setViewType(ViewType.LICENCE);
 		
-		aMenu.getCommandables().add(menuItemUserAccount());
+		aMenu.getCommandables().add(menuItemUserAccountModule(userSession,aMenu));
 	}
 	
 	private void contextual(UIMenu aMenu,InternalApplicationModuleType internalApplicationModuleType){
@@ -147,16 +165,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
 		
 		commandable.getChildren().add(commandable("command.administration", IconType.ACTION_ADMINISTRATE));
-		//for(BusinessEntityInfos businessEntityInfos : list){
-			//commandable.getChildren().add(crudMany(businessEntityInfos, null));
-			//commandable.getChildren().add(commandable("command.administration", IconType.ACTION_ADMINISTRATE));
-			/*p.setBusinessEntityInfos(businessEntityInfos);
-			if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
-				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
-			}else{
-				p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
-			}*/
-		//}
+		
 	}
 	
 	/**/
@@ -224,6 +233,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
+	
+	
 	public static UICommandable menuItemReferenceEntity(ApplicationBusiness applicationBusiness){
 		UICommandable p;
 		UICommandable referenceEntity = commandable("command.referenceentity", null);
@@ -248,17 +259,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
-	public static UICommandable menuItemUserAccount(){
-		UICommandable userAccount = commandable("command.useraccount", IconType.THING_USERACCOUNT);
-				
-		UICommandable logout = commandable("command.useraccount.logout", IconType.ACTION_LOGOUT);
-		logout.setViewType(ViewType.USERACCOUNT_LOGOUT);
-		logout.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
-		
-		userAccount.getChildren().add(logout);
-		
-		return userAccount;
-	}
+	
 	
 	/**/
 		
