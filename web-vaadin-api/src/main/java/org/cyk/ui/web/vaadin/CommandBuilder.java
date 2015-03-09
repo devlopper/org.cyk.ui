@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.model.table.HierarchyNode;
 
 import com.vaadin.server.FontAwesome;

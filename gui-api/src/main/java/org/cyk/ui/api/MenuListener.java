@@ -3,7 +3,7 @@ package org.cyk.ui.api;
 import java.util.Collection;
 
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 
 public interface MenuListener {
 

@@ -10,7 +10,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.primefaces.component.commandbutton.CommandButton;

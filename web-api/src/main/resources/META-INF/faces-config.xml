@@ -27,6 +27,12 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>referenceentity</from-outcome>
+			<to-view-id>/private/referenceentity.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>administratorindex</from-outcome>
 			<to-view-id>/__administration__/index.xhtml</to-view-id>
 			<redirect />

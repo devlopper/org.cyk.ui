@@ -1,7 +1,8 @@
-package org.cyk.ui.api.command;
+package org.cyk.ui.api.command.menu;
 
 import java.util.Collection;
 
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 
 public interface UIMenu {

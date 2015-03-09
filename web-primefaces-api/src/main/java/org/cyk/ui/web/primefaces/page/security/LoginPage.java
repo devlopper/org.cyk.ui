@@ -49,7 +49,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		if(form.getSubmitCommandable().getCommand()==command){
 			UserAccount userAccount = userAccountBusiness.connect(identifiable);
 			SecurityUtils.getSubject().login(new UsernamePasswordToken(identifiable.getUsername(), identifiable.getPassword(),rememberMe));
-			session.setUserAccount(userAccount);
+			session.init(userAccount);
 		}
 	}
 	
@@ -66,6 +66,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 				else
 					home = savedRequest.getRequestUrl();
 			}
+			
 			navigationManager.redirectToUrl(home);
 		}
 		return super.succeed(command, parameter);

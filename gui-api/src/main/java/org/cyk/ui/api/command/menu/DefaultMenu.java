@@ -1,4 +1,4 @@
-package org.cyk.ui.api.command;
+package org.cyk.ui.api.command.menu;
 
 import java.io.Serializable;
 

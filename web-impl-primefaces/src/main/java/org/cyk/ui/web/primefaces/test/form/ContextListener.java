@@ -12,7 +12,11 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.UserSession;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.menu.ApplicationMenuManager;
+import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
@@ -26,6 +30,22 @@ public class ContextListener extends AbstractContextListener {
 
 	@Inject private PersonBusiness personBusiness;
 	@Inject private ActorBusiness actorBusiness;
+	
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		SystemMenu systemMenu = new SystemMenu();
+		systemMenu.setName("MyApp");
+		systemMenu.getBusinesses().add(UIProvider.getInstance().createCommandable("command.add", IconType.ACTION_ADD));
+		systemMenu.getBusinesses().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_EDIT));
+		
+		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
+		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
+		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
+		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
+		
+		ApplicationMenuManager.getInstance().getSystemMenus().add(systemMenu);
+	}
 	
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {

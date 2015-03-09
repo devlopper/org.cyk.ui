@@ -18,13 +18,13 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.MenuListener.ModuleType;
-import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.DefaultMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 

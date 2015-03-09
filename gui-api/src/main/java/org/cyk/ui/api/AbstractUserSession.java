@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.ui.api.command.menu.ApplicationMenuManager;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractUserSession extends AbstractBean implements UserSession,Serializable {
@@ -21,7 +23,8 @@ public abstract class AbstractUserSession extends AbstractBean implements UserSe
 	
 	@Getter @Setter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UserAccount userAccount;
-	
+	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu;
+		
 	public Party getUser(){
 		return userAccount == null?null:userAccount.getUser();
 	}
@@ -29,6 +32,12 @@ public abstract class AbstractUserSession extends AbstractBean implements UserSe
 	@Override
 	public Boolean getLoggedIn() {
 		return userAccount!=null;
+	}
+	
+	public void init(UserAccount userAccount){
+		setUserAccount(userAccount);
+		setApplicationMenu(ApplicationMenuManager.getInstance().build(this));
+		setReferenceEntityMenu(ApplicationMenuManager.getInstance().referenceEntity(this));
 	}
 	
 	protected abstract void __logout__();

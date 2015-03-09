@@ -20,7 +20,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;

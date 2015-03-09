@@ -1,4 +1,4 @@
-package org.cyk.ui.api.command;
+package org.cyk.ui.api.command.menu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -41,7 +42,10 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 
 	@Override
 	public UICommandable addCommandable(UICommandable commandable) {
-		commandables.add(commandable);
+		/*if( (commandable.getViewId()==null || commandable.getViewType()==null) && commandable.getChildren().isEmpty() )
+			;
+		else*/
+			commandables.add(commandable);
 		return commandable;
 	}
 }

@@ -11,9 +11,9 @@ import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
-import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.DefaultMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter

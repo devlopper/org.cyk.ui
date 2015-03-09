@@ -17,11 +17,10 @@ import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
-import org.cyk.ui.api.MenuManager.Type;
-import org.cyk.ui.api.command.DefaultMenu;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UIMenu;
+import org.cyk.ui.api.command.menu.DefaultMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
@@ -40,7 +39,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject @Getter transient protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter transient protected EventBusiness eventBusiness;
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
-	@Inject transient protected MenuManager menuManager;
+	//@Inject transient protected MenuManager menuManager;
 	
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
@@ -55,7 +54,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		mainMenu = menuManager.build(getUserSession(),Type.APPLICATION);
+		mainMenu = getUserSession().getApplicationMenu(); //menuManager.build(getUserSession(),Type.APPLICATION);
 	}
 	
 	@Override

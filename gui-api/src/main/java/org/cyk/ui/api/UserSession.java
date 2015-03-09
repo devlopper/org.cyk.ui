@@ -3,6 +3,7 @@ package org.cyk.ui.api;
 import java.util.Locale;
 
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.ui.api.command.menu.UIMenu;
 
 public interface UserSession {
 
@@ -17,6 +18,9 @@ public interface UserSession {
 	Boolean getIsAdministrator();
 	
 	Boolean getIsManager();
+	
+	UIMenu getApplicationMenu();
+	UIMenu getReferenceEntityMenu();
 	
 	void logout();
 }
