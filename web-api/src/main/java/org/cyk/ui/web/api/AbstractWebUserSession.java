@@ -2,17 +2,14 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.shiro.SecurityUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Faces;
 
-@SessionScoped @Named
-public class WebSession extends AbstractUserSession implements Serializable {
+public abstract class AbstractWebUserSession extends AbstractUserSession implements Serializable {
 
 	private static final long serialVersionUID = 7799444210756287076L;
 

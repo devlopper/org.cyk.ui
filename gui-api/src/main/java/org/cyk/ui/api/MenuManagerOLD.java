@@ -17,7 +17,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.MenuListener.ModuleType;
+import org.cyk.ui.api.MenuListenerOLD.ModuleType;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -28,20 +28,20 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Singleton
-public class MenuManager extends AbstractBean implements Serializable {
+@Singleton @Deprecated
+public class MenuManagerOLD extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -59229034680588410L;
 
 	public enum Type {APPLICATION,CONTEXTUAL}
 	
-	private static MenuManager INSTANCE;
-	public static MenuManager getInstance() {
+	private static MenuManagerOLD INSTANCE;
+	public static MenuManagerOLD getInstance() {
 		return INSTANCE;
 	}
 	
 	@Inject protected ApplicationBusiness applicationBusiness;
-	@Getter private Collection<MenuListener> menuListeners = new ArrayList<>();
+	@Getter private Collection<MenuListenerOLD> menuListeners = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -58,7 +58,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			case CONTEXTUAL:contextual(menu,internalApplicationModuleType); break;
 			}
 			if(!Boolean.TRUE.equals(userSession.getIsAdministrator()))
-				for(MenuListener listener : menuListeners)
+				for(MenuListenerOLD listener : menuListeners)
 					listener.menu(userSession,menu, type);
 		}
 		return menu;
@@ -93,13 +93,13 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	private UICommandable moduleEvent(UserSession userSession,UIMenu aMenu,UICommandable module,ModuleType type){
-		for(MenuListener listener : menuListeners)
+		for(MenuListenerOLD listener : menuListeners)
 			module = listener.module(userSession, aMenu, module, type);
 		return module;
 	}
 	
 	private Collection<UICommandable> moduleEvent(UserSession userSession,UIMenu aMenu,Collection<UICommandable> modules,ModuleType type){
-		for(MenuListener listener : menuListeners)
+		for(MenuListenerOLD listener : menuListeners)
 			modules = listener.modules(userSession, aMenu, modules, type);
 		return modules;
 	}

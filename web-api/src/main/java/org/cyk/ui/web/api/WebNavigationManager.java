@@ -76,6 +76,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeToolsExportDataTableToXls = "toolsexportdatatabletoxls";
 	@Getter private String outcomeToolsPrintDataTable = "toolsprintdatatable";
 	
+	@Getter private String outcomeReferenceEntity = "referenceentity";
+	@Getter private String outcomeSecurity = "security";
+	@Getter private String outcomeUserAccounts = "useraccounts";
+	@Getter private String outcomeEventCrudOne = "eventCrudOne";
+	
 	@Getter private String outcomeLicense = "license";
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 
 import org.cyk.ui.api.InternalApplicationModuleType;
-import org.cyk.ui.api.MenuManager;
+import org.cyk.ui.api.MenuManagerOLD;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.editor.input.UIInputComponent;
 import org.cyk.ui.web.api.WebManager;
@@ -28,7 +28,7 @@ public abstract class AbstractApplication<START_VIEW extends AbstractView<?, ?, 
 	@Inject @Getter protected DefaultPageLayoutManager pageLayoutManager;
 	@Getter protected InternalApplicationModuleType internalApplicationModuleType = InternalApplicationModuleType.CRUD;
 	@Inject protected UIManager uiManager;
-	@Inject @Getter protected MenuManager menuManager;
+	@Inject @Getter protected MenuManagerOLD menuManager;
 	@Inject protected WebManager webManager;
 	@Inject protected VaadinMessageManager messageManager;
 	protected Navigator navigator;

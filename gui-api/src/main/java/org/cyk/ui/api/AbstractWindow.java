@@ -24,7 +24,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.model.EventCalendar;
+import org.cyk.ui.api.model.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -43,10 +43,11 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
+	
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
-	protected Collection<EventCalendar> eventCalendars = new ArrayList<>();
+	protected Collection<AbstractEventCalendar> eventCalendars = new ArrayList<>();
 	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	
 	@Getter protected String title,contentTitle="Content";
@@ -79,7 +80,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		for(AbstractTable<?,?,?> table : tables)
 			table.build();
 
-		for(EventCalendar eventCalendar : eventCalendars)
+		for(AbstractEventCalendar eventCalendar : eventCalendars)
 			eventCalendar.targetDependentInitialisation();
 	}
 	
@@ -136,9 +137,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	
 	@Override
-	public EventCalendar eventCalendarInstance(Class<?> aClass) {
-		EventCalendar eventCalendar = eventCalendarInstance();
-		//eventCalendar.setWindow(this);
+	public AbstractEventCalendar eventCalendarInstance(Class<?> aClass) {
+		AbstractEventCalendar eventCalendar = eventCalendarInstance();
+		eventCalendar.setWindow(this);
 		configureBeforeConstruct(eventCalendar);
 		((AbstractBean)eventCalendar).postConstruct();
 		configureAfterConstruct(eventCalendar);

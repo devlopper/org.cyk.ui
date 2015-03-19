@@ -1,11 +1,14 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.model.event.Notification;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractMessageManager<MESSAGE,SEVERITY> extends AbstractBean implements UIMessageManager,Serializable {
@@ -14,7 +17,7 @@ public abstract class AbstractMessageManager<MESSAGE,SEVERITY> extends AbstractB
 	
 	@Inject protected LanguageBusiness languageBusiness;
 	
-	protected MESSAGE builtMessage;
+	protected final Collection<MESSAGE> builtMessages = new ArrayList<>();
 	
 	protected abstract MESSAGE buildMessage(SEVERITY severity,String summary, String details);
 	
@@ -24,13 +27,26 @@ public abstract class AbstractMessageManager<MESSAGE,SEVERITY> extends AbstractB
 	
 	@Override
 	public UIMessageManager message(SeverityType severityType, Text summary, Text details) {
-		builtMessage = buildMessage(severity(severityType), toString(summary), toString(details));
+		builtMessages.add(buildMessage(severity(severityType), toString(summary), toString(details)));
 		return this;
 	}
 	
 	@Override
 	public UIMessageManager message(SeverityType severityType, Object object, Boolean isId) {
-		builtMessage = buildMessage(severity(severityType), toString(new Text(object, isId)), toString(new Text(object, isId)));
+		builtMessages.add(buildMessage(severity(severityType), toString(new Text(object, isId)), toString(new Text(object, isId))));
+		return this;
+	}
+	
+	@Override
+	public UIMessageManager notification(Notification notification) {
+		builtMessages.add(buildMessage(severityInfo(),notification.getTitle(),notification.getMessage()));
+		return this;
+	}
+	
+	@Override
+	public UIMessageManager notifications(Collection<Notification> notifications) {
+		for(Notification notification : notifications)
+			notification(notification);
 		return this;
 	}
 		
@@ -42,6 +58,36 @@ public abstract class AbstractMessageManager<MESSAGE,SEVERITY> extends AbstractB
 		message(SeverityType.ERROR,new Text(m, Boolean.FALSE),new Text(m, Boolean.FALSE));
 		return this;
 	}
+	
+	@Override
+	public final void showInline() {
+		if(builtMessages.isEmpty())
+			return;
+		__showInline__();
+		builtMessages.clear();
+	}
+
+	@Override
+	public final void showDialog() {
+		if(builtMessages.isEmpty())
+			return;
+		__showDialog__();
+		builtMessages.clear();
+	}
+
+	@Override
+	public final void showGrowl() {
+		if(builtMessages.isEmpty())
+			return;
+		__showGrowl__();
+		builtMessages.clear();
+	}
+	
+	protected abstract void __showInline__();
+
+	protected abstract void __showDialog__();
+
+	protected abstract void __showGrowl__();
 
 	/**/
 	

@@ -7,6 +7,8 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 
 public interface UIMenu {
 	
+	enum RenderType{PLAIN,SLIDE,PANEL}
+	
 	Collection<UICommandable> getCommandables();
 
 	UICommandable commandable(String anIdentifier);
@@ -14,4 +16,7 @@ public interface UIMenu {
 	UICommandable addCommandable(String labelId,IconType iconType);
 	
 	UICommandable addCommandable(UICommandable commandable);
+	
+	RenderType getRenderType();
+	void setRenderType(RenderType aRenderType);
 }

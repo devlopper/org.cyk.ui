@@ -1,5 +1,9 @@
 package org.cyk.ui.api;
 
+import java.util.Collection;
+
+import org.cyk.system.root.model.event.Notification;
+
 public class MessageManager implements UIMessageManager {
 	
 	public static UIMessageManager INSTANCE;
@@ -26,6 +30,21 @@ public class MessageManager implements UIMessageManager {
 
 	@Override
 	public void showDialog() {
+		
+	}
+
+	@Override
+	public UIMessageManager notification(Notification notification) {
+		return null;
+	}
+
+	@Override
+	public UIMessageManager notifications(Collection<Notification> notifications) {
+		return null;
+	}
+
+	@Override
+	public void showGrowl() {
 		
 	}
 

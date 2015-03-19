@@ -36,6 +36,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private static final long serialVersionUID = -3546850417728323300L;
 
 	private static PrimefacesManager INSTANCE;
+	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
+	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;
@@ -43,6 +45,9 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
 	private String formId = ":form:contentPanel";
+	
+	private String notificationChannelSocketWidgetVar = "notificationChannelWidgetVar";
+	private String notificationChannelGrowlWidgetVar = "notificationChannelGrowlWidgetVar";
 	
 	@Override
 	protected void initialisation() {
@@ -102,6 +107,14 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	@Override
 	protected SelectItem item(Enum<?> anEnum) {
 		return new SelectItem(anEnum,anEnum.toString());
+	}
+	
+	public void connectSocket(String socket,String channel){
+		RequestContext.getCurrentInstance().execute("PF('"+socket+"').connect('"+channel+ "');");
+	}
+	
+	public void disconnectSocket(String socket){
+		RequestContext.getCurrentInstance().execute("PF('"+socket+"').disconnect();");
 	}
 
 }

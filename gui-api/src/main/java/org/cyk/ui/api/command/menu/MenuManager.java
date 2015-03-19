@@ -1,0 +1,276 @@
+package org.cyk.ui.api.command.menu;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.AbstractApplicationUIManager;
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.UserSession;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.Parameter;
+import org.cyk.ui.api.command.UICommandable.ViewType;
+import org.cyk.utility.common.annotation.Deployment;
+import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
+import org.cyk.utility.common.cdi.AbstractBean;
+
+@Singleton @Deployment(initialisationType=InitialisationType.EAGER)
+public class MenuManager extends AbstractBean implements Serializable {
+
+	private static final long serialVersionUID = 4331240830505008164L;
+	public static enum ModuleGroup{TOOLS,CONTROL_PANEL,REPORT,USER_ACCOUNT,HELP}
+	
+	private static MenuManager INSTANCE;
+	public static MenuManager getInstance() {
+		return INSTANCE;
+	}
+	
+	@Inject private ApplicationBusiness applicationBusiness;
+	
+	private Map<ModuleGroup, UICommandable> groupsMap = new HashMap<>();
+	
+	@Getter private Collection<MenuListener> menuListeners = new ArrayList<>();
+	@Getter @Setter private Boolean autoGenerateReferenceEntityMenu=Boolean.FALSE;
+	
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+	}
+	
+	public UICommandable createModuleGroup(UserSession userSession,ModuleGroup moduleGroup) {
+		UICommandable commandableGroup = null;
+		groupsMap.put(moduleGroup, commandableGroup);
+		switch(moduleGroup){
+		case TOOLS:
+			commandableGroup = UIProvider.getInstance().createCommandable("command.tools", null);
+			commandableGroup.addChild("command.calendar", null, ViewType.TOOLS_CALENDAR, null);
+			break;
+		case CONTROL_PANEL:
+			commandableGroup = UIProvider.getInstance().createCommandable("command.controlpanel", null);
+			commandableGroup.addChild("command.referenceentity", null, ViewType.MODULE_REFERENCE_ENTITY, null);
+			//TODO to be rendered when Manager ONLY - use RoleManager as interface
+			commandableGroup.addChild("command.security", null, ViewType.MODULE_SECURITY, null);
+			break;
+		case USER_ACCOUNT:
+			commandableGroup = UIProvider.getInstance().createCommandable("command.useraccount", IconType.THING_USERACCOUNT);
+			commandableGroup.addChild("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT, null)
+				.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+			break;
+		case HELP:
+			commandableGroup = UIProvider.getInstance().createCommandable("command.help", null);
+			break;
+		case REPORT:
+			commandableGroup = UIProvider.getInstance().createCommandable("command.report", null);
+			for(SystemMenu systemMenu : systemMenus(userSession)){
+				for(UICommandable reportCommandable : systemMenu.getReports())
+					commandableGroup.addChild(reportCommandable);
+			}
+			break;
+		}
+		for(MenuListener listener : menuListeners)
+			listener.moduleGroupCreated(userSession,moduleGroup, commandableGroup);
+		return commandableGroup;
+	}
+	
+	public UICommandable findModuleGroup(ModuleGroup group) {
+		for(Entry<ModuleGroup, UICommandable> entry : groupsMap.entrySet())
+			if(entry.getKey().equals(group))
+				return entry.getValue();
+		return null;
+	}
+	
+	private Collection<SystemMenu> systemMenus(UserSession userSession){
+		Collection<SystemMenu> collection = new ArrayList<>();
+		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
+			collection.add(applicationUIManager.systemMenu(userSession));
+		return collection;
+	}
+	
+	public UIMenu applicationMenu(UserSession userSession){
+		//System.out.println("ApplicationMenuManager.build()");
+		UIMenu menu = new DefaultMenu();
+		business(userSession,menu);
+		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.REPORT));
+		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
+		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
+		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
+		return menu;
+	}
+	
+	public UIMenu referenceEntityMenu(UserSession userSession){
+		UIMenu menu = new DefaultMenu();
+		if(Boolean.TRUE.equals(autoGenerateReferenceEntityMenu)){
+			UICommandable p;
+			List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
+			
+			Set<String> categories = new LinkedHashSet<>();
+			for(BusinessEntityInfos businessEntityInfos : list){
+				categories.add(businessEntityInfos.getClazz().getPackage().getName());
+			}
+			
+			Map<String, UICommandable> map = new LinkedHashMap<>();
+			for(String categorie : categories){
+				String[] parts = StringUtils.split(categorie,'.');
+				UICommandable commandable = commandable(parts[parts.length-1], null);
+				map.put(categorie, commandable);
+				menu.addCommandable(commandable);
+			}
+			
+			Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
+			for(BusinessEntityInfos businessEntityInfos : list){
+				p = commandable(businessEntityInfos.getUiLabelId(), null);
+				
+				map.get(businessEntityInfos.getClazz().getPackage().getName()).addChild(p);
+				//menu.addCommandable(p);
+				
+				p.setBusinessEntityInfos(businessEntityInfos);
+				if(AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz())){
+					p.setViewType(ViewType.DYNAMIC_CRUD_MANY);	
+				}else{
+					p.setViewType(ViewType.DYNAMIC_CRUD_MANY);
+				}
+			}
+		}else{
+			for(SystemMenu systemMenu : systemMenus(userSession)){
+				for(UICommandable referenceEntityGroup : systemMenu.getReferenceEntities()){
+					menu.addCommandable(referenceEntityGroup);
+					for(MenuListener listener : menuListeners)
+						listener.referenceEntityGroupCreated(userSession, referenceEntityGroup);
+				}
+			}
+		}
+		return menu;
+	}
+	
+	public UIMenu securityMenu(UserSession userSession){
+		UIMenu menu = new DefaultMenu();
+		menu.addCommandable(commandable("user.accounts", null,ViewType.USER_ACCOUNTS));
+		return menu;
+	}
+	
+	public UIMenu calendarMenu(UserSession userSession){
+		UIMenu menu = new DefaultMenu();
+		UICommandable p;
+		p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
+		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		return menu;
+	}
+	
+	/**/
+	
+	private void business(UserSession userSession,UIMenu menu){
+		for(SystemMenu systemMenu : systemMenus(userSession)){
+			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
+				menu.addCommandable(businessModuleGroup);
+				for(MenuListener listener : menuListeners)
+					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
+			}
+		}
+	}
+	
+	/* ---- */
+	
+	public UICommandable commandable(String labelId,IconType iconType,ViewType viewType){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, null, null);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.setViewType(viewType);
+		return commandable;
+	}
+	
+	public UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(null, labelId, iconType, null, null);
+		commandable.setCommandRequestType(aCommandRequestType);
+		return commandable;
+	}
+	
+	public UICommandable commandable(String labelId,IconType iconType){
+		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
+	}
+	
+	private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,IconType iconType){
+		UICommandable commandable = commandable(businessEntityInfos.getUiLabelId(), iconType);
+		commandable.setBusinessEntityInfos(businessEntityInfos);
+		commandable.setViewType(viewType);
+		return commandable;
+	}
+	
+	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
+		UICommandable c = crud(businessEntityInfos,null, iconType);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
+		else{
+			c.setViewId(businessEntityInfos.getUiEditViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		}
+		return c;
+	}
+	
+	public UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+		return crudOne(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
+	public UICommandable crudMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
+		UICommandable c = crud(businessEntityInfos, null, iconType);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
+			c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
+		else{
+			c.setViewId(businessEntityInfos.getUiListViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+		}
+		return c;
+	}
+	
+	public UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+		return crudMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
+	public UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
+		UICommandable commandable,p;
+		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
+		commandable = commandable(businessEntityInfos.getUiLabelId(), null);
+		commandable.getChildren().add(p=crudOne(aClass, IconType.ACTION_ADD));
+		p.setLabel(UIManager.getInstance().text("command.item.add"));
+		commandable.getChildren().add(p=crudMany(aClass, IconType.THING_LIST));
+		p.setLabel(UIManager.getInstance().text("command.list"));
+		
+		return commandable;
+	}
+	
+	/**/
+	
+	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
+
+		@Override
+		public int compare(BusinessEntityInfos o1, BusinessEntityInfos o2) {
+			return o1.getClazz().getName().compareTo(o2.getClazz().getName());
+		}
+		
+	}
+	
+}

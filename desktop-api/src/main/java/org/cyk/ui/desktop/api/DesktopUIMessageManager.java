@@ -1,11 +1,13 @@
 package org.cyk.ui.desktop.api;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.inject.Singleton;
 
 import lombok.extern.java.Log;
 
+import org.cyk.system.root.model.event.Notification;
 import org.cyk.ui.api.AbstractMessageManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
@@ -35,12 +37,12 @@ public class DesktopUIMessageManager extends AbstractMessageManager<DesktopUIMes
 	}
 	
 	@Override
-	public void showInline() {
+	protected void __showInline__() {
 		log.warning("I dont know how to show message in inline!!!");
 	}
 
 	@Override
-	public void showDialog() {
+	protected void __showDialog__() {
 		log.warning("I dont know how to show message in dialog!!!");
 	}
 	
@@ -48,6 +50,21 @@ public class DesktopUIMessageManager extends AbstractMessageManager<DesktopUIMes
 	
 	protected SeverityType severity(SeverityType severityType) {
 		return severityType;
+	}
+
+	@Override
+	public UIMessageManager notification(Notification notification) {
+		return null;
+	}
+
+	@Override
+	public UIMessageManager notifications(Collection<Notification> notifications) {
+		return null;
+	}
+
+	@Override
+	protected void __showGrowl__() {
+		
 	}
 
 }

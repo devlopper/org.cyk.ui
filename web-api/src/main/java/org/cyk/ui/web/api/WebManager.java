@@ -2,11 +2,14 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.Part;
@@ -14,6 +17,8 @@ import javax.servlet.http.Part;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.api.SelectItemBuildAdapter;
+import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -79,6 +84,19 @@ public class WebManager extends AbstractBean implements Serializable {
 			if (content.trim().startsWith("filename"))
 				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
 		return null;
+	}
+	
+	public <TYPE> List<SelectItem> buildSelectItems(Class<TYPE> aClass,SelectItemBuildListener<TYPE> selectItemBuildListener){
+		List<SelectItem> list = new ArrayList<>();
+		if(Boolean.TRUE.equals(selectItemBuildListener.nullable()))
+			list.add(new SelectItem(null, selectItemBuildListener.nullLabel()));
+		for(TYPE type : selectItemBuildListener.collection(aClass))
+			list.add(new SelectItem(type,selectItemBuildListener.label(type)));
+		return list;
+	}
+	
+	public <TYPE> List<SelectItem> buildSelectItems(Class<TYPE> aClass){
+		return buildSelectItems(aClass, new SelectItemBuildAdapter<TYPE>());
 	}
 	
 	

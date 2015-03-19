@@ -36,15 +36,18 @@
 	    <dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping-->
-	
-	<!--
+
 	<servlet>
 		<servlet-name>Push Servlet</servlet-name>
 		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+		<async-supported>true</async-supported>
+		<init-param>
+            <param-name>org.atmosphere.cpr.packages</param-name>
+            <param-value>org.cyk.ui.web.primefaces.push</param-value>
+   		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Push Servlet</servlet-name>
 		<url-pattern>/primepush/*</url-pattern>
 	</servlet-mapping>
-	-->
 </web-fragment>

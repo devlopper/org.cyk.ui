@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
@@ -29,6 +30,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		crud = crudFromRequestParameter();
 		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		
+		formModelClass = __formModelClass__();
 		Object data = data(formModelClass==null?(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass()):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);
@@ -83,6 +85,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
+		if(StringUtils.isNotBlank(previousUrl))
+			messageDialogOkButtonOnClick=javaScriptHelper.windowHref(previousUrl);
 		return null;
 	}
 

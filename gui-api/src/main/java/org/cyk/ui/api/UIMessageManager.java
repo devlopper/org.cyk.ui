@@ -1,6 +1,9 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.Collection;
+
+import org.cyk.system.root.model.event.Notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +16,17 @@ public interface UIMessageManager {
 	
 	UIMessageManager message(SeverityType severityType,Object object,Boolean isId);
 	
+	UIMessageManager notification(Notification notification);
+	
+	UIMessageManager notifications(Collection<Notification> notifications);
+	
 	UIMessageManager throwable(Throwable throwable);
 	
 	void showInline();
 	
 	void showDialog();
+	
+	void showGrowl();
 	
 	/**/
 	

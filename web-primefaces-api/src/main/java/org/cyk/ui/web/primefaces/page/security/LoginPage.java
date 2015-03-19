@@ -23,7 +23,6 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.api.WebSession;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.omnifaces.util.Faces;
 
@@ -34,14 +33,13 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 
 	@Inject private UserAccountBusiness userAccountBusiness;
 	
-	@Inject private WebSession session;
 	@Getter @Setter private Boolean rememberMe = Boolean.FALSE;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		form.setShowCommands(Boolean.TRUE);
-		form.getSubmitCommandable().setLabel(text("command.login"));		
+		form.getSubmitCommandable().setLabel(text("command.login"));	
 	}
 		
 	@Override
@@ -49,7 +47,8 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		if(form.getSubmitCommandable().getCommand()==command){
 			UserAccount userAccount = userAccountBusiness.connect(identifiable);
 			SecurityUtils.getSubject().login(new UsernamePasswordToken(identifiable.getUsername(), identifiable.getPassword(),rememberMe));
-			session.init(userAccount);
+			userSession.init(userAccount);
+			
 		}
 	}
 	
@@ -59,10 +58,10 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 			SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(Faces.getRequest());
 			String home = null;
 			if(savedRequest==null)
-				home = WebNavigationManager.getInstance().homeUrl(session);
+				home = WebNavigationManager.getInstance().homeUrl(userSession);
 			else{
 				if(StringUtils.equals(URI.create(savedRequest.getRequestURI()).getPath(), Faces.getRequestContextPath()+"/private/index.jsf"))
-					home = navigationManager.homeUrl(session);
+					home = navigationManager.homeUrl(userSession);
 				else
 					home = savedRequest.getRequestUrl();
 			}

@@ -74,6 +74,11 @@ public class CommandBuilder implements Serializable {
 					case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToXls());break;
 					case TOOLS_REPORT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsReport());break;
 					case TOOLS_PRINT_DATA_TABLE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsPrintDataTable());break;
+					
+					case MODULE_REFERENCE_ENTITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeReferenceEntity());break;
+					case MODULE_SECURITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeSecurity());break;
+					case USER_ACCOUNTS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccounts());break;
+					case EVENT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeEventCrudOne());break;
 					default:break;
 					}
 					
@@ -99,7 +104,7 @@ public class CommandBuilder implements Serializable {
 				}else{
 					switch(aCommandable.getViewType()){
 					case USERACCOUNT_LOGOUT:
-						menuItem.setCommand("#{webSession.logout()}");
+						menuItem.setCommand("#{userSession.logout()}");
 						menuItem.setAjax(Boolean.FALSE);
 						break;
 					default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 

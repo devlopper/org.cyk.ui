@@ -2,6 +2,8 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Singleton;
 
 import org.cyk.ui.api.MessageManager;
@@ -20,8 +22,17 @@ public class PrimefacesMessageManager extends WebUIMessageManager implements Ser
 	}
 	
 	@Override
-	public void showDialog() {
-        RequestContext.getCurrentInstance().showMessageInDialog(builtMessage);  
+	protected void __showDialog__() {
+		for(FacesMessage facesMessage : builtMessages)
+			RequestContext.getCurrentInstance().showMessageInDialog(facesMessage);  
+	}
+	
+	@Override
+	protected void __showGrowl__() {
+		for(FacesMessage facesMessage : builtMessages){
+			//System.out.println("PrimefacesMessageManager.__showGrowl__()");
+			FacesContext.getCurrentInstance().addMessage("notificationGrowl",facesMessage);  
+		}
 	}
 
 }

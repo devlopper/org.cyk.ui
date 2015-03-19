@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{notifTestPage}" />
+ 		<ui:define name="body">
+			    <h:panelGrid columns="2">
+			        <p:outputLabel for="summary" value="Objet: " />
+			        <p:inputText id="summary" value="#{notifTestPage.title}" required="true" />
+			 
+			        <p:outputLabel for="detail" value="Message: " />
+			        <p:editor id="detail" value="#{notifTestPage.message}" required="true" />
+			    </h:panelGrid>
+			 
+			    <p:commandButton value="Send" actionListener="#{notifTestPage.send}" />
+			
+ 		</ui:define>
+ 		
+ 		
+ 		
+ 	</ui:decorate>
+ 
+</html>

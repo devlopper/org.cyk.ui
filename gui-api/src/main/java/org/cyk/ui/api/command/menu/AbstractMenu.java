@@ -18,6 +18,8 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 
 	private static final long serialVersionUID = 101308477938178448L;
 
+	protected RenderType renderType = RenderType.PLAIN;
+	
 	protected Collection<UICommandable> commandables = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
 		public boolean add(UICommandable aCommandable){

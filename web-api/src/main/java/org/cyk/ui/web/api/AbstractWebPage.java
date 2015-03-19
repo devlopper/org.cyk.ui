@@ -16,7 +16,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
@@ -26,7 +25,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	private static final long serialVersionUID = -7284361545083572063L;
 	
 	@Inject transient protected WebManager webManager;
-	@Inject protected WebSession session;
+	//protected AbstractWebUserSession session;
 	@Inject transient protected WebNavigationManager navigationManager;
 	@Inject transient protected JavaScriptHelper javaScriptHelper;
 	
@@ -39,7 +38,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		locale = session.getLocale();
+		locale = getUserSession().getLocale();
 		footer=  UIManager.getInstance().getWindowFooter();
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
@@ -55,7 +54,6 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 					fields = commonUtils.getAllFields(getClass(), RequestParameter.class));
 		}
 		
-		
 		//System.out.println("AbstractWebPage.initialisation() : "+fields);	
 		for(Field field : fields){
 			RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
@@ -66,12 +64,14 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 				e.printStackTrace();
 			}
 		}
+		
+		//getMessageManager().notifications(session.getNotifications()).showGrowl();
 	}
-	
+	/*
 	@Override
 	public UserSession getUserSession() {
 		return session;
-	}
+	}*/
 	
 	@Override
 	public Boolean getShowFooter() {

@@ -1,7 +1,8 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
@@ -11,15 +12,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.MenuListener;
-import org.cyk.ui.api.MenuManager;
+import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserSession;
-import org.cyk.ui.api.MenuManager.Type;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.menu.MenuListener;
+import org.cyk.ui.api.command.menu.MenuManager;
+import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -27,6 +31,7 @@ import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.joda.time.DateTimeConstants;
 
 public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener,WebNavigationManagerListener,Serializable {
 
@@ -42,6 +47,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected RoleManager roleManager;
+	@Inject protected EventBusiness eventBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -50,6 +56,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
 		webNavigationManager.getWebNavigationManagerListeners().add(this);
+	
 	}
 	
 	@Override
@@ -58,6 +65,10 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
 		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
+		
+		//TODO find good times
+		RootBusinessLayer.getInstance().enableAlarmScanning(DateTimeConstants.MILLIS_PER_MINUTE*1l, DateTimeConstants.MILLIS_PER_MINUTE/2l,
+				new LinkedHashSet<RemoteEndPoint>(Arrays.asList(RemoteEndPoint.USER_INTERFACE)));
 	}
 	
 	protected void identifiableConfiguration(ServletContextEvent event){}
@@ -107,26 +118,33 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		businessClassConfig(aClass,formModelClass,null);
 	}
 	
-	@Override
-	public void menu(UserSession userSession, UIMenu menu, Type type) {
-			
-	}
+	/**/
 	
 	@Override
-	public UICommandable module(UserSession userSession, UIMenu menu,UICommandable module, ModuleType type) {
-		return module;
-	}
+	public void applicationMenuCreated(UserSession userSession, UIMenu menu) {}
 	
 	@Override
-	public Collection<UICommandable> modules(UserSession userSession,UIMenu aMenu, Collection<UICommandable> modules, ModuleType type) {
-		return modules;
+	public void businessModuleGroupCreated(UserSession userSession,UICommandable commandableGroup) {}
+	
+	@Override
+	public void moduleGroupCreated(UserSession userSession, ModuleGroup group,UICommandable commandable) {}
+	
+	@Override
+	public void referenceEntityMenuCreated(UserSession userSession, UIMenu menu) {}
+	
+	@Override
+	public void referenceEntityGroupCreated(UserSession userSession,UICommandable referenceEntityGroup) {}
+	
+	@Override
+	public void calendarMenuCreated(UserSession userSession, UIMenu menu) {
+		
 	}
 	
 	/**/
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		
+		RootBusinessLayer.getInstance().disableAlarmScanning();
 	}
 	
 }

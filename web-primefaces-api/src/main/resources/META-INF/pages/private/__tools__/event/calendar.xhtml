@@ -10,21 +10,20 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{toolsCalendarController}" />
+ 		<ui:param name="pageController" value="#{calendarPage}" />
  		<ui:define name="body">
- 			<cyk:eventCalendar value="#{toolsCalendarController.eventCalendar}" />
+ 			<cyk:eventCalendar value="#{calendarPage.eventCalendar}" />
  		</ui:define>
- 		<ui:define name="contentMenuBar"> 
+ 		<!--ui:define name="contentMenuBar"> 
  			
  			<cyk:command value="#{toolsCalendarController.eventCalendar.primefacesAddEventCommand}" />
  			 
- 			<!--
  			<p:commandButton value="Effects" type="button" onclick="PF('eventDialog').show();" /> 
  			<p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" appendTo="@(body)" modal="true">
 		        <cyk:editor value="#{toolsCalendarController.eventEditor}" />
 		    </p:dialog> 
-		    -->
- 		</ui:define>
+		    
+ 		</ui:define-->
  	</ui:decorate>
  	
 </html>

@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import org.cyk.ui.api.command.menu.UIMenu.RenderType;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +21,8 @@ public class ReferenceEntityPage extends AbstractPrimefacesPage implements Seria
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		contextualMenu = session.getReferenceEntityMenu();
+		contextualMenu = userSession.getReferenceEntityMenu();
+		contextualMenu.setRenderType(RenderType.PANEL);
 	}
 	
 }

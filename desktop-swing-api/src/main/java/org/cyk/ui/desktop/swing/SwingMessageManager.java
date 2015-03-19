@@ -3,7 +3,6 @@ package org.cyk.ui.desktop.swing;
 import java.io.Serializable;
 
 import javax.inject.Singleton;
-import javax.swing.JOptionPane;
 
 import org.cyk.ui.api.MessageManager;
 import org.cyk.ui.desktop.api.DesktopUIMessageManager;
@@ -20,8 +19,8 @@ public class SwingMessageManager extends DesktopUIMessageManager implements Seri
 	}
 	
 	@Override
-	public void showDialog() {
-        JOptionPane.showMessageDialog(null, builtMessage.getDetails());
+	protected void __showDialog__() {
+        //JOptionPane.showMessageDialog(null, builtMessage.getDetails());
 	}
 
 }

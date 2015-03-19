@@ -13,7 +13,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 
 @Named @RequestScoped
@@ -56,7 +55,8 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
-			WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
+			userSession.logout();
+			//WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
 		}
 		return super.succeed(command, parameter);
 	}

@@ -38,4 +38,10 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	@IncludeInputs(layout=Layout.VERTICAL) 
 	//protected AbstractFormModel<ContactCollection> contactCollectionFormModel = new SimpleContactCollectionFormModel();
 	protected SimpleContactCollectionFormModel contactCollectionFormModel = new SimpleContactCollectionFormModel();
+	
+	@Override
+	public void setIdentifiable(PARTY identifiable) {
+		super.setIdentifiable(identifiable);
+		contactCollectionFormModel.setIdentifiable(identifiable.getContactCollection());
+	}
 }

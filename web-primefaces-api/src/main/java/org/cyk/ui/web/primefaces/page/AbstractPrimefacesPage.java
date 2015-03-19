@@ -11,13 +11,14 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.model.EventCalendar;
+import org.cyk.ui.api.model.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.primefaces.CommandBuilder;
-import org.cyk.ui.web.primefaces.PrimefacesEventCalendar;
+import org.cyk.ui.web.primefaces.EventCalendar;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.ui.web.primefaces.UserSession;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -31,6 +32,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/*@Inject*/// @Getter protected ValidationPolicy validationPolicy;
 	@Inject @Getter transient protected UIManager uiManager;
 	@Inject @Getter transient protected PrimefacesMessageManager messageManager;
+	@Inject @Getter protected UserSession userSession;
 	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
 	
@@ -54,8 +56,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@Override
-	public EventCalendar eventCalendarInstance() {
-		return new PrimefacesEventCalendar();
+	public AbstractEventCalendar eventCalendarInstance() {
+		return new EventCalendar();
 	}
 	
 	protected Boolean commandsEqual(UICommandable commandable,UICommand command){

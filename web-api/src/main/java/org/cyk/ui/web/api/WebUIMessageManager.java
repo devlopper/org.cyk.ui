@@ -38,13 +38,19 @@ public class WebUIMessageManager extends AbstractMessageManager<FacesMessage, Se
 	}
 	
 	@Override
-	public void showInline() {
-		FacesContext.getCurrentInstance().addMessage(null, builtMessage);
+	protected void __showInline__() {
+		for(FacesMessage facesMessage : builtMessages)
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	}
 
 	@Override
-	public void showDialog() {
+	protected void __showDialog__() {
 		log.warning("I dont know how to show message in dialog!!!");
+	}
+
+	@Override
+	protected void __showGrowl__() {
+		log.warning("I dont know how to show message in growl!!!");
 	}
 	
 	/**/

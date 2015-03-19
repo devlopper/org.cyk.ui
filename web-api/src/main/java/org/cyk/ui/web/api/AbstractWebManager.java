@@ -2,14 +2,17 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 
-import org.cyk.ui.api.UserSession;
-import org.cyk.ui.api.command.menu.SystemMenu;
-import org.cyk.utility.common.cdi.AbstractBean;
+import javax.inject.Inject;
 
-public abstract class AbstractWebManager extends AbstractBean implements Serializable {
+import org.cyk.ui.api.AbstractApplicationUIManager;
+import org.cyk.ui.web.api.security.RoleManager;
+
+public abstract class AbstractWebManager extends AbstractApplicationUIManager implements Serializable {
 
 	private static final long serialVersionUID = 406884223652214395L;
 
-	public abstract SystemMenu systemMenu(UserSession userSession);
+	@Inject protected WebNavigationManager webNavigationManager;
+	@Inject protected WebManager webManager;
+	@Inject protected RoleManager roleManager;
 	
 }

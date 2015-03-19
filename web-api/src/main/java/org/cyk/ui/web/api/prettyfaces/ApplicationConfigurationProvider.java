@@ -1,5 +1,5 @@
 package org.cyk.ui.web.api.prettyfaces;
-
+/*
 import java.io.Serializable;
 
 import javax.servlet.ServletContext;
@@ -30,4 +30,4 @@ public class ApplicationConfigurationProvider extends HttpConfigurationProvider 
 		return 0;
 	}
 
-}
+}*/

@@ -2,7 +2,7 @@ package org.cyk.ui.web.vaadin.application.crud;
 
 import java.io.Serializable;
 
-import org.cyk.ui.api.MenuManager.Type;
+import org.cyk.ui.api.MenuManagerOLD.Type;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.table.HierarchyNode;
 import org.cyk.ui.web.vaadin.AbstractView;

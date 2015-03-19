@@ -1,7 +1,9 @@
 package org.cyk.ui.api;
 
+import java.util.Collection;
 import java.util.Locale;
 
+import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.UIMenu;
 
@@ -22,5 +24,10 @@ public interface UserSession {
 	UIMenu getApplicationMenu();
 	UIMenu getReferenceEntityMenu();
 	
+	String getNotificationChannel();
+	void setNotificationChannel(String channel);
+	Collection<Notification> getNotifications();
+	
 	void logout();
+	
 }

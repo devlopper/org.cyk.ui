@@ -11,17 +11,15 @@ import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
+import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.UserSession;
-import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.api.command.menu.ApplicationMenuManager;
-import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
+import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -34,17 +32,9 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		SystemMenu systemMenu = new SystemMenu();
-		systemMenu.setName("MyApp");
-		systemMenu.getBusinesses().add(UIProvider.getInstance().createCommandable("command.add", IconType.ACTION_ADD));
-		systemMenu.getBusinesses().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_EDIT));
+		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
+		uiManager.registerApplicationUImanager(RootWebManager.getInstance());
 		
-		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
-		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
-		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
-		systemMenu.getReports().add(UIProvider.getInstance().createCommandable("command.edit", IconType.ACTION_ADD));
-		
-		ApplicationMenuManager.getInstance().getSystemMenus().add(systemMenu);
 	}
 	
 	@Override
@@ -89,6 +79,7 @@ public class ContextListener extends AbstractContextListener {
 		
 		
 	}
+	
 	/*
 	@Override
 	public void menu(UserSession userSession, UIMenu menu, Type type) {
@@ -103,5 +94,5 @@ public class ContextListener extends AbstractContextListener {
 		//return webNavigationManager.url("test",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		return null;//webNavigationManager.createManyUrl(uiManager.businessEntityInfos(Person.class),Boolean.FALSE,Boolean.FALSE);
 	}
-
+	
 }

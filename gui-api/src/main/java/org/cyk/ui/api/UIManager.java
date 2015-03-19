@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -27,8 +28,10 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Application;
+import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
@@ -47,16 +50,23 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> FORM_MODEL_MAP = new HashMap<>();
 	
+	public static final String PUSH_CHANNEL_VAR = "channel";
+	public static final String PUSH_RECEIVER_VAR = "receiver";
+	public static final String PUSH_NOTIFICATION_CHANNEL = "notification_channel";
+	
 	private static UIManager INSTANCE;
 	public static UIManager getInstance() {
 		return INSTANCE;
 	}
 	
 	private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
+	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
 	private final String consultViewSuffix="ConsultView";
 	private final String listViewSuffix="ListView";
 	private final String editViewSuffix="EditView";
+	
+	private final String pushNotificationChannel=PUSH_NOTIFICATION_CHANNEL;
 	
 	private CollectionLoadMethod collectionLoadMethod;
 	private ToStringMethod toStringMethod;
@@ -67,6 +77,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private BusinessManager businessManager;
 	@Inject private GenericBusiness genericBusiness;
 	@Inject private FileBusiness fileBusiness;
+	@Inject private TimeBusiness timeBusiness;
+	
+	private Locale locale = Locale.FRENCH;
 	
 	/* constants */
 	private final String reportIdentifierParameter = "ridp";
@@ -157,6 +170,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return parameter.toString();
 			}
 		};
+	}
+	
+	public Collection<AbstractApplicationUIManager> getApplicationUImanagers() {
+		return applicationUIManagers;
+	}
+	
+	public void registerApplicationUImanager(AbstractApplicationUIManager applicationUIManager){
+		applicationUIManagers.add(applicationUIManager);
 	}
 	
 	public Application getApplication(){
@@ -271,6 +292,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public String formatTime(Date time){
 		return timeFormat.format(time);
+	}
+	
+	public String formatDuration(Period period){
+		return timeBusiness.formatDuration(timeBusiness.findDuration(period));
 	}
 	
 	/**/

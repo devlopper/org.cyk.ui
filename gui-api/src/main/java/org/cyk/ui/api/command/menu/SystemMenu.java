@@ -18,7 +18,7 @@ public class SystemMenu implements Serializable {
 	private String name,nameId;
 	private IconType iconType;
 	
-	private Collection<UICommandable> parameters = new ArrayList<>();
+	private Collection<UICommandable> referenceEntities = new ArrayList<>();
 	
 	private Collection<UICommandable> businesses = new ArrayList<>();
 	
