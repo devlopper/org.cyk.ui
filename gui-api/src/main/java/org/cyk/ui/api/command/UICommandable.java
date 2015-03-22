@@ -92,6 +92,7 @@ public interface UICommandable {
 		USER_ACCOUNTS,
 		EDIT_USER_ACCOUNT,
 		EVENT_CRUD_ONE,
+		NOTIFICATIONS,
 	}
 	
 	public enum IconType{

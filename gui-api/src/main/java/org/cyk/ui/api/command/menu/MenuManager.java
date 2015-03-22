@@ -25,9 +25,9 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractApplicationUIManager;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -62,7 +62,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
-	public UICommandable createModuleGroup(UserSession userSession,ModuleGroup moduleGroup) {
+	public UICommandable createModuleGroup(AbstractUserSession userSession,ModuleGroup moduleGroup) {
 		UICommandable commandableGroup = null;
 		groupsMap.put(moduleGroup, commandableGroup);
 		switch(moduleGroup){
@@ -77,9 +77,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandableGroup.addChild("command.security", null, ViewType.MODULE_SECURITY, null);
 			break;
 		case USER_ACCOUNT:
-			commandableGroup = UIProvider.getInstance().createCommandable("command.useraccount", IconType.THING_USERACCOUNT);
+			commandableGroup = UIProvider.getInstance().createCommandable(/*"command.useraccount"*/ userSession.getUserAccount().getCredentials().getUsername(),
+					IconType.THING_USERACCOUNT);
 			commandableGroup.addChild("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT, null)
 				.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+			commandableGroup.addChild("command.notifications", null, ViewType.NOTIFICATIONS, null);
 			break;
 		case HELP:
 			commandableGroup = UIProvider.getInstance().createCommandable("command.help", null);
@@ -104,14 +106,14 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return null;
 	}
 	
-	private Collection<SystemMenu> systemMenus(UserSession userSession){
+	private Collection<SystemMenu> systemMenus(AbstractUserSession userSession){
 		Collection<SystemMenu> collection = new ArrayList<>();
 		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
 			collection.add(applicationUIManager.systemMenu(userSession));
 		return collection;
 	}
 	
-	public UIMenu applicationMenu(UserSession userSession){
+	public UIMenu applicationMenu(AbstractUserSession userSession){
 		//System.out.println("ApplicationMenuManager.build()");
 		UIMenu menu = new DefaultMenu();
 		business(userSession,menu);
@@ -122,7 +124,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return menu;
 	}
 	
-	public UIMenu referenceEntityMenu(UserSession userSession){
+	public UIMenu referenceEntityMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();
 		if(Boolean.TRUE.equals(autoGenerateReferenceEntityMenu)){
 			UICommandable p;
@@ -167,13 +169,13 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return menu;
 	}
 	
-	public UIMenu securityMenu(UserSession userSession){
+	public UIMenu securityMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();
 		menu.addCommandable(commandable("user.accounts", null,ViewType.USER_ACCOUNTS));
 		return menu;
 	}
 	
-	public UIMenu calendarMenu(UserSession userSession){
+	public UIMenu calendarMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();
 		UICommandable p;
 		p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
@@ -183,7 +185,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	private void business(UserSession userSession,UIMenu menu){
+	private void business(AbstractUserSession userSession,UIMenu menu){
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
 				menu.addCommandable(businessModuleGroup);

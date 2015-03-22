@@ -79,6 +79,7 @@ public class CommandBuilder implements Serializable {
 					case MODULE_SECURITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeSecurity());break;
 					case USER_ACCOUNTS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccounts());break;
 					case EVENT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeEventCrudOne());break;
+					case NOTIFICATIONS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeNotifications());break;
 					default:break;
 					}
 					

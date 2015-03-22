@@ -22,8 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.web.api.security.RoleManager;
@@ -80,6 +80,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeSecurity = "security";
 	@Getter private String outcomeUserAccounts = "useraccounts";
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
+	@Getter private String outcomeNotifications = "notifications";
 	
 	@Getter private String outcomeLicense = "license";
 	
@@ -266,7 +267,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
-	public String homeUrl(UserSession userSession){
+	public String homeUrl(AbstractUserSession userSession){
 		String url = null;
 		if(roleManager.isAdministrator(null))
 			url = url("administratorindex",new Object[]{},Boolean.FALSE,Boolean.FALSE);

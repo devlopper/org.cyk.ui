@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import javax.inject.Singleton;
 
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIProvider;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
@@ -27,7 +27,7 @@ public class MyWebManager extends AbstractWebManager implements Serializable {
 	}
 	
 	@Override
-	public SystemMenu systemMenu(UserSession userSession) {
+	public SystemMenu systemMenu(AbstractUserSession userSession) {
 		SystemMenu systemMenu = new SystemMenu();
 		systemMenu.setName("MyApp");
 		

@@ -27,20 +27,15 @@ public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean impleme
 	*/
 	
 	@OnOpen
-    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {
-        //System.out.println("AbstractPushEndPoint.onOpen() : "+remoteEndpoint.path()+" ,  "+getChannel()+"|"+getReceiver());
-    }
+    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {}
 	
     @OnMessage(encoders = {JSONEncoder.class})
     public MESSAGE onMessage(MESSAGE message) {
-    	//System.out.println("AbstractPushEndPoint.onnMessage()"+" ,  "+getChannel()+"|"+getReceiver());
     	return message;
     }
     
     @OnClose
-    public void onClose(RemoteEndpoint remoteEndpoint, EventBus eventBus) {
-    	//System.out.println("AbstractPushEndPoint.onClose() : "+remoteEndpoint.path()+" ,  "+getChannel()+"|"+getReceiver());
-    }
+    public void onClose(RemoteEndpoint remoteEndpoint, EventBus eventBus) {}
     
     protected abstract String getChannel();
     protected abstract String getReceiver();

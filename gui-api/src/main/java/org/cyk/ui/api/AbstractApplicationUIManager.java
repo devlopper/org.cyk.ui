@@ -27,6 +27,6 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	
-	public abstract SystemMenu systemMenu(UserSession userSession);
+	public abstract SystemMenu systemMenu(AbstractUserSession userSession);
 	
 }

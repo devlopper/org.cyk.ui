@@ -12,8 +12,8 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
@@ -90,7 +90,7 @@ public class ContextListener extends AbstractContextListener {
 	}*/
 	
 	@Override
-	public String homeUrl(UserSession userSession) {
+	public String homeUrl(AbstractUserSession userSession) {
 		//return webNavigationManager.url("test",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		return null;//webNavigationManager.createManyUrl(uiManager.businessEntityInfos(Person.class),Boolean.FALSE,Boolean.FALSE);
 	}

@@ -11,7 +11,7 @@ import org.cyk.ui.api.model.AbstractEventCalendar;
 
 public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
-	UserSession getUserSession();
+	AbstractUserSession getUserSession();
 	
 	ValidationPolicy getValidationPolicy();
 	

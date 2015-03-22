@@ -2,28 +2,23 @@ package org.cyk.ui.web.api.security;
 
 import java.io.Serializable;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.Getter;
-
-import org.cyk.system.root.business.api.security.PermissionBusiness;
-import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.ui.api.AbstractRoleManager;
 import org.omnifaces.util.Faces;
 
 @Named @Singleton
-public class RoleManager extends AbstractBean implements Serializable {
+public class RoleManager extends AbstractRoleManager<HttpServletRequest> implements Serializable {
 
 	private static final long serialVersionUID = 3355588987277022257L;
 
 	private static RoleManager INSTANCE;
 	
-	@Inject @Getter private RoleBusiness roleBusiness;	
-	@Inject @Getter private PermissionBusiness permissionBusiness;
+	//@Inject @Getter private RoleBusiness roleBusiness;	
+	//@Inject @Getter private PermissionBusiness permissionBusiness;
 	
 	@Override
 	protected void initialisation() {

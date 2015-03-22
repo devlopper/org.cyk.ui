@@ -30,8 +30,10 @@
 			<h:outputText value="#{pageController.title}" rendered="#{not empty pageController.title}"/>
 			
 		</title>
+		
+		<h:outputScript library="org.cyk.ui.web.primefaces" name="js/head.js" target="head"/>
 
-		<script type="text/javascript">
+		<!-- <script type="text/javascript">
 	        $(document).ready(function() {
 	        	//Ready
 	        	#{pageController.onDocumentReadyJavaScript}
@@ -56,14 +58,18 @@
  		            reader.readAsDataURL(input.files[0]);
  		        }
  		    }
-	     </script>  
-	     
+	        
+	        function playSound(soundfile) {
+				document.getElementById("dummysound").
+					innerHTML='<embed src="'+soundfile+'" hidden="true" autostart="true" loop="false" />';
+			}
+	     </script>  -->
+	     <ui:include src="/org.cyk.ui.web.primefaces/include/js/head.xhtml" />
     </h:head>
     
     <ui:insert name="metadata"/>
  
 	<h:body>
-		
 		<ui:include src="#{webManager.decoratedTemplateInclude}" />
 		<h:outputScript library="org.cyk.ui.web.primefaces" name="js/primefaces.js" />
 		
@@ -75,9 +81,12 @@
 		<p:socket onMessage="handlePushChannelGlobalMessage" channel="#{primefacesManager.pushChannelGlobal}" />
 		-->
 		
-		<p:growl id="notificationChannelGrowl" widgetVar="#{primefacesManager.notificationChannelGrowlWidgetVar}" 
-			showDetail="true" sticky="true" escape="false" globalOnly="true" />
-		<h:form><p:remoteCommand name="updateNotifications" actionListener="#{userSession.showNotifications}" /></h:form>
+		<span id="dummysound"></span>
+		<h:form>
+			<p:growl id="notificationChannelGrowlId" widgetVar="#{primefacesManager.notificationChannelGrowlWidgetVar}" 
+				showDetail="true" sticky="true" escape="false" globalOnly="true"  />
+			<p:remoteCommand id="notificationRemoteCommand" name="updateNotifications" actionListener="#{userSession.showNotifications}" update="notificationChannelGrowlId" />
+		</h:form>
 		<p:socket widgetVar="#{primefacesManager.notificationChannelSocketWidgetVar}" autoConnect="true" 
 			channel="/#{uiManager.pushNotificationChannel}/#{userSession.userAccount.identifier}" 
 			onMessage="handleNotificationMessage" />
@@ -206,19 +215,13 @@
 			}
 			
 			function handleNotificationMessage(facesMessage) { 
-				//alert('Hi');
-				//PF('#{primefacesManager.notificationChannelGrowlWidgetVar}').show([facesMessage]); 
-				updateNotifications();  
-			}	
+				playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}'); 
+				updateNotifications(); 
+			}
 			
 		</h:outputScript>
  		
- 		<!--p:confirmDialog widgetVar="confirmDialogWidgetVar" header="#{uiManager.text('confirmation')}" closable="false" 
- 			message="#{uiManager.text('command.execution.confirmation.question')}" >
-	        <p:commandButton value="#{uiManager.text('yes')}" action="#{pageController.onConfirm}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
-	        	onclick="#{cc.value.command.execute(cc.attrs.executeParameter)}"/>
-	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('confirmDialogWidgetVar').hide();" />
-	    </p:confirmDialog-->
+ 		
  		
     </h:body>
 </html>

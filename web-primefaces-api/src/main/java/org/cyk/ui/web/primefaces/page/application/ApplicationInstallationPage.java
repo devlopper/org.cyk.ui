@@ -13,7 +13,9 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
+import org.omnifaces.util.Faces;
 
 @Named @RequestScoped
 public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePage<Application> implements Serializable {
@@ -55,8 +57,8 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
-			userSession.logout();
-			//WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
+			Faces.invalidateSession();
+			WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
 		}
 		return super.succeed(command, parameter);
 	}

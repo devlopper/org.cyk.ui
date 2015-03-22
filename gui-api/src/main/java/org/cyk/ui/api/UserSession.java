@@ -1,5 +1,5 @@
 package org.cyk.ui.api;
-
+/*
 import java.util.Collection;
 import java.util.Locale;
 
@@ -31,3 +31,4 @@ public interface UserSession {
 	void logout();
 	
 }
+*/

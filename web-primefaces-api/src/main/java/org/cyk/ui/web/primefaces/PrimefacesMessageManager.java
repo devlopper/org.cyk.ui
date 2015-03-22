@@ -29,10 +29,8 @@ public class PrimefacesMessageManager extends WebUIMessageManager implements Ser
 	
 	@Override
 	protected void __showGrowl__() {
-		for(FacesMessage facesMessage : builtMessages){
-			//System.out.println("PrimefacesMessageManager.__showGrowl__()");
-			FacesContext.getCurrentInstance().addMessage("notificationGrowl",facesMessage);  
-		}
+		for(FacesMessage facesMessage : builtMessages)
+			FacesContext.getCurrentInstance().addMessage(/*PrimefacesManager.getInstance().getNotificationChannelGrowlId()*/null,facesMessage);  
 	}
 
 }

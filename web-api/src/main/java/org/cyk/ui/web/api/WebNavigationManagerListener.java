@@ -1,9 +1,9 @@
 package org.cyk.ui.web.api;
 
-import org.cyk.ui.api.UserSession;
+import org.cyk.ui.api.AbstractUserSession;
 
 public interface WebNavigationManagerListener {
 
-	String homeUrl(UserSession userSession);
+	String homeUrl(AbstractUserSession userSession);
 	
 }

@@ -71,6 +71,12 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>notifications</from-outcome>
+			<to-view-id>/private/__tools__/event/notifications.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>toolsexportdatatabletopdf</from-outcome>
 			<to-view-id>/private/__tools__/exportdatatabletopdf.xhtml</to-view-id>
 			<redirect />

@@ -48,6 +48,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	private String notificationChannelSocketWidgetVar = "notificationChannelWidgetVar";
 	private String notificationChannelGrowlWidgetVar = "notificationChannelGrowlWidgetVar";
+	private String notificationChannelGrowlId = "notificationChannelGrowlId";
 	
 	@Override
 	protected void initialisation() {

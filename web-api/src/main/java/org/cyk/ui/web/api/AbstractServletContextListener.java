@@ -3,6 +3,7 @@ package org.cyk.ui.web.api;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
@@ -18,8 +19,8 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UserSession;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.MenuListener;
 import org.cyk.ui.api.command.menu.MenuManager;
@@ -66,15 +67,14 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
 		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
 		
-		//TODO find good times
-		RootBusinessLayer.getInstance().enableAlarmScanning(DateTimeConstants.MILLIS_PER_MINUTE*1l, DateTimeConstants.MILLIS_PER_MINUTE/2l,
-				new LinkedHashSet<RemoteEndPoint>(Arrays.asList(RemoteEndPoint.USER_INTERFACE)));
+		if(Boolean.TRUE.equals(alarmScanningEnabled()))
+			RootBusinessLayer.getInstance().enableAlarmScanning(DateTimeConstants.MILLIS_PER_MINUTE*1l, alarmScanningPeriod(),alarmScanningRemoteEndPoints());
 	}
 	
 	protected void identifiableConfiguration(ServletContextEvent event){}
 	
 	@Override
-	public String homeUrl(UserSession userSession) {
+	public String homeUrl(AbstractUserSession userSession) {
 		return null;
 	}
 	
@@ -121,23 +121,37 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	/**/
 	
 	@Override
-	public void applicationMenuCreated(UserSession userSession, UIMenu menu) {}
+	public void applicationMenuCreated(AbstractUserSession userSession, UIMenu menu) {}
 	
 	@Override
-	public void businessModuleGroupCreated(UserSession userSession,UICommandable commandableGroup) {}
+	public void businessModuleGroupCreated(AbstractUserSession userSession,UICommandable commandableGroup) {}
 	
 	@Override
-	public void moduleGroupCreated(UserSession userSession, ModuleGroup group,UICommandable commandable) {}
+	public void moduleGroupCreated(AbstractUserSession userSession, ModuleGroup group,UICommandable commandable) {}
 	
 	@Override
-	public void referenceEntityMenuCreated(UserSession userSession, UIMenu menu) {}
+	public void referenceEntityMenuCreated(AbstractUserSession userSession, UIMenu menu) {}
 	
 	@Override
-	public void referenceEntityGroupCreated(UserSession userSession,UICommandable referenceEntityGroup) {}
+	public void referenceEntityGroupCreated(AbstractUserSession userSession,UICommandable referenceEntityGroup) {}
 	
 	@Override
-	public void calendarMenuCreated(UserSession userSession, UIMenu menu) {
+	public void calendarMenuCreated(AbstractUserSession userSession, UIMenu menu) {
 		
+	}
+	
+	/**/
+	
+	protected Boolean alarmScanningEnabled(){
+		return Boolean.TRUE;
+	}
+	
+	protected Long alarmScanningPeriod(){
+		return DateTimeConstants.MILLIS_PER_MINUTE*1l;
+	}
+	
+	protected Set<RemoteEndPoint> alarmScanningRemoteEndPoints(){
+		return new LinkedHashSet<RemoteEndPoint>(Arrays.asList(RemoteEndPoint.USER_INTERFACE));
 	}
 	
 	/**/
