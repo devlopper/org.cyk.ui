@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @RequestScoped @Getter @Setter
-public class SecurityPage extends AbstractPrimefacesPage implements Serializable {
+public class SecurityManagerPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 

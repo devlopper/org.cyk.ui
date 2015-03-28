@@ -69,6 +69,7 @@ public class CommandBuilder implements Serializable {
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLogout());break;
 					case LICENCE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLicense());break;
+					case LICENCE_READ:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLicenseRead());break;
 					case TOOLS_CALENDAR:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsCalendar());break;
 					case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToPdf());break;
 					case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToXls());break;
@@ -78,6 +79,7 @@ public class CommandBuilder implements Serializable {
 					case MODULE_REFERENCE_ENTITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeReferenceEntity());break;
 					case MODULE_SECURITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeSecurity());break;
 					case USER_ACCOUNTS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccounts());break;
+					case USER_ACCOUNT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccountCrudOne());break;
 					case EVENT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeEventCrudOne());break;
 					case NOTIFICATIONS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeNotifications());break;
 					default:break;

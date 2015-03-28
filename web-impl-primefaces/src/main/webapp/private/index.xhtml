@@ -12,8 +12,12 @@
  		<ui:param name="pageController" value="#{customPrivateIndexPage}" />
  
  		<ui:define name="body">
- 			
- 			
+ 			Roles<br/>
+ 			Administrator : #{roleManager.isAdministrator(request)}<br/>
+ 			Setting Manager : #{roleManager.isSettingManager(request)}<br/>
+ 			Business Actor : #{roleManager.isBusinessActor(request)}<br/>
+ 			Manager : #{roleManager.isManager(request)}<br/>
+ 			Security Manager : #{roleManager.isSecurityManager(request)}<br/>
  		</ui:define>
  	</ui:decorate>
  

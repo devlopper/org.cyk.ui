@@ -33,8 +33,7 @@ public class ContextListener extends AbstractContextListener {
 	protected void initialisation() {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
-		uiManager.registerApplicationUImanager(RootWebManager.getInstance());
-		
+		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
 	}
 	
 	@Override
@@ -75,19 +74,13 @@ public class ContextListener extends AbstractContextListener {
 				}
 				return super.count(dataClass, filter);
 			}
-		});
-		
-		
+		});	
 	}
 	
-	/*
 	@Override
-	public void menu(UserSession userSession, UIMenu menu, Type type) {
-		UICommandable commandable;
-		menu.getCommandables().add(MenuManager.crudMany(Actor.class, IconType.PERSON));
-		menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
-		commandable.setViewId("personsearch");
-	}*/
+	protected Long alarmScanningPeriod() {
+		return 1000 * 15l;
+	}
 	
 	@Override
 	public String homeUrl(AbstractUserSession userSession) {

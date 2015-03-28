@@ -7,11 +7,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Singleton;
 
 import org.cyk.ui.api.MessageManager;
-import org.cyk.ui.web.api.WebUIMessageManager;
+import org.cyk.ui.web.api.AbstractWebMessageManager;
 import org.primefaces.context.RequestContext;
 
 @Singleton
-public class PrimefacesMessageManager extends WebUIMessageManager implements Serializable {
+public class PrimefacesMessageManager extends AbstractWebMessageManager implements Serializable {
 
 	private static final long serialVersionUID = -2135903644205681102L;
 	
@@ -29,8 +29,9 @@ public class PrimefacesMessageManager extends WebUIMessageManager implements Ser
 	
 	@Override
 	protected void __showGrowl__() {
+		String clientId = null;//PrimefacesManager.getInstance().getNotificationChannelGrowlId();
 		for(FacesMessage facesMessage : builtMessages)
-			FacesContext.getCurrentInstance().addMessage(/*PrimefacesManager.getInstance().getNotificationChannelGrowlId()*/null,facesMessage);  
+			FacesContext.getCurrentInstance().addMessage(clientId,facesMessage);  
 	}
 
 }

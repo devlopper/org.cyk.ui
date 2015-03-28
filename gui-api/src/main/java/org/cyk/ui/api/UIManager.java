@@ -82,6 +82,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private Locale locale = Locale.FRENCH;
 	
 	/* constants */
+	private final String userAccountParameter = "ridp";
 	private final String reportIdentifierParameter = "ridp";
 	private final String formModelParameter = "formmodel";
 	private final String classParameter = "clazz";

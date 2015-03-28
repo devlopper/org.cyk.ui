@@ -13,8 +13,9 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.security.RoleManager;
+import org.cyk.utility.common.cdi.AbstractBean;
 
-public class WebEnvironmentAdapter implements WebEnvironmentListener,Serializable {
+public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmentListener,Serializable {
 
 	private static final long serialVersionUID = 4907315709148031667L;
 
@@ -52,22 +53,55 @@ public class WebEnvironmentAdapter implements WebEnvironmentListener,Serializabl
 		urlsSection = anIni.addSection("urls");
 		urlsSection.put("/login", "user");
 		
-		role("/__administration__/**", Role.ADMINISTRATOR);
-		permission("/private/__security__/license.jsf",License.class, Crud.READ);
+		roleSettingManager();
+		roleSecurityManager();
+		roleManager();
+		
+		roleBusinessActor();
+		
+		/**/
+		
+		roleAdministrator();
+		//debug(anIni);
+		//debug(urlsSection);
+	}
+	
+	/**/
+	
+	protected void roleAdministrator(){
+		role("/private/__role__/__administrator__/**", Role.ADMINISTRATOR);
+	}
+	
+	protected void roleManager(){
+		role("/private/__role__/__manager__/**",Role.MANAGER);
+	}
+	
+	protected void roleSecurityManager(){
+		role("/private/__role__/__securitymanager__/**",Role.SECURITY_MANAGER);
+	}
+	
+	protected void roleSettingManager(){
+		//permission("/private/__role__/__settingmanager__/readlicense.jsf",License.class, Crud.READ);
+		role("/private/__role__/__settingmanager__/**",Role.SETTING_MANAGER);
+	}
+	
+	protected void roleBusinessActor(){
 		role("/private/**", Role.BUSINESS_ACTOR);
 	}
 	
-	private void role(String path,String roleCode){
+	/**/
+	
+	protected void role(String path,String roleCode){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
 		urlsSection.put(path,String.format(ROLES_FORMAT,FILTER_VAR,roleBusiness.find(roleCode).getIdentifier()));
 	}
 	
-	private void permission(String path,String permission){
+	protected void permission(String path,String permission){
 		urlsSection.put(path,String.format(PERMISSIONS_FORMAT,FILTER_VAR,permission));
 	}
 	
-	private void permission(String path,Class<? extends AbstractIdentifiable> aClass,Crud aCrud){
+	protected void permission(String path,Class<? extends AbstractIdentifiable> aClass,Crud aCrud){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
 		permission(path, permissionBusiness.find(aClass, aCrud).getIdentifier().toString());

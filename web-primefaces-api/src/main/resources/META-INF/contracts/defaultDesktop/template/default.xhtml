@@ -6,90 +6,18 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
  
     <h:head>
-    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    	<!-- Error : Not Found - Check how it comes -->
-    	<!--
-    	<link href="#{request.contextPath}/contracts/defaultDesktop/css/default.css" rel="stylesheet" type="text/css"/>
-    	<link href="#{request.contextPath}/contracts/defaultDesktop/css/common.css" rel="stylesheet" type="text/css"/>
-		-->
-		
-		
-		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces" />
-		
-		<!--
-		<ui:repeat var="link" value="#{webManager.headLinks}">
-			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/#{link}" />
-		</ui:repeat>
-		-->
-		<title>
-			<h:outputText value="#{uiManager.application.name}" rendered="#{not empty uiManager.application.name}"/>
-			<h:outputText value=" - " rendered="#{not empty uiManager.application.name and not empty pageController.title}" />
-			<h:outputText value="#{pageController.title}" rendered="#{not empty pageController.title}"/>
-			
-		</title>
-		
-		<h:outputScript library="org.cyk.ui.web.primefaces" name="js/head.js" target="head"/>
-
-		<!-- <script type="text/javascript">
-	        $(document).ready(function() {
-	        	//Ready
-	        	#{pageController.onDocumentReadyJavaScript}
-	        	//Loaded
-	        	$(window).on('load', function() { #{pageController.onDocumentLoadJavaScript} });
-	        	//Before unloadind
-	        	$(window).bind('beforeunload', function(){
-					#{pageController.onDocumentBeforeUnLoadJavaScript}
-					//the custom message for page unload doesn't work on Firefox
-					if(#{pageController.onDocumentBeforeUnLoadWarnAsString})
-						return '#{pageController.onDocumentBeforeUnLoadWarningMessage}';
-				
-				});
-			});
-	        
-	        function preview(input,previewId) {
- 		        if (input.files &amp;&amp; input.files[0]) {
- 		            var reader = new FileReader();
- 		            reader.onload = function (e) {
- 		                $('#'+previewId).attr('src', e.target.result);
- 		            }
- 		            reader.readAsDataURL(input.files[0]);
- 		        }
- 		    }
-	        
-	        function playSound(soundfile) {
-				document.getElementById("dummysound").
-					innerHTML='<embed src="'+soundfile+'" hidden="true" autostart="true" loop="false" />';
-			}
-	     </script>  -->
-	     <ui:include src="/org.cyk.ui.web.primefaces/include/js/head.xhtml" />
+    	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
     </h:head>
     
     <ui:insert name="metadata"/>
  
 	<h:body>
 		<ui:include src="#{webManager.decoratedTemplateInclude}" />
-		<h:outputScript library="org.cyk.ui.web.primefaces" name="js/primefaces.js" />
-		
-		<!--p:growl id="notificationGrowl" showDetail="true" sticky="true" escape="false" globalOnly="true" /-->
-		
-		<!-- pushing -->
-		<!--
-		<p:growl widgetVar="#{primefacesManager.pushChannelGlobalGrowlWidgetVar}" showDetail="true" sticky="true" escape="false" />
-		<p:socket onMessage="handlePushChannelGlobalMessage" channel="#{primefacesManager.pushChannelGlobal}" />
-		-->
-		
-		<span id="dummysound"></span>
-		<h:form>
-			<p:growl id="notificationChannelGrowlId" widgetVar="#{primefacesManager.notificationChannelGrowlWidgetVar}" 
-				showDetail="true" sticky="true" escape="false" globalOnly="true"  />
-			<p:remoteCommand id="notificationRemoteCommand" name="updateNotifications" actionListener="#{userSession.showNotifications}" update="notificationChannelGrowlId" />
-		</h:form>
-		<p:socket widgetVar="#{primefacesManager.notificationChannelSocketWidgetVar}" autoConnect="true" 
-			channel="/#{uiManager.pushNotificationChannel}/#{userSession.userAccount.identifier}" 
-			onMessage="handleNotificationMessage" />
+		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
 		
 		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
 			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" rendered="#{pageController.showMainMenu}"><h:form id="formNorth">
@@ -170,58 +98,6 @@
 			</pe:layoutPane>
 			
 		</pe:layout> 
- 		
- 		<h:outputScript>
- 			$ = jQuery;
-			
-	    	function clickEditButtonLastRow(dataTableStyleClass){
-	    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
-					 $(this).click();	
-				});
-				
-			}
-			
-			function clickEditButtonAllRow(dataTableStyleClass){
-				$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
-					 $(this).click();	
-				});
-			}
-			
-			function hideAllRowEditorButtons(dataTableStyleClass){
-				$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('div.ui-row-editor').each(function(){
-					 $(this).display='none';
-					 $(this).visible='false';
-					 $(this).visibility='hidden';	
-				});
-			}			
-			
-			function clickEditButtonRow(dataTableStyleClass,rowIndex){
-				$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
-					 $(this).click();	
-				});
-			}
-			
-			
-			function confirmDialog(){
-	    		PF('confirmDialogWidgetVar').show();
-			}
-			
-			function blockUIStart() {
-			    PF('#{webManager.blockUIDialogWidgetId}').show();
-			}
-			 
-			function blockUIStop() {
-			    PF('#{webManager.blockUIDialogWidgetId}').hide();
-			}
-			
-			function handleNotificationMessage(facesMessage) { 
-				playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}'); 
-				updateNotifications(); 
-			}
-			
-		</h:outputScript>
- 		
- 		
- 		
+ 		<ui:include src="/org.cyk.ui.web.primefaces/include/js/bodybottom.xhtml" />
     </h:body>
 </html>

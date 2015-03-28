@@ -9,15 +9,12 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -26,8 +23,6 @@ import org.cyk.ui.api.command.menu.MenuListener;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
-import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
@@ -77,7 +72,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	public String homeUrl(AbstractUserSession userSession) {
 		return null;
 	}
-	
+	/*
 	protected BusinessEntityInfos businessEntityInfos(Class<? extends AbstractIdentifiable> aClass){
 		return uiManager.businessEntityInfos(aClass);
 	}
@@ -99,9 +94,9 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected void registerFormModel(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> aClass){
 		registerFormModel(aClass.getSimpleName(),aClass);//TODO ensure that there is no duplicate
 	}
-	
+	*/
 	/**/
-	
+	/*
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass,
 			String uiEditViewId){
 		identifiableConfiguration(aClass).setFormModelClass(formModelClass);
@@ -117,7 +112,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass){
 		businessClassConfig(aClass,formModelClass,null);
 	}
-	
+	*/
 	/**/
 	
 	@Override

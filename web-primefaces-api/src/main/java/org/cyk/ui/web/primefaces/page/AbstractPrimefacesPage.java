@@ -63,6 +63,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected Boolean commandsEqual(UICommandable commandable,UICommand command){
 		return commandable.getCommand() == command;
 	}
+	
+	/**/
+	
+	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
+		form.setShowCommands(Boolean.FALSE);
+	}
+	
+	protected void configureDetailsTable(Table<?> table,String titleId){
+		table.addColumnFromDataClass();
+		table.setTitle(text(titleId));
+		table.setShowToolBar(Boolean.FALSE);
+	}
 
 
 	

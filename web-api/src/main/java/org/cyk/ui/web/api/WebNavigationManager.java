@@ -79,10 +79,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeReferenceEntity = "referenceentity";
 	@Getter private String outcomeSecurity = "security";
 	@Getter private String outcomeUserAccounts = "useraccounts";
+	@Getter private String outcomeUserAccountCrudOne = "useraccountcrudone";
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
 	@Getter private String outcomeNotifications = "notifications";
 	
 	@Getter private String outcomeLicense = "license";
+	@Getter private String outcomeLicenseRead = "licenseRead";
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
 	@Getter private String outcomeReportTable = "exportdatatableservlet";

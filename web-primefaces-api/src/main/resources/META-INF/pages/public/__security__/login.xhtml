@@ -18,6 +18,15 @@
  				</p:panel>
  			</td> </tr> </table>
  			
+ 			<p:dialog id="connectionMessageDialogId" widgetVar="#{webManager.connectionMessageDialogWidgetId}" header="#{uiManager.text('information')}" 
+ 				draggable="false" resizable="false">
+ 				
+ 				<h:outputText value="#{uiManager.text('autodisconnectandconnectwarning')}" escape="false" />
+ 				<p:separator/>
+ 				<p:commandButton value="#{uiManager.text('yes')}" action="#{loginPage.disconnectConnectedAndConnect}" />
+ 				
+ 			</p:dialog>
+ 			
  		</ui:define>
  	</ui:decorate>
  

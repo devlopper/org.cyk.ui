@@ -60,6 +60,11 @@ public abstract class AbstractMessageManager<MESSAGE,SEVERITY> extends AbstractB
 	}
 	
 	@Override
+	public void clear() {
+		builtMessages.clear();	
+	}
+	
+	@Override
 	public final void showInline() {
 		if(builtMessages.isEmpty())
 			return;

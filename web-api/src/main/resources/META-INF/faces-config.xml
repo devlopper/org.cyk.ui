@@ -14,12 +14,6 @@
 			<redirect />
 		</navigation-case>
 
-		<!--navigation-case>
-			<from-outcome>publicindex</from-outcome>
-			<to-view-id>/index.xhtml</to-view-id>
-			<redirect />
-		</navigation-case-->
-
 		<navigation-case>
 			<from-outcome>privateindex</from-outcome>
 			<to-view-id>/private/index.xhtml</to-view-id>
@@ -94,8 +88,6 @@
 			<redirect />
 		</navigation-case>
 
-		<!-- security -->
-
 		<navigation-case>
 			<from-outcome>useraccountlogout</from-outcome>
 			<to-view-id>/public/__useraccount__/logout.xhtml</to-view-id>
@@ -122,26 +114,37 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>security</from-outcome>
-			<to-view-id>/private/security.jsf</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>useraccounts</from-outcome>
-			<to-view-id>/private/__security__/useraccounts.jsf</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>license</from-outcome>
-			<to-view-id>/private/__security__/license.jsf</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
 			<from-outcome>toolsreport</from-outcome>
 			<to-view-id>/private/__tools__/report.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!-- Security Manager -->
+		<navigation-case>
+			<from-outcome>security</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/index.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>useraccounts</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/listuseraccount.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>useraccountcrudone</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/createuseraccount.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!-- Setting Manager -->
+		<navigation-case>
+			<from-outcome>license</from-outcome>
+			<to-view-id>/private/__role__/__settingmanager__/readlicense.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>licenseRead</from-outcome>
+			<to-view-id>/private/__role__/__settingmanager__/readlicense.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		

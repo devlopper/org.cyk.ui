@@ -85,6 +85,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			break;
 		case HELP:
 			commandableGroup = UIProvider.getInstance().createCommandable("command.help", null);
+			commandableGroup.addChild("command.license", null, ViewType.LICENCE_READ, null);
 			break;
 		case REPORT:
 			commandableGroup = UIProvider.getInstance().createCommandable("command.report", null);
@@ -121,6 +122,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
+		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
 		return menu;
 	}
 	
@@ -170,7 +172,9 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public UIMenu securityMenu(AbstractUserSession userSession){
-		UIMenu menu = new DefaultMenu();
+		UIMenu menu = new DefaultMenu();UICommandable p;
+		menu.addCommandable(p = commandable("user.account.create", null,ViewType.USER_ACCOUNT_CRUD_ONE));
+		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		menu.addCommandable(commandable("user.accounts", null,ViewType.USER_ACCOUNTS));
 		return menu;
 	}

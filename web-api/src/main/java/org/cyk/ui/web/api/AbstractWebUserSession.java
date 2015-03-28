@@ -3,13 +3,15 @@ package org.cyk.ui.web.api;
 import java.io.Serializable;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.shiro.SecurityUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebUserSession extends AbstractUserSession implements Serializable {
+public abstract class AbstractWebUserSession extends AbstractUserSession implements HttpSessionBindingListener , Serializable {
 
 	private static final long serialVersionUID = 7799444210756287076L;
 
@@ -40,4 +42,15 @@ public abstract class AbstractWebUserSession extends AbstractUserSession impleme
 		return RoleManager.getInstance().isManager(null);
 	}
 	
+	/**/
+	
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		System.out.println("AbstractWebUserSession.valueBound()");
+	}
+	
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		System.out.println("AbstractWebUserSession.valueUnbound()");
+	}
 }

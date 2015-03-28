@@ -96,7 +96,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 					
 					WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
 							new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
-						,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString()});
+						,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
+						UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
+						?UIManager.getInstance().getCrudReadParameter():null});
 				}
 			});
 		}

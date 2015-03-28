@@ -48,28 +48,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		});
 		table.getAddRowCommandable().getCommand().getCommandListeners().add(this);
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
-		
 		table.addColumnFromDataClass();
-		
 		table.setMaster(identifiable);
-		
-		
-		
-		//if(!Boolean.TRUE.equals(table.getLazyLoad()))
-		//	table.fetchData(null,null,null,null,null,null);
-		
-		
-		
-		/*
-		table.getSaveRowCommand().getCommand().setAfterFailureMethod(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = -4698491663673906259L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				messageDialogOkButtonOnClick="clickEditButtonRow('"+table.getUpdateStyleClass()+"','"+(table.getLastEditedRowIndex()+1)+"');";
-				return null;
-			}
-		});*/
-		
 		contentTitle = text("page.crud.many")+" "+contentTitle;
 		title = contentTitle;
 		

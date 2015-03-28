@@ -48,4 +48,9 @@ public class MessageManager implements UIMessageManager {
 		
 	}
 
+	@Override
+	public void clear() {
+		
+	}
+
 }

@@ -66,6 +66,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		}
 		
 		//getMessageManager().notifications(session.getNotifications()).showGrowl();
+		//System.out.println("AbstractWebPage.initialisation() : "+FacesContext.getCurrentInstance().getMessageList());
 	}
 	/*
 	@Override

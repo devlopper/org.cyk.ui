@@ -34,6 +34,16 @@ public class RoleManager extends AbstractRoleManager<HttpServletRequest> impleme
 		return Boolean.TRUE.equals(hasRole(request, Role.MANAGER));
 	}
 	
+	@Override
+	public Boolean isSettingManager(HttpServletRequest request) {
+		return Boolean.TRUE.equals(hasRole(request, Role.SETTING_MANAGER));
+	}
+	
+	@Override
+	public Boolean isSecurityManager(HttpServletRequest request) {
+		return Boolean.TRUE.equals(hasRole(request, Role.SECURITY_MANAGER));
+	}
+	
 	public Boolean isBusinessActor(HttpServletRequest request){
 		return Boolean.TRUE.equals(hasRole(request, Role.BUSINESS_ACTOR));
 	}

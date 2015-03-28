@@ -22,6 +22,8 @@ public interface UIMessageManager {
 	
 	UIMessageManager throwable(Throwable throwable);
 	
+	void clear();
+	
 	void showInline();
 	
 	void showDialog();

@@ -37,6 +37,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	@Getter @Setter protected UserAccount userAccount;
 	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu;
 	@Getter @Setter protected String notificationChannel;
+	@Getter protected Boolean logoutCalled;
 	
 	//FIXME not called. because of Session Scope ?
 	/*
@@ -66,6 +67,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	}
 	
 	public void init(UserAccount userAccount){
+		logoutCalled = Boolean.FALSE;
 		setUserAccount(userAccount);
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));
 		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this));
@@ -76,9 +78,17 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		timestamp = System.currentTimeMillis();
 		
 		register(this);
+		/*
+		Collection<AbstractUserSession> userSessions = find(userAccount);
+		if(userSessions.size()>1){
+			//notificationFired(notification, facesMessage);
+		}
+		*/
 	}
 	
 	public void showNotifications(){
+		//System.out.println("AbstractUserSession.showNotifications() : "+userAccount.getSessionNotifications().size());
+		MessageManager.INSTANCE.clear();//to avoid showing old message in case there are
 		MessageManager.INSTANCE.notifications(userAccount.getSessionNotifications()).showGrowl();
 	}
 	
@@ -88,10 +98,17 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		userAccountBusiness.disconnect(getUserAccount());
 		__logout__();
 		unRegister(this);
+		logoutCalled = Boolean.TRUE;
 		__invalidateSession__();
 		__navigateToPublicIndex__();
 	}
 	
+	public void autoLogout(){
+		userAccountBusiness.disconnect(getUserAccount());
+		__logout__();
+		unRegister(this);
+		__navigateToPublicIndex__();
+	}
 	
 	protected abstract void __navigateToPublicIndex__();
 	
@@ -115,5 +132,10 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 			if(entry.getValue().getUserAccount().equals(userAccount))
 				collection.add(entry.getValue());
 		return collection;
+	}
+	
+	public static void logout(UserAccount userAccount){
+		for(AbstractUserSession session : find(userAccount))
+			session.logout();
 	}
 }

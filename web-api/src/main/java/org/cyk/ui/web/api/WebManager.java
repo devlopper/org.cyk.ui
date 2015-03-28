@@ -47,6 +47,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
 	private final String messageDialogWidgetId = "messageDialogWidget";
+	private final String connectionMessageDialogWidgetId = "connectionMessageDialogWidget";
 	private final String reportDataTableServletUrl = "/_cyk_report_/_datatable_/_jasper_/";
 	
 	@Setter private String decoratedTemplateInclude;
