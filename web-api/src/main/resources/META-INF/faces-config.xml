@@ -85,21 +85,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>toolsprintdatatable</from-outcome>
-			<to-view-id>/private/__tools__/export/printdatatable.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>toolsexportdatatabletopdf</from-outcome>
-			<to-view-id>/private/__tools__/export/exportdatatabletopdf.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>toolsexportdatatabletoxls</from-outcome>
-			<to-view-id>/private/__tools__/export/exportdatatabletoxls.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>exportdatatableservlet</from-outcome>
 			<to-view-id>/private/__tools__/export/_cyk_report_/_datatable_/_jasper_/</to-view-id>
 			<redirect />
@@ -115,7 +100,7 @@
 		<!-- Application -->
 		<navigation-case>
 			<from-outcome>applicationSetup</from-outcome>
-			<to-view-id>/public/__application__/setup.jsf</to-view-id>
+			<to-view-id>/public/__application__/install.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		

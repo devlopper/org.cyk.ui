@@ -1,15 +1,17 @@
 package org.cyk.ui.web.api.security.shiro;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
-import org.cyk.system.root.business.api.security.PermissionBusiness;
-import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.security.RoleManager;
@@ -27,14 +29,13 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	protected static final String PERMISSIONS_FORMAT = "%s , perms[%s]";
 	
 	public static DataSource DATA_SOURCE;
+	public static final Collection<SecuredUrlProvider> SECURED_URL_PROVIDERS = new ArrayList<>();
 	
-	private RoleBusiness roleBusiness;
-	private PermissionBusiness permissionBusiness;
+	
 	private Section  urlsSection;
 	
 	public WebEnvironmentAdapter() {
-		permissionBusiness = RoleManager.getInstance().getPermissionBusiness();
-		roleBusiness = RoleManager.getInstance().getRoleBusiness();
+		SECURED_URL_PROVIDERS.add(new RootSecuredUrlProvider());
 	}
 	
 	@Override
@@ -53,46 +54,73 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		urlsSection = anIni.addSection("urls");
 		urlsSection.put("/login", "user");
 		
-		roleSettingManager();
-		roleSecurityManager();
-		roleManager();
+		for(SecuredUrlProvider securedUrlProvider : SECURED_URL_PROVIDERS)
+			for(Entry<String, String> entry : securedUrlProvider.urls.entrySet())
+				urlsSection.put(entry.getKey(), entry.getValue());
 		
-		roleBusinessActor();
+		roleUser();
 
-		roleAdministrator();
+		
 		//debug(anIni);
 		//debug(urlsSection);
 	}
 	
 	/**/
 	
-	protected void roleAdministrator(){
-		role("/private/__role__/__administrator__/**", Role.ADMINISTRATOR);
+	protected void roleUser(){
+		role("/private/**", Role.USER);
 	}
 	
-	protected void roleManager(){
-		role("/private/__role__/__manager__/**",Role.MANAGER);
+	protected class RootSecuredUrlProvider extends SecuredUrlProvider implements Serializable {
+
+		private static final long serialVersionUID = -4399583055230412704L;
+
+		@Override
+		public void provide() {
+			roleSettingManager();
+			roleSecurityManager();
+			roleManager();
+			roleAdministrator();
+			roleBusinessActor();
+		}
+		
+		protected void roleAdministrator(){
+			roleFolder("__administrator__", Role.ADMINISTRATOR);
+		}
+		
+		protected void roleManager(){
+			roleFolder("__manager__",Role.MANAGER);
+		}
+		
+		protected void roleSecurityManager(){
+			roleFolder("__securitymanager__",Role.SECURITY_MANAGER);
+		}
+		
+		protected void roleSettingManager(){
+			//permission("/private/__role__/__settingmanager__/readlicense.jsf",License.class, Crud.READ);
+			roleFolder("__settingmanager__",Role.SETTING_MANAGER);
+		}
+		
+		protected void roleBusinessActor(){
+			roleFolder("__businessactor__", Role.BUSINESS_ACTOR);
+		}
+		
 	}
 	
-	protected void roleSecurityManager(){
-		role("/private/__role__/__securitymanager__/**",Role.SECURITY_MANAGER);
-	}
+	/**/
 	
-	protected void roleSettingManager(){
-		//permission("/private/__role__/__settingmanager__/readlicense.jsf",License.class, Crud.READ);
-		role("/private/__role__/__settingmanager__/**",Role.SETTING_MANAGER);
-	}
 	
-	protected void roleBusinessActor(){
-		role("/private/**", Role.BUSINESS_ACTOR);
-	}
 	
 	/**/
 	
 	protected void role(String path,String roleCode){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
-		urlsSection.put(path,String.format(ROLES_FORMAT,FILTER_VAR,roleBusiness.find(roleCode).getIdentifier()));
+		urlsSection.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
+	}
+	/*
+	protected void roleFolder(String folderPath,String roleCode){
+		role("/private/__role__/"+folderPath+"/**", roleCode);
 	}
 	
 	protected void permission(String path,String permission){
@@ -103,6 +131,38 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
 		permission(path, permissionBusiness.find(aClass, aCrud).getIdentifier().toString());
+	}
+	*/
+	/**/
+	
+	
+	
+	/**/
+	
+	public static abstract class SecuredUrlProvider{
+		private Map<String,String> urls = new LinkedHashMap<String, String>();
+		
+		public abstract void provide();
+		
+		protected void role(String path,String roleCode){
+			if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
+				return;
+			urls.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
+		}
+		
+		protected void roleFolder(String folderPath,String roleCode){
+			role("/private/__role__/"+folderPath+"/**", roleCode);
+		}
+		
+		protected void permission(String path,String permission){
+			urls.put(path,String.format(PERMISSIONS_FORMAT,FILTER_VAR,permission));
+		}
+		
+		protected void permission(String path,Class<? extends AbstractIdentifiable> aClass,Crud aCrud){
+			if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
+				return;
+			permission(path, RoleManager.getInstance().getPermissionBusiness().find(aClass, aCrud).getIdentifier().toString());
+		}
 	}
 
 }

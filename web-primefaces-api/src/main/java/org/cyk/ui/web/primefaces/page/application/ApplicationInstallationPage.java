@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.shiro.SecurityUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -57,6 +58,7 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
+			SecurityUtils.getSubject().logout();
 			Faces.invalidateSession();
 			WebNavigationManager.getInstance().redirectTo(WebNavigationManager.getInstance().getOutcomePrivateIndex());
 		}
