@@ -21,6 +21,7 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -83,7 +84,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
 	@Getter private String outcomeNotifications = "notifications";
 	
-	@Getter private String outcomeLicense = "license";
 	@Getter private String outcomeLicenseRead = "licenseRead";
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
@@ -357,9 +357,18 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public void redirectToPrintData(Class<AbstractIdentifiable> dataClass){
-		redirectTo(outcomeToolsPrintDataTable,new Object[]{
+		/*redirectTo(outcomeToolsPrintDataTable,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
+		});*/
+		
+		redirectTo(outcomeToolsReport,new Object[]{
+				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
+				UIManager.getInstance().getFileExtensionParameter(),uiManager.getPdfParameter(),
+				UIManager.getInstance().getReportIdentifierParameter(),RootBusinessLayer.getInstance().getParameterGenericObjectReportTable(),
+				webManager.getRequestParameterPrint(),Boolean.TRUE,
+				webManager.getRequestParameterOutcome(), outcomeReportTable
 		});
+		
 	}
 	
 	/**/

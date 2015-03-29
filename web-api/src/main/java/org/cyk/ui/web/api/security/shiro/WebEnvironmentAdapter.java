@@ -58,9 +58,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		roleManager();
 		
 		roleBusinessActor();
-		
-		/**/
-		
+
 		roleAdministrator();
 		//debug(anIni);
 		//debug(urlsSection);

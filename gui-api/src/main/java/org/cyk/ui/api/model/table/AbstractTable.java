@@ -103,26 +103,15 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		exportToPdfCommandable = UIProvider.getInstance().createCommandable(this, "command.export.pdf", IconType.ACTION_EXPORT_PDF, null, null);
 		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
-		/*
-		exportToPdfCommandable.setViewType(ViewType.TOOLS_REPORT);
-		exportToPdfCommandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		exportToPdfCommandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
-		exportToPdfCommandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),UIManager.getInstance().getPdfParameter()));
-		*/
 		exportMenu.getCommandables().add(exportToPdfCommandable);
 		
 		exportToXlsCommandable = UIProvider.getInstance().createCommandable(this, "command.export.excel", IconType.ACTION_EXPORT_EXCEL, null, null);
 		reportCommandable(exportToXlsCommandable, UIManager.getInstance().getXlsParameter());
-		/*
-		exportToXlsCommandable.setViewType(ViewType.TOOLS_REPORT);
-		exportToXlsCommandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		exportToXlsCommandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
-		exportToXlsCommandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),UIManager.getInstance().getXlsParameter()));
-		*/
 		exportMenu.getCommandables().add(exportToXlsCommandable);
 		
 		printCommandable = UIProvider.getInstance().createCommandable(this, "command.print", IconType.ACTION_PRINT, null, null);
-		printCommandable.setViewType(ViewType.TOOLS_PRINT_DATA_TABLE);
+		reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter());
+		//printCommandable.setViewType(ViewType.TOOLS_PRINT_DATA_TABLE);
 		
 		getTableListeners().add(new TableAdapter<Row<DATA>, Column, DATA, String, Cell, String>(){
 			@Override
