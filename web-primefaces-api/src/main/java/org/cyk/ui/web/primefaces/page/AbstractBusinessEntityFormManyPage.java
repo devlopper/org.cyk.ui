@@ -55,7 +55,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		paginatorTemplate();
 	}
-	
+	/*
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
@@ -67,15 +67,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			hideTableFooter(".dataTableStyleClass");
 			//hide(".dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot");
 			//onDocumentLoadJavaScript += "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();";
-	}
-	
-	protected void hideTableHeader(String parentPath) {
-		hide(parentPath+" > .ui-datatable-header");
-	}
-	
-	protected void hideTableFooter(String parentPath) {
-		hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot");
-	}
+	}*/
 	
 	protected void paginatorTemplate(){
 		table.getDataTable().setPaginatorTemplate("{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}");
@@ -139,7 +131,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	*/
 	@Override
 	public Boolean getShowContextualMenu() {
-		return Boolean.TRUE.equals(table.getShowHierarchy());
+		return Boolean.TRUE.equals(super.getShowContextualMenu()) || Boolean.TRUE.equals(table.getShowHierarchy());
 	}
 	
 	/**/

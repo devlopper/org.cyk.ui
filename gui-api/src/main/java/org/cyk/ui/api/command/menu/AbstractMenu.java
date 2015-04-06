@@ -10,7 +10,9 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -39,6 +41,20 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	@Override
 	public UICommandable addCommandable(String labelId,IconType iconType) {
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType);
+		return addCommandable(commandable);
+	}
+	@Override
+	public UICommandable addCommandable(String labelId, IconType iconType,ViewType viewType) {
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType);
+		commandable.setViewType(viewType);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		return addCommandable(commandable);
+	}
+	@Override
+	public UICommandable addCommandable(String labelId, IconType iconType,Object viewId) {
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType);
+		commandable.setViewId(viewId);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		return addCommandable(commandable);
 	}
 

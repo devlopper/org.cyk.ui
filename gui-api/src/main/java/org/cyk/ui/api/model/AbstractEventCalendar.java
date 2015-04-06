@@ -1,6 +1,7 @@
 package org.cyk.ui.api.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -9,6 +10,8 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.model.event.Event;
+import org.cyk.system.root.model.party.Party;
+import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.UIWindowPart;
 import org.cyk.ui.api.command.UICommandable;
@@ -28,18 +31,16 @@ public abstract class AbstractEventCalendar extends AbstractBean implements UIWi
 	protected Boolean editable=Boolean.FALSE;
 	protected UICommandable addEventCommandable,deleteEventCommandable,openEventCommandable,saveEventCommandable,cancelEventCommandable;
 	protected Event dataAdding;
+	private Collection<Party> parties = new ArrayList<>();
 	/*
 	protected Boolean showOpenCommand;
 	*/
-	
-	@Override
-	protected void initialisation() {
-		super.initialisation();
 		
-	}
-	
 	public Collection<Event> events(Date start,Date end){
-		return getWindow().getEventBusiness().findWhereFromDateBetweenByStartDateByEndDate(start, end);
+		if(parties==null || parties.isEmpty())
+			return getWindow().getEventBusiness().findWhereFromDateBetweenPeriod(new Period(start, end));
+		
+		return getWindow().getEventBusiness().findWhereFromDateBetweenPeriodByParties(new Period(start, end),parties);
 	}
 	
 }

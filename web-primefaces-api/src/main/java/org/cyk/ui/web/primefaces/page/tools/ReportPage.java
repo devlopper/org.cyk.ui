@@ -33,5 +33,10 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 		return url;
 	}
 	
+	@Override
+	public Boolean getShowContextualMenu() {
+		return Boolean.FALSE;
+	}
+	
 	
 }

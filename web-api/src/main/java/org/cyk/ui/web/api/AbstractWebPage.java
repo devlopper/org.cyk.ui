@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
@@ -13,9 +14,12 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
@@ -28,17 +32,18 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	//protected AbstractWebUserSession session;
 	@Inject transient protected WebNavigationManager navigationManager;
 	@Inject transient protected JavaScriptHelper javaScriptHelper;
+	@Inject protected RoleBusiness roleBusiness;
 	
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
 		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage;
-	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn;
+	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn,renderViewError;
 	private String windowMode;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		locale = getUserSession().getLocale();
+		//locale = getUserSession().getLocale();
 		footer=  UIManager.getInstance().getWindowFooter();
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
@@ -67,12 +72,34 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		
 		//getMessageManager().notifications(session.getNotifications()).showGrowl();
 		//System.out.println("AbstractWebPage.initialisation() : "+FacesContext.getCurrentInstance().getMessageList());
+		//System.out.println("AbstractWebPage.initialisation()");
 	}
-	/*
-	@Override
-	public UserSession getUserSession() {
-		return session;
-	}*/
+	
+	
+		
+	public void onPreRenderView(){
+		if(!Boolean.TRUE.equals(FacesContext.getCurrentInstance().isPostback())){
+			//System.out.println("AbstractWebPage.onPreRenderView()");
+			if(Boolean.TRUE.equals(isRenderViewAllowed()))
+				initialiseView();
+			else{
+				renderViewNotAllowed();
+				/*String outcome = renderViewNotAllowedOutcome();
+				if(StringUtils.isNotBlank(outcome))
+					navigationManager.handleNavigation(outcome);*/
+			}
+		}
+	}
+	
+	protected Boolean isRenderViewAllowed(){return Boolean.TRUE;}
+	protected void initialiseView(){}
+	protected void renderViewNotAllowed(){}
+	protected String renderViewNotAllowedOutcome(){return "outcomecannotrenderview";}
+	
+	protected void renderViewErrorMessage(String summary,String details){
+		getMessageManager().message(SeverityType.ERROR, new Text(summary, Boolean.FALSE), new Text(details, Boolean.FALSE));
+		renderViewError = Boolean.TRUE;
+	}
 	
 	@Override
 	public Boolean getShowFooter() {
@@ -139,7 +166,13 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
+	protected void hideTableHeader(String parentPath) {
+		hide(parentPath+" > .ui-datatable-header");
+	}
 	
+	protected void hideTableFooter(String parentPath) {
+		hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot");
+	}
 	
 	/**/
 	

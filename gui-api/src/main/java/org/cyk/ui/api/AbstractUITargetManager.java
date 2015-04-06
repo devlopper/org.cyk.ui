@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -11,9 +12,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.geography.LocalityBusiness;
+import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
@@ -27,6 +33,8 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	private static final long serialVersionUID = -2692873330809223761L;
 
 	@Inject protected UIProvider uiProvider;
+	@Inject protected LocalityBusiness localityBusiness;
+	@Inject protected RoleBusiness roleBusiness;
 	
 	@Override
 	public Class<? extends Control<?, ?, ?, ?, ?>> controlClassSelected(Class<? extends Control<?, ?, ?, ?, ?>> aClass) {
@@ -55,7 +63,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		Boolean itemWrapper = itemWrapper(inputChoice);
 		
 		if(AbstractIdentifiable.class.isAssignableFrom(type)){
-			for(Object object : findAll((Class<? extends AbstractIdentifiable>)type)){
+			for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
 				AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
 				list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
 			}
@@ -63,13 +71,22 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())
 				list.add(item(value));
 		}
-		
-		
-		
 	}
 	
-	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass){
-		return UIManager.getInstance().getGenericBusiness().use(aClass).find().all();
+	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field){
+		Collection<AbstractIdentifiable> collection = null;
+		if(field.getName().equals("nationality")){
+			collection = new ArrayList<>();
+			for(Locality locality : localityBusiness.findByType(RootBusinessLayer.getInstance().getCountryLocalityType()))
+				collection.add(locality);
+			return collection;
+		}else if(field.getName().equals("roles")){
+			collection = new ArrayList<>();
+			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getAdministratorRole())))
+				collection.add(role);
+			return collection;
+		}else
+			return UIManager.getInstance().getGenericBusiness().use(aClass).find().all();
 	}
 	
 	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice){
@@ -110,6 +127,13 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 				return value.toString();
 		}else if(value instanceof Date)
 			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
+		else if(value instanceof Boolean)
+			if(Boolean.TRUE.equals(value))
+				return UIManager.getInstance().text("yes");
+			else if(Boolean.FALSE.equals(value))
+				return UIManager.getInstance().text("no");
+			else
+				return UIManager.getInstance().text("notspecified");
 		else if(value instanceof Collection<?>){
 			Collection<?> collection = (Collection<?>) value;
 			Collection<String> strings = new ArrayList<>();

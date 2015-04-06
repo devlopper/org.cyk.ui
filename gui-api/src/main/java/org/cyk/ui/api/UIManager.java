@@ -25,6 +25,7 @@ import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.NumberBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -60,6 +61,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
+	public static final Collection<ComponentCreationListener> componentCreationListeners = new ArrayList<>();
 	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
 	private final String consultViewSuffix="ConsultView";
@@ -78,6 +80,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private GenericBusiness genericBusiness;
 	@Inject private FileBusiness fileBusiness;
 	@Inject private TimeBusiness timeBusiness;
+	@Inject private NumberBusiness numberBusiness;
 	
 	private Locale locale = Locale.FRENCH;
 	
@@ -171,6 +174,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return parameter.toString();
 			}
 		};
+		
+		
 	}
 	
 	public Collection<AbstractApplicationUIManager> getApplicationUImanagers() {

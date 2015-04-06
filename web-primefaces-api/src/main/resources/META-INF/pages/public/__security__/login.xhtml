@@ -12,11 +12,15 @@
  		<ui:param name="pageController" value="#{loginPage}" />
  		<ui:define name="body">
  			
- 			<table class="cyk-page-login-table" ><tr><td>
- 				<p:panel>
- 					<cyk:formOneData value="#{loginPage.form}" />
- 				</p:panel>
- 			</td> </tr> </table>
+ 			<table class="cyk-page-login-table" >
+ 				<tr><td>
+ 					<p:panel>
+ 						<cyk:logo />
+ 						<p:separator/>
+ 						<cyk:formOneData value="#{loginPage.form}" />
+ 					</p:panel>
+ 				</td></tr>
+ 			</table>
  			
  			<p:dialog id="connectionMessageDialogId" widgetVar="#{webManager.connectionMessageDialogWidgetId}" header="#{uiManager.text('information')}" 
  				draggable="false" resizable="false">

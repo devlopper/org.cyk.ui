@@ -41,6 +41,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		contentTitle = uiManager.getApplication().getName();
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.login"));	
 	}

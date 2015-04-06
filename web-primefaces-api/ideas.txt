@@ -1,0 +1,15 @@
+Android application functionalities are :
+	
+	Manage Events
+	- List all events
+	- List coming events
+	- List overdue events
+	- Create event
+	- Read event
+	- Update event
+	- Delete event
+	
+	Manage Notifications
+	- List all notifications
+	- Delete notification from session
+	- Disable event notification

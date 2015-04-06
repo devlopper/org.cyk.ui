@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.model.security.UserAccountSearchCriteria;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessQueryPage;
@@ -26,7 +27,6 @@ public class UserAccountsPage extends AbstractBusinessQueryPage<UserAccount, Use
 	protected void initialisation() {
 		super.initialisation();
 		contextualMenu = userSession.getSecurityMenu();
-		//contextualMenu.setRenderType(RenderType.PANEL);
 		table.setShowHeader(Boolean.FALSE);
 		table.setShowFooter(Boolean.FALSE);
 	}
@@ -50,15 +50,21 @@ public class UserAccountsPage extends AbstractBusinessQueryPage<UserAccount, Use
 	protected Class<UserAccountSearchResultFormModel> __resultClass__() {
 		return UserAccountSearchResultFormModel.class;
 	}
+	
+	private UserAccountSearchCriteria searchCriteria(){
+		UserAccountSearchCriteria searchCriteria = new UserAccountSearchCriteria(form.getData().getUsername());
+		searchCriteria.getRoleExcluded().add(RootBusinessLayer.getInstance().getAdministratorRole());
+		return searchCriteria;
+	}
 
 	@Override
 	protected Collection<UserAccount> __query__() {
-		return userAccountBusiness.findByCriteria(new UserAccountSearchCriteria(form.getData().getUsername()));
+		return userAccountBusiness.findByCriteria(searchCriteria());
 	}
 
 	@Override
 	protected Long __count__() {
-		return userAccountBusiness.countByCriteria(new UserAccountSearchCriteria(form.getData().getUsername()));
+		return userAccountBusiness.countByCriteria(searchCriteria());
 	}
 	
 }

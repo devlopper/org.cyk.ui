@@ -49,6 +49,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private String notificationChannelSocketWidgetVar = "notificationChannelWidgetVar";
 	private String notificationChannelGrowlWidgetVar = "notificationChannelGrowlWidgetVar";
 	private String notificationChannelGrowlId = "notificationChannelGrowlId";
+	//@Inject private LocalityBusiness localityBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -92,8 +93,18 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			pickList.getDualListModel().setTarget(targetList);
 		}
 	}
-	
-	
+	/*
+	@Override
+	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?, ?, ?, ?, ?, ?> inputChoice, Object data, Field field) {
+		Collection<AbstractIdentifiable> collection = null;
+		if(field.getName().equals("nationality")){
+			collection = new ArrayList<>();
+			for(Locality locality : localityBusiness.findByType(RootBusinessLayer.getInstance().getCountryLocalityType()))
+				collection.add(locality);
+			return collection;
+		}
+		return super.findAll(aClass, inputChoice, data, field);
+	}*/
 	
 	@Override
 	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice) {

@@ -71,5 +71,7 @@ public class PersonFormModel extends AbstractPartyFormModel<Person>  implements 
 	public SimpleContactCollectionFormModel getContactCollectionFormModel() {
 		return super.getContactCollectionFormModel();
 	}
+	
+	
 		
 }

@@ -131,7 +131,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 					seperatorAdded = Boolean.FALSE;
 				}*/
 				controlSet.addField(objectField.getObject(),objectField.getField());
-				
+				//if(objectField.getField().getAnnotation(Input.class)!=null)
+					//System.out.println(objectField.getObject().getClass());
+					//inputChoice((InputChoice<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>) objectField.getObject());
 			}else if(objectField.getField().getAnnotation(IncludeInputs.class)!=null){
 				Layout layout = objectField.getField().getAnnotation(IncludeInputs.class).layout();
 				if(Layout.AUTO.equals(layout))
@@ -151,6 +153,10 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	/**/
+	
+	protected void inputChoice(InputChoice<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> inputChoice){
+		
+	}
 	
 	@Override
 	public void transfer(UICommand command, Object parameter) {

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -13,6 +12,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.NumberBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
@@ -39,10 +39,12 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject @Getter transient protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter transient protected EventBusiness eventBusiness;
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
+	@Inject transient protected NumberBusiness numberBusiness;
+	
 	//@Inject transient protected MenuManager menuManager;
 	
-	@Getter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
+	
 	
 	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
@@ -70,9 +72,12 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 				
 			}
 		}
-		
+	
 		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
 			form.build();
+			
+			//for(ComponentCreationListener listener : UIManager.componentCreationListeners)
+			//	listener.formOneDataCreated(form);
 		}
 		
 		targetDependentInitialisation();
@@ -85,7 +90,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	
 	public Boolean getShowContextualMenu(){
-		return contextualMenu!=null;
+		return getUserSession().getContextualMenu()!=null || contextualMenu!=null;
 	}
 	
 	public Boolean getShowContentMenu(){

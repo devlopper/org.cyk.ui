@@ -225,7 +225,27 @@ border: none;
 
 .cyk-page-login-table{
 	margin: auto;
-	margin-top: 200px;
+	margin-top: 120px;
+}
+.cyk-page-logo-table{
+	
+	border: 0px solid red;
+	margin: auto;
+}
+.cyk-page-logo-table-imagetd{
+	/*background: red;*/
+	height: 50px;
+	text-align: center;
+}
+.cyk-page-logo-table-nametd{
+	font-weight:bold;
+	text-align: center;
+}
+.cyk-page-logo-table-nametd a{
+	text-decoration: none;
+}
+.cyk-page-west-table1-infostd{
+	/*background: blue;*/
 }
 /**/
 

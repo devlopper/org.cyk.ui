@@ -18,6 +18,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.party.Party;
+import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.UIMenu;
@@ -35,9 +36,10 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	protected Long timestamp;
 	@Getter @Setter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UserAccount userAccount;
-	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu;
+	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu;
 	@Getter @Setter protected String notificationChannel;
 	@Getter protected Boolean logoutCalled;
+	@Getter @Setter protected UIMenu contextualMenu;
 	
 	//FIXME not called. because of Session Scope ?
 	/*
@@ -72,6 +74,8 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));
 		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this));
 		setSecurityMenu(MenuManager.getInstance().securityMenu(this));
+		setUserAccountMenu(MenuManager.getInstance().userAccountMenu(this));
+		setContextualMenu(MenuManager.getInstance().sessionContextualMenu(this));
 		
 		identifier = userAccount.getIdentifier()+" - "+System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(10);
 		notificationChannel = "/"+UIManager.PUSH_NOTIFICATION_CHANNEL+"/"+userAccount.getIdentifier();
@@ -84,6 +88,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 			//notificationFired(notification, facesMessage);
 		}
 		*/
+		
 	}
 	
 	public void showNotifications(){
@@ -117,6 +122,13 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	public abstract Boolean getIsAdministrator();
 
 	public abstract Boolean getIsManager();
+	
+	public Boolean hasRole(String roleCode){
+		for(Role role : userAccount.getRoles())
+			if(role.getCode().equals(roleCode))
+				return Boolean.TRUE;
+		return Boolean.FALSE;
+	}
 	
 	public static void register(AbstractUserSession userSession){
 		USER_SESSION_MAP.put(userSession.getIdentifier(), userSession);

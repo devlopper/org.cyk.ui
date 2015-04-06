@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -29,12 +30,9 @@ public class EventCrudOnePage extends AbstractCrudOnePage<Event> implements Seri
 		contentTitle=text("calendar");
 		eventCalendar = (EventCalendar) eventCalendarInstance(null);
 		contextualMenu = MenuManager.getInstance().calendarMenu(userSession);
+		if(Crud.CREATE.equals(crud))
+			identifiable.setOwner(userSession.getUser());
 	}
-	/*
-	@Override
-	protected void create() {
-		debug(identifiable);
-	}*/
 	
 	@Override
 	protected Class<? extends AbstractFormModel<?>> __formModelClass__() {

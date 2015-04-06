@@ -14,6 +14,18 @@
 			<redirect />
 		</navigation-case>
 		
+		<!-- Member -->
+		<navigation-case>
+			<from-outcome>useraccountconsult</from-outcome>
+			<to-view-id>/private/__role__/__member__/useraccountconsult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>useraccountchangepassword</from-outcome>
+			<to-view-id>/private/__role__/__member__/useraccountchangepassword.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<!-- Administrator -->
 		<navigation-case>
 			<from-outcome>administratorindex</from-outcome>
@@ -116,6 +128,10 @@
 			<from-outcome>outcomenotfound</from-outcome>
 			<to-view-id>/public/__error__/unknowoutcome.xhtml</to-view-id>
 			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>outcomecannotrenderview</from-outcome>
+			<to-view-id>/public/__error__/cannotrenderview.xhtml</to-view-id>
 		</navigation-case>
 		
 	</navigation-rule>

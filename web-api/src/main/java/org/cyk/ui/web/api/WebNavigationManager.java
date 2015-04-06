@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -81,6 +82,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeSecurity = "security";
 	@Getter private String outcomeUserAccounts = "useraccounts";
 	@Getter private String outcomeUserAccountCrudOne = "useraccountcrudone";
+	@Getter private String outcomeUserAccountConsult = "useraccountconsult";
+	@Getter private String outcomeUserAccountChangePassword = "useraccountchangepassword";
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
 	@Getter private String outcomeNotifications = "notifications";
 	
@@ -103,6 +106,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
+	public void handleNavigation(String outcome) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+        NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
+        navigationHandler.handleNavigation(facesContext, null, outcome);
+	}
 	
 	public String url(String id,Object[] parameters,Boolean actionOutcome,Boolean partial,Boolean pretty){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -402,4 +410,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,Boolean print){
 		return reportParameters(anIdentifiable, reportIdentifier, uiManager.getPdfParameter(),print);
 	}
+
+
+	
 }

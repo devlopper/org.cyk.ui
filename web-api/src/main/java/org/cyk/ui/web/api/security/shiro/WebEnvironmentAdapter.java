@@ -68,7 +68,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	/**/
 	
 	protected void roleUser(){
-		role("/private/**", Role.USER);
+		WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);
 	}
 	
 	protected class RootSecuredUrlProvider extends SecuredUrlProvider implements Serializable {
@@ -113,29 +113,11 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	
 	/**/
 	
-	protected void role(String path,String roleCode){
+	protected static void role(Map<String,String> map,String path,String roleCode){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
-		urlsSection.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
+		map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
 	}
-	/*
-	protected void roleFolder(String folderPath,String roleCode){
-		role("/private/__role__/"+folderPath+"/**", roleCode);
-	}
-	
-	protected void permission(String path,String permission){
-		urlsSection.put(path,String.format(PERMISSIONS_FORMAT,FILTER_VAR,permission));
-	}
-	
-	protected void permission(String path,Class<? extends AbstractIdentifiable> aClass,Crud aCrud){
-		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
-			return;
-		permission(path, permissionBusiness.find(aClass, aCrud).getIdentifier().toString());
-	}
-	*/
-	/**/
-	
-	
 	
 	/**/
 	
@@ -145,9 +127,12 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		public abstract void provide();
 		
 		protected void role(String path,String roleCode){
+			WebEnvironmentAdapter.role(urls,path,roleCode);
+			/*
 			if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 				return;
 			urls.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
+			*/
 		}
 		
 		protected void roleFolder(String folderPath,String roleCode){

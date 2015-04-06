@@ -46,6 +46,19 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(AbstractTable<?, ?, ?> atable : tables){
+			Table<?> table = (Table<?>) atable;
+			if(!Boolean.TRUE.equals(table.getShowHeader()))
+				hideTableHeader("."+table.getUpdateStyleClass() /*".dataTableStyleClass"*/);
+			if(!Boolean.TRUE.equals(table.getShowFooter()))
+				hideTableFooter("."+table.getUpdateStyleClass()/*".dataTableStyleClass"*/);
+		}
+			
+	}
+	
+	@Override
 	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
 		return new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
 	}

@@ -38,6 +38,7 @@ public class UserAccountFormModel extends AbstractFormModel<UserAccount> impleme
 	@Override
 	public void write() {
 		super.write();
+		identifiable.setUser(user);
 		identifiable.setCredentials(credentialsInputs.getCredentials());
 		identifiable.getRoles().addAll(roles);
 	}

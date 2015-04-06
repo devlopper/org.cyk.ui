@@ -26,6 +26,8 @@ public class CommandBuilder implements Serializable {
 	private static final CommandBuilder INSTANCE = new CommandBuilder();
 	private static final String EL_MENU_ITEM_COMMAND_FORMAT = "#"+"{"+ "%s.%s.commandable('%s').command.execute(null)}";
 	
+	private WebNavigationManager navigationManager = WebNavigationManager.getInstance();
+	
 	public static CommandBuilder getInstance() {
 		return INSTANCE;
 	}
@@ -62,25 +64,32 @@ public class CommandBuilder implements Serializable {
 					}
 				}else{
 					switch(aCommandable.getViewType()){
+					case HOME:menuItem.setOutcome(navigationManager.getOutcomePrivateIndex());break;
 					case DYNAMIC_CRUD_ONE:
-						menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());
+						menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudOne());
 						menuItem.setParam(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
 						break;
-					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeDynamicCrudMany());break;
-					case USERACCOUNT_LOGOUT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLogout());break;
-					case LICENCE_READ:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeLicenseRead());break;
-					case TOOLS_CALENDAR:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsCalendar());break;
-					case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToPdf());break;
-					case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsExportDataTableToXls());break;
-					case TOOLS_REPORT:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsReport());break;
-					case TOOLS_PRINT_DATA_TABLE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeToolsPrintDataTable());break;
+					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudMany());break;
+					case USERACCOUNT_LOGOUT:menuItem.setOutcome(navigationManager.getOutcomeLogout());break;
+					case LICENCE_READ:menuItem.setOutcome(navigationManager.getOutcomeLicenseRead());break;
+					case TOOLS_CALENDAR:menuItem.setOutcome(navigationManager.getOutcomeToolsCalendar());break;
+					//case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToPdf());break;
+					//case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToXls());break;
+					case TOOLS_REPORT:menuItem.setOutcome(navigationManager.getOutcomeToolsReport());break;
+					case TOOLS_PRINT_DATA_TABLE:menuItem.setOutcome(navigationManager.getOutcomeToolsPrintDataTable());break;
 					
-					case MODULE_REFERENCE_ENTITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeReferenceEntity());break;
-					case MODULE_SECURITY:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeSecurity());break;
-					case USER_ACCOUNTS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccounts());break;
-					case USER_ACCOUNT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeUserAccountCrudOne());break;
-					case EVENT_CRUD_ONE:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeEventCrudOne());break;
-					case NOTIFICATIONS:menuItem.setOutcome(WebNavigationManager.getInstance().getOutcomeNotifications());break;
+					case MODULE_REFERENCE_ENTITY:menuItem.setOutcome(navigationManager.getOutcomeReferenceEntity());break;
+					case MODULE_SECURITY:menuItem.setOutcome(navigationManager.getOutcomeSecurity());break;
+					case USER_ACCOUNTS:menuItem.setOutcome(navigationManager.getOutcomeUserAccounts());break;
+					case USER_ACCOUNT_CRUD_ONE:menuItem.setOutcome(navigationManager.getOutcomeUserAccountCrudOne());break;
+					case USER_ACCOUNT_CONSULT:
+						menuItem.setOutcome(navigationManager.getOutcomeUserAccountConsult());
+						break;
+					case USER_ACCOUNT_CHANGE_PASSWORD:
+						menuItem.setOutcome(navigationManager.getOutcomeUserAccountChangePassword());
+						break;
+					case EVENT_CRUD_ONE:menuItem.setOutcome(navigationManager.getOutcomeEventCrudOne());break;
+					case NOTIFICATIONS:menuItem.setOutcome(navigationManager.getOutcomeNotifications());break;
 					default:break;
 					}
 					
@@ -158,9 +167,27 @@ public class CommandBuilder implements Serializable {
 		case ACTION_SAVE:return "ui-icon-check";
 		case ACTION_SEARCH:return "ui-icon-search";
 		case ACTION_PREVIEW:return "ui-icon-image";
-		case ACTION_LOGOUT:return "ui-icon-logout";
+		case ACTION_LOGOUT:return "ui-icon-extlink";
 		case ACTION_EXPORT:return "ui-icon-document";
 		case ACTION_PRINT:return "ui-icon-print";
+		case ACTION_CLEAR: return "ui-icon-trash";
+		case ACTION_EXPORT_EXCEL: return "ui-icon-";
+		case ACTION_EXPORT_PDF: return "ui-icon-";
+		case ACTION_SET: return "ui-icon-wrench";
+		
+		case THING_APPLICATION: return "ui-icon-";
+		case THING_CALENDAR: return "ui-icon-calendar";
+		case THING_CONTROLPANEL: return "ui-icon-gear";
+		case THING_HELP: return "ui-icon-help";
+		case THING_LICENCE: return "ui-icon-document";
+		case THING_LIST: return "ui-icon-document";
+		case THING_NOTIFICATIONS: return "ui-icon-flag";
+		case THING_REPORT: return "ui-icon-document";
+		case THING_SECURITY: return "ui-icon-key";
+		case THING_TOOLS: return "ui-icon-wrench";
+		case THING_USERACCOUNT: return "ui-icon-suitcase";
+		case THING_HOME: return "ui-icon-home";
+		case THING_CONNECTED: return "ui-icon-newin";
 		
 		case PERSON:return "ui-icon-person";
 		default:return null;

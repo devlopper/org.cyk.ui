@@ -12,12 +12,52 @@
  		<ui:param name="pageController" value="#{customPrivateIndexPage}" />
  
  		<ui:define name="body">
+ 			
+ 			<style>
+ 				.ui-menu{
+ 					/*background: transparent !important;*/
+ 					/*border-radius: 0px !important;*/
+ 					
+ 				}
+ 			</style>
+ 			<!--
  			Roles<br/>
  			Administrator : #{roleManager.isAdministrator(request)}<br/>
  			Setting Manager : #{roleManager.isSettingManager(request)}<br/>
  			Business Actor : #{roleManager.isBusinessActor(request)}<br/>
  			Manager : #{roleManager.isManager(request)}<br/>
  			Security Manager : #{roleManager.isSecurityManager(request)}<br/>
+ 			-->
+ 			
+ 			<p:dashboard id="board" model="#{myDashBoardPage.model}"  >
+	            <p:panel id="sports" header="Sports" toggleable="true" >
+	            	<h:outputText value="Sports Content" />
+	            	<h1>
+	            		Line 1<br />
+	            		Line 2<br />
+	            		Line 3<br />
+	            		Line 4<br />
+	            		Line 5<br />
+	            	</h1>
+	            </p:panel>
+	 
+	            <p:panel id="finance" header="Finance">
+	                <h:outputText value="Finance Content" />
+	            </p:panel>
+	 
+	            <p:panel id="lifestyle" header="Lifestyle">
+	                <h:outputText value="Lifestyle Content"  />
+	            </p:panel>
+	 
+	            <p:panel id="weather" header="Weather">
+	                <h:outputText value="Weather Content" />
+	            </p:panel>
+	 
+	            <p:panel id="politics" header="Politics">
+	                <h:outputText value="Politics Content" />
+	            </p:panel>
+	        </p:dashboard>
+ 			
  		</ui:define>
  	</ui:decorate>
  

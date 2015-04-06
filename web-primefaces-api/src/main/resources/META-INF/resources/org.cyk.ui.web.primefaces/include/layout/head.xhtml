@@ -92,7 +92,8 @@
 		}
 		
 		function handleNotificationMessage(facesMessage) { 
-			playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}'); 
+			/*playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}');*/
+			playSound('#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}');
 			window.navigator.vibrate(200);
 			updateNotifications(); 
 			desktopNotification(facesMessage);

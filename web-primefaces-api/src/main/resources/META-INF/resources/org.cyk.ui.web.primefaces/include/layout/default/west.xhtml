@@ -12,9 +12,24 @@
     <!-- 
 	<p:tabMenu model="#{pageController.contextualMenuModel}" /> 
 	-->
-	
+	<!--
 	<p:menu model="#{pageController.contextualMenuModel}" rendered="#{pageController.contextualMenu.renderType.ordinal()==0}" />
 	<p:slideMenu model="#{pageController.contextualMenuModel}" rendered="#{pageController.contextualMenu.renderType.ordinal()==1}" />
 	<p:panelMenu model="#{pageController.contextualMenuModel}" rendered="#{pageController.contextualMenu.renderType.ordinal()==2}" />
+	-->
+	
+	<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+		<ui:param name="model" value="#{pageController.contextualMenuModel}" />
+		<ui:param name="menu" value="#{pageController.contextualMenu}" />
+	</ui:include>
+	
+	<ui:fragment rendered="#{pageController.contextualMenuModel!=null}" >
+		<p:separator/>
+	</ui:fragment>
+	
+	<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+		<ui:param name="model" value="#{userSession.contextualMenuModel}" />
+		<ui:param name="menu" value="#{userSession.contextualMenu}" />
+	</ui:include>
 	
 </html>

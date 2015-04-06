@@ -99,6 +99,10 @@
 		  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 		  					</ui:include></ui:fragment>
 		  					
+		  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputBooleanCheck')}" ><ui:include src="#{controlDir}/input/inputBooleanCheck.xhtml" >
+		  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+		  					</ui:include></ui:fragment>
+		  					
 		  				</f:facet>
 		  				<f:facet name="output">
 		  					<ui:fragment rendered="#{cc.value.cell(row,column).isFile}" >

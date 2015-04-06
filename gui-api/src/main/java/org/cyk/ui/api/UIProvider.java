@@ -21,6 +21,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
+import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputBooleanButton;
@@ -157,6 +158,18 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	public UICommandable createCommandable(String labelId,IconType iconType){
 		return createCommandable(null, labelId, iconType, null, null);
+	}
+	
+	public UICommandable createCommandable(String labelId,IconType iconType,ViewType viewType){
+		UICommandable p = createCommandable(null, labelId, iconType, null, null);
+		p.setViewType(viewType);
+		return p;
+	}
+	
+	public UICommandable createCommandable(String labelId,IconType iconType,Object viewId){
+		UICommandable p = createCommandable(null, labelId, iconType, null, null);
+		p.setViewId(viewId);
+		return p;
 	}
 	
 	/* */

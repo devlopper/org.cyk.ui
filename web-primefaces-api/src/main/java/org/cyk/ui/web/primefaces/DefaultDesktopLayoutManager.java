@@ -15,6 +15,10 @@ public class DefaultDesktopLayoutManager extends AbstractBean implements Seriali
 
 	private static final long serialVersionUID = 776758304463284101L;
 
+	private String logoPath = "/org.cyk.ui.web.primefaces/images/logo/cyksystems.png";
+	private String loginBackgroundPath = "/org.cyk.ui.web.primefaces/images/background/default.jpg";
+	private String incomingMessageSoundPath = "/org.cyk.ui.web.primefaces/sound/messageincoming.mp3";
+	
 	private String northInclude = "/org.cyk.ui.web.primefaces/include/layout/default/north.xhtml";
 	private String westInclude = "/org.cyk.ui.web.primefaces/include/layout/default/west.xhtml";
 	

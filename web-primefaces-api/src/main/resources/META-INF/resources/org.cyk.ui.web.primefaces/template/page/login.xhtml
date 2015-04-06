@@ -13,8 +13,10 @@
 		
 		<style>
 			.ui-layout-pane-center{
-				background:url(#{request.contextPath}/javax.faces.resource/background/login_01.jpg.jsf?ln=org.cyk.ui.web.primefaces/images) fixed 50% / cover !important;
-        		background-size: 100% 100%;
+				/*background:url(#{request.contextPath}/javax.faces.resource/background/login_01.jpg.jsf?ln=org.cyk.ui.web.primefaces/images) fixed 50% / cover !important;*/
+				/* #{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']} */
+				background:url(#{resource[defaultDesktopLayoutManager.loginBackgroundPath]}) fixed 50% / cover !important;
+				background-size: 100% 100%;
 			}
 		</style>
 		

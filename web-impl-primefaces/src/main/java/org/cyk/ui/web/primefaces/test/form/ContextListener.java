@@ -11,6 +11,7 @@ import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -50,6 +51,8 @@ public class ContextListener extends AbstractContextListener {
 		uiManager.registerConfiguration(config);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorFormModel.class));
+		
+		uiManager.businessEntityInfos(UserAccount.class).setUiEditViewId("useraccountcrudone");
 		
 		uiManager.getBusinesslisteners().add(new BusinessAdapter(){
 			private static final long serialVersionUID = 4605368263736933413L;

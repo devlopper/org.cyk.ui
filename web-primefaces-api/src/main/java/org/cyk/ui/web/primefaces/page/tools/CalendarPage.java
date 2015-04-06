@@ -8,11 +8,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.UIProvider;
-import org.cyk.ui.api.command.CommandAdapter;
-import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.web.primefaces.EventCalendar;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
@@ -29,19 +24,8 @@ public class CalendarPage extends AbstractPrimefacesPage implements Serializable
 		super.initialisation();
 		contentTitle=text("calendar");
 		eventCalendar = (EventCalendar) eventCalendarInstance(null);
+		eventCalendar.getParties().add(getUserSession().getUser());
 		contextualMenu = MenuManager.getInstance().calendarMenu(userSession);
-		
-		UICommandable c = UIProvider.getInstance().createCommandable("alarm", null);
-		c.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
-		c.getCommand().getCommandListeners().add(new CommandAdapter(){
-			private static final long serialVersionUID = 6350067344396642437L;
-			@Override
-			public void serve(UICommand command, Object parameter) {
-				System.out
-						.println("CalendarPage.initialisation().new CommandAdapter() {...}.serve()");
-			}
-		});
-		contextualMenu.getCommandables().add(c);
 	}
 	
 }

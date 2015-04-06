@@ -8,13 +8,19 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
- 
+
+    <f:metadata>
+  		<!--
+  		<f:viewAction action="#{pageController.onInvokeApplicationPhase}" onPostback="true" phase="APPLY_REQUEST_VALUES" />
+  		-->
+  		<f:event type="preRenderView" listener="#{pageController.onPreRenderView}" />
+  		<ui:insert name="metadata"/>
+	</f:metadata>
+	    
     <h:head>
     	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
     </h:head>
     
-    <ui:insert name="metadata"/>
- 
 	<h:body>
 		<ui:include src="#{webManager.decoratedTemplateInclude}" />
 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
@@ -25,6 +31,19 @@
 			</h:form></pe:layoutPane>
 			
 			<pe:layoutPane position="west" styleClassContent="westcenterpanecontent" rendered="#{pageController.showContextualMenu}">
+				<!--table class="cyk-page-west-table1">
+					<tr><td class="cyk-page-west-table1-logotd">
+						<h:link outcome="#{webNavigationManager.outcomePrivateIndex}">
+							<p:graphicImage alt="logo" value="#{defaultDesktopLayoutManager.logoPath}" title="#{uiManager.application.name}" />
+						</h:link>
+					</td></tr>
+					<tr><td class="cyk-page-west-table1-appnametd">
+						<h:link outcome="#{webNavigationManager.outcomePrivateIndex}">
+							<h:outputText value="#{uiManager.application.name}" escape="false" title="#{uiManager.application.name}"/>
+						</h:link>
+					</td></tr>
+				</table-->
+				<cyk:logo />
 				<h:form id="contextualMenuForm">
 					<ui:insert name="westContent">
 						<ui:include src="#{defaultDesktopLayoutManager.westInclude}" />
@@ -38,7 +57,12 @@
 				 	<pe:layoutPane id="contentp" position="center">
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
-				 			<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
+				 			<ui:fragment rendered="#{not pageController.renderViewError}" >
+				 				<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
+				 			</ui:fragment>
+				 			<ui:fragment rendered="#{pageController.renderViewError}" >
+				 				<h1><h:outputText value="Content cannot be rendered" /></h1>
+				 			</ui:fragment>
 				 			<!-- Messages -->
 							<p:outputPanel id="messagePanel" autoUpdate="true">
 								<p:dialog id="messageDialogId" widgetVar="#{webManager.messageDialogWidgetId}" header="#{uiManager.text('information')}" modal="true" appendTo="@(body)" 
@@ -68,7 +92,8 @@
 				 		</p:outputPanel>
 				 	</pe:layoutPane>
 				 	
-				 	<pe:layoutPane id="commandp" position="south" styleClassContent="maincenterpanecontentformmenubar ui-widget-header ui-corner-top pe-layout-pane-header" rendered="#{pageController.showContentMenu}">
+				 	<pe:layoutPane id="commandp" position="south" styleClassContent="maincenterpanecontentformmenubar ui-widget-header ui-corner-top pe-layout-pane-header" 
+				 		rendered="#{not pageController.renderViewError and pageController.showContentMenu}">
 						<p:outputPanel id="menuPanel" style="padding-left: 5px !important;padding-top: 2px !important;">
 							<ui:insert name="contentMenuBar">
 								<p:menubar id="menubar" model="#{pageController.contentMenuModel}" styleClass="maincenterpanecontentformmenubar"/>
