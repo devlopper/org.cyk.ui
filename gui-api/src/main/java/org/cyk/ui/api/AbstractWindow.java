@@ -12,10 +12,11 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
-import org.cyk.system.root.business.api.NumberBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
+import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -40,26 +41,29 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject @Getter transient protected EventBusiness eventBusiness;
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
 	@Inject transient protected NumberBusiness numberBusiness;
+	@Inject transient protected TimeBusiness timeBusiness;
 	
-	//@Inject transient protected MenuManager menuManager;
-	
+	@Getter @Setter protected UserDeviceType userDeviceType;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
 	
 	
-	//@Getter protected Boolean showContentMenu = Boolean.FALSE,showContextualMenu=Boolean.TRUE;
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
 	protected Collection<AbstractEventCalendar> eventCalendars = new ArrayList<>();
-	//protected Collection<HierarchycalData<?>> hierarchicalDatas = new ArrayList<>();
 	
 	@Getter protected String title,contentTitle="Content";
 	
 	@Override
 	protected void initialisation() {
+		setUserDeviceType();
 		super.initialisation();
-		mainMenu = getUserSession().getApplicationMenu(); //menuManager.build(getUserSession(),Type.APPLICATION);
+		mainMenu = UIManager.getInstance().isMobileDevice(userDeviceType)?getUserSession().getMobileApplicationMenu():getUserSession().getApplicationMenu();
 	}
 	
+	protected void setUserDeviceType() {
+		userDeviceType = UserDeviceType.DESKTOP;
+	}
+
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
@@ -72,6 +76,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 				
 			}
 		}
+		
+		if(contextualMenu!=null && UIManager.getInstance().isMobileDevice(userDeviceType))
+			contextualMenu.setRenderType(UIMenu.RenderType.TAB);
 	
 		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
 			form.build();
@@ -82,11 +89,19 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		
 		targetDependentInitialisation();
 		
-		for(AbstractTable<?,?,?> table : tables)
-			table.build();
+		buildTables();
 
 		for(AbstractEventCalendar eventCalendar : eventCalendars)
 			eventCalendar.targetDependentInitialisation();
+	}
+	
+	protected void buildTables(){
+		for(AbstractTable<?,?,?> table : tables)
+			buildTable(table);
+	}
+	
+	protected void buildTable(AbstractTable<?, ?, ?> table){
+		table.build();
 	}
 	
 	public Boolean getShowContextualMenu(){
@@ -107,6 +122,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
+		form.setUserDeviceType(userDeviceType);
 		formOneDatas.add(form);
 		return form;
 	}

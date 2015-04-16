@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -17,6 +19,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +47,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
+	public static final Map<String, String> MOBILE_VIEW_MAP = new HashMap<String, String>();
+	public static final String MOBILE_AGENT_FOLDER = "/mobile";
+	public static final String MOBILE_PAGE_OUTCOME_FORMAT = "pm:%s?transition=%s&reverse=%s";
+	public static final String MOBILE_PAGE_TRANSITION="flip";
+	public static final Boolean MOBILE_PAGE_REVERSE=Boolean.TRUE;
+	
 	/**
 	 * 
 	 */
@@ -62,7 +71,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
 	
 	@Getter private String dynamicDirectory = "__dynamic__";
-	
+	@Getter @Setter private String mobileContext;
 	@Getter private String outcomePublicIndex = "publicindex";
 	@Getter private String outcomePrivateIndex = "privateindex";
 	
@@ -85,6 +94,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeUserAccountConsult = "useraccountconsult";
 	@Getter private String outcomeUserAccountChangePassword = "useraccountchangepassword";
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
+	@Getter private String outcomeEventList = "eventlist";
 	@Getter private String outcomeNotifications = "notifications";
 	
 	@Getter private String outcomeLicenseRead = "licenseRead";
@@ -96,7 +106,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Inject private NavigationHelper navigationHelper;
 	@Inject private WebManager webManager;
 	@Inject private UIManager uiManager;
-	@Inject protected RoleManager roleManager;
+	@Inject private RoleManager roleManager;
 	
 	@Getter private Collection<WebNavigationManagerListener> webNavigationManagerListeners = new ArrayList<>();
 	
@@ -195,10 +205,16 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public String url(String id){
 		return url(id, Boolean.TRUE);
 	}
+	
+	public String mobilePageOutcome(String pageId,String transition,Boolean reverse){
+		return String.format(MOBILE_PAGE_OUTCOME_FORMAT, pageId,transition,Boolean.TRUE.equals(reverse));
+	}
+	public String mobilePageOutcome(String pageId){
+		return mobilePageOutcome(pageId,MOBILE_PAGE_TRANSITION,MOBILE_PAGE_REVERSE);
+	}
 		
-	public String getRequestUrl(){
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		String url,path = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
+	public String getRequestUrl(HttpServletRequest request){
+		String url,path = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
 		if(path==null){
 			url = request.getRequestURL().toString();
 			if(StringUtils.isNotEmpty(request.getQueryString()))
@@ -211,6 +227,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		//if(StringUtils.isNotEmpty(PrettyContext.getCurrentInstance().getRequestQueryString().toQueryString()))
 		//	url += NavigationHelper.QUERY_START+PrettyContext.getCurrentInstance().getRequestQueryString().toQueryString();
 		return url;
+	}
+	
+	public String getRequestUrl(){
+		return getRequestUrl((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest());
 	}
 			
 	public void redirectTo(String outcome,Object[] parameters){
@@ -411,6 +431,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return reportParameters(anIdentifiable, reportIdentifier, uiManager.getPdfParameter(),print);
 	}
 
+	public Boolean isMobileView(HttpServletRequest request){
+		return request.getRequestURI().startsWith(mobileContext);
+	}
+	
+	public Boolean isMobileView(){
+		return isMobileView((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest());
+	}
 
 	
 }

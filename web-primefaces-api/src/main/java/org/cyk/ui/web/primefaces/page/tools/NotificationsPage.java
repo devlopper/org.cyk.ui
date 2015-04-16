@@ -47,7 +47,10 @@ public class NotificationsPage extends AbstractPrimefacesPage implements Seriali
 				loadNotifications();
 			}
 		});
-		((Commandable)deleteFromSessionCommandable).setUpdate(":form:notificationdatalist");
+		if(uiManager.isMobileDevice(userDeviceType))
+			((Commandable)deleteFromSessionCommandable).setUpdate(":main:form:notificationdatalist");
+		else
+			((Commandable)deleteFromSessionCommandable).setUpdate(":form:notificationdatalist");
 	}
 	
 	public void loadNotifications(){

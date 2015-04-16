@@ -3,6 +3,7 @@ package org.cyk.ui.api.data.collector.form;
 import java.util.Collection;
 
 import org.cyk.ui.api.View;
+import org.cyk.ui.api.data.collector.control.Input;
 
 public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View  {
 		
@@ -26,6 +27,8 @@ public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View 
 	ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetByIndex(Integer index);
 	Boolean hasControlSetByIndex(Integer index);
 	
-	<T> T findInputByFieldName(Class<T> aClass,String fieldName);
+	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
+	
+	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 }

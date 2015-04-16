@@ -12,6 +12,8 @@ public class NavigationHelper implements Serializable {
 
 	private static final long serialVersionUID = 7627367286110326059L;
 	
+	public static final String SLASH = "/";
+	
 	public static final String QUERY_START = "?";
 	private static final String QUERY_SEPARATOR = "&";
 	private static final String QUERY_NAME_VALUE_SEPARATOR = "=";

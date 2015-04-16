@@ -47,6 +47,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
  
 	public enum RowMenuLocation{MAIN_MENU,BY_ROW}
 	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
+	public enum RenderType{TABLE,LIST,GRID}
 	
 	protected List<DATA> editing = new ArrayList<>();
 	private Boolean __justAdded__ = null;
@@ -56,7 +57,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected IdentifiableConfiguration identifiableConfiguration;
 	protected BusinessEntityInfos businessEntityInfos;
 	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericObjectReportTable();
-	protected Boolean editable=Boolean.FALSE,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
+	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
@@ -68,6 +69,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected List<DATA> hierarchyData = new ArrayList<>();
 	
 	protected UICommand lastExecutedCommand;
+	protected RenderType renderType = RenderType.TABLE;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
@@ -177,7 +179,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
 		showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
 		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
-		editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
+		if(editable==null)
+			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){

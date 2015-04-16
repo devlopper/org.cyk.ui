@@ -27,6 +27,7 @@
 		<welcome-file>index.jsf</welcome-file>
 	</welcome-file-list>
 	
+	<!-- errors pages -->
 	<error-page>
 		<error-code>401</error-code>
 		<location>/public/__error__/401.jsf</location>
@@ -34,6 +35,14 @@
 	<error-page>
 		<error-code>404</error-code>
 		<location>/public/__error__/404.jsf</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/public/__error__/500.jsf</location>
+	</error-page>
+	<error-page>
+	    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+	    <location>/public/__error__/viewexpired.xhtml</location>
 	</error-page>
 	
 	<!-- pretty faces -->
@@ -65,6 +74,20 @@
 	<filter-mapping>
 		<filter-name>applicationSecurityFilter</filter-name>
 		<url-pattern>/private/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>userAgentFilter</filter-name>
+		<filter-class>org.cyk.ui.web.api.servlet.UserAgentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>userAgentFilter</filter-name>
+		<url-pattern>/private/*</url-pattern>
+		<url-pattern>/public/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>

@@ -21,6 +21,7 @@ public class SystemMenu implements Serializable {
 	private Collection<UICommandable> referenceEntities = new ArrayList<>();
 	
 	private Collection<UICommandable> businesses = new ArrayList<>();
+	private Collection<UICommandable> mobileBusinesses = new ArrayList<>();
 	
 	private Collection<UICommandable> reports = new ArrayList<>();
 

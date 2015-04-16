@@ -52,11 +52,14 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
 		webNavigationManager.getWebNavigationManagerListeners().add(this);
-	
+		
 	}
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		webNavigationManager.setMobileContext(event.getServletContext().getContextPath()+WebNavigationManager.MOBILE_AGENT_FOLDER);
+		WebNavigationManager.MOBILE_VIEW_MAP.put(event.getServletContext().getContextPath()+"/private/__tools__/event/agenda.jsf", 
+			"/mobile/private/__tools__/event/list.jsf");
 		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();

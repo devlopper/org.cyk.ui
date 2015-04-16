@@ -14,8 +14,6 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +23,9 @@ import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
-import org.cyk.system.root.business.api.NumberBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -72,8 +70,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private CollectionLoadMethod collectionLoadMethod;
 	private ToStringMethod toStringMethod;
+	/*
 	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
-	
+	*/
 	@Inject private LanguageBusiness languageBusiness;
 	@Inject private ApplicationBusiness applicationBusiness;
 	@Inject private BusinessManager businessManager;
@@ -134,11 +133,11 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		
 		//System.out.println("UIManager.initialisation() : "+businessManager.toString());
 		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
-		
+		/*
 		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
 		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
 		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
-		
+		*/
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
 		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
@@ -293,11 +292,11 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	/**/
 	
 	public String formatDate(Date date,Boolean dateTime){
-		return (Boolean.TRUE.equals(dateTime)?dateTimeFormat:dateFormat).format(date);
+		return Boolean.TRUE.equals(dateTime)?timeBusiness.formatDateTime(date):timeBusiness.formatDate(date);
 	}
 	
 	public String formatTime(Date time){
-		return timeFormat.format(time);
+		return timeBusiness.formatTime(time);
 	}
 	
 	public String formatDuration(Period period){
@@ -315,6 +314,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public SimpleDateFormat findDateFormatter(Field field){
+		return new SimpleDateFormat(timeBusiness.findFormatPattern(field));
+		/*
 		Temporal temporal = field.getAnnotation(Temporal.class);
 		if(temporal==null || TemporalType.DATE.equals(temporal.value()))
 			return dateFormat;
@@ -322,6 +323,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			return timeFormat;
 		else
 			return dateTimeFormat;
+			*/
 	}
 	
 	/**/
@@ -378,6 +380,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public Collection<BusinessListener> getBusinesslisteners() {
 		return businessListeners;
+	}
+	
+	public Boolean isMobileDevice(UserDeviceType userDeviceType){
+		return userDeviceType==null || !UserDeviceType.DESKTOP.equals(userDeviceType);
 	}
 	
 }

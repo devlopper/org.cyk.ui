@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.api.data.collector.form.AbstractControlSet;
 import org.cyk.ui.api.data.collector.layout.Position;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -31,5 +32,8 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 		return UIManager.getInstance().text(code);
 	}
 	
-	
+	@Override
+	public UserDeviceType getUserDeviceType() {
+		return set.getUserDeviceType();
+	}
 } 

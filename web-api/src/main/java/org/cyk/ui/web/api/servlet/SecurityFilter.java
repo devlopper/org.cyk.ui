@@ -31,10 +31,10 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
-		if(!redirect(applicationBusiness.findCurrentInstance()==null, "install", request, response)){
+		if(!goTo(applicationBusiness.findCurrentInstance()==null, "install", request, response)){
 			if(Boolean.TRUE.equals(LICENSE_ENABLED)){
 				License license = applicationBusiness.findCurrentInstance().getLicense();
-				if(!redirect(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), "license/expired", request, response))
+				if(!goTo(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), "license/expired", request, response))
 					filterChain.doFilter(servletRequest, servletResponse);
 				else{
 					if(!Boolean.TRUE.equals(license.getExpired()))

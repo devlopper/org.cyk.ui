@@ -15,9 +15,18 @@ import org.primefaces.extensions.model.layout.LayoutOptions;
 public class PrimefacesDefaultPageLayoutManager extends AbstractWebPageLayoutManager implements Serializable {
 
 	private static final long serialVersionUID = 2282543573812258638L;
+	
+	public static final String DEFAULT_CONTRACTS = "defaultDesktop";
+	public static final String DEFAULT_TEMPLATE = "/template/default.xhtml";
+	public static final String DEFAULT_DECORATED_TEMPLATE = "/org.cyk.ui.web.primefaces/template/page/default.xhtml";
 
 	private LayoutOptions options;
 	
+	public PrimefacesDefaultPageLayoutManager() {
+		contracts = DEFAULT_CONTRACTS;
+		template = DEFAULT_TEMPLATE;
+		decoratedTemplate = DEFAULT_DECORATED_TEMPLATE;
+	}
 	
 	@Override
 	protected void initialisation() {

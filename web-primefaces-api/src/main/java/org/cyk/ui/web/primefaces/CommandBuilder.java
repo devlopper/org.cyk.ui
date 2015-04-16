@@ -72,7 +72,7 @@ public class CommandBuilder implements Serializable {
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(navigationManager.getOutcomeLogout());break;
 					case LICENCE_READ:menuItem.setOutcome(navigationManager.getOutcomeLicenseRead());break;
-					case TOOLS_CALENDAR:menuItem.setOutcome(navigationManager.getOutcomeToolsCalendar());break;
+					case TOOLS_AGENDA:menuItem.setOutcome(navigationManager.getOutcomeToolsCalendar());break;
 					//case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToPdf());break;
 					//case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToXls());break;
 					case TOOLS_REPORT:menuItem.setOutcome(navigationManager.getOutcomeToolsReport());break;

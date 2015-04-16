@@ -12,6 +12,7 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
 @Getter
@@ -37,6 +38,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
+		
+		if(uiManager.isMobileDevice(userDeviceType)){
+			((Commandable)form.getSubmitCommandable()).setUpdate("");
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

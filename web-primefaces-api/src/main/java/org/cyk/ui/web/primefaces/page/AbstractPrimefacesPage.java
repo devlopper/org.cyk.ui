@@ -1,18 +1,21 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import lombok.Getter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
+import org.cyk.ui.api.model.table.AbstractTable.RenderType;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.EventCalendar;
@@ -35,32 +38,59 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter protected UserSession userSession;
 	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
+	private String mobilePageTransition="flip";
+	private Boolean mobilePageReverse=Boolean.TRUE;
 	
 	@Override
 	public void targetDependentInitialisation() {
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
 		
+		if(contextualMenu!=null && contextualMenu.getCommandables().isEmpty())
+			contextualMenu = null;
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
 	}
 	
+	/*
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		tablesInitialisation();
+	}*/
+	
+	protected void buildTables(){
+		super.buildTables();
+		
 		for(AbstractTable<?, ?, ?> atable : tables){
+			buildTable(atable);
+			/*
 			Table<?> table = (Table<?>) atable;
 			if(!Boolean.TRUE.equals(table.getShowHeader()))
-				hideTableHeader("."+table.getUpdateStyleClass() /*".dataTableStyleClass"*/);
+				hideTableHeader("."+table.getUpdateStyleClass());
 			if(!Boolean.TRUE.equals(table.getShowFooter()))
-				hideTableFooter("."+table.getUpdateStyleClass()/*".dataTableStyleClass"*/);
-		}
-			
+				hideTableFooter("."+table.getUpdateStyleClass());
+			*/
+		}	
 	}
+	
+	protected void buildTable(AbstractTable<?, ?, ?> atable){
+		super.buildTable(atable);
+		Table<?> table = (Table<?>) atable;
+		if(!Boolean.TRUE.equals(table.getShowHeader()))
+			hideTableHeader("."+table.getUpdateStyleClass() /*".dataTableStyleClass"*/);
+		if(!Boolean.TRUE.equals(table.getShowFooter()))
+			hideTableFooter("."+table.getUpdateStyleClass()/*".dataTableStyleClass"*/);
+	}
+	
+	protected void tables(){}
 	
 	@Override
 	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
-		return new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
+		FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
+		//System.out.println("AbstractPrimefacesPage.__createFormOneData__()");
+		//form.setUserDeviceType(UserDeviceType.PHONE);
+		return form;
 	}
 
 	@Override
@@ -83,12 +113,34 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		form.setShowCommands(Boolean.FALSE);
 	}
 	
+	/**
+	 * Call after page init
+	 */
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
+		@SuppressWarnings("unchecked")
+		Table<T> table = (Table<T>) createTable(aClass, null, null);
+		configureDetailsTable(table, titleId);
+		buildTable(table);
+		if(collection!=null)
+			table.addRows(collection);
+		
+		return table;
+	}
+	
 	protected void configureDetailsTable(Table<?> table,String titleId){
 		table.addColumnFromDataClass();
-		table.setTitle(text(titleId));
+		table.setEditable(Boolean.FALSE);
+		if(StringUtils.isBlank(titleId))
+			table.setShowHeader(Boolean.FALSE);
+		else
+			table.setTitle(text(titleId));
 		table.setShowToolBar(Boolean.FALSE);
+		if(uiManager.isMobileDevice(userDeviceType))
+			table.setRenderType(RenderType.LIST);
 	}
 
-
+	public String mobilePageOutcome(String pageId){
+		return navigationManager.mobilePageOutcome(pageId,mobilePageTransition,mobilePageReverse);
+	}
 	
 }

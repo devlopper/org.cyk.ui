@@ -68,7 +68,9 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	/**/
 	
 	protected void roleUser(){
-		WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);
+		WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);//TODO content should be moved to desktop or mobile and this removed
+		WebEnvironmentAdapter.role(urlsSection,"/mobile/private/**", Role.USER);
+		WebEnvironmentAdapter.role(urlsSection,"/desktop/private/**", Role.USER);
 	}
 	
 	protected class RootSecuredUrlProvider extends SecuredUrlProvider implements Serializable {

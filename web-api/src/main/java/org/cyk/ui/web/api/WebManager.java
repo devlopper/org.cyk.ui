@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.Part;
@@ -17,6 +18,7 @@ import javax.servlet.http.Part;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
@@ -35,10 +37,13 @@ public class WebManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
+	@Inject private LanguageBusiness languageBusiness;
+	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
 	}
 	
 	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();

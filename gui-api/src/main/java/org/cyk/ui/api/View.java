@@ -15,4 +15,7 @@ public interface View {
 	Collection<ViewListener> getViewListeners();
 
 	void build();
+	
+	UserDeviceType getUserDeviceType();
+	void setUserDeviceType(UserDeviceType aUserDeviceType);
 }

@@ -73,6 +73,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		if(Boolean.TRUE.equals(__collectPositions__)){
 			control.getPosition().getRow().setIndex(__rowCount__-1);
 			control.getPosition().getColumn().setIndex(++__columnCount__);
+			control.setSet(this);
 			controls.add(control);
 		}else{
 			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners)
@@ -206,6 +207,17 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 					&& ( ((Input<?,?,?,?,?,?>)control).getField().getName().equals(fieldName)) 
 					&& aClass.isAssignableFrom(control.getClass()))
 				return (T) control;
+		}
+		return null;
+	}
+	
+	@Override
+	public Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
+		for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls){
+			if( (control instanceof Input<?,?,?,?,?,?>) 
+					&& ( ((Input<?,?,?,?,?,?>)control).getField().getName().equals(fieldName)) 
+					)
+				return (Input<?, ?, ?, ?, ?, ?>) control;
 		}
 		return null;
 	}

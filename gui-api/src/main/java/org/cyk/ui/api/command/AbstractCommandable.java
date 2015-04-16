@@ -70,4 +70,9 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	public void addChild(UICommandable aCommandable) {
 		children.add(aCommandable);
 	}
+	
+	@Override
+	public String toString() {
+		return getLabel();
+	}
 }

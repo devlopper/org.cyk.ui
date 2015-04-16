@@ -25,6 +25,7 @@ import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.omnifaces.util.Faces;
 
@@ -37,6 +38,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	
 	@Getter @Setter private Boolean rememberMe = Boolean.FALSE;
 	private Boolean disconnect = Boolean.FALSE;
+	@Getter private InputText inputText;
 	
 	@Override
 	protected void initialisation() {
@@ -44,6 +46,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		contentTitle = uiManager.getApplication().getName();
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.login"));	
+		
 	}
 		
 	@Override
@@ -116,6 +119,9 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	public Boolean getShowContentMenu() {
 		return Boolean.FALSE;
 	}
-
+	
+	/**/
+	
+	
 	
 }

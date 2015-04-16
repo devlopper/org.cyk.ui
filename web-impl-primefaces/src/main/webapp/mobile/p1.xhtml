@@ -6,12 +6,26 @@
     xmlns:pm="http://primefaces.org/mobile">
 <f:view renderKitId="PRIMEFACES_MOBILE" />
 <h:head>
+
 </h:head>
 <h:body>
+	<script>
+	function PlaySound(soundObj) {
+	  var sound = document.getElementById(soundObj);
+	  alert('Called : '+sound);	
+	  sound.Play();
+	}
+	</script>		
     <pm:page id="main">
            <pm:header title="Main Page"></pm:header>
            <pm:content>
+           <embed src="#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}" autostart="false" width="0" height="0" id="sound1" enablejavascript="true"/>
            	<p:button outcome="pm:second" />
+           	<a href="#" onclick="PlaySound('sound1');">Play Sound 1</a><br/>
+           	<a href="#" onclick="playSound('#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}');">Play Sound 2</a><br/>
+           	<a href="#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}">Play Sound 3</a><br/>
+           	
+           	#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}
            </pm:content>
     </pm:page>
     <pm:page id="second">

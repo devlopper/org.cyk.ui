@@ -11,9 +11,9 @@
 
 	<ui:decorate template="#{templateFile}">
 		<ui:param name="input" value="#{control}" />
-		<ui:param name="forId" value="inputText" />
+		<ui:param name="forId" value="#{controlId == null ? 'inputText' : controlId}" />
 		<ui:define name="input">
-			<p:inputText id="inputText" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
+			<p:inputText id="#{forId}" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}">
 				<f:attribute name="fieldId" value="#{control.id}" />

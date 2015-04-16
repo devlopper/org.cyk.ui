@@ -36,7 +36,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	protected Long timestamp;
 	@Getter @Setter protected Locale locale = Locale.FRENCH;
 	@Getter @Setter protected UserAccount userAccount;
-	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu;
+	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu,mobileApplicationMenu;
 	@Getter @Setter protected String notificationChannel;
 	@Getter protected Boolean logoutCalled;
 	@Getter @Setter protected UIMenu contextualMenu;
@@ -72,6 +72,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		logoutCalled = Boolean.FALSE;
 		setUserAccount(userAccount);
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));
+		setMobileApplicationMenu(MenuManager.getInstance().mobileApplicationMenu(this));
 		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this));
 		setSecurityMenu(MenuManager.getInstance().securityMenu(this));
 		setUserAccountMenu(MenuManager.getInstance().userAccountMenu(this));

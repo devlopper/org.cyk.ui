@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.AbstractView;
+import org.cyk.ui.api.data.collector.control.Input;
 
 public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> extends AbstractView implements FormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>, 
 	ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>,Serializable {
@@ -39,9 +40,19 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public <T> T findInputByFieldName(Class<T> aClass, String fieldName) {
+	public <T> T findInputByClassByFieldName(Class<T> aClass, String fieldName) {
 		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
 			T object = set.findInputByFieldName(aClass, fieldName);
+			if(object!=null)
+				return object;
+		}
+		return null;
+	}
+	
+	@Override
+	public Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
+		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
+			Input<?, ?, ?, ?, ?, ?> object = set.findInputByFieldName(fieldName);
 			if(object!=null)
 				return object;
 		}

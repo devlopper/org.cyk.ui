@@ -219,6 +219,34 @@ border: none;
 	border: 0px solid red !important;
 }
 /*---------------------------------------------------------  Page   ----------------------------------------------------------------------*/
+.cyk-mobilepage{
+	
+}
+.cyk-mobilepage-header{
+	height: 40px;
+}
+.cyk-mobilepage-header-table{
+	width: 100%;
+}
+.cyk-mobilepage-header-table td button{
+	top: 0px !important;
+	margin: 0px !important;
+}
+.cyk-mobilepage-header-table-backbuttontd{
+	width: 0% !important;
+	
+}
+.cyk-mobilepage-header-table-titletd{
+	width: 100%;
+	text-align: center;
+}
+.cyk-mobilepage-header-table-menubuttontd{
+	width: 0% !important;
+}
+.cyk-mobilepage-title{
+	
+}
+
 .cyk-page-login{
 	
 }

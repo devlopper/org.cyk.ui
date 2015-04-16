@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+ 	<ui:decorate template="#{mobilePageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{privateIndexPage}" />
+ 		<ui:define name="body">
+ 			
+ 			<a href="#" onclick="playSound('#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}');">Play Sound 2</a><br/>
+ 			
+ 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/mobile/page.xhtml">
+ 				<ui:define name="content">
+		    		
+		    		<script>
+		    			//var snd = new Audio('#{resource[defaultDesktopLayoutManagerr.incomingMessageSoundPath]}'); // buffers automatically when created
+		    			function PlaySound(file) {
+		    				alert('Global 3');
+		    				//if (snd == null)
+		    					snd = new Audio(file); // buffers automatically when created
+							snd.play();
+						}
+		    			
+		    			function playSound3(soundfile) {
+		    				//alert('PS 2 : '+soundfile);
+		    				//document.getElementById("dummysound").innerHTML='<embed src="'+soundfile+'" hidden="true" autostart="true" loop="false" />';
+		    				//sound2 = new Audio(soundfile)); // buffers automatically when created
+		    				//sound2.play();	
+		    				
+		    				snd = new Audio(soundfile); // buffers automatically when created
+							snd.play();
+		    			}
+					</script>	
+					
+					<audio>
+   						<source src="elvis.mp3" type='audio/mpeg; codecs="mp3"'/>
+					</audio>
+	
+			<embed src="#{resource[defaultDesktopLayoutManagerr.incomingMessageSoundPath]}" autostart="false" width="0" height="0" id="sound1" enablejavascript="true"/>
+           	<!--p:button outcome="pm:second" /-->
+           	<br /><br/>
+           	<a href="#" onclick="$( '#soundPlayerLink').trigger('click');">Play Sound Manual</a><br/><br/><br/>
+           	
+           	
+           	
+ 				</ui:define>	
+ 			</ui:decorate> 			
+ 		</ui:define>
+ 	</ui:decorate>
+ 
+</html>

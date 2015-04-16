@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.cyk.ui.api.View;
 import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.Input;
 
 //TODO i think DATA should be remove because ControlSet can contain fields from various Objects
 public interface ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> extends View {
@@ -17,6 +18,8 @@ public interface ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> extends
 	Collection<Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM>> getControls(); 
 	
 	<T> T findInputByFieldName(Class<T> aClass,String fieldName);
+	
+	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 	MODEL getModel();
 	

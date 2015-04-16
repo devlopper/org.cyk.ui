@@ -28,6 +28,7 @@ import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -62,17 +63,40 @@ public class MenuManager extends AbstractBean implements Serializable {
 		super.initialisation();
 	}
 	
+	private UICommandable homeCommandable(){
+		UICommandable commandable = UIProvider.getInstance().createCommandable("command.home", IconType.THING_HOME,ViewType.HOME);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		return commandable;
+	}
+	
+	private UICommandable logoutCommandable(){
+		UICommandable commandable = UIProvider.getInstance().createCommandable("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT);
+		commandable.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+		return commandable;
+	}
+	
+	private UICommandable notificationsCommandable(){
+		UICommandable commandable = UIProvider.getInstance().createCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		return commandable;
+	}
+	
+	private UICommandable agendaCommandable(){
+		UICommandable commandable = UIProvider.getInstance().createCommandable("command.agenda", IconType.THING_CALENDAR, ViewType.TOOLS_AGENDA);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		return commandable;
+	}
+	
 	public UICommandable createModuleGroup(AbstractUserSession userSession,ModuleGroup moduleGroup) {
 		UICommandable commandableGroup = null;
 		groupsMap.put(moduleGroup, commandableGroup);
 		switch(moduleGroup){
 		case HOME:
-			commandableGroup = UIProvider.getInstance().createCommandable("command.home", IconType.THING_HOME,ViewType.HOME);
-			commandableGroup.setCommandRequestType(CommandRequestType.UI_VIEW);
+			commandableGroup = homeCommandable();
 			break;
 		case TOOLS:
 			commandableGroup = UIProvider.getInstance().createCommandable("command.tools", IconType.THING_TOOLS);
-			commandableGroup.addChild("command.calendar", IconType.THING_CALENDAR, ViewType.TOOLS_CALENDAR, null);
+			commandableGroup.addChild(agendaCommandable() /*"command.calendar", IconType.THING_CALENDAR, ViewType.TOOLS_CALENDAR, null*/);
 			break;
 		case CONTROL_PANEL:
 			commandableGroup = UIProvider.getInstance().createCommandable("command.controlpanel", null);
@@ -84,10 +108,9 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandableGroup = UIProvider.getInstance().createCommandable(/*"command.useraccount"*/ userSession.getUserAccount().getCredentials().getUsername(),
 					null);
 			commandableGroup.setLabel(userSession.getUserAccount().getCredentials().getUsername());
-			commandableGroup.addChild("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS, null);
+			commandableGroup.addChild(notificationsCommandable());
 			commandableGroup.addChild("command.useraccount", IconType.THING_USERACCOUNT, ViewType.USER_ACCOUNT_CONSULT, null);
-			commandableGroup.addChild("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT, null)
-				.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
+			commandableGroup.addChild(logoutCommandable());
 			
 			break;
 		case HELP:
@@ -132,6 +155,16 @@ public class MenuManager extends AbstractBean implements Serializable {
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
+		return menu;
+	}
+	
+	public UIMenu mobileApplicationMenu(AbstractUserSession userSession){
+		UIMenu menu = new DefaultMenu();
+		menu.addCommandable(homeCommandable());
+		mobileBusiness(userSession,menu);
+		menu.addCommandable(agendaCommandable());
+		menu.addCommandable(notificationsCommandable());
+		menu.addCommandable(logoutCommandable());
 		return menu;
 	}
 	
@@ -188,11 +221,13 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return menu;
 	}
 	
-	public UIMenu calendarMenu(AbstractUserSession userSession){
+	public UIMenu calendarMenu(AbstractUserSession userSession,UserDeviceType userDeviceType){
 		UIMenu menu = new DefaultMenu();
 		UICommandable p;
-		p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
-		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		if(!UIManager.getInstance().isMobileDevice(userDeviceType)){
+			p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
+			p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		}
 		return menu;
 	}
 	
@@ -206,7 +241,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UIMenu sessionContextualMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();
 		menu.addCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
-		menu.addCommandable("command.calendar", IconType.THING_CALENDAR,ViewType.TOOLS_CALENDAR);
+		menu.addCommandable("command.calendar", IconType.THING_CALENDAR,ViewType.TOOLS_AGENDA);
 		menu.addCommandable("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT)
 			.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
 		return menu;
@@ -217,6 +252,16 @@ public class MenuManager extends AbstractBean implements Serializable {
 	private void business(AbstractUserSession userSession,UIMenu menu){
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
+				menu.addCommandable(businessModuleGroup);
+				for(MenuListener listener : menuListeners)
+					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
+			}
+		}
+	}
+	
+	private void mobileBusiness(AbstractUserSession userSession,UIMenu menu){
+		for(SystemMenu systemMenu : systemMenus(userSession)){
+			for(UICommandable businessModuleGroup : systemMenu.getMobileBusinesses()){
 				menu.addCommandable(businessModuleGroup);
 				for(MenuListener listener : menuListeners)
 					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
@@ -303,7 +348,5 @@ public class MenuManager extends AbstractBean implements Serializable {
 		}
 		
 	}
-
-
 	
 }

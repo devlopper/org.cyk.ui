@@ -14,15 +14,6 @@
 
 	<cc:implementation>
 		
-		<!--h:commandButton id="#{cc.id}ButtonJsf"
-			action="#{cc.value.command.execute}" 
-			rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"
-			title="#{cc.value.button.title}"
-			value="#{cc.value.button.value}">
-			
-			
-		</h:commandButton-->
-		
 		<p:commandButton id="#{cc.id}Button"
 			action="#{cc.value.command.execute(cc.attrs.executeParameter)}" 
 			ajax="#{cc.value.button.ajax}"
@@ -75,10 +66,10 @@
 			
 		</p:commandButton>
 				
-		<p:confirmDialog global="true">
+		<!--p:confirmDialog global="true">
 	        <p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-	    </p:confirmDialog>
+	    </p:confirmDialog-->
 	    
 	    <p:menuButton id="#{cc.id}ButtonMenu"
 	    	

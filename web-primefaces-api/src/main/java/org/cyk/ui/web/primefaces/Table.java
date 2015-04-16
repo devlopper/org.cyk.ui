@@ -71,8 +71,6 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 		commandable.getButton().setType("button");
 		commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
 		
-		dataTable.setEditable(getEditable());
-		
 		commandable.getButton().setWidgetVar("searchCommandWidgetVar");
 		
 	}
@@ -102,6 +100,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 				}
 			});
 		}
+		
+		dataTable.setEditable(getEditable());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -41,14 +41,19 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	@Override
-	public <T> T findInputByFieldName(Class<T> aClass, String fieldName) {
-		return getSelectedFormData().findInputByFieldName(aClass, fieldName);
+	public <T> T findInputByClassByFieldName(Class<T> aClass, String fieldName) {
+		return getSelectedFormData().findInputByClassByFieldName(aClass, fieldName);
+	}
+	
+	@Override
+	public org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
+		return getSelectedFormData().findInputByFieldName(fieldName);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addChoices(String fieldName, List<SELECTITEM> choices) {
-		findInputByFieldName(InputChoice.class, fieldName).getList().addAll(choices);
+		findInputByClassByFieldName(InputChoice.class, fieldName).getList().addAll(choices);
 	}
 	
 	@Override
@@ -59,7 +64,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			annotations.add(IncludeInputs.class);
 			FormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> formData = createFormData();
 			formData.setData(getData());
+			formData.setUserDeviceType(userDeviceType);
 			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet = formData.createControlSet();
+			controlSet.setUserDeviceType(formData.getUserDeviceType());
 			if(controlSetListener!=null)
 				controlSet.getControlSetListeners().add(controlSetListener);
 			/*

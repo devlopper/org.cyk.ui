@@ -3,6 +3,8 @@ package org.cyk.ui.api.data.collector.form;
 import java.util.List;
 import java.util.Stack;
 
+import org.cyk.ui.api.data.collector.control.Input;
+
 public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends Form<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> {
 	/*
 	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> getWindow();
@@ -21,7 +23,8 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	
 	FormData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> getSelectedFormData();
 	
-	<T> T findInputByFieldName(Class<T> aClass,String fieldName);
+	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
+	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 	void addChoices(String fieldName,List<SELECTITEM> choices);
 	

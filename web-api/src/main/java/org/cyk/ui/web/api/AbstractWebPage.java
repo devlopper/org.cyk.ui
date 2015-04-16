@@ -20,6 +20,7 @@ import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
+import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.omnifaces.util.Faces;
 
@@ -50,6 +51,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 			windowMode = webManager.getRequestParameterWindowModeNormal();
 		url = navigationManager.getRequestUrl();
 		previousUrl = requestParameter(webManager.getRequestParameterPreviousUrl());
+		
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		
 		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());
@@ -75,7 +77,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		//System.out.println("AbstractWebPage.initialisation()");
 	}
 	
-	
+	@Override
+	protected void setUserDeviceType() {
+		userDeviceType = navigationManager.isMobileView()?UserDeviceType.PHONE:UserDeviceType.DESKTOP;
+	}
 		
 	public void onPreRenderView(){
 		if(!Boolean.TRUE.equals(FacesContext.getCurrentInstance().isPostback())){
