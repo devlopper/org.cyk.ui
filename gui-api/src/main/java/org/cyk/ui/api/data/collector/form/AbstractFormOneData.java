@@ -90,9 +90,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 
 	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,Object data){
 		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
-		
 		new FieldSorter(fields,data.getClass()).sort();
-		
+		if(controlSetListener!=null)
+			controlSetListener.sort(fields);
 		for(Field field : fields){
 			objectFields.add(new ObjectField(data, field));
 			
@@ -114,6 +114,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		
 		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
+			if(controlSetListener!=null)
+				if(Boolean.FALSE.equals(controlSetListener.build(objectField.getField())))
+					continue;
 			OutputSeperator outputSeparator = objectField.getField().getAnnotation(OutputSeperator.class);
 			if(outputSeparator!=null){
 				String label = null;

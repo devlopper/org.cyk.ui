@@ -1,6 +1,7 @@
 package org.cyk.ui.api.data.collector.form;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -57,5 +58,15 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 				return object;
 		}
 		return null;
+	}
+	
+	@Override
+	public Boolean build(Field field) {
+		return null;
+	}
+	
+	@Override
+	public void sort(List<Field> fields) {
+		
 	}
 }

@@ -1,7 +1,9 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
@@ -218,6 +220,16 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	public void setControlLabel(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet, DynaFormControl control,
 			DynaFormLabel label) {
+	}
+	
+	@Override
+	public void sort(List<Field> fields) {
+		
+	}
+	
+	@Override
+	public Boolean build(Field field) {
+		return Boolean.TRUE;
 	}
 	
 }

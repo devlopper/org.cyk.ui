@@ -59,20 +59,22 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		tablesInitialisation();
 	}*/
 	
+	/*
 	protected void buildTables(){
 		super.buildTables();
 		
 		for(AbstractTable<?, ?, ?> atable : tables){
 			buildTable(atable);
-			/*
+			
 			Table<?> table = (Table<?>) atable;
 			if(!Boolean.TRUE.equals(table.getShowHeader()))
 				hideTableHeader("."+table.getUpdateStyleClass());
 			if(!Boolean.TRUE.equals(table.getShowFooter()))
 				hideTableFooter("."+table.getUpdateStyleClass());
-			*/
+			
 		}	
 	}
+	*/
 	
 	protected void buildTable(AbstractTable<?, ?, ?> atable){
 		super.buildTable(atable);

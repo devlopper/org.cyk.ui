@@ -1,5 +1,8 @@
 package org.cyk.ui.web.primefaces.data.collector.control;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import javax.faces.model.SelectItem;
 
 import org.cyk.ui.api.data.collector.control.Control;
@@ -44,6 +47,16 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 	public void setControlLabel(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet, DynaFormControl control,
 			DynaFormLabel label) {
 		
+	}
+
+	@Override
+	public void sort(List<Field> fields) {
+		
+	}
+
+	@Override
+	public Boolean build(Field field) {
+		return null;
 	}
 
 }

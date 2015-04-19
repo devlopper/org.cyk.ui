@@ -70,6 +70,4 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 		return Boolean.TRUE;
 	}
 
-
-
 }
