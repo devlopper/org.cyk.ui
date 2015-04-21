@@ -1,9 +1,9 @@
-package org.cyk.ui.api;
+package org.cyk.ui.api.model;
 
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.cyk.ui.api.model.table.HierarchyNode;
+import org.cyk.ui.api.UIManager;
 
 public class TreeAdapter<NODE, MODEL extends HierarchyNode> implements Serializable, TreeListener<NODE, MODEL> {
 
@@ -57,6 +57,11 @@ public class TreeAdapter<NODE, MODEL extends HierarchyNode> implements Serializa
 	@Override
 	public Collection<NODE> nodeChildren(NODE node) {
 		return null;
+	}
+
+	@Override
+	public String label(Object data) {
+		return UIManager.getInstance().getToStringMethod().execute(data);
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.cyk.ui.api;
+package org.cyk.ui.api.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.model.table.HierarchyNode;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
@@ -58,9 +58,20 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	}
 	
 	public void nodeSelected(NODE node){
+		selected = node;
 		for(TreeListener<NODE,MODEL> listener : treeListeners)
 			listener.nodeSelected(node);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <TYPE> TYPE selectedAs(Class<TYPE> aClass){
+		Object data = nodeModel(selected).getData();
+		if(data==null)
+			return null;
+		return aClass.isAssignableFrom(data.getClass())?(TYPE)data:null;
+	}
+	
+
 	
 	public void populate(Object object){
 		populate(object, index);
@@ -108,6 +119,13 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			if(r!=null)
 				node = r;
 		}
+		
+		for(TreeListener<NODE,MODEL> listener : treeListeners){
+			String label = listener.label(model.getData());
+			if(StringUtils.isNotBlank(label))
+				model.setLabel(label);
+		}
+		
 		return node;
 	}
 	

@@ -9,7 +9,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.editor.input.UIInputComponent;
-import org.cyk.ui.api.model.table.HierarchyNode;
+import org.cyk.ui.api.model.HierarchyNode;
 import org.cyk.ui.api.model.table.TableCell;
 import org.cyk.ui.api.model.table.TableColumn;
 import org.cyk.ui.api.model.table.TableListener;

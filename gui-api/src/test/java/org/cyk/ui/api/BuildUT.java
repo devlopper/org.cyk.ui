@@ -6,8 +6,8 @@ import org.cyk.ui.api.model.AbstractPartyFormModel;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
-import org.cyk.utility.common.test.AbstractUnitTest;
-
+import org.cyk.utility.test.AbstractUnitTest;
+  
 public class BuildUT extends AbstractUnitTest {
 
 	private static final long serialVersionUID = 4990067858159745391L;

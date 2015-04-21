@@ -1,8 +1,6 @@
-package org.cyk.ui.api;
+package org.cyk.ui.api.model;
 
 import java.util.Collection;
-
-import org.cyk.ui.api.model.table.HierarchyNode;
 
 public interface TreeListener<NODE,MODEL extends HierarchyNode> {
 
@@ -25,5 +23,7 @@ public interface TreeListener<NODE,MODEL extends HierarchyNode> {
 	Collection<Object> children(Object object);
 	
 	Collection<NODE> nodeChildren(NODE node);
+
+	String label(Object data);
 	
 }

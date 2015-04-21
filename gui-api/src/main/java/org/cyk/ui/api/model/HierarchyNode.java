@@ -1,11 +1,6 @@
-package org.cyk.ui.api.model.table;
+package org.cyk.ui.api.model;
 
 import java.io.Serializable;
-import java.util.Collection;
-
-import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.UIManager;
-import org.cyk.utility.common.AbstractMethod;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +18,8 @@ public class HierarchyNode implements Serializable {
 	public HierarchyNode(Object data) {
 		super();
 		this.data = data;
-		if(data!=null)
-			label = UIManager.getInstance().getToStringMethod().execute(data);
+		//if(data!=null)
+		//	label = UIManager.getInstance().getToStringMethod().execute(data);
 	}
 	
 	@Override
@@ -34,6 +29,7 @@ public class HierarchyNode implements Serializable {
 	
 	/**/
 	
+	/*
 	public static AbstractMethod<Collection<Object>, Object> CHILDREN_METHOD = new AbstractMethod<Collection<Object>, Object>() {
 		private static final long serialVersionUID = 6739817055207710222L;
 		@SuppressWarnings("rawtypes")
@@ -44,4 +40,5 @@ public class HierarchyNode implements Serializable {
 			return null;
 		}
 	};
+	*/
 }

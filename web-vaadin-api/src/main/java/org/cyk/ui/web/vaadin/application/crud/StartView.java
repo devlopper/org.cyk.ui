@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.ui.api.MenuManagerOLD.Type;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.model.table.HierarchyNode;
+import org.cyk.ui.api.model.HierarchyNode;
 import org.cyk.ui.web.vaadin.AbstractView;
 import org.cyk.ui.web.vaadin.CommandBuilder;
 
