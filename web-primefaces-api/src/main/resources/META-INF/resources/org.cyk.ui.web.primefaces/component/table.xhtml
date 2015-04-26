@@ -15,18 +15,19 @@
 	<cc:implementation>
 		<ui:param name="updateDataTableStyleClass" value="#{cc.value.updateStyleClass}" />
 		<ui:param name="controlDir" value="/org.cyk.ui.web.primefaces/include/control" />
-		
+
 		<ui:fragment rendered="#{cc.value.renderType.ordinal()==0}" >
 			<p:dataTable id="dataTable" widgetVar="dataTableWidgetVar" var="row" value="#{cc.value.value}" editable="#{cc.value.editable}" 
 				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index" 
 				emptyMessage="#{uiManager.text('record.list.empty')}" lazy="#{cc.value.lazyLoad}"			
 				paginator="#{cc.value.lazyLoad}" rows="#{cc.value.rows.size()}" paginatorPosition="bottom" sortMode="single"
 				paginatorTemplate="#{cc.value.dataTable.paginatorTemplate}" currentPageReportTemplate="#{cc.value.dataTable.currentPageReportTemplate}"
-				tableStyleClass="ui-table-columntoggle" reflow="true"
+				tableStyleClass="ui-table-columntoggle" reflow="true" rowStyleClass="#{row.cascadeStyleSheet.clazz}"
 				>
 				
 				<f:facet name="header">
 	      			<h:outputText value="#{cc.value.title}" rendered="#{not empty cc.value.title}" />
+	      			
 	      			<p:toolbar id="toolbar" rendered="#{cc.value.showToolBar}">
 		      			<f:facet name="left">
 		      				<cyk:command value="#{cc.value.addRowCommandable}" />
@@ -53,7 +54,7 @@
 				<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />
 				<p:ajax event="rowEditCancel" listener="#{cc.value.onRowEditCancel}" />
 				
-				<p:column headerText="#" width="1"><h:outputText value="#{index+1}" /> </p:column>
+				<p:column headerText="#" width="14"><h:outputText value="#{index+1}" /> </p:column>
 				
 				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex">  
@@ -101,12 +102,15 @@
 		        
 		        <p:column rendered="#{cc.value.showEditColumn}" width="35">
 		        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" /> 
-		        	<cyk:command value="#{cc.value.crudOneRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
+		        	<cyk:command value="#{cc.value.crudOneRowCommandable}" executeParameter="#{row}" rendered="#{row.editable and not cc.value.inplaceEdit}"/>
 		        </p:column>
 		        
-		        <p:column rendered="#{cc.value.showAddRemoveColumn}" width="90">
+		        <p:column rendered="#{cc.value.showAddRemoveColumn or cc.value.showOpenCommand}" width="90">
 		        	<table><tr>
-		        		<td style="border: none;"><cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" /></td>
+		        		<ui:fragment rendered="#{row.deletable and cc.value.showAddRemoveColumn}" ><td style="border: none;">
+		        			<cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" />
+		        		</td></ui:fragment>
+		        		<!-- row.openable return false why??? -->
 		        		<ui:fragment rendered="#{cc.value.showOpenCommand}" ><td style="border: none;">
 		        			<cyk:command value="#{cc.value.openRowCommandable}" executeParameter="#{row}" />
 		        		</td></ui:fragment>

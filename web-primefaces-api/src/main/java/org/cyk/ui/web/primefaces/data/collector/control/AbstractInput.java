@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
-import org.cyk.ui.web.api.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;

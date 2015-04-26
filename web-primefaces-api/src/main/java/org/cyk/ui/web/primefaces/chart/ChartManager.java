@@ -16,9 +16,10 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
 
 @Singleton @Deployment(initialisationType=InitialisationType.EAGER)
-public class ChartManager extends AbstractBean implements UIChartManager<ChartSeries,BarChartModel>,Serializable {
+public class ChartManager extends AbstractBean implements UIChartManager<ChartSeries,BarChartModel,PieChartModel>,Serializable {
 
 	private static final long serialVersionUID = -3652044913525036249L;
 
@@ -55,20 +56,46 @@ public class ChartManager extends AbstractBean implements UIChartManager<ChartSe
 		
 		model.setTitle(label(cartesianModel.getTitle()));
 		model.setLegendPosition("ne");
-         
+		
         Axis xAxis = model.getAxis(AxisType.X);
+        axis(cartesianModel.getXAxis(),xAxis);
+        /*
         xAxis.setLabel(label(cartesianModel.getXAxis().getLabel()));
         xAxis.setMin(cartesianModel.getXAxis().getMinimum());
+        */
         
         Axis yAxis = model.getAxis(AxisType.Y);
+        axis(cartesianModel.getYAxis(),yAxis);
+        /*
         yAxis.setLabel(label(cartesianModel.getYAxis().getLabel()));
         yAxis.setMin(cartesianModel.getYAxis().getMinimum());
-		
+		*/
+        
 		return model;
 	}
 	
 	private String label(String label){
 		return StringUtils.replace(label, "'", " ");
+	}
+	
+	private void axis(org.cyk.system.root.business.api.chart.Axis axis,Axis paxis){
+		paxis.setLabel(label(axis.getLabel()));
+		paxis.setMin(axis.getMinimum());
+		if(axis.getTickAngle()!=null)
+			paxis.setTickAngle(axis.getTickAngle());
+		
+	}
+
+	@Override
+	public PieChartModel pieModel(Series series) {
+		PieChartModel model = new PieChartModel();
+        for(SeriesItem item : series.getItems())
+        	model.set(item.getX().toString(), item.getY());
+		 
+		model.setTitle(series.getLabel());
+		model.setLegendPosition("e");
+		model.setShowDataLabels(Boolean.TRUE);
+		return model;
 	}
 
 }

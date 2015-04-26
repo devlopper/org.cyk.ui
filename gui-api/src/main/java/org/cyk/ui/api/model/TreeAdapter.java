@@ -58,10 +58,10 @@ public class TreeAdapter<NODE, MODEL extends HierarchyNode> implements Serializa
 	public Collection<NODE> nodeChildren(NODE node) {
 		return null;
 	}
-
+ 
 	@Override
 	public String label(Object data) {
-		return UIManager.getInstance().getToStringMethod().execute(data);
+		return UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data); 
 	}
 
 }

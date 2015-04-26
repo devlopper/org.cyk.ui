@@ -3,6 +3,7 @@ package org.cyk.ui.api;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -126,7 +127,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			else
 				return value.toString();
 		}else if(value instanceof Date)
-			return UIManager.getInstance().findDateFormatter(field).format((Date)value);
+			return UIManager.getInstance().getTimeBusiness().format(field, (Date)value);
 		else if(value instanceof Boolean)
 			if(Boolean.TRUE.equals(value))
 				return UIManager.getInstance().text("yes");
@@ -141,7 +142,8 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			for(Object object : collection)
 				strings.add( (collection.size()>1?++i+" - ":"")+formatValue(field,object));
 			return StringUtils.join(strings,contentType().getNewLineMarker());
-		}
+		}else if(value instanceof BigDecimal)
+			return UIManager.getInstance().getNumberBusiness().format((Number) value);
 			
 		return value.toString();
 	}

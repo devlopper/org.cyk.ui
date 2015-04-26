@@ -161,6 +161,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return Faces.getRequestParameter(name);
 	}
 	
+	protected Long requestParameterLong(Class<? extends AbstractIdentifiable> identifiableClass){
+		return requestParameterLong(UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+	}
+	
 	protected Long requestParameterLong(String name){
 		try {
 			return Long.parseLong(requestParameter(name));
@@ -180,5 +184,15 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	
 	/**/
+	
+	protected void redirectToDynamicCrudOne(AbstractIdentifiable identifiable,Crud crud){
+		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable, Crud.UPDATE);
+	}
+	protected void redirectToEditOne(AbstractIdentifiable identifiable){
+		redirectToDynamicCrudOne(identifiable,Crud.UPDATE);
+	}
+	protected void redirectToDeleteOne(AbstractIdentifiable identifiable){
+		redirectToDynamicCrudOne(identifiable,Crud.DELETE);
+	}
 	
 }

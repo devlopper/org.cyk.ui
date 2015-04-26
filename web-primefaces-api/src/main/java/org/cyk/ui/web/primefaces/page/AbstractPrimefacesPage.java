@@ -9,13 +9,17 @@ import javax.inject.Inject;
 import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.EventCalendar;
@@ -118,7 +122,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/**
 	 * Call after page init
 	 */
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
+	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(aClass, null, null);
 		configureDetailsTable(table, titleId);
@@ -126,7 +130,58 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(collection!=null)
 			table.addRows(collection);
 		
+		table.setInplaceEdit(Boolean.FALSE);
+		table.setShowEditColumn(editable);
+		if(Boolean.TRUE.equals(editable)){
+			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 5577628912554608271L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					AbstractIdentifiable identifiable = null;
+					if(StringUtils.isNotBlank(identifiableFieldName)){
+						Object data = ((Row<T>)parameter).getData();
+						identifiable = (AbstractIdentifiable) commonUtils.readField(data, FieldUtils.getField(aClass,identifiableFieldName , Boolean.TRUE), Boolean.FALSE);
+					}else
+						identifiable = detailsTableRowIdentifiable(((Row<T>)parameter).getData());
+					
+					if(identifiable!=null)
+						redirectToEditOne(identifiable);
+				}
+			});
+		}
+		
+		table.setShowAddRemoveColumn(deletable);
+		if(Boolean.TRUE.equals(deletable)){
+			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 5577628912554608271L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					AbstractIdentifiable identifiable = null;
+					if(StringUtils.isNotBlank(identifiableFieldName)){
+						Object data = ((Row<T>)parameter).getData();
+						identifiable = (AbstractIdentifiable) commonUtils.readField(data, FieldUtils.getField(aClass,identifiableFieldName , Boolean.TRUE), Boolean.FALSE);
+					}else
+						identifiable = detailsTableRowIdentifiable(((Row<T>)parameter).getData());
+					
+					if(identifiable!=null)
+						redirectToDeleteOne(identifiable);
+				}
+			});
+		}
+		
 		return table;
+	}
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
+		return createDetailsTable(aClass, collection, titleId, Boolean.FALSE,Boolean.FALSE,null);
+	}
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection){
+		return createDetailsTable(aClass, collection,null);
+	}
+	
+	protected AbstractIdentifiable detailsTableRowIdentifiable(Object rowData){
+		return null;
 	}
 	
 	protected void configureDetailsTable(Table<?> table,String titleId){

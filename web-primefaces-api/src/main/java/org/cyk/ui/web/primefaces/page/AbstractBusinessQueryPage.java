@@ -43,7 +43,10 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	protected Boolean showGraphics=Boolean.FALSE;
 	
 	protected QUERY query;
-	//protected Integer pageSize = 10;
+	protected Long queryFirst=0l;
+	protected String querySortField, queryGlobalFilter;
+	protected Map<String, Object> queryFilters;
+	protected Boolean queryAscendingOrder;
 	@Getter protected FormOneData<QUERY> form;
 	
 	public AbstractBusinessQueryPage() {
@@ -66,6 +69,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		super.initialisation();
 		table.setGlobalFilter(Boolean.FALSE);
 		table.setShowToolBar(Boolean.FALSE);
+		
 		form = (FormOneData<QUERY>) createFormOneData(query = newInstance(queryClass), Crud.CREATE);
 		form.setControlSetListener((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
 		form.setShowCommands(Boolean.FALSE);
@@ -78,6 +82,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
 			public Collection<Object> fetchData(Integer first, Integer pageSize, String sortField, Boolean ascendingOrder, Map<String, Object> filters, String globalFilter) {
+				queryFirst = first==null?0l:first.longValue();
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 					return datas((Collection<AbstractIdentifiable>) __query__());
 				return null;
@@ -98,6 +103,9 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.getSubmitCommandable().setRequested(autoLoad());
 		if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 			serve(form.getSubmitCommandable().getCommand(), null);
+		
+		table.setShowAddRemoveColumn(Boolean.FALSE);
+		table.setShowOpenCommand(Boolean.TRUE);
 	}
 	
 	protected abstract Class<ENTITY> __entityClass__();

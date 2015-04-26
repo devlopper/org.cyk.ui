@@ -38,8 +38,8 @@ public abstract class AbstractForm<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> exte
 	
 	@Override
 	public Object succeed(UICommand command, Object parameter) {
-		if(Boolean.TRUE.equals(notifyAfterServe(command, AfterServeState.SUCCEED)))
-			showInfoMessage(notificationMessageIdAfterServe(command, parameter, AfterServeState.SUCCEED));
+		//if(Boolean.TRUE.equals(notifyAfterServe(command, AfterServeState.SUCCEED)))
+		//	showInfoMessage(notificationMessageIdAfterServe(command, parameter, AfterServeState.SUCCEED));
 		return null;
 	}
 

@@ -8,9 +8,11 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -19,6 +21,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -37,7 +40,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) __formModelClass__());
+		Class<? extends AbstractFormModel<?>> aFormClass = __formModelClass__();
+		if(aFormClass==null)
+			aFormClass = UIManager.DEFAULT_MANY_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
+		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) aFormClass);
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
 			public Boolean ignore(Field field) {
@@ -50,24 +56,20 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
 		table.addColumnFromDataClass();
 		table.setMaster(identifiable);
+		table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+			private static final long serialVersionUID = 2679004450545381808L;
+			@Override
+			public void serve(UICommand command, Object parameter) {
+				Object data = ((Row<Object>)parameter).getData();
+				AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
+				WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,Crud.UPDATE);
+			}
+		});
 		contentTitle = text("page.crud.many")+" "+contentTitle;
 		title = contentTitle;
 		
 		paginatorTemplate();
 	}
-	/*
-	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		if(!Boolean.TRUE.equals(table.getShowHeader()))
-			hideTableHeader(".dataTableStyleClass");
-			//hide(".dataTableStyleClass > .ui-datatable-header");
-			//onDocumentLoadJavaScript += "$('.dataTableStyleClass > .ui-datatable-header').hide();";
-		if(!Boolean.TRUE.equals(table.getShowFooter()))
-			hideTableFooter(".dataTableStyleClass");
-			//hide(".dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot");
-			//onDocumentLoadJavaScript += "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();";
-	}*/
 	
 	protected void paginatorTemplate(){
 		table.getDataTable().setPaginatorTemplate("{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}");

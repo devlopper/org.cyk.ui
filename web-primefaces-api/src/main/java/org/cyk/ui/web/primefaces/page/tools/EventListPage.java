@@ -16,6 +16,7 @@ import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.command.menu.MenuManager;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -43,9 +44,18 @@ public class EventListPage extends AbstractPrimefacesPage implements Serializabl
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		pastEventTable = createDetailsTable(EventDetails.class, eventDetails(eventBusiness.findPasts(parties)), null);
-		currentEventTable = createDetailsTable(EventDetails.class, eventDetails(eventBusiness.findCurrents(parties)), null);
-		onComingEventTable = createDetailsTable(EventDetails.class, eventDetails(eventBusiness.findOnComings(parties)), null);
+		pastEventTable = eventDetailsTable(eventBusiness.findPasts(parties));
+		currentEventTable = eventDetailsTable(eventBusiness.findCurrents(parties));
+		onComingEventTable = eventDetailsTable(eventBusiness.findOnComings(parties));
+	}
+	
+	private Table<EventDetails> eventDetailsTable(Collection<Event> events){
+		Table<EventDetails> table = createDetailsTable(EventDetails.class, eventDetails(events), null,Boolean.TRUE,Boolean.TRUE,"event");
+		for(Row<EventDetails> row : table.getRows()){
+			row.setEditable(userSession.getUser().equals(row.getData().getEvent().getOwner()));
+			row.setDeletable(row.getEditable());
+		}
+		return table;
 	}
 	
 	private Collection<EventDetails> eventDetails(Collection<Event> events){

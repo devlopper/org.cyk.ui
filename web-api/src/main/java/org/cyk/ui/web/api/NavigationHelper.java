@@ -33,8 +33,11 @@ public class NavigationHelper implements Serializable {
 	}
 	
 	public void addParameter(StringBuilder url,Object name,Object value){
-		if(AbstractIdentifiable.class.isAssignableFrom((Class<?>) name))
-			name = UIManager.getInstance().businessEntityInfos((Class<?>) name).getIdentifier();
+		if(name instanceof Class<?>)
+			if(AbstractIdentifiable.class.isAssignableFrom((Class<?>) name))
+				name = UIManager.getInstance().businessEntityInfos((Class<?>) name).getIdentifier();
+			else
+				;
 		else
 			name = name.toString();
 		if(value instanceof AbstractIdentifiable)

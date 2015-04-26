@@ -48,6 +48,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> FORM_MODEL_MAP = new HashMap<>();
+	public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
+	public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_ONE_FORM_MODEL_MAP = new HashMap<>();
 	
 	public static final String PUSH_CHANNEL_VAR = "channel";
 	public static final String PUSH_RECEIVER_VAR = "receiver";
@@ -69,10 +71,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String pushNotificationChannel=PUSH_NOTIFICATION_CHANNEL;
 	
 	private CollectionLoadMethod collectionLoadMethod;
-	private ToStringMethod toStringMethod;
-	/*
-	private SimpleDateFormat dateFormat,timeFormat,dateTimeFormat;
-	*/
+	
 	@Inject private LanguageBusiness languageBusiness;
 	@Inject private ApplicationBusiness applicationBusiness;
 	@Inject private BusinessManager businessManager;
@@ -87,6 +86,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String userAccountParameter = "ridp";
 	private final String reportIdentifierParameter = "ridp";
 	private final String formModelParameter = "formmodel";
+	private final String formModelActorParameter = "afm";
 	private final String classParameter = "clazz";
 	private final String identifiableParameter = "identifiable";
 	private final String windowParameter="windowParam";
@@ -127,22 +127,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
-		
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
-		
-		//System.out.println("UIManager.initialisation() : "+businessManager.toString());
 		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
-		/*
-		dateFormat = new SimpleDateFormat(text("string.format.pattern.date"));
-		timeFormat = new SimpleDateFormat(text("string.format.pattern.time"));
-		dateTimeFormat = new SimpleDateFormat(text("string.format.pattern.datetime"));
-		*/
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
 		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
 			infos.setUiLabel(text(infos.getUiLabelId()));//for those registered late
-			
 		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
@@ -163,17 +154,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 				return l;
 			}
 		};
-		 
-		toStringMethod = new ToStringMethod() {
-			private static final long serialVersionUID = 7479681304478557922L;
-			@Override
-			protected String __execute__(Object parameter) {
-				if(parameter instanceof AbstractIdentifiable)
-					return ((AbstractIdentifiable)parameter).getUiString();
-				return parameter.toString();
-			}
-		};
-		
 		
 	}
 	
@@ -312,20 +292,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public String fieldLabel(Field field) {
 		return languageBusiness.findFieldLabelText(field);
 	}
-	
-	public SimpleDateFormat findDateFormatter(Field field){
-		return new SimpleDateFormat(timeBusiness.findFormatPattern(field));
-		/*
-		Temporal temporal = field.getAnnotation(Temporal.class);
-		if(temporal==null || TemporalType.DATE.equals(temporal.value()))
-			return dateFormat;
-		else if(TemporalType.TIME.equals(temporal.value()))
-			return timeFormat;
-		else
-			return dateTimeFormat;
-			*/
-	}
-	
+		
 	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {
 		private static final long serialVersionUID = 1175379361365502915L;

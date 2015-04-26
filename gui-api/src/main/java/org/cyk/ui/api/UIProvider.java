@@ -99,7 +99,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			
 			if(input instanceof InputCalendar<?,?,?,?,?>){
 				InputCalendar<?, ?, ?, ?, ?> calendar = (InputCalendar<?, ?, ?, ?, ?>) input;
-				calendar.setPattern(UIManager.getInstance().findDateFormatter(field).toPattern());
+				calendar.setPattern(UIManager.getInstance().getTimeBusiness().findFormatPattern(field));
 			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;

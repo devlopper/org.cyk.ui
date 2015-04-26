@@ -80,13 +80,14 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 			if(v!=null)
 				notify = v;
 		}
-		
 		if(Boolean.TRUE.equals(notify)){
 			//getMessageManager().message(SeverityType.INFO, UIManager.getInstance().text("command.execution.success"),Boolean.FALSE).showInline();
 			for(int i=0;i<commandListeners.size();i++){
 				String messageId = ((List<CommandListener>)commandListeners).get(i).notificationMessageIdAfterServe(this, object, state);
-				if(StringUtils.isNotEmpty(messageId))
+				if(StringUtils.isNotEmpty(messageId)){
 					getMessageManager().message(SeverityType.INFO, new Text(messageId+".summary"),new Text(messageId+".details")).showInline();
+					//System.out.println("success() A : "+FacesContext.getCurrentInstance().getMessageList());
+				}
 			}
 		}
 		for(CommandListener listener : commandListeners)

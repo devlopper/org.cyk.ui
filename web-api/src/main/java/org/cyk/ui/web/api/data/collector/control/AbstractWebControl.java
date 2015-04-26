@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.data.collector.control.AbstractControl;
-import org.cyk.ui.web.api.CascadeStyleSheet;
 
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractWebControl<MODEL,ROW,LABEL,CONTROL> extends AbstractControl<MODEL, ROW, LABEL, CONTROL, SelectItem> 

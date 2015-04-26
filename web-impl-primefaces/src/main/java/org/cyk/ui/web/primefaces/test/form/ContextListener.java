@@ -16,6 +16,7 @@ import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.model.ActorConsultFormModel;
 import org.cyk.ui.api.model.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
@@ -45,6 +46,9 @@ public class ContextListener extends AbstractContextListener {
 		UIManager.FORM_MODEL_MAP.put("pfm3", PersonFormModel3.class);
 		
 		UIManager.FORM_MODEL_MAP.put("ltfm1", LocalityTypeFormModel.class);
+		UIManager.DEFAULT_MANY_FORM_MODEL_MAP.put(Actor.class, ActorConsultFormModel.class);
+		//uiManager.businessEntityInfos(Actor.class).setUiListViewId("pfm1");
+		
 		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("crudperson");
 		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
 		config.setFileSupport(Boolean.TRUE);

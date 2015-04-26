@@ -58,15 +58,15 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected IdentifiableConfiguration identifiableConfiguration;
 	protected BusinessEntityInfos businessEntityInfos;
 	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericObjectReportTable();
-	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
+	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.FALSE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		crudOneRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
-	protected Boolean showHierarchy,showOpenCommand=Boolean.TRUE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE;
+	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE;
 	
-	protected AbstractIdentifiable master;
+	protected DATA master;
 	protected List<DATA> hierarchyData = new ArrayList<>();
 	
 	protected UICommand lastExecutedCommand;
@@ -190,12 +190,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			
 			if(Boolean.TRUE.equals(getShowHierarchy())){
 				MODEL hierarchyNode = createHierarchyNode();
-				hierarchyNode.setLabel(getTitle());
+				hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));
 				createTree();
+				/*
 				tree.build(hierarchyNode);
 				for(DATA d : hierarchyData)
 					tree.populate(d);	
 				tree.expand(master, Boolean.TRUE);
+				*/
+				tree.build(rowDataClass, hierarchyData, (DATA)master);
+				
 				showOpenCommand = getShowHierarchy();
 			}
 			
@@ -206,26 +210,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected abstract void __createTree__();
 	protected void createTree(){
-		__createTree__();
+		__createTree__();	
 		if(tree!=null){
 			tree.getTreeListeners().add(new TreeAdapter<NODE,MODEL>(){
 				private static final long serialVersionUID = 6817293162423539828L;
 				@SuppressWarnings("unchecked")
 				@Override
 				public void nodeSelected(NODE node) {
-					open( (DATA) tree.nodeModel(node).getData());
-				}
-				
-				@Override
-				public Collection<Object> children(Object object) {
-					if(object instanceof AbstractDataTreeNode){
-						Collection<Object> collection = new ArrayList<>();
-						if(((AbstractDataTreeNode)object).getChildren()!=null)
-							for(Object o : ((AbstractDataTreeNode)object).getChildren())
-								collection.add(o);
-						return collection;
-					}
-					return super.children(object);
+					open(tree.nodeModel(node).getData() instanceof AbstractIdentifiable?(DATA) tree.nodeModel(node).getData():null);
 				}
 			});
 		}
@@ -263,14 +255,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void addRowOfRoot(AbstractIdentifiable root,Collection<Object> rows){
+	protected void addRowOfRoot(DATA root,Collection<Object> rows){
 		Collection<DATA> collection = new ArrayList<>();
 		if(root==null)
 			for(DATA node : hierarchyData)
-				collection.add((DATA) node);
+				collection.add(node);
 		else{
 			//business.findHierarchy( master);
-			root = (AbstractIdentifiable) getReferenceFromHierarchy(root,hierarchyData);
+			root = getReferenceFromHierarchy(root,hierarchyData);
 			if( ((AbstractDataTreeNode)root).getChildren()!=null)
 				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)root).getChildren())
 					collection.add((DATA) node);	
@@ -285,7 +277,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	}
 	
 	@SuppressWarnings("unchecked")
-	public DATA getReferenceFromHierarchy(AbstractIdentifiable identifiable,List<DATA> list){
+	public DATA getReferenceFromHierarchy(DATA identifiable,List<DATA> list){
 		Integer index = list.indexOf(identifiable);
 		if(index>-1)
 			return list.get(index);
@@ -438,8 +430,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			}
 			
 		}else if(command==crudOneRowCommandable.getCommand()){
-			Row<DATA> row = (Row<DATA>) parameter;
-			crudOnePage(row.getData(),Crud.UPDATE);
+			//System.out.println("AbstractTable.serve() : CrudOne");
+			//Row<DATA> row = (Row<DATA>) parameter;
+			//crudOnePage(row.getData(),Crud.UPDATE);
 		}else if(command==exportToPdfCommandable.getCommand()){
 			exportDataTableToPdfPage();
 		}else if(command==exportToXlsCommandable.getCommand()){

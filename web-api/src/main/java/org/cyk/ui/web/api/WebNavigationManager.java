@@ -71,7 +71,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
 	
 	@Getter private String dynamicDirectory = "__dynamic__";
-	@Getter @Setter private String mobileContext;
+	@Getter @Setter private String contextPath;
+	@Getter @Setter private String mobileContextPath;
 	@Getter private String outcomePublicIndex = "publicindex";
 	@Getter private String outcomePrivateIndex = "privateindex";
 	
@@ -431,12 +432,19 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 
 	public Boolean isMobileView(HttpServletRequest request){
-		return request.getRequestURI().startsWith(mobileContext);
+		return request.getRequestURI().startsWith(mobileContextPath);
 	}
 	
 	public Boolean isMobileView(){
 		return isMobileView((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest());
 	}
 
+	public static void init(String contextPath){
+		getInstance().setMobileContextPath(contextPath+MOBILE_AGENT_FOLDER);
+	}
+	
+	public void mapMobileView(String viewName,String mobileViewName){
+		MOBILE_VIEW_MAP.put(contextPath+viewName+FILE_PROCESSING_EXTENSION, MOBILE_AGENT_FOLDER+mobileViewName+FILE_PROCESSING_EXTENSION);
+	}
 	
 }

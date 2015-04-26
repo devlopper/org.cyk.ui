@@ -7,7 +7,8 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
@@ -16,9 +17,26 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	@Getter protected NODE root,index;
 	@Getter @Setter protected NODE selected;
+	@Getter @Setter protected Boolean dynamic = Boolean.TRUE;
 	
 	@Getter protected Collection<TreeListener<NODE,MODEL>> treeListeners = new ArrayList<>();
-		
+	
+	public AbstractTree() {
+		treeListeners.add(new TreeAdapter<NODE,MODEL>(){
+			private static final long serialVersionUID = 763364839529624006L;
+			public Collection<Object> children(Object object) {
+				if(object instanceof AbstractDataTreeNode){
+					Collection<Object> collection = new ArrayList<>();
+					if(((AbstractDataTreeNode)object).getChildren()!=null)
+						for(Object o : ((AbstractDataTreeNode)object).getChildren())
+							collection.add(o);
+					return collection;
+				}
+				return null;
+			};
+		});
+	}
+	
 	public void build(MODEL model){
 		for(TreeListener<NODE,MODEL> listener : treeListeners){
 			NODE r = listener.createRootNode();
@@ -28,11 +46,18 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		
 		if(model==null)
 			index = root;
-		else
+		else{
 			index = createNode(model, root);
-		
+		}
 		for(TreeListener<NODE,MODEL> listener : treeListeners)
 			listener.expandNode(index);
+	}
+	
+	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
+		build(createModel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(aClass)));
+		for(TYPE element : aCollection)
+			populate(element);	
+		expand(selected, Boolean.TRUE);
 	}
 	
 	public void expand(Object object,Boolean selected){
@@ -119,13 +144,14 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			if(r!=null)
 				node = r;
 		}
-		
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
-			String label = listener.label(model.getData());
-			if(StringUtils.isNotBlank(label))
-				model.setLabel(label);
-		}
-		
+		/*
+		if(parent!=root)
+			for(TreeListener<NODE,MODEL> listener : treeListeners){
+				String label = listener.label(model.getData());
+				if(StringUtils.isNotBlank(label))
+					model.setLabel(label);
+			}
+		*/
 		return node;
 	}
 	

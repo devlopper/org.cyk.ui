@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.validator.ValidatorException;
 
-import org.cyk.ui.web.api.CascadeStyleSheet;
+import org.cyk.ui.api.CascadeStyleSheet;
 
 
 public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, ROW, LABEL, CONTROL> {

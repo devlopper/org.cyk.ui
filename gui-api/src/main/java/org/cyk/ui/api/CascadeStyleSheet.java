@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api;
+package org.cyk.ui.api;
 
 import java.io.Serializable;
 

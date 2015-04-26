@@ -69,7 +69,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			@Override
 			public void nodeSelected(TreeNode node) {
 				if(StringUtils.isNotBlank(outcome))
-					redirectTo("saleDashBoardView");
+					redirectTo(outcome);
 				else
 					super.nodeSelected(node);
 			}
@@ -78,6 +78,11 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 
 	public void onNodeSelect(NodeSelectEvent event){
 		nodeSelected(event.getTreeNode());
+	}
+	
+	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected,String outcome){
+		build(aClass, aCollection,selected);
+		this.outcome = outcome;
 	}
 	
 	public void redirectTo(String outcome){
