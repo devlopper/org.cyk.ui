@@ -25,7 +25,7 @@ public class UserAccountSearchResultFormModel extends AbstractFormModel<UserAcco
 	public void read() {
 		super.read();
 		username = identifiable.getCredentials().getUsername();
-		creationDate = UIManager.getInstance().formatDate(identifiable.getCreationDate(), Boolean.TRUE);
+		creationDate = UIManager.getInstance().getTimeBusiness().formatDateTime(identifiable.getCreationDate());
 		Set<String> set = new LinkedHashSet<>();
 		for(Role role : identifiable.getRoles())
 			set.add(role.getName());

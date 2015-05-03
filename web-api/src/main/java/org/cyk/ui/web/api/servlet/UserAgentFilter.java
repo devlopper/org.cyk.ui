@@ -28,14 +28,17 @@ public class UserAgentFilter extends AbstractFilter implements Serializable {
 	    String accept = request.getHeader(HEADER_ACCEPT);
 
         if (userAgent != null && accept != null && new UserAgentInfo(userAgent, accept).isMobileDevice()){
-        	if(WebNavigationManager.getInstance().isMobileView(request))
+        	if(navigationManager.isMobileView(request))
         		filterChain.doFilter(servletRequest, servletResponse);
         	else{
-        		String relativeUrl = WebNavigationManager.MOBILE_VIEW_MAP.get(request.getRequestURI());
+        		StringBuilder relativeUrl = new StringBuilder(StringUtils.defaultString(WebNavigationManager.MOBILE_VIEW_MAP.get(request.getRequestURI())));
         		if(StringUtils.isBlank(relativeUrl))
-        			relativeUrl = StringUtils.replaceOnce(request.getRequestURI(), request.getContextPath(), WebNavigationManager.MOBILE_AGENT_FOLDER);
-        		
-        		goTo(Boolean.TRUE, relativeUrl, request, response);
+        			relativeUrl = new StringBuilder(StringUtils.replaceOnce(request.getRequestURI(), request.getContextPath(), WebNavigationManager.MOBILE_AGENT_FOLDER));
+        
+        		navigationManager.appendQueries(relativeUrl, request);
+        			
+        		//System.out.println("UserAgentFilter.doFilter() : "+relativeUrl);
+        		goTo(Boolean.TRUE, relativeUrl.toString(), request, response);
         	}
         }else
         	filterChain.doFilter(servletRequest, servletResponse);

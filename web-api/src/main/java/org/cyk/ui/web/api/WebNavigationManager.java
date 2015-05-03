@@ -446,5 +446,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public void mapMobileView(String viewName,String mobileViewName){
 		MOBILE_VIEW_MAP.put(contextPath+viewName+FILE_PROCESSING_EXTENSION, MOBILE_AGENT_FOLDER+mobileViewName+FILE_PROCESSING_EXTENSION);
 	}
-	
+
+	public void appendQueries(StringBuilder stringBuilder,HttpServletRequest request){
+		if(StringUtils.isNotBlank(request.getQueryString()))
+			stringBuilder.append(NavigationHelper.QUERY_START).append(request.getQueryString());
+		/*
+		for(Entry<String, String[]> entry : request.getParameterMap().entrySet())
+			navigationHelper.addParameter(stringBuilder, entry.getKey(), StringUtils.join(entry.getValue(),","));
+		*/
+	}
 }

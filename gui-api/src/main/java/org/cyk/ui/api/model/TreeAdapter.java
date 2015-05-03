@@ -64,4 +64,14 @@ public class TreeAdapter<NODE, MODEL extends HierarchyNode> implements Serializa
 		return UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data); 
 	}
 
+	@Override
+	public void nodeExpanded(NODE node) {
+		
+	}
+
+	@Override
+	public Boolean isLeaf(NODE node) {
+		return null;
+	}
+
 }

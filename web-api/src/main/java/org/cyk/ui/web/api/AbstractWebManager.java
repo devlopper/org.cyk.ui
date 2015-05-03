@@ -23,4 +23,8 @@ public abstract class AbstractWebManager extends AbstractApplicationUIManager im
 		super.businessClassConfig(aClass, formModelClass, uiEditViewId==null?webNavigationManager.getOutcomeDynamicCrudOne():uiEditViewId);
 	}
 	
+	public String getLibraryName(){
+		return null;
+	}
+	
 }

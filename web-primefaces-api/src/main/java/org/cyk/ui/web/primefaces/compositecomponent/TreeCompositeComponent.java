@@ -7,4 +7,5 @@ import org.cyk.ui.web.primefaces.Tree;
 @FacesComponent(value="org.cyk.ui.web.primefaces.compositecomponent.Tree")
 public class TreeCompositeComponent extends AbstractCompositeComponent<Tree> {
 
+
 }

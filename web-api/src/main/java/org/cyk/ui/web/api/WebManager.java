@@ -105,5 +105,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		return buildSelectItems(aClass, new SelectItemBuildAdapter<TYPE>());
 	}
 	
+	public String libraryName(AbstractWebManager webManager){
+		return webManager.getLibraryName();
+	}
 	
 }

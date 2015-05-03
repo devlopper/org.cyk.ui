@@ -51,6 +51,21 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
 				return input == null && includeInputs==null;
 			}
+			@Override
+			public void rowAdded(Row<Object> row) {
+				super.rowAdded(row);
+				AbstractBusinessEntityFormManyPage.this.rowAdded(row);
+			}
+			@Override
+			public void columnAdded(Column column) {
+				super.columnAdded(column);
+				AbstractBusinessEntityFormManyPage.this.columnAdded(column);
+			}
+			@Override
+			public void cellAdded(Row<Object> row, Column column, Cell cell) {
+				super.cellAdded(row, column, cell);
+				AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);
+			}
 		});
 		table.getAddRowCommandable().getCommand().getCommandListeners().add(this);
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
@@ -88,6 +103,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		}
 		return collection;
 	}
+	
+	protected void rowAdded(Row<Object> row){}
+	protected void columnAdded(Column column){}
+	protected void cellAdded(Row<Object> row, Column column, Cell cell){}
 	
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {

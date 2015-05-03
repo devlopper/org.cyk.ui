@@ -2,10 +2,8 @@ package org.cyk.ui.api;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,7 +28,6 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Application;
-import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
@@ -271,20 +268,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
-	public String formatDate(Date date,Boolean dateTime){
-		return Boolean.TRUE.equals(dateTime)?timeBusiness.formatDateTime(date):timeBusiness.formatDate(date);
-	}
-	
-	public String formatTime(Date time){
-		return timeBusiness.formatTime(time);
-	}
-	
-	public String formatDuration(Period period){
-		return timeBusiness.formatDuration(timeBusiness.findDuration(period));
-	}
-	
-	/**/
-	
 	public String textAnnotationValue(Field field,Text text) {
 		return languageBusiness.findAnnotationText(field, text);
 	}
@@ -303,11 +286,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		private static final long serialVersionUID = 7640865186916095212L;
 	}
 	
-	
-	public static abstract class ToStringMethod extends AbstractMethod<String, Object> {
-		private static final long serialVersionUID = 1175379361365502915L;
-	}
-
 
 	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, Map<String, Object> filters) {
 		for(BusinessListener listener : businessListeners){

@@ -18,14 +18,17 @@ import org.apache.shiro.web.util.WebUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessException;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.security.OpticalDecoderBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.AbstractOpticalBarCodeReader;
+import org.cyk.ui.api.model.OpticalBarCodeReaderAdapter;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.Timer;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.omnifaces.util.Faces;
 
@@ -35,10 +38,12 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	private static final long serialVersionUID = -1797753269882644031L;
 
 	@Inject private UserAccountBusiness userAccountBusiness;
+	@Inject private OpticalDecoderBusiness opticalDecoderBusiness;
 	
+	@Getter private OpticalBarCodeReader opticalBarCodeReader;
 	@Getter @Setter private Boolean rememberMe = Boolean.FALSE;
 	private Boolean disconnect = Boolean.FALSE;
-	@Getter private InputText inputText;
+	//@Getter private InputText inputText;
 	
 	@Override
 	protected void initialisation() {
@@ -47,22 +52,40 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.login"));	
 		
+		opticalBarCodeReader = new OpticalBarCodeReader("tabview:obcr",opticalDecoderBusiness);
+		opticalBarCodeReader.getOpticalBarCodeReaderListeners().add(new OpticalBarCodeReaderAdapter<Timer>(){
+			private static final long serialVersionUID = 1519936596082983556L;
+			@Override
+			public void notNullString(AbstractOpticalBarCodeReader<Timer> reader, byte[] bytes,String value) {
+				String[] credentials = StringUtils.split(value, "\r\n");
+				System.out
+						.println("LoginPage.initialisation().new OpticalBarCodeReaderAdapter() {...}.notNullString()");
+				//connect(new Credentials(credentials[0], credentials[1]));
+				identifiable.setUsername(StringUtils.trim(credentials[0]));
+				identifiable.setPassword(StringUtils.trim(credentials[1]));
+				form.getSubmitCommandable().getCommand().execute(new Credentials(credentials[0], credentials[1]));
+			}
+		});
 	}
 		
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
-			if(Boolean.TRUE.equals(disconnect)){
-				UserAccount userAccount = userAccountBusiness.findByCredentials(identifiable);
-				userAccountBusiness.disconnect(userAccount);
-				AbstractUserSession.logout(userAccount);
-				disconnect = Boolean.FALSE;
-			}
-			UserAccount userAccount = userAccountBusiness.connect(identifiable);
-			SecurityUtils.getSubject().login(new UsernamePasswordToken(identifiable.getUsername(), identifiable.getPassword(),rememberMe));
-			userSession.init(userAccount);
-			
+			//connect(identifiable);
+			connect((Credentials) parameter);
 		}
+	}
+	
+	public void connect(Credentials credentials){
+		if(Boolean.TRUE.equals(disconnect)){
+			UserAccount userAccount = userAccountBusiness.findByCredentials(credentials);
+			userAccountBusiness.disconnect(userAccount);
+			AbstractUserSession.logout(userAccount);
+			disconnect = Boolean.FALSE;
+		}
+		UserAccount userAccount = userAccountBusiness.connect(credentials);
+		SecurityUtils.getSubject().login(new UsernamePasswordToken(credentials.getUsername(), credentials.getPassword(),rememberMe));
+		userSession.init(userAccount);
 	}
 	
 	@Override
@@ -121,7 +144,5 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	}
 	
 	/**/
-	
-	
-	
+
 }

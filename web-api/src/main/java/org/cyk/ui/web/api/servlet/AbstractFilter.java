@@ -3,6 +3,7 @@ package org.cyk.ui.web.api.servlet;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -10,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.ui.web.api.NavigationHelper;
+import org.cyk.ui.web.api.WebNavigationManager;
 
 public abstract class AbstractFilter implements Filter,Serializable {
 
 	private static final long serialVersionUID = 8855562067264528963L;
 
 	protected static enum RedirectType{REDIRECT,FORWARD}
+	
+	@Inject protected WebNavigationManager navigationManager;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {}

@@ -5,7 +5,9 @@ import java.io.Serializable;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.chart.AbstractChartModel;
 import org.cyk.system.root.business.api.chart.CartesianModel;
+import org.cyk.system.root.business.api.chart.PieModel;
 import org.cyk.system.root.business.api.chart.Series;
 import org.cyk.system.root.business.api.chart.SeriesItem;
 import org.cyk.ui.api.UIChartManager;
@@ -15,6 +17,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
@@ -43,9 +46,7 @@ public class ChartManager extends AbstractBean implements UIChartManager<ChartSe
 			chartSeries.set(seriesItem.getX(), seriesItem.getY());
 		return chartSeries;
 	}
-
-	
-	
+		
 	@Override
 	public BarChartModel barModel(CartesianModel cartesianModel) {
 		if(cartesianModel==null)
@@ -54,23 +55,29 @@ public class ChartManager extends AbstractBean implements UIChartManager<ChartSe
 		for(Series series : cartesianModel.getSeriesCollection())
 			model.addSeries(series(series));
 		
-		model.setTitle(label(cartesianModel.getTitle()));
-		model.setLegendPosition("ne");
+		model(cartesianModel,model);
 		
         Axis xAxis = model.getAxis(AxisType.X);
         axis(cartesianModel.getXAxis(),xAxis);
-        /*
-        xAxis.setLabel(label(cartesianModel.getXAxis().getLabel()));
-        xAxis.setMin(cartesianModel.getXAxis().getMinimum());
-        */
         
         Axis yAxis = model.getAxis(AxisType.Y);
         axis(cartesianModel.getYAxis(),yAxis);
-        /*
-        yAxis.setLabel(label(cartesianModel.getYAxis().getLabel()));
-        yAxis.setMin(cartesianModel.getYAxis().getMinimum());
-		*/
         
+		return model;
+	}
+	
+	@Override
+	public PieChartModel pieModel(PieModel pieModel) {
+		PieChartModel model = new PieChartModel();
+        for(SeriesItem item : pieModel.getSeries().getItems())
+        	model.set(item.getX().toString(), item.getY());
+		 
+		model(pieModel,model);
+		
+		model.setShowDataLabels(Boolean.TRUE.equals(pieModel.getShowLabels()));
+		if(pieModel.getDiameter()!=null)
+			model.setDiameter(pieModel.getDiameter());
+		
 		return model;
 	}
 	
@@ -82,20 +89,22 @@ public class ChartManager extends AbstractBean implements UIChartManager<ChartSe
 		paxis.setLabel(label(axis.getLabel()));
 		paxis.setMin(axis.getMinimum());
 		if(axis.getTickAngle()!=null)
-			paxis.setTickAngle(axis.getTickAngle());
-		
+			paxis.setTickAngle(axis.getTickAngle());	
 	}
 
-	@Override
-	public PieChartModel pieModel(Series series) {
-		PieChartModel model = new PieChartModel();
-        for(SeriesItem item : series.getItems())
-        	model.set(item.getX().toString(), item.getY());
-		 
-		model.setTitle(series.getLabel());
-		model.setLegendPosition("e");
-		model.setShowDataLabels(Boolean.TRUE);
-		return model;
+	private void model(AbstractChartModel model,ChartModel chartModel){
+		if(Boolean.TRUE.equals(model.getShowTitle()))
+			chartModel.setTitle(label(model.getTitle()));
+		switch(model.getLegendPosition()){
+		case NORTH:chartModel.setLegendPosition("n");break;
+		case NORTH_EAST:chartModel.setLegendPosition("ne");break;
+		case NORTH_WEST:chartModel.setLegendPosition("nw");break;
+		case SOUTH:chartModel.setLegendPosition("s");break;
+		case SOUTH_EAST:chartModel.setLegendPosition("se");break;
+		case SOUTH_WEST:chartModel.setLegendPosition("sw");break;
+		case EAST:chartModel.setLegendPosition("e");break;
+		case WEST:chartModel.setLegendPosition("w");break;
+		}
 	}
 
 }

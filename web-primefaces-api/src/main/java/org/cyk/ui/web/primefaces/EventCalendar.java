@@ -59,8 +59,8 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 	
 	public String selectedEventDetails(){
 		return UIManager.getInstance().getLanguageBusiness().findText("calendar.event.details",new Object[]{
-				selectedEvent.getType().getName(),UIManager.getInstance().formatDate(selectedEvent.getPeriod().getFromDate(),Boolean.FALSE),
-				UIManager.getInstance().formatTime(selectedEvent.getPeriod().getFromDate())
+				selectedEvent.getType().getName(),UIManager.getInstance().getTimeBusiness().formatDate(selectedEvent.getPeriod().getFromDate()),
+				UIManager.getInstance().getTimeBusiness().formatTime(selectedEvent.getPeriod().getFromDate())
 		});
 	}
 	

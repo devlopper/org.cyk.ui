@@ -10,6 +10,8 @@ public interface TreeListener<NODE,MODEL extends HierarchyNode> {
 	
 	void nodeSelected(NODE node);
 	
+	void nodeExpanded(NODE node);
+	
 	void expandNode(NODE node);
 	
 	void selectNode(NODE node);
@@ -19,6 +21,8 @@ public interface TreeListener<NODE,MODEL extends HierarchyNode> {
 	MODEL createModel(Object object);
 	
 	MODEL nodeModel(NODE node);
+	
+	Boolean isLeaf(NODE node);
 	
 	Collection<Object> children(Object object);
 	

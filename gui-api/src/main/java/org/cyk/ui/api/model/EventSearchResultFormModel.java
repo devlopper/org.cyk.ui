@@ -23,7 +23,7 @@ public class EventSearchResultFormModel extends AbstractFormModel<Event> impleme
 		type = identifiable.getType().getName();
 		object = identifiable.getObject();
 		comments = identifiable.getComments();
-		date = UIManager.getInstance().formatDate(identifiable.getPeriod().getFromDate(),Boolean.TRUE);
+		date = UIManager.getInstance().getTimeBusiness().formatDateTime(identifiable.getPeriod().getFromDate());
 		//contacts = identifiable.getType().getName();
 		
 	}

@@ -1,6 +1,7 @@
 package org.cyk.ui.api;
 
 import org.cyk.system.root.business.api.chart.CartesianModel;
+import org.cyk.system.root.business.api.chart.PieModel;
 import org.cyk.system.root.business.api.chart.Series;
 
 public interface UIChartManager<CHART_SERIES,BAR_CHART_MODEL,PIE_CHART_MODEL> {
@@ -11,5 +12,5 @@ public interface UIChartManager<CHART_SERIES,BAR_CHART_MODEL,PIE_CHART_MODEL> {
 	
 	BAR_CHART_MODEL barModel(CartesianModel cartesianModel);
 	
-	PIE_CHART_MODEL pieModel(Series series);
+	PIE_CHART_MODEL pieModel(PieModel pieModel);
 }

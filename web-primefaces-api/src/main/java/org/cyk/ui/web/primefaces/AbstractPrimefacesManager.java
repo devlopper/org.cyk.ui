@@ -12,4 +12,7 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 
 	@Inject protected DefaultDesktopLayoutManager layoutManager;
 	
+	public String getLibraryName(){
+		return "org.cyk.ui.web.primefaces."+identifier;
+	}
 }

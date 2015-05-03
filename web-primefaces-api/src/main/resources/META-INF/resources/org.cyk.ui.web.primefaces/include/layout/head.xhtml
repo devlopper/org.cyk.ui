@@ -12,6 +12,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces" />
     
+    <ui:repeat var="applicationUImanager" value="#{uiManager.applicationUImanagers}">
+    	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=#{webManager.libraryName(applicationUImanager)}" />
+    </ui:repeat>
+    
     <title>
 		<h:outputText value="#{uiManager.application.name}" rendered="#{not empty uiManager.application.name}"/>
 		<h:outputText value=" - " rendered="#{not empty uiManager.application.name and not empty pageController.title}" />

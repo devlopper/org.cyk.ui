@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.OpticalBarCodeReader">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		
+		<p:photoCam widgetVar="camera" listener="#{cc.value.onCapture}" />
+	    
+	    <p:outputPanel id="runningPanel" >
+	    	<h:outputText value="RUNNING" rendered="#{cc.value.timer.running}" />
+	    	<h:outputText value="#{cc.value.string}" />
+	    </p:outputPanel>
+	    		
+		<cyk:timer value="#{cc.value.timer}" />  
+			
+	</cc:implementation>
+
+</ui:composition>

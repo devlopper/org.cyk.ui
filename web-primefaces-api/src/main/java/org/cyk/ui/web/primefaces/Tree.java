@@ -65,7 +65,10 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			public WebHierarchyNode nodeModel(TreeNode node) {
 				return (WebHierarchyNode) node.getData();
 			}
-			
+			@Override
+			public Boolean isLeaf(TreeNode node) {
+				return node.isLeaf();
+			}
 			@Override
 			public void nodeSelected(TreeNode node) {
 				if(StringUtils.isNotBlank(outcome))
@@ -92,7 +95,8 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			;
 		else
 			parameters = new Object[]{data.getClass(), data};
+		//System.out.println("Tree.redirectTo() "+StringUtils.join(parameters," , "));
 		WebNavigationManager.getInstance().redirectTo(outcome,parameters);
 	}
-	
+		
 }

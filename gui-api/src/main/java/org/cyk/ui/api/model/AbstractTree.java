@@ -16,7 +16,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	private static final long serialVersionUID = 763364839529624006L;
 	
 	@Getter protected NODE root,index;
-	@Getter @Setter protected NODE selected;
+	@Getter @Setter protected NODE selected,lastExpanded;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE;
 	
 	@Getter protected Collection<TreeListener<NODE,MODEL>> treeListeners = new ArrayList<>();
@@ -58,6 +58,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		for(TYPE element : aCollection)
 			populate(element);	
 		expand(selected, Boolean.TRUE);
+		lastExpanded = this.selected;
 	}
 	
 	public void expand(Object object,Boolean selected){
@@ -73,6 +74,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			//webHierarchyNode.getCss().addClass("cyk-ui-tree-node-selected ui-state-highlight");
 			for(TreeListener<NODE,MODEL> listener : treeListeners)
 				listener.selectNode(node);
+			this.selected = node;
 		}
 		
 		do{
@@ -83,9 +85,16 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	}
 	
 	public void nodeSelected(NODE node){
-		selected = node;
+		//System.out.println("AbstractTree.nodeSelected() : "+node);
+		lastExpanded = selected = node;
 		for(TreeListener<NODE,MODEL> listener : treeListeners)
 			listener.nodeSelected(node);
+	}
+	
+	public void nodeExpanded(NODE node){
+		lastExpanded = node;
+		for(TreeListener<NODE,MODEL> listener : treeListeners)
+			listener.nodeExpanded(node);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -186,7 +195,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		return data;
 	}
 	
-	private Collection<Object> children(Object object){
+	public Collection<Object> children(Object object){
 		Collection<Object> collection = null;
 		for(TreeListener<NODE,MODEL> listener : treeListeners){
 			Collection<Object> r = listener.children(object);
@@ -196,7 +205,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		return collection;
 	}
 	
-	private Collection<NODE> nodeChildren(NODE node){
+	public Collection<NODE> nodeChildren(NODE node){
 		Collection<NODE> collection = null;
 		for(TreeListener<NODE,MODEL> listener : treeListeners){
 			Collection<NODE> r = listener.nodeChildren(node);
@@ -204,6 +213,44 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 				collection = r;
 		}
 		return collection;
+	}
+	
+	public Boolean isLeaf(NODE node){
+		Boolean isLeaf = null;
+		for(TreeListener<NODE,MODEL> listener : treeListeners){
+			Boolean v = listener.isLeaf(node);
+			if(v!=null)
+				isLeaf = v;
+		}
+		return isLeaf;
+	}
+	
+	public Collection<NODE> getMobileNodes(){
+		Collection<NODE> collection = new ArrayList<NODE>();
+		Collection<NODE> selecteds = new ArrayList<NODE>();
+		//System.out.println("AbstractTree.getMobileNodes() : "+lastExpanded);
+		if(lastExpanded==null){
+			selecteds.addAll(nodeChildren(root));
+		}else{
+			selecteds.add(lastExpanded);
+			NODE parent = parentNode(lastExpanded);
+			if(parent!=root)
+				collection.add(parent);
+		}
+		for(NODE node : selecteds){
+			collection.add(node);
+			collection.addAll(nodeChildren(node));
+		}
+		
+		return collection;
+	}
+	
+	public Boolean expandable(NODE node){
+		//System.out.println("AbstractTree.expandable() "+node+"/"+lastExpanded);
+		if(lastExpanded==null)
+			return !Boolean.TRUE.equals(isLeaf(node)) && parentNode(node)!=root;
+		else
+			return !Boolean.TRUE.equals(isLeaf(node)) && node != lastExpanded;
 	}
 	
 }

@@ -5,15 +5,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 
+import javax.inject.Singleton;
+
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.extern.java.Log;
 
-@Log
-public class NavigationHelper implements Serializable {
+@Log @Singleton
+public class NavigationHelper extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 7627367286110326059L;
+	
+	private static NavigationHelper INSTANCE; 
 	
 	public static final String SLASH = "/";
 	
@@ -21,6 +26,12 @@ public class NavigationHelper implements Serializable {
 	private static final String QUERY_SEPARATOR = "&";
 	private static final String QUERY_NAME_VALUE_SEPARATOR = "=";
 	private static final String QUERY_PARAMETER_ENCODING = "UTF-8";
+	
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+	}
 	
 	public String addQueryParameters(String aUrl,Object[] parameters){
 		//System.out.println(aUrl);
@@ -47,6 +58,10 @@ public class NavigationHelper implements Serializable {
 		} catch (UnsupportedEncodingException e) {
 			log.log(Level.SEVERE,e.toString(),e);
 		}
+	}
+	
+	public static NavigationHelper getInstance() {
+		return INSTANCE;
 	}
 
 }

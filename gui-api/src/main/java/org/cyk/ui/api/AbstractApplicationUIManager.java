@@ -32,6 +32,8 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	
+	@Getter @Setter protected String identifier;
+	
 	public abstract SystemMenu systemMenu(AbstractUserSession userSession);
 	
 	protected BusinessEntityInfos businessEntityInfos(Class<? extends AbstractIdentifiable> aClass){

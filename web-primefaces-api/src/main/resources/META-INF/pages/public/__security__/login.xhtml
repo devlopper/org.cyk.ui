@@ -17,7 +17,18 @@
  					<p:panel>
  						<cyk:logo />
  						<p:separator/>
- 						<cyk:formOneData value="#{loginPage.form}" />
+ 						<p:tabView id="tabview" >
+ 							<p:tab title="#{uiManager.text('password')}" >
+ 								
+ 								<cyk:formOneData value="#{loginPage.form}" />
+ 								
+ 							</p:tab>
+ 							<p:tab title="#{uiManager.text('barcode')}" >
+ 								<cyk:opticalBarCodeReader id="obcr" value="#{loginPage.opticalBarCodeReader}"/>
+ 							</p:tab>
+ 						</p:tabView>
+ 						
+ 						
  					</p:panel>
  				</td></tr>
  			</table>
