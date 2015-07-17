@@ -1,7 +1,6 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,16 +14,18 @@ import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.RootRandomDataProvider;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.MenuListener;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
-import org.cyk.ui.api.model.ActorConsultFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
@@ -36,16 +37,19 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	private static final long serialVersionUID = 5382833444089348823L;
 	
 	@Inject protected GenericBusiness genericBusiness;
+	@Inject protected EventBusiness eventBusiness;
+	@Inject protected LanguageBusiness languageBusiness;
 	
 	@Inject protected UIManager uiManager;
+	@Inject protected UIProvider uiProvider;
 	@Inject protected MenuManager menuManager;
-	@Inject protected LanguageBusiness languageBusiness;
 	@Inject protected WebNavigationManager webNavigationManager;
 	@Inject protected WebManager webManager;
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected RoleManager roleManager;
-	@Inject protected EventBusiness eventBusiness;
+	@Inject protected RootRandomDataProvider rootRandomDataProvider;
+	
 	
 	@Override
 	protected void initialisation() {
@@ -53,31 +57,25 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		@SuppressWarnings("unused")
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
-		webNavigationManager.getWebNavigationManagerListeners().add(this);
-		
-		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
-		
+		webNavigationManager.getWebNavigationManagerListeners().add(this);	
 	}
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		//WebNavigationManager.CONTEXT_PATH = "";
-		//webNavigationManager.setMobileContext(event.getServletContext().getContextPath()+WebNavigationManager.MOBILE_AGENT_FOLDER);
+		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());
 		mobileViewMapping();
-		/*
-		WebNavigationManager.MOBILE_VIEW_MAP.put(event.getServletContext().getContextPath()+"/private/__tools__/event/agenda.jsf", 
-			"/mobile/private/__tools__/event/list.jsf");
-			*/
 		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
-		UIManager.FORM_MODEL_MAP.put(uiManager.getFormModelActorParameter(), ActorConsultFormModel.class);
+		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("personEditView");
+		//uiManager.businessEntityInfos(Person.class).setUiListViewId("personListView");
+		//UIManager.FORM_MODEL_MAP.put(uiManager.getFormModelActorParameter(), ActorConsultFormModel.class);
 		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
 		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
 		
-		if(Boolean.TRUE.equals(alarmScanningEnabled()))
-			RootBusinessLayer.getInstance().enableAlarmScanning(DateTimeConstants.MILLIS_PER_MINUTE*1l, alarmScanningPeriod(),alarmScanningRemoteEndPoints());
+		if(Boolean.TRUE.equals(alarmScanningEnabled(event)))
+			RootBusinessLayer.getInstance().enableAlarmScanning(alarmScanningDelay(event), alarmScanningPeriod(event),alarmScanningRemoteEndPoints(event));
 	}
 	
 	protected void mobileViewMapping(){
@@ -113,16 +111,27 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	/**/
 	
-	protected Boolean alarmScanningEnabled(){
-		return Boolean.FALSE;
+	protected Boolean alarmScanningEnabled(ServletContextEvent event){
+		return booleanContextParameter(ContextParam.ALARM_SCANNING_ENABLED,event,Boolean.FALSE);
 	}
 	
-	protected Long alarmScanningPeriod(){
-		return DateTimeConstants.MILLIS_PER_MINUTE*1l;
+	protected Long alarmScanningDelay(ServletContextEvent event){
+		return longContextParameter(ContextParam.ALARM_SCANNING_DELAY,event,DateTimeConstants.MILLIS_PER_MINUTE*1l);	
 	}
 	
-	protected Set<RemoteEndPoint> alarmScanningRemoteEndPoints(){
-		return new LinkedHashSet<RemoteEndPoint>(Arrays.asList(RemoteEndPoint.USER_INTERFACE,RemoteEndPoint.MAIL_SERVER));
+	protected Long alarmScanningPeriod(ServletContextEvent event){
+		return longContextParameter(ContextParam.ALARM_SCANNING_PERIOD,event,DateTimeConstants.MILLIS_PER_MINUTE*3l);
+	}
+	
+	protected Set<RemoteEndPoint> alarmScanningRemoteEndPoints(ServletContextEvent event){
+		Set<RemoteEndPoint> set = new LinkedHashSet<RemoteEndPoint>();
+		if(booleanContextParameter(ContextParam.ALARM_SCANNING_REMOTEENDPOINTUIENABLED,event,Boolean.FALSE))
+			set.add(RemoteEndPoint.USER_INTERFACE);
+		if(booleanContextParameter(ContextParam.ALARM_SCANNING_REMOTEENDPOINTMAILENABLED,event,Boolean.FALSE))
+			set.add(RemoteEndPoint.MAIL_SERVER);
+		if(booleanContextParameter(ContextParam.ALARM_SCANNING_REMOTEENDPOINTSMSENABLED,event,Boolean.FALSE))
+			set.add(RemoteEndPoint.PHONE);
+		return set;
 	}
 	
 	/**/
@@ -130,6 +139,66 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		RootBusinessLayer.getInstance().disableAlarmScanning();
+	}
+	
+	/**/
+	
+	protected String contextParameter(String name,ServletContextEvent event){
+		return event.getServletContext().getInitParameter(name);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> T contextParameter(Class<T> aClass,String name,ServletContextEvent event,T defaultValue){
+		String stringValue = contextParameter(name,event);
+		if(stringValue==null)
+			return defaultValue;
+		Object value = null;
+		try {
+			if(String.class.equals(aClass))
+				value = stringValue;
+			else if(Boolean.class.equals(aClass))
+				value = Boolean.parseBoolean(stringValue);
+			else if(Long.class.equals(aClass))
+				value = Long.parseLong(stringValue);
+			else if(Integer.class.equals(aClass))
+				value = Integer.parseInt(stringValue);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+		__writeInfo__("Context parameter "+name+" set to "+value);
+		return (T) value;
+	}
+	
+	protected <T> T contextParameter(Class<T> aClass,String name,ServletContextEvent event){
+		return contextParameter(aClass, name, event, null);
+	}
+	
+	protected Boolean booleanContextParameter(String name,ServletContextEvent event,Boolean defaultValue){
+		return Boolean.TRUE.equals(contextParameter(Boolean.class,name,event,defaultValue));
+	}
+	protected Boolean booleanContextParameter(String name,ServletContextEvent event){
+		return booleanContextParameter(name, event, Boolean.FALSE);
+	}
+	
+	protected String stringContextParameter(String name,ServletContextEvent event,String defaultValue){
+		return contextParameter(String.class,name,event,defaultValue);
+	}
+	protected String stringContextParameter(String name,ServletContextEvent event){
+		return stringContextParameter(name, event, null);
+	}
+	
+	protected Long longContextParameter(String name,ServletContextEvent event,Long defaultValue){
+		return contextParameter(Long.class,name,event,defaultValue);
+	}
+	protected Long longContextParameter(String name,ServletContextEvent event){
+		return longContextParameter(name, event, 0l);
+	}
+	
+	protected Integer integerContextParameter(String name,ServletContextEvent event,Integer defaultValue){
+		return contextParameter(Integer.class,name,event,defaultValue);
+	}
+	protected Integer integerContextParameter(String name,ServletContextEvent event){
+		return integerContextParameter(name, event, 0);
 	}
 	
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
-import org.cyk.ui.api.model.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessQueryPage;
 
 @Named

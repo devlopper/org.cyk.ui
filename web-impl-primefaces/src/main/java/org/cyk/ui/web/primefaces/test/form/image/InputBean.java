@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.api.model.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 

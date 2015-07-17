@@ -16,6 +16,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.ControlSet;
@@ -23,6 +24,7 @@ import org.cyk.ui.api.data.collector.form.ControlSetListener;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.model.table.TableAdapter;
@@ -67,8 +69,12 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		table.setEditable(Boolean.FALSE);
 		table.setGlobalFilter(Boolean.FALSE);
 		table.setShowToolBar(Boolean.FALSE);
+		table.getAddRowCommandable().setRendered(Boolean.FALSE);
+		table.setShowOpenCommand(Boolean.TRUE);
+		table.setIdentifiableClass(__entityClass__());
 		
 		form = (FormOneData<QUERY>) createFormOneData(query = newInstance(queryClass), Crud.CREATE);
 		form.setControlSetListener((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
@@ -77,7 +83,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.getSubmitCommandable().setLabel(text("command.search"));
 		form.getSubmitCommandable().getCommand().setMessageManager(messageManager);
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
-		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":form:"+componentId()+":resultsOutputPanel");
+		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":"+WebManager.getInstance().getFormId()+":"+componentId()+":resultsOutputPanel");
 		
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
@@ -104,8 +110,12 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 			serve(form.getSubmitCommandable().getCommand(), null);
 		
+		
+		table.setShowEditColumn(table.getEditable());
+		table.setInplaceEdit(Boolean.FALSE);
 		table.setShowAddRemoveColumn(Boolean.FALSE);
-		table.setShowOpenCommand(Boolean.TRUE);
+		
+		((Commandable)table.getAddRowCommandable()).getButton().setRendered(table.getAddRowCommandable().getRendered());
 	}
 	
 	protected abstract Class<ENTITY> __entityClass__();
@@ -238,6 +248,27 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	public Boolean build(Field field) {
 		return Boolean.TRUE;
+	}
+	
+	@Override
+	public void labelBuilt(
+			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+			Field field, DynaFormLabel label) {
+		
+	}
+	
+	@Override
+	public String fiedLabel(
+			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+			Field field) {
+		return null;
+	}
+	
+	@Override
+	public void input(
+			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+			Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
+		
 	}
 	
 }

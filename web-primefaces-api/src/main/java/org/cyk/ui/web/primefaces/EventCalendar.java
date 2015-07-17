@@ -1,14 +1,20 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
+import org.cyk.system.root.model.event.EventParticipation;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.model.AbstractEventCalendar;
+import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
@@ -22,6 +28,7 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 	@Getter private MenuModel menuModel;
 	@Getter private ScheduleModel scheduleModel;
 	@Getter private Event selectedEvent;
+	@Getter private EventInfos selectedEventInfos;
 	
 	@Override
 	public void targetDependentInitialisation() {
@@ -54,6 +61,7 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 	
 	public void onEventSelect(SelectEvent selectEvent){
 		selectedEvent = (Event) ((DefaultScheduleEvent) selectEvent.getObject()).getData();
+		selectedEventInfos = new EventInfos(selectedEvent);
 		//editor( selectedEvent,Boolean.FALSE,Crud.READ);
 	}
 	
@@ -83,5 +91,35 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 		}
 	}
 	*/
+	
+	@Getter @Setter
+	public static class EventInfos implements Serializable{
+		private static final long serialVersionUID = -6277816820166800295L;
+		
+		private Event event;
+		private String object,comments,date,parties;
+		
+		public EventInfos(Event event) {
+			this.event = event;
+			object = event.getObject();
+			comments = event.getComments(); 
+			date = UIManager.getInstance().getTimeBusiness().formatPeriodFromTo(event.getPeriod());
+			List<String> partiyList = new ArrayList<>();
+			for(EventParticipation eventParticipation : UIManager.getInstance().getEventParticipationBusiness().findByEvent(event)){
+				StringBuilder builder = new StringBuilder();
+				if(eventParticipation.getParty() instanceof Person){
+					Person person = (Person)eventParticipation.getParty();
+					UIManager.getInstance().getPersonBusiness().load(person);
+					builder.append( person.getNames() );
+					if(person.getContactCollection().getPhoneNumbers()!=null && !person.getContactCollection().getPhoneNumbers().isEmpty())
+						builder.append(" - "+person.getContactCollection().getPhoneNumbers().iterator().next().getNumber());
+				}else
+					builder.append( eventParticipation.getParty().getName() );
+				
+				partiyList.add(builder.toString());
+			}
+			parties = StringUtils.join(partiyList,ContentType.HTML.getNewLineMarker());
+		}
+	}
 		
 }

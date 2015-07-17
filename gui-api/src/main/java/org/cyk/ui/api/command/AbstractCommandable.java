@@ -72,6 +72,32 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	}
 	
 	@Override
+	public Parameter getParameter(String name) {
+		for(Parameter parameter : parameters)
+			if(parameter.getName().equals(name))
+				return parameter;
+		return null;
+	}
+	
+	@Override
+	public UICommandable addParameter(String name, Object value) {
+		parameters.add(new Parameter(name, value));
+		return this;
+	}
+	
+	@Override
+	public UICommandable setParameter(String name, Object value) {
+		Parameter parameter = getParameter(name);
+		if(parameter==null){
+			parameter = new Parameter(name, value);
+			addParameter(name, value);
+		}else{
+			parameter.setValue(value);
+		}
+		return this;
+	}
+	
+	@Override
 	public String toString() {
 		return getLabel();
 	}

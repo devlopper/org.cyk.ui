@@ -54,6 +54,7 @@ public class CommandBuilder implements Serializable {
 		if(aCommandable.getChildren().isEmpty()){
 			DefaultMenuItem	menuItem = new DefaultMenuItem();
 			menuItem.setValue(aCommandable.getLabel());
+			menuItem.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIconType()!=null)
 				menuItem.setIcon(icon(aCommandable.getIconType()));
 			if(aCommandable.getIsNavigationCommand()){
@@ -105,7 +106,7 @@ public class CommandBuilder implements Serializable {
 				
 			}else{
 				
-				menuItem.setUpdate(":form:contentPanel");
+				menuItem.setUpdate(WebManager.getInstance().getFormContentFullId());//TODO make it constant
 				menuItem.setOnstart(WebManager.getInstance().getBlockUIDialogWidgetId()+".show();");
 				menuItem.setOnsuccess(WebManager.getInstance().getBlockUIDialogWidgetId()+".hide();");
 				menuItem.setGlobal(true);
@@ -132,6 +133,7 @@ public class CommandBuilder implements Serializable {
 			return menuItem;
 		}else{
 			DefaultSubMenu subMenu = new DefaultSubMenu(aCommandable.getLabel());
+			subMenu.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIconType()!=null)
 				subMenu.setIcon(icon(aCommandable.getIconType()));
 			for(UICommandable commandable : aCommandable.getChildren())

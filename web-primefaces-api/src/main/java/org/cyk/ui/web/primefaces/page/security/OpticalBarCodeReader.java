@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.cyk.system.root.business.api.security.OpticalDecoderBusiness;
 import org.cyk.ui.api.model.AbstractOpticalBarCodeReader;
 import org.cyk.ui.api.model.OpticalBarCodeReaderAdapter;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.Timer;
 import org.omnifaces.util.Ajax;
@@ -21,13 +22,13 @@ public class OpticalBarCodeReader extends AbstractOpticalBarCodeReader<Timer> im
 		this.identifier = identifier;
 		timer.setRunOnce(Boolean.FALSE);
 		((Commandable)timer.getStartCommandable()).getButton().setProcess("@this");
-		((Commandable)timer.getStartCommandable()).getButton().setUpdate(":form:"+this.identifier+":runningPanel");
+		((Commandable)timer.getStartCommandable()).getButton().setUpdate(WebManager.getInstance().getFormId()+":"+this.identifier+":runningPanel");
 				
 		opticalBarCodeReaderListeners.add(new OpticalBarCodeReaderAdapter<Timer>(){
 			private static final long serialVersionUID = 1519936596082983556L;
 			@Override
 			public void notNullString(AbstractOpticalBarCodeReader<Timer> reader, byte[] bytes,String value) {
-				Ajax.update("form:"+OpticalBarCodeReader.this.identifier+":runningPanel");
+				WebManager.getInstance().updateInForm(new String[]{OpticalBarCodeReader.this.identifier,"runningPanel"});
 			}
 		});
 	}

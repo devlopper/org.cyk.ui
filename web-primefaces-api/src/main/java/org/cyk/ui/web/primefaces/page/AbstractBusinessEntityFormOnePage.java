@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -32,6 +33,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		
 		formModelClass = __formModelClass__();
+		if(formModelClass==null)
+			formModelClass = UIManager.DEFAULT_ONE_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
 		Object data = data(formModelClass==null?(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass()):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);

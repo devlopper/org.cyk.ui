@@ -135,8 +135,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return Boolean.TRUE.equals(getOnDocumentBeforeUnLoadWarn())?Boolean.TRUE.toString():Boolean.FALSE.toString();
 	}
 	
-	protected void hide(String path){
-		onDocumentLoadJavaScript += javaScriptHelper.hide(path);
+	protected String hide(String path,Boolean onDocumentLoad){
+		String script = javaScriptHelper.hide(path);
+		if(Boolean.TRUE.equals(onDocumentLoad))
+			onDocumentLoadJavaScript += script;
+		return script;
 	}
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
@@ -174,15 +177,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	
 	/**/
-	
-	protected void hideTableHeader(String parentPath) {
-		hide(parentPath+" > .ui-datatable-header");
-	}
-	
-	protected void hideTableFooter(String parentPath) {
-		hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot");
-	}
-	
+		
 	/**/
 	
 	protected void redirectToDynamicCrudOne(AbstractIdentifiable identifiable,Crud crud){
@@ -194,5 +189,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	protected void redirectToDeleteOne(AbstractIdentifiable identifiable){
 		redirectToDynamicCrudOne(identifiable,Crud.DELETE);
 	}
+	
+	/**/
+	
 	
 }

@@ -16,6 +16,7 @@ import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
@@ -50,7 +51,7 @@ public class NotificationsPage extends AbstractPrimefacesPage implements Seriali
 		if(uiManager.isMobileDevice(userDeviceType))
 			((Commandable)deleteFromSessionCommandable).setUpdate(":main:form:notificationdatalist");
 		else
-			((Commandable)deleteFromSessionCommandable).setUpdate(":form:notificationdatalist");
+			((Commandable)deleteFromSessionCommandable).setUpdate(":"+WebManager.getInstance().getFormId()+":notificationdatalist");
 	}
 	
 	public void loadNotifications(){

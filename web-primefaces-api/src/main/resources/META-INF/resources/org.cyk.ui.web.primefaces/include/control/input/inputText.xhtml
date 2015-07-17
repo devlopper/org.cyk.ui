@@ -12,6 +12,7 @@
 	<ui:decorate template="#{templateFile}">
 		<ui:param name="input" value="#{control}" />
 		<ui:param name="forId" value="#{controlId == null ? 'inputText' : controlId}" />
+		<!--ui:param name="forId" value="#{controlId == null ? uiManager.isMobileDevice(userDeviceType) ? 'mobileInputText':'noMobileInputText' : controlId}" /-->
 		<ui:define name="input">
 			<p:inputText id="#{forId}" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"

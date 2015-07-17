@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.page.security;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,7 +15,13 @@ import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.model.security.UserAccountSearchCriteria;
+import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessQueryPage;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 @Named @ViewScoped @Getter @Setter
 public class UserAccountsPage extends AbstractBusinessQueryPage<UserAccount, UserAccountSearchFormModel, UserAccountSearchResultFormModel> implements Serializable {
@@ -65,6 +72,13 @@ public class UserAccountsPage extends AbstractBusinessQueryPage<UserAccount, Use
 	@Override
 	protected Long __count__() {
 		return userAccountBusiness.countByCriteria(searchCriteria());
+	}
+
+	@Override
+	public void input(
+			ControlSet<UserAccount, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+			Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
+		
 	}
 	
 }

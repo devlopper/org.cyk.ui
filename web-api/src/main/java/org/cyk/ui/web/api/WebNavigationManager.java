@@ -25,7 +25,6 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -336,7 +335,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return url(outcomeToolsReport, parametersToArray(parameters), Boolean.FALSE, Boolean.FALSE);
 	}
 	
-	public Object[] parametersToArray(Collection<UICommandable.Parameter> parameters){
+	public Object[] parametersToArray(Collection<Parameter> parameters){
 		Object[] objects = new Object[parameters.size()*2];
 		int i=0;
 		for(UICommandable.Parameter parameter : parameters){
@@ -384,19 +383,20 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToPrintData(Class<AbstractIdentifiable> dataClass){
+	public void redirectToPrintData(Collection<Parameter> parameters/*,String reportId*/){
 		/*redirectTo(outcomeToolsPrintDataTable,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
 		});*/
-		
-		redirectTo(outcomeToolsReport,new Object[]{
+		//System.out.println("WebNavigationManager.redirectToPrintData() : "+dataClass+" : "+uiManager.keyFromClass(dataClass));
+		/*redirectTo(outcomeToolsReport,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
 				UIManager.getInstance().getFileExtensionParameter(),uiManager.getPdfParameter(),
-				UIManager.getInstance().getReportIdentifierParameter(),RootBusinessLayer.getInstance().getParameterGenericObjectReportTable(),
+				UIManager.getInstance().getReportIdentifierParameter(),reportId,
 				webManager.getRequestParameterPrint(),Boolean.TRUE,
 				webManager.getRequestParameterOutcome(), outcomeReportTable
-		});
+		});*/
 		
+		redirectTo(outcomeToolsReport,parametersToArray(parameters));
 	}
 	
 	/**/

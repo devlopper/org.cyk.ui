@@ -34,14 +34,21 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 			switch(crud){
 			case CREATE:create();break;
 			case READ:break;
-			case UPDATE:getGenericBusiness().update(identifiable);break;
-			case DELETE:getGenericBusiness().delete(identifiable);break;
+			case UPDATE:update();break;
+			case DELETE:delete();break;
 			}
 		}
 	}
 	
 	protected void create(){
 		getGenericBusiness().create(identifiable);
+	}
+	
+	protected void update(){
+		getGenericBusiness().update(identifiable);
+	}
+	protected void delete(){
+		getGenericBusiness().delete(identifiable);
 	}
 
 	@Override

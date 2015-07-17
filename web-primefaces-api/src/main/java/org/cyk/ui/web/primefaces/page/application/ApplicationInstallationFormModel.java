@@ -12,6 +12,8 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputBooleanCheck;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
@@ -32,6 +34,9 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 	@OutputSeperator(label=@Text(value="field.license"))
 	private License license = new License();
 	
+	@Input @InputBooleanCheck
+	private Boolean fakedData = Boolean.FALSE;
+	
 	private Installation installation = new Installation();
 	
 	public ApplicationInstallationFormModel(Application application) {
@@ -42,6 +47,7 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 		installation.setManagerCredentials(managerCredentials.getCredentialsInputs().getCredentials());
 		
 		installation.setLicense(license);
+		installation.setFaked(fakedData);
 	}
 	
 	@Override
@@ -49,6 +55,7 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 		super.write();
 		installation.getApplication().setName(administratorCredentials.getName());
 		installation.getManager().setName(managerCredentials.getName());
+		installation.setFaked(fakedData);
 	}
 	
 }

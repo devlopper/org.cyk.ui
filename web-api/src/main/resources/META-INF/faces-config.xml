@@ -97,6 +97,17 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>personEditView</from-outcome>
+			<to-view-id>/private/__tools__/crud/editperson.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personListView</from-outcome>
+			<to-view-id>/private/__tools__/crud/listperson.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>notifications</from-outcome>
 			<to-view-id>/private/__tools__/event/notifications.jsf</to-view-id>
 			<redirect />
@@ -109,7 +120,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>exportdatatableservlet</from-outcome>
-			<to-view-id>/private/__tools__/export/_cyk_report_/_datatable_/_jasper_/</to-view-id>
+			<to-view-id>/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

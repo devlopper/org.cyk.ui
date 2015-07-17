@@ -65,17 +65,20 @@
 			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />
 			
 		</p:commandButton>
-				
-		<!--p:confirmDialog global="true">
-	        <p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-	        <p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-	    </p:confirmDialog-->
+		
+		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
+			<p:confirmDialog global="true">
+	        	<p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        	<p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    	</p:confirmDialog>
+		</ui:fragment>		
+		
 	    
 	    <p:menuButton id="#{cc.id}ButtonMenu"
 	    	
 	    	model="#{cc.value.menu}"
 	    	
-	    	rendered="#{cc.value.menu!=null}"
+	    	rendered="#{cc.value.rendered and cc.value.menu!=null}"
 	    	 
 	    	title="#{cc.value.button.title}"
 	    	

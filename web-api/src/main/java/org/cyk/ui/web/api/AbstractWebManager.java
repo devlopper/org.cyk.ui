@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractApplicationUIManager;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
 
@@ -25,6 +27,13 @@ public abstract class AbstractWebManager extends AbstractApplicationUIManager im
 	
 	public String getLibraryName(){
 		return null;
+	}
+	
+	protected void addBusinessMenu(SystemMenu systemMenu,UICommandable item){
+		if(item==null)
+			;
+		else
+			systemMenu.getBusinesses().add(item); 
 	}
 	
 }

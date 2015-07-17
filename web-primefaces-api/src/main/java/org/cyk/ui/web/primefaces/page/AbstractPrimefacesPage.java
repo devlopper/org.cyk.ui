@@ -16,16 +16,20 @@ import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.model.AbstractEventCalendar;
+import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
+import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.primefaces.CommandBuilder;
+import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.EventCalendar;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.utility.common.model.table.TableListener;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -82,11 +86,28 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	protected void buildTable(AbstractTable<?, ?, ?> atable){
 		super.buildTable(atable);
-		Table<?> table = (Table<?>) atable;
+		tableFormatJavaScript((Table<?>) atable,Boolean.TRUE);
+	}
+	/*
+	protected String hideTableHeader(String parentPath,Boolean onDocumentLoad) {
+		return hide(parentPath+" > .ui-datatable-header",onDocumentLoad);
+	}
+	
+	protected String hideTableFooter(String parentPath,Boolean onDocumentLoad) {
+		return hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot",onDocumentLoad);
+	}*/
+	
+	protected String tableFormatJavaScript(Table<?> table,Boolean onDocumentLoad) {
+		String script = table.getFormatJavaScript();
+		if(Boolean.TRUE.equals(table.getShowHeader()))
+			onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, script);
+		/*	
 		if(!Boolean.TRUE.equals(table.getShowHeader()))
-			hideTableHeader("."+table.getUpdateStyleClass() /*".dataTableStyleClass"*/);
+			script = javaScriptHelper.add(script,hide("."+table.getHeaderStyleClass(),onDocumentLoad));
 		if(!Boolean.TRUE.equals(table.getShowFooter()))
-			hideTableFooter("."+table.getUpdateStyleClass()/*".dataTableStyleClass"*/);
+			script = javaScriptHelper.add(script,hide("."+table.getFooterStyleClass(),onDocumentLoad));
+			*/
+		return script;
 	}
 	
 	protected void tables(){}
@@ -122,9 +143,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/**
 	 * Call after page init
 	 */
-	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
+	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(aClass, null, null);
+		if(listener!=null)
+			table.getTableListeners().add(listener);
 		configureDetailsTable(table, titleId);
 		buildTable(table);
 		if(collection!=null)
@@ -170,14 +193,29 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				}
 			});
 		}
+		((Commandable)table.getAddRowCommandable()).getButton().setRendered(Boolean.FALSE);
 		
 		return table;
 	}
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
-		return createDetailsTable(aClass, collection, titleId, Boolean.FALSE,Boolean.FALSE,null);
+	
+	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
+		return createDetailsTable(aClass, collection, null, titleId, editable, deletable, identifiableFieldName);
 	}
+	
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener,String titleId){
+		return createDetailsTable(aClass, collection,listener, titleId, Boolean.FALSE,Boolean.FALSE,null);
+	}
+	
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
+		return createDetailsTable(aClass, collection,null, titleId);
+	}
+	
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener){
+		return createDetailsTable(aClass, collection,listener);
+	}
+	
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection){
-		return createDetailsTable(aClass, collection,null);
+		return createDetailsTable(aClass, collection, "");
 	}
 	
 	protected AbstractIdentifiable detailsTableRowIdentifiable(Object rowData){

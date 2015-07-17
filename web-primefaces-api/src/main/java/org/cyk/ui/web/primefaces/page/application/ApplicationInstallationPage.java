@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.page.application;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.enterprise.context.RequestScoped;
@@ -23,6 +25,7 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 
 	private static final long serialVersionUID = -3563847253553434464L;
 	
+	public static final Collection<ApplicationInstallListener> LISTENERS = new ArrayList<>();
 	@Inject private ApplicationBusiness applicationBusiness;
 	
 	private ApplicationInstallationFormModel formModel = new ApplicationInstallationFormModel(new Application());
@@ -51,7 +54,8 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			applicationBusiness.install(formModel.getInstallation());
-			
+			for(ApplicationInstallListener listener : LISTENERS)
+				listener.install(formModel);
 		}
 	}
 	
@@ -83,6 +87,12 @@ public class ApplicationInstallationPage extends AbstractBusinessEntityFormOnePa
 	@Override
 	public Boolean getShowMainMenu() {
 		return Boolean.FALSE;
+	}
+	
+	/**/
+	
+	public static interface ApplicationInstallListener{
+		void install(ApplicationInstallationFormModel formModel);
 	}
 	
 }

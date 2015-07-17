@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.mathematics.NumberBusiness;
+import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.Binding;
@@ -27,6 +30,9 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 	@Getter @Setter protected CommandListener submitCommandListener;
 	
 	@Getter protected Collection<FormModelListener<ENTITY>> formModelListeners = new ArrayList<>();
+	
+	protected NumberBusiness numberBusiness = UIManager.getInstance().getNumberBusiness();
+	protected TimeBusiness timeBusiness = UIManager.getInstance().getTimeBusiness();
 	
 	public void setIdentifiable(ENTITY identifiable) {
 		this.identifiable = identifiable;

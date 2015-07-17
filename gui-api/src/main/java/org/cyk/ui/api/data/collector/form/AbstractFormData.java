@@ -66,6 +66,25 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
+	public void labelBuilt(
+			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,
+			Field field, LABEL label) {
+		
+	}
+	
+	@Override
+	public String fiedLabel(
+			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,
+			Field field) {
+		return null;
+	}
+	
+	@Override
+	public void input(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM> input) {
+		
+	}
+	
+	@Override
 	public void sort(List<Field> fields) {
 		
 	}

@@ -22,6 +22,9 @@
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 
-
+	<!--context-param>
+		<param-name>org.cyk.logoPath</param-name>
+		<param-value>/org.cyk.ui.web.primefaces.test/images/logo/beauty.png</param-value>
+	</context-param-->
 
 </web-app>

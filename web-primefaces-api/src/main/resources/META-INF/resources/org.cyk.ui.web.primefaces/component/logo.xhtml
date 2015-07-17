@@ -15,7 +15,8 @@
 		<table class="cyk-page-logo-table">
 			<tr><td class="cyk-page-logo-table-imagetd">
 				<h:link outcome="#{webNavigationManager.outcomePrivateIndex}">
-					<p:graphicImage alt="logo" value="#{defaultDesktopLayoutManager.logoPath}" title="#{uiManager.application.name}" />
+					<p:graphicImage alt="logo" value="#{resource[defaultDesktopLayoutManager.logoPath]}" title="#{uiManager.application.name}" />
+					<!--p:graphicImage alt="logo" value="#{defaultDesktopLayoutManager.logoPath}" title="#{uiManager.application.name}" /-->
 				</h:link>
 			</td></tr>
 			<tr><td class="cyk-page-logo-table-nametd">

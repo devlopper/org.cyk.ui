@@ -20,16 +20,26 @@ public class GuiBusinessLayer extends AbstractBusinessLayer implements Serializa
 
 	@Inject private ActorBusiness actorBusiness;
 	
-	@Override
-	public void createInitialData() {
-		
-	}
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void registerTypedBusinessBean(Map<Class<AbstractIdentifiable>, TypedBusiness<AbstractIdentifiable>> beansMap) {
         beansMap.put((Class)Actor.class, (TypedBusiness)actorBusiness);
         
     }
+
+	@Override
+	protected void fakeTransactions() {
+		
+	}
+
+	@Override
+	protected void persistData() {
+		
+	}
+
+	@Override
+	protected void setConstants() {
+		
+	}
 
 }

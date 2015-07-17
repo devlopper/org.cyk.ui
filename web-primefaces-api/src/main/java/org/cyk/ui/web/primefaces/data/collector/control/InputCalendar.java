@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.faces.model.SelectItem;
 
 import lombok.Setter;
-
 import lombok.Getter;
 
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -21,5 +20,6 @@ org.cyk.ui.api.data.collector.control.InputCalendar<DynaFormModel,DynaFormRow,Dy
 	private static final long serialVersionUID = 1390099136018097004L;
 
 	private String pattern;
+	private Date minimum,maximum;
 	
 }

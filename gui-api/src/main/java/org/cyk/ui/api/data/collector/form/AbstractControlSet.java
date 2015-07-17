@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.AbstractView;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -90,18 +91,29 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		return this;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,Field field){
-		@SuppressWarnings("unchecked")
-		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(UIManager.getInstance().fieldLabel(field));
+		String fieldLabel = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field);
+		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
+			String c = listener.fiedLabel(this, field);
+			if(StringUtils.isNotBlank(c))
+				fieldLabel = c;
+		}
+		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(fieldLabel);
+		/*
+		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
+			listener.labelBuilt(this, field, (LABEL) label);
+		*/
 		add(label);
 		
-		@SuppressWarnings("unchecked")
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(object, field);
 		if(control instanceof Input<?,?,?,?,?,?>){
 			((Input<?,?,?,?,?,?>)control).setReadOnly(!Boolean.TRUE.equals(getFormData().getForm().getEditable()));
 			if(Boolean.TRUE.equals(((Input<?,?,?,?,?,?>)control).getReadOnly()))
 				((Input<?,?,?,?,?,?>)control).setRequired(Boolean.FALSE);
+			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
+				listener.input(this,(Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control);
 		}
 			
 		add(control);

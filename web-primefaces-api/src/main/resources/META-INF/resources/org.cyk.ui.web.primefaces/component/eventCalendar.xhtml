@@ -22,14 +22,18 @@
 			<p:panelGrid columns="2" rendered="#{cc.value.selectedEvent!=null}" >
 				<h:outputText value="#{uiManager.text('field.type')}" /><h:outputText value="#{cc.value.selectedEvent.type.name}" />
 				
-				<h:outputText value="#{uiManager.text('field.object')}" rendered="#{not empty cc.value.selectedEvent.object}"/>
-				<h:outputText value="#{cc.value.selectedEvent.object}" rendered="#{not empty cc.value.selectedEvent.object}" escape="false"/>
+				<h:outputText value="#{uiManager.text('field.object')}" rendered="#{not empty cc.value.selectedEventInfos.object}"/>
+				<h:outputText value="#{cc.value.selectedEventInfos.object}" rendered="#{not empty cc.value.selectedEventInfos.object}" escape="false"/>
 				
-				<h:outputText value="#{uiManager.text('field.comments')}" rendered="#{not empty cc.value.selectedEvent.comments}"/>
-				<h:outputText value="#{cc.value.selectedEvent.comments}" rendered="#{not empty cc.value.selectedEvent.comments}" escape="false"/>
+				<h:outputText value="#{uiManager.text('field.comments')}" rendered="#{not empty cc.value.selectedEventInfos.comments}"/>
+				<h:outputText value="#{cc.value.selectedEventInfos.comments}" rendered="#{not empty cc.value.selectedEventInfos.comments}" escape="false"/>
 				
-				<h:outputText value="#{uiManager.text('field.from.date')}" /><h:outputText value="#{uiManager.formatDate(cc.value.selectedEvent.period.fromDate,true)}" />
-				<h:outputText value="#{uiManager.text('field.to.date')}" /><h:outputText value="#{uiManager.formatDate(cc.value.selectedEvent.period.toDate,true)}" />
+				<h:outputText value="#{uiManager.text('field.date')}" /><h:outputText value="#{cc.value.selectedEventInfos.date}" />
+				
+				<!--
+				<h:outputText value="#{uiManager.text('field.from.date')}" /><h:outputText value="#{uiManager.timeBusiness.formatDateTime(cc.value.selectedEvent.period.fromDate)}" />
+				<h:outputText value="#{uiManager.text('field.to.date')}" /><h:outputText value="#{uiManager.timeBusiness.formatDateTime(cc.value.selectedEvent.period.toDate)}" />
+				-->
 				
 				<!--h:outputText value="#{uiManager.text('field.alarm')}" rendered="#{cc.value.selectedEvent.alarm.period.fromDate != null}"/>
 				<h:outputText value="" rendered="#{cc.value.selectedEvent.alarm.period.fromDate != null}"/>
@@ -41,6 +45,13 @@
 				<h:outputText value="#{uiManager.text('field.duration')}" /><h:outputText value="#{uiManager.formatDuration(cc.value.selectedEvent.period)}" />
 				-->
 			</p:panelGrid>
+			<ui:fragment rendered="#{not empty cc.value.selectedEventInfos.parties}">
+				<p:separator/>
+				<p:fieldset legend="#{uiManager.text('field.parties')}">
+					<h:outputText value="#{cc.value.selectedEventInfos.parties}" escape="false"/>
+				</p:fieldset>
+			</ui:fragment>
+			
 		</p:dialog> 
 			
 	</cc:implementation>

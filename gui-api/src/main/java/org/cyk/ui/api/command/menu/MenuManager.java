@@ -313,10 +313,13 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable crudMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos, null, iconType);
+		//c.setLabel(UIManager.getInstance().getLanguageBusiness().findText("list.of",
+		//		new Object[]{UIManager.getInstance().getLanguageBusiness().findText(businessEntityInfos.getUiLabelId())}));
 		if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
 			c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 		else{
 			c.setViewId(businessEntityInfos.getUiListViewId());
+			c.setCommandRequestType(CommandRequestType.UI_VIEW);
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 		}
 		return c;

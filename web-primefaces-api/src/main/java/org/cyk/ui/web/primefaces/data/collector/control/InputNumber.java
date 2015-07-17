@@ -22,7 +22,8 @@ public class InputNumber extends AbstractInput<Number> implements org.cyk.ui.web
 org.cyk.ui.api.data.collector.control.InputNumber<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem>, Serializable {
 
 	private static final long serialVersionUID = 1390099136018097004L;
-
+	
+	private Number minimum,maximum;
 	
 	@Override
 	public Converter getConverter() {

@@ -46,7 +46,7 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	public InputFile() {
 		clearCommandable = UIProvider.getInstance().createCommandable(null, "command.delete", IconType.ACTION_CLEAR, null, null);
 		((Commandable)clearCommandable).getButton().setProcess("@this");
-		((Commandable)clearCommandable).getButton().setRendered(value!=null);
+		//((Commandable)clearCommandable).getButton().setRendered(value!=null);
 		clearCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 1247729459254167284L;
 			@Override

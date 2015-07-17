@@ -245,8 +245,8 @@ public class CommandBuilder implements Serializable {
 		tree.addItem(hierarchyNode);
 		if(parent!=null)
 			tree.setParent(hierarchyNode, parent);
-		
-		Collection<Object> children = HierarchyNode.CHILDREN_METHOD.execute(node);
+		/*
+		Collection<Object> children = null;//HierarchyNode.CHILDREN_METHOD.execute(node);
 		//System.out.println("CommandBuilder.treeItemObject() "+node+" : "+children);
 		tree.setChildrenAllowed(hierarchyNode, children!=null && !children.isEmpty());
 		
@@ -256,7 +256,7 @@ public class CommandBuilder implements Serializable {
 			for(Object child : children)
 				treeItemObject(tree,child, hierarchyNode);
 		}
-		
+		*/
 		return hierarchyNode;
 	}
 	

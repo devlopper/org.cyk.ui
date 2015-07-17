@@ -36,7 +36,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected CascadeStyleSheet readOnlyValueCss = new CascadeStyleSheet(); 
 	protected Field field;
 	protected VALUE_TYPE value;
-	protected Boolean required,readOnly;
+	protected Boolean required,readOnly,disabled;
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	
 	@Override
@@ -59,6 +59,12 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	
 	protected void validationException(String messageId){
 		new ValidatorException(new FacesMessage(UIManager.getInstance().text(messageId)));
+	}
+	
+	public void setReadOnly(Boolean value){
+		this.readOnly = value;
+		if(Boolean.TRUE.equals(required) && Boolean.TRUE.equals(readOnly))
+			setRequired(Boolean.FALSE);
 	}
 	
 }

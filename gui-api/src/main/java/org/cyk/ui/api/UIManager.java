@@ -1,7 +1,6 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,26 +20,35 @@ import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
+import org.cyk.system.root.business.api.event.EventParticipationBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
+import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.party.ActorConsultFormModel;
+import org.cyk.ui.api.model.party.PersonConsultFormModel;
+import org.cyk.ui.api.model.party.PersonFormModelSimpleLight;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
-import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
 
 	private static final long serialVersionUID = -9062523105492591265L;
+	
+	public static ContentType CONTENT_TYPE = ContentType.TEXT;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
@@ -70,12 +78,15 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private CollectionLoadMethod collectionLoadMethod;
 	
 	@Inject private LanguageBusiness languageBusiness;
+	@Inject private ContactCollectionBusiness contactCollectionBusiness;
 	@Inject private ApplicationBusiness applicationBusiness;
 	@Inject private BusinessManager businessManager;
 	@Inject private GenericBusiness genericBusiness;
 	@Inject private FileBusiness fileBusiness;
 	@Inject private TimeBusiness timeBusiness;
 	@Inject private NumberBusiness numberBusiness;
+	@Inject private EventParticipationBusiness eventParticipationBusiness;
+	@Inject private PersonBusiness personBusiness;
 	
 	private Locale locale = Locale.FRENCH;
 	
@@ -88,6 +99,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String identifiableParameter = "identifiable";
 	private final String windowParameter="windowParam";
 	private final String fileExtensionParameter="fileExtensionParam";
+	private final String printParameter="print";
 	private final String pdfParameter="pdf";
 	private final String xlsParameter="xls";
 	private final String crudParameter="crud";
@@ -136,7 +148,11 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
 			registerClassKey(entry.getValue());
 		}
-				
+		
+		FORM_MODEL_MAP.put(formModelActorParameter, ActorConsultFormModel.class);
+		DEFAULT_ONE_FORM_MODEL_MAP.put(Person.class, PersonFormModelSimpleLight.class);
+		DEFAULT_MANY_FORM_MODEL_MAP.put(Person.class, PersonConsultFormModel.class);
+		
 		collectionLoadMethod = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -4679710339375267115L;
 			@SuppressWarnings("unchecked")
@@ -199,20 +215,21 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public String textInputValueRequired(String nameId){
 		return languageBusiness.findText("input.value.required", new Object[]{text(nameId)});
 	}
-	
+	/*
 	public String textOfClass(Class<?> aClass){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
 		if(businessEntityInfos==null)
 			return "###???###";
 		return text(businessEntityInfos.getUiLabelId());
-	}
+	}*/
 	
+	/*
 	public String uiLabelIdOfClass(Class<?> aClass){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
 		if(businessEntityInfos==null)
 			return "?UNKNOWN_UI_ID-"+aClass.getSimpleName()+"?";
 		return businessEntityInfos.getUiLabelId();
-	}
+	}*/
 	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
 		for(BusinessEntityInfos infos : theClasses){
@@ -267,14 +284,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	/**/
-	
+	/*
 	public String textAnnotationValue(Field field,Text text) {
 		return languageBusiness.findAnnotationText(field, text);
-	}
-	
+	}*/
+	/*
 	public String fieldLabel(Field field) {
 		return languageBusiness.findFieldLabelText(field);
-	}
+	}*/
 		
 	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {

@@ -10,7 +10,7 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.impl.BusinessIntegrationTestHelper;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.persistence.impl.GenericDaoImpl;
-import org.cyk.utility.test.AbstractIntegrationTestJpaBased;
+import org.cyk.utility.test.integration.AbstractIntegrationTestJpaBased;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

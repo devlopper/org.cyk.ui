@@ -44,7 +44,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
-	private String formId = ":form:contentPanel";
+	private String formId = WebManager.getInstance().getFormContentFullId();
 	
 	private String notificationChannelSocketWidgetVar = "notificationChannelWidgetVar";
 	private String notificationChannelGrowlWidgetVar = "notificationChannelGrowlWidgetVar";

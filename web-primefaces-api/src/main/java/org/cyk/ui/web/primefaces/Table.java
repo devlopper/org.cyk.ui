@@ -19,9 +19,11 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.omnifaces.util.Ajax;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
@@ -38,6 +40,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@Getter private MenuModel menuModel;
 	@Getter private Commandable primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
 	@Getter private String updateStyleClass;
+	private JavaScriptHelper javaScriptHelper = JavaScriptHelper.getInstance();
 	
 	protected TypedBusiness<?> business;
 	protected LazyDataModel<Row<DATA>> dataModel;
@@ -141,25 +144,25 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void crudOnePage() {
-		WebNavigationManager.getInstance().redirectToDynamicCrudOne((Class<AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass()));
+		WebNavigationManager.getInstance().redirectToDynamicCrudOne((Class<AbstractIdentifiable>) (identifiableConfiguration==null?identifiableClass/*rowDataClass*/:identifiableConfiguration.getIdentifiableClass()));
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void exportDataTableToPdfPage() {
-		WebNavigationManager.getInstance().redirectToExportDataTableToPdf((Class<AbstractIdentifiable>) identifiableClass());
+		WebNavigationManager.getInstance().redirectToExportDataTableToPdf((Class<AbstractIdentifiable>) identifiableClass);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void exportDataTableToXlsPage() {
-		WebNavigationManager.getInstance().redirectToExportDataTableToXls((Class<AbstractIdentifiable>) identifiableClass());
+		WebNavigationManager.getInstance().redirectToExportDataTableToXls((Class<AbstractIdentifiable>) identifiableClass);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void printDataPage() {
-		WebNavigationManager.getInstance().redirectToPrintData((Class<AbstractIdentifiable>) identifiableClass());
+		printCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(),WebNavigationManager.getInstance().getOutcomeReportTable()));
+		WebNavigationManager.getInstance().redirectToPrintData(printCommandable.getParameters());
 	}
 	
 	/**/
@@ -217,6 +220,35 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 			};
 		}
 		return dataModel;
+	}
+	
+	public String getFormatJavaScript() {
+		String script = "";
+		if(!Boolean.TRUE.equals(getShowHeader()))
+			script = javaScriptHelper.add(script,javaScriptHelper.hide("."+getHeaderStyleClass()));
+		if(!Boolean.TRUE.equals(getShowFooter()))
+			script = javaScriptHelper.add(script,javaScriptHelper.hide("."+getFooterStyleClass()));
+		return script;
+	}
+	
+	public String getHeaderStyleClass(){
+		return updateStyleClass+" > .ui-datatable-header";
+	}
+	
+	public String getFooterStyleClass(){
+		return updateStyleClass+" > .ui-datatable-tablewrapper > table > tfoot";
+	}
+	
+	@Override
+	public void serve(UICommand command, Object parameter) {
+		super.serve(command, parameter);
+		if(command==addRowCommandable.getCommand()){
+			if(Boolean.TRUE.equals(inplaceEdit))
+				Ajax.oncomplete(getFormatJavaScript());
+		}else if(command==removeRowCommandable.getCommand()){
+			if(Boolean.TRUE.equals(inplaceEdit))
+				Ajax.oncomplete(getFormatJavaScript());
+		}
 	}
 	
 }

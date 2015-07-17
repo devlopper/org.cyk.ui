@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
@@ -85,8 +87,9 @@ public class UIProvider extends AbstractBean implements Serializable {
 		if(control instanceof Input<?,?,?,?,?,?>){
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setObject(data);
-			input.setLabel(UIManager.getInstance().fieldLabel(field));
+			input.setLabel(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field));
 			input.setField(field);
+			Size size = field.getAnnotation(Size.class);
 			try {
 				FieldUtils.writeField(control, "value", FieldUtils.readField(field, data, Boolean.TRUE), Boolean.TRUE);
 			} catch (IllegalAccessException e) {
@@ -100,6 +103,12 @@ public class UIProvider extends AbstractBean implements Serializable {
 			if(input instanceof InputCalendar<?,?,?,?,?>){
 				InputCalendar<?, ?, ?, ?, ?> calendar = (InputCalendar<?, ?, ?, ?, ?>) input;
 				calendar.setPattern(UIManager.getInstance().getTimeBusiness().findFormatPattern(field));
+				if(size==null){
+					
+				}else{
+					
+				}
+					
 			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
@@ -116,6 +125,14 @@ public class UIProvider extends AbstractBean implements Serializable {
 				inputFile.setMinimumSize(annotation.size().from().integer());
 				inputFile.setMaximumSize(annotation.size().to().integer());
 				
+			}else if(control instanceof InputNumber){
+				InputNumber<?, ?, ?, ?, ?> number = (InputNumber<?, ?, ?, ?, ?>) input;
+				if(size==null){
+					
+				}else{
+					number.setMinimum(size.min());
+					number.setMaximum(size.max());
+				}
 			}
 		}
 		
@@ -169,6 +186,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 	public UICommandable createCommandable(String labelId,IconType iconType,Object viewId){
 		UICommandable p = createCommandable(null, labelId, iconType, null, null);
 		p.setViewId(viewId);
+		if(viewId != null)
+			p.setCommandRequestType(CommandRequestType.UI_VIEW);
 		return p;
 	}
 	

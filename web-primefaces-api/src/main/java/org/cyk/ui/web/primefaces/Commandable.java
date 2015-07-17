@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.command.AbstractWebCommandable;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.event.SelectEvent;
@@ -21,13 +22,18 @@ public class Commandable extends AbstractWebCommandable implements Serializable 
 	@Getter @Setter private String update;
 	
 	{
-		update = ":form:contentPanel :form:menuPanel";
+		update = WebManager.getInstance().getFormContentFullId()+" "+WebManager.getInstance().getFormMenuFullId();
 	}
 	
 	public CommandButton getButton(){
 		if(commandButton==null)
 			commandButton = CommandBuilder.getInstance().commandButton(this);
 		return commandButton;
+	}
+	
+	public void updateLabel(String label){
+		getButton().setValue(label);
+		getButton().setTitle(getButton().getValue().toString());
 	}
 	
 	public void onDialogReturn(SelectEvent selectEvent){}

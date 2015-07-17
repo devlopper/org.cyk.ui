@@ -23,6 +23,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 
 	protected static final String FILTER_VAR = "user";
 	protected static final String REALM_VAR = "realm";
+	protected static final String CACHE_MANAGER_VAR = "cacheManager";
 	protected static final String DATA_SOURCE_VAR = "dataSource";
 	
 	protected static final String ROLES_FORMAT = "%s , roles[%s]";
@@ -43,7 +44,9 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		Section  main = anIni.addSection("main");
 		main.put(FILTER_VAR,"org.cyk.ui.web.api.security.shiro.AuthorisationFilter");
 		main.put(REALM_VAR, "org.cyk.ui.web.api.security.shiro.Realm");
-		
+		main.put(CACHE_MANAGER_VAR, "org.apache.shiro.cache.ehcache.EhCacheManager");
+				
+		main.put("securityManager.cacheManager", "$"+CACHE_MANAGER_VAR);		
 		main.put("dataSource", DATA_SOURCE.getDriver());
 		main.put("dataSource.URL", DATA_SOURCE.getUrl());
 		main.put("dataSource.user", DATA_SOURCE.getUsername());
@@ -61,7 +64,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		roleUser();
 
 		
-		//debug(anIni);
+		logInfo(anIni.toString());
 		//debug(urlsSection);
 	}
 	
@@ -118,6 +121,12 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	protected static void role(Map<String,String> map,String path,String roleCode){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
+		/*
+		System.out.println("WebEnvironmentAdapter.role() : 0 "+RoleManager.getInstance());
+		System.out.println("WebEnvironmentAdapter.role() : 1 "+RoleManager.getInstance().getRoleBusiness());
+		Role role = RoleManager.getInstance().getRoleBusiness().find(roleCode);
+		System.out.println("WebEnvironmentAdapter.role() : 2 "+role);
+		*/
 		map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
 	}
 	

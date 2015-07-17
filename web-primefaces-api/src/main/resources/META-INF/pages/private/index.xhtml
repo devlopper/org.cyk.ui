@@ -10,7 +10,12 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{privateIndexPage}" />
  		<ui:define name="body">
- 			<h1>Private Home</h1>
+ 			<style>
+				.ui-layout-pane-center{
+					background:url(#{resource[defaultDesktopLayoutManager.homeBackgroundPath]}) fixed 50% / cover !important;
+					background-size: 100% 100%;
+				}
+			</style>
  		</ui:define>
  	</ui:decorate>
  

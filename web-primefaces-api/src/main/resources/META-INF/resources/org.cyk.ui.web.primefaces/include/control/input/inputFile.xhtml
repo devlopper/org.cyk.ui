@@ -22,25 +22,12 @@
 		<ui:define name="input">
 
  			<table border="0" class="cyk-ui-input-file">
- 				<!--
- 				<tr><td>
- 					<h:outputText value="#{uiManager.text('input.file.upload.extension.allowed')} #{control.extensionsAsString}" />
- 				</td></tr>
- 				-->
  				<!-- input button -->
  				<tr><td class="cyk-ui-input-file-input">
-					<!-- JSF -->
-					<!--h:inputFile id="inputFile" value="#{control.file}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" 
-						title="#{control.label}" requiredMessage="#{control.requiredMessage}" styleClass="fileUploadStyleClass"  >
-						<f:attribute name="fieldId" value="#{control.id}" />
-						<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
-					</h:inputFile-->	
-					
-					<!-- Primefaces -->
 					<p:fileUpload id="inputFile" value="#{control.file}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" 
 						title="#{control.label}" requiredMessage="#{control.requiredMessage}" mode="#{control.mode}" styleClass="fileUploadStyleClass"
-						allowTypes="#{control.allowTypes}" sizeLimit="#{control.maximumSize}" rendered="#{control.value == null}" label="#{control.label}">
-						<f:attribute name="fieldId" value="#{control.id}" />
+						allowTypes="#{control.allowTypes}" sizeLimit="#{control.maximumSize}" label="#{control.label}">
+						<f:attribute name="fieldId" value="#{control.id}" /> <!--  rendered="#{control.value == null}"  -->
 						<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
 					</p:fileUpload>	
 				</td></tr>
@@ -48,8 +35,8 @@
 				<!-- preview -->	
 				<tr><td class="cyk-ui-input-file-preview">
 					<ui:fragment rendered="#{control.previewable}">
-						<ui:fragment rendered="#{control.value == null}">
-							<img id="cyk-ui-input-file-preview-img" alt="#{uiManager.text('preview')}" src="" width="#{control.previewWidth}px" height="#{control.previewHeight}px" /> 
+						<ui:fragment ><!--  rendered="#{control.value == null}"  --> <!-- alt="#{uiManager.text('preview')}" -->
+							<img id="cyk-ui-input-file-preview-img" src="" width="#{control.previewWidth}px" height="#{control.previewHeight}px" /> 
 						</ui:fragment>
 						<cyk:image identifier="#{control.value.identifier}" rendered="#{control.value != null}" width="#{control.previewWidth}px" height="#{control.previewHeight}px" />
 					</ui:fragment>					
@@ -57,7 +44,7 @@
 					
 				<!-- clear button -->	
 				<tr><td class="cyk-ui-input-file-clear">
-					<cyk:command value="#{control.clearCommandable}" />
+					<cyk:command value="#{control.clearCommandable}" rendered="#{control.value.identifier != null}"/>
 				</td></tr>						
 			</table>		
 								

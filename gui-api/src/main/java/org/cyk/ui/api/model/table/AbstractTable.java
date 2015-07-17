@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
@@ -55,9 +56,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
+	protected Class<? extends AbstractIdentifiable> identifiableClass;
 	protected IdentifiableConfiguration identifiableConfiguration;
 	protected BusinessEntityInfos businessEntityInfos;
-	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericObjectReportTable();
+	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericReportBasedOnDynamicBuilder();
 	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.FALSE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow;
 	protected AbstractTree<NODE,MODEL> tree;
@@ -78,20 +80,18 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		rowClass = (Class<Row<DATA>>) commonUtils.classFormName(Row.class.getName());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
-		
+		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass());
 		addRowCommandable = UIProvider.getInstance().createCommandable(this, "command.add", IconType.ACTION_ADD, null, null);
 		initRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
 		cancelRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.cancel", IconType.ACTION_CANCEL, null, null);
 		applyRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.apply", IconType.ACTION_APPLY, null, null);
 		removeRowCommandable = UIProvider.getInstance().createCommandable(this, "command.remove", IconType.ACTION_REMOVE, null, null);
 		removeRowCommandable.setShowLabel(Boolean.FALSE);
-		
-		if(businessEntityInfos!=null)
-			removeRowCommandable.getCommand().setConfirm( CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) );
 		
 		openRowCommandable = UIProvider.getInstance().createCommandable(this, "command.open", IconType.ACTION_OPEN, null, null);
 		openRowCommandable.setShowLabel(Boolean.FALSE);
@@ -103,6 +103,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		searchCommandable.setShowLabel(Boolean.FALSE);
 		
 		exportCommandable = UIProvider.getInstance().createCommandable(null, "command.export", IconType.ACTION_EXPORT, null, null);
+		exportCommandable.setRendered(Boolean.FALSE);
 		
 		exportToPdfCommandable = UIProvider.getInstance().createCommandable(this, "command.export.pdf", IconType.ACTION_EXPORT_PDF, null, null);
 		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
@@ -113,8 +114,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		exportMenu.getCommandables().add(exportToXlsCommandable);
 		
 		printCommandable = UIProvider.getInstance().createCommandable(this, "command.print", IconType.ACTION_PRINT, null, null);
-		reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter());
-		//printCommandable.setViewType(ViewType.TOOLS_PRINT_DATA_TABLE);
+		//reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter()); //has been move on demand because of customization
+		printCommandable.getParameters().add(new Parameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE));
 		
 		getTableListeners().add(new TableAdapter<Row<DATA>, Column, DATA, String, Cell, String>(){
 			@Override
@@ -126,7 +127,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			@Override
 			public void columnAdded(Column column) {
 				super.columnAdded(column);
-				column.setTitle(UIManager.getInstance().fieldLabel(column.getField()));
+				column.setTitle(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(column.getField()));
 			}
 			
 			@Override
@@ -160,12 +161,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		});	
 		
 		showToolBar = UsedFor.ENTITY_INPUT.equals(usedFor);
+		
+		
 	}
 	
 	protected void reportCommandable(UICommandable commandable,String fileExtension){
 		commandable.setViewType(ViewType.TOOLS_REPORT);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		commandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass())));
+		commandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass)));
 		commandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),fileExtension));
 		commandable.getParameters().add(new Parameter(UIManager.getInstance().getReportIdentifierParameter(),reportIdentifier));
 	}
@@ -176,12 +179,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		//globalFilter = lazyLoad;
 		if(globalFilter==null)
 			globalFilter = identifiableConfiguration==null?lazyLoad:identifiableConfiguration.getGlobalFiltering();
-		inplaceEdit = !lazyLoad;
+		inplaceEdit = businessEntityInfos==null?Boolean.FALSE:StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) /*|| !lazyLoad*/;
 		showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
 		showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
 		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
 		if(editable==null)
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
+		
+		removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
@@ -289,11 +294,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Class<? extends AbstractIdentifiable> identifiableClass(){
-		return (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getIdentifiableClass());
-	}
-	
 	//TODO commands should be treated in specific pages
 	
 	private void transfer(Object parameter) throws IllegalAccessException{
@@ -314,46 +314,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		if(applyRowEditCommandable.getCommand()==command){
-			//if(UsedFor.ENTITY_INPUT.equals(usedFor)){
-				transfer(parameter);
-				/*
-				Row<?> row = (Row<?>) parameter;
-				for(Cell cell : row.getCells())
-					((org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>)cell.getControl()).applyValueToField();
-				
-				if(parameter!=null){
-					if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
-						((AbstractFormModel<?>)parameter).write();
-					}
-				}
-				*/
-			//}
+			transfer(parameter);
 		}else if(addRowCommandable.getCommand()==command){
-			/*if(UsedFor.FIELD_INPUT.equals(usedFor)){
-				System.out.println("AbstractTable.transfer()");
-				for(Row<?> row : rows)
-					transfer(row);
-			}*/
 			
 		}
-		/*
-		if(table.getApplyRowEditCommandable().getCommand()==command){
-			if(parameter!=null){
-				if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
-					((AbstractFormModel<?>)parameter).write();
-				}
-			}
-		}
-		*/
 	}
 	
 	@Override
 	public Boolean validate(UICommand command, Object parameter) {
 		if(command==addRowCommandable.getCommand()){
-			//if(UsedFor.ENTITY_INPUT.equals(usedFor))
-				return editing.isEmpty();
-			//else
-			//	return UsedFor.FIELD_INPUT.equals(usedFor);
+			return editing.isEmpty();
 		}else if(command==initRowEditCommandable.getCommand()){
 			return Boolean.TRUE.equals(__justAdded__) || editing.isEmpty();
 		}
@@ -365,9 +335,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public void serve(UICommand command, Object parameter) {
 		lastExecutedCommand = command;
 		if(command==addRowCommandable.getCommand()){
-			if(Boolean.TRUE.equals(lazyLoad)){
-				crudOnePage();
-			}else{
+			if(Boolean.TRUE.equals(inplaceEdit)){
 				DATA d;
 				if(AbstractFormModel.class.isAssignableFrom(rowDataClass)){
 					d = (DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz()));
@@ -383,6 +351,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				editing.add(d);
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;
+			}else{
+				crudOnePage();
 			}
 				
 		}else if(command==initRowEditCommandable.getCommand()){
@@ -401,6 +371,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				}
 			Row<DATA> row = (Row<DATA>) parameter;
 			updateRow(row, row.getData());
+			//for()
 			editing.clear();
 		}else if(command==cancelRowEditCommandable.getCommand()){
 			if(editing.get(0) instanceof AbstractIdentifiable && ((AbstractIdentifiable)editing.get(0)).getIdentifier()==null)
@@ -415,7 +386,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			editing.clear();
 		}else if(command==removeRowCommandable.getCommand()){
 			Row<DATA> row = (Row<DATA>) parameter;
-			if(!Boolean.TRUE.equals(lazyLoad)){
+			if(Boolean.TRUE.equals(inplaceEdit)){
 				AbstractIdentifiable identifiable = null;
 				if(AbstractIdentifiable.class.isAssignableFrom(rowDataClass)){
 					identifiable = (AbstractIdentifiable) row.getData();
@@ -438,6 +409,15 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		}else if(command==exportToXlsCommandable.getCommand()){
 			exportDataTableToXlsPage();
 		}else if(command==printCommandable.getCommand()){
+			reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter());
+			/*
+			for(Parameter p : printCommandable.getParameters())
+				if(p.getValue()==null)
+					if(p.getName().equals(UIManager.getInstance().getClassParameter()))
+						p.setValue(UIManager.getInstance().keyFromClass(identifiableClass));
+					else if(p.getName().equals(UIManager.getInstance().getReportIdentifierParameter()))
+						p.setValue(reportIdentifier);
+			*/	
 			printDataPage();
 		}
 		

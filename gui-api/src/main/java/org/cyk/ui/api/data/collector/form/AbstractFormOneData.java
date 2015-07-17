@@ -25,6 +25,7 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.SeperatorLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -118,13 +119,18 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				if(Boolean.FALSE.equals(controlSetListener.build(objectField.getField())))
 					continue;
 			OutputSeperator outputSeparator = objectField.getField().getAnnotation(OutputSeperator.class);
+			SeperatorLocation seperatorLocation = null;
+			String separatorLabel = null;
 			if(outputSeparator!=null){
-				String label = null;
+				seperatorLocation = outputSeparator.location();
 				if(ValueType.VALUE.equals(outputSeparator.label().type()))
-					label = outputSeparator.label().value();
+					separatorLabel = outputSeparator.label().value();
 				else
-					label = UIManager.getInstance().textAnnotationValue(objectField.getField(),outputSeparator.label());
-				controlSet.row(null).addSeperator(label);
+					separatorLabel = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputSeparator.label());
+				if(OutputSeperator.SeperatorLocation.AUTO.equals(outputSeparator.location()))
+					seperatorLocation = OutputSeperator.SeperatorLocation.BEFORE;
+				if(OutputSeperator.SeperatorLocation.BEFORE.equals(seperatorLocation))
+					controlSet.row(null).addSeperator(separatorLabel);
 				//seperatorAdded = Boolean.TRUE;
 				//controlSet.row(null);
 				addRow = null;
@@ -154,6 +160,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				}else
 					addRow = Boolean.TRUE;
 			}
+			
+			if(OutputSeperator.SeperatorLocation.AFTER.equals(seperatorLocation))
+				controlSet.row(null).addSeperator(separatorLabel);
 		}
 	}
 	

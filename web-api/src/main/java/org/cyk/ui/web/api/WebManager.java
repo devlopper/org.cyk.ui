@@ -18,6 +18,7 @@ import javax.servlet.http.Part;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
@@ -26,6 +27,7 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
+import org.omnifaces.util.Ajax;
 
 @Singleton @Named @Getter @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebManager extends AbstractBean implements Serializable {
@@ -36,6 +38,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	public static WebManager getInstance() {
 		return INSTANCE;
 	}
+	
+	private static final String COLON = ":";
 	
 	@Inject private LanguageBusiness languageBusiness;
 	
@@ -50,16 +54,23 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	private final String clientValidationGroupClass = Client.class.getName();
 	
+	private final String formId = "form";
+	private final String formContentId = "contentPanel";
+	private final String formMenuId = "menuPanel";
+	private final String formContentFullId = COLON+formId+COLON+formContentId;
+	private final String formMenuFullId = COLON+formId+COLON+formMenuId;
+	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
 	private final String messageDialogWidgetId = "messageDialogWidget";
 	private final String connectionMessageDialogWidgetId = "connectionMessageDialogWidget";
-	private final String reportDataTableServletUrl = "/private/__tools__/export/_cyk_report_/_datatable_/_jasper_/";
+	private final String reportDataTableServletUrl = "/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/";
 	
 	@Setter private String decoratedTemplateInclude;
 	
 	private final String requestParameterFormModel = UIManager.getInstance().getFormModelParameter();
 	private final String requestParameterClass = UIManager.getInstance().getClassParameter();
 	private final String requestParameterIdentifiable = UIManager.getInstance().getIdentifiableParameter();
+	private final String requestParameterUserAccount = "useraccount";
 	private final String requestParameterWindowMode = "windowmode";
 	private final String requestParameterWindowModeDialog = "windowmodedialog";
 	private final String requestParameterWindowModeNormal = "windowmodenormal";
@@ -107,6 +118,43 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public String libraryName(AbstractWebManager webManager){
 		return webManager.getLibraryName();
+	}
+	
+	/**/
+	
+	public String getClientId(String[] clientId,Boolean root){
+		return (Boolean.TRUE.equals(root)?COLON:"")+StringUtils.join(clientId,COLON);
+	}
+	
+	public String getClientId(String clientId,Boolean root){
+		return getClientId(new String[]{clientId}, root);
+	}
+	
+	/**/
+	
+	public void update(String[] clientId){
+		//System.out.println("WebManager.update() : "+getClientId(clientId, Boolean.FALSE));
+		Ajax.update(getClientId(clientId, Boolean.FALSE));
+	}
+	
+	public void update(String clientId){
+		update(new String[]{getClientId(clientId, Boolean.FALSE)});
+	}
+	
+	public void updateInForm(String clientId){
+		update(new String[]{formId,clientId});
+	}
+	
+	public void updateInForm(String[] clientId){
+		update(formId+COLON+StringUtils.join(clientId,COLON));
+	}
+	
+	public void updateInFormContent(String clientId){
+		updateInForm(new String[]{formId,formContentId,clientId});
+	}
+	
+	public void updateInFormContent(String[] clientId){
+		updateInForm(formId+COLON+formContentId+COLON+StringUtils.join(clientId,COLON));
 	}
 	
 }

@@ -35,6 +35,9 @@ public interface Input<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> exten
 	
 	String getRequiredMessage();
 	void setRequiredMessage(String aRequiredMessage);
+	
+	Boolean getDisabled();
+	void setDisabled(Boolean aValue);
 		
 	void applyValueToField() throws IllegalAccessException;
 	

@@ -25,7 +25,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.model.AbstractEventCalendar;
+import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.cdi.AbstractBean;

@@ -58,8 +58,6 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 			@Override
 			public void notNullString(AbstractOpticalBarCodeReader<Timer> reader, byte[] bytes,String value) {
 				String[] credentials = StringUtils.split(value, "\r\n");
-				System.out
-						.println("LoginPage.initialisation().new OpticalBarCodeReaderAdapter() {...}.notNullString()");
 				//connect(new Credentials(credentials[0], credentials[1]));
 				identifiable.setUsername(StringUtils.trim(credentials[0]));
 				identifiable.setPassword(StringUtils.trim(credentials[1]));
@@ -72,7 +70,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			//connect(identifiable);
-			connect((Credentials) parameter);
+			connect(/*(Credentials) parameter*/ identifiable );
 		}
 	}
 	
