@@ -27,6 +27,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
+import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
@@ -87,6 +88,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private NumberBusiness numberBusiness;
 	@Inject private EventParticipationBusiness eventParticipationBusiness;
 	@Inject private PersonBusiness personBusiness;
+	@Inject private RoleSecuredViewBusiness roleSecuredViewBusiness;
 	
 	private Locale locale = Locale.FRENCH;
 	

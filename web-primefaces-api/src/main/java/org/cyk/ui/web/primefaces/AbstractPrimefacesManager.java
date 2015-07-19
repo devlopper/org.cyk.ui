@@ -24,6 +24,7 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 		logoFileInfos = new FileInfos("default", "png");
 		loginBackgroundFileInfos = new FileInfos("default", "jpg");
 		homeBackgroundFileInfos = new FileInfos("default", "jpg");
+		languageBusiness.registerResourceBundle("org.cyk.system."+identifier+".ui.web.primefaces.api.resources.i18n",getClass().getClassLoader());
 	}
 	
 	@Override

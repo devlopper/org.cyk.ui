@@ -13,6 +13,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.RoleSecuredView;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -36,7 +37,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	private Section  urlsSection;
 	
 	public WebEnvironmentAdapter() {
-		SECURED_URL_PROVIDERS.add(new RootSecuredUrlProvider());
+		//SECURED_URL_PROVIDERS.add(new RootSecuredUrlProvider());
 	}
 	
 	@Override
@@ -63,19 +64,23 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		
 		roleUser();
 
-		
-		logInfo(anIni.toString());
+		logInfo("Secured views");
+		for(Entry<String, String> entry : urlsSection.entrySet())
+			logInfo(entry);
 		//debug(urlsSection);
 	}
 	
 	/**/
 	
 	protected void roleUser(){
-		WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);//TODO content should be moved to desktop or mobile and this removed
-		WebEnvironmentAdapter.role(urlsSection,"/mobile/private/**", Role.USER);
-		WebEnvironmentAdapter.role(urlsSection,"/desktop/private/**", Role.USER);
+		for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
+			role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
+		//WebEnvironmentAdapter.role(urlsSection,"/private/**", "USER1");
+		//WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);//TODO content should be moved to desktop or mobile and this removed
+		//WebEnvironmentAdapter.role(urlsSection,"/mobile/private/**", Role.USER);
+		//WebEnvironmentAdapter.role(urlsSection,"/desktop/private/**", Role.USER);
 	}
-	
+	/*
 	protected class RootSecuredUrlProvider extends SecuredUrlProvider implements Serializable {
 
 		private static final long serialVersionUID = -4399583055230412704L;
@@ -111,23 +116,15 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		}
 		
 	}
-	
-	/**/
-	
-	
-	
-	/**/
-	
+		*/
 	protected static void role(Map<String,String> map,String path,String roleCode){
+		role(map,path,RoleManager.getInstance().getRoleBusiness().find(roleCode));
+	}
+	
+	protected static void role(Map<String,String> map,String path,Role role){
 		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
 			return;
-		/*
-		System.out.println("WebEnvironmentAdapter.role() : 0 "+RoleManager.getInstance());
-		System.out.println("WebEnvironmentAdapter.role() : 1 "+RoleManager.getInstance().getRoleBusiness());
-		Role role = RoleManager.getInstance().getRoleBusiness().find(roleCode);
-		System.out.println("WebEnvironmentAdapter.role() : 2 "+role);
-		*/
-		map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
+		map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,role.getIdentifier()));
 	}
 	
 	/**/
@@ -139,11 +136,6 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		
 		protected void role(String path,String roleCode){
 			WebEnvironmentAdapter.role(urls,path,roleCode);
-			/*
-			if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
-				return;
-			urls.put(path,String.format(ROLES_FORMAT,FILTER_VAR,RoleManager.getInstance().getRoleBusiness().find(roleCode).getIdentifier()));
-			*/
 		}
 		
 		protected void roleFolder(String folderPath,String roleCode){
