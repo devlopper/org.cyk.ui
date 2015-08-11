@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +10,20 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.test.model.MyIdentifiable;
+import org.cyk.ui.web.api.AjaxListener;
+import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.ui.web.api.data.collector.control.WebInputOneCombo;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -41,7 +48,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		form = (FormOneData<MyIdentifiable>) createFormOneData(entityWithAnnotation,Crud.CREATE);
 
 		form.setTitle("Mon Formulaire");
-		form.setFieldsRequiredMessage("Champs obligatoire");
+		//form.setFieldsRequiredMessage("Champs obligatoire");
 		form.setDynamic(Boolean.TRUE);
 		
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
@@ -55,11 +62,77 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		//((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
 		
 		//form.build();
+		/*
+		form.setControlSetListener(new ControlSetAdapter(){
+			@Override
+			public Boolean showFieldLabel(ControlSet controlSet, Field field) {
+				return Boolean.FALSE;
+			}
+		});
+		*/
+		
+		/*
+		form.getSelectedFormData().getControlSets().iterator().next().getControlSetListeners().add(new ControlSetAdapter(){
+			@Override
+			public Boolean showFieldLabel(ControlSet controlSet, Field field) {
+				return Boolean.FALSE;
+			}
+		});
+		*/
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		AjaxListener ajaxListener = null;
+		
+		setAjaxListener(form, "textOneLine", "change", new String[]{"textManyLine"},new String[]{"textManyLine","textManyLine2"}, String.class,new ListenValueMethod<String>() {
+			@Override
+			public void execute(String value) {
+				setFieldValue(form,"textManyLine", form.findInputByFieldName("textManyLine").getValue()+" NEW - "+value);
+				setFieldValue(form,"textManyLine2", value);
+			}
+		});
+		
+		ajaxListener = setAjaxListener(form, "number1", "change", new String[]{"number2"},new String[]{"sumResult","multiplyResult"}, BigDecimal.class,new ListenValueMethod<BigDecimal>() {
+			@Override
+			public void execute(BigDecimal value) {
+				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
+				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
+			}
+		});
+		
+		setAjaxListener(form, "number2", "change", new String[]{"number1"}, new String[]{"sumResult","multiplyResult"},BigDecimal.class,new ListenValueMethod<BigDecimal>() {
+			@Override
+			public void execute(BigDecimal value) {
+				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number1")));
+				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
+			}
+		});
+		
+		ajaxListener = setAjaxListener(form, "canSum", "change", null, null,Boolean.class,new ListenValueMethod<Boolean>() {
+			@Override
+			public void execute(Boolean value) {
+				//form.findInputByFieldName("sumResult").setDisabled(value);
+				//form.findInputByClassByFieldName(WebInput.class, "sumResult").getReadOnlyValueCss().addInline("background-color:red !important;");
+				//setFieldValue(form,"sumResult", value?BigDecimal.ONE:BigDecimal.ZERO);
+				//setFieldValue(form,"textManyLine2", "Can Sum : "+value);
+				//Ajax.oncomplete(javaScriptHelper.hide("."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()));
+				//System.out.println(javaScriptHelper.hide("."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()));
+				//System.out.println("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').hide();");
+				onComplete(inputRowVisibility(form,"sumResult",value),inputRowVisibility(form,"multiplyResult",value));
+				/*
+				if(Boolean.TRUE.equals(value))
+					rowVisibility(form.findInputByClassByFieldName(WebInput.class, "sumResult"), "show")
+					Ajax.oncomplete("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').closest('tr').show();");
+				else
+					Ajax.oncomplete("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').closest('tr').hide();");
+					*/
+			}
+		});
+		
+		form.findInputByClassByFieldName(WebInputOneCombo.class, "myEnum").setFiltered(Boolean.TRUE);
+		
 		/*
 		form.addChoices("inputOneList",CHOICES);
 		form.addChoices("inputOneCombo",CHOICES);
@@ -74,7 +147,10 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		form.addChoices("inputManyCheckCombo",CHOICES);
 		*/
 		
+		
 	}
+	
+	
 
 	
 }

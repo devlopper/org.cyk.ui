@@ -18,7 +18,7 @@ public interface ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> extends
 	Collection<Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM>> getControls(); 
 	
 	<T> T findInputByFieldName(Class<T> aClass,String fieldName);
-	
+	<T> T findControlByIndex(Class<T> aClass,Integer index);
 	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 	MODEL getModel();
@@ -33,6 +33,8 @@ public interface ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> extends
 	ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,Field field);
 
 	ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addSeperator(String label);
+	
+	ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addText(String text);
 	
 	ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> row(Object object);
 	

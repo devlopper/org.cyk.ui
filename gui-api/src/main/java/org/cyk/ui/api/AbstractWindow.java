@@ -123,6 +123,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
 		form.setUserDeviceType(userDeviceType);
+		if(Boolean.TRUE.equals(form.getEditable())){
+			form.setFieldsRequiredMessage(text("ui.form.fields.required.message"));
+		}
 		formOneDatas.add(form);
 		return form;
 	}

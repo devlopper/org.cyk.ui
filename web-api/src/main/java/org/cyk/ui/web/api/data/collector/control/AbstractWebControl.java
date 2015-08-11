@@ -19,4 +19,13 @@ public abstract class AbstractWebControl<MODEL,ROW,LABEL,CONTROL> extends Abstra
 
 	protected CascadeStyleSheet css = new CascadeStyleSheet();
 	
+	{
+		css.addClass(getUniqueCssClass());
+		
+	}
+	
+	@Override
+	public String getUniqueCssClass() {
+		return getId();
+	}
 } 

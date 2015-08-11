@@ -10,16 +10,17 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.web.api.WebManager;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
+import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.utility.common.annotation.Deployment;
@@ -29,6 +30,11 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
@@ -38,10 +44,14 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private static PrimefacesManager INSTANCE;
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
+	private static final String SELECTOR_FORMAT = "@(%s)";
+	private static final String CLASS_SELECTOR_FORMAT = String.format(SELECTOR_FORMAT, ".%s");
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;
 	}
+	
+	private EventBus eventBus;
 	
 	private String templateControlSetDefault = "/org.cyk.ui.web.primefaces/template/controlset/default.xhtml";
 	private String formId = WebManager.getInstance().getFormContentFullId();
@@ -55,6 +65,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();	
+		eventBus = EventBusFactory.getDefault().eventBus();
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
@@ -75,6 +86,15 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		urlParams.put(WebManager.getInstance().getRequestParameterWindowMode(),Arrays.asList(WebManager.getInstance().getRequestParameterWindowModeDialog()));
 		
 		RequestContext.getCurrentInstance().openDialog(outcome, dialogParams, urlParams); 
+	}
+	
+	@Override
+	public void controlInstanceCreated(Control<?, ?, ?, ?, ?> control) {
+		super.controlInstanceCreated(control);
+		if(control instanceof WebOutputText<?, ?, ?, ?>){
+			if(!(control instanceof WebOutputSeparator<?, ?,?,?>))
+				((WebOutputText<?, ?, ?, ?>)control).getCss().addClass("cyk-ui-form-block-header-title ui-state-highlight");
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -127,6 +147,12 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	public void disconnectSocket(String socket){
 		RequestContext.getCurrentInstance().execute("PF('"+socket+"').disconnect();");
+	}
+	
+	public String classSelector(WebInput<?, ?, ?, ?> input){
+		if(input==null)
+			return "";
+		return String.format(CLASS_SELECTOR_FORMAT, input.getUniqueCssClass());
 	}
 
 }

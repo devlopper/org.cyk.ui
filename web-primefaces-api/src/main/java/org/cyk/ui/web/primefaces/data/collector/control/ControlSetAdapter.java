@@ -81,4 +81,9 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 		
 	}
 
+	@Override
+	public Boolean showFieldLabel(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+		return null;
+	}
+
 }

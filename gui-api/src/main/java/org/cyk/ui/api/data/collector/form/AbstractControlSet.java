@@ -100,16 +100,24 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			if(StringUtils.isNotBlank(c))
 				fieldLabel = c;
 		}
-		OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(fieldLabel);
-		/*
-		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
-			listener.labelBuilt(this, field, (LABEL) label);
-		*/
-		add(label);
-		
+		Boolean showFieldLabel = Boolean.TRUE;
+		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
+			Boolean value = listener.showFieldLabel(this, field);
+			if(value!=null)
+				showFieldLabel = value;
+		}
+		if(Boolean.TRUE.equals(showFieldLabel)){
+			OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(fieldLabel);
+			/*
+			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
+				listener.labelBuilt(this, field, (LABEL) label);
+			*/
+			add(label);
+		}
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(object, field);
 		if(control instanceof Input<?,?,?,?,?,?>){
-			((Input<?,?,?,?,?,?>)control).setReadOnly(!Boolean.TRUE.equals(getFormData().getForm().getEditable()));
+			org.cyk.utility.common.annotation.user.interfaces.Input inputAnnotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.Input.class);
+			((Input<?,?,?,?,?,?>)control).setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
 			if(Boolean.TRUE.equals(((Input<?,?,?,?,?,?>)control).getReadOnly()))
 				((Input<?,?,?,?,?,?>)control).setRequired(Boolean.FALSE);
 			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
@@ -124,6 +132,15 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	public ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> addSeperator(String label) {
 		@SuppressWarnings("unchecked")
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createSeparator(label);
+		control.getPosition().getColumn().setSpan(2);//TODO to be done automatically
+		add(control);
+		return this;
+	}
+	
+	@Override
+	public ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> addText(String text) {
+		@SuppressWarnings("unchecked")
+		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createOutputText(text);
 		control.getPosition().getColumn().setSpan(2);//TODO to be done automatically
 		add(control);
 		return this;
@@ -219,6 +236,18 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 					&& ( ((Input<?,?,?,?,?,?>)control).getField().getName().equals(fieldName)) 
 					&& aClass.isAssignableFrom(control.getClass()))
 				return (T) control;
+		}
+		return null;
+	}
+	
+	@Override @SuppressWarnings("unchecked")
+	public <T> T findControlByIndex(Class<T> aClass, Integer index) {
+		Integer position = 0;
+		for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls){
+			if( aClass.isAssignableFrom(control.getClass())){
+				if(position++ == index)
+					return (T) control;
+			}
 		}
 		return null;
 	}

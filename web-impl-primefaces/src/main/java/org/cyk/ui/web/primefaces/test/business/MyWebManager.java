@@ -29,6 +29,8 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		identifier = "test";
 		
 		businessClassConfig(Actor.class,ActorFormModel.class);
+		//languageBusiness.registerResourceBundle("org.cyk.system."+identifier+".ui.web.primefaces.api.resources.i18n",getClass().getClassLoader());
+		
 	}
 	
 	@Override

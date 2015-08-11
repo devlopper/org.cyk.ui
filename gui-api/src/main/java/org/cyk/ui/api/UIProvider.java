@@ -48,6 +48,7 @@ import org.cyk.ui.api.data.collector.control.InputText;
 import org.cyk.ui.api.data.collector.control.InputTextarea;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.control.OutputSeparator;
+import org.cyk.ui.api.data.collector.control.OutputText;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -149,6 +150,12 @@ public class UIProvider extends AbstractBean implements Serializable {
 		OutputSeparator<?,?,?,?,?> outputSeperator = (OutputSeparator<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputSeparator.class));
 		outputSeperator.setValue(value);
 		return outputSeperator;
+	}
+	
+	public OutputText<?,?,?,?,?> createOutputText(String value){
+		OutputText<?,?,?,?,?> outputText = (OutputText<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputText.class));
+		outputText.setValue(value);
+		return outputText;
 	}
 	
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){

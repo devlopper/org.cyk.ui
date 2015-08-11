@@ -27,33 +27,32 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	protected static final String CACHE_MANAGER_VAR = "cacheManager";
 	protected static final String DATA_SOURCE_VAR = "dataSource";
 	
+	public static String AUTHORISATION_FILTER = "org.cyk.ui.web.api.security.shiro.AuthorisationFilter";
+	public static String REALM = "org.cyk.ui.web.api.security.shiro.Realm";
+	public static String CACHE_MANAGER = "org.apache.shiro.cache.ehcache.EhCacheManager";
+	
 	protected static final String ROLES_FORMAT = "%s , roles[%s]";
 	protected static final String PERMISSIONS_FORMAT = "%s , perms[%s]";
 	
 	public static DataSource DATA_SOURCE;
 	public static final Collection<SecuredUrlProvider> SECURED_URL_PROVIDERS = new ArrayList<>();
 	
-	
 	private Section  urlsSection;
-	
-	public WebEnvironmentAdapter() {
-		//SECURED_URL_PROVIDERS.add(new RootSecuredUrlProvider());
-	}
-	
+		
 	@Override
 	public void ini(WebEnvironment environment, Ini anIni) {
 		Section  main = anIni.addSection("main");
-		main.put(FILTER_VAR,"org.cyk.ui.web.api.security.shiro.AuthorisationFilter");
-		main.put(REALM_VAR, "org.cyk.ui.web.api.security.shiro.Realm");
-		main.put(CACHE_MANAGER_VAR, "org.apache.shiro.cache.ehcache.EhCacheManager");
+		main.put(FILTER_VAR,AUTHORISATION_FILTER);
+		main.put(REALM_VAR, REALM);
+		main.put(CACHE_MANAGER_VAR, CACHE_MANAGER);
 				
-		main.put("securityManager.cacheManager", "$"+CACHE_MANAGER_VAR);		
-		main.put("dataSource", DATA_SOURCE.getDriver());
-		main.put("dataSource.URL", DATA_SOURCE.getUrl());
-		main.put("dataSource.user", DATA_SOURCE.getUsername());
-		main.put("dataSource.password", DATA_SOURCE.getPassword());
+		main.put("securityManager."+CACHE_MANAGER_VAR, "$"+CACHE_MANAGER_VAR);		
+		main.put(DATA_SOURCE_VAR, DATA_SOURCE.getDriver());
+		main.put(DATA_SOURCE_VAR+".URL", DATA_SOURCE.getUrl());
+		main.put(DATA_SOURCE_VAR+".user", DATA_SOURCE.getUsername());
+		main.put(DATA_SOURCE_VAR+".password", DATA_SOURCE.getPassword());
 		
-		main.put(REALM_VAR+".dataSource", "$dataSource");
+		main.put(REALM_VAR+"."+DATA_SOURCE_VAR, "$"+DATA_SOURCE_VAR);
 		
 		urlsSection = anIni.addSection("urls");
 		urlsSection.put("/login", "user");
@@ -62,61 +61,23 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 			for(Entry<String, String> entry : securedUrlProvider.urls.entrySet())
 				urlsSection.put(entry.getKey(), entry.getValue());
 		
-		roleUser();
+		for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
+			role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
 
 		logInfo("Secured views");
 		for(Entry<String, String> entry : urlsSection.entrySet())
 			logInfo(entry);
-		//debug(urlsSection);
 	}
 	
 	/**/
 	
 	protected void roleUser(){
-		for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
-			role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
 		//WebEnvironmentAdapter.role(urlsSection,"/private/**", "USER1");
 		//WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);//TODO content should be moved to desktop or mobile and this removed
 		//WebEnvironmentAdapter.role(urlsSection,"/mobile/private/**", Role.USER);
 		//WebEnvironmentAdapter.role(urlsSection,"/desktop/private/**", Role.USER);
 	}
-	/*
-	protected class RootSecuredUrlProvider extends SecuredUrlProvider implements Serializable {
-
-		private static final long serialVersionUID = -4399583055230412704L;
-
-		@Override
-		public void provide() {
-			roleSettingManager();
-			roleSecurityManager();
-			roleManager();
-			roleAdministrator();
-			roleBusinessActor();
-		}
-		
-		protected void roleAdministrator(){
-			roleFolder("__administrator__", Role.ADMINISTRATOR);
-		}
-		
-		protected void roleManager(){
-			roleFolder("__manager__",Role.MANAGER);
-		}
-		
-		protected void roleSecurityManager(){
-			roleFolder("__securitymanager__",Role.SECURITY_MANAGER);
-		}
-		
-		protected void roleSettingManager(){
-			//permission("/private/__role__/__settingmanager__/readlicense.jsf",License.class, Crud.READ);
-			roleFolder("__settingmanager__",Role.SETTING_MANAGER);
-		}
-		
-		protected void roleBusinessActor(){
-			roleFolder("__businessactor__", Role.BUSINESS_ACTOR);
-		}
-		
-	}
-		*/
+	
 	protected static void role(Map<String,String> map,String path,String roleCode){
 		role(map,path,RoleManager.getInstance().getRoleBusiness().find(roleCode));
 	}

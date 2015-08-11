@@ -1,9 +1,8 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -13,8 +12,13 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.web.api.AjaxListener;
+import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -111,5 +115,36 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public String notificationMessageIdAfterServe(UICommand command, Object parameter, AfterServeState state) {
 		return null;
+	}
+	
+	protected <TYPE> AjaxListener setAjaxListener(final String fieldName,String event,String[] crossFieldNames,String[] updatedFieldNames,final Class<TYPE> valueClass,ListenValueMethod<TYPE> method){
+		return setAjaxListener(form, fieldName, event, crossFieldNames,updatedFieldNames,valueClass, method);
+	}
+	
+	protected void setFieldValue(String inputName,Object value){
+		setFieldValue(form, inputName, value);
+	}
+	
+	protected <TYPE> TYPE fieldValue(String fieldName,Class<TYPE> typeClass,TYPE nullValue){
+		return fieldValue(form,fieldName, typeClass,nullValue);
+	}
+	
+	protected BigDecimal bigDecimalValue(String fieldName,BigDecimal nullValue){
+		return bigDecimalValue(form,fieldName,nullValue);
+	}
+	protected BigDecimal bigDecimalValue(String fieldName){
+		return bigDecimalValue(fieldName, BigDecimal.ZERO);
+	}
+	protected String stringValue(String fieldName,String nullValue){
+		return stringValue(form,fieldName,nullValue);
+	}
+	protected String stringValue(String fieldName){
+		return stringValue(fieldName,"");
+	}
+	protected Date dateValue(String fieldName,Date nullValue){
+		return dateValue(form,fieldName,nullValue);
+	}
+	protected String inputRowVisibility(String fieldName,Boolean visible){
+		return inputRowVisibility(form, fieldName, visible);
 	}
 }

@@ -11,6 +11,13 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{personSearchPage}" />
  		<ui:define name="body">
+ 			
+ 			<style>
+ 				.qwerty_sr{
+ 					background: yellow;
+ 				}
+ 			</style>
+ 			
  			<cyk:businessQuery id="query" value="#{personSearchPage}" >
  				<f:facet name="graphics"><h1>Here</h1> </f:facet>
  				<f:facet name="tabs">

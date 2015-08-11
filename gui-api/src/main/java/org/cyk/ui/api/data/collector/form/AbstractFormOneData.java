@@ -26,6 +26,8 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.SeperatorLocation;
+import org.cyk.utility.common.annotation.user.interfaces.OutputText;
+import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -33,7 +35,10 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	private static final long serialVersionUID = -1043478880255116994L;
 
 	@Getter protected Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
-	@Setter protected ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetListener;//TODO a temporary solution
+	
+	//TODO a temporary solution. Should be a collection
+	@Setter protected ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetListener;
+	
 	
 	/**/
 	
@@ -44,6 +49,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	@Override
 	public <T> T findInputByClassByFieldName(Class<T> aClass, String fieldName) {
 		return getSelectedFormData().findInputByClassByFieldName(aClass, fieldName);
+	}
+	
+	@Override
+	public <T> T findControlByClassByIndex(Class<T> aClass, Integer index) {
+		return getSelectedFormData().findControlByClassByIndex(aClass, index);
 	}
 	
 	@Override
@@ -110,24 +120,23 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
-		
+		logDebug("Auto build starts");
 		new ObjectFieldSorter(objectFields,null).sort();
-		
 		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
 			if(controlSetListener!=null)
 				if(Boolean.FALSE.equals(controlSetListener.build(objectField.getField())))
 					continue;
-			OutputSeperator outputSeparator = objectField.getField().getAnnotation(OutputSeperator.class);
+			OutputSeperator outputSeperator = objectField.getField().getAnnotation(OutputSeperator.class);
 			SeperatorLocation seperatorLocation = null;
 			String separatorLabel = null;
-			if(outputSeparator!=null){
-				seperatorLocation = outputSeparator.location();
-				if(ValueType.VALUE.equals(outputSeparator.label().type()))
-					separatorLabel = outputSeparator.label().value();
+			if(outputSeperator!=null){
+				seperatorLocation = outputSeperator.location();
+				if(ValueType.VALUE.equals(outputSeperator.label().type()))
+					separatorLabel = outputSeperator.label().value();
 				else
-					separatorLabel = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputSeparator.label());
-				if(OutputSeperator.SeperatorLocation.AUTO.equals(outputSeparator.location()))
+					separatorLabel = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputSeperator.label());
+				if(OutputSeperator.SeperatorLocation.AUTO.equals(outputSeperator.location()))
 					seperatorLocation = OutputSeperator.SeperatorLocation.BEFORE;
 				if(OutputSeperator.SeperatorLocation.BEFORE.equals(seperatorLocation))
 					controlSet.row(null).addSeperator(separatorLabel);
@@ -136,12 +145,30 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				addRow = null;
 			}
 			
+			OutputText outputText = objectField.getField().getAnnotation(OutputText.class);
+			OutputTextLocation outputTextLocation = null;
+			String text = null;
+			if(outputText!=null){
+				outputTextLocation = outputText.location();
+				if(ValueType.VALUE.equals(outputText.label().type()))
+					text = outputText.label().value();
+				else
+					text = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputText.label());
+				if(OutputText.OutputTextLocation.AUTO.equals(outputText.location()))
+					outputTextLocation = OutputText.OutputTextLocation.BEFORE;
+				if(OutputText.OutputTextLocation.BEFORE.equals(outputTextLocation))
+					controlSet.row(null).addText(text);
+				addRow = null;
+			}
+			
 			if(objectField.getField().getAnnotation(Input.class)!=null){
 				if(addRow==null)
 					addRow = Boolean.TRUE;
 				
-				if(Boolean.TRUE.equals(addRow))
+				if(Boolean.TRUE.equals(addRow)){
 					controlSet.row(objectField.getField());
+					logDebug("Row created form field {}"+objectField.getField().getName());
+				}
 				/*if(Boolean.TRUE.equals(seperatorAdded)){
 					controlSet.row(null);
 					seperatorAdded = Boolean.FALSE;
@@ -163,6 +190,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			
 			if(OutputSeperator.SeperatorLocation.AFTER.equals(seperatorLocation))
 				controlSet.row(null).addSeperator(separatorLabel);
+			
+			if(OutputText.OutputTextLocation.AFTER.equals(outputTextLocation))
+				controlSet.row(null).addText(text);
 		}
 	}
 	

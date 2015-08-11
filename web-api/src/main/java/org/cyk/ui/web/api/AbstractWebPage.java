@@ -2,7 +2,11 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -20,8 +24,15 @@ import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
+import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.UserDeviceType;
+import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.annotation.RequestParameter;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.ui.web.api.data.collector.control.WebOutput;
+import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
 
 public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem> implements 
@@ -75,6 +86,18 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		//getMessageManager().notifications(session.getNotifications()).showGrowl();
 		//System.out.println("AbstractWebPage.initialisation() : "+FacesContext.getCurrentInstance().getMessageList());
 		//System.out.println("AbstractWebPage.initialisation()");
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form : formOneDatas)
+			for(Control<?, ?, ?, ?, ?> control : form.getSelectedFormData().getControlSets().iterator().next().getControls()){
+				if(control instanceof WebInput<?,?,?,?>)
+					((WebInput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");
+				else if(control instanceof WebOutput<?, ?, ?, ?>)
+					;//((WebOutput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");
+			}
 	}
 	
 	@Override
@@ -142,6 +165,36 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return script;
 	}
 	
+	@SuppressWarnings("unchecked")
+	protected void setFieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value){
+		Input<Object, ?, ?, ?, ?, ?> input = ((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName));
+		if(Boolean.TRUE.equals(input.getReadOnly()))
+			onCompleteUpdate((WebInput<?, ?, ?, ?>) input, value,Boolean.FALSE);
+		else
+		((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName)).setValue(value);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value,Boolean onServer){
+		if(Boolean.TRUE.equals(onServer)){
+			((Input<Object, ?, ?, ?, ?, ?>) input).setValue(value);
+		}else{
+			Ajax.oncomplete(javaScriptHelper.update(input, value));
+		}
+	}
+	
+	protected void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value){
+		onCompleteUpdate(input, value, Boolean.TRUE);
+	}
+	
+	protected void onCompleteUpdate(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value,Boolean onServer){
+		onCompleteUpdate((WebInput<?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName),value,onServer);
+	}
+	
+	protected void onCompleteUpdate(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value){
+		onCompleteUpdate(form, inputName, value, Boolean.TRUE);
+	}
+	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))
 			return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));
@@ -192,5 +245,74 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
+	protected <TYPE> AjaxListener setAjaxListener(final FormOneData<?, ?, ?, ?, ?, ?> form,final String fieldName,String event
+			,String[] crossFieldNames,String[] updatedFieldNames,Class<TYPE> valueClass,final ListenValueMethod<TYPE> method){
+		
+		WebInput<?, ?, ?, ?> webInput = form.findInputByClassByFieldName(WebInput.class, fieldName);
+		if(webInput==null)
+			return null;
+		final Set<String> processes = new HashSet<>();
+		processes.add(classSelector(webInput));
+		if(crossFieldNames!=null)
+			for(String crossFieldName : crossFieldNames)
+				processes.add(classSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
+		
+		AjaxListener ajaxAdapter = new AjaxAdapter(event) {
+			private static final long serialVersionUID = 4750417275636910265L;
+			@Override
+			public void listen() {
+				@SuppressWarnings("unchecked")
+				TYPE value = (TYPE) form.findInputByClassByFieldName(Input.class, fieldName).getValue();
+				method.execute(value);
+			}
+
+			@Override
+			public String getProcess() {
+				return StringUtils.join(processes,",");
+			}
+		};
+		
+		Set<String> updated = new HashSet<>();
+		if(updatedFieldNames!=null){
+			for(String updatedFieldName : updatedFieldNames)
+				updated.add(classSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
+			ajaxAdapter.setUpdate(StringUtils.join(updated,","));
+		}
+		webInput.setAjaxListener(ajaxAdapter);
+		return ajaxAdapter;
+	}
+	
+	protected String inputRowVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
+		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.findInputByFieldName(fieldName);
+		if(input==null)
+			return "";
+		return "$('."+input.getUniqueCssClass()+"').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";//TODO works only in 2 columns mode
+	}
+	
+	protected void onComplete(String...scripts){
+		Ajax.oncomplete(scripts);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <TYPE> TYPE fieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Class<TYPE> typeClass,TYPE nullValue){
+		return (TYPE) form.findInputByFieldName(fieldName).getValue();
+	}
+	
+	protected BigDecimal bigDecimalValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,BigDecimal nullValue){
+		return fieldValue(form,fieldName, BigDecimal.class,nullValue);
+	}
+	protected BigDecimal bigDecimalValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
+		return bigDecimalValue(form, fieldName, BigDecimal.ZERO);
+	}
+	protected String stringValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,String nullValue){
+		return fieldValue(form,fieldName, String.class,nullValue);
+	}
+	protected Date dateValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Date nullValue){
+		return fieldValue(form,fieldName, Date.class,nullValue);
+	}
+	
+	protected String classSelector(WebInput<?, ?, ?, ?> input){
+		return "@(."+input.getUniqueCssClass()+")";
+	}
 	
 }

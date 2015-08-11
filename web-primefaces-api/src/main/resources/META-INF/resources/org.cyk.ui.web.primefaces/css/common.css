@@ -182,7 +182,33 @@ border: none;
 .cyk-ui-verticalaligntop{
 	vertical-align: top;
 }
+/* Input */
+.cyk-ui-form-header{
 
+}
+.cyk-ui-form-header-title{
+	
+}
+.cyk-ui-form-block-header-title{
+	font-weight: bold;
+	text-align: center;
+}
+.cyk-ui-form-header-requiredfieldsmessage{
+	font-style: italic;
+	color: red;
+	font-size: 10pt;
+	/*background: yellow;*/
+}
+
+.cyk-ui-form-inputfield,.cyk-ui-form-inputfield input{
+	width: 300px !important;
+}
+.ui-selectonemenu .cyk-ui-form-inputfield,.cyk-ui-form-inputfield{
+	width: 300px !important;
+}
+.ui-selectonemenu-filter-container input{
+	width: 260px !important;
+}	
 
 /*---------------------------------------------------------- Tree  ------------------------------------------------------------------*/
 .cyk-ui-tree-node-selected{

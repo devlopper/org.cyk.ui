@@ -19,7 +19,5 @@ public class OutputSeparator extends AbstractOutputText implements org.cyk.ui.ap
  WebOutputSeparator<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl>,Serializable {
 
 	private static final long serialVersionUID = 5671513590779656492L;
-
-	private Boolean readOnly;//TODO this is a mic mac to solve an issue
 	
 }

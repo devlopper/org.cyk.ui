@@ -24,7 +24,6 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 		logoFileInfos = new FileInfos("default", "png");
 		loginBackgroundFileInfos = new FileInfos("default", "jpg");
 		homeBackgroundFileInfos = new FileInfos("default", "jpg");
-		languageBusiness.registerResourceBundle("org.cyk.system."+identifier+".ui.web.primefaces.api.resources.i18n",getClass().getClassLoader());
 	}
 	
 	@Override
@@ -36,6 +35,8 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 		layoutManager.setLoginBackgroundPath("/"+getLibraryName()+"/images/background/"+loginBackgroundFileInfos.getPath());
 		if(homeBackgroundFileInfos!=null)
 			layoutManager.setHomeBackgroundPath("/"+getLibraryName()+"/images/background/home/"+homeBackgroundFileInfos.getPath());
+		
+		languageBusiness.registerResourceBundle("org.cyk.system."+identifier+".ui.web.primefaces.api.resources.i18n",getClassLoader());
 	}
 	
 	public String getLibraryName(){

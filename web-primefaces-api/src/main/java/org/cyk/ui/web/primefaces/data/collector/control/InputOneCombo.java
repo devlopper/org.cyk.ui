@@ -18,5 +18,6 @@ org.cyk.ui.api.data.collector.control.InputOneCombo<VALUE_TYPE,DynaFormModel,Dyn
 
 	private static final long serialVersionUID = 1490472924426610838L;
 
-	
+	private Boolean filtered = Boolean.FALSE;
+	private String filterMode = FILTER_MODE_CONTAINS;
 }

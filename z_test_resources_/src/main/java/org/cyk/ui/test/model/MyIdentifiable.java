@@ -1,6 +1,9 @@
 package org.cyk.ui.test.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,23 +14,39 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.test.model.MyEntity.MyEnum;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.OutputText;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
+import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
 @Getter @Setter
 public class MyIdentifiable extends AbstractIdentifiable implements Serializable {
 
 	private static final long serialVersionUID = 2551782857718212950L;
 	
-	@Input @InputText
+	@Input @InputText @NotNull
 	private String textOneLine;
 
-	@Input @InputTextarea
+	@Input @InputTextarea @NotNull
 	private String textManyLine;
+	
+	@Input @InputNumber @NotNull private BigDecimal number1=BigDecimal.ZERO;
+	@Input @InputNumber @NotNull private BigDecimal number2=BigDecimal.ZERO;
+	
+	@Input @InputBooleanButton private Boolean canSum;
+	
+	@OutputSeperator(label=@Text(value="results")) 
+	@OutputText(label=@Text(type=ValueType.VALUE,value="This is the results section")) 
+	@Input(readOnly=true) @InputText 
+	private String sumResult;
+	@Input(readOnly=true) @InputText private String multiplyResult;
 	
 	@Input
 	@InputChoice

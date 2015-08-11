@@ -19,6 +19,7 @@ public abstract class AbstractOutputText extends AbstractOutput implements WebOu
 
 	protected String value;
 	protected Boolean escape=Boolean.TRUE;
+	private Boolean readOnly;//TODO this is a mic mac to solve an issue
 	
 	public AbstractOutputText(String value, Boolean escape) {
 		super();

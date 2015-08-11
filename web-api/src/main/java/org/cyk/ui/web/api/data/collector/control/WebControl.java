@@ -10,4 +10,6 @@ public interface WebControl<MODEL, ROW, LABEL, CONTROL> extends Control<MODEL, R
 	CascadeStyleSheet getCss();
 	void setCss(CascadeStyleSheet aCascadeStyleSheet);
 	
+	String getUniqueCssClass();
+	
 }

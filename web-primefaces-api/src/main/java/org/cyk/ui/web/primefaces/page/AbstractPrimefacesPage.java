@@ -23,9 +23,11 @@ import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.AbstractWebPage;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.EventCalendar;
+import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.UserSession;
@@ -236,6 +238,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 
 	public String mobilePageOutcome(String pageId){
 		return navigationManager.mobilePageOutcome(pageId,mobilePageTransition,mobilePageReverse);
+	}
+	
+	@Override
+	protected String classSelector(WebInput<?, ?, ?, ?> input) {
+		return PrimefacesManager.getInstance().classSelector(input);
 	}
 	
 }

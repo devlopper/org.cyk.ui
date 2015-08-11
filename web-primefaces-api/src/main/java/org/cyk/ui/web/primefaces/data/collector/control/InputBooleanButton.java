@@ -25,6 +25,6 @@ org.cyk.ui.api.data.collector.control.InputBooleanButton<DynaFormModel,DynaFormR
 
 	private static final long serialVersionUID = 1390099136018097004L;
 
-	private State onState=new State(text("oui"),"ui-icon-check"),offState=new State(text("non"),null);
+	private State onState=new State(text("yes"),"ui-icon-check"),offState=new State(text("no"),null);
 	
 }

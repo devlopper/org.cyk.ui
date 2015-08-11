@@ -23,7 +23,7 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		contentTitle = text("data.report")+" - "+contentTitle;
+		contentTitle = null;//text("data.report")+" - "+contentTitle;
 	}
 	
 	@Override

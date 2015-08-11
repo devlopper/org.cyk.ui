@@ -238,6 +238,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public void redirectTo(String outcome){
 		redirectTo(outcome, null);
 	}
+	
+	public void redirectTo(UICommandable commandable){
+		redirectTo((String) commandable.getViewId());
+	}
 		
 	public void redirectToUrl(String url){
 		try {

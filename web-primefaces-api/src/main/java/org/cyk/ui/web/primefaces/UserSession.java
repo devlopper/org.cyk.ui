@@ -6,21 +6,19 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 
-import lombok.Getter;
-
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.web.api.AbstractWebUserSession;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
+
+import lombok.Getter;
 
 @SessionScoped @Named
 public class UserSession extends AbstractWebUserSession implements Serializable {
 
 	private static final long serialVersionUID = -4310383407889787288L;
 
-	private static final EventBus BUS = EventBusFactory.getDefault().eventBus();
+	//private static final EventBus BUS = EventBusFactory.getDefault().eventBus();
 	
 	@Getter private MenuModel contextualMenuModel;
 	
@@ -33,7 +31,7 @@ public class UserSession extends AbstractWebUserSession implements Serializable 
 	@Override
 	protected void __notificationFired__(Notification notification,FacesMessage facesMessage) {
 		super.__notificationFired__(notification, facesMessage);
-		BUS.publish(notificationChannel, facesMessage);
+		PrimefacesManager.getInstance().getEventBus().publish(notificationChannel, facesMessage);
 	}
 	 
 	@Override

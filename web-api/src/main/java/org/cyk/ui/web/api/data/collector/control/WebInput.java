@@ -6,6 +6,7 @@ import javax.faces.convert.Converter;
 import javax.faces.validator.ValidatorException;
 
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.web.api.AjaxListener;
 
 
 public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, ROW, LABEL, CONTROL> {
@@ -16,5 +17,8 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 	Converter getConverter();
 	
 	void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException;
+	
+	void setAjaxListener(AjaxListener listener);
+	AjaxListener getAjaxListener();
 	
 }

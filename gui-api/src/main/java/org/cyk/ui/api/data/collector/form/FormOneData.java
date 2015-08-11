@@ -13,7 +13,7 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	UIMenu getMenu();
 	void setMenu(UIMenu aMenu);
 	
-	*/
+	*/ 
 	
 	DATA getData();
 	void setData(DATA data);
@@ -24,6 +24,7 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	FormData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> getSelectedFormData();
 	
 	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
+	<T> T findControlByClassByIndex(Class<T> aClass, Integer index);
 	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 	void addChoices(String fieldName,List<SELECTITEM> choices);

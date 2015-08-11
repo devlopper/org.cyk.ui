@@ -2,6 +2,8 @@ package org.cyk.ui.test.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +23,7 @@ public class MyIdentifiableDetails1 extends AbstractIdentifiable implements Seri
 
 	private static final long serialVersionUID = 2551782857718212950L;
 	
-	@Input @InputText
+	@Input @InputText @NotNull
 	private String detailsTextOneLine;
 
 	@Input @InputEditor

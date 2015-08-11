@@ -83,6 +83,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.getSubmitCommandable().setLabel(text("command.search"));
 		form.getSubmitCommandable().getCommand().setMessageManager(messageManager);
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
+		form.setFieldsRequiredMessage(null);
 		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":"+WebManager.getInstance().getFormId()+":"+componentId()+":resultsOutputPanel");
 		
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
@@ -116,6 +117,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		table.setShowAddRemoveColumn(Boolean.FALSE);
 		
 		((Commandable)table.getAddRowCommandable()).getButton().setRendered(table.getAddRowCommandable().getRendered());
+		
 	}
 	
 	protected abstract Class<ENTITY> __entityClass__();
@@ -269,6 +271,11 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
 			Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
 		
+	}
+	
+	@Override
+	public Boolean showFieldLabel(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+		return null;
 	}
 	
 }

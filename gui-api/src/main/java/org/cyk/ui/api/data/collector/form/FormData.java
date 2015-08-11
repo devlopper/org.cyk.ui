@@ -28,7 +28,7 @@ public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View 
 	Boolean hasControlSetByIndex(Integer index);
 	
 	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
-	
+	<T> T findControlByClassByIndex(Class<T> aClass,Integer index);
 	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
 }

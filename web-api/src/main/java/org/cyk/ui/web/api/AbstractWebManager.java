@@ -18,6 +18,7 @@ public abstract class AbstractWebManager extends AbstractApplicationUIManager im
 	@Inject protected WebNavigationManager webNavigationManager;
 	@Inject protected WebManager webManager;
 	@Inject protected RoleManager roleManager;
+	@Inject protected JavaScriptHelper javaScriptHelper;
 	
 	@Override
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass,

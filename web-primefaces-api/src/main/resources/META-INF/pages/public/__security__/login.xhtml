@@ -11,7 +11,11 @@
  	<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/login.xhtml">
  		<ui:param name="pageController" value="#{loginPage}" />
  		<ui:define name="body">
- 			
+ 			<style>
+ 				.cyk-ui-form-inputfield{
+					width: 150px !important;
+				}
+ 			</style>
  			<table class="cyk-page-login-table" >
  				<tr><td>
  					<p:panel>

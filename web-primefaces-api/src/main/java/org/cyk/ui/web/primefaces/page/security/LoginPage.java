@@ -51,6 +51,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		contentTitle = uiManager.getApplication().getName();
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.login"));	
+		form.setFieldsRequiredMessage(null);
 		
 		opticalBarCodeReader = new OpticalBarCodeReader("tabview:obcr",opticalDecoderBusiness);
 		opticalBarCodeReader.getOpticalBarCodeReaderListeners().add(new OpticalBarCodeReaderAdapter<Timer>(){

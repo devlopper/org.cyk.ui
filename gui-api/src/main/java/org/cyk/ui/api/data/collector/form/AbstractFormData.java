@@ -51,6 +51,16 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
+	public <T> T findControlByClassByIndex(Class<T> aClass, Integer index) {
+		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
+			T object = set.findControlByIndex(aClass, index);
+			if(object!=null)
+				return object;
+		}
+		return null;
+	}
+	
+	@Override
 	public Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
 		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
 			Input<?, ?, ?, ?, ?, ?> object = set.findInputByFieldName(fieldName);
@@ -87,5 +97,10 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	@Override
 	public void sort(List<Field> fields) {
 		
+	}
+	
+	@Override
+	public Boolean showFieldLabel(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Field field) {
+		return null;
 	}
 }

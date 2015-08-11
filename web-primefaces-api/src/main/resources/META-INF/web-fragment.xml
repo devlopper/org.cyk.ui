@@ -45,11 +45,16 @@
 	<servlet>
 		<servlet-name>Push Servlet</servlet-name>
 		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+		 <load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 		<init-param>
             <param-name>org.atmosphere.cpr.packages</param-name>
             <param-value>org.cyk.ui.web.primefaces.push</param-value>
    		</init-param>
+   		<init-param>
+            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+            <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
+        </init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Push Servlet</servlet-name>

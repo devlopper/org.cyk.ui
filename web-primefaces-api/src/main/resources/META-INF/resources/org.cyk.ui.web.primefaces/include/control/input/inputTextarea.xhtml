@@ -16,8 +16,7 @@
 			<p:inputTextarea id="inputTextarea" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" label="#{control.label}"
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" rows="#{control.rows}" cols="#{control.columns}">
-				<f:attribute name="fieldId" value="#{control.id}" />
-				<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
+				<!--ui:include src="body.xhtml" /-->
 			</p:inputTextarea>		
 		</ui:define>
 	</ui:decorate>
