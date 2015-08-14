@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.message.MailBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
@@ -39,6 +40,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Inject protected GenericBusiness genericBusiness;
 	@Inject protected EventBusiness eventBusiness;
 	@Inject protected LanguageBusiness languageBusiness;
+	@Inject protected MailBusiness mailBusiness;
 	
 	@Inject protected UIManager uiManager;
 	@Inject protected UIProvider uiProvider;
@@ -81,7 +83,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected void mobileViewMapping(){
 		webNavigationManager.mapMobileView("/private/__tools__/event/list", "/private/__tools__/event/agenda");
 	}
-	
+		
 	protected void identifiableConfiguration(ServletContextEvent event){}
 	
 	@Override
