@@ -15,6 +15,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     @Override
     protected void businesses() {
     	installApplication();
+    	System.exit(0);
     }
     
     @Override protected void finds() {}

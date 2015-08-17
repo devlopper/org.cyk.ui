@@ -94,14 +94,31 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	protected Collection<Object> datas(Collection<AbstractIdentifiable> records){
 		Collection<Object> collection = new ArrayList<>();
 		if(records!=null){
-			if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
+			/*if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
 				for(AbstractIdentifiable identifiable : records)	
 					collection.add(identifiable);
 			else
 				for(AbstractIdentifiable identifiable : records)	
 					collection.add(AbstractFormModel.instance(table.getRowDataClass(), identifiable));
+					*/
+			for(AbstractIdentifiable identifiable : records)	
+				collection.add(buildRowData(identifiable));
 		}
 		return collection;
+	}
+	
+	protected Object buildRowData(AbstractIdentifiable entity){
+		if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
+			return identifiable;
+		else if(AbstractFormModel.class.isAssignableFrom(table.getRowDataClass()))
+			return AbstractFormModel.instance(table.getRowDataClass(), identifiable);
+		else
+			try {
+				return table.getRowDataClass().getConstructor(identifiable.getClass()).newInstance(identifiable);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 	}
 	
 	protected void rowAdded(Row<Object> row){}
