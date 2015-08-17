@@ -109,12 +109,12 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	
 	protected Object buildRowData(AbstractIdentifiable entity){
 		if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
-			return identifiable;
+			return entity;
 		else if(AbstractFormModel.class.isAssignableFrom(table.getRowDataClass()))
-			return AbstractFormModel.instance(table.getRowDataClass(), identifiable);
+			return AbstractFormModel.instance(table.getRowDataClass(), entity);
 		else
 			try {
-				return table.getRowDataClass().getConstructor(identifiable.getClass()).newInstance(identifiable);
+				return table.getRowDataClass().getConstructor(entity.getClass()).newInstance(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
