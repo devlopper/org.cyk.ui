@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
@@ -33,6 +34,7 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 	
 	protected NumberBusiness numberBusiness = UIManager.getInstance().getNumberBusiness();
 	protected TimeBusiness timeBusiness = UIManager.getInstance().getTimeBusiness();
+	protected RootBusinessLayer rootBusinessLayer = RootBusinessLayer.getInstance();
 	
 	public void setIdentifiable(ENTITY identifiable) {
 		this.identifiable = identifiable;

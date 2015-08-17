@@ -50,7 +50,7 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		form.setControlSetListener(new ControlSetAdapter<PersonQueryFormModel>(){
+		form.getControlSetListeners().add(new ControlSetAdapter<PersonQueryFormModel>(){
 			
 			@Override
 			public Boolean build(Field field) {

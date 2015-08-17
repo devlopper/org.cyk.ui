@@ -77,7 +77,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		table.setIdentifiableClass(__entityClass__());
 		
 		form = (FormOneData<QUERY>) createFormOneData(query = newInstance(queryClass), Crud.CREATE);
-		form.setControlSetListener((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
+		form.getControlSetListeners().add((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
 		form.setShowCommands(Boolean.FALSE);
 		
 		form.getSubmitCommandable().setLabel(text("command.search"));

@@ -125,6 +125,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 		}
 	}
 	
+	/**/
+	
 	protected String readPostalBox(){
 		if(identifiable.getPostalBoxs()==null)
 			identifiable.setPostalBoxs(new ArrayList<PostalBox>());

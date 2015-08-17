@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.model.geography.ContactCollectionFormModelSimpleLight;
+import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -27,6 +27,10 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 
 	private static final long serialVersionUID = -3897201743383535836L;
 	
+	public static final String FIELD_NAME = "name";
+	public static final String FIELD_IMAGE = "image";
+	public static final String FIELD_CONTACT_COLLECTION_FORM_MODEL = "contactCollectionFormModel";
+	
 	@OutputSeperator(label=@Text(value="field.identity")) 
 	@Input @InputText
 	@NotNull(groups=org.cyk.utility.common.validation.Client.class)
@@ -37,8 +41,7 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
-	//protected AbstractFormModel<ContactCollection> contactCollectionFormModel = new SimpleContactCollectionFormModel();
-	protected ContactCollectionFormModelSimpleLight contactCollectionFormModel = new ContactCollectionFormModelSimpleLight();
+	protected ContactCollectionFormModel contactCollectionFormModel = new ContactCollectionFormModel();
 	
 	@Override
 	public void setIdentifiable(PARTY identifiable) {

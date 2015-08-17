@@ -2,7 +2,9 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.primefaces.context.RequestContext;
@@ -46,6 +49,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
 	private static final String SELECTOR_FORMAT = "@(%s)";
 	private static final String CLASS_SELECTOR_FORMAT = String.format(SELECTOR_FORMAT, ".%s");
+	
+	private final Collection<BusinessEntityFormOnePageListener> businessEntityFormOnePageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;

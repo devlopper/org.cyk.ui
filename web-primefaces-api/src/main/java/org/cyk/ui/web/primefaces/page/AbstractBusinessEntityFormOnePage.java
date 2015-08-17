@@ -15,6 +15,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
 import lombok.Getter;
@@ -49,6 +50,25 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		if(uiManager.isMobileDevice(userDeviceType)){
 			((Commandable)form.getSubmitCommandable()).setUpdate("");
 		}
+		
+		if(StringUtils.isBlank(previousUrl)){
+			//previousUrl = navigationManager.url(businessEntityInfos.getUiListViewId(),null,Boolean.FALSE,Boolean.FALSE);
+			//System.out.println("AbstractBusinessEntityFormOnePage.initialisation() : "+businessEntityInfos.getUiListViewId());
+			
+		}
+		
+		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners()){
+			if(listener.getEntityTypeClass().isAssignableFrom(businessEntityInfos.getClazz()))
+				listener.initialised(this); 
+		}
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners())
+			if(listener.getEntityTypeClass().isAssignableFrom(businessEntityInfos.getClazz()))
+				listener.afterInitialised(this); 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -99,6 +119,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	public Object succeed(UICommand command, Object parameter) {
 		if(StringUtils.isNotBlank(previousUrl))
 			messageDialogOkButtonOnClick=javaScriptHelper.windowHref(previousUrl);
+		else
+			messageDialogOkButtonOnClick = javaScriptHelper.windowBack();
 		return null;
 	}
 

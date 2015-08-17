@@ -13,13 +13,13 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
-import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.party.ActorConsultFormModel;
-import org.cyk.ui.api.model.party.PersonFormModelSimpleLight;
+import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.page.tools.ActorCrudOnePageListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 
@@ -50,7 +50,7 @@ public class ContextListener extends AbstractContextListener {
 		//uiManager.businessEntityInfos(Actor.class).setUiListViewId("pfm1");
 		
 		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("crudperson");
-		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModelSimpleLight.class);
+		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
 		config.setFileSupport(Boolean.TRUE);
 		uiManager.registerConfiguration(config);
 		
@@ -82,17 +82,27 @@ public class ContextListener extends AbstractContextListener {
 				return super.count(dataClass, filter);
 			}
 		});	
+		/*
+		primefacesManager.getBusinessEntityFormOnePageListeners().add(new BusinessEntityFormOnePageAdapter<Person>(){
+			private static final long serialVersionUID = 7115590731648449187L;
+			@Override
+			public Class<Person> getEntityTypeClass() {
+				return Person.class;
+			}
+			@Override
+			public void initialised(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page) {
+				page.getForm().getControlSetListeners().add(new ControlSetAdapter<Object>(){
+					@Override
+					public Boolean build(Field field) {
+						return field.getName().equals("name");
+					}
+				});
+			}
+			
+		});
+		*/
+		
+		primefacesManager.getBusinessEntityFormOnePageListeners().add(new ActorCrudOnePageListener<Actor>(Actor.class));
 	}
-	
-	@Override
-	protected Long alarmScanningPeriod(ServletContextEvent event) {
-		return 1000 * 15l;
-	}
-	
-	@Override
-	public String homeUrl(AbstractUserSession userSession) {
-		//return webNavigationManager.url("test",new Object[]{},Boolean.FALSE,Boolean.FALSE);
-		return null;//webNavigationManager.createManyUrl(uiManager.businessEntityInfos(Person.class),Boolean.FALSE,Boolean.FALSE);
-	}
-	
+			
 }

@@ -12,9 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
@@ -37,12 +34,15 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.party.ActorConsultFormModel;
 import org.cyk.ui.api.model.party.PersonConsultFormModel;
-import org.cyk.ui.api.model.party.PersonFormModelSimpleLight;
+import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -140,7 +140,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		INSTANCE = this;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
-		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
+		//windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
+		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{"CYK Systems"});
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
 		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
@@ -152,7 +153,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		}
 		
 		FORM_MODEL_MAP.put(formModelActorParameter, ActorConsultFormModel.class);
-		DEFAULT_ONE_FORM_MODEL_MAP.put(Person.class, PersonFormModelSimpleLight.class);
+		DEFAULT_ONE_FORM_MODEL_MAP.put(Person.class, PersonFormModel.class);
 		DEFAULT_MANY_FORM_MODEL_MAP.put(Person.class, PersonConsultFormModel.class);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {

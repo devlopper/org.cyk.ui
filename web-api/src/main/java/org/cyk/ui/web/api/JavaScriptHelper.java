@@ -45,6 +45,10 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 		return "window.location='"+url+"';";
 	}
 	
+	public String windowBack(){
+		return "window.history.back();";
+	}
+	
 	public String hide(String path){
 		return "$('"+path+"').hide();";
 	}

@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
@@ -30,14 +27,15 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
 
+import lombok.Getter;
+
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = -1043478880255116994L;
 
 	@Getter protected Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
 	
-	//TODO a temporary solution. Should be a collection
-	@Setter protected ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSetListener;
+	@Getter protected final Collection<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>> controlSetListeners = new ArrayList<>();
 	
 	
 	/**/
@@ -78,8 +76,8 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			formData.setUserDeviceType(userDeviceType);
 			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet = formData.createControlSet();
 			controlSet.setUserDeviceType(formData.getUserDeviceType());
-			if(controlSetListener!=null)
-				controlSet.getControlSetListeners().add(controlSetListener);
+			
+			controlSet.getControlSetListeners().addAll(controlSetListeners);
 			/*
 			for(Field field : commonUtils.getAllFields(getData().getClass(), annotations)){
 				if(field.getAnnotation(Input.class)!=null)
@@ -102,8 +100,8 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,Object data){
 		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
 		new FieldSorter(fields,data.getClass()).sort();
-		if(controlSetListener!=null)
-			controlSetListener.sort(fields);
+		for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners)
+			listener.sort(fields);
 		for(Field field : fields){
 			objectFields.add(new ObjectField(data, field));
 			
@@ -124,9 +122,14 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		new ObjectFieldSorter(objectFields,null).sort();
 		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
-			if(controlSetListener!=null)
-				if(Boolean.FALSE.equals(controlSetListener.build(objectField.getField())))
-					continue;
+			Boolean build = Boolean.TRUE;
+			for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners){
+				Boolean v = listener.build(objectField.getField());
+				if(v!=null)
+					build = Boolean.TRUE.equals(v);
+			}
+			if(Boolean.FALSE.equals(build))
+				continue;
 			OutputSeperator outputSeperator = objectField.getField().getAnnotation(OutputSeperator.class);
 			SeperatorLocation seperatorLocation = null;
 			String separatorLabel = null;

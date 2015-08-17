@@ -2,15 +2,15 @@ package org.cyk.ui.web.primefaces.page.crud;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<IDENTIFIABLE> implements Serializable {
