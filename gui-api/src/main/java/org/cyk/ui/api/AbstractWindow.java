@@ -23,7 +23,6 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
@@ -133,7 +132,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected abstract AbstractTable<Object,?,?> __createTable__();
 	
 	@SuppressWarnings("unchecked")
-	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<AbstractFormModel<?>> customFormModelClass,UsedFor usedFor,Crud crud) {
+	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,UsedFor usedFor,Crud crud) {
 		AbstractTable<Object,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
 		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormModelClass()):customFormModelClass));
@@ -142,21 +141,12 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
 		if(UsedFor.FIELD_INPUT.equals(usedFor))
 			table.setLazyLoad(Boolean.FALSE);
-		//table.setWindow(this);
-		//configureBeforeConstruct(table);
-		((AbstractBean)table).postConstruct();
-		//table.build();
-		//configureAfterConstruct(table);
-		//table.getAddRowCommand().getCommand().setMessageManager(getMessageManager());
-		//table.getSaveRowCommand().setMessageManager(getMessageManager());
-		//table.getDeleteRowCommand().getCommand().setMessageManager(getMessageManager());
-		//table.getCancelRowCommand().setMessageManager(getMessageManager());
-		
+		((AbstractBean)table).postConstruct();		
 		tables.add(table);
 		return table;
 	}
 	
-	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<AbstractFormModel<?>> customFormModelClass) {
+	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<?> customFormModelClass) {
 		return createTable(aDataClass, crudConfig,customFormModelClass,UsedFor.ENTITY_INPUT, Crud.READ);
 	}
 	

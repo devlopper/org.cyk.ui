@@ -40,7 +40,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		Class<? extends AbstractFormModel<?>> aFormClass = __formModelClass__();
+		Class<?> aFormClass = __formModelClass__();
 		if(aFormClass==null)
 			aFormClass = UIManager.DEFAULT_MANY_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) aFormClass);
@@ -91,7 +91,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getDataTable().setCurrentPageReportTemplate("{totalRecords} "+UIManager.getInstance().text("datatable.results"));
 	}
 	
-	protected Collection<Object> datas(Collection<AbstractIdentifiable> records){
+	protected Collection<Object> datas(Collection<ENTITY> records){
 		Collection<Object> collection = new ArrayList<>();
 		if(records!=null){
 			/*if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))

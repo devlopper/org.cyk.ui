@@ -190,9 +190,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
-			if(!Boolean.TRUE.equals(getLazyLoad()))
+			if(!Boolean.TRUE.equals(getLazyLoad())){
 				fetchData(null,null,null,null,null,null);
-			
+				System.out.println("AbstractTable.build()");
+			}
 			if(Boolean.TRUE.equals(getShowHierarchy())){
 				MODEL hierarchyNode = createHierarchyNode();
 				hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));

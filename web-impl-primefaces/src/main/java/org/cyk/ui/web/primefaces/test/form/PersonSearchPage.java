@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.faces.model.SelectItem;
@@ -9,11 +10,15 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.ui.api.data.collector.form.ControlSet;
-import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
@@ -28,14 +33,11 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQueryFormModel, PersonFormModel> implements Serializable {
+public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQueryFormModel, PersonSearchPage.PersonResultFormModel> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
@@ -77,10 +79,21 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 			@Override
 			public void rowAdded(Row<Object> row) {
 				super.rowAdded(row);
-				if(i++%2==0)
-					row.getCascadeStyleSheet().addClass("qwerty_sr");
+				//if(i++%2==0)
+				//	row.getCascadeStyleSheet().addClass("qwerty_sr");
 			}
+			
 		});
+	}
+	
+	@Override
+	protected Boolean isSummaryRow(PersonResultFormModel result) {
+		return StringUtils.isBlank(result.getNames());
+	}
+	
+	@Override
+	protected Boolean autoLoad() {
+		return Boolean.TRUE;
 	}
 	
 	@Override
@@ -94,8 +107,8 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 	}
 
 	@Override
-	protected Class<PersonFormModel> __resultClass__() {
-		return PersonFormModel.class;
+	protected Class<PersonResultFormModel> __resultClass__() {
+		return PersonResultFormModel.class;
 	}
 
 	@Override
@@ -108,6 +121,21 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		return personBusiness.countByCriteria(new PersonSearchCriteria(query.getName()));
 	}	
 	
+	@Override
+	protected Collection<PersonResultFormModel> __results__(Collection<Person> identifiables) {
+		Collection<PersonResultFormModel> collection = new ArrayList<>();
+		int i=0;
+		for(PersonResultFormModel p : super.__results__(identifiables)){
+			collection.add(p);
+			if(i++%2==0){
+				PersonResultFormModel personResultFormModel = new PersonResultFormModel();
+				personResultFormModel.c1 = "RECAP "+i+" Here";
+				collection.add(personResultFormModel);	
+			}		
+		}
+		return collection;
+	}
+		
 	@Getter @Setter
 	public static class PersonQueryFormModel{
 		
@@ -117,6 +145,17 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		@Input @InputText
 		private String lastName;
 		
+	}
+	
+	@Getter @Setter @NoArgsConstructor
+	public static class PersonResultFormModel{
+		
+		@Input @InputText
+		private String names,c1,c2;
+		
+		public PersonResultFormModel(Person person) {
+			names = person.getNames();
+		}
 	}
 	
 }

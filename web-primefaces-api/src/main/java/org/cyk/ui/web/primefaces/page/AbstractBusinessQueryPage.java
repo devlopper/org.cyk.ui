@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -39,6 +40,11 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 
 	private static final long serialVersionUID = -5996159828897377343L;
 
+	public static final CascadeStyleSheet CASCADE_STYLE_SHEET_SUMMARY_ROW = new CascadeStyleSheet();
+	static{
+		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass("cyk-ui-table-summaryrow");
+	}
+	
 	protected Class<ENTITY> entityClass;
 	protected Class<QUERY> queryClass;
 	protected Class<RESULT> resultClass;
@@ -91,7 +97,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 			public Collection<Object> fetchData(Integer first, Integer pageSize, String sortField, Boolean ascendingOrder, Map<String, Object> filters, String globalFilter) {
 				queryFirst = first==null?0l:first.longValue();
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
-					return datas((Collection<AbstractIdentifiable>) __query__());
+					return (Collection<Object>) __results__(__query__());
 				return null;
 			}
 			
@@ -100,6 +106,11 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 					return __count__();
 				return null;
+			}
+			
+			@Override
+			public void rowAdded(Row<Object> row) {
+				super.rowAdded(row);
 			}
 		});
 	}
@@ -127,6 +138,34 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	protected abstract Collection<ENTITY> __query__();
 	protected abstract Long __count__();
 	
+	protected Boolean isSummaryRow(RESULT result){
+		return Boolean.FALSE;
+	}
+	
+	protected CascadeStyleSheet getSummaryRowCss(){
+		return CASCADE_STYLE_SHEET_SUMMARY_ROW;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void rowAdded(Row<Object> row) {
+		super.rowAdded(row);
+		//row.setIsSummary(isSummaryRow((Row<RESULT>) row));
+		if(Boolean.TRUE.equals(isSummaryRow((RESULT) row.getData()))){
+			CascadeStyleSheet css = getSummaryRowCss();
+			if(css!=null){
+				row.getCascadeStyleSheet().addClass(css.getClazz());
+				row.getCascadeStyleSheet().addInline(css.getInline());
+				System.out.println("AbstractBusinessQueryPage.rowAdded()");
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Collection<RESULT> __results__(Collection<ENTITY> identifiables){
+		return (Collection<RESULT>) datas(identifiables);
+	}
+	
 	protected Boolean autoLoad(){
 		return Boolean.FALSE;
 	}
@@ -140,12 +179,9 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		return uiManager.businessEntityInfos(entityClass);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	protected Class<? extends AbstractFormModel<?>> __formModelClass__() {
-		if(AbstractFormModel.class.isAssignableFrom(resultClass))
-			return (Class<? extends AbstractFormModel<?>>)resultClass;
-		return super.__formModelClass__();
+	protected Class<?> __formModelClass__() {
+		return __resultClass__();
 	}
 	
 	@Override
@@ -172,6 +208,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			table.fetchData(0, null, null, null, null, null);
+			table.setFetch(Boolean.FALSE);
 		}
 		
 	}

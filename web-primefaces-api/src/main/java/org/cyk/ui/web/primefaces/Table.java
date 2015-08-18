@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	
 	protected TypedBusiness<?> business;
 	protected LazyDataModel<Row<DATA>> dataModel;
-	protected Boolean fetch = Boolean.TRUE;
+	@Getter @Setter protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l;
 	@Getter protected DataTable dataTable;
 	
@@ -197,7 +198,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 					String filter = (String)filters.get("globalFilter");
-					fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters,filter);
+					if(Boolean.TRUE.equals(fetch))
+						fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters,filter);
+					fetch = Boolean.TRUE;
 					if(StringUtils.isNotBlank(filter)){
 						filter = filter.toLowerCase();
 						for(Row<DATA> row : rows)

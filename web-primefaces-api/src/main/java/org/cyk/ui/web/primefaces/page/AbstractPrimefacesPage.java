@@ -62,53 +62,15 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
 	}
 	
-	/*
-	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		tablesInitialisation();
-	}*/
-	
-	/*
-	protected void buildTables(){
-		super.buildTables();
-		
-		for(AbstractTable<?, ?, ?> atable : tables){
-			buildTable(atable);
-			
-			Table<?> table = (Table<?>) atable;
-			if(!Boolean.TRUE.equals(table.getShowHeader()))
-				hideTableHeader("."+table.getUpdateStyleClass());
-			if(!Boolean.TRUE.equals(table.getShowFooter()))
-				hideTableFooter("."+table.getUpdateStyleClass());
-			
-		}	
-	}
-	*/
-	
 	protected void buildTable(AbstractTable<?, ?, ?> atable){
 		super.buildTable(atable);
 		tableFormatJavaScript((Table<?>) atable,Boolean.TRUE);
 	}
-	/*
-	protected String hideTableHeader(String parentPath,Boolean onDocumentLoad) {
-		return hide(parentPath+" > .ui-datatable-header",onDocumentLoad);
-	}
-	
-	protected String hideTableFooter(String parentPath,Boolean onDocumentLoad) {
-		return hide(parentPath+" > .ui-datatable-tablewrapper > table > tfoot",onDocumentLoad);
-	}*/
 	
 	protected String tableFormatJavaScript(Table<?> table,Boolean onDocumentLoad) {
 		String script = table.getFormatJavaScript();
 		if(Boolean.TRUE.equals(table.getShowHeader()))
 			onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, script);
-		/*	
-		if(!Boolean.TRUE.equals(table.getShowHeader()))
-			script = javaScriptHelper.add(script,hide("."+table.getHeaderStyleClass(),onDocumentLoad));
-		if(!Boolean.TRUE.equals(table.getShowFooter()))
-			script = javaScriptHelper.add(script,hide("."+table.getFooterStyleClass(),onDocumentLoad));
-			*/
 		return script;
 	}
 	
@@ -117,8 +79,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Override
 	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
 		FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
-		//System.out.println("AbstractPrimefacesPage.__createFormOneData__()");
-		//form.setUserDeviceType(UserDeviceType.PHONE);
 		return form;
 	}
 

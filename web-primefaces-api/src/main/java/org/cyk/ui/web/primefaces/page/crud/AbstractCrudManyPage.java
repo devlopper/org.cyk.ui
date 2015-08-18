@@ -55,15 +55,15 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					}
 					
 				}else{
-					Collection<AbstractIdentifiable> records = null;
+					Collection<ENTITY> records = null;
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							records = UIManager.getInstance().find(identifiableClass, first, pageSize, sortField, ascendingOrder, globalFilter);
+							records = (Collection<ENTITY>) uiManager.find(identifiableClass, first, pageSize, sortField, ascendingOrder, globalFilter);
 						else
-							records = UIManager.getInstance().find(identifiableClass, first, pageSize, sortField, ascendingOrder, filters);
+							records = (Collection<ENTITY>) uiManager.find(identifiableClass, first, pageSize, sortField, ascendingOrder, filters);
 					}else
-						records = UIManager.getInstance().getGenericBusiness().use(identifiableClass).find().all();
+						records = (Collection<ENTITY>) uiManager.getGenericBusiness().use(identifiableClass).find().all();
 					
 					/*if(records!=null){
 						if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))

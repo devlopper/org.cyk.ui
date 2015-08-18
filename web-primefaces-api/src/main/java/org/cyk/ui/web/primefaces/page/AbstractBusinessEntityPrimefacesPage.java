@@ -10,7 +10,6 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.WebManager;
 
 @Getter
@@ -23,7 +22,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	protected IdentifiableConfiguration identifiableConfiguration ;
 	protected ENTITY identifiable;
 	protected String formModelClassId;
-	protected Class<? extends AbstractFormModel<?>> formModelClass;
+	protected Class<?> formModelClass;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -46,7 +45,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		return formModelClassId;
 	}
 	
-	protected Class<? extends AbstractFormModel<?>> __formModelClass__(){
+	protected /*Class<? extends AbstractFormModel<?>>*/ Class<?> __formModelClass__(){
 		return formModelClass;
 	}
 	
