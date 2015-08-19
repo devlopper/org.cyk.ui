@@ -50,7 +50,10 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private static final String SELECTOR_FORMAT = "@(%s)";
 	private static final String CLASS_SELECTOR_FORMAT = String.format(SELECTOR_FORMAT, ".%s");
 	
-	private final Collection<BusinessEntityFormOnePageListener> businessEntityFormOnePageListeners = new ArrayList<>();
+	public static final String CSS_CLASS_DATATABLE_SUMMARY_ROW = "ui-datatable-summaryrow";
+	public static final String CSS_CLASS_WIDGET_HEADER = "ui-widget-header";
+	
+	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;

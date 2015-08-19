@@ -192,7 +192,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
 			if(!Boolean.TRUE.equals(getLazyLoad())){
 				fetchData(null,null,null,null,null,null);
-				System.out.println("AbstractTable.build()");
 			}
 			if(Boolean.TRUE.equals(getShowHierarchy())){
 				MODEL hierarchyNode = createHierarchyNode();

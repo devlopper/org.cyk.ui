@@ -27,6 +27,7 @@ import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.model.table.TableAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -42,7 +43,8 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 
 	public static final CascadeStyleSheet CASCADE_STYLE_SHEET_SUMMARY_ROW = new CascadeStyleSheet();
 	static{
-		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass("cyk-ui-table-summaryrow");
+		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass(PrimefacesManager.CSS_CLASS_DATATABLE_SUMMARY_ROW);
+		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass(PrimefacesManager.CSS_CLASS_WIDGET_HEADER);
 	}
 	
 	protected Class<ENTITY> entityClass;
@@ -150,13 +152,11 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	protected void rowAdded(Row<Object> row) {
 		super.rowAdded(row);
-		//row.setIsSummary(isSummaryRow((Row<RESULT>) row));
 		if(Boolean.TRUE.equals(isSummaryRow((RESULT) row.getData()))){
 			CascadeStyleSheet css = getSummaryRowCss();
 			if(css!=null){
 				row.getCascadeStyleSheet().addClass(css.getClazz());
 				row.getCascadeStyleSheet().addInline(css.getInline());
-				System.out.println("AbstractBusinessQueryPage.rowAdded()");
 			}
 		}
 	}
