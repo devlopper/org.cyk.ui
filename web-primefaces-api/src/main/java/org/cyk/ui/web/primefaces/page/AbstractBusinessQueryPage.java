@@ -89,6 +89,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
 			@Override
 			public Collection<Object> fetchData(Integer first, Integer pageSize, String sortField, Boolean ascendingOrder, Map<String, Object> filters, String globalFilter) {
+				table.setNumberOfNullUiIndex(null);
 				queryFirst = first==null?0l:first.longValue();
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 					return (Collection<Object>) __results__(__query__());
@@ -107,6 +108,8 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 				super.rowAdded(row);
 			}
 		});
+		
+		//TODO in order to handle pagination with summary row , extract all non indexed row and render them using JQuery
 		
 	}
 	

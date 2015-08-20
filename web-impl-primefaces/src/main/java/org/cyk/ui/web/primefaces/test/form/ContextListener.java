@@ -65,7 +65,10 @@ public class ContextListener extends AbstractContextListener {
 			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, Integer first, Integer pageSize, String sortField, Boolean ascendingOrder,
 					String filter) {
 				if(Person.class.equals(dataClass)){
-					return (Collection<T>) personBusiness.findByCriteria(new PersonSearchCriteria(filter));
+					PersonSearchCriteria p = new PersonSearchCriteria(filter);
+					p.getReadConfig().setFirstResultIndex(first.longValue());
+					p.getReadConfig().setMaximumResultCount(pageSize.longValue());
+					return (Collection<T>) personBusiness.findByCriteria(p);
 				}else if(Actor.class.equals(dataClass)){
 					return (Collection<T>) actorBusiness.findAll();
 				}

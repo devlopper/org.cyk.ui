@@ -122,6 +122,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 			});
 		}
 		
+		setNumberOfNullUiIndex(null);
+		
 		dataTable.setEditable(getEditable());
 	}
 	
@@ -207,7 +209,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 			return getDataModel();
 		return rows;
 	}
-	
+		
 	public LazyDataModel<Row<DATA>> getDataModel() {
 		if(dataModel==null){
 			dataModel = new LazyDataModel<Row<DATA>>() {
@@ -215,8 +217,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 					String filter = (String)filters.get("globalFilter");
-					if(Boolean.TRUE.equals(fetch))
+					if(Boolean.TRUE.equals(fetch)){
 						fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters,filter);
+					}
 					fetch = Boolean.TRUE;
 					if(StringUtils.isNotBlank(filter)){
 						filter = filter.toLowerCase();

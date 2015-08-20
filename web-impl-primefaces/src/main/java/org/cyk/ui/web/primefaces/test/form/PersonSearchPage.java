@@ -27,8 +27,8 @@ import org.cyk.ui.web.primefaces.page.AbstractBusinessQueryPage;
 import org.cyk.ui.web.primefaces.test.form.PersonSearchPage.PersonQueryFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
-import org.cyk.utility.common.model.table.TableAdapter;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+import org.cyk.utility.common.model.table.TableAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -89,6 +89,7 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 	
 	@Override
 	protected DimensionType getRowType(Row<Object> row) {
+		//return super.getRowType(row);
 		return StringUtils.isBlank(((PersonResultFormModel)row.getData()).getNames()) ? DimensionType.SUMMARY:super.getRowType(row);
 	}
 	
@@ -112,28 +113,39 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		return PersonResultFormModel.class;
 	}
 
+	private PersonSearchCriteria criteria(){
+		PersonSearchCriteria c = new PersonSearchCriteria(query.getName());
+		return c;
+	}
+	
 	@Override
 	protected Collection<Person> __query__() {
-		return personBusiness.findByCriteria(new PersonSearchCriteria(query.getName()));
+		PersonSearchCriteria c = criteria();
+		//c.getReadConfig().setFirstResultIndex(queryFirst);
+		//c.getReadConfig().setMaximumResultCount(3l);
+		return personBusiness.findByCriteria(c);
 	}
 
 	@Override
 	protected Long __count__() {
-		return personBusiness.countByCriteria(new PersonSearchCriteria(query.getName()));
+		return personBusiness.countByCriteria(criteria());
 	}	
 	
 	@Override
 	protected Collection<PersonResultFormModel> __results__(Collection<Person> identifiables) {
+		Integer cb = 0;
 		Collection<PersonResultFormModel> collection = new ArrayList<>();
 		int i=0;
 		for(PersonResultFormModel p : super.__results__(identifiables)){
 			collection.add(p);
-			if(i++%2==0){
+			if(i++%8==0){
 				PersonResultFormModel personResultFormModel = new PersonResultFormModel();
 				personResultFormModel.c1 = "RECAP "+i+" Here";
 				collection.add(personResultFormModel);	
+				cb++;
 			}		
 		}
+		
 		return collection;
 	}
 		

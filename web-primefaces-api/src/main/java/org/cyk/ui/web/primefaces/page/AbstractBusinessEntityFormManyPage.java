@@ -101,7 +101,11 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		paginatorTemplate();
 		
-		onDocumentLoadJavaScript = "$('."+PrimefacesManager.CSS_CLASS_CYK_DATATABLE_SUMMARY_ROW+"').removeClass('ui-datatable-even ui-datatable-odd')";
+		onDocumentLoadJavaScript = "$('."+PrimefacesManager.CSS_CLASS_CYK_DATATABLE_SUMMARY_ROW+"').removeClass('ui-datatable-even ui-datatable-odd');";
+		/*
+		onDocumentLoadJavaScript = onDocumentLoadJavaScript + "$('.ui-table-columntoggle > tbody > tr').eq(2)."
+				+ "after('<tr data-ri=\"2\" class=\"ui-widget-content ui-datatable-even\" role=\"row\" > <td>1</td> <td>zougou</td> <td>3</td> </tr>');";
+		*/
 	}
 	
 	protected CascadeStyleSheet getRowCss(DimensionType dimensionType){
