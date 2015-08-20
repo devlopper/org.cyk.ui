@@ -14,7 +14,6 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -27,7 +26,6 @@ import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
-import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.model.table.TableAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -41,12 +39,6 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 
 	private static final long serialVersionUID = -5996159828897377343L;
 
-	public static final CascadeStyleSheet CASCADE_STYLE_SHEET_SUMMARY_ROW = new CascadeStyleSheet();
-	static{
-		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass(PrimefacesManager.CSS_CLASS_DATATABLE_SUMMARY_ROW);
-		CASCADE_STYLE_SHEET_SUMMARY_ROW.addClass(PrimefacesManager.CSS_CLASS_WIDGET_HEADER);
-	}
-	
 	protected Class<ENTITY> entityClass;
 	protected Class<QUERY> queryClass;
 	protected Class<RESULT> resultClass;
@@ -115,6 +107,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 				super.rowAdded(row);
 			}
 		});
+		
 	}
 	
 	@Override
@@ -140,27 +133,10 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	protected abstract Collection<ENTITY> __query__();
 	protected abstract Long __count__();
 	
-	protected Boolean isSummaryRow(RESULT result){
-		return Boolean.FALSE;
+	protected Boolean isCountableRow(RESULT result){
+		return Boolean.TRUE;
 	}
-	
-	protected CascadeStyleSheet getSummaryRowCss(){
-		return CASCADE_STYLE_SHEET_SUMMARY_ROW;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void rowAdded(Row<Object> row) {
-		super.rowAdded(row);
-		if(Boolean.TRUE.equals(isSummaryRow((RESULT) row.getData()))){
-			CascadeStyleSheet css = getSummaryRowCss();
-			if(css!=null){
-				row.getCascadeStyleSheet().addClass(css.getClazz());
-				row.getCascadeStyleSheet().addInline(css.getInline());
-			}
-		}
-	}
-	
+		
 	@SuppressWarnings("unchecked")
 	protected Collection<RESULT> __results__(Collection<ENTITY> identifiables){
 		return (Collection<RESULT>) datas(identifiables);

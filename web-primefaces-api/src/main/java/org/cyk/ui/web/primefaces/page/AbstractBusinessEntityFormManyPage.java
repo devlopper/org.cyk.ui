@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -22,10 +23,12 @@ import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.model.table.TableAdapter;
+import org.cyk.utility.common.model.table.Dimension.DimensionType;
 
 @Getter
 @Setter
@@ -51,9 +54,22 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
 				return input == null && includeInputs==null;
 			}
+			
+			@Override
+			public void rowCreated(Row<Object> row) {
+				row.setType(getRowType(row));
+				row.setCountable(row.getIsDetail());
+				AbstractBusinessEntityFormManyPage.this.rowCreated(row);
+			}
+			
 			@Override
 			public void rowAdded(Row<Object> row) {
 				super.rowAdded(row);
+				CascadeStyleSheet css = getRowCss(row.getType());
+				if(css!=null){
+					row.getCascadeStyleSheet().addClass(css.getClazz());
+					row.getCascadeStyleSheet().addInline(css.getInline());
+				}
 				AbstractBusinessEntityFormManyPage.this.rowAdded(row);
 			}
 			@Override
@@ -84,6 +100,16 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		title = contentTitle;
 		
 		paginatorTemplate();
+		
+		onDocumentLoadJavaScript = "$('."+PrimefacesManager.CSS_CLASS_CYK_DATATABLE_SUMMARY_ROW+"').removeClass('ui-datatable-even ui-datatable-odd')";
+	}
+	
+	protected CascadeStyleSheet getRowCss(DimensionType dimensionType){
+		return Table.CASCADE_STYLE_SHEET_MAP.get(dimensionType);
+	}
+	
+	protected DimensionType getRowType(Row<Object> row){
+		return row.getType()==null?DimensionType.DETAIL:row.getType();
 	}
 	
 	protected void paginatorTemplate(){
@@ -121,6 +147,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			}
 	}
 	
+	protected void rowCreated(Row<Object> row){}
 	protected void rowAdded(Row<Object> row){}
 	protected void columnAdded(Column column){}
 	protected void cellAdded(Row<Object> row, Column column, Cell cell){}

@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
@@ -24,6 +26,7 @@ import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.omnifaces.util.Ajax;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
@@ -37,6 +40,20 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	private static final long serialVersionUID = -2915809915934469649L;
 	
 	private static final String HIGHLIGHT_MATCH_FORMAT = "<span class=\"cyk-ui-table-search-match\">%s</span>";
+	
+	public static final Map<DimensionType, CascadeStyleSheet> CASCADE_STYLE_SHEET_MAP = new HashMap<>();
+	
+	static{
+		CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
+		cascadeStyleSheet.addClasses(PrimefacesManager.CSS_CLASS_CYK_DATATABLE_SUMMARY_ROW,PrimefacesManager.CSS_CLASS_DATATABLE_ROW_SUMMARY
+				,PrimefacesManager.CSS_CLASS_WIDGET_HEADER);	
+		CASCADE_STYLE_SHEET_MAP.put(DimensionType.SUMMARY, cascadeStyleSheet);
+		
+		cascadeStyleSheet = new CascadeStyleSheet();
+		cascadeStyleSheet.addClasses(PrimefacesManager.CSS_CLASS_CYK_DATATABLE_SUMMARY_ROW,PrimefacesManager.CSS_CLASS_DATATABLE_ROW_SUMMARY,
+				PrimefacesManager.CSS_CLASS_WIDGET_HEADER);	
+		CASCADE_STYLE_SHEET_MAP.put(DimensionType.HEADER, cascadeStyleSheet);
+	}
 	
 	@Getter private MenuModel menuModel;
 	@Getter private Commandable primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;

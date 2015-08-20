@@ -28,6 +28,7 @@ import org.cyk.ui.web.primefaces.test.form.PersonSearchPage.PersonQueryFormModel
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.model.table.TableAdapter;
+import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -87,8 +88,8 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 	}
 	
 	@Override
-	protected Boolean isSummaryRow(PersonResultFormModel result) {
-		return StringUtils.isBlank(result.getNames());
+	protected DimensionType getRowType(Row<Object> row) {
+		return StringUtils.isBlank(((PersonResultFormModel)row.getData()).getNames()) ? DimensionType.SUMMARY:super.getRowType(row);
 	}
 	
 	@Override
