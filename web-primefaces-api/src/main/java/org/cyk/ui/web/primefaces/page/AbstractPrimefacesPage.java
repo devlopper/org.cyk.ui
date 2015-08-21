@@ -46,6 +46,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter transient protected UIManager uiManager;
 	@Inject @Getter transient protected PrimefacesMessageManager messageManager;
 	@Inject @Getter protected UserSession userSession;
+	@Inject protected PrimefacesManager primefacesManager;
 	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
 	private String mobilePageTransition="flip";

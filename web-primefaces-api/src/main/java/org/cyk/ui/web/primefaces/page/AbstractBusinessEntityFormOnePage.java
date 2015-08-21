@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +16,6 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
-import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 
 import lombok.Getter;
@@ -34,6 +34,9 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+			listener.initialisationStarted(this); 
+		
 		crud = crudFromRequestParameter();
 		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		
@@ -57,18 +60,19 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			
 		}
 		
-		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners()){
-			if(listener.getEntityTypeClass().isAssignableFrom(businessEntityInfos.getClazz()))
-				listener.initialised(this); 
-		}
+		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+			listener.initialisationEnded(this); 
+		
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners())
-			if(listener.getEntityTypeClass().isAssignableFrom(businessEntityInfos.getClazz()))
-				listener.afterInitialised(this); 
+		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+			listener.afterInitialisationStarted(this);
+		
+		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+			listener.afterInitialisationEnded(this); 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -94,6 +98,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
+	}
+	
+	private Collection<BusinessEntityFormOnePageListener<?>> getListeners(){
+		return primefacesManager.getBusinessEntityFormOnePageListeners(businessEntityInfos.getClazz());
 	}
 	
 	/**/

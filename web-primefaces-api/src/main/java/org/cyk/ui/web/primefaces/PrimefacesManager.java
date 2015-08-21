@@ -16,6 +16,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
@@ -166,4 +167,12 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		return String.format(CLASS_SELECTOR_FORMAT, input.getUniqueCssClass());
 	}
 
+	public Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
+		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners())
+			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+				results.add(listener);
+		return results;
+	}
+	
 }

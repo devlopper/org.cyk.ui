@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.party.AbstractPartyFormModel;
 import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 public class ActorCrudOnePageListener<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
 
@@ -33,8 +33,9 @@ public class ActorCrudOnePageListener<ACTOR extends AbstractActor> extends Defau
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void initialised(final AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page) {
-		super.initialised(page);
+	public void initialisationEnded(AbstractBean bean) {
+		super.initialisationEnded(bean);
+		final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
 		page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
 			
 			@Override
@@ -61,5 +62,5 @@ public class ActorCrudOnePageListener<ACTOR extends AbstractActor> extends Defau
 			}
 		});
 	}
-	
+		
 }
