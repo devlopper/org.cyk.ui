@@ -71,6 +71,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
 			listener.afterInitialisationStarted(this);
 		
+		// your Code gere
+		
 		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
 	}

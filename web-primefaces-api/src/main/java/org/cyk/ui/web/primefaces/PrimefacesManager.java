@@ -26,6 +26,7 @@ import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -58,6 +59,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public static final String CSS_CLASS_WIDGET_HEADER = "ui-widget-header";
 	
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
+	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;
@@ -169,7 +171,15 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 
 	public Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
-		for(BusinessEntityFormOnePageListener<?> listener : PrimefacesManager.getInstance().getBusinessEntityFormOnePageListeners())
+		for(BusinessEntityFormOnePageListener<?> listener : businessEntityFormOnePageListeners)
+			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+				results.add(listener);
+		return results;
+	}
+	
+	public Collection<BusinessEntityFormManyPageListener<?>> getBusinessEntityFormManyPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<BusinessEntityFormManyPageListener<?>> results = new ArrayList<>();
+		for(BusinessEntityFormManyPageListener<?> listener : businessEntityFormManyPageListeners)
 			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
 				results.add(listener);
 		return results;

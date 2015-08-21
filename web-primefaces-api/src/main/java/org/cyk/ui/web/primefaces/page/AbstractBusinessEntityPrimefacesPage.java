@@ -45,7 +45,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		return formModelClassId;
 	}
 	
-	protected /*Class<? extends AbstractFormModel<?>>*/ Class<?> __formModelClass__(){
+	protected Class<?> __formModelClass__(){
 		return formModelClass;
 	}
 	

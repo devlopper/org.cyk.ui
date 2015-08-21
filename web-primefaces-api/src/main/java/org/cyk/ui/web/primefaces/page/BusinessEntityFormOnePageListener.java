@@ -6,13 +6,6 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 
 public interface BusinessEntityFormOnePageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener<ENTITY> {
 
-	/*
-	Class<ENTITY> getEntityTypeClass();
-	
-	void initialised(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page);
-	
-	void afterInitialised(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page);
-	*/
 	void onSucceed(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page);
 	
 	CreateMode getCreateMode();

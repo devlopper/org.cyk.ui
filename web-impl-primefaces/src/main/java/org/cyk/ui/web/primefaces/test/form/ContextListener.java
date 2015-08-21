@@ -13,13 +13,10 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.model.party.ActorConsultFormModel;
-import org.cyk.ui.api.model.party.PersonFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
-import org.cyk.ui.web.primefaces.page.tools.ActorCrudOnePageListener;
+import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageListener;
+import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 
@@ -45,16 +42,19 @@ public class ContextListener extends AbstractContextListener {
 		UIManager.FORM_MODEL_MAP.put("pfm2", PersonFormModel2.class);
 		UIManager.FORM_MODEL_MAP.put("pfm3", PersonFormModel3.class);*/
 		
-		UIManager.FORM_MODEL_MAP.put("ltfm1", LocalityTypeFormModel.class);
-		UIManager.DEFAULT_MANY_FORM_MODEL_MAP.put(Actor.class, ActorConsultFormModel.class);
+		//UIManager.FORM_MODEL_MAP.put("ltfm1", LocalityTypeFormModel.class);
+		//UIManager.DEFAULT_MANY_FORM_MODEL_MAP.put(Actor.class, ActorConsultFormModel.class);
 		//uiManager.businessEntityInfos(Actor.class).setUiListViewId("pfm1");
 		
 		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("crudperson");
+		
+		/*
 		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
 		config.setFileSupport(Boolean.TRUE);
 		uiManager.registerConfiguration(config);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorFormModel.class));
+		*/
 		
 		uiManager.businessEntityInfos(UserAccount.class).setUiEditViewId("useraccountcrudone");
 		
@@ -105,7 +105,8 @@ public class ContextListener extends AbstractContextListener {
 		});
 		*/
 		
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(new ActorCrudOnePageListener<Actor>(Actor.class));
+		primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<Actor>(Actor.class));
+		primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<Actor>(Actor.class));
 	}
 			
 }

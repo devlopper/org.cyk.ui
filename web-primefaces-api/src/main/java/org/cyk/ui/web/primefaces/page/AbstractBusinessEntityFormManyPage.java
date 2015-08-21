@@ -43,6 +43,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+			listener.initialisationStarted(this); 
+		
 		Class<?> aFormClass = __formModelClass__();
 		if(aFormClass==null)
 			aFormClass = UIManager.DEFAULT_MANY_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
@@ -106,6 +109,21 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		onDocumentLoadJavaScript = onDocumentLoadJavaScript + "$('.ui-table-columntoggle > tbody > tr').eq(2)."
 				+ "after('<tr data-ri=\"2\" class=\"ui-widget-content ui-datatable-even\" role=\"row\" > <td>1</td> <td>zougou</td> <td>3</td> </tr>');";
 		*/
+		
+		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+			listener.initialisationEnded(this); 
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+			listener.afterInitialisationStarted(this); 
+		
+		// Your code here
+		
+		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+			listener.afterInitialisationEnded(this); 
 	}
 	
 	protected CascadeStyleSheet getRowCss(DimensionType dimensionType){
@@ -149,6 +167,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				e.printStackTrace();
 				return null;
 			}
+	}
+	
+	private Collection<BusinessEntityFormManyPageListener<?>> getListeners(){
+		return primefacesManager.getBusinessEntityFormManyPageListeners(businessEntityInfos.getClazz());
 	}
 	
 	protected void rowCreated(Row<Object> row){}

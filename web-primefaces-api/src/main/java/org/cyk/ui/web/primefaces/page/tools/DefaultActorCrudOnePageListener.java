@@ -14,11 +14,11 @@ import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public class ActorCrudOnePageListener<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
+public class DefaultActorCrudOnePageListener<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 
-	public ActorCrudOnePageListener(Class<ACTOR> entityTypeClass,CreateMode createMode) {
+	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass,CreateMode createMode) {
 		super(entityTypeClass, createMode);
 		onCreateFields.add(AbstractPartyFormModel.FIELD_NAME);
 		onCreateFields.add(PersonFormModel.FIELD_LAST_NAME);
@@ -27,7 +27,7 @@ public class ActorCrudOnePageListener<ACTOR extends AbstractActor> extends Defau
 		requiredFields.add(PersonFormModel.FIELD_LAST_NAME);
 	}
 
-	public ActorCrudOnePageListener(Class<ACTOR> entityTypeClass) {
+	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass) {
 		this(entityTypeClass,CreateMode.FAST);
 	}
 	

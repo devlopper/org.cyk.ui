@@ -15,19 +15,5 @@ public class DefaultBusinessEntityFormOnePageAdapter<ENTITY extends AbstractIden
 	public DefaultBusinessEntityFormOnePageAdapter(Class<ENTITY> entityTypeClass) {
 		this(entityTypeClass,CreateMode.FAST);
 	}
-	
-	@Override
-	public Class<ENTITY> getEntityTypeClass() {
-		return entityTypeClass;
-	}
-	
-	/*
-	@Override
-	public void initialised(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page) {
-		super.initialised(page);
-		if(StringUtils.isEmpty(page.getPreviousUrl())){
-			page.setPreviousUrl(page.);
-		}
-	}*/
-	
+		
 }
