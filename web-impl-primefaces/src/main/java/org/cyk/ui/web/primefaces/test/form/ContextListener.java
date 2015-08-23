@@ -19,6 +19,7 @@ import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageListener;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -62,27 +63,25 @@ public class ContextListener extends AbstractContextListener {
 			private static final long serialVersionUID = 4605368263736933413L;
 			@SuppressWarnings("unchecked")
 			@Override
-			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, Integer first, Integer pageSize, String sortField, Boolean ascendingOrder,
-					String filter) {
+			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, DataReadConfiguration configuration) {
 				if(Person.class.equals(dataClass)){
-					PersonSearchCriteria p = new PersonSearchCriteria(filter);
-					p.getReadConfig().setFirstResultIndex(first.longValue());
-					p.getReadConfig().setMaximumResultCount(pageSize.longValue());
+					PersonSearchCriteria p = new PersonSearchCriteria(configuration.getGlobalFilter());
+					p.getReadConfig().set(configuration);
 					return (Collection<T>) personBusiness.findByCriteria(p);
 				}else if(Actor.class.equals(dataClass)){
 					return (Collection<T>) actorBusiness.findAll();
 				}
-				return super.find(dataClass, first, pageSize, sortField, ascendingOrder, filter);
+				return super.find(dataClass, configuration);
 			}
 			
 			@Override
-			public <T extends AbstractIdentifiable> Long count(Class<T> dataClass, String filter) {
+			public <T extends AbstractIdentifiable> Long count(Class<T> dataClass, DataReadConfiguration configuration) {
 				if(Person.class.equals(dataClass)){
-					return personBusiness.countByCriteria(new PersonSearchCriteria((String) filter));
+					return personBusiness.countByCriteria(new PersonSearchCriteria(configuration.getGlobalFilter()));
 				}else if(Actor.class.equals(dataClass)){
 					return actorBusiness.countAll();
 				}
-				return super.count(dataClass, filter);
+				return super.count(dataClass, configuration);
 			}
 		});	
 		/*

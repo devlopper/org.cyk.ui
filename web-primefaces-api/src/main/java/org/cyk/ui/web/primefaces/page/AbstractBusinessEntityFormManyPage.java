@@ -5,9 +5,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
@@ -20,15 +17,20 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.CellAdapter;
 import org.cyk.ui.api.model.table.Column;
+import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.model.table.TableAdapter;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -50,24 +52,17 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		if(aFormClass==null)
 			aFormClass = UIManager.DEFAULT_MANY_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) aFormClass);
-		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
+		
+		table.getRowListeners().add(new RowAdapter<Object>(){
 			@Override
-			public Boolean ignore(Field field) {
-				Input input = field.getAnnotation(Input.class);
-				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
-				return input == null && includeInputs==null;
-			}
-			
-			@Override
-			public void rowCreated(Row<Object> row) {
+			public void created(Row<Object> row) {
 				row.setType(getRowType(row));
 				row.setCountable(row.getIsDetail());
 				AbstractBusinessEntityFormManyPage.this.rowCreated(row);
 			}
-			
 			@Override
-			public void rowAdded(Row<Object> row) {
-				super.rowAdded(row);
+			public void added(Row<Object> row) {
+				super.added(row);
 				CascadeStyleSheet css = getRowCss(row.getType());
 				if(css!=null){
 					row.getCascadeStyleSheet().addClass(css.getClazz());
@@ -75,17 +70,28 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				}
 				AbstractBusinessEntityFormManyPage.this.rowAdded(row);
 			}
+		});
+		table.getColumnListeners().add(new ColumnAdapter(){
 			@Override
-			public void columnAdded(Column column) {
-				super.columnAdded(column);
-				AbstractBusinessEntityFormManyPage.this.columnAdded(column);
+			public Boolean isColumn(Field field) {
+				Input input = field.getAnnotation(Input.class);
+				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
+				return input != null || includeInputs!=null;
 			}
 			@Override
-			public void cellAdded(Row<Object> row, Column column, Cell cell) {
-				super.cellAdded(row, column, cell);
+			public void added(Column column) {
+				super.added(column);
+				AbstractBusinessEntityFormManyPage.this.columnAdded(column);
+			}
+		});
+		table.getCellListeners().add(new CellAdapter<Object>(){
+			@Override
+			public void added(Row<Object> row, Column column, Cell cell) {
+				super.added(row, column, cell);
 				AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);
 			}
 		});
+		
 		table.getAddRowCommandable().getCommand().getCommandListeners().add(this);
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
 		table.addColumnFromDataClass();

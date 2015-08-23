@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -26,6 +23,7 @@ import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.omnifaces.util.Ajax;
 import org.primefaces.component.datatable.DataTable;
@@ -34,6 +32,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> implements Serializable {
 
@@ -217,8 +218,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 					String filter = (String)filters.get("globalFilter");
+					DataReadConfiguration configuration = new DataReadConfiguration((long)first,(long)pageSize, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 					if(Boolean.TRUE.equals(fetch)){
-						fetchData(first, pageSize, sortField,SortOrder.ASCENDING.equals(sortOrder), filters,filter);
+						Table.this.load(configuration);
 					}
 					fetch = Boolean.TRUE;
 					if(StringUtils.isNotBlank(filter)){
@@ -228,7 +230,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 								String temp = StringUtils.lowerCase(cell.getValue());
 								Integer index = StringUtils.indexOf(temp, filter); 
 								if(index==-1){
-								
+								 
 								}else if(index>=0){
 									cell.setValue(StringUtils.substring(cell.getValue(), 0,index)
 											+String.format(HIGHLIGHT_MATCH_FORMAT, StringUtils.substring(cell.getValue(), index, index+filter.length()))
@@ -237,7 +239,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 							
 							}
 					}
-					resultsCount =  count(filter);
+					resultsCount =  count(configuration);
 					return rows;
 				}
 				

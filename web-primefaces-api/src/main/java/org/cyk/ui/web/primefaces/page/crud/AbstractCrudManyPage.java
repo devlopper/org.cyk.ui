@@ -3,10 +3,6 @@ package org.cyk.ui.web.primefaces.page.crud;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessLocator;
@@ -14,12 +10,13 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.model.table.Cell;
-import org.cyk.ui.api.model.table.Column;
-import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.computation.Function;
-import org.cyk.utility.common.model.table.TableAdapter;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements Serializable {
@@ -30,10 +27,10 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 	protected void initialisation() {
 		super.initialisation();
 		table.setEditable(Boolean.TRUE);
-		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
+		table.getRowListeners().add(new RowAdapter<Object>(){
 			@SuppressWarnings("unchecked")
 			@Override
-			public Collection<Object> fetchData(Integer first, Integer pageSize, String sortField, Boolean ascendingOrder, Map<String, Object> filters, String globalFilter) {
+			public Collection<Object> load(DataReadConfiguration configuration) {
 				table.clear();
 				Collection<Object> results = new ArrayList<>();
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
@@ -59,9 +56,9 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							records = (Collection<ENTITY>) uiManager.find(identifiableClass, first, pageSize, sortField, ascendingOrder, globalFilter);
+							records = (Collection<ENTITY>) uiManager.find(identifiableClass, configuration);
 						else
-							records = (Collection<ENTITY>) uiManager.find(identifiableClass, first, pageSize, sortField, ascendingOrder, filters);
+							records = (Collection<ENTITY>) uiManager.find(identifiableClass, configuration);
 					}else
 						records = (Collection<ENTITY>) uiManager.getGenericBusiness().use(identifiableClass).find().all();
 					
@@ -80,20 +77,20 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Long count(String filter) {
+			public Long count(DataReadConfiguration configuration) {
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
 					
 				}else{
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							return UIManager.getInstance().count(identifiableClass, filter);
+							return uiManager.count(identifiableClass, configuration);
 						else
-							return UIManager.getInstance().count(identifiableClass, filter);
+							return uiManager.count(identifiableClass, configuration);
 					}else
 						return UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
 				}
-				return super.count(filter);
+				return super.count(configuration);
 			}
 		});	
 		

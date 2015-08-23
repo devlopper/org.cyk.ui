@@ -8,9 +8,6 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -21,17 +18,18 @@ import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.data.collector.form.ControlSetListener;
-import org.cyk.ui.api.model.table.Cell;
-import org.cyk.ui.api.model.table.Column;
-import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-import org.cyk.utility.common.model.table.TableAdapter;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifiable,QUERY,RESULT> extends AbstractBusinessEntityFormManyPage<ENTITY> 
@@ -86,27 +84,23 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.setFieldsRequiredMessage(null);
 		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":"+WebManager.getInstance().getFormId()+":"+componentId()+":resultsOutputPanel");
 		
-		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
+		table.getRowListeners().add(new RowAdapter<Object>(){
 			@Override
-			public Collection<Object> fetchData(Integer first, Integer pageSize, String sortField, Boolean ascendingOrder, Map<String, Object> filters, String globalFilter) {
+			public Collection<Object> load(DataReadConfiguration configuration) {
 				table.setNumberOfNullUiIndex(null);
-				queryFirst = first==null?0l:first.longValue();
+				queryFirst = configuration.getFirstResultIndex()==null?0l:configuration.getFirstResultIndex();
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 					return (Collection<Object>) __results__(__query__());
 				return null;
 			}
 			
 			@Override
-			public Long count(String filter) {
+			public Long count(DataReadConfiguration configuration) {
 				if(Boolean.TRUE.equals(form.getSubmitCommandable().getRequested()))
 					return __count__();
 				return null;
 			}
 			
-			@Override
-			public void rowAdded(Row<Object> row) {
-				super.rowAdded(row);
-			}
 		});
 		
 		//TODO in order to handle pagination with summary row , extract all non indexed row and render them using JQuery
@@ -186,7 +180,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
-			table.fetchData(0, null, null, null, null, null);
+			table.load(new DataReadConfiguration(0l, null, null, null, null, null));
 			table.setFetch(Boolean.FALSE);
 		}
 		

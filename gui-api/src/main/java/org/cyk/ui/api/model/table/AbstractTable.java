@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -38,8 +36,11 @@ import org.cyk.ui.api.model.TreeAdapter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Table;
-import org.cyk.utility.common.model.table.TableAdapter;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter @Setter
@@ -73,6 +74,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected UICommand lastExecutedCommand;
 	protected RenderType renderType = RenderType.TABLE;
+	protected LanguageBusiness languageBusiness = UIManager.getInstance().getLanguageBusiness();
+	protected UIProvider uiProvider = UIProvider.getInstance();
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
@@ -117,38 +120,32 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		//reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter()); //has been move on demand because of customization
 		printCommandable.getParameters().add(new Parameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE));
 		
-		getTableListeners().add(new TableAdapter<Row<DATA>, Column, DATA, String, Cell, String>(){
+		columnListeners.add(new ColumnAdapter(){
 			@Override
-			public void addColumnFromDataClass(Class<?> aClass,Collection<Field> fields) {
+			public void populateFromDataClass(Class<?> aClass, List<Field> fields) {
 				List<Field> f = new ArrayList<>();
-				__fields__(f, rowDataClass,UIProvider.getInstance().annotationClasses());
+				__fields__(f, rowDataClass,uiProvider.annotationClasses());
 				fields.addAll(f);
 			}
 			@Override
-			public void columnAdded(Column column) {
-				super.columnAdded(column);
-				column.setTitle(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(column.getField()));
+			public void added(Column column) {
+				super.added(column);
+				column.setTitle(languageBusiness.findFieldLabelText(column.getField()));
 			}
+		});
+		rowListeners.add(new RowAdapter<DATA>(){
 			
+		});
+		
+		cellListeners.add(new CellAdapter<DATA>(){
 			@Override
-			public String cellValue(Row<DATA> row, Column column) {
+			public String getValue(Row<DATA> row, Column column) {
 				Object value = commonUtils.readField(row.getData(), column.getField(),!column.getField().getDeclaringClass().isAssignableFrom(rowDataClass),Boolean.FALSE,
 						UIProvider.getInstance().annotationClasses());
-				//if( value!=null )
-					//System.out.println(column.getField().getName()+" - "+value);
 				return UIProvider.getInstance().formatValue(column.getField(), value);
 			}
-			
 			@Override
-			public void cellAdded(Row<DATA> row, Column column, Cell cell) {
-				/*
-				Object object = null;
-				if(column.getField().getDeclaringClass().equals(rowDataClass)){
-					object = row.getData();
-				}
-				if(object!=null)
-					cell.setValue(UIProvider.getInstance().readOnlyValue(column.getField(), object));
-				*/
+			public void added(Row<DATA> row, Column column, Cell cell) {
 				cell.setIsFile(UIProvider.getInstance().isFile(column.getField()));
 				if(Boolean.TRUE.equals(cell.getIsFile()))
 					cell.setIsImage(UIProvider.getInstance().isImage(column.getField()));
@@ -158,11 +155,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 					cell.setControl(UIProvider.getInstance().createFieldControl(row.getData(), column.getField()));
 				}
 			}
-		});	
+		});
+		
 		
 		showToolBar = UsedFor.ENTITY_INPUT.equals(usedFor);
-		
-		
 	}
 	
 	protected void reportCommandable(UICommandable commandable,String fileExtension){
@@ -191,7 +187,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
 			if(!Boolean.TRUE.equals(getLazyLoad())){
-				fetchData(null,null,null,null,null,null);
+				DataReadConfiguration configuration = new DataReadConfiguration();
+				load(configuration);
 			}
 			if(Boolean.TRUE.equals(getShowHierarchy())){
 				MODEL hierarchyNode = createHierarchyNode();

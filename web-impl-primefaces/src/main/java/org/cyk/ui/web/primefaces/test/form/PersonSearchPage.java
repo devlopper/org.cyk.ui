@@ -10,17 +10,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.ui.api.data.collector.form.ControlSet;
-import org.cyk.ui.api.model.table.Cell;
-import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessQueryPage;
@@ -28,11 +22,14 @@ import org.cyk.ui.web.primefaces.test.form.PersonSearchPage.PersonQueryFormModel
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
-import org.cyk.utility.common.model.table.TableAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -76,15 +73,6 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 			}
 		}); 
 		
-		table.getTableListeners().add(new TableAdapter<Row<Object>, Column, Object, String, Cell, String>(){
-			@Override
-			public void rowAdded(Row<Object> row) {
-				super.rowAdded(row);
-				//if(i++%2==0)
-				//	row.getCascadeStyleSheet().addClass("qwerty_sr");
-			}
-			
-		});
 	}
 	
 	@Override

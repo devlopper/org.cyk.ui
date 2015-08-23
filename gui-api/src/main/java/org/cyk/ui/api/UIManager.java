@@ -40,6 +40,7 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
+import org.cyk.utility.common.computation.DataReadConfiguration;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -307,36 +308,18 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 
-	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, Map<String, Object> filters) {
+	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, DataReadConfiguration dataReadConfiguration) {
 		for(BusinessListener listener : businessListeners){
-			Long count = listener.count(aClass, filters);
+			Long count = listener.count(aClass, dataReadConfiguration);
 			if(count!=null)
 				return count;
 		}	
 		return null;
 	}
 
-	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, String filter) {
+	public <T extends AbstractIdentifiable> Collection<T> find(Class<T> aClass,DataReadConfiguration dataReadConfiguration) {
 		for(BusinessListener listener : businessListeners){
-			Long count = listener.count(aClass,filter);
-			if(count!=null)
-				return count;
-		}	
-		return null;
-	}
-
-	public <T extends AbstractIdentifiable> Collection<T> find(Class<T> aClass, Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,Map<String, Object> filters) {
-		for(BusinessListener listener : businessListeners){
-			Collection<T> collection = listener.find(aClass, first, pageSize, sortField, ascendingOrder, filters);
-			if(collection!=null)
-				return collection;
-		}
-		return null;
-	}
-	
-	public <T extends AbstractIdentifiable> Collection<T> find(Class<T> aClass, Integer first, Integer pageSize,String sortField, Boolean ascendingOrder,String filter) {
-		for(BusinessListener listener : businessListeners){
-			Collection<T> collection = listener.find(aClass, first, pageSize, sortField, ascendingOrder, filter);
+			Collection<T> collection = listener.find(aClass,dataReadConfiguration);
 			if(collection!=null)
 				return collection;
 		}
