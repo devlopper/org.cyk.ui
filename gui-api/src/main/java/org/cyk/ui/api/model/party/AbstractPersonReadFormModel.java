@@ -12,29 +12,37 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionReadFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @NoArgsConstructor
-public abstract class AbstractPersonConsultFormModel<ENTITY extends AbstractIdentifiable> extends AbstractFormModel<ENTITY>  implements Serializable {
+public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	
-	@Input @InputText private String firstName,lastName,contacts;
+	@Input @InputText protected String firstName,lastName;
 	
-	protected abstract Person getPerson();
+	@OutputSeperator(label=@Text(value="field.contacts")) 
+	@IncludeInputs(layout=Layout.VERTICAL) 
+	protected ContactCollectionReadFormModel contactCollectionFormModel = new ContactCollectionReadFormModel();
 	
-	@Override
-	public void read() {
+	public AbstractPersonReadFormModel(ENTITY entity){
 		photo = getPerson().getImage();
 		firstName = getPerson().getName();
 		lastName = getPerson().getLastName();
+		contactCollectionFormModel.setIdentifiable(getPerson().getContactCollection());
+		/*
 		if(getPerson().getContactCollection()!=null){
 			UIManager.getInstance().getContactCollectionBusiness().load(getPerson().getContactCollection());//TODO should be done with many and not one to improve speed
 			StringBuilder s = new StringBuilder();
@@ -45,8 +53,11 @@ public abstract class AbstractPersonConsultFormModel<ENTITY extends AbstractIden
 			newLine = appendContacts(s,getPerson().getContactCollection().getPostalBoxs(),newLine);
 			contacts = s.toString();
 		}
+		*/
 	}
 	
+	protected abstract Person getPerson();
+		
 	private Boolean appendContacts(StringBuilder builder,Collection<?> collection,Boolean newLine){
 		if(collection!=null && !collection.isEmpty()){
 			if(Boolean.TRUE.equals(newLine))

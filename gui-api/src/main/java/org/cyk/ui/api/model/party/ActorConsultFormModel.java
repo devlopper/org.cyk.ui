@@ -14,7 +14,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
 @Getter @Setter @NoArgsConstructor
-public class ActorConsultFormModel extends AbstractPersonConsultFormModel<AbstractActor>  implements Serializable {
+public class ActorConsultFormModel extends AbstractPersonReadFormModel<AbstractActor>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 

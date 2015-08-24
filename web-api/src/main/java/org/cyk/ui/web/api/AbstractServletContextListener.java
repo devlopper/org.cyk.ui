@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.GenericBusiness;
@@ -31,6 +32,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
 
@@ -70,9 +72,16 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		mobileViewMapping();
 		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
 		
-		/*for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
-			if(businessEntityInfos.getc)
-		}*/
+		
+		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
+			if(CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
+				if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+					businessEntityInfos.setUiEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+				if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
+					businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());
+			}
+		}
+		
 		
 		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();

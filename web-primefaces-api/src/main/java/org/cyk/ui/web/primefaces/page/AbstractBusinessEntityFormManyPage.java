@@ -96,11 +96,6 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getAddRowCommandable().getCommand().getCommandListeners().add(this);
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
 		
-		//System.out.println(table.getIdentifiableConfiguration());
-		//System.out.println(table.getIdentifiableClass());
-		//System.out.println(table.getRowDataClass());
-		
-		//table.addColumnFromDataClass();
 		table.setMaster(identifiable);
 		table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 2679004450545381808L;
