@@ -135,8 +135,16 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,UsedFor usedFor,Crud crud) {
 		AbstractTable<Object,?,?> table = __createTable__();
 		table.setUsedFor(usedFor);
-		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormModelClass()):customFormModelClass));
+		/*
+		System.out.println("AbstractWindow.createTable() : "+customFormModelClass);
+		System.out.println(aDataClass);
+		System.out.println(configuration);
+		System.out.println(customFormModelClass);
+		*/
+		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getReadManyFormModelClass()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
+		//table.setIdentifiableClass((Class<? extends AbstractIdentifiable>) (configuration==null?aDataClass:configuration.getIdentifiableClass()));
+		
 		table.setCrud(crud);
 		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
 		if(UsedFor.FIELD_INPUT.equals(usedFor))

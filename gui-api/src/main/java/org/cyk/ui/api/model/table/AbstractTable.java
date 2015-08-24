@@ -184,6 +184,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
+		logTrace("Table build - Identifiable {}", identifiableClass.getSimpleName());
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
 			if(!Boolean.TRUE.equals(getLazyLoad())){

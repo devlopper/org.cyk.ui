@@ -11,7 +11,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.hibernate.validator.constraints.Email;
 
 @Getter @Setter
-public class ContactCollectionFormModel extends AbstractContactCollectionFormModel implements Serializable {
+public class ContactCollectionEditFormModel extends AbstractContactCollectionFormModel implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 

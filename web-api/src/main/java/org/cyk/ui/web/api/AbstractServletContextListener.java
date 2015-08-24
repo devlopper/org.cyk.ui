@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
@@ -68,9 +69,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		WebNavigationManager.init(event.getServletContext().getContextPath());
 		mobileViewMapping();
 		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
-		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("personEditView");
-		//uiManager.businessEntityInfos(Person.class).setUiListViewId("personListView");
-		//UIManager.FORM_MODEL_MAP.put(uiManager.getFormModelActorParameter(), ActorConsultFormModel.class);
+		
+		/*for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
+			if(businessEntityInfos.getc)
+		}*/
+		
 		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();

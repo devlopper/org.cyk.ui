@@ -9,13 +9,10 @@ import lombok.Setter;
 import org.cyk.system.root.model.party.person.Person;
 
 @Getter @Setter @NoArgsConstructor
-public class PersonConsultFormModel extends AbstractPersonConsultFormModel<Person>  implements Serializable {
+public class PersonReadFormModel extends AbstractPartyReadFormModel<Person>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@Override
-	protected Person getPerson() {
-		return identifiable;
-	}
+	
 				
 }

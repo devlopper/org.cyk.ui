@@ -9,7 +9,7 @@ import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.party.person.MaritalStatus;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.Sex;
-import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class PersonFormModel extends AbstractPartyFormModel<Person>  implements Serializable {
+public class PersonEditFormModel extends AbstractPartyEditFormModel<Person>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
@@ -65,7 +65,7 @@ public class PersonFormModel extends AbstractPartyFormModel<Person>  implements 
 	}
 	
 	@Override @Sequence(direction=Direction.AFTER,field=FIELD_IMAGE)
-	public ContactCollectionFormModel getContactCollectionFormModel() {
+	public ContactCollectionEditFormModel getContactCollectionFormModel() {
 		return super.getContactCollectionFormModel();
 	}
 	

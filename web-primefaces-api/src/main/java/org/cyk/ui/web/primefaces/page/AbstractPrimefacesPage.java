@@ -186,7 +186,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected void configureDetailsTable(Table<?> table,String titleId){
-		table.addColumnFromDataClass();
+		//table.addColumnFromDataClass();
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(titleId))
 			table.setShowHeader(Boolean.FALSE);

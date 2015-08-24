@@ -5,21 +5,19 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -30,7 +28,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected Crud crud;
 	protected FormOneData<Object> form;
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
@@ -38,12 +35,16 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			listener.initialisationStarted(this); 
 		
 		crud = crudFromRequestParameter();
-		IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+		//IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		
+		/*
 		formModelClass = __formModelClass__();
-		if(formModelClass==null)
-			formModelClass = UIManager.DEFAULT_ONE_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
-		Object data = data(formModelClass==null?(configuration==null?businessEntityInfos.getClazz():configuration.getFormModelClass()):formModelClass);
+		if(formModelClass==null){
+			formModelClass = UIManager.FORM_MODEL_MAP.get(webManager.getRequestParameterFormModel());
+			//formModelClass = UIManager.DEFAULT_ONE_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
+		}
+		*/
+		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getEditOneFormModelClass()):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);

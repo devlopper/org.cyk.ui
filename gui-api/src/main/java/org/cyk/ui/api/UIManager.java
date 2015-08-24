@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
@@ -31,19 +34,14 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.model.party.ActorConsultFormModel;
-import org.cyk.ui.api.model.party.PersonConsultFormModel;
-import org.cyk.ui.api.model.party.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonEditFormModel;
+import org.cyk.ui.api.model.party.PersonReadFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 import org.cyk.utility.common.computation.DataReadConfiguration;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -54,9 +52,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
-	public static final Map<String, Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> FORM_MODEL_MAP = new HashMap<>();
-	public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
-	public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_ONE_FORM_MODEL_MAP = new HashMap<>();
+	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
+	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
+	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_ONE_FORM_MODEL_MAP = new HashMap<>();
 	
 	public static final String PUSH_CHANNEL_VAR = "channel";
 	public static final String PUSH_RECEIVER_VAR = "receiver";
@@ -153,9 +151,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		FORM_MODEL_MAP.put(formModelActorParameter, ActorConsultFormModel.class);
-		DEFAULT_ONE_FORM_MODEL_MAP.put(Person.class, PersonFormModel.class);
-		DEFAULT_MANY_FORM_MODEL_MAP.put(Person.class, PersonConsultFormModel.class);
+		IdentifiableConfiguration personConfiguration = new IdentifiableConfiguration(Person.class,PersonEditFormModel.class,PersonReadFormModel.class);
+		registerConfiguration(personConfiguration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -4679710339375267115L;

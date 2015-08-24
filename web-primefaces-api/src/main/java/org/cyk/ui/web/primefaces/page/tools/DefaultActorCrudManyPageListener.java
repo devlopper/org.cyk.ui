@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.model.party.AbstractPartyFormModel;
-import org.cyk.ui.api.model.party.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonEditFormModel;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
@@ -18,7 +18,7 @@ public class DefaultActorCrudManyPageListener<ACTOR extends AbstractActor> exten
 	public DefaultActorCrudManyPageListener(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
 		onReadFields.add(AbstractPartyFormModel.FIELD_NAME);
-		onReadFields.add(PersonFormModel.FIELD_LAST_NAME);
+		onReadFields.add(PersonEditFormModel.FIELD_LAST_NAME);
 		//onCreateFields.add(ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER);
 	}
 	

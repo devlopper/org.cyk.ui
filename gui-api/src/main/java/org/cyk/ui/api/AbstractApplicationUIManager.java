@@ -62,7 +62,7 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass,
 			String uiEditViewId){
-		identifiableConfiguration(aClass).setFormModelClass(formModelClass);
+		//identifiableConfiguration(aClass).setFormModelClass(formModelClass);
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		if(StringUtils.isNotBlank(uiEditViewId))
 			businessEntityInfos.setUiEditViewId(uiEditViewId);

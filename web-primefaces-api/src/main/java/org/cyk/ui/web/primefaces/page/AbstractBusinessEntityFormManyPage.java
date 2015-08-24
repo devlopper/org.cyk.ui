@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
@@ -29,11 +32,7 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
 	implements CommandListener, Serializable {
 
@@ -48,10 +47,12 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.initialisationStarted(this); 
 		
-		Class<?> aFormClass = __formModelClass__();
-		if(aFormClass==null)
-			aFormClass = UIManager.DEFAULT_MANY_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
-		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) aFormClass);
+		/*Class<?> aFormClass = __formModelClass__();
+		if(aFormClass==null){
+			// TODO Form can be provided by URL parameter registered in Form Map
+			aFormClass = UIManager.FORM_MODEL_MAP.get(webManager.getRequestParameterFormModel());
+		}*/
+		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass);
 		
 		table.getRowListeners().add(new RowAdapter<Object>(){
 			@Override
@@ -94,7 +95,12 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		table.getAddRowCommandable().getCommand().getCommandListeners().add(this);
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
-		table.addColumnFromDataClass();
+		
+		//System.out.println(table.getIdentifiableConfiguration());
+		//System.out.println(table.getIdentifiableClass());
+		//System.out.println(table.getRowDataClass());
+		
+		//table.addColumnFromDataClass();
 		table.setMaster(identifiable);
 		table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 2679004450545381808L;

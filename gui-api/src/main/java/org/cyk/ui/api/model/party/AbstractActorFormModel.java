@@ -17,11 +17,11 @@ public abstract class AbstractActorFormModel<ACTOR extends AbstractActor> extend
 	private static final long serialVersionUID = -3897201743383535836L;
 
 	@IncludeInputs(layout=Layout.VERTICAL) 
-	private PersonFormModel personFormModel;
+	private PersonEditFormModel personFormModel;
 
 	public AbstractActorFormModel() {
 		super();
-		this.personFormModel = new PersonFormModel();
+		this.personFormModel = new PersonEditFormModel();
 	}
 	
 	@Override

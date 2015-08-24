@@ -162,11 +162,12 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void crudOnePage() {
 		if(addRowCommandable.getViewId()==null){
-			WebNavigationManager.getInstance().redirectToDynamicCrudOne((Class<AbstractIdentifiable>) (identifiableConfiguration==null?identifiableClass/*rowDataClass*/:identifiableConfiguration.getIdentifiableClass()));
+			System.out.println(identifiableClass);
+			System.out.println(identifiableClass);
+			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiableClass);
 		}else{
 			WebNavigationManager.getInstance().redirectTo(addRowCommandable);
 		}

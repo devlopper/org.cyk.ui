@@ -8,7 +8,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.party.AbstractPartyFormModel;
-import org.cyk.ui.api.model.party.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
@@ -21,10 +21,10 @@ public class DefaultActorCrudOnePageListener<ACTOR extends AbstractActor> extend
 	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass,CreateMode createMode) {
 		super(entityTypeClass, createMode);
 		onCreateFields.add(AbstractPartyFormModel.FIELD_NAME);
-		onCreateFields.add(PersonFormModel.FIELD_LAST_NAME);
+		onCreateFields.add(PersonEditFormModel.FIELD_LAST_NAME);
 		//onCreateFields.add(ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER);
 		
-		requiredFields.add(PersonFormModel.FIELD_LAST_NAME);
+		requiredFields.add(PersonEditFormModel.FIELD_LAST_NAME);
 	}
 
 	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass) {

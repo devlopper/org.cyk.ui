@@ -10,7 +10,6 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.web.api.WebManager;
 
 @Getter
 @Setter
@@ -31,10 +30,12 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		businessEntityInfos = fetchBusinessEntityInfos();
 		identifiableConfiguration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		identifiable = identifiableFromRequestParameter((Class<ENTITY>)businessEntityInfos.getClazz());
-		formModelClassId = requestParameter(WebManager.getInstance().getRequestParameterFormModel());
-		if(StringUtils.isNotBlank(formModelClassId))
-			formModelClass = UIManager.FORM_MODEL_MAP.get(__formModelClassId__());
+		formModelClassId = __formModelClassId__();
+		formModelClass = __formModelClass__();
 		contentTitle = text(businessEntityInfos.getUiLabelId());
+		
+		logDebug("Web page created I={} , M={}", businessEntityInfos==null?"":businessEntityInfos.getClazz().getSimpleName(),
+				formModelClass==null?"":formModelClass.getSimpleName());
 	}
 	
 	protected BusinessEntityInfos fetchBusinessEntityInfos(){
@@ -42,10 +43,12 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	protected String __formModelClassId__(){
-		return formModelClassId;
+		return requestParameter(webManager.getRequestParameterFormModel());
 	}
 	
 	protected Class<?> __formModelClass__(){
+		if(StringUtils.isNotBlank(formModelClassId))
+			formModelClass = UIManager.FORM_MODEL_MAP.get(formModelClassId);
 		return formModelClass;
 	}
 	

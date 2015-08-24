@@ -170,7 +170,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				
 				if(Boolean.TRUE.equals(addRow)){
 					controlSet.row(objectField.getField());
-					logDebug("Row created form field {}"+objectField.getField().getName());
+					logDebug("Row created form field {}",objectField.getField().getName());
 				}
 				/*if(Boolean.TRUE.equals(seperatorAdded)){
 					controlSet.row(null);

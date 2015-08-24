@@ -11,11 +11,8 @@ import lombok.Setter;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
-import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
-import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -39,13 +36,4 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE))
 	protected File image;
 	
-	@OutputSeperator(label=@Text(value="field.contacts")) 
-	@IncludeInputs(layout=Layout.VERTICAL) 
-	protected ContactCollectionFormModel contactCollectionFormModel = new ContactCollectionFormModel();
-	
-	@Override
-	public void setIdentifiable(PARTY identifiable) {
-		super.setIdentifiable(identifiable);
-		contactCollectionFormModel.setIdentifiable(identifiable.getContactCollection());
-	}
 }

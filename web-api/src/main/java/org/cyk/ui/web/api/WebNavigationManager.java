@@ -322,7 +322,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public String editOneOutcome(Class<AbstractIdentifiable> aClass){
+	public String editOneOutcome(Class<? extends AbstractIdentifiable> aClass){
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		//IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass);
 		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
@@ -359,28 +359,28 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToDynamicCrudOne(Class<AbstractIdentifiable> aClass){
+	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass){
 		redirectTo(editOneOutcome(aClass),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass),
 				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
 		});
 	}
 	
-	public void redirectToDynamicCrudMany(Class<AbstractIdentifiable> dataClass,AbstractIdentifiable data){
+	public void redirectToDynamicCrudMany(Class<? extends AbstractIdentifiable> dataClass,AbstractIdentifiable data){
 		redirectTo(outcomeDynamicCrudMany,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
 				webManager.getRequestParameterIdentifiable(), data==null?null:((AbstractIdentifiable)data).getIdentifier()
 		});
 	}
 	
-	public void redirectToExportDataTableToPdf(Class<AbstractIdentifiable> dataClass){
+	public void redirectToExportDataTableToPdf(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToPdf,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
 				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
 		});
 	}
 	
-	public void redirectToExportDataTableToXls(Class<AbstractIdentifiable> dataClass){
+	public void redirectToExportDataTableToXls(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToXls,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
 				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()

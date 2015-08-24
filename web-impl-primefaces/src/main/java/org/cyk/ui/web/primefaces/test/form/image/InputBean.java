@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.api.model.party.PersonFormModel;
+import org.cyk.ui.api.model.party.PersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
@@ -19,14 +19,14 @@ public class InputBean extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 9040359120893077422L;
 
-	private FormOneData<PersonFormModel> form;
+	private FormOneData<PersonEditFormModel> form;
 	//private Part part;
 	//private String statusMessage;
 
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		form = (FormOneData<PersonFormModel>) createFormOneData(new PersonFormModel(), Crud.CREATE);
+		form = (FormOneData<PersonEditFormModel>) createFormOneData(new PersonEditFormModel(), Crud.CREATE);
 		
 	
 	}

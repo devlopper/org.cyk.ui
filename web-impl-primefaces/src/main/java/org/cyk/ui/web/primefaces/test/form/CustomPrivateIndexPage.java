@@ -30,7 +30,6 @@ public class CustomPrivateIndexPage extends AbstractPrimefacesPage implements Se
 	protected void initialisation() {
 		super.initialisation();
 		tablePersonDetails = (Table<PersonDetails>) createTable(PersonDetails.class, null, null);
-		tablePersonDetails.addColumnFromDataClass();
 	}
 	
 	@Override
