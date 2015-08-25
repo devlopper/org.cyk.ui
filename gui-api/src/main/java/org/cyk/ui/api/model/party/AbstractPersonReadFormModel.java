@@ -38,7 +38,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 		firstName = getPerson(entity).getName();
 		lastName = getPerson(entity).getLastName();
 		contactCollectionFormModel.setIdentifiable(getPerson(entity).getContactCollection());
-		//contactCollectionFormModel.read();
+		contactCollectionFormModel.read();
 	}
 	
 	protected abstract Person getPerson(ENTITY entity);
