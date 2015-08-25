@@ -28,7 +28,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		super.initialisation();
 		identifier = "test";
 		
-		businessClassConfig(Actor.class,ActorFormModel.class);
+		//businessClassConfig(Actor.class,ActorFormModel.class);
 		
 	}
 	

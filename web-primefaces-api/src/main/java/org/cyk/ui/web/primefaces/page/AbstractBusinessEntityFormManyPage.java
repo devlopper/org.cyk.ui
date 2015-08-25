@@ -169,7 +169,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			return AbstractFormModel.instance(table.getRowDataClass(), entity);
 		else
 			try {
-				return table.getRowDataClass().getConstructor(entity.getClass()).newInstance(entity);
+				//return table.getRowDataClass().getConstructor(entity.getClass()).newInstance(entity);
+				return commonUtils.getConstructor(table.getRowDataClass(),new Class<?>[]{entity.getClass()}).newInstance(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;

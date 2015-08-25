@@ -11,6 +11,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -18,6 +19,7 @@ import org.cyk.system.root.business.api.message.MailBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
@@ -29,6 +31,7 @@ import org.cyk.ui.api.command.menu.MenuListener;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
@@ -72,18 +75,25 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		mobileViewMapping();
 		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
 		
+		identifiableConfiguration(event);
 		
 		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
 			if(CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
-				if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
-					businessEntityInfos.setUiEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
-				if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
-					businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());
+				@SuppressWarnings("unchecked")
+				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+				if(configuration==null || configuration.getFormMap()==null){
+					
+				}else{
+					if(StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null){
+						businessEntityInfos.setUiEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+					}
+					if(StringUtils.isBlank(businessEntityInfos.getUiListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
+						businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
+				}
+				
 			}
 		}
 		
-		
-		identifiableConfiguration(event);
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
 		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;

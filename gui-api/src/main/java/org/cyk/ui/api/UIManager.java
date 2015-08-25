@@ -34,8 +34,8 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.model.party.PersonEditFormModel;
-import org.cyk.ui.api.model.party.PersonReadFormModel;
+import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.api.model.party.DefaultPersonReadFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -151,8 +151,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration personConfiguration = new IdentifiableConfiguration(Person.class,PersonEditFormModel.class,PersonReadFormModel.class);
-		registerConfiguration(personConfiguration);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class);
+		registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -4679710339375267115L;
@@ -263,6 +263,16 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass){
 		IdentifiableConfiguration config = IDENTIFIABLE_CONFIGURATION_MAP.get(aClass);
+		/*
+		if(config==null){
+			for(Entry<Class<? extends AbstractIdentifiable>, IdentifiableConfiguration> entry : IDENTIFIABLE_CONFIGURATION_MAP.entrySet()){
+				if(entry.getKey().isAssignableFrom(aClass)){
+					config = entry.getValue();
+					break;
+				}
+			}
+		}
+		*/
 		return config;
 	}
 	

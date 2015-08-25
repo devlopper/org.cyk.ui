@@ -165,8 +165,6 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@Override
 	protected void crudOnePage() {
 		if(addRowCommandable.getViewId()==null){
-			System.out.println(identifiableClass);
-			System.out.println(identifiableClass);
 			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiableClass);
 		}else{
 			WebNavigationManager.getInstance().redirectTo(addRowCommandable);

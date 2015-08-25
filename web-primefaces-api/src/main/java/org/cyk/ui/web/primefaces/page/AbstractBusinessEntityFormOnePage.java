@@ -44,7 +44,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			//formModelClass = UIManager.DEFAULT_ONE_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
 		}
 		*/
-		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getEditOneFormModelClass()):formModelClass);
+		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getOne(crud)):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);

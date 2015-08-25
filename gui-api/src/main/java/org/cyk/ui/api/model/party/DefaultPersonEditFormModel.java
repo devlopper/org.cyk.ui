@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class PersonEditFormModel extends AbstractPartyEditFormModel<Person>  implements Serializable {
+public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Person>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
