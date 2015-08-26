@@ -31,25 +31,23 @@ public class DefaultBusinessEntityFormOnePageAdapter<ENTITY extends AbstractIden
 			
 			@Override
 			public Boolean build(Field field) {
-				if(Crud.CREATE.equals(page.getCrud())){
-					FormConfiguration configuration = createFormConfigurationMap.entrySet().iterator().next().getValue();
-					return configuration==null||CollectionUtils.isEmpty(configuration.getFieldNames()) ?super.build(field):configuration.getFieldNames().contains(field.getName());
-				}else
+				FormConfiguration configuration = getFormConfiguration(page.getCrud(),formConfigurationMap);
+				if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
 					return super.build(field);
+				else
+					return configuration.getFieldNames().contains(field.getName());
 			}
 			
 			@Override
 			public void input(ControlSet controlSet, Input input) {
 				super.input(controlSet, input);
-				FormConfiguration configuration = createFormConfigurationMap.entrySet().iterator().next().getValue();
 				if(Crud.CREATE.equals(page.getCrud())){
-					
+					if(Boolean.FALSE.equals(input.getRequired())){
+						FormConfiguration configuration = getFormConfiguration(page.getCrud(),formConfigurationMap);
+						if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
+							input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
+					}	
 				}
-				if(Boolean.FALSE.equals(input.getRequired())){
-					if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
-						input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
-				}
-				
 			}
 		});
 	}

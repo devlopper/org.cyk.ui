@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.Getter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 
@@ -13,7 +14,7 @@ public class BusinessEntityFormOnePageAdapter<ENTITY_TYPE extends AbstractIdenti
 
 	private static final long serialVersionUID = -7944074776241690783L;
 
-	@Getter protected Map<FormConfiguration.Type,FormConfiguration> createFormConfigurationMap = new HashMap<>();
+	@Getter protected Map<Crud,Map<FormConfiguration.Type,FormConfiguration>> formConfigurationMap = new HashMap<>();
 	
 	public BusinessEntityFormOnePageAdapter(Class<ENTITY_TYPE> entityTypeClass) {
 		super(entityTypeClass);
@@ -25,7 +26,7 @@ public class BusinessEntityFormOnePageAdapter<ENTITY_TYPE extends AbstractIdenti
 	}
 
 	
-
+	
 	
 	
 }

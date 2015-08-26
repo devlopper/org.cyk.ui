@@ -102,8 +102,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				Object data = ((Row<Object>)parameter).getData();
-				AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
-				WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,Crud.UPDATE);
+				redirectToCrudOne(Crud.UPDATE,data);
 			}
 		});
 		contentTitle = text("page.crud.many")+" "+contentTitle;
@@ -131,6 +130,19 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
+	}
+	
+	protected void redirectToCrudOne(Crud crud,Object data){
+		BusinessEntityFormManyPageListener<?> redirectListener = null;
+		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+			if(Boolean.TRUE.equals(listener.canRedirect(crud, data)))
+				redirectListener = listener; 
+		if(redirectListener==null){
+			AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
+			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
+		}else{
+			redirectListener.redirect(crud, data);
+		}
 	}
 	
 	protected CascadeStyleSheet getRowCss(DimensionType dimensionType){

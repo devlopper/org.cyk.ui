@@ -6,4 +6,5 @@ public interface BusinessEntityPrimefacesPageListener<ENTITY extends AbstractIde
 
 	Class<ENTITY> getEntityTypeClass();
 	
+	
 }

@@ -17,7 +17,7 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 218887156564236022L;
 
 	private Type type;
-	private Set<String> fieldNames,requiredFieldNames;
+	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
 	
 	public FormConfiguration(Type type) {
 		super();
@@ -39,6 +39,14 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 			requiredFieldNames.addAll(Arrays.asList(names));
 			addFieldNames(names);
 		}
+		return this;
+	}
+	
+	public FormConfiguration addExcludedFieldNames(String...names){
+		if(excludedFieldNames==null)
+			excludedFieldNames = new LinkedHashSet<>();
+		if(names!=null)
+			excludedFieldNames.addAll(Arrays.asList(names));
 		return this;
 	}
 

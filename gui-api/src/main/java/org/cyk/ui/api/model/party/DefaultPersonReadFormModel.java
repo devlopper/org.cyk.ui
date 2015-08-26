@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.party.person.Person;
 
-@Getter @Setter
+@Getter @Setter 
 public class DefaultPersonReadFormModel extends AbstractPersonReadFormModel<Person>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;

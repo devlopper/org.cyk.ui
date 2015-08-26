@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.Getter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 
@@ -17,6 +18,16 @@ public class BusinessEntityFormManyPageAdapter<ENTITY_TYPE extends AbstractIdent
 	
 	public BusinessEntityFormManyPageAdapter(Class<ENTITY_TYPE> entityTypeClass) {
 		super(entityTypeClass);
+	}
+
+	@Override
+	public Boolean canRedirect(Crud crud, Object data) {
+		return null;
+	}
+
+	@Override
+	public void redirect(Crud crud, Object data) {
+		
 	}
 	
 }

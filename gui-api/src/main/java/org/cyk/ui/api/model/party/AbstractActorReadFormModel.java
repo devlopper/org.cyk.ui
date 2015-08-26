@@ -17,6 +17,8 @@ public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> ex
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
+	public static final String FIELD_REGISTRATION_CODE = "registrationCode";
+	
 	@Input @InputText @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
 
 	public AbstractActorReadFormModel(ACTOR actor) {

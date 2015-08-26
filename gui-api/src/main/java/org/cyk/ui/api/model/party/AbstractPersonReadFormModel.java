@@ -25,6 +25,11 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
+	public static final String FIELD_PHOTO = "photo";
+	public static final String FIELD_FIRST_NAME = "firstName";
+	public static final String FIELD_LAST_NAME = "lastName";
+	
+	private ENTITY identifiable;
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	
 	@Input @InputText protected String firstName,lastName;
@@ -34,6 +39,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	protected ContactCollectionReadFormModel contactCollectionFormModel = new ContactCollectionReadFormModel();
 	
 	public AbstractPersonReadFormModel(ENTITY entity){
+		identifiable = entity;
 		photo = getPerson(entity).getImage();
 		firstName = getPerson(entity).getName();
 		lastName = getPerson(entity).getLastName();
