@@ -1,71 +1,53 @@
 package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.geography.ContactCollectionReadFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.ReportColumn;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
-import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
+	public static final String FIELD_PHOTO = "photo";
+	public static final String FIELD_FIRST_NAME = "firstName";
+	public static final String FIELD_LAST_NAME = "lastName";
+	
+	private ENTITY identifiable;
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	
-	@Input @InputText protected String firstName,lastName;
+	@Input @InputText @ReportColumn protected String firstName,lastName;
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
 	protected ContactCollectionReadFormModel contactCollectionFormModel = new ContactCollectionReadFormModel();
 	
 	public AbstractPersonReadFormModel(ENTITY entity){
-		photo = getPerson().getImage();
-		firstName = getPerson().getName();
-		lastName = getPerson().getLastName();
-		contactCollectionFormModel.setIdentifiable(getPerson().getContactCollection());
-		/*
-		if(getPerson().getContactCollection()!=null){
-			UIManager.getInstance().getContactCollectionBusiness().load(getPerson().getContactCollection());//TODO should be done with many and not one to improve speed
-			StringBuilder s = new StringBuilder();
-			Boolean newLine = Boolean.FALSE;
-			newLine = appendContacts(s,getPerson().getContactCollection().getPhoneNumbers(),newLine);
-			newLine = appendContacts(s,getPerson().getContactCollection().getElectronicMails(),newLine);
-			newLine = appendContacts(s,getPerson().getContactCollection().getLocations(),newLine);
-			newLine = appendContacts(s,getPerson().getContactCollection().getPostalBoxs(),newLine);
-			contacts = s.toString();
-		}
-		*/
+		identifiable = entity;
+		photo = getPerson(entity).getImage();
+		firstName = getPerson(entity).getName();
+		lastName = getPerson(entity).getLastName();
+		contactCollectionFormModel.setIdentifiable(getPerson(entity).getContactCollection());
+		contactCollectionFormModel.read();
 	}
 	
-	protected abstract Person getPerson();
-		
-	private Boolean appendContacts(StringBuilder builder,Collection<?> collection,Boolean newLine){
-		if(collection!=null && !collection.isEmpty()){
-			if(Boolean.TRUE.equals(newLine))
-				builder.append(UIManager.CONTENT_TYPE.getNewLineMarker());
-			builder.append(StringUtils.join(collection,","));
-			return Boolean.TRUE;
-		}
-		return Boolean.FALSE;
-	}
+	protected abstract Person getPerson(ENTITY entity);
 		
 }

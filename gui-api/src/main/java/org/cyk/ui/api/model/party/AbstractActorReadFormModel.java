@@ -6,26 +6,30 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.party.person.AbstractActor;
-import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
-import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
+import org.cyk.system.root.model.party.person.Person;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.ReportColumn;
+import org.cyk.utility.common.annotation.user.interfaces.Sequence;
+import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
 @Getter @Setter
-public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> extends AbstractActorFormModel<ACTOR>  implements Serializable {
+public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> extends AbstractPersonReadFormModel<ACTOR>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@IncludeInputs(layout=Layout.VERTICAL) 
-	private PersonReadFormModel personFormModel;
+	public static final String FIELD_REGISTRATION_CODE = "registrationCode";
+	
+	@Input @InputText @ReportColumn @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
 
-	public AbstractActorReadFormModel() {
-		super();
-		this.personFormModel = new PersonReadFormModel();
+	public AbstractActorReadFormModel(ACTOR actor) {
+		super(actor);
+		registrationCode = actor.getRegistration().getCode();
 	}
 	
 	@Override
-	public void setIdentifiable(ACTOR actor) {
-		personFormModel.setIdentifiable(actor.getPerson());
-		super.setIdentifiable(actor);
+	protected Person getPerson(ACTOR actor) {
+		return actor.getPerson();
 	}
 	
 }

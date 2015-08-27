@@ -18,4 +18,6 @@ public class BusinessEntityPrimefacesPageAdapter<ENTITY_TYPE extends AbstractIde
 		this.entityTypeClass = entityTypeClass;
 	}
 	
+	
+	
 }

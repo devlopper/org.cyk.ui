@@ -15,8 +15,6 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageListener;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
@@ -39,23 +37,9 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
-		/*UIManager.FORM_MODEL_MAP.put("pfm1", PersonFormModel.class);
-		UIManager.FORM_MODEL_MAP.put("pfm2", PersonFormModel2.class);
-		UIManager.FORM_MODEL_MAP.put("pfm3", PersonFormModel3.class);*/
 		
-		//UIManager.FORM_MODEL_MAP.put("ltfm1", LocalityTypeFormModel.class);
-		//UIManager.DEFAULT_MANY_FORM_MODEL_MAP.put(Actor.class, ActorConsultFormModel.class);
-		//uiManager.businessEntityInfos(Actor.class).setUiListViewId("pfm1");
-		
-		//uiManager.businessEntityInfos(Person.class).setUiEditViewId("crudperson");
-		
-		/*
-		IdentifiableConfiguration config = new IdentifiableConfiguration(Person.class, PersonFormModel.class);
-		config.setFileSupport(Boolean.TRUE);
-		uiManager.registerConfiguration(config);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorFormModel.class));
-		*/
+		//IdentifiableConfiguration configuration = new IdentifiableConfiguration(Actor.class,DefaultActorEditFormModel.class,DefaultActorReadFormModel.class);
+		//uiManager.registerConfiguration(configuration);
 		
 		uiManager.businessEntityInfos(UserAccount.class).setUiEditViewId("useraccountcrudone");
 		
@@ -104,8 +88,8 @@ public class ContextListener extends AbstractContextListener {
 		});
 		*/
 		
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<Actor>(Actor.class));
-		primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<Actor>(Actor.class));
+		//primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<Actor>(Actor.class));
+		//primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<Actor>(Actor.class));
 	}
 			
 }

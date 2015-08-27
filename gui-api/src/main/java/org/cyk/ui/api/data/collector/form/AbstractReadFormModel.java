@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
@@ -14,24 +13,21 @@ import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.command.CommandListener;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.Binding;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-//TODO can be renamed with Edit in the name : AbstractEditFormModel
-public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean implements Serializable,FormModelListener<ENTITY> {
+//TODO create a base class for Read and Edit
+public abstract class AbstractReadFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean implements Serializable,ReadFormModelListener<ENTITY> {
 
 	private static final long serialVersionUID = 9013238823027923151L;
 	
 	@Getter protected ENTITY identifiable;
 	@Getter protected Collection<Field> inputFields , includeFields , identifiableFields;
 	
-	@Getter @Setter protected CommandListener submitCommandListener;
-	
-	@Getter protected Collection<FormModelListener<ENTITY>> formModelListeners = new ArrayList<>();
+	@Getter protected Collection<ReadFormModelListener<ENTITY>> formModelListeners = new ArrayList<>();
 	
 	protected NumberBusiness numberBusiness = UIManager.getInstance().getNumberBusiness();
 	protected TimeBusiness timeBusiness = UIManager.getInstance().getTimeBusiness();
@@ -64,11 +60,11 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 		
 		if(includeFields!=null)
 			for (Field includeField : includeFields)
-				if(AbstractFormModel.class.isAssignableFrom(includeField.getType()))
-					((AbstractFormModel<?>)CommonUtils.getInstance().readField(this, includeField, Boolean.FALSE)).read();
+				if(AbstractReadFormModel.class.isAssignableFrom(includeField.getType()))
+					((AbstractReadFormModel<?>)CommonUtils.getInstance().readField(this, includeField, Boolean.FALSE)).read();
 		
 					
-		for(FormModelListener<ENTITY> listener : formModelListeners)
+		for(ReadFormModelListener<ENTITY> listener : formModelListeners)
 			listener.read(this);
 	}
 	
@@ -80,32 +76,6 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 		}		
 	}
 
-	/**
-	 * Read values from form model and write it to identifiable
-	 */
-	public void write() {
-		if(inputFields!=null)
-			for (Field inputField : inputFields)
-				for (Field identifiableField : identifiableFields)
-					if(bound(inputField, identifiableField) && commonUtils.canWriteSourceToDestination(this, inputField, identifiable, identifiableField))
-						write(inputField, identifiableField);
-			
-		if(includeFields!=null)
-			for(Field includeField : includeFields)
-				if(AbstractFormModel.class.isAssignableFrom(includeField.getType()))
-					((AbstractFormModel<?>)CommonUtils.getInstance().readField(this, includeField, Boolean.FALSE)).write();
-		
-		for(FormModelListener<ENTITY> listener : formModelListeners)
-			listener.write(this);
-	}
-	
-	protected void write(Field source,Field destination) {
-		try {
-			FieldUtils.writeField(destination, identifiable, FieldUtils.readField(source, this, Boolean.TRUE), Boolean.TRUE);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	protected Boolean bound(Field f1, Field f2) {
 		if(f1.getName().equals(f2.getName()))
@@ -116,16 +86,13 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 	
 
 	@Override
-	public void read(AbstractFormModel<ENTITY> form) {}
+	public void read(AbstractReadFormModel<ENTITY> form) {}
 	
-	@Override
-	public void write(AbstractFormModel<ENTITY> form) {}
-
 	@SuppressWarnings("unchecked")
-	public static AbstractFormModel<AbstractIdentifiable> instance(Class<?> aClass,AbstractIdentifiable identifiable){
-		AbstractFormModel<AbstractIdentifiable> data = null;
+	public static AbstractReadFormModel<AbstractIdentifiable> instance(Class<?> aClass,AbstractIdentifiable identifiable){
+		AbstractReadFormModel<AbstractIdentifiable> data = null;
 		try {
-			data = (AbstractFormModel<AbstractIdentifiable>) aClass.newInstance();
+			data = (AbstractReadFormModel<AbstractIdentifiable>) aClass.newInstance();
 			data.setIdentifiable(identifiable);
 			data.read();
 		} catch (Exception e) {

@@ -141,7 +141,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		System.out.println(configuration);
 		System.out.println(customFormModelClass);
 		*/
-		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getReadManyFormModelClass()):customFormModelClass));
+		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormMap().getManyRead()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
 		//table.setIdentifiableClass((Class<? extends AbstractIdentifiable>) (configuration==null?aDataClass:configuration.getIdentifiableClass()));
 		
