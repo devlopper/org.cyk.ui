@@ -16,8 +16,7 @@ public class DefaultActorCrudOnePageListener<ACTOR extends AbstractActor> extend
 
 	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
-		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, Type.INPUT_SET_SMALLEST,formConfigurationMap);
-		//configuration.addRequiredFieldNames(DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
+		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, Type.INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);

@@ -17,6 +17,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.ReportColumn;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -32,7 +33,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	private ENTITY identifiable;
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	
-	@Input @InputText protected String firstName,lastName;
+	@Input @InputText @ReportColumn protected String firstName,lastName;
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 

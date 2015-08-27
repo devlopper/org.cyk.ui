@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
@@ -28,7 +29,7 @@ public class DefaultBusinessEntityFormManyPageAdapter<ENTITY extends AbstractIde
 			
 			@Override
 			public Boolean isColumn(Field field) {
-				FormConfiguration configuration = readFormConfigurationMap.entrySet().iterator().next().getValue();
+				FormConfiguration configuration = getFormConfiguration(Crud.READ);
 				return configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())?super.isColumn(field):configuration.getFieldNames().contains(field.getName());
 			}
 			

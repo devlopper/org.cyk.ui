@@ -31,7 +31,7 @@ public class DefaultBusinessEntityFormOnePageAdapter<ENTITY extends AbstractIden
 			
 			@Override
 			public Boolean build(Field field) {
-				FormConfiguration configuration = getFormConfiguration(page.getCrud(),formConfigurationMap);
+				FormConfiguration configuration = getFormConfiguration(page.getCrud());
 				if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
 					return super.build(field);
 				else
@@ -43,7 +43,7 @@ public class DefaultBusinessEntityFormOnePageAdapter<ENTITY extends AbstractIden
 				super.input(controlSet, input);
 				if(Crud.CREATE.equals(page.getCrud())){
 					if(Boolean.FALSE.equals(input.getRequired())){
-						FormConfiguration configuration = getFormConfiguration(page.getCrud(),formConfigurationMap);
+						FormConfiguration configuration = getFormConfiguration(page.getCrud());
 						if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
 							input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
 					}	

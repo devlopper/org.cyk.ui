@@ -9,6 +9,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.ReportColumn;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
@@ -19,10 +20,11 @@ public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> ex
 
 	public static final String FIELD_REGISTRATION_CODE = "registrationCode";
 	
-	@Input @InputText @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
+	@Input @InputText @ReportColumn @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
 
 	public AbstractActorReadFormModel(ACTOR actor) {
 		super(actor);
+		registrationCode = actor.getRegistration().getCode();
 	}
 	
 	@Override
