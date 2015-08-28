@@ -21,6 +21,7 @@ import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
+import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
@@ -106,11 +107,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/**
 	 * Call after page init
 	 */
-	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
+	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(aClass, null, null);
 		if(listener!=null)
-			table.getTableListeners().add(listener);
+			table.getColumnListeners().add(listener);
 		configureDetailsTable(table, titleId);
 		buildTable(table);
 		if(collection!=null)
@@ -165,7 +166,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return createDetailsTable(aClass, collection, null, titleId, editable, deletable, identifiableFieldName);
 	}
 	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener,String titleId){
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId){
 		return createDetailsTable(aClass, collection,listener, titleId, Boolean.FALSE,Boolean.FALSE,null);
 	}
 	
