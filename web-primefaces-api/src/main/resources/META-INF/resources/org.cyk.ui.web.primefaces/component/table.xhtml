@@ -59,7 +59,8 @@
 				<p:column headerText="#" width="14"><h:outputText value="#{row.uiIndex==null?'':(row.uiIndex+1)}" /> </p:column>
 				
 				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
-				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex">  
+				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" 
+					styleClass="#{column.cascadeStyleSheet.clazz}" style="#{column.cascadeStyleSheet.inline}">  
 		            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
 		            <f:facet name="footer"><h:outputText value="#{column.footer}" /></f:facet>  
 		  			<ui:param name="templateFile" value="/org.cyk.ui.web.primefaces/template/control/messageAtTop.xhtml" />

@@ -10,6 +10,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
@@ -26,10 +30,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -72,6 +72,12 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 				return Boolean.FALSE;
 			}
 		}); 
+		
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
 		
 	}
 	

@@ -82,6 +82,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			@Override
 			public void added(Column column) {
 				super.added(column);
+				column.getCascadeStyleSheet().addClass(
+						column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
+						"-"+column.getField().getName().toLowerCase());
 				AbstractBusinessEntityFormManyPage.this.columnAdded(column);
 			}
 		});

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.utility.common.model.table.AbstractColumn;
 
 @Getter @Setter
@@ -12,8 +13,6 @@ public class Column extends AbstractColumn<String, Cell, String> implements Seri
 
 	private static final long serialVersionUID = 8311076255598465773L;
 	
-	{
-		//footer = "MyFoot";
-	}
+	private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 
 }
