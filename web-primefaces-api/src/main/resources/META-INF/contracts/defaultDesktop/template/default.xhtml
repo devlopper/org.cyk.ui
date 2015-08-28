@@ -59,16 +59,19 @@
 				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
+				 			<p:focus context="contentPanel" />
 				 			<ui:fragment rendered="#{not pageController.renderViewError}" >
 				 				<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
 				 			</ui:fragment>
 				 			<ui:fragment rendered="#{pageController.renderViewError}" >
 				 				<h1><h:outputText value="Content cannot be rendered" /></h1>
 				 			</ui:fragment>
-				 			<!-- Messages -->
+				 			<!-- Messages --> 
 							<p:outputPanel id="messagePanel" autoUpdate="true">
 								<p:dialog id="messageDialogId" widgetVar="#{webManager.messageDialogWidgetId}" header="#{uiManager.text('information')}" modal="true" appendTo="@(body)" 
-									visible="#{not empty facesContext.messageList}" draggable="false" resizable="false" closable="false">
+									visible="#{not empty facesContext.messageList}" draggable="false" resizable="false" closable="false" closeOnEscape="true" 
+									onHide="#{pageController.messageDialogOkButtonOnClick}">
+									
 									<table style="margin: auto;" cellspacing="5">
 										<tr style="vertical-align: middle;">
 											<td class="ui-datalist-bordernone"><p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" 
@@ -83,12 +86,13 @@
 											<td colspan="1">
 												<p:separator/>
 												<div align="center">
-													<p:commandButton value="OK" type="button" icon="ui-icon-check" 
-														onclick="PF('#{webManager.messageDialogWidgetId}').hide();#{pageController.messageDialogOkButtonOnClick}" />
+													<p:commandButton id="messageDialogIdOkButton" value="OK" type="button" icon="ui-icon-check" 
+														onclick="PF('#{webManager.messageDialogWidgetId}').hide();" />
 												</div>
 											</td>
 										</tr>
 									</table>
+									<!--p:hotkey bind="esc" handler="alert('ESCAPE');"/-->
 								</p:dialog>
 							</p:outputPanel>
 				 		</p:outputPanel>
