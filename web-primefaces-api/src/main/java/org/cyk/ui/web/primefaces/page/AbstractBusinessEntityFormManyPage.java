@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -184,8 +185,11 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			return AbstractFormModel.instance(table.getRowDataClass(), entity);
 		else
 			try {
+				Constructor<?> constructor = commonUtils.getConstructor(table.getRowDataClass(),new Class<?>[]{entity.getClass()});
+				if(constructor==null)
+					throw new IllegalArgumentException("No constructor found for "+table.getRowDataClass()+" with parameter "+entity.getClass());
 				//return table.getRowDataClass().getConstructor(entity.getClass()).newInstance(entity);
-				return commonUtils.getConstructor(table.getRowDataClass(),new Class<?>[]{entity.getClass()}).newInstance(entity);
+				return constructor.newInstance(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
