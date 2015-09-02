@@ -26,6 +26,7 @@ import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
@@ -60,7 +61,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			public void created(Row<Object> row) {
 				row.setType(getRowType(row));
 				row.setCountable(row.getIsDetail());
-				AbstractBusinessEntityFormManyPage.this.rowCreated(row);
+				AbstractBusinessEntityFormManyPage.this.rowCreated(row);//TODO to be removed. implements listener instead
 			}
 			@Override
 			public void added(Row<Object> row) {
@@ -70,14 +71,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					row.getCascadeStyleSheet().addClass(css.getClazz());
 					row.getCascadeStyleSheet().addInline(css.getInline());
 				}
-				AbstractBusinessEntityFormManyPage.this.rowAdded(row);
+				AbstractBusinessEntityFormManyPage.this.rowAdded(row);//TODO to be removed. implements listener instead
 			}
 		});
 		table.getColumnListeners().add(new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
 				Input input = field.getAnnotation(Input.class);
-				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
+				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);//TODO to be removed. implements listener instead
 				return input != null || includeInputs!=null;
 			}
 			@Override
@@ -86,14 +87,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				column.getCascadeStyleSheet().addClass(
 						column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
 						"-"+column.getField().getName().toLowerCase());
-				AbstractBusinessEntityFormManyPage.this.columnAdded(column);
+				AbstractBusinessEntityFormManyPage.this.columnAdded(column);//TODO to be removed. implements listener instead
 			}
 		});
 		table.getCellListeners().add(new CellAdapter<Object>(){
 			@Override
 			public void added(Row<Object> row, Column column, Cell cell) {
 				super.added(row, column, cell);
-				AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);
+				AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);//TODO to be removed. implements listener instead
 			}
 		});
 		
@@ -109,6 +110,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				redirectToCrudOne(Crud.UPDATE,data);
 			}
 		});
+		
 		contentTitle = text("page.crud.many")+" "+contentTitle;
 		title = contentTitle;
 		
@@ -130,7 +132,38 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.afterInitialisationStarted(this); 
 		
-		// Your code here
+		if(Boolean.TRUE.equals(table.getLazyLoad())){
+			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 2679004450545381808L;
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					@SuppressWarnings("unchecked")
+					Object data = ((Row<Object>)parameter).getData();
+					AbstractIdentifiable identifiable = __identifiable__(data);
+					
+					if(identifiable==null){
+						BusinessEntityFormManyPageListener<?> redirectListener = null;
+						for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+							if(Boolean.TRUE.equals(listener.canRedirectToConsultView(data)))
+								redirectListener = listener; 
+						if(redirectListener==null){
+							logWarning("No listener found to redirect to consult view {} , {} , {}"
+									,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),data);
+						}else{
+							redirectListener.redirectToConsultView(data);
+						}
+					}else{
+						logTrace("Redirecting to consult view from page. {} , {} , {}"
+								,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
+						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
+								new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
+							,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
+							UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
+							?UIManager.getInstance().getCrudReadParameter():null});
+					}
+				}
+			});	
+		}
 		
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
@@ -142,11 +175,21 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			if(Boolean.TRUE.equals(listener.canRedirect(crud, data)))
 				redirectListener = listener; 
 		if(redirectListener==null){
-			AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
+			AbstractIdentifiable identifiable = __identifiable__(data);
+			//(AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
 			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
 		}else{
 			redirectListener.redirect(crud, data);
 		}
+	}
+	
+	protected AbstractIdentifiable __identifiable__(Object data){
+		if(data instanceof AbstractFormModel<?>)
+			return ((AbstractFormModel<?>)data).getIdentifiable();
+		else if(data instanceof AbstractIdentifiable)
+			return (AbstractIdentifiable) data;
+		else
+			return null;
 	}
 	
 	protected CascadeStyleSheet getRowCss(DimensionType dimensionType){

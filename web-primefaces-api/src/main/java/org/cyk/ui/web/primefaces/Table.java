@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -32,9 +33,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> implements Serializable {
 
@@ -103,7 +101,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 		((Commandable)exportCommandable).setMenu(CommandBuilder.getInstance().menuModel(exportMenu, Table.class, ""));
 		
 		if(Boolean.TRUE.equals(lazyLoad)){
-			openRowCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
+			/*openRowCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 1120566504648934547L;
 				@SuppressWarnings("unchecked")
 				@Override
@@ -111,16 +109,17 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 					AbstractIdentifiable identifiable;
 					if(((Row<?>)parameter).getData() instanceof AbstractFormModel<?>)
 						identifiable = ((AbstractFormModel<?>)((Row<?>)parameter).getData()).getIdentifiable();
+					else if(((Row<?>)parameter).getData() instanceof AbstractIdentifiable)
+						identifiable = (AbstractIdentifiable) ((Row<?>)parameter).getData();
 					else
-						identifiable = ((Row<AbstractIdentifiable>)parameter).getData();
-					
+						;
 					WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
 							new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 						,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
 						UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
 						?UIManager.getInstance().getCrudReadParameter():null});
 				}
-			});
+			});*/
 		}
 		
 		setNumberOfNullUiIndex(null);

@@ -110,6 +110,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(aClass, null, null);
+		table.getColumnListeners().add(new DefaultColumnAdapter());
 		if(listener!=null)
 			table.getColumnListeners().add(listener);
 		configureDetailsTable(table, titleId);
@@ -187,7 +188,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected void configureDetailsTable(Table<?> table,String titleId){
-		//table.addColumnFromDataClass();
+		table.getColumnListeners().add(new DefaultColumnAdapter());
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(titleId))
 			table.setShowHeader(Boolean.FALSE);

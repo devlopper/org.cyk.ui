@@ -14,6 +14,9 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 	
 	void redirect(Crud crud,Object data);
 	
+	Boolean canRedirectToConsultView(Object data);
+	void redirectToConsultView(Object data);
+	
 	ENTITY getIdentifiable(Object data);
 	
 }
