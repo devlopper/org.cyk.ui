@@ -136,7 +136,9 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		
 	@SuppressWarnings("unchecked")
 	protected Collection<RESULT> __results__(Collection<ENTITY> identifiables){
-		return (Collection<RESULT>) datas(identifiables);
+		Collection<RESULT> collection = (Collection<RESULT>) datas(identifiables);
+		
+		return collection;
 	}
 	
 	protected Boolean autoLoad(){

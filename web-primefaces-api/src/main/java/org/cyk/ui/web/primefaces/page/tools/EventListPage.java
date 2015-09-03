@@ -52,8 +52,8 @@ public class EventListPage extends AbstractPrimefacesPage implements Serializabl
 	private Table<EventDetails> eventDetailsTable(Collection<Event> events){
 		Table<EventDetails> table = createDetailsTable(EventDetails.class, eventDetails(events), null,Boolean.TRUE,Boolean.TRUE,"event");
 		for(Row<EventDetails> row : table.getRows()){
-			row.setEditable(userSession.getUser().equals(row.getData().getEvent().getOwner()));
-			row.setDeletable(row.getEditable());
+			row.setUpdatable(userSession.getUser().equals(row.getData().getEvent().getOwner()));
+			row.setDeletable(row.getUpdatable());
 		}
 		return table;
 	}

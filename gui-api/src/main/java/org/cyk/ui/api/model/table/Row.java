@@ -14,7 +14,7 @@ public class Row<DATA> extends AbstractRow<DATA,Cell,String> implements Serializ
 	private static final long serialVersionUID = -3855944230298132423L;
 
 	private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
-	private Boolean editable=Boolean.TRUE,deletable=Boolean.TRUE,openable=Boolean.FALSE,countable=Boolean.TRUE;
+	//private Boolean editable=Boolean.TRUE,deletable=Boolean.TRUE,openable=Boolean.FALSE,countable=Boolean.TRUE;
 	
 	
 	

@@ -41,6 +41,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	protected Table<Object> table;
+	protected RowAdapter<Object> rowAdapter;
+	protected ColumnAdapter columnAdapter;
+	protected CellAdapter<Object> cellAdapter;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -56,12 +59,13 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		}*/
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass);
 		
-		table.getRowListeners().add(new RowAdapter<Object>(){
+		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
 			@Override
 			public void created(Row<Object> row) {
 				row.setType(getRowType(row));
 				row.setCountable(row.getIsDetail());
-				AbstractBusinessEntityFormManyPage.this.rowCreated(row);//TODO to be removed. implements listener instead
+				row.setOpenable(openable);
+				//AbstractBusinessEntityFormManyPage.this.rowCreated(row);//TODO to be removed. implements listener instead
 			}
 			@Override
 			public void added(Row<Object> row) {
@@ -71,10 +75,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					row.getCascadeStyleSheet().addClass(css.getClazz());
 					row.getCascadeStyleSheet().addInline(css.getInline());
 				}
-				AbstractBusinessEntityFormManyPage.this.rowAdded(row);//TODO to be removed. implements listener instead
+				//AbstractBusinessEntityFormManyPage.this.rowAdded(row);//TODO to be removed. implements listener instead
 			}
 		});
-		table.getColumnListeners().add(new ColumnAdapter(){
+		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
 				Input input = field.getAnnotation(Input.class);
@@ -87,14 +91,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				column.getCascadeStyleSheet().addClass(
 						column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
 						"-"+column.getField().getName().toLowerCase());
-				AbstractBusinessEntityFormManyPage.this.columnAdded(column);//TODO to be removed. implements listener instead
+				//AbstractBusinessEntityFormManyPage.this.columnAdded(column);//TODO to be removed. implements listener instead
 			}
 		});
-		table.getCellListeners().add(new CellAdapter<Object>(){
+		table.getCellListeners().add(cellAdapter = new CellAdapter<Object>(){
 			@Override
 			public void added(Row<Object> row, Column column, Cell cell) {
 				super.added(row, column, cell);
-				AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);//TODO to be removed. implements listener instead
+				//AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);//TODO to be removed. implements listener instead
 			}
 		});
 		
@@ -242,12 +246,12 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	private Collection<BusinessEntityFormManyPageListener<?>> getListeners(){
 		return primefacesManager.getBusinessEntityFormManyPageListeners(businessEntityInfos.getClazz());
 	}
-	
+	/*
 	protected void rowCreated(Row<Object> row){}
 	protected void rowAdded(Row<Object> row){}
 	protected void columnAdded(Column column){}
 	protected void cellAdded(Row<Object> row, Column column, Cell cell){}
-	
+	*/
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		
@@ -294,6 +298,12 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	public Boolean getShowContextualMenu() {
 		return Boolean.TRUE.equals(super.getShowContextualMenu()) || Boolean.TRUE.equals(table.getShowHierarchy());
 	}
+	
+	/**/
+	/*
+	protected ColumnAdapter getDefaultColumnAdapter(){
+		
+	}*/
 	
 	/**/
 	
