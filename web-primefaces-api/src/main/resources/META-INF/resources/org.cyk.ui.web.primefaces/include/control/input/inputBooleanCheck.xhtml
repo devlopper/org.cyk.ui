@@ -16,7 +16,8 @@
 			<p:selectBooleanCheckbox id="inputBooleanCheck" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}" 
-				disabled="#{control.disabled}"  >
+				disabled="#{control.disabled}"  
+				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}">
 				
 				<ui:include src="body.xhtml" />
 			</p:selectBooleanCheckbox>				

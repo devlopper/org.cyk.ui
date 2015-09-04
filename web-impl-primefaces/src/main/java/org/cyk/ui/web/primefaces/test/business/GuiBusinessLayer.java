@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -19,14 +21,17 @@ public class GuiBusinessLayer extends AbstractBusinessLayer implements Serializa
 	private static final long serialVersionUID = -462780912429013933L;
 
 	@Inject private ActorBusiness actorBusiness;
+	@Inject @Getter private GuiReportRepository reportRepository;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void registerTypedBusinessBean(Map<Class<AbstractIdentifiable>, TypedBusiness<AbstractIdentifiable>> beansMap) {
         beansMap.put((Class)Actor.class, (TypedBusiness)actorBusiness);
         
+        
+        
     }
-
+	
 	@Override
 	protected void fakeTransactions() {
 		

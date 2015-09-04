@@ -8,15 +8,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import lombok.Getter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.impl.AbstractFieldSorter.FieldSorter;
+import org.cyk.system.root.business.impl.AbstractFieldSorter.ObjectField;
+import org.cyk.system.root.business.impl.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
-import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.FieldSorter;
-import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.ObjectField;
-import org.cyk.ui.api.data.collector.control.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
@@ -26,8 +28,6 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.Seperat
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
-
-import lombok.Getter;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 

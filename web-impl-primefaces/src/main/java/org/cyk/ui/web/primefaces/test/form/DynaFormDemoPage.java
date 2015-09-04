@@ -17,7 +17,10 @@ import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.ui.web.api.data.collector.control.WebInputNumber;
 import org.cyk.ui.web.api.data.collector.control.WebInputOneCombo;
+import org.cyk.ui.web.api.data.collector.control.WebInputText;
+import org.cyk.ui.web.api.data.collector.control.WebInputTextarea;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
@@ -85,7 +88,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		AjaxListener ajaxListener = null;
-		
+		/*
 		setAjaxListener(form, "textOneLine", "change", new String[]{"textManyLine"},new String[]{"textManyLine","textManyLine2"}, String.class,new ListenValueMethod<String>() {
 			@Override
 			public void execute(String value) {
@@ -109,7 +112,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
 			}
 		});
-		
+		*/
 		ajaxListener = setAjaxListener(form, "canSum", "change", null, null,Boolean.class,new ListenValueMethod<Boolean>() {
 			@Override
 			public void execute(Boolean value) {
@@ -131,7 +134,20 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			}
 		});
 		
-		form.findInputByClassByFieldName(WebInputOneCombo.class, "myEnum").setFiltered(Boolean.TRUE);
+		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnClick("alert('They clicked me!!!');");
+		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnChange("alert('We on changed.');");
+		
+		form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setWidgetVar("aazzeerrttyy");
+		form.findInputByClassByFieldName(WebInputTextarea.class, "textManyLine").setWidgetVar("tml");
+		form.findInputByClassByFieldName(WebInputNumber.class, "number1").setWidgetVar("wv1");
+		form.findInputByClassByFieldName(WebInputNumber.class, "number2").setWidgetVar("wv2");
+		
+		form.findInputByClassByFieldName(WebInputText.class, "textOneLine")
+			.setOnChange("document.getElementById(PF('tml').id).value=document.getElementById(PF('aazzeerrttyy').id).value;");
+		
+		form.findInputByClassByFieldName(WebInputNumber.class, "number1").setOnChange("alert(document.getElementById(PF('wv1').id).value);");
+		
+		//form.findInputByClassByFieldName(WebInputOneCombo.class, "myEnum").setFiltered(Boolean.TRUE);
 		
 		/*
 		form.addChoices("inputOneList",CHOICES);

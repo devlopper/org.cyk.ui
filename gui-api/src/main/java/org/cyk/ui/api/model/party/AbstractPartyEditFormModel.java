@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -25,6 +26,9 @@ public abstract class AbstractPartyEditFormModel<PARTY extends Party> extends Ab
 	@Override
 	public void setIdentifiable(PARTY identifiable) {
 		super.setIdentifiable(identifiable);
+		if(identifiable.getContactCollection()==null)
+			identifiable.setContactCollection(new ContactCollection());
 		contactCollectionFormModel.setIdentifiable(identifiable.getContactCollection());
 	}
+
 }

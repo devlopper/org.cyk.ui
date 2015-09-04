@@ -31,14 +31,14 @@ public class MyIdentifiable extends AbstractIdentifiable implements Serializable
 
 	private static final long serialVersionUID = 2551782857718212950L;
 	
-	@Input @InputText @NotNull
+	@Input @InputText //@NotNull
 	private String textOneLine;
 
-	@Input @InputTextarea @NotNull
+	@Input @InputTextarea //@NotNull
 	private String textManyLine;
 	
-	@Input @InputNumber @NotNull private BigDecimal number1=BigDecimal.ZERO;
-	@Input @InputNumber @NotNull private BigDecimal number2=BigDecimal.ZERO;
+	@Input @InputNumber /*@NotNull*/ private BigDecimal number1=BigDecimal.ZERO;
+	@Input @InputNumber /*@NotNull*/ private BigDecimal number2=BigDecimal.ZERO;
 	
 	@Input @InputBooleanButton private Boolean canSum;
 	
@@ -57,8 +57,8 @@ public class MyIdentifiable extends AbstractIdentifiable implements Serializable
 	@Input @InputTextarea
 	private String textManyLine2;
 	
-	@IncludeInputs
-	@OutputSeperator
+	//@IncludeInputs
+	//@OutputSeperator
 	private MyIdentifiableDetails1 details1;
 	
 	@Override

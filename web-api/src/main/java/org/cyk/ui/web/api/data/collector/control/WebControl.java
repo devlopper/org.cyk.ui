@@ -12,4 +12,10 @@ public interface WebControl<MODEL, ROW, LABEL, CONTROL> extends Control<MODEL, R
 	
 	String getUniqueCssClass();
 	
+	String getOnClick();
+	void setOnClick(String script);
+	
+	String getWidgetVar();
+	void setWidgetVar(String widgetVar);
+	
 }

@@ -14,6 +14,7 @@ import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageListener;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageListener;
+import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener implements Serializable {
 
@@ -29,6 +30,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		layoutManager.setLoginBackgroundPath(stringContextParameter(ContextParam.LOGIN_BACKGROUN_DPATH, event,layoutManager.getLoginBackgroundPath()));
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));
 		
+		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
 	}
 	
 	@Override

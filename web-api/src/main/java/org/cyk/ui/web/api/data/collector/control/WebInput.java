@@ -21,4 +21,7 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 	void setAjaxListener(AjaxListener listener);
 	AjaxListener getAjaxListener();
 	
+	String getOnChange();
+	void setOnChange(String script);
+	
 }

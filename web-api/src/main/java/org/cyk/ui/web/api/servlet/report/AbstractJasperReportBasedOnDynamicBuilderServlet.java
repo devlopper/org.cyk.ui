@@ -30,6 +30,9 @@ public abstract class AbstractJasperReportBasedOnDynamicBuilderServlet<IDENTIFIA
 		UserAccount userAccount = userAccountBusiness.findByUsername(request.getRemoteUser());
 		p.setCreatedBy(((Person)userAccount.getUser()).getNames());
 		p.setExtendedParameterMap(request.getParameterMap());
+		
+		for(ReportBasedOnDynamicBuilderServletListener listener : webManager.getReportBasedOnDynamicBuilderServletListeners())
+			listener.beforeCreateReport(p);
        
 		return ((ReportBasedOnDynamicBuilderConfiguration<IDENTIFIABLE, ReportBasedOnDynamicBuilder<IDENTIFIABLE>>) configuration).build(p);
 	}

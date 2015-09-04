@@ -18,5 +18,6 @@ public abstract class AbstractControl extends AbstractWebControl<DynaFormModel,D
 
 	private static final long serialVersionUID = 5671513590779656492L;
 
+	protected String widgetVar,onClick;
 	
 } 

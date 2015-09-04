@@ -23,6 +23,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -40,6 +41,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	private static final String COLON = ":";
+	private final Collection<ReportBasedOnDynamicBuilderServletListener> reportBasedOnDynamicBuilderServletListeners = new ArrayList<>();
 	
 	@Inject private LanguageBusiness languageBusiness;
 	

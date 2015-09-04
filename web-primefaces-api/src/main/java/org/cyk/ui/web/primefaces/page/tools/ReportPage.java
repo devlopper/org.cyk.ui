@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.omnifaces.util.Faces;
 
 @Named @RequestScoped @Getter @Setter
@@ -28,6 +29,7 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 	
 	@Override
 	protected String url(){
+		logTrace("Building report url");
 		Collection<Object> parametersCollection = new ArrayList<Object>();
 		HttpServletRequest request = Faces.getRequest();
 		for(Entry<String, String[]> entry : request.getParameterMap().entrySet()){
@@ -35,17 +37,24 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 			if(entry.getValue()!=null && entry.getValue().length>0)
 				parametersCollection.add(entry.getValue()[0]);
 		}
+		String outcome = requestParameter(webManager.getRequestParameterOutcome());
 		Object[] parametersArray = parametersCollection.toArray();
-		/*
-		String url = navigationManager.url(requestParameter(webManager.getRequestParameterOutcome()), new Object[]{
-				webManager.getRequestParameterClass(),requestParameter(webManager.getRequestParameterClass())
-				,webManager.getRequestParameterIdentifiable(),requestParameter(webManager.getRequestParameterIdentifiable())
-				,uiManager.getFileExtensionParameter(),fileExtension
-				,webManager.getRequestParameterPrint(),requestParameter(webManager.getRequestParameterPrint())
-				,uiManager.getReportIdentifierParameter(),requestParameter(uiManager.getReportIdentifierParameter())
-			},Boolean.FALSE,Boolean.FALSE);
-		*/
-		return navigationManager.url(requestParameter(webManager.getRequestParameterOutcome()), parametersArray,Boolean.FALSE,Boolean.FALSE);
+		
+		String url = null;
+		for(ReportPageListener<?> listener : primefacesManager.getReportPageListeners())
+			if(listener.getEntityTypeClass().equals(businessEntityInfos.getClazz())){
+				String u = listener.getUrl(outcome, parametersArray);
+				if(u!=null)
+					url = u;
+			}
+		
+		if(url==null){
+			url = navigationManager.url(outcome, parametersArray,Boolean.FALSE,Boolean.FALSE);
+		}else{
+			
+		}
+		logTrace("Report url {}", url);
+		return url;
 	}
 	
 	@Override

@@ -40,6 +40,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected Boolean required,readOnly,disabled;
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	protected AjaxListener ajaxListener;
+	protected String onChange;
 	
 	{
 		readOnlyValueCss.addClass(getUniqueCssClass());
