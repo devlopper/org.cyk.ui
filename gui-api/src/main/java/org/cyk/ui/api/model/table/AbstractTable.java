@@ -3,6 +3,7 @@ package org.cyk.ui.api.model.table;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -447,7 +448,18 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public String notificationMessageIdAfterServe(UICommand command, Object parameter, AfterServeState state) {
 		return null;
 	}	
-	 
+	
+	public void setColumnFooter(String fieldName,String value){
+		Column column = getColumn(fieldName);
+		if(column!=null)
+			column.setFooter(value);
+	}
+	public void setColumnFooter(String fieldName,BigDecimal value){
+		Column column = getColumn(fieldName);
+		if(column!=null)
+			column.setFooter(UIManager.getInstance().getNumberBusiness().format(value));
+	}
+	
 	/**/
 	
 	private void __fields__(List<Field> fields,Class<?> aClass,Collection<Class<? extends Annotation>> annotations){
