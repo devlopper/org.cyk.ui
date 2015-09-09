@@ -96,7 +96,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 				setFieldValue(form,"textManyLine2", value);
 			}
 		});
-		
+		*/
 		ajaxListener = setAjaxListener(form, "number1", "change", new String[]{"number2"},new String[]{"sumResult","multiplyResult"}, BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
@@ -112,7 +112,7 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
 			}
 		});
-		*/
+		
 		ajaxListener = setAjaxListener(form, "canSum", "change", null, null,Boolean.class,new ListenValueMethod<Boolean>() {
 			@Override
 			public void execute(Boolean value) {
@@ -136,16 +136,16 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		
 		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnClick("alert('They clicked me!!!');");
 		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnChange("alert('We on changed.');");
-		
+		/*
 		form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setWidgetVar("aazzeerrttyy");
 		form.findInputByClassByFieldName(WebInputTextarea.class, "textManyLine").setWidgetVar("tml");
 		form.findInputByClassByFieldName(WebInputNumber.class, "number1").setWidgetVar("wv1");
 		form.findInputByClassByFieldName(WebInputNumber.class, "number2").setWidgetVar("wv2");
+		*/
+		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine")
+		//	.setOnChange("document.getElementById(PF('tml').id).value=document.getElementById(PF('aazzeerrttyy').id).value;");
 		
-		form.findInputByClassByFieldName(WebInputText.class, "textOneLine")
-			.setOnChange("document.getElementById(PF('tml').id).value=document.getElementById(PF('aazzeerrttyy').id).value;");
-		
-		form.findInputByClassByFieldName(WebInputNumber.class, "number1").setOnChange("alert(document.getElementById(PF('wv1').id).value);");
+		//form.findInputByClassByFieldName(WebInputNumber.class, "number1").setOnChange("alert(document.getElementById(PF('wv1').id).value);");
 		
 		//form.findInputByClassByFieldName(WebInputOneCombo.class, "myEnum").setFiltered(Boolean.TRUE);
 		
