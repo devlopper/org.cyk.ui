@@ -45,16 +45,20 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	@Override
 	public void write() {
 		super.write();
-		if(identifiable.getBirthLocation()==null) 
-			identifiable.setBirthLocation(new Location());
-		identifiable.getBirthLocation().setComment(birthLocation);
+		if(identifiable.getExtendedInformations()!=null){
+			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
+				identifiable.getExtendedInformations().setBirthLocation(new Location());
+			identifiable.getExtendedInformations().getBirthLocation().setComment(birthLocation);
+		}
 	}
 	
 	@Override
 	public void read() {
 		super.read();
-		if(identifiable.getBirthLocation()!=null)
-			birthLocation = identifiable.getBirthLocation().toString();
+		if(identifiable.getExtendedInformations()!=null){
+			if(identifiable.getExtendedInformations().getBirthLocation()!=null)
+				birthLocation = identifiable.getExtendedInformations().getBirthLocation().toString();
+		}
 	}
 	
 	/**/
