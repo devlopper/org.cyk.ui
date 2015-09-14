@@ -10,11 +10,11 @@ import org.cyk.ui.api.model.party.AbstractActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormManyPageAdapter;
 
-public class DefaultActorCrudManyPageListener<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormManyPageAdapter<ACTOR> implements Serializable {
+public class DefaultActorCrudManyPageAdapter<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormManyPageAdapter<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 
-	public DefaultActorCrudManyPageListener(Class<ACTOR> entityTypeClass) {
+	public DefaultActorCrudManyPageAdapter(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
 		FormConfiguration configuration = createFormConfiguration(Crud.READ, Type.INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);

@@ -10,11 +10,11 @@ import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
 
-public class DefaultActorCrudOnePageListener<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
+public class DefaultActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 
-	public DefaultActorCrudOnePageListener(Class<ACTOR> entityTypeClass) {
+	public DefaultActorCrudOnePageAdapter(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
 		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, Type.INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);

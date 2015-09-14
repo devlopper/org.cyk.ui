@@ -145,7 +145,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public UIMenu applicationMenu(AbstractUserSession userSession){
-		//System.out.println("ApplicationMenuManager.build()");
+		logDebug("Build application menu for user {}", userSession.getUser().getCode());
 		UIMenu menu = new DefaultMenu();
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HOME));
 		business(userSession,menu);
@@ -304,6 +304,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		}
+		logTrace("Crud one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
 	

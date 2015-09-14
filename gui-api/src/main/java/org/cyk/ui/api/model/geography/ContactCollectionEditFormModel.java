@@ -15,11 +15,19 @@ public class ContactCollectionEditFormModel extends AbstractContactCollectionFor
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
+	/* Home */
 	@Input @InputText private String mobilePhoneNumber;
 	@Input @InputText private String landPhoneNumber;
 	@Input @InputText @Email private String electronicMail;
 	@Input @InputText private String homeLocation;
 	@Input @InputText private String postalBox;
+	
+	/* Work */
+	@Input @InputText private String workMobilePhoneNumber;
+	@Input @InputText private String workLandPhoneNumber;
+	@Input @InputText @Email private String workElectronicMail;
+	@Input @InputText private String workLocation;
+	@Input @InputText private String workPostalBox;
 	
 	@Override
 	public void write() {

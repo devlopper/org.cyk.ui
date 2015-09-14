@@ -12,8 +12,8 @@ import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageListener;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageListener;
+import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
+import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener implements Serializable {
@@ -51,9 +51,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected <ACTOR extends AbstractActor> void registerActorForm(Class<ACTOR> actorClass){
 		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,DefaultActorEditFormModel.class,DefaultActorReadFormModel.class);
 		uiManager.registerConfiguration(configuration);
+		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
 		
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<ACTOR>(actorClass));
-		primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<ACTOR>(actorClass));
+		primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass));
+		primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageAdapter<ACTOR>(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
