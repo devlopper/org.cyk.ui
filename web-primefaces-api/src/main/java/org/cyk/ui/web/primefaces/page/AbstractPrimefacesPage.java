@@ -10,12 +10,14 @@ import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
@@ -102,6 +104,12 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
 		form.setShowCommands(Boolean.FALSE);
+	}
+	
+	protected DetailsBlock createDetailsBlock(String titleId,Object details){
+		DetailsBlock detailsBlock = new DetailsBlock(text(titleId),createFormOneData(details, Crud.READ));
+		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData());
+		return detailsBlock;
 	}
 	
 	/**

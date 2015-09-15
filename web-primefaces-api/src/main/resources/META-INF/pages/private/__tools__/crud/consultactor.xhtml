@@ -11,13 +11,44 @@
  		<ui:param name="pageController" value="#{consultActorPage}" />
  		<ui:define name="body">
  			<p:tabView  >
- 				<p:tab title="T1" >
  				
- 				</p:tab>
- 				<p:tab title="T2" >
+ 				<p:tab title="#{consultActorPage.mainDetails.title}" rendered="#{consultActorPage.mainDetails.rendered}" >
+	 				<cyk:formOneData value="#{consultActorPage.mainDetails.formOneData}" />
+	 			</p:tab>
  				
- 				</p:tab>
+ 				<p:tab title="#{consultActorPage.medicalDetails.title}" rendered="#{consultActorPage.medicalDetails.rendered}" >
+	 				<cyk:formOneData value="#{consultActorPage.medicalDetails.formOneData}" />
+	 			</p:tab>
+	 			
+	 			<p:tab title="#{consultActorPage.contactDetails.title}" rendered="#{consultActorPage.contactDetails.rendered}" >
+	 				<cyk:formOneData value="#{consultActorPage.contactDetails.formOneData}" />
+	 			</p:tab>
+	 			
+	 			<p:tab title="#{consultActorPage.jobDetails.title}" rendered="#{consultActorPage.jobDetails.rendered}" >
+	 				<cyk:formOneData value="#{consultActorPage.jobDetails.formOneData}" />
+	 			</p:tab>
+	 			
+	 			<p:tab title="#{consultActorPage.otherDetails.title}" rendered="#{consultActorPage.otherDetails.rendered}" >
+	 				<cyk:formOneData value="#{consultActorPage.otherDetails.formOneData}" />
+	 			</p:tab>
+ 				
+ 				<!--ui:include src="/org.cyk.ui.web.primefaces/include/tab.xhtml">
+ 					<ui:param name="tab" value="#{consultActorPage.mainDetails}"/>
+ 				</ui:include-->
+ 				
  			</p:tabView>
+ 			
+ 			
+ 			<!--p:tabView value="#{consultActorPage.detailsBlocks.collection}" var="tab" >
+				<p:tab title="#{tab.title}" >
+					
+					<cyk:formOneData value="#{tab.formOneData}" />
+					
+				</p:tab>		
+			</p:tabView-->
+ 			
+ 			<!--cyk:detailsBlockCollection value="#{consultActorPage.detailsBlocks}" /-->
+ 			
  		</ui:define>
  		
  	</ui:decorate>

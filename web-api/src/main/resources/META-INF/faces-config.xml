@@ -108,6 +108,12 @@
 		</navigation-case-->
 		
 		<navigation-case>
+			<from-outcome>actorConsultView</from-outcome>
+			<to-view-id>/private/__tools__/crud/consultactor.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>notifications</from-outcome>
 			<to-view-id>/private/__tools__/event/notifications.jsf</to-view-id>
 			<redirect />

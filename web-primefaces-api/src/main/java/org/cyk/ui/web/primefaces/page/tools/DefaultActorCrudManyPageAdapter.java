@@ -8,7 +8,11 @@ import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
 import org.cyk.ui.api.model.party.AbstractActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
+import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormManyPageAdapter;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 public class DefaultActorCrudManyPageAdapter<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormManyPageAdapter<ACTOR> implements Serializable {
 
@@ -33,6 +37,32 @@ public class DefaultActorCrudManyPageAdapter<ACTOR extends AbstractActor> extend
 	public ACTOR getIdentifiable(Object data) {
 		return ((AbstractActorReadFormModel<ACTOR>)data).getIdentifiable();
 	}
+	
+	@Override
+	public Boolean canRedirectToConsultView(Object data) {
+		return Boolean.TRUE;
+	}
+	
+	@Override
+	public void redirectToConsultView(Object data) {
+		debug(data);
+		super.redirectToConsultView(data);
+	}
+	
+	@Override
+	public void initialisationEnded(AbstractBean bean) {
+		super.initialisationEnded(bean);
+		AbstractBusinessEntityFormManyPage<?> page = (AbstractBusinessEntityFormManyPage<?>) bean;
+		page.getTable().setShowOpenCommand(Boolean.TRUE);
+		page.getTable().getRowListeners().add(new RowAdapter<Object>(){
+			@Override
+			public void added(Row<Object> row) {
+				super.added(row);
+				row.setOpenable(Boolean.TRUE);
+			}
+		});
+	}
+	
 	
 
 }

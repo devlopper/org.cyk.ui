@@ -45,7 +45,7 @@ public class BusinessEntityFormPageAdapter<ENTITY_TYPE extends AbstractIdentifia
 	public void redirectToConsultView(Object data) {
 		ENTITY_TYPE identifiable = getIdentifiable(data);
 		if(identifiable!=null){
-			BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(data.getClass());
+			BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiable.getClass());
 			logTrace("Redirecting to consult view from listener : {} , {} , {}"
 					,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
 			WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
