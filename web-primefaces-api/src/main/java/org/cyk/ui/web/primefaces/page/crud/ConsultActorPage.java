@@ -16,6 +16,7 @@ import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.primefaces.model.menu.MenuModel;
 
 @Named @ViewScoped @Getter @Setter
 public class ConsultActorPage extends AbstractConsultPage<AbstractActor> implements Serializable {
@@ -23,14 +24,14 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	private DetailsBlockCollection detailsBlocks = new DetailsBlockCollection();
-	private DetailsBlock mainDetails,medicalDetails,contactDetails,jobDetails,otherDetails;
+	private DetailsBlock<MenuModel> mainDetails,medicalDetails,contactDetails,jobDetails,otherDetails;
 	
 	/**/
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		mainDetails = createDetailsBlock("informations", new MainDetails(identifiable));
+		mainDetails = createDetailsBlock("informations", new MainDetails(identifiable),"mainDetails.menu");
 		medicalDetails = createDetailsBlock("medical", new MedicalDetails(identifiable));
 		contactDetails = createDetailsBlock("contact", new ContactDetails(identifiable));
 		jobDetails = createDetailsBlock("job", new JobDetails(identifiable));

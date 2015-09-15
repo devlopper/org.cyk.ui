@@ -13,6 +13,7 @@ import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.Constant;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -119,7 +120,7 @@ public class CommandBuilder implements Serializable {
 						menuItem.setCommand("#{userSession.logout()}");
 						menuItem.setAjax(Boolean.FALSE);
 						break;
-					default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,"."),aCommandable.getIdentifier())); 
+					default:menuItem.setCommand(String.format(EL_MENU_ITEM_COMMAND_FORMAT, managedBeanName,StringUtils.join(fields,Constant.CHARACTER_DOT),aCommandable.getIdentifier())); 
 					}
 				}
 								

@@ -106,10 +106,16 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		form.setShowCommands(Boolean.FALSE);
 	}
 	
-	protected DetailsBlock createDetailsBlock(String titleId,Object details){
-		DetailsBlock detailsBlock = new DetailsBlock(text(titleId),createFormOneData(details, Crud.READ));
+	protected DetailsBlock<MenuModel> createDetailsBlock(String titleId,Object details,String fieldName){
+		DetailsBlock<MenuModel> detailsBlock = new DetailsBlock<MenuModel>(text(titleId),createFormOneData(details, Crud.READ));
 		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData());
+		if(StringUtils.isNotBlank(fieldName))
+			detailsBlock.setMenuModel(CommandBuilder.getInstance().menuModel(detailsBlock.getMenu(), getClass(),fieldName));
 		return detailsBlock;
+	}
+	
+	protected DetailsBlock<MenuModel> createDetailsBlock(String titleId,Object details){
+		return createDetailsBlock(titleId, details, null);
 	}
 	
 	/**
