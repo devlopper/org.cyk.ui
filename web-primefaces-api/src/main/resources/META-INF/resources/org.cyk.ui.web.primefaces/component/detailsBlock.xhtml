@@ -8,25 +8,16 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
-	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.DetailsBlockCollection">
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.DetailsBlock">
 		<cc:attribute name="value" required="true" />
 	</cc:interface>
 
 	<cc:implementation>
-		
-		<ui:repeat var="block" value="#{cc.value.collection}">
-			<cyk:detailsBlock value="#{block}" form="#{consultActorPage.mainDetails.formOneData}"/>
-			T : #{block.formOneData}
-		</ui:repeat>
-		
-		<!--p:tabView value="#{cc.value.collection}" var="tab" >
-			<p:tab title="#{tab.title}" >
-				
-				<cyk:formOneData value="#{tab.formOneData}" />
-				
-			</p:tab>		
-		</p:tabView-->
-		
+		<p:fieldset legend="#{cc.value.title}">
+			<cyk:formOneData value="#{cc.value.formOneData}" />
+			<cc:insertChildren/>
+			<p:menubar model="#{cc.value.menuModel}" rendered="#{cc.value.menuModel != null}" /> 			
+		</p:fieldset>
 	</cc:implementation>
 
 </ui:composition>

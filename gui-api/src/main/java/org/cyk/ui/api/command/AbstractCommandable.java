@@ -9,8 +9,12 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.model.AbstractOutputDetails;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -84,6 +88,26 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		parameters.add(new Parameter(name, value));
 		return this;
 	}
+	
+	@Override
+	public UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable, AbstractOutputDetails<?> details) {
+		addParameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(identifiable.getClass()));
+		addParameter(UIManager.getInstance().getCrudParameter(), crudParameter);
+		addParameter(UIManager.getInstance().getIdentifiableParameter(), identifiable.getIdentifier());
+		if(details!=null){
+			@SuppressWarnings("unchecked")
+			OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
+			addParameter(UIManager.getInstance().getDetailsParameter(), configuration.getKey());
+		}
+		return this;
+	}
+	
+	@Override
+	public UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable) {
+		return addCrudParameters(crudParameter, identifiable, null);
+	}
+	
+	
 	
 	@Override
 	public UICommandable setParameter(String name, Object value) {

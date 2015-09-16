@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.faces.model.SelectItem;
@@ -16,8 +17,14 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.menu.DefaultMenu;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
+import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
@@ -50,6 +57,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter transient protected PrimefacesMessageManager messageManager;
 	@Inject @Getter protected UserSession userSession;
 	@Inject protected PrimefacesManager primefacesManager;
+	
+	@Getter protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
 	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
 	private String mobilePageTransition="flip";
@@ -106,16 +115,44 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		form.setShowCommands(Boolean.FALSE);
 	}
 	
-	protected DetailsBlock<MenuModel> createDetailsBlock(String titleId,Object details,String fieldName){
-		DetailsBlock<MenuModel> detailsBlock = new DetailsBlock<MenuModel>(text(titleId),createFormOneData(details, Crud.READ));
+	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractIdentifiable master,AbstractOutputDetails<?> details,String editOutcome,UICommandable...links){
+		DetailsBlock<MenuModel> detailsBlock = new DetailsBlock<MenuModel>(null,createFormOneData(details, Crud.READ));
 		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData());
-		if(StringUtils.isNotBlank(fieldName))
-			detailsBlock.setMenuModel(CommandBuilder.getInstance().menuModel(detailsBlock.getMenu(), getClass(),fieldName));
+		Collection<UICommandable> commandables = new ArrayList<>();
+		@SuppressWarnings("unchecked")
+		OutputDetailsConfiguration configuration = uiManager.findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
+		if(detailsBlock.getTitle()==null)
+			if(configuration!=null)
+				detailsBlock.setTitle(configuration.getName());
+		if(links!=null){
+			for(UICommandable commandable : links)
+				commandables.add(commandable);
+		}
+			
+		if(StringUtils.isNotBlank(editOutcome)){
+			UICommandable commandable = createViewCommandRequest("command.edit",IconType.ACTION_EDIT, editOutcome);
+			/*
+			commandable.addParameter(uiManager.getClassParameter(), uiManager.keyFromClass(master.getClass()));
+			commandable.addParameter(uiManager.getCrudParameter(), uiManager.getCrudUpdateParameter());
+			commandable.addParameter(uiManager.getIdentifiableParameter(), master.getIdentifier());
+			*/
+			commandable.addCrudParameters(uiManager.getCrudUpdateParameter(), master, details);
+			commandables.add(commandable);
+		}
+		
+		detailsBlock.setMenu(new DefaultMenu());
+		for(UICommandable commandable : commandables){
+			commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+			detailsBlock.getMenu().getCommandables().add(commandable);
+		}
+		detailsBlock.setMenuModel(CommandBuilder.getInstance().menuModel(detailsBlock.getMenu(), getClass(),""));
+		
+		detailsBlocks.add(detailsBlock);
 		return detailsBlock;
 	}
 	
-	protected DetailsBlock<MenuModel> createDetailsBlock(String titleId,Object details){
-		return createDetailsBlock(titleId, details, null);
+	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractIdentifiable master,AbstractOutputDetails<?> details,String editOutcome){
+		return createDetailsBlock(master, details, editOutcome,new Commandable[]{});
 	}
 	
 	/**

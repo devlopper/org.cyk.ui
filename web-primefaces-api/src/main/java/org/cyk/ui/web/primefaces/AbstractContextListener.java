@@ -8,10 +8,12 @@ import javax.servlet.ServletContextEvent;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
+import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
@@ -31,6 +33,14 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));
 		
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
+		
+		OutputDetailsConfiguration detailsConfiguration = new OutputDetailsConfiguration(ConsultActorPage.MainDetails.class);
+		detailsConfiguration.setName("TheName");
+		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
+		
+		detailsConfiguration = new OutputDetailsConfiguration(ConsultActorPage.ContactDetails.class);
+		detailsConfiguration.setName("ContactHere");
+		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
 	}
 	
 	@Override

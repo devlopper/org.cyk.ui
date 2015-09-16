@@ -44,12 +44,6 @@ public class DefaultActorCrudManyPageAdapter<ACTOR extends AbstractActor> extend
 	}
 	
 	@Override
-	public void redirectToConsultView(Object data) {
-		debug(data);
-		super.redirectToConsultView(data);
-	}
-	
-	@Override
 	public void initialisationEnded(AbstractBean bean) {
 		super.initialisationEnded(bean);
 		AbstractBusinessEntityFormManyPage<?> page = (AbstractBusinessEntityFormManyPage<?>) bean;
@@ -63,6 +57,4 @@ public class DefaultActorCrudManyPageAdapter<ACTOR extends AbstractActor> extend
 		});
 	}
 	
-	
-
 }

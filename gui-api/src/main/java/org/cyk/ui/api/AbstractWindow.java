@@ -20,6 +20,9 @@ import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -202,6 +205,22 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	protected Collection<UICommandable> contextualCommandables(){
 		return null;
+	}
+	
+	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,ViewType viewType){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewType);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		return commandable;
+	}
+	protected UICommandable createViewCommandRequest(String labelId,ViewType viewType){
+		return createViewCommandRequest(labelId, null, viewType);
+	}
+	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,Object viewId){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewId);
+		return commandable;
+	}
+	protected UICommandable createViewCommandRequest(String labelId,Object viewId){
+		return createViewCommandRequest(labelId, null, viewId);
 	}
 
 }

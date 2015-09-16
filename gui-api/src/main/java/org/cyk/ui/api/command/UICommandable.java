@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.model.AbstractOutputDetails;
 
 public interface UICommandable {
 	 
@@ -70,6 +72,9 @@ public interface UICommandable {
 	UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
 	UICommandable addChild(String labelId,IconType iconType,ViewType viewType,Collection<Parameter> parameters);
 	void addChild(UICommandable aCommandable);
+	
+	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
+	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable);
 	
 	/**/
 	

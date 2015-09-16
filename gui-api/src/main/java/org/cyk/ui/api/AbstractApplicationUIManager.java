@@ -44,7 +44,7 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass);
 		if(identifiableConfiguration==null){
 			identifiableConfiguration = new IdentifiableConfiguration();
-			identifiableConfiguration.setIdentifiableClass(aClass);
+			identifiableConfiguration.setClazz(aClass);
 			uiManager.registerConfiguration(identifiableConfiguration);
 		}
 		return identifiableConfiguration;

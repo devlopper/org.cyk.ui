@@ -33,7 +33,9 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonReadFormModel;
 import org.cyk.utility.common.AbstractMethod;
@@ -51,6 +53,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static ContentType CONTENT_TYPE = ContentType.TEXT;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
+	private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
 	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
@@ -103,6 +106,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String printParameter="print";
 	private final String pdfParameter="pdf";
 	private final String xlsParameter="xls";
+	private final String detailsParameter="details";
 	private final String crudParameter="crud";
 	private final String crudCreateParameter="create";
 	private final String crudReadParameter="read";
@@ -277,7 +281,15 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public void registerConfiguration(IdentifiableConfiguration configuration){
-		IDENTIFIABLE_CONFIGURATION_MAP.put(configuration.getIdentifiableClass(), configuration);
+		IDENTIFIABLE_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
+	}
+	
+	public OutputDetailsConfiguration findOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> aClass){
+		OutputDetailsConfiguration config = OUTPUT_DETAILS_CONFIGURATION_MAP.get(aClass);
+		return config;
+	}
+	public void registerOutputDetailsConfiguration(OutputDetailsConfiguration configuration){
+		OUTPUT_DETAILS_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
 	}
 	
 	/**/

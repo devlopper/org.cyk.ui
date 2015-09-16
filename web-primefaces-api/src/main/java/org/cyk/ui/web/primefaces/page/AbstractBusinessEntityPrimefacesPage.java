@@ -9,7 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.ui.api.model.DetailsBlock;
+import org.primefaces.model.menu.MenuModel;
 
 @Getter
 @Setter
@@ -50,6 +54,10 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		if(StringUtils.isNotBlank(formModelClassId))
 			formModelClass = UIManager.FORM_MODEL_MAP.get(formModelClassId);
 		return formModelClass;
+	}
+	
+	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractOutputDetails<?> details, String editOutcome,UICommandable... links) {
+		return super.createDetailsBlock(identifiable, details, editOutcome, links);
 	}
 	
 }
