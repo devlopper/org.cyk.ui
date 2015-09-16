@@ -35,11 +35,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
 		
 		OutputDetailsConfiguration detailsConfiguration = new OutputDetailsConfiguration(ConsultActorPage.MainDetails.class);
-		detailsConfiguration.setName("TheName");
+		detailsConfiguration.setName(languageBusiness.findText("baseinformations"));
 		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
 		
 		detailsConfiguration = new OutputDetailsConfiguration(ConsultActorPage.ContactDetails.class);
-		detailsConfiguration.setName("ContactHere");
+		detailsConfiguration.setName(languageBusiness.findText("contacts"));
 		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
 	}
 	
