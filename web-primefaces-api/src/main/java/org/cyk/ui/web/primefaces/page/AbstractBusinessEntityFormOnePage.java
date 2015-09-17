@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
@@ -13,11 +14,14 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.omnifaces.util.Faces;
 
 @Getter
 @Setter
@@ -33,23 +37,28 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		super.initialisation();
 		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
 			listener.initialisationStarted(this); 
-		
 		crud = crudFromRequestParameter();
-		//IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
-		
-		/*
-		formModelClass = __formModelClass__();
-		if(formModelClass==null){
-			formModelClass = UIManager.FORM_MODEL_MAP.get(webManager.getRequestParameterFormModel());
-			//formModelClass = UIManager.DEFAULT_ONE_FORM_MODEL_MAP.get(businessEntityInfos.getClazz());
-		}
-		*/
 		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getOne(crud)):formModelClass);
 
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
+		
+		String outputDetailsKey = Faces.getRequestParameter(uiManager.getDetailsParameter());
+		if(StringUtils.isNotBlank(outputDetailsKey)){
+			final OutputDetailsConfiguration configuration = uiManager.getOutputDetailsConfigurationFromKey(outputDetailsKey);
+			if(configuration.getEditFormConfiguration()==null)
+				;
+			else{
+				form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+					@Override
+					public Boolean build(Field field) {
+						return configuration.getEditFormConfiguration().getFieldNames().contains(field.getName());
+					}
+				});
+			}
+		}	
 		
 		if(uiManager.isMobileDevice(userDeviceType)){
 			((Commandable)form.getSubmitCommandable()).setUpdate("");

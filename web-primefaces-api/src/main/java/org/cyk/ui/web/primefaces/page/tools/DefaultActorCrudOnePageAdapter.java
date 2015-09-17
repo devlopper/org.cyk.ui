@@ -23,5 +23,5 @@ public class DefaultActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
 		
 	}
-		
+
 }

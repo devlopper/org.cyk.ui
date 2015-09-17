@@ -10,13 +10,7 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{consultActorPage}" />
  		<ui:define name="body">
- 			<cyk:detailsBlock value="#{consultActorPage.mainDetails}"/>
- 			<cyk:detailsBlock value="#{consultActorPage.contactDetails}"/>
- 			<!--
- 			<cyk:detailsBlock value="#{consultActorPage.medicalDetails}"/>
- 			<cyk:detailsBlock value="#{consultActorPage.jobDetails}"/>
- 			<cyk:detailsBlock value="#{consultActorPage.otherDetails}"/>
- 			-->
+ 			<cyk:detailsBlockCollection value="#{consultActorPage.detailsBlocks}"/>
  		</ui:define>
  		
  	</ui:decorate>

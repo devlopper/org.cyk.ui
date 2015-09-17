@@ -19,7 +19,6 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
@@ -76,12 +75,12 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	
 	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field){
 		Collection<AbstractIdentifiable> collection = null;
-		if(field.getName().equals("nationality")){
+		/*if(field.getName().equals("nationality")){
 			collection = new ArrayList<>();
 			for(Locality locality : localityBusiness.findByType(RootBusinessLayer.getInstance().getCountryLocalityType()))
 				collection.add(locality);
 			return collection;
-		}else if(field.getName().equals("roles")){
+		}else */if(field.getName().equals("roles")){
 			collection = new ArrayList<>();
 			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getAdministratorRole())))
 				collection.add(role);

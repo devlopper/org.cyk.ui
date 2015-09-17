@@ -14,10 +14,34 @@
 
 	<cc:implementation>
 		
-		<ui:repeat var="block" value="#{cc.value.collection}">
+		<cyk:detailsBlock value="#{cc.value.get(0)}" rendered="#{cc.value.hasIndex(0)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(1)}" rendered="#{cc.value.hasIndex(1)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(2)}" rendered="#{cc.value.hasIndex(2)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(3)}" rendered="#{cc.value.hasIndex(3)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(4)}" rendered="#{cc.value.hasIndex(4)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(5)}" rendered="#{cc.value.hasIndex(5)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(6)}" rendered="#{cc.value.hasIndex(6)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(7)}" rendered="#{cc.value.hasIndex(7)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(8)}" rendered="#{cc.value.hasIndex(8)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(9)}" rendered="#{cc.value.hasIndex(9)}"/>
+		
+		
+		<!--
+		<cyk:detailsBlock value="#{cc.value.get(10)}" rendered="#{cc.value.hasIndex(10)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(11)}" rendered="#{cc.value.hasIndex(11)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(12)}" rendered="#{cc.value.hasIndex(12)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(13)}" rendered="#{cc.value.hasIndex(13)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(14)}" rendered="#{cc.value.hasIndex(14)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(15)}" rendered="#{cc.value.hasIndex(15)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(16)}" rendered="#{cc.value.hasIndex(16)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(17)}" rendered="#{cc.value.hasIndex(17)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(18)}" rendered="#{cc.value.hasIndex(18)}"/>
+		<cyk:detailsBlock value="#{cc.value.get(19)}" rendered="#{cc.value.hasIndex(19)}"/>
+		-->
+		<!--ui:repeat var="block" value="#{cc.value.collection}">
 			<cyk:detailsBlock value="#{block}" form="#{consultActorPage.mainDetails.formOneData}"/>
 			T : #{block.formOneData}
-		</ui:repeat>
+		</ui:repeat-->
 		
 		<!--p:tabView value="#{cc.value.collection}" var="tab" >
 			<p:tab title="#{tab.title}" >

@@ -251,6 +251,22 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return entitiesRequestParameterIdMap.get(key);
 	}
 	
+	public Class<? extends AbstractOutputDetails<?>> getOutputDetailsClassFromKey(String key){
+		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
+			if(entry.getValue().getKey().equals(key))
+				return entry.getKey();
+		logWarning("No OutputDetails class found for {}", key);
+		return null;
+	}
+	
+	public OutputDetailsConfiguration getOutputDetailsConfigurationFromKey(String key){
+		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
+			if(entry.getValue().getKey().equals(key))
+				return entry.getValue();
+		logWarning("No OutputDetailsConfiguration class found for {}", key);
+		return null;
+	}
+	
 	public String keyFromClass(BusinessEntityInfos aBusinessEntityInfos){
 		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
 			if(entry.getValue().equals(aBusinessEntityInfos))
