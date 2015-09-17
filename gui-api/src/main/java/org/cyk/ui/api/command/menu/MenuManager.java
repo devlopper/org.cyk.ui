@@ -220,7 +220,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		menu.addCommandable(commandable("user.accounts", IconType.THING_LIST,ViewType.USER_ACCOUNTS));
 		
-		menu.addCommandable(commandable("roles", IconType.THING_LIST).addCreateParameters(Role.class));
+		menu.addCommandable(commandable("roles", IconType.THING_LIST).addReadAllParameters(Role.class));
 		return menu;
 	}
 	

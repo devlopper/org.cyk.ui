@@ -77,6 +77,7 @@ public interface UICommandable {
 	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable);
 	
 	UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass);
+	UICommandable addReadAllParameters(Class<? extends AbstractIdentifiable> identifiableClass);
 	
 	/**/
 	
