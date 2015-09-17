@@ -107,7 +107,13 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		return addCrudParameters(crudParameter, identifiable, null);
 	}
 	
-	
+	@Override
+	public UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass) {
+		addParameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+		//addParameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
+		setViewType(ViewType.DYNAMIC_CRUD_ONE);
+		return this;
+	}
 	
 	@Override
 	public UICommandable setParameter(String name, Object value) {

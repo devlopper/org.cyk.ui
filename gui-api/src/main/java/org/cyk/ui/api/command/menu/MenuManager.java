@@ -24,6 +24,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -218,6 +219,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 		menu.addCommandable(p = commandable("user.account.create", IconType.ACTION_ADD,ViewType.USER_ACCOUNT_CRUD_ONE));
 		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		menu.addCommandable(commandable("user.accounts", IconType.THING_LIST,ViewType.USER_ACCOUNTS));
+		
+		menu.addCommandable(commandable("roles", IconType.THING_LIST).addCreateParameters(Role.class));
 		return menu;
 	}
 	

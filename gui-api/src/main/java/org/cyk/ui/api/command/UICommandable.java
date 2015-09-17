@@ -76,6 +76,8 @@ public interface UICommandable {
 	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
 	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable);
 	
+	UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass);
+	
 	/**/
 	
 	public enum RenderType{BUTTON,LINK}
@@ -101,6 +103,7 @@ public interface UICommandable {
 		MODULE_REFERENCE_ENTITY,
 		MODULE_SECURITY,
 		USER_ACCOUNTS,
+		ROLES,
 		USER_ACCOUNT_CRUD_ONE,
 		USER_ACCOUNT_CONSULT,
 		USER_ACCOUNT_CHANGE_PASSWORD,
