@@ -64,6 +64,8 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
 			role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
 
+		urlsSection.put("/private/**", "user");
+		
 		logInfo("Secured views");
 		for(Entry<String, String> entry : urlsSection.entrySet())
 			logInfo(entry);
