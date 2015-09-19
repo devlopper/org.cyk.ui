@@ -26,7 +26,7 @@ public class UserSession extends AbstractWebUserSession implements Serializable 
 	public void init(UserAccount userAccount) {
 		super.init(userAccount);
 		this.contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
-		logDebug("User has logged in : Username={} , Roles={}", userAccount.getCredentials().getUsername(),userAccount.getRoles());
+		logInfo("User has logged in : Username={} , Roles={}", userAccount.getCredentials().getUsername(),userAccount.getRoles());
 	}
 	
 	@Override
