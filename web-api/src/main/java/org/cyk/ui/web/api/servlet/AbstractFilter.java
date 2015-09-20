@@ -2,6 +2,8 @@ package org.cyk.ui.web.api.servlet;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -12,8 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.ui.web.api.NavigationHelper;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractFilter implements Filter,Serializable {
+public abstract class AbstractFilter extends AbstractBean implements Filter,Serializable {
 
 	private static final long serialVersionUID = 8855562067264528963L;
 
@@ -45,5 +48,14 @@ public abstract class AbstractFilter implements Filter,Serializable {
 	
 	@Override
 	public void destroy() {}
+	
+	protected URL url(HttpServletRequest request){
+		try {
+			return new URL(request.getRequestURL().toString());
+		} catch (MalformedURLException e) {
+			logThrowable(e);
+			return null;
+		}
+	}
 	
 }

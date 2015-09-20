@@ -32,6 +32,17 @@ public class ContextListener extends AbstractContextListener {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
+		
+	}
+	
+	@Override
+	protected void addUrls(ServletContextEvent event) {
+		super.addUrls(event);
+		addUrl("/private/__tools__/crud/",Boolean.TRUE);
+		addUrl("/private/index.jsf",Boolean.TRUE);
+		addUrl("/index.jsf",Boolean.TRUE);
+		
+		addUrl("/private/__tools__/",Boolean.FALSE);
 	}
 	
 	@Override
@@ -91,5 +102,7 @@ public class ContextListener extends AbstractContextListener {
 		//primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<Actor>(Actor.class));
 		//primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<Actor>(Actor.class));
 	}
-			
+
+	
+	
 }

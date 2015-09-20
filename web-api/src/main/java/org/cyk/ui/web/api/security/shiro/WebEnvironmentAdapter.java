@@ -64,6 +64,10 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
 			role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
 
+		//TODO this is a trick to handle role ordering. Instead try using sorting. if A and B have common prefix then if A followed by ** then B comes first then A
+		// B = common_prefix/a_sub_space
+		// A = common_prefix/**
+		urlsSection.remove("/private/**");
 		urlsSection.put("/private/**", "user");
 		
 		logInfo("Secured views");

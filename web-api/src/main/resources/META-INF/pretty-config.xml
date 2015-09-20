@@ -37,6 +37,11 @@
 		<view-id value="/public/__security__/logout.jsf" />
 	</url-mapping>    
 	
+	<url-mapping id="accessDenied">
+		<pattern value="/access/denied" />
+		<view-id value="/public/__error__/401.jsf" />
+	</url-mapping> 
+	
 	<!-- Secured -->
 	   
 	<url-mapping id="home1">

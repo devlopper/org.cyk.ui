@@ -31,21 +31,22 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
-		if(!goTo(applicationBusiness.findCurrentInstance()==null, "install", request, response)){
-			if(Boolean.TRUE.equals(LICENSE_ENABLED)){
-				License license = applicationBusiness.findCurrentInstance().getLicense();
-				if(!goTo(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), "license/expired", request, response))
+		if(applicationBusiness.isAccessible(url(request))){
+			if(!goTo(applicationBusiness.findCurrentInstance()==null, "install", request, response)){
+				if(Boolean.TRUE.equals(LICENSE_ENABLED)){
+					License license = applicationBusiness.findCurrentInstance().getLicense();
+					if(!goTo(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), "license/expired", request, response))
+						filterChain.doFilter(servletRequest, servletResponse);
+					else{
+						if(!Boolean.TRUE.equals(license.getExpired()))
+							licenseBusiness.expire(license);
+					}
+				}else
 					filterChain.doFilter(servletRequest, servletResponse);
-				else{
-					if(!Boolean.TRUE.equals(license.getExpired()))
-						licenseBusiness.expire(license);
-				}
-			}else
-				filterChain.doFilter(servletRequest, servletResponse);
+			}	
+		}else{
+			goTo(Boolean.TRUE, "access/denied", request, response);
 		}
-		
 	}
-	
-	/* Assertions */
 
 }

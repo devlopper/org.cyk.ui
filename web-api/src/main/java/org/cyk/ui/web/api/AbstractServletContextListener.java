@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -23,6 +24,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -58,6 +60,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Inject protected RoleManager roleManager;
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	
+	protected ServletContext servletContext;
 	
 	@Override
 	protected void initialisation() {
@@ -70,6 +73,8 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		servletContext = event.getServletContext();
+		addUrls(event);
 		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());
 		mobileViewMapping();
@@ -100,6 +105,20 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		
 		if(Boolean.TRUE.equals(alarmScanningEnabled(event)))
 			RootBusinessLayer.getInstance().enableAlarmScanning(alarmScanningDelay(event), alarmScanningPeriod(event),alarmScanningRemoteEndPoints(event));
+	}
+	
+	protected void addUrls(ServletContextEvent event){
+		
+	}
+	
+	protected void addWhiteListedUrls(String...relativeUrls){
+		for(String relativeUrl : relativeUrls)
+			addUrl(relativeUrl, Boolean.TRUE);
+	}
+	
+	protected void addBlackListedUrls(String...relativeUrls){
+		for(String relativeUrl : relativeUrls)
+			addUrl(relativeUrl, Boolean.FALSE);
 	}
 	
 	protected void mobileViewMapping(){
@@ -225,4 +244,10 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		return integerContextParameter(name, event, 0);
 	}
 	
+	protected void addUrl(String relativeUrl,Boolean witheListed){
+		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator(servletContext.getContextPath()+relativeUrl);
+		(Boolean.TRUE.equals(witheListed) ? RootBusinessLayer.getInstance().getApplicationBusiness().getWhiteListedUrls() 
+				:RootBusinessLayer.getInstance().getApplicationBusiness().getBlackListedUrls()).add(uniformResourceLocator);
+	}
+
 }
