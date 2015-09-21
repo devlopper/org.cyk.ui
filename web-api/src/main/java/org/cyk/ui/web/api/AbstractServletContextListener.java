@@ -1,7 +1,11 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -17,6 +21,7 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.message.MailBusiness;
+import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
@@ -45,6 +50,8 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
+	public static final Map<String, Collection<UniformResourceLocator>> ROLE_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
+	
 	@Inject protected GenericBusiness genericBusiness;
 	@Inject protected EventBusiness eventBusiness;
 	@Inject protected LanguageBusiness languageBusiness;
@@ -59,6 +66,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Inject protected BusinessManager businessManager;
 	@Inject protected RoleManager roleManager;
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
+	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	
 	protected ServletContext servletContext;
 	
@@ -109,16 +117,6 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	protected void addUrls(ServletContextEvent event){
 		
-	}
-	
-	protected void addWhiteListedUrls(String...relativeUrls){
-		for(String relativeUrl : relativeUrls)
-			addUrl(relativeUrl, Boolean.TRUE);
-	}
-	
-	protected void addBlackListedUrls(String...relativeUrls){
-		for(String relativeUrl : relativeUrls)
-			addUrl(relativeUrl, Boolean.FALSE);
 	}
 	
 	protected void mobileViewMapping(){
@@ -244,10 +242,22 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		return integerContextParameter(name, event, 0);
 	}
 	
-	protected void addUrl(String relativeUrl,Boolean witheListed){
+	protected void addUrl(String roleCode,String relativeUrl,Object...parameters){
 		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator(servletContext.getContextPath()+relativeUrl);
-		(Boolean.TRUE.equals(witheListed) ? RootBusinessLayer.getInstance().getApplicationBusiness().getWhiteListedUrls() 
-				:RootBusinessLayer.getInstance().getApplicationBusiness().getBlackListedUrls()).add(uniformResourceLocator);
+		if(parameters!=null)
+			for(int i=0;i<parameters.length-1;i=+2)
+				uniformResourceLocator.addParameter((String)parameters[i], parameters[i+1].toString());
+		
+		addUrl(roleCode, uniformResourceLocator);
+		
+	}
+	
+	protected void addUrl(String roleCode,UniformResourceLocator uniformResourceLocator){
+		Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
+		if(uniformResourceLocators==null)
+			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
+		
+		uniformResourceLocators.add(uniformResourceLocator);
 	}
 
 }

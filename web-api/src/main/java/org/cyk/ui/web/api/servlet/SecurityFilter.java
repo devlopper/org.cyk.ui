@@ -2,6 +2,7 @@ package org.cyk.ui.web.api.servlet;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -12,9 +13,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.License;
+import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.utility.common.CommonUtils;
 
 public class SecurityFilter extends AbstractFilter implements Filter,Serializable {
@@ -24,6 +29,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	public static Boolean LICENSE_ENABLED = Boolean.FALSE;
 	
 	@Inject private ApplicationBusiness applicationBusiness;
+	@Inject private UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	@Inject private LicenseBusiness licenseBusiness;
 	
 	@Override
@@ -31,7 +37,12 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
-		if(applicationBusiness.isAccessible(url(request))){
+		debug(request.getSession());
+		Collection<UniformResourceLocator> uniformResourceLocators = AbstractServletContextListener.ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(RootBusinessLayer.getInstance().getUserRole().getCode());
+		System.out.println(uniformResourceLocators);
+		
+		if(uniformResourceLocatorBusiness.isAccessible(uniformResourceLocators,url(request))){
+			//System.out.println(applicationBusiness.getBlackListedUrls());
 			if(!goTo(applicationBusiness.findCurrentInstance()==null, "install", request, response)){
 				if(Boolean.TRUE.equals(LICENSE_ENABLED)){
 					License license = applicationBusiness.findCurrentInstance().getLicense();
