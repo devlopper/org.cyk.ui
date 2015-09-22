@@ -51,6 +51,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public static final String MOBILE_PAGE_OUTCOME_FORMAT = "pm:%s?transition=%s&reverse=%s";
 	public static final String MOBILE_PAGE_TRANSITION="flip";
 	public static final Boolean MOBILE_PAGE_REVERSE=Boolean.TRUE;
+	public static final String PAGE_CRUD_MANY = "/private/__tools__/crud/crudmany.jsf";
+	public static final String PAGE_CRUD_ONE = "/private/__tools__/crud/crudone.jsf";
 	
 	/**
 	 * 

@@ -7,6 +7,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.BusinessAdapter;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
@@ -38,10 +39,10 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void addUrls(ServletContextEvent event) {
 		super.addUrls(event);
-		//uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.TRUE);
+		uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.TRUE);
 		addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/index.jsf");
-		addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
-		
+		//addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
+		addCrudUrl(rootBusinessLayer.getUserRole().getCode(), Actor.class, Boolean.TRUE,Crud.CREATE);
 		/*
 		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/crud/");
 		

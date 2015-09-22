@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.web.api.AbstractWebUserSession;
 import org.cyk.ui.web.api.NavigationHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractFilter extends AbstractBean implements Filter,Serializable {
@@ -55,7 +57,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 	
 	protected URL url(HttpServletRequest request){
 		try {
-			return new URL(request.getRequestURL().toString());
+			return new URL(request.getRequestURL().toString()+(StringUtils.isBlank(request.getQueryString())?Constant.EMPTY_STRING:"?"+request.getQueryString()) );
 		} catch (MalformedURLException e) {
 			logThrowable(e);
 			return null;

@@ -62,7 +62,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		}
 			
 		if(Boolean.TRUE.equals(doFilterChain)){
-			if(uniformResourceLocatorBusiness.isAccessible(uniformResourceLocators,url(request)))
+			if(uniformResourceLocators==null || uniformResourceLocatorBusiness.isAccessible(uniformResourceLocators,url(request)))
 				filterChain.doFilter(servletRequest, servletResponse);
 			else
 				goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response);

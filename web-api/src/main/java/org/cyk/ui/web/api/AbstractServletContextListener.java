@@ -252,7 +252,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected void addUrl(String roleCode,String relativeUrl,Object...parameters){
 		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator(servletContext.getContextPath()+relativeUrl);
 		if(parameters!=null)
-			for(int i=0;i<parameters.length-1;i=+2)
+			for(int i=0;i<parameters.length-1;i+=2)
 				uniformResourceLocator.addParameter((String)parameters[i], parameters[i+1].toString());
 		
 		addUrl(roleCode, uniformResourceLocator);
@@ -267,8 +267,40 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		uniformResourceLocators.add(uniformResourceLocator);
 	}
 	
+	protected void addCrudUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean list,Crud...cruds){
+		if(cruds==null)
+			cruds = Crud.values();
+		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
+		String classIdentifier = businessEntityInfos.getIdentifier();
+		if(Boolean.TRUE.equals(list)){
+			addUrl(roleCode,WebNavigationManager.PAGE_CRUD_MANY,uiManager.getClassParameter(),classIdentifier);
+		}
+		for(Crud crud : cruds){
+			switch(crud){
+			case CREATE:
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+						,uiManager.getCrudCreateParameter());
+				break;
+			case READ:
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+						,uiManager.getCrudReadParameter());
+				break;
+			case UPDATE:
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+						,uiManager.getCrudUpdateParameter());
+				break;
+			case DELETE:
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+						,uiManager.getCrudDeleteParameter());
+				break;
+			}
+		}
+	}
+	
 	//TODO to be moved to business
 	public static Collection<UniformResourceLocator> getUrls(UserAccount userAccount){
+		if(userAccount.getRoles().contains(RootBusinessLayer.getInstance().getManagerRole()))
+			return null;
 		Collection<UniformResourceLocator> uniformResourceLocators = USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP.get(userAccount.getIdentifier());
 		if(uniformResourceLocators==null){
 			uniformResourceLocators=new ArrayList<>();

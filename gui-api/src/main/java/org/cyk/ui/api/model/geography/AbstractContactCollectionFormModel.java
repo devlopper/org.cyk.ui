@@ -54,6 +54,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	}
 	
 	protected String readPhoneNumber(PhoneNumberType type){
+		if(identifiable==null)
+			return null;
 		if(identifiable.getPhoneNumbers()==null)
 			identifiable.setPhoneNumbers(new ArrayList<PhoneNumber>());
 		for(PhoneNumber p : identifiable.getPhoneNumbers())
@@ -95,6 +97,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	}
 	
 	protected String readLocation(LocationType type){
+		if(identifiable==null)
+			return null;
 		if(identifiable.getLocations()==null)
 			identifiable.setLocations(new ArrayList<Location>());
 		for(Location p : identifiable.getLocations())
@@ -106,6 +110,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	/**/
 	
 	protected String readElectronicMail(){
+		if(identifiable==null)
+			return null;
 		if(identifiable.getElectronicMails()==null)
 			identifiable.setElectronicMails(new ArrayList<ElectronicMail>());
 		if(identifiable.getElectronicMails().isEmpty())
@@ -128,6 +134,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	/**/
 	
 	protected String readPostalBox(){
+		if(identifiable==null)
+			return null;
 		if(identifiable.getPostalBoxs()==null)
 			identifiable.setPostalBoxs(new ArrayList<PostalBox>());
 		if(identifiable.getPostalBoxs().isEmpty())
