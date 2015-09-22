@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -30,6 +31,8 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -50,7 +53,9 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
+	/*TODO to be moved on business with caching concept*/
 	public static final Map<String, Collection<UniformResourceLocator>> ROLE_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
+	public static final Map<Long, Collection<UniformResourceLocator>> USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
 	
 	@Inject protected GenericBusiness genericBusiness;
 	@Inject protected EventBusiness eventBusiness;
@@ -65,6 +70,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	@Inject protected ApplicationBusiness applicationBusiness;
 	@Inject protected BusinessManager businessManager;
 	@Inject protected RoleManager roleManager;
+	protected RootBusinessLayer rootBusinessLayer;
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	
@@ -77,6 +83,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
 		webNavigationManager.getWebNavigationManagerListeners().add(this);	
+		rootBusinessLayer = RootBusinessLayer.getInstance();
 	}
 	
 	@Override
@@ -258,6 +265,28 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
 		
 		uniformResourceLocators.add(uniformResourceLocator);
+	}
+	
+	//TODO to be moved to business
+	public static Collection<UniformResourceLocator> getUrls(UserAccount userAccount){
+		Collection<UniformResourceLocator> uniformResourceLocators = USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP.get(userAccount.getIdentifier());
+		if(uniformResourceLocators==null){
+			uniformResourceLocators=new ArrayList<>();
+			for(Role role : userAccount.getRoles()){
+				for(Entry<String, Collection<UniformResourceLocator>> entry : ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.entrySet()){
+					if(entry.getKey().equals(role.getCode()) && entry.getValue()!=null){
+						uniformResourceLocators.addAll(entry.getValue());
+					}
+				}
+			}
+		}else{
+			
+		}
+		return uniformResourceLocators;
+	}
+	
+	public static Collection<UniformResourceLocator> getUrls(){
+		return ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(RootBusinessLayer.getInstance().getUserRole().getCode());
 	}
 
 }

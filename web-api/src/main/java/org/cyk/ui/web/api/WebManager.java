@@ -86,6 +86,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterUrl = "url";
 	private final String requestParameterOutcome = "outcome";
 	
+	private final String sessionAttributeUserSession = "userSession";
+	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){
 		case 0:return "info";

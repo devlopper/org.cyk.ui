@@ -3,9 +3,11 @@ package org.cyk.ui.web.primefaces.page.security;
 import java.io.Serializable;
 import java.net.URI;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +29,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.AbstractOpticalBarCodeReader;
 import org.cyk.ui.api.model.OpticalBarCodeReaderAdapter;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.Timer;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
@@ -85,6 +88,8 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		UserAccount userAccount = userAccountBusiness.connect(credentials);
 		SecurityUtils.getSubject().login(new UsernamePasswordToken(credentials.getUsername(), credentials.getPassword(),rememberMe));
 		userSession.init(userAccount);
+		logInfo("User has logged in : Username={} , Roles={}", userAccount.getCredentials().getUsername(),userAccount.getRoles());
+		((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(Boolean.FALSE)).setAttribute(WebManager.getInstance().getSessionAttributeUserSession(), userSession);
 	}
 	
 	@Override

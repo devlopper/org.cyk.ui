@@ -89,13 +89,14 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 			//notificationFired(notification, facesMessage);
 		}
 		*/
-		
+		logTrace("User session of {} initialised",getUserAccount().getCredentials().getUsername());
 	}
 	
 	public void showNotifications(){
 		//System.out.println("AbstractUserSession.showNotifications() : "+userAccount.getSessionNotifications().size());
 		MessageManager.INSTANCE.clear();//to avoid showing old message in case there are
 		MessageManager.INSTANCE.notifications(userAccount.getSessionNotifications()).showGrowl();
+		logTrace("Show {} notifications to username {}",userAccount.getSessionNotifications().size(),getUserAccount().getCredentials().getUsername());
 	}
 	
 	protected abstract void __logout__();
@@ -107,6 +108,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		logoutCalled = Boolean.TRUE;
 		__invalidateSession__();
 		__navigateToPublicIndex__();
+		logTrace("Username {} has logged out", userAccount.getCredentials().getUsername());
 	}
 	
 	public void autoLogout(){
@@ -114,6 +116,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		__logout__();
 		unRegister(this);
 		__navigateToPublicIndex__();
+		logTrace("Username {} has logged out", userAccount.getCredentials().getUsername());
 	}
 	
 	protected abstract void __navigateToPublicIndex__();

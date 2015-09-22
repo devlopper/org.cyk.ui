@@ -8,9 +8,7 @@ import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.BusinessAdapter;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
@@ -40,22 +38,22 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void addUrls(ServletContextEvent event) {
 		super.addUrls(event);
+		//uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.TRUE);
+		addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/index.jsf");
+		addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
 		
+		/*
 		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/crud/");
-		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/index.jsf");
+		
 		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/index.jsf");
 		
 		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator("/private/__tools__/crud/crudone.jsf");
 		uniformResourceLocator.addParameter(uiManager.getCrudParameter(),uiManager.getCrudCreateParameter());
 		uniformResourceLocator.addParameter(uiManager.getClassParameter(),uiManager.businessEntityInfos(Person.class).getIdentifier());
 		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),uniformResourceLocator);
-		
-		//addUrl("/private/__tools__/crud/crudone.jsf",Boolean.FALSE,uiManager.getCrudParameter(),uiManager.getCrudCreateParameter(),
-		//		uiManager.getClassParameter(),uiManager.businessEntityInfos(Person.class).getIdentifier());
-		
-		
+				
 		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
-		//addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/");
+		*/
 	}
 	
 	@Override

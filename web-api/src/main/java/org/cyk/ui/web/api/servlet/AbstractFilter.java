@@ -11,8 +11,12 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.web.api.AbstractWebUserSession;
 import org.cyk.ui.web.api.NavigationHelper;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -56,6 +60,11 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 			logThrowable(e);
 			return null;
 		}
+	}
+	
+	protected AbstractUserSession userSession(HttpServletRequest request){
+		HttpSession session = request.getSession(Boolean.FALSE);
+		return (AbstractWebUserSession) (session == null ? null : session.getAttribute(WebManager.getInstance().getSessionAttributeUserSession()));
 	}
 	
 }

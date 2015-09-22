@@ -46,11 +46,11 @@ public abstract class AbstractWebUserSession extends AbstractUserSession impleme
 	
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-		System.out.println("AbstractWebUserSession.valueBound()");
+		
 	}
 	
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
-		System.out.println("AbstractWebUserSession.valueUnbound()");
+		
 	}
 }

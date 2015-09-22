@@ -6,12 +6,12 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 
+import lombok.Getter;
+
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.web.api.AbstractWebUserSession;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
 
 @SessionScoped @Named
 public class UserSession extends AbstractWebUserSession implements Serializable {
@@ -26,7 +26,6 @@ public class UserSession extends AbstractWebUserSession implements Serializable 
 	public void init(UserAccount userAccount) {
 		super.init(userAccount);
 		this.contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
-		logInfo("User has logged in : Username={} , Roles={}", userAccount.getCredentials().getUsername(),userAccount.getRoles());
 	}
 	
 	@Override
@@ -38,6 +37,7 @@ public class UserSession extends AbstractWebUserSession implements Serializable 
 	@Override
 	public void showNotifications() {
 		super.showNotifications();
+		
 		//if(StringUtils.endsWith(navigationManager.getRequestUrl(), "/private/__tools__/event/notifications.jsf")){
 			//navigationManager.redirectTo(navigationManager.getOutcomeNotifications());
 			//RequestContext.getCurrentInstance().execute("updateNotifications();");
