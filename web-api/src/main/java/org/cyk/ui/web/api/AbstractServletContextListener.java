@@ -303,6 +303,16 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		}
 	}
 	
+	protected void addTableUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,String path,Boolean printable,Object...parameters){
+		addUrl(roleCode,path,parameters);
+		if(Boolean.TRUE.equals(printable)){
+			addReportUrl(roleCode, aClass, Boolean.TRUE, parameters);
+		}
+	}
+	protected void addTableUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,String path,Object...parameters){
+		addTableUrl(roleCode, aClass, path, Boolean.TRUE, parameters);
+	}
+	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
 		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
 				.addAnyInstanceOf(aClass).addParameters(parameters));
@@ -313,6 +323,8 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
 					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addAnyInstanceOf(aClass).addParameters(parameters));	
 		}
+		
+		
 	}
 	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Object...parameters){
