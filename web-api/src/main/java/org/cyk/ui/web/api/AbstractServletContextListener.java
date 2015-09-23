@@ -26,6 +26,7 @@ import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
@@ -73,6 +74,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected RootBusinessLayer rootBusinessLayer;
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
+	protected UniformResourceLocatorBuilder uniformResourceLocatorBuilder = new UniformResourceLocatorBuilder();
 	
 	protected ServletContext servletContext;
 	
@@ -249,14 +251,18 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		return integerContextParameter(name, event, 0);
 	}
 	
+	protected void addUrl(String roleCode,UniformResourceLocatorBuilder builder){
+		Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
+		if(uniformResourceLocators==null)
+			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
+		
+		uniformResourceLocators.add(builder.build());
+	}
+	
+	//TODO this logic should be moved on root business
 	protected void addUrl(String roleCode,String relativeUrl,Object...parameters){
-		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator(servletContext.getContextPath()+relativeUrl);
-		if(parameters!=null)
-			for(int i=0;i<parameters.length-1;i+=2)
-				uniformResourceLocator.addParameter((String)parameters[i], parameters[i+1].toString());
-		
-		addUrl(roleCode, uniformResourceLocator);
-		
+		addUrl(roleCode, uniformResourceLocatorBuilder.newUniformResourceLocator()
+				.setPath(servletContext.getContextPath()+relativeUrl).addParameters(parameters).build());
 	}
 	
 	protected void addUrl(String roleCode,UniformResourceLocator uniformResourceLocator){
@@ -278,23 +284,39 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		for(Crud crud : cruds){
 			switch(crud){
 			case CREATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
 						,uiManager.getCrudCreateParameter());
 				break;
 			case READ:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
 						,uiManager.getCrudReadParameter());
 				break;
 			case UPDATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
 						,uiManager.getCrudUpdateParameter());
 				break;
 			case DELETE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),classIdentifier,uiManager.getCrudParameter()
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
 						,uiManager.getCrudDeleteParameter());
 				break;
 			}
 		}
+	}
+	
+	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
+		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
+				.addAnyInstanceOf(aClass).addParameters(parameters));
+		if(Boolean.TRUE.equals(dynamic)){
+			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
+					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addAnyInstanceOf(aClass).addParameters(parameters));	
+		}else{
+			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
+					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addAnyInstanceOf(aClass).addParameters(parameters));	
+		}
+	}
+	
+	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Object...parameters){
+		addReportUrl(roleCode, aClass, Boolean.TRUE, parameters);
 	}
 	
 	//TODO to be moved to business

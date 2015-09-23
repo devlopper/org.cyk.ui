@@ -29,6 +29,7 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
@@ -141,6 +142,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
+		UniformResourceLocatorBuilder.CLASS_PARAMETER_NAME=classParameter;
+		UniformResourceLocatorBuilder.IDENTIFIABLE_PARAMETER_NAME=identifiableParameter;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
 		//windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
