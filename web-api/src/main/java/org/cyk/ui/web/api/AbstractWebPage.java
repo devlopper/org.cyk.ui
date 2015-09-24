@@ -32,6 +32,7 @@ import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutput;
+import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
 
@@ -45,6 +46,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@Inject transient protected WebNavigationManager navigationManager;
 	@Inject transient protected JavaScriptHelper javaScriptHelper;
 	@Inject protected RoleBusiness roleBusiness;
+	@Inject protected RoleManager roleManager;
 	
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
 		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage;

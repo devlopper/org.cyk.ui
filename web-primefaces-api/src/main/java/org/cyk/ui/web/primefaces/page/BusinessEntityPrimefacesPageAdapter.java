@@ -2,12 +2,11 @@ package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+
 import lombok.Getter;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.utility.common.cdi.DefaultBeanAdapter;
-
-public class BusinessEntityPrimefacesPageAdapter<ENTITY_TYPE extends AbstractIdentifiable> extends DefaultBeanAdapter implements BusinessEntityPrimefacesPageListener<ENTITY_TYPE>,Serializable {
+public class BusinessEntityPrimefacesPageAdapter<ENTITY_TYPE extends AbstractIdentifiable> extends PrimefacesPageAdapter implements BusinessEntityPrimefacesPageListener<ENTITY_TYPE>,Serializable {
 
 	private static final long serialVersionUID = -7944074776241690783L;
 

@@ -51,11 +51,15 @@ public class RoleManager extends AbstractRoleManager<HttpServletRequest> impleme
 	/**/
 	
 	
-	private <ROLE extends Role> Boolean hasRole(HttpServletRequest request,String roleCode){
+	public <ROLE extends Role> Boolean hasRole(HttpServletRequest request,String roleCode){
 		
 		if(request==null)
 			request = Faces.getRequest();
 		return request.isUserInRole(roleBusiness.find(roleCode).getIdentifier().toString());
+	}
+	
+	public <ROLE extends Role> Boolean hasRole(String roleCode){
+		return hasRole(null, roleCode);
 	}
 	
 	public static RoleManager getInstance() {

@@ -65,6 +65,33 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	private Boolean mobilePageReverse=Boolean.TRUE;
 	
 	@Override
+	protected void initialisation() {
+		super.initialisation();
+		for(PrimefacesPageListener listener : getListeners())
+			listener.initialisationStarted(this); 
+		
+		
+		for(PrimefacesPageListener listener : getListeners())
+			listener.initialisationEnded(this); 
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(PrimefacesPageListener listener : getListeners())
+			listener.afterInitialisationStarted(this);
+		
+		// your Code gere
+		
+		for(PrimefacesPageListener listener : getListeners())
+			listener.afterInitialisationEnded(this); 
+	}
+	
+	private Collection<PrimefacesPageListener> getListeners(){
+		return primefacesManager.getPageListeners();
+	}
+	
+	@Override
 	public void targetDependentInitialisation() {
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
 		

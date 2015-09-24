@@ -315,13 +315,15 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
 		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
-				.addAnyInstanceOf(aClass).addParameters(parameters));
+				//.addAnyInstanceOf(aClass)
+				.addClassParameter(aClass)
+				.addParameters(parameters));
 		if(Boolean.TRUE.equals(dynamic)){
 			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
-					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addAnyInstanceOf(aClass).addParameters(parameters));	
+					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}else{
 			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
-					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addAnyInstanceOf(aClass).addParameters(parameters));	
+					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}
 		
 		

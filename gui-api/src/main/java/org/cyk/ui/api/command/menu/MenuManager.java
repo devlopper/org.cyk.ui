@@ -96,14 +96,18 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandableGroup = homeCommandable();
 			break;
 		case TOOLS:
-			commandableGroup = UIProvider.getInstance().createCommandable("command.tools", IconType.THING_TOOLS);
-			commandableGroup.addChild(agendaCommandable() /*"command.calendar", IconType.THING_CALENDAR, ViewType.TOOLS_CALENDAR, null*/);
+			if(userSession.getIsManager()){
+				commandableGroup = UIProvider.getInstance().createCommandable("command.tools", IconType.THING_TOOLS);
+				commandableGroup.addChild(agendaCommandable() /*"command.calendar", IconType.THING_CALENDAR, ViewType.TOOLS_CALENDAR, null*/);
+			}
 			break;
 		case CONTROL_PANEL:
-			commandableGroup = UIProvider.getInstance().createCommandable("command.controlpanel", null);
-			commandableGroup.addChild("command.referenceentity", IconType.ACTION_SET, ViewType.MODULE_REFERENCE_ENTITY, null);
-			//TODO to be rendered when Manager ONLY - use RoleManager as interface
-			commandableGroup.addChild("command.security", IconType.THING_SECURITY, ViewType.MODULE_SECURITY, null);
+			if(userSession.getIsManager()){
+				commandableGroup = UIProvider.getInstance().createCommandable("command.controlpanel", null);
+				commandableGroup.addChild("command.referenceentity", IconType.ACTION_SET, ViewType.MODULE_REFERENCE_ENTITY, null);
+				//TODO to be rendered when Manager ONLY - use RoleManager as interface
+				commandableGroup.addChild("command.security", IconType.THING_SECURITY, ViewType.MODULE_SECURITY, null);
+			}
 			break;
 		case USER_ACCOUNT:
 			commandableGroup = UIProvider.getInstance().createCommandable(/*"command.useraccount"*/ userSession.getUserAccount().getCredentials().getUsername(),
@@ -152,8 +156,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 		business(userSession,menu);
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.REPORT));
 		
-		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
-		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
+		if(userSession.getIsManager()){
+			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
+			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
+		}
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
 		return menu;
@@ -228,8 +234,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 		UIMenu menu = new DefaultMenu();
 		UICommandable p;
 		if(!UIManager.getInstance().isMobileDevice(userDeviceType)){
-			p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
-			p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+			if(userSession.getIsManager()){
+				p = menu.addCommandable(commandable("event.create", IconType.ACTION_ADD,ViewType.EVENT_CRUD_ONE));
+				p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+			}
 		}
 		return menu;
 	}
