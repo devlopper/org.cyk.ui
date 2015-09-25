@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -26,7 +27,8 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	protected Collection<UICommandable> commandables = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
 		public boolean add(UICommandable aCommandable){
-			aCommandable.setIdentifier(RandomStringUtils.randomAlphabetic(4));
+			if(StringUtils.isBlank(aCommandable.getIdentifier()))
+				aCommandable.setIdentifier(RandomStringUtils.randomAlphabetic(4));
 			return super.add(aCommandable);
 		}
 	};
