@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
@@ -36,7 +37,8 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected Collection<UICommandable> children = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
 		public boolean add(UICommandable aCommandable){
-			aCommandable.setIdentifier(RandomStringUtils.randomAlphabetic(4));
+			if(StringUtils.isBlank(aCommandable.getIdentifier()))
+				aCommandable.setIdentifier(RandomStringUtils.randomAlphabetic(4));
 			return super.add(aCommandable);
 		}
 	};
