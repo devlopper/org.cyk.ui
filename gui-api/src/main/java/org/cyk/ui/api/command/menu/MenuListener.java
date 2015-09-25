@@ -20,4 +20,6 @@ public interface MenuListener {
 	
 	void calendarMenuCreated(AbstractUserSession userSession,UIMenu menu);
 
+	void sessionContextualMenuCreated(AbstractUserSession userSession,UIMenu menu);
+
 }

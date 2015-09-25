@@ -159,6 +159,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		
 	}
 	
+	@Override
+	public void sessionContextualMenuCreated(AbstractUserSession userSession,UIMenu menu) {
+		
+	}
+	
 	/**/
 	
 	protected Boolean alarmScanningEnabled(ServletContextEvent event){
