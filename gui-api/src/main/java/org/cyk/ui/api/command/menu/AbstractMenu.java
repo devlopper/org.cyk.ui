@@ -3,6 +3,7 @@ package org.cyk.ui.api.command.menu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,27 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 			if(commandable.getIdentifier().equals(anIdentifier))
 				return commandable;
 		throw new IllegalArgumentException("No such commandable <"+anIdentifier+"> exist");
+	}
+	
+	@Override
+	public UICommandable remove(String anIdentifier) {
+		List<UICommandable> list = (List<UICommandable>) commandables;
+		UICommandable commandable = __remove__(anIdentifier, list);
+		if(commandable==null){
+			for(int i=0;i<list.size() && commandable==null;i++)
+				commandable = __remove__(anIdentifier, (List<UICommandable>) list.get(i).getChildren());
+		}	
+		return commandable;
+	}
+	
+	private UICommandable __remove__(String anIdentifier,List<UICommandable> commandables) {
+		if(commandables==null)
+			return null;
+		for(int i=0;i<commandables.size();i++){
+			if(commandables.get(i).getIdentifier().equals(anIdentifier))
+				return commandables.remove(i);
+		}
+		return null;
 	}
 	
 	@Override

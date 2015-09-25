@@ -13,6 +13,7 @@ public interface UIMenu {
 	Collection<UICommandable> getCommandables();
 
 	UICommandable commandable(String anIdentifier);
+	UICommandable remove(String anIdentifier);
 	
 	UICommandable addCommandable(String labelId,IconType iconType);
 	UICommandable addCommandable(UICommandable commandable);

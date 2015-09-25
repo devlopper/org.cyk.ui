@@ -49,6 +49,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 
 	private static final long serialVersionUID = 581883275700805955L;
  
+	public static final String COMMANDABLE_ADD_IDENTIFIER = "add";
+	public static final String COMMANDABLE_EXPORT_PDF_IDENTIFIER = "print";
+	
 	public enum RowMenuLocation{MAIN_MENU,BY_ROW}
 	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
 	public enum RenderType{TABLE,LIST,GRID}
@@ -91,6 +94,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
 		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?rowDataClass:identifiableConfiguration.getClazz());
 		addRowCommandable = UIProvider.getInstance().createCommandable(this, "command.add", IconType.ACTION_ADD, null, null);
+		addRowCommandable.setIdentifier(COMMANDABLE_ADD_IDENTIFIER);
+		
 		initRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
 		cancelRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.cancel", IconType.ACTION_CANCEL, null, null);
 		applyRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.apply", IconType.ACTION_APPLY, null, null);
@@ -110,6 +115,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		exportCommandable.setRendered(Boolean.FALSE);
 		
 		exportToPdfCommandable = UIProvider.getInstance().createCommandable(this, "command.export.pdf", IconType.ACTION_EXPORT_PDF, null, null);
+		exportToPdfCommandable.setIdentifier(COMMANDABLE_EXPORT_PDF_IDENTIFIER);
 		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
 		exportMenu.getCommandables().add(exportToPdfCommandable);
 		

@@ -93,13 +93,27 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@Override
 	public void targetDependentInitialisation() {
+		for(PrimefacesPageListener listener : getListeners())
+			listener.targetDependentInitialisationStarted(this); 
+		
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
 		
 		if(contextualMenu!=null && contextualMenu.getCommandables().isEmpty())
 			contextualMenu = null;
+		
+		if(contextualMenu!=null)
+			for(PrimefacesPageListener listener : getListeners())
+				listener.processContextualMenu(this,contextualMenu); 
+		
+		if(contextualMenu!=null && contextualMenu.getCommandables().isEmpty())
+			contextualMenu = null;
+		
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		
-		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");	
+		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");
+		
+		for(PrimefacesPageListener listener : getListeners())
+			listener.targetDependentInitialisationEnded(this); 
 	}
 	
 	protected void buildTable(AbstractTable<?, ?, ?> atable){
