@@ -9,6 +9,9 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
     
-	<h:outputText value="#{uiManager.text('page.build.error')}" escape="false" />	
+	<ui:include src="/org.cyk.ui.web.primefaces/include/message.xhtml" >
+		<ui:param name="severity" value="error"/>
+		<ui:param name="message" value="#{uiManager.text('page.build.error')}"/>
+	</ui:include>	
 		
 </ui:composition>
