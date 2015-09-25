@@ -44,6 +44,9 @@ import org.cyk.utility.common.cdi.AbstractBean;
 public class MenuManager extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4331240830505008164L;
+	public static final String COMMANDABLE_NOTIFICATIONS_IDENTIFIER = "notifications";
+	public static final String COMMANDABLE_EVENT_CALENDAR_IDENTIFIER = "eventcalendar";
+	public static final String COMMANDABLE_USER_ACCOUNT_IDENTIFIER = "useraccount";
 	public static enum ModuleGroup{HOME,TOOLS,CONTROL_PANEL,REPORT,USER_ACCOUNT,HELP}
 	
 	private static MenuManager INSTANCE;
@@ -79,17 +82,19 @@ public class MenuManager extends AbstractBean implements Serializable {
 	private UICommandable notificationsCommandable(){
 		UICommandable commandable = UIProvider.getInstance().createCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.setIdentifier(COMMANDABLE_NOTIFICATIONS_IDENTIFIER);
 		return commandable;
 	}
 	
 	private UICommandable agendaCommandable(){
 		UICommandable commandable = UIProvider.getInstance().createCommandable("command.agenda", IconType.THING_CALENDAR, ViewType.TOOLS_AGENDA);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.setIdentifier(COMMANDABLE_EVENT_CALENDAR_IDENTIFIER);
 		return commandable;
 	}
 	
 	public UICommandable createModuleGroup(AbstractUserSession userSession,ModuleGroup moduleGroup) {
-		UICommandable commandableGroup = null;
+		UICommandable commandableGroup = null,c;
 		groupsMap.put(moduleGroup, commandableGroup);
 		switch(moduleGroup){
 		case HOME:
@@ -114,7 +119,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 					null);
 			commandableGroup.setLabel(userSession.getUserAccount().getCredentials().getUsername());
 			commandableGroup.addChild(notificationsCommandable());
-			commandableGroup.addChild("command.useraccount", IconType.THING_USERACCOUNT, ViewType.USER_ACCOUNT_CONSULT, null);
+			c = commandableGroup.addChild("command.useraccount", IconType.THING_USERACCOUNT, ViewType.USER_ACCOUNT_CONSULT, null);
+			c.setIdentifier(COMMANDABLE_USER_ACCOUNT_IDENTIFIER);
 			commandableGroup.addChild(logoutCommandable());
 			
 			break;

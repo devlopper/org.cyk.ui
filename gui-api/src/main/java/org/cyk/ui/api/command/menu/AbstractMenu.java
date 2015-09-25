@@ -50,7 +50,7 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 		return commandable;
 	}
 	
-	private UICommandable __remove__(String anIdentifier,List<UICommandable> commandables) {
+	public static UICommandable __remove__(String anIdentifier,List<UICommandable> commandables) {
 		if(commandables==null)
 			return null;
 		for(int i=0;i<commandables.size();i++){
