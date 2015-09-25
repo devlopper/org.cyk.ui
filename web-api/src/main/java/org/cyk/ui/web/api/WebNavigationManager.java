@@ -246,6 +246,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 		
 	public void redirectToUrl(String url){
+		logTrace("Redirect to {} , Committed = {}", url,Faces.isResponseCommitted());
 		try {
 			Faces.redirect(url);
 			//Faces.responseComplete();

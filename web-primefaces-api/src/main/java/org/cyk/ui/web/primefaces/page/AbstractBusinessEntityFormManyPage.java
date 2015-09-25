@@ -144,7 +144,6 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					@SuppressWarnings("unchecked")
 					Object data = ((Row<Object>)parameter).getData();
 					AbstractIdentifiable identifiable = __identifiable__(data);
-					
 					if(identifiable==null){
 						BusinessEntityFormManyPageListener<?> redirectListener = null;
 						for(BusinessEntityFormManyPageListener<?> listener : getListeners())
@@ -159,11 +158,13 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					}else{
 						logTrace("Redirecting to consult view from page. {} , {} , {}"
 								,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
+					
 						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
 								new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 							,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
 							UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
 							?UIManager.getInstance().getCrudReadParameter():null});
+							
 					}
 				}
 			});	
