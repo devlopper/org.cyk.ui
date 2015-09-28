@@ -45,6 +45,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		registerOutputDetailsConfiguration(ConsultActorPage.ContactDetails.class, ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER
 				,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL
 				,ContactCollectionEditFormModel.FIELD_HOME_LOCATION,ContactCollectionEditFormModel.FIELD_POSTALBOX);
+		
+		registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class,DefaultPersonEditFormModel.FIELD_BLOOD_GROUP
+				,DefaultPersonEditFormModel.FIELD_OTHER_MEDICAL_INFORMATIONS);
+		
+		registerOutputDetailsConfiguration(ConsultActorPage.JobDetails.class,DefaultPersonEditFormModel.FIELD_COMPANY,DefaultPersonEditFormModel.FIELD_JOB_TITLE
+				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
 	}
 	
 	@Override

@@ -257,8 +257,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UIMenu sessionContextualMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();
-		menu.addCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
-		menu.addCommandable("command.calendar", IconType.THING_CALENDAR,ViewType.TOOLS_AGENDA);
+		UICommandable c;
+		c = menu.addCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
+		c.setIdentifier(COMMANDABLE_NOTIFICATIONS_IDENTIFIER);
+		c = menu.addCommandable("command.calendar", IconType.THING_CALENDAR,ViewType.TOOLS_AGENDA);
+		c.setIdentifier(COMMANDABLE_EVENT_CALENDAR_IDENTIFIER);
 		menu.addCommandable("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT)
 			.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
 		for(MenuListener listener : menuListeners)

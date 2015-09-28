@@ -21,6 +21,7 @@ import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputEditor;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -40,11 +41,13 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	@Input @InputChoice @InputOneChoice @InputOneCombo private MaritalStatus maritalStatus;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private Country nationality;
 	
+	@Input @InputChoice @InputOneChoice @InputOneCombo private BloodGroup bloodGroup;
+	//@Input @InputText private String allergicReactionResponse,allergicReactionType;
+	@Input @InputEditor private String otherMedicalInformations;
+	
 	@Input @InputText private String company;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private JobTitle jobTitle;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private JobFunction jobFunction;
-	
-	@Input @InputChoice @InputOneChoice @InputOneCombo private BloodGroup bloodGroup;
 	
 	@Override
 	public void write() {
@@ -87,10 +90,17 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	public static final String FIELD_SEX = "sex";
 	public static final String FIELD_MARITAL_STATUS = "maritalStatus";
 	public static final String FIELD_NATIONALITY = "nationality";
-	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_TITLE = "title";
+	
+	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
+	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";
+	public static final String FIELD_ALLERGIC_REACTION_TYPE = "allergicReactionType";
+	public static final String FIELD_ALLERGIES = "allergies";
+	public static final String FIELD_MEDICATIONS = "medications";
+	public static final String FIELD_OTHER_MEDICAL_INFORMATIONS = "otherMedicalInformations";
 	
 	public static final String FIELD_JOB_TITLE = "jobTitle";
 	public static final String FIELD_JOB_FUNCTION = "jobFunction";
-	public static final String FIELD_COMPANY = "company";
+	public static final String FIELD_COMPANY = "jobCompany";
+	public static final String FIELD_JOB_CONTACTS = "jobContacts";
 }

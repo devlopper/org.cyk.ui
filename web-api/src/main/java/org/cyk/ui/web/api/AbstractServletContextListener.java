@@ -125,7 +125,9 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	}
 	
 	protected void addUrls(ServletContextEvent event){
-		
+		uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.FALSE);
+		//TODO use shiro object instead for better management
+		addUrl(Role.USER,"/private/index.jsf");
 	}
 	
 	protected void mobileViewMapping(){
