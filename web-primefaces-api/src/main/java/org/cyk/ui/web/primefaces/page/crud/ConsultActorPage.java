@@ -33,10 +33,10 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		mainDetails = createDetailsBlock(new MainDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
-		contactDetails = createDetailsBlock(new ContactDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
-		medicalDetails = createDetailsBlock(new MedicalDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
-		jobDetails = createDetailsBlock(new JobDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
+		mainDetails = createDetailsBlock(new MainDetails(identifiable));
+		contactDetails = createDetailsBlock(new ContactDetails(identifiable));
+		medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
+		jobDetails = createDetailsBlock(new JobDetails(identifiable));
 		//otherDetails = createDetailsBlock(new OtherDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
 	}
 		
@@ -81,13 +81,12 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 			super(actor);
 			Person person = actor.getPerson();
 			if(actor.getPerson().getMedicalInformations()!=null){
-				allergies = StringUtils.join(actor.getPerson().getMedicalInformations().getAllergies(),Constant.CHARACTER_COMA);
 				if(person.getMedicalInformations().getBloodGroup()!=null)
 					bloodGroup = person.getMedicalInformations().getBloodGroup().getName();
 				//allergicReactionResponse = person.getMedicalInformations().getAllergicReactionResponse();
 				//allergicReactionType = person.getMedicalInformations().getAllergicReactionType();
 				otherInformations = person.getMedicalInformations().getOtherInformations();
-				allergies = StringUtils.join(person.getMedicalInformations().getAllergies(),Constant.CHARACTER_COMA);
+				allergies = StringUtils.join(person.getMedicalInformations().getMedicalInformationsAllergies(),Constant.CHARACTER_COMA);
 				medications = StringUtils.join(person.getMedicalInformations().getMedications(),Constant.CHARACTER_COMA);
 			}
 		}

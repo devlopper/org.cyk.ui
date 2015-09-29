@@ -10,7 +10,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormMap;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor 
 public class IdentifiableConfiguration extends ClassConfiguration<AbstractIdentifiable> implements Serializable {
 
 	private static final long serialVersionUID = 524804677149804204L;

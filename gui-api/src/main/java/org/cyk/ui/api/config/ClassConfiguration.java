@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @Deprecated
 public class ClassConfiguration<CLASS> implements Serializable {
 
 	private static final long serialVersionUID = 524804677149804204L;
@@ -18,5 +18,5 @@ public class ClassConfiguration<CLASS> implements Serializable {
 		super();
 		this.clazz = clazz;
 	}
-	
+	 
 }

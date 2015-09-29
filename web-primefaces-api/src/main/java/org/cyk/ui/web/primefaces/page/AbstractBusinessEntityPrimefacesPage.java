@@ -59,5 +59,8 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractOutputDetails<?> details, String editOutcome,UICommandable... links) {
 		return super.createDetailsBlock(identifiable, details, editOutcome, links);
 	}
+	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractOutputDetails<?> details,UICommandable... links) {
+		return createDetailsBlock(details, null,links);
+	}
 	
 }

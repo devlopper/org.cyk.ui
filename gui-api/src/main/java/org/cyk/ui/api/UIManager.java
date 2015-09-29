@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
+import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventParticipationBusiness;
@@ -34,8 +35,8 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonReadFormModel;
@@ -54,7 +55,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static ContentType CONTENT_TYPE = ContentType.TEXT;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
-	private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
+	//private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
 	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
@@ -92,6 +93,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private EventParticipationBusiness eventParticipationBusiness;
 	@Inject private PersonBusiness personBusiness;
 	@Inject private RoleSecuredViewBusiness roleSecuredViewBusiness;
+	@Inject private ClazzBusiness clazzBusiness;
 	
 	private Locale locale = Locale.FRENCH;
 	
@@ -254,20 +256,25 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return entitiesRequestParameterIdMap.get(key);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Class<? extends AbstractOutputDetails<?>> getOutputDetailsClassFromKey(String key){
+		/*
 		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
-			if(entry.getValue().getKey().equals(key))
+			if(entry.getValue().getRuntimeIdentifier().equals(key))
 				return entry.getKey();
 		logWarning("No OutputDetails class found for {}", key);
-		return null;
+		*/
+		return (Class<? extends AbstractOutputDetails<?>>) clazzBusiness.find(key).getClazz();
 	}
 	
 	public OutputDetailsConfiguration getOutputDetailsConfigurationFromKey(String key){
+		/*
 		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
-			if(entry.getValue().getKey().equals(key))
+			if(entry.getValue().getRuntimeIdentifier().equals(key))
 				return entry.getValue();
 		logWarning("No OutputDetailsConfiguration class found for {}", key);
-		return null;
+		*/
+		return (OutputDetailsConfiguration) clazzBusiness.find(key);
 	}
 	
 	public String keyFromClass(BusinessEntityInfos aBusinessEntityInfos){
@@ -304,11 +311,13 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public OutputDetailsConfiguration findOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> aClass){
-		OutputDetailsConfiguration config = OUTPUT_DETAILS_CONFIGURATION_MAP.get(aClass);
-		return config;
+		//OutputDetailsConfiguration config = OUTPUT_DETAILS_CONFIGURATION_MAP.get(aClass);
+		//return config;
+		return (OutputDetailsConfiguration) clazzBusiness.find(aClass);
 	}
 	public void registerOutputDetailsConfiguration(OutputDetailsConfiguration configuration){
-		OUTPUT_DETAILS_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
+		//OUTPUT_DETAILS_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
+		clazzBusiness.register(configuration);
 	}
 	
 	/**/

@@ -17,6 +17,7 @@ import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
@@ -38,6 +39,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
 		
+		OutputDetailsConfiguration outputDetailsConfiguration;
+		
 		registerOutputDetailsConfiguration(ConsultActorPage.MainDetails.class,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_NAME
 				,DefaultPersonEditFormModel.FIELD_LAST_NAME,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE
 				,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_NATIONALITY);
@@ -46,8 +49,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL
 				,ContactCollectionEditFormModel.FIELD_HOME_LOCATION,ContactCollectionEditFormModel.FIELD_POSTALBOX);
 		
-		registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class,DefaultPersonEditFormModel.FIELD_BLOOD_GROUP
+		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class,DefaultPersonEditFormModel.FIELD_BLOOD_GROUP
 				,DefaultPersonEditFormModel.FIELD_OTHER_MEDICAL_INFORMATIONS);
+		outputDetailsConfiguration.setUiEditViewId("editMedicalInformations");
 		
 		registerOutputDetailsConfiguration(ConsultActorPage.JobDetails.class,DefaultPersonEditFormModel.FIELD_COMPANY,DefaultPersonEditFormModel.FIELD_JOB_TITLE
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
@@ -79,12 +83,14 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
 	
-	protected void registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){
+	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){
 		OutputDetailsConfiguration detailsConfiguration = new OutputDetailsConfiguration(outputDetailsClass);
 		//detailsConfiguration.setName(languageBusiness.findText("baseinformations"));
 		detailsConfiguration.setEditFormConfiguration(new FormConfiguration(FormConfiguration.Type.DEFAULT));
 		detailsConfiguration.getEditFormConfiguration().addFieldNames(fieldNames);
+		detailsConfiguration.setUiEditViewId(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());
 		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
+		return detailsConfiguration;
 	}
 	
 }

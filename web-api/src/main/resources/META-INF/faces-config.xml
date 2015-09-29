@@ -112,6 +112,11 @@
 			<to-view-id>/private/__tools__/crud/consultactor.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>editMedicalInformations</from-outcome>
+			<to-view-id>/private/__tools__/crud/editmedicalinformations.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>notifications</from-outcome>

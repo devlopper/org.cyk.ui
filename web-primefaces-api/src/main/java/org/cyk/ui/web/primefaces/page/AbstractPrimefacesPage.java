@@ -164,11 +164,15 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		OutputDetailsConfiguration configuration = uiManager.findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
 		if(detailsBlock.getTitle()==null)
 			if(configuration!=null)
-				detailsBlock.setTitle(configuration.getName());
+				detailsBlock.setTitle(configuration.getUiLabel());
 		if(links!=null){
 			for(UICommandable commandable : links)
 				commandables.add(commandable);
 		}
+		
+		if(StringUtils.isBlank(editOutcome))
+			if(configuration!=null)
+				editOutcome = configuration.getUiEditViewId();
 			
 		if(StringUtils.isNotBlank(editOutcome)){
 			UICommandable commandable = createViewCommandRequest("command.edit",IconType.ACTION_EDIT, editOutcome);

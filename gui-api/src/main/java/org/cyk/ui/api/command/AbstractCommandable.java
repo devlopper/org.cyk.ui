@@ -99,7 +99,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		if(details!=null){
 			@SuppressWarnings("unchecked")
 			OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
-			addParameter(UIManager.getInstance().getDetailsParameter(), configuration.getKey());
+			addParameter(UIManager.getInstance().getDetailsParameter(), configuration.getRuntimeIdentifier());
 		}
 		return this;
 	}
