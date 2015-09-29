@@ -22,9 +22,12 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.api.model.AbstractItemCollection;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
+import org.cyk.ui.api.model.ItemCollectionListener.ItemCollectionAdapter;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
@@ -37,6 +40,7 @@ import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.EventCalendar;
+import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
@@ -293,6 +297,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.setShowToolBar(Boolean.FALSE);
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
+	}
+	
+	protected<TYPE extends AbstractItemCollectionItem> ItemCollection<TYPE> createItemCollection(String identifier,Class<TYPE> aClass){
+		ItemCollection<TYPE> collection = new ItemCollection<TYPE>(identifier,aClass);
+		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE>(){
+			private static final long serialVersionUID = 4920928936636548919L;
+			@Override
+			public void instanciated(AbstractItemCollection<TYPE> itemCollection,TYPE item) {
+				item.setForm(createFormOneData(item,Crud.CREATE));
+			}
+		});
+		return collection;
 	}
 
 	public String mobilePageOutcome(String pageId){

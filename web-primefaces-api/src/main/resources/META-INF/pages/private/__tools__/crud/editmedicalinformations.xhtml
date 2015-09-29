@@ -8,13 +8,23 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{editMedicalInformationsPage}" />
+ 		<ui:param name="pageController" value="#{medicalInformationsEditPage}" />
  		<ui:define name="body">
- 			<h1>Custom Form</h1>
+ 			<cyk:itemCollection value="#{medicalInformationsEditPage.allergyItems}" >
+ 				<p:column headerText="#{uiManager.text('allergy')}" >
+ 					<cyk:inputOneCombo value="#{item.form.findInputByFieldName('allergy')}"/>
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('reaction')}" >
+ 					<cyk:inputText value="#{item.form.findInputByFieldName('reaction')}"/>
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('response')}" >
+ 					<cyk:inputText value="#{item.form.findInputByFieldName('response')}"/>
+ 				</p:column>
+ 			</cyk:itemCollection>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{editMedicalInformationsPage.form.submitCommandable}" executeParameter="#{editMedicalInformationsPage.form.data}" />
+ 			<cyk:command value="#{medicalInformationsEditPage.form.submitCommandable}" executeParameter="#{medicalInformationsEditPage.form.data}" />
  		</ui:define>
  		
  	</ui:decorate>

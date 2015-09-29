@@ -17,7 +17,7 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
-public abstract class AbstractItemCollection<TYPE> extends AbstractBean implements Serializable {
+public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -3543754685060813767L;
 
@@ -32,7 +32,6 @@ public abstract class AbstractItemCollection<TYPE> extends AbstractBean implemen
 		//itemClass = (Class<TYPE>) parameterizedClass(Object.class, 0); //(Class<TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		//itemClass = (Class<TYPE>) (Class<TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		this.itemClass = itemClass;
-		itemCollectionListeners.add(new DefaultItemCollectionAdapter<TYPE>());
 		label = UIManager.getInstance().getLanguageBusiness().findClassLabelText(itemClass); //textOfClass(itemClass);
 		addCommandable = UIProvider.getInstance().createCommandable("command.add", IconType.ACTION_ADD);
 		addCommandable.setShowLabel(Boolean.FALSE);
@@ -56,35 +55,29 @@ public abstract class AbstractItemCollection<TYPE> extends AbstractBean implemen
 	}
 	
 	public void add(){
+		TYPE instance = newInstance(itemClass);
+		items.add(instance);
 		for(ItemCollectionListener<TYPE> listener : itemCollectionListeners)
-			listener.add(this);
+			listener.instanciated(this,instance); 
+		
+		if(instance.getForm()==null)
+			;
+		else{
+			instance.getForm().setDynamic(Boolean.TRUE);
+			instance.getForm().build();
+		}
+		for(ItemCollectionListener<TYPE> listener : itemCollectionListeners)
+			listener.add(this,instance);
 		updateTable();
 	}
 	
 	public void delete(TYPE item){
+		items.remove(item);
 		for(ItemCollectionListener<TYPE> listener : itemCollectionListeners)
 			listener.delete(this,item);
 		updateTable();
 	}
 	
 	protected abstract void updateTable();
-	
-	/**/
-	
-	public static class DefaultItemCollectionAdapter<TYPE> extends AbstractBean implements ItemCollectionListener<TYPE>{
 
-		private static final long serialVersionUID = 5920340778121618178L;
-
-		@Override
-		public void add(AbstractItemCollection<TYPE> itemCollection) {
-			itemCollection.items.add(newInstance(itemCollection.itemClass));
-		}
-
-		@Override
-		public void delete(AbstractItemCollection<TYPE> itemCollection, TYPE item) {
-			itemCollection.items.remove(item);
-		}
-		
-	}
-	
 }

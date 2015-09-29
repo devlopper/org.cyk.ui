@@ -23,7 +23,7 @@ public class CustomPrivateIndexPage extends AbstractPrimefacesPage implements Se
 
 	private Table<PersonDetails> tablePersonDetails;
 	
-	private ItemCollection<PersonDetails> personCollection = new ItemCollection<>("qwerty",PersonDetails.class);
+	//private ItemCollection<PersonDetails> personCollection = new ItemCollection<>("qwerty",PersonDetails.class);
 	 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -37,7 +37,7 @@ public class CustomPrivateIndexPage extends AbstractPrimefacesPage implements Se
 		// TODO Auto-generated method stub
 		super.afterInitialisation();
 		tablePersonDetails.addRow(new PersonDetails("Ali bongo 2", "12/09/1983"));
-		personCollection.setLabel("Details de personnes");
+		//personCollection.setLabel("Details de personnes");
 		//System.out.println("PrivateIndexPage.initialisation()");
 		//throw new RuntimeException();
 	}

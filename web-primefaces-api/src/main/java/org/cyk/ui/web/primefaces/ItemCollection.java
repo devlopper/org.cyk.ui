@@ -2,10 +2,11 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.AbstractWebItemCollection;
 import org.cyk.ui.web.api.WebManager;
 
-public class ItemCollection<TYPE> extends AbstractWebItemCollection<TYPE> implements Serializable {
+public class ItemCollection<TYPE extends AbstractItemCollectionItem> extends AbstractWebItemCollection<TYPE> implements Serializable {
 
 	private static final long serialVersionUID = -6459718386925539576L;
 
