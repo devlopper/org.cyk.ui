@@ -28,6 +28,7 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
 import org.cyk.ui.web.primefaces.page.PrimefacesPageListener;
 import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.cyk.utility.common.annotation.Deployment;
@@ -61,6 +62,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public static final String CSS_CLASS_WIDGET_HEADER = "ui-widget-header";
 	
 	private final Collection<PrimefacesPageListener> pageListeners = new ArrayList<>();
+	private final Collection<BusinessEntityFormPageListener<?>> businessEntityFormPageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
@@ -173,6 +175,14 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		return String.format(CLASS_SELECTOR_FORMAT, input.getUniqueCssClass());
 	}
 
+	public Collection<BusinessEntityFormPageListener<?>> getBusinessEntityFormPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<BusinessEntityFormPageListener<?>> results = new ArrayList<>();
+		for(BusinessEntityFormPageListener<?> listener : businessEntityFormPageListeners)
+			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+				results.add(listener);
+		return results;
+	}
+	
 	public Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
 		for(BusinessEntityFormOnePageListener<?> listener : businessEntityFormOnePageListeners)

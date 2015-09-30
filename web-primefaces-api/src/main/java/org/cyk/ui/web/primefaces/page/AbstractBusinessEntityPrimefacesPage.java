@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +33,8 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		for(BusinessEntityFormPageListener<?> listener : getListeners())
+			listener.initialisationStarted(this); 
 		businessEntityInfos = fetchBusinessEntityInfos();
 		identifiableConfiguration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		identifiable = identifiableFromRequestParameter((Class<ENTITY>)businessEntityInfos.getClazz());
@@ -38,8 +42,23 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		formModelClass = __formModelClass__();
 		contentTitle = text(businessEntityInfos.getUiLabelId());
 		
+		for(BusinessEntityFormPageListener<?> listener : getListeners())
+			listener.initialisationEnded(this); 
+		
 		logDebug("Web page created I={} , M={}", businessEntityInfos==null?"":businessEntityInfos.getClazz().getSimpleName(),
 				formModelClass==null?"":formModelClass.getSimpleName());
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		for(BusinessEntityFormPageListener<?> listener : getListeners())
+			listener.afterInitialisationStarted(this); 
+		
+		
+		
+		for(BusinessEntityFormPageListener<?> listener : getListeners())
+			listener.afterInitialisationEnded(this); 
 	}
 	
 	protected BusinessEntityInfos fetchBusinessEntityInfos(){
@@ -61,6 +80,12 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractOutputDetails<?> details,UICommandable... links) {
 		return createDetailsBlock(details, null,links);
+	}
+	
+	private Collection<BusinessEntityFormPageListener<?>> getListeners(){
+		if(businessEntityInfos==null)
+			return new ArrayList<>();
+		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos.getClazz());
 	}
 	
 }
