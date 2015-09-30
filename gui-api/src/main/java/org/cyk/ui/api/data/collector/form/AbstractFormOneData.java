@@ -20,6 +20,7 @@ import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -33,10 +34,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 
 	private static final long serialVersionUID = -1043478880255116994L;
 
-	@Getter protected Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
-	
+	@Getter protected final Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
 	@Getter protected final Collection<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>> controlSetListeners = new ArrayList<>();
-	
+	@Getter protected final Collection<AbstractItemCollection<?,?>> itemCollections = new ArrayList<>() ;
 	
 	/**/
 	
@@ -118,7 +118,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
-		logDebug("Auto build starts");
+		logDebug("Auto build starts. number of object fields = {}",objectFields.size());
 		new ObjectFieldSorter(objectFields,null).sort();
 		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
@@ -128,8 +128,10 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				if(v!=null)
 					build = Boolean.TRUE.equals(v);
 			}
-			if(Boolean.FALSE.equals(build))
+			if(Boolean.FALSE.equals(build)){
+				logTrace("field {} will not be built",objectField.getField().getName());
 				continue;
+			}
 			OutputSeperator outputSeperator = objectField.getField().getAnnotation(OutputSeperator.class);
 			SeperatorLocation seperatorLocation = null;
 			String separatorLabel = null;

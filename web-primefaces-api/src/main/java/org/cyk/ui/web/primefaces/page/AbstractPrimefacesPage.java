@@ -299,12 +299,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			table.setRenderType(RenderType.LIST);
 	}
 	
-	protected<TYPE extends AbstractItemCollectionItem> ItemCollection<TYPE> createItemCollection(String identifier,Class<TYPE> aClass){
-		ItemCollection<TYPE> collection = new ItemCollection<TYPE>(identifier,aClass);
-		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE>(){
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
+			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables){
+		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
+		form.getItemCollections().add(collection);
+		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE,IDENTIFIABLE>(){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
-			public void instanciated(AbstractItemCollection<TYPE> itemCollection,TYPE item) {
+			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE> itemCollection,TYPE item) {
 				item.setForm(createFormOneData(item,Crud.CREATE));
 			}
 		});

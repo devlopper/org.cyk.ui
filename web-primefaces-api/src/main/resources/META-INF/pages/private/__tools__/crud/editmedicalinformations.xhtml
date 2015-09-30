@@ -10,6 +10,9 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{medicalInformationsEditPage}" />
  		<ui:define name="body">
+ 			<p:fieldset legend="#{uiManager.text('emergency.contacts')}" >
+ 				<cyk:formOneData value="#{medicalInformationsEditPage.form}" />
+ 			</p:fieldset>
  			<cyk:itemCollection value="#{medicalInformationsEditPage.allergyItems}" >
  				<p:column headerText="#{uiManager.text('allergy')}" >
  					<cyk:inputOneCombo value="#{item.form.findInputByFieldName('allergy')}"/>

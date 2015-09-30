@@ -1,19 +1,13 @@
 package org.cyk.ui.api.data.collector.form;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
 import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.api.model.AbstractItemCollection;
 
 public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends Form<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> {
-	/*
-	UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> getWindow();
-	void setWindow(UIWindow<FORM,OUTPUTLABEL,INPUT,SELECTITEM,?> aWindow);
-	
-	UIMenu getMenu();
-	void setMenu(UIMenu aMenu);
-	
-	*/ 
 	
 	DATA getData();
 	void setData(DATA data);
@@ -29,32 +23,6 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	
 	void addChoices(String fieldName,List<SELECTITEM> choices);
 	
-	/*
+	Collection<AbstractItemCollection<?,?>> getItemCollections();
 	
-	UICommandable getSwitchCommandable();
-	UICommandable getBackCommandable();
-	UICommandable getResetCommandable();
-	UICommandable getCloseCommandable();
-	
-	
-	
-	SELECTITEM item(Object object);
-	
-	
-	void updateValues() throws Exception;
-	
-	
-	
-	Boolean getRoot();
-	
-	Boolean getShowCommands();
-	void setShowCommands(Boolean aValue);
-	
-	Crud getCrud();
-	void setCrud(Crud crud);
-	
-	Boolean getSubmitMethodMainExecuted();
-	
-	Collection<FormListener<FORM,OUTPUTLABEL,INPUT,SELECTITEM>> getFormListeners();
-	*/
 }

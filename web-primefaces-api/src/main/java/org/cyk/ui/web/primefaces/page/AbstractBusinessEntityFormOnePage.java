@@ -16,6 +16,8 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractItemCollection;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.Commandable;
@@ -48,9 +50,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		String outputDetailsKey = Faces.getRequestParameter(uiManager.getDetailsParameter());
 		if(StringUtils.isNotBlank(outputDetailsKey)){
 			final OutputDetailsConfiguration configuration = uiManager.getOutputDetailsConfigurationFromKey(outputDetailsKey);
-			if(configuration.getEditFormConfiguration()==null)
-				;
-			else{
+			if(configuration.getEditFormConfiguration()==null){
+				logTrace("No form edit configuration found for {}", outputDetailsKey);
+			}else{
+				logTrace("Form edit configuration found for {}", outputDetailsKey);
 				form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 					@Override
 					public Boolean build(Field field) {
@@ -124,7 +127,14 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			if(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud))
 				if(parameter!=null){
 					if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
-						((AbstractFormModel<?>)parameter).write();
+						AbstractFormModel<?> formModel = (AbstractFormModel<?>) parameter;
+						formModel.write();
+						for(AbstractItemCollection<?,?> itemCollection : form.getItemCollections()){
+							for(AbstractItemCollectionItem<?> item : itemCollection.getItems()){
+								item.getForm().getSelectedFormData().applyValuesToFields();
+								item.write();
+							}
+						}
 					}
 				}
 		}
