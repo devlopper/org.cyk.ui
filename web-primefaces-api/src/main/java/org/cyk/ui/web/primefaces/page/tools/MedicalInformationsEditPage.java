@@ -82,10 +82,6 @@ public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractAct
 		@Input @InputText protected String doctorFirstName;
 		@Input @InputText protected String doctorLastNames;
 		@Input @InputText protected String doctorPhoneNumber;
-		
-		@Input @InputText protected String noRecommendationsConcernsOrNeeds;
-		@Input @InputText protected String requestingSchoolFollowUp;
-		//@Input @InputText protected String otherMedicalConditionInformations;
-		//@Input @InputText protected String doctorPhoneNumber;
+	
 	}
 }

@@ -49,9 +49,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL
 				,ContactCollectionEditFormModel.FIELD_HOME_LOCATION,ContactCollectionEditFormModel.FIELD_POSTALBOX);
 		
-		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class,DefaultPersonEditFormModel.FIELD_BLOOD_GROUP
-				,DefaultPersonEditFormModel.FIELD_OTHER_MEDICAL_INFORMATIONS);
-		outputDetailsConfiguration.setUiEditViewId("editMedicalInformations");
+		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class);
+		outputDetailsConfiguration.setUiEditViewId(webNavigationManager.getOutcomeEditActorMedicalInformations());
+		
+		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.RelationshipDetails.class);
+		outputDetailsConfiguration.setUiEditViewId(webNavigationManager.getOutcomeEditActorRelationship());
 		
 		registerOutputDetailsConfiguration(ConsultActorPage.JobDetails.class,DefaultPersonEditFormModel.FIELD_COMPANY,DefaultPersonEditFormModel.FIELD_JOB_TITLE
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);

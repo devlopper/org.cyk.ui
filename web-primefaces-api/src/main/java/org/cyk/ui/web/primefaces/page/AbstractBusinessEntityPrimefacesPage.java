@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import lombok.Getter;
@@ -83,9 +82,9 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	private Collection<BusinessEntityFormPageListener<?>> getListeners(){
-		if(businessEntityInfos==null)
-			return new ArrayList<>();
-		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos.getClazz());
+		//if(businessEntityInfos==null)
+		//	return new ArrayList<>();
+		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
 	}
 	
 }

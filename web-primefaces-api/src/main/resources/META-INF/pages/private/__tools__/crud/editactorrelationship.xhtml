@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{actorRelationshipEditPage}" />
+ 		<ui:define name="body">
+ 			<cyk:itemCollection value="#{actorRelationshipEditPage.collection}" >
+ 				<p:column headerText="#{uiManager.text('person1')}" >
+ 					<cyk:inputOneCombo value="#{item.form.findInputByFieldName('person1')}"/>
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('relation')}" >
+ 					<cyk:inputOneCombo value="#{item.form.findInputByFieldName('type')}"/>
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('person2')}" >
+ 					<cyk:inputOneCombo value="#{item.form.findInputByFieldName('person2')}"/>
+ 				</p:column>
+ 			</cyk:itemCollection>
+ 		</ui:define>
+ 		
+ 		<ui:define name="contentMenuBar">
+ 			<cyk:command value="#{actorRelationshipEditPage.form.submitCommandable}" executeParameter="#{actorRelationshipEditPage.form.data}" />
+ 		</ui:define>
+ 		
+ 	</ui:decorate>
+ 	
+</html>

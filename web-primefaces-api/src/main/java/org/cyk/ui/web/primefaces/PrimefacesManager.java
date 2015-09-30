@@ -177,25 +177,28 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 
 	public Collection<BusinessEntityFormPageListener<?>> getBusinessEntityFormPageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormPageListener<?>> results = new ArrayList<>();
-		for(BusinessEntityFormPageListener<?> listener : businessEntityFormPageListeners)
-			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-				results.add(listener);
+		if(aClass!=null)
+			for(BusinessEntityFormPageListener<?> listener : businessEntityFormPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add(listener);
 		return results;
 	}
 	
 	public Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
-		for(BusinessEntityFormOnePageListener<?> listener : businessEntityFormOnePageListeners)
-			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-				results.add(listener);
+		if(aClass!=null)
+			for(BusinessEntityFormOnePageListener<?> listener : businessEntityFormOnePageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add(listener);
 		return results;
 	}
 	
 	public Collection<BusinessEntityFormManyPageListener<?>> getBusinessEntityFormManyPageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormManyPageListener<?>> results = new ArrayList<>();
-		for(BusinessEntityFormManyPageListener<?> listener : businessEntityFormManyPageListeners)
-			if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-				results.add(listener);
+		if(aClass!=null)
+			for(BusinessEntityFormManyPageListener<?> listener : businessEntityFormManyPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add(listener);
 		return results;
 	}
 	

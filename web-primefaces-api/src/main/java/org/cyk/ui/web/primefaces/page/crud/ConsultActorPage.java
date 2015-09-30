@@ -28,15 +28,16 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	private DetailsBlock<MenuModel> mainDetails,medicalDetails,contactDetails,jobDetails,otherDetails;
+	private DetailsBlock<MenuModel> mainDetails,medicalDetails,contactDetails,jobDetails,relationshipDetails,otherDetails;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		mainDetails = createDetailsBlock(new MainDetails(identifiable));
 		contactDetails = createDetailsBlock(new ContactDetails(identifiable));
-		medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
+		relationshipDetails = createDetailsBlock(new RelationshipDetails(identifiable));
 		jobDetails = createDetailsBlock(new JobDetails(identifiable));
+		medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
 		//otherDetails = createDetailsBlock(new OtherDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
 	}
 		
@@ -44,10 +45,12 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	public static class MainDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
 		@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
-		@Input @InputText private String title,firstName,lastNames,birthDate,birthLocation,sex,maritalStatus,nationality;
+		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,birthDate,birthLocation,sex,maritalStatus,nationality;
 		public MainDetails(AbstractActor actor) {
 			super(actor);
 			Person person = actor.getPerson();
+			registrationCode = actor.getRegistration().getCode();
+			registrationDate = timeBusiness.formatDate(actor.getRegistration().getDate());
 			photo = person.getImage();
 			firstName = person.getName();
 			lastNames = person.getLastName();
@@ -92,8 +95,6 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 		}
 	}
 	
-	
-	
 	@Getter @Setter
 	public static class JobDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
@@ -110,6 +111,17 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 				if(person.getJobInformations().getContactCollection()!=null)
 					contacts = StringUtils.join(person.getJobInformations().getContactCollection().getPhoneNumbers(),Constant.CHARACTER_COMA);
 			}
+		}
+	}
+	
+	@Getter @Setter
+	public static class RelationshipDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
+		private static final long serialVersionUID = -1498269103849317057L;
+		@Input @InputText private String father,mother;
+		public RelationshipDetails(AbstractActor actor) {
+			super(actor);
+			Person person = actor.getPerson();
+			
 		}
 	}
 	
