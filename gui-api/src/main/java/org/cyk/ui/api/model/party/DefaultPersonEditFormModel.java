@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
@@ -15,6 +17,7 @@ import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
@@ -35,6 +38,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 
 	@Input @InputChoice @InputOneChoice @InputOneCombo private PersonTitle title;
 	@Input @InputText private String lastName;
+	@Input @InputText private String surname;
 	@Input @InputCalendar private Date birthDate;
 	@Input @InputText private String birthLocation;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private Sex sex;
@@ -52,13 +56,41 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	@Override
 	public void write() {
 		super.write();
+		//identifiable.setSurname(surname);
+		//identifiable.setBirthDate(birthDate);
+		if(title!=null)
+			getExtendedInformations(Boolean.TRUE).setTitle(title);
 		
-		if(identifiable.getExtendedInformations()!=null){
+		if(maritalStatus!=null)
+			;//getExtendedInformations(Boolean.TRUE).setMaritalStatus(maritalStatus);
+		if(StringUtils.isBlank(birthLocation)){
+			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
+			if(location==null)
+				;
+			else
+				location.setComment(null);
+		}else{
+			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
+			if(location==null)
+				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,RootBusinessLayer.getInstance().getCountryCoteDivoire().getLocality(),birthLocation));
+			else
+				location.setComment(birthLocation);
+		}
+		/*if(identifiable.getExtendedInformations()!=null){
 			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
 			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
 				identifiable.getExtendedInformations().setBirthLocation(new Location());
 			identifiable.getExtendedInformations().getBirthLocation().setComment(birthLocation);
-		}
+		}*/
+	}
+	
+	private PersonExtendedInformations getExtendedInformations(Boolean createIfNull){
+		PersonExtendedInformations personExtendedInformations = identifiable.getExtendedInformations();
+		if(personExtendedInformations==null)
+			if(Boolean.TRUE.equals(createIfNull))
+				personExtendedInformations = new PersonExtendedInformations(identifiable);
+		identifiable.setExtendedInformations(personExtendedInformations);
+		return personExtendedInformations;
 	}
 	
 	@Override
@@ -67,6 +99,8 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		if(identifiable.getExtendedInformations()!=null){
 			if(identifiable.getExtendedInformations().getBirthLocation()!=null)
 				birthLocation = identifiable.getExtendedInformations().getBirthLocation().toString();
+			title = identifiable.getExtendedInformations().getTitle();
+			
 		}
 	}
 	
@@ -87,6 +121,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	public static final String FIELD_LAST_NAME = "lastName";
 	public static final String FIELD_BIRTH_DATE = "birthDate";
 	public static final String FIELD_BIRTH_LOCATION = "birthLocation";
+	public static final String FIELD_SURNAME = "surname";
 	public static final String FIELD_SEX = "sex";
 	public static final String FIELD_MARITAL_STATUS = "maritalStatus";
 	public static final String FIELD_NATIONALITY = "nationality";

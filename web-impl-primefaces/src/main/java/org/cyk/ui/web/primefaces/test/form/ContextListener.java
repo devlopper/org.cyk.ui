@@ -10,12 +10,19 @@ import org.cyk.system.root.business.api.BusinessAdapter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
+import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
+import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
+import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
+import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
@@ -39,30 +46,14 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void addUrls(ServletContextEvent event) {
 		super.addUrls(event);
-		uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.TRUE);
-		addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/index.jsf");
-		//addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
-		addCrudUrl(rootBusinessLayer.getUserRole().getCode(), Actor.class, Boolean.TRUE,Crud.CREATE);
-		/*
-		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/crud/");
-		
-		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/index.jsf");
-		
-		UniformResourceLocator uniformResourceLocator = new UniformResourceLocator("/private/__tools__/crud/crudone.jsf");
-		uniformResourceLocator.addParameter(uiManager.getCrudParameter(),uiManager.getCrudCreateParameter());
-		uniformResourceLocator.addParameter(uiManager.getClassParameter(),uiManager.businessEntityInfos(Person.class).getIdentifier());
-		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),uniformResourceLocator);
-				
-		addUrl(RootBusinessLayer.getInstance().getUserRole().getCode(),"/private/__tools__/crud/crudmany.jsf",uiManager.getClassParameter(),uiManager.businessEntityInfos(Actor.class).getIdentifier());
-		*/
+		//uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.FALSE);
+		//addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/index.jsf");
+		//addCrudUrl(rootBusinessLayer.getUserRole().getCode(), Actor.class, Boolean.TRUE,Crud.CREATE);
 	}
 	
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
-		
-		//IdentifiableConfiguration configuration = new IdentifiableConfiguration(Actor.class,DefaultActorEditFormModel.class,DefaultActorReadFormModel.class);
-		//uiManager.registerConfiguration(configuration);
 		
 		uiManager.businessEntityInfos(UserAccount.class).setUiEditViewId("useraccountcrudone");
 		
@@ -91,30 +82,26 @@ public class ContextListener extends AbstractContextListener {
 				return super.count(dataClass, configuration);
 			}
 		});	
-		/*
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(new BusinessEntityFormOnePageAdapter<Person>(){
-			private static final long serialVersionUID = 7115590731648449187L;
-			@Override
-			public Class<Person> getEntityTypeClass() {
-				return Person.class;
-			}
-			@Override
-			public void initialised(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page) {
-				page.getForm().getControlSetListeners().add(new ControlSetAdapter<Object>(){
-					@Override
-					public Boolean build(Field field) {
-						return field.getName().equals("name");
-					}
-				});
-			}
-			
-		});
-		*/
-		
-		//primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageListener<Actor>(Actor.class));
-		//primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageListener<Actor>(Actor.class));
 	}
-
+		
+	@Override
+	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener) {
+		super.registerBusinessEntityFormOnePageListener(actorClass, listener);
+		if(actorClass.equals(Actor.class)){
+			listener.getFormConfigurationMap().get(Crud.CREATE).get(Type.INPUT_SET_SMALLEST).addFieldNames(DefaultPersonEditFormModel.FIELD_SURNAME
+					,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION
+					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE);
+			listener.getFormConfigurationMap().get(Crud.CREATE).get(Type.INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
+		}
+	}
 	
+	@Override
+	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener) {
+		if(actorClass.equals(Actor.class)){
+			listener.getFormConfigurationMap().get(Crud.READ).get(Type.INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
+		}
+		
+		super.registerBusinessEntityFormManyPageListener(actorClass, listener);
+	}
 	
 }

@@ -49,6 +49,20 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 			excludedFieldNames.addAll(Arrays.asList(names));
 		return this;
 	}
+	
+	public FormConfiguration removeFieldNames(String...names){
+		for(String name : names){
+			if(fieldNames!=null)
+				fieldNames.remove(name);
+			
+			if(requiredFieldNames!=null)
+				requiredFieldNames.remove(name);
+			
+			if(excludedFieldNames!=null)
+				excludedFieldNames.remove(name);
+		}
+		return this;
+	}
 
 	/**/
 	

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.Person;
@@ -29,7 +30,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	private ENTITY identifiable;
 	
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
-	@Input @InputText @ReportColumn protected String title,firstName,lastName/*,birthDate,birthLocation,sex,maritalStatus,nationality*/;
+	@Input @InputText @ReportColumn protected String title,surname,firstName,lastName,birthDate,birthLocation,sex/*,maritalStatus*/,nationality;
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
@@ -44,7 +45,8 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 		//photo = person.getImage();
 		firstName = person.getName();
 		lastName = person.getLastName();
-		/*
+		surname = person.getSurname();
+		
 		if(person.getSex()!=null)
 			sex = person.getSex().getName();
 		if(person.getNationality()!=null)
@@ -56,11 +58,11 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 			if(person.getExtendedInformations().getTitle()!=null)
 				title = person.getExtendedInformations().getTitle().getName();
 			if(person.getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
+				birthLocation = person.getExtendedInformations().getBirthLocation().getComment();
 			if(person.getExtendedInformations().getMaritalStatus()!=null)
-				maritalStatus = person.getExtendedInformations().getMaritalStatus().getName();
+				;//maritalStatus = person.getExtendedInformations().getMaritalStatus().getName();
 		}
-		
+		/*
 		if(person.getMedicalInformations()!=null){
 			if(person.getMedicalInformations().getBloodGroup()!=null)
 				bloodGroup = person.getMedicalInformations().getBloodGroup().getName();
@@ -94,6 +96,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	public static final String FIELD_PHOTO = "photo";
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_LAST_NAME = "lastName";
+	public static final String FIELD_SUR_NAME = "surname";
 	public static final String FIELD_BIRTH_DATE = "birthDate";
 	public static final String FIELD_BIRTH_LOCATION = "birthLocation";
 	public static final String FIELD_SEX = "sex";

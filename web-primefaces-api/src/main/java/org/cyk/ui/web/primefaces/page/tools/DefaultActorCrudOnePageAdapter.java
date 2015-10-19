@@ -6,7 +6,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
-import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
 
@@ -19,8 +18,8 @@ public class DefaultActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends
 		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, Type.INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
-		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);
-		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
+		//configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);
+		//configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
 		
 	}
 

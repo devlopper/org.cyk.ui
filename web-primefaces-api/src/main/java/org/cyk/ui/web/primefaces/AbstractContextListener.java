@@ -18,6 +18,8 @@ import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
@@ -79,10 +81,17 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(configuration);
 		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
 		
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass));
-		primefacesManager.getBusinessEntityFormManyPageListeners().add(new DefaultActorCrudManyPageAdapter<ACTOR>(actorClass));
+		registerBusinessEntityFormOnePageListener(actorClass,new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass));
+		registerBusinessEntityFormManyPageListener(actorClass,new DefaultActorCrudManyPageAdapter<ACTOR>(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
+	}
+	
+	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener){
+		primefacesManager.getBusinessEntityFormOnePageListeners().add(listener);
+	}
+	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener){
+		primefacesManager.getBusinessEntityFormManyPageListeners().add(listener);
 	}
 	
 	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){

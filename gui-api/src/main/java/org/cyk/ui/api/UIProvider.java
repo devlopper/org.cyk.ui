@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -46,6 +47,7 @@ import org.cyk.ui.api.data.collector.control.InputOneRadio;
 import org.cyk.ui.api.data.collector.control.InputPassword;
 import org.cyk.ui.api.data.collector.control.InputText;
 import org.cyk.ui.api.data.collector.control.InputTextarea;
+import org.cyk.ui.api.data.collector.control.OutputImage;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.control.OutputSeparator;
 import org.cyk.ui.api.data.collector.control.OutputText;
@@ -156,6 +158,12 @@ public class UIProvider extends AbstractBean implements Serializable {
 		OutputText<?,?,?,?,?> outputText = (OutputText<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputText.class));
 		outputText.setValue(value);
 		return outputText;
+	}
+	
+	public OutputImage<?,?,?,?,?> createOutputImage(File value){
+		OutputImage<?,?,?,?,?> outputImage = (OutputImage<?, ?, ?, ?, ?>) createControlInstance(controlClass(OutputImage.class));
+		outputImage.setValue(value);
+		return outputImage;
 	}
 	
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){

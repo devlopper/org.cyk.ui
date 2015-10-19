@@ -34,6 +34,7 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	protected void initialisation() {
 		super.initialisation();
 		mainDetails = createDetailsBlock(new MainDetails(identifiable));
+		
 		contactDetails = createDetailsBlock(new ContactDetails(identifiable));
 		relationshipDetails = createDetailsBlock(new RelationshipDetails(identifiable));
 		jobDetails = createDetailsBlock(new JobDetails(identifiable));
@@ -45,21 +46,30 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	public static class MainDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
 		@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
-		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,birthDate,birthLocation,sex,maritalStatus,nationality;
+		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,surname,birthDate,birthLocation,sex,maritalStatus,nationality;
 		public MainDetails(AbstractActor actor) {
 			super(actor);
 			Person person = actor.getPerson();
 			registrationCode = actor.getRegistration().getCode();
 			registrationDate = timeBusiness.formatDate(actor.getRegistration().getDate());
 			photo = person.getImage();
+			
 			firstName = person.getName();
 			lastNames = person.getLastName();
+			surname = person.getSurname();
 			if(person.getSex()!=null)
 				sex = person.getSex().getName();
 			if(person.getNationality()!=null)
 				nationality = person.getNationality().getUiString();
 			if(person.getBirthDate()!=null)
 				birthDate = RootBusinessLayer.getInstance().getTimeBusiness().formatDate(person.getBirthDate());
+			
+			if(person.getExtendedInformations()!=null){
+				if(person.getExtendedInformations().getTitle()!=null)
+					title = person.getExtendedInformations().getTitle().getName();
+				if(person.getExtendedInformations().getBirthLocation()!=null)
+					birthLocation = person.getExtendedInformations().getBirthLocation().getComment();
+			}
 		}
 	}
 	
@@ -120,7 +130,7 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 		@Input @InputText private String father,mother;
 		public RelationshipDetails(AbstractActor actor) {
 			super(actor);
-			Person person = actor.getPerson();
+			//Person person = actor.getPerson();
 			
 		}
 	}

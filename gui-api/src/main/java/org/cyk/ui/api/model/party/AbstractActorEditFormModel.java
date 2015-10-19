@@ -35,9 +35,17 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 	}
 	
 	@Override
+	public void write() {
+		super.write();
+		identifiable.getRegistration().setCode(registrationCode);
+		identifiable.getRegistration().setDate(registrationDate);
+	}
+	
+	@Override
 	public void read() {
 		super.read();
 		registrationCode = identifiable.getRegistration().getCode();
+		registrationDate = identifiable.getRegistration().getDate();
 	}
 	
 	/**/

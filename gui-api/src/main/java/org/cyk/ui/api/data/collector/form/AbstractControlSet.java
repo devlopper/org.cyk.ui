@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.AbstractView;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -117,11 +118,21 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(object, field);
 		if(control instanceof Input<?,?,?,?,?,?>){
 			org.cyk.utility.common.annotation.user.interfaces.Input inputAnnotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.Input.class);
-			((Input<?,?,?,?,?,?>)control).setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
-			if(Boolean.TRUE.equals(((Input<?,?,?,?,?,?>)control).getReadOnly()))
-				((Input<?,?,?,?,?,?>)control).setRequired(Boolean.FALSE);
-			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
-				listener.input(this,(Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control);
+			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
+			input.setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
+			
+			if(Boolean.TRUE.equals(input.getReadOnly())){
+				if(input.getField().getType().equals(File.class)){
+					control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createOutputImage((File) input.getValue());
+				}else{
+					input.setRequired(Boolean.FALSE);
+				}
+			}
+			
+			if(control instanceof Input<?,?,?,?,?,?>){
+				for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
+					listener.input(this,(Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control);
+			}
 		}
 			
 		add(control);
@@ -145,7 +156,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		add(control);
 		return this;
 	}
-	
+		
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,String fieldName){
 		return addField(object, fieldName);//TODO recursive?
 	}

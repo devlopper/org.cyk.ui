@@ -169,10 +169,17 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			if(objectField.getField().getAnnotation(Input.class)!=null){
 				if(addRow==null)
 					addRow = Boolean.TRUE;
+				/*
+				if(objectField.getField().getType().equals(File.class)){
+					System.out.println("AbstractFormOneData.__autoBuild__() : not added");
+					//addRow = false;
+					continue;
+				}*/
 				
 				if(Boolean.TRUE.equals(addRow)){
-					controlSet.row(objectField.getField());
-					logDebug("Row created form field {}",objectField.getField().getName());
+						//System.out.println("F : "+objectField.getField());
+						controlSet.row(objectField.getField());
+					logDebug("Row created from field {}",objectField.getField().getName());
 				}
 				/*if(Boolean.TRUE.equals(seperatorAdded)){
 					controlSet.row(null);
