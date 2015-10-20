@@ -64,6 +64,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
+		businessAdapters(event);
+		applicationUImanagers(event);
 		registerActorForm();
 	}
 	
@@ -103,5 +105,13 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
 		return detailsConfiguration;
 	}
+
 	
+	protected void businessAdapters(ServletContextEvent event) {
+		
+	}
+	
+	protected void applicationUImanagers(ServletContextEvent event) {
+		
+	}
 }

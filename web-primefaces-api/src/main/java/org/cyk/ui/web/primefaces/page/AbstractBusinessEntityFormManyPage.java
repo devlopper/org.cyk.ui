@@ -20,6 +20,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.CellAdapter;
 import org.cyk.ui.api.model.table.Column;
@@ -182,7 +183,11 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		if(redirectListener==null){
 			AbstractIdentifiable identifiable = __identifiable__(data);
 			//(AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
-			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
+			if(identifiable==null){
+				logError("Identifiable cannot be found from {} : {}",data.getClass().getSimpleName(),data);
+			}else{
+				WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
+			}
 		}else{
 			redirectListener.redirect(crud, data);
 		}
@@ -191,6 +196,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	protected AbstractIdentifiable __identifiable__(Object data){
 		if(data instanceof AbstractFormModel<?>)
 			return ((AbstractFormModel<?>)data).getIdentifiable();
+		else if(data instanceof AbstractOutputDetails)
+			return ((AbstractOutputDetails<?>) data).getMaster();
 		else if(data instanceof AbstractIdentifiable)
 			return (AbstractIdentifiable) data;
 		else
