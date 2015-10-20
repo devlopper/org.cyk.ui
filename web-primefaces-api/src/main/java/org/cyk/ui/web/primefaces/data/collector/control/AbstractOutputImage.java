@@ -19,7 +19,7 @@ public abstract class AbstractOutputImage extends AbstractOutput implements WebO
 	private static final long serialVersionUID = 5671513590779656492L;
 
 	protected File value;
-	protected Integer previewWidth=100,previewHeight=100;
+	protected Integer width=100,height=100;
 	private Boolean readOnly;//TODO this is a mic mac to solve an issue
 	
 	public AbstractOutputImage(File value) {

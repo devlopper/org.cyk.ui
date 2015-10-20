@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
@@ -72,7 +71,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		}else{
 			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
 			if(location==null)
-				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,RootBusinessLayer.getInstance().getCountryCoteDivoire().getLocality(),birthLocation));
+				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,null,birthLocation));
 			else
 				location.setComment(birthLocation);
 		}
@@ -98,7 +97,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		super.read();
 		if(identifiable.getExtendedInformations()!=null){
 			if(identifiable.getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = identifiable.getExtendedInformations().getBirthLocation().toString();
+				birthLocation = identifiable.getExtendedInformations().getBirthLocation().getComment();
 			title = identifiable.getExtendedInformations().getTitle();
 			
 		}

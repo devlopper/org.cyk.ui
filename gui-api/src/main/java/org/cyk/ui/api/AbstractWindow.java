@@ -210,6 +210,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,ViewType viewType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewType);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.addDefaultParameters();
 		return commandable;
 	}
 	protected UICommandable createViewCommandRequest(String labelId,ViewType viewType){
@@ -217,6 +218,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,Object viewId){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewId);
+		commandable.addDefaultParameters();
 		return commandable;
 	}
 	protected UICommandable createViewCommandRequest(String labelId,Object viewId){

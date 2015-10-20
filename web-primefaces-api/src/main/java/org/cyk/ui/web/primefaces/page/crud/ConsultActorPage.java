@@ -29,16 +29,22 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	private DetailsBlock<MenuModel> mainDetails,medicalDetails,contactDetails,jobDetails,relationshipDetails,otherDetails;
+	private Boolean showMainDetails=Boolean.TRUE,showContactDetails=Boolean.FALSE,showRelationshipDetails=Boolean.FALSE,showJobDetails=Boolean.FALSE
+			,showMedicalDetails=Boolean.FALSE;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		mainDetails = createDetailsBlock(new MainDetails(identifiable));
-		
-		contactDetails = createDetailsBlock(new ContactDetails(identifiable));
-		relationshipDetails = createDetailsBlock(new RelationshipDetails(identifiable));
-		jobDetails = createDetailsBlock(new JobDetails(identifiable));
-		medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
+		if(Boolean.TRUE.equals(showMainDetails))
+			mainDetails = createDetailsBlock(new MainDetails(identifiable));
+		if(Boolean.TRUE.equals(showContactDetails))
+			contactDetails = createDetailsBlock(new ContactDetails(identifiable));
+		if(Boolean.TRUE.equals(showRelationshipDetails))
+			relationshipDetails = createDetailsBlock(new RelationshipDetails(identifiable));
+		if(Boolean.TRUE.equals(showJobDetails))
+			jobDetails = createDetailsBlock(new JobDetails(identifiable));
+		if(Boolean.TRUE.equals(showMedicalDetails))
+			medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
 		//otherDetails = createDetailsBlock(new OtherDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
 	}
 		
@@ -46,7 +52,7 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 	public static class MainDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
 		@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
-		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,surname,birthDate,birthLocation,sex,maritalStatus,nationality;
+		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,surname,birthDate,birthLocation,sex/*,maritalStatus,nationality*/;
 		public MainDetails(AbstractActor actor) {
 			super(actor);
 			Person person = actor.getPerson();
@@ -59,8 +65,10 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 			surname = person.getSurname();
 			if(person.getSex()!=null)
 				sex = person.getSex().getName();
+			/*
 			if(person.getNationality()!=null)
 				nationality = person.getNationality().getUiString();
+			*/
 			if(person.getBirthDate()!=null)
 				birthDate = RootBusinessLayer.getInstance().getTimeBusiness().formatDate(person.getBirthDate());
 			
@@ -68,7 +76,7 @@ public class ConsultActorPage extends AbstractConsultPage<AbstractActor> impleme
 				if(person.getExtendedInformations().getTitle()!=null)
 					title = person.getExtendedInformations().getTitle().getName();
 				if(person.getExtendedInformations().getBirthLocation()!=null)
-					birthLocation = person.getExtendedInformations().getBirthLocation().getComment();
+					birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
 			}
 		}
 	}

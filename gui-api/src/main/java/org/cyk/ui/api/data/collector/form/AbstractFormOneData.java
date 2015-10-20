@@ -169,12 +169,6 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			if(objectField.getField().getAnnotation(Input.class)!=null){
 				if(addRow==null)
 					addRow = Boolean.TRUE;
-				/*
-				if(objectField.getField().getType().equals(File.class)){
-					System.out.println("AbstractFormOneData.__autoBuild__() : not added");
-					//addRow = false;
-					continue;
-				}*/
 				
 				if(Boolean.TRUE.equals(addRow)){
 						//System.out.println("F : "+objectField.getField());

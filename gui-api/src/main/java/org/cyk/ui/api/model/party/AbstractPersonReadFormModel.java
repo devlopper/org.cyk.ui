@@ -58,7 +58,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 			if(person.getExtendedInformations().getTitle()!=null)
 				title = person.getExtendedInformations().getTitle().getName();
 			if(person.getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = person.getExtendedInformations().getBirthLocation().getComment();
+				birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
 			if(person.getExtendedInformations().getMaritalStatus()!=null)
 				;//maritalStatus = person.getExtendedInformations().getMaritalStatus().getName();
 		}

@@ -123,6 +123,14 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		setViewType(ViewType.DYNAMIC_CRUD_MANY);
 		return this;
 	}
+	@Override
+	public UICommandable addPreviousViewParameter() {
+		return this;
+	}
+	@Override
+	public UICommandable addDefaultParameters() {
+		return this;
+	}
 	
 	@Override
 	public UICommandable setParameter(String name, Object value) {

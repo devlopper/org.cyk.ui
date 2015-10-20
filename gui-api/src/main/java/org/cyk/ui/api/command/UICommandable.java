@@ -79,6 +79,9 @@ public interface UICommandable {
 	UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass);
 	UICommandable addReadAllParameters(Class<? extends AbstractIdentifiable> identifiableClass);
 	
+	UICommandable addPreviousViewParameter();
+	UICommandable addDefaultParameters();
+	
 	/**/
 	
 	public enum RenderType{BUTTON,LINK}

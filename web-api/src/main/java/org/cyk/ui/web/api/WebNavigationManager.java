@@ -31,6 +31,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.web.api.security.RoleManager;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -221,9 +222,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		if(path==null){
 			url = request.getRequestURL().toString();
 			if(StringUtils.isNotEmpty(request.getQueryString()))
-				url += "?"+request.getQueryString();
+				url += Constant.CHARACTER_QUESTION_MARK+request.getQueryString();
 		}else{
-			url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+			url = request.getScheme()+Constant.CHARACTER_COLON+Constant.CHARACTER_SLASH+Constant.CHARACTER_SLASH+request.getServerName()+
+					Constant.CHARACTER_COLON+request.getServerPort()+path;
 		}
 		
 		
@@ -361,6 +363,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
 				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(crud)
+				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
 		});
 	}
 	
@@ -368,6 +371,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		redirectTo(editOneOutcome(aClass),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass),
 				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
+				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
 		});
 	}
 	

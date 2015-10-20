@@ -35,7 +35,6 @@ public class DetailsBlock<MENU_MODEL> implements Serializable {
 		this.table = table;
 	}
 	
-	
-	
+	/**/
 	
 }
