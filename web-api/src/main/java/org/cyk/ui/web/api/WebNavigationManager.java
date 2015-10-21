@@ -30,6 +30,7 @@ import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.web.api.security.RoleManager;
@@ -435,6 +436,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(editOneOutcome(identifiable.getClass()));
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudUpdateParameter(), identifiable);
 		return commandable;
 	}
@@ -442,6 +444,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(consultOneOutcome(identifiable.getClass()));
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), identifiable);
 		return commandable;
 	}
