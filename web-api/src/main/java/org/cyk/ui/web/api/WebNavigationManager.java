@@ -341,6 +341,14 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			return businessEntityInfos.getUiEditViewId();
 	}
 	
+	public String consultOneOutcome(AbstractIdentifiable identifiable){
+		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(identifiable.getClass());
+		if(StringUtils.isEmpty(businessEntityInfos.getUiConsultViewId()))
+			return outcomeDynamicCrudOne;
+		else
+			return businessEntityInfos.getUiConsultViewId();
+	}
+	
 	public String reportUrl(AbstractIdentifiable identifiable,String reportIdentifier,String fileExtension,Boolean print){
 		Collection<UICommandable.Parameter> parameters = reportParameters(identifiable, reportIdentifier, fileExtension,print);
 		return url(outcomeToolsReport, parametersToArray(parameters), Boolean.FALSE, Boolean.FALSE);
@@ -355,6 +363,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			i += 2;
 		}
 		return objects;
+	}
+	
+	public void redirectToDynamicConsultOne(AbstractIdentifiable data){
+		redirectTo(consultOneOutcome(data),new Object[]{
+				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
+				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
+				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
+				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+		});
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -24,13 +24,14 @@ import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
+import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
 import org.cyk.ui.web.api.data.collector.control.WebOutput;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Ajax;
@@ -317,4 +318,13 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return "@(."+input.getUniqueCssClass()+")";
 	}
 	
+	/**/
+	
+	protected void addInputAdapter(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form,String fieldName,WebInputAdapter inputAdapter){
+		WebInput<?, ?, ?, ?> webInput = ((WebInput<?, ?, ?, ?>)form.findInputByFieldName(fieldName));
+		if(webInput==null)
+			logError("Cannot add web input adapter to field named {} because field not found", fieldName);
+		else
+			webInput.getWebInputListeners().add(inputAdapter);
+	}
 }

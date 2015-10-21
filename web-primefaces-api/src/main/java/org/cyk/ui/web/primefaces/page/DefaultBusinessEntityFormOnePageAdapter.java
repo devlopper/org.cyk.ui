@@ -26,30 +26,32 @@ public class DefaultBusinessEntityFormOnePageAdapter<ENTITY extends AbstractIden
 	@Override
 	public void initialisationEnded(AbstractBean bean) {
 		super.initialisationEnded(bean);
-		final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
-		page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
-			
-			@Override
-			public Boolean build(Field field) {
-				FormConfiguration configuration = getFormConfiguration(page.getCrud());
-				if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
-					return super.build(field);
-				else
-					return configuration.getFieldNames().contains(field.getName());
-			}
-			
-			@Override
-			public void input(ControlSet controlSet, Input input) {
-				super.input(controlSet, input);
-				if(Crud.CREATE.equals(page.getCrud())){
-					if(Boolean.FALSE.equals(input.getRequired())){
-						FormConfiguration configuration = getFormConfiguration(page.getCrud());
-						if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
-							input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
-					}	
+		if(bean instanceof AbstractCrudOnePage<?>){
+			final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
+			page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
+				
+				@Override
+				public Boolean build(Field field) {
+					FormConfiguration configuration = getFormConfiguration(page.getCrud());
+					if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
+						return super.build(field);
+					else
+						return configuration.getFieldNames().contains(field.getName());
 				}
-			}
-		});
+				
+				@Override
+				public void input(ControlSet controlSet, Input input) {
+					super.input(controlSet, input);
+					if(Crud.CREATE.equals(page.getCrud())){
+						if(Boolean.FALSE.equals(input.getRequired())){
+							FormConfiguration configuration = getFormConfiguration(page.getCrud());
+							if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
+								input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
+						}	
+					}
+				}
+			});	
+		}
 	}
 		
 }

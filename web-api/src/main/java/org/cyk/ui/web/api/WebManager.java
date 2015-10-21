@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -159,6 +160,22 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public void updateInFormContent(String[] clientId){
 		updateInForm(formId+COLON+formContentId+COLON+StringUtils.join(clientId,COLON));
+	}
+	
+	/**/
+	
+	public void throwValidationException(String messageId,Object[] messageParams,String detailsId,Object[] detailsParams){
+		throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,UIManager.getInstance().getLanguageBusiness().findText(messageId,messageParams)
+				,StringUtils.isBlank(detailsId)?null:UIManager.getInstance().getLanguageBusiness().findText(detailsId,detailsParams)));
+	}
+	public void throwValidationException(String messageId,Object[] messageParams){
+		throwValidationException(messageId,messageParams, null,null);
+	}
+	public void throwValidationException(){
+		throwValidationException("input.value.valid.no",null);
+	}
+	public void throwValidationExceptionUnknownValue(Object value){
+		throwValidationException("exception.value.unknown",new Object[]{value});
 	}
 	
 }

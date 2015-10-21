@@ -2,17 +2,22 @@ package org.cyk.ui.web.primefaces.data.collector.control;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.CascadeStyleSheet;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
@@ -20,11 +25,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implements Input<VALUE_TYPE,DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem>,
@@ -41,6 +41,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	protected AjaxListener ajaxListener;
 	protected String onChange;
+	protected Collection<WebInputListener> webInputListeners = new ArrayList<>();
 	
 	{
 		readOnlyValueCss.addClass(getUniqueCssClass());
@@ -57,15 +58,14 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	}
 
 	@Override
-	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {}
+	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
+		for(WebInputListener listener : webInputListeners)
+			listener.validate(facesContext, uiComponent, value);
+	}
 	
 	@Override
 	public Converter getConverter() {
 		return null;
-	}
-	
-	protected void validationException(String messageId){
-		new ValidatorException(new FacesMessage(UIManager.getInstance().text(messageId)));
 	}
 	
 	public void setReadOnly(Boolean value){
