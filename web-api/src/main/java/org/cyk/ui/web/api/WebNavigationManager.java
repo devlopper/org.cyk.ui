@@ -28,7 +28,9 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.Constant;
@@ -341,8 +343,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			return businessEntityInfos.getUiEditViewId();
 	}
 	
-	public String consultOneOutcome(AbstractIdentifiable identifiable){
-		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(identifiable.getClass());
+	public String consultOneOutcome(Class<? extends AbstractIdentifiable> aClass){
+		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		if(StringUtils.isEmpty(businessEntityInfos.getUiConsultViewId()))
 			return outcomeDynamicCrudOne;
 		else
@@ -366,7 +368,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public void redirectToDynamicConsultOne(AbstractIdentifiable data){
-		redirectTo(consultOneOutcome(data),new Object[]{
+		redirectTo(consultOneOutcome(data.getClass()),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
 				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
@@ -374,9 +376,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
-		redirectTo(editOneOutcome((Class<AbstractIdentifiable>) data.getClass()),new Object[]{
+		redirectTo(editOneOutcome(data.getClass()),new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
 				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(crud)
@@ -427,6 +428,22 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});*/
 		
 		redirectTo(outcomeToolsReport,parametersToArray(parameters));
+	}
+	
+	/**/
+	
+	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
+		commandable.setViewId(editOneOutcome(identifiable.getClass()));
+		commandable.addCrudParameters(UIManager.getInstance().getCrudUpdateParameter(), identifiable);
+		return commandable;
+	}
+	
+	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
+		commandable.setViewId(consultOneOutcome(identifiable.getClass()));
+		commandable.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), identifiable);
+		return commandable;
 	}
 	
 	/**/

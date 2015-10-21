@@ -327,4 +327,5 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		else
 			webInput.getWebInputListeners().add(inputAdapter);
 	}
+
 }
