@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 
 	private static final long serialVersionUID = -7284361545083572063L;
 	
+	public static final Layout DEFAULT_LAYOUT = new Layout(); 
+	
 	@Inject transient protected WebManager webManager;
 	//protected AbstractWebUserSession session;
 	@Inject transient protected WebNavigationManager navigationManager;
@@ -53,12 +56,14 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage;
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn,renderViewError;
 	private String windowMode;
+	@Getter private Layout layout = new Layout(DEFAULT_LAYOUT);
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		//locale = getUserSession().getLocale();
+		//layout.setWest("/org.cyk.ui.web.primefaces/include/layout/default/north.xhtml");
 		footer=  UIManager.getInstance().getWindowFooter();
 		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
 		if(StringUtils.isEmpty(windowMode))
@@ -328,4 +333,13 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 			webInput.getWebInputListeners().add(inputAdapter);
 	}
 
+	/**/
+	
+	@Getter @Setter @NoArgsConstructor
+	public static class Layout{
+		private String west;
+		public Layout(Layout layout) {
+			west = layout.west;
+		}
+	}
 }

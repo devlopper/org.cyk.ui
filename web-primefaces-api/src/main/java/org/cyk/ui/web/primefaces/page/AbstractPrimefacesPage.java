@@ -44,6 +44,7 @@ import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.utility.common.model.table.TableListener;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -66,7 +67,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
 	private String mobilePageTransition="flip";
-	private Boolean mobilePageReverse=Boolean.TRUE;
+	@Getter protected Boolean mobilePageReverse=Boolean.TRUE,showTreeMenu=Boolean.FALSE;
+	@Getter protected Tree treeMenu;
 	
 	@Override
 	protected void initialisation() {
@@ -287,7 +289,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return null;
 	}
 	
-	protected void configureDetailsTable(Table<?> table,String titleId){
+	protected void configureDetailsTable(Table<?> table,String titleId,Boolean rowMasterOpenable){
 		table.getColumnListeners().add(new DefaultColumnAdapter());
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(titleId))
@@ -297,6 +299,24 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.setShowToolBar(Boolean.FALSE);
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
+		
+		if(Boolean.TRUE.equals(rowMasterOpenable)){
+			table.setShowOpenCommand(Boolean.TRUE);
+			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 8640883295366346645L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
+						navigationManager.redirectToDynamicConsultOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster());
+					}
+				}
+			});
+		}
+	}
+	
+	protected void configureDetailsTable(Table<?> table,String titleId){
+		configureDetailsTable(table, titleId, Boolean.FALSE);
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form

@@ -13,6 +13,4 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 
 	private static final long serialVersionUID = 9040359120893077422L;
 
-	
-	
 }
