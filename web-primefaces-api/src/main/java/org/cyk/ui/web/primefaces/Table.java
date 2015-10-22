@@ -63,7 +63,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	protected LazyDataModel<Row<DATA>> dataModel;
 	@Getter @Setter protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l;
-	@Getter protected DataTable dataTable;
+	@Getter protected DataTable dataTable = new DataTable();
 	
 	@Override
 	protected void initialisation() {
@@ -78,7 +78,6 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		dataTable = new DataTable();
 		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
 		Commandable commandable = (Commandable) addRowCommandable;
 		commandable.getButton().setUpdate("@(."+updateStyleClass+")");
@@ -98,28 +97,11 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@Override
 	public void build() {
 		super.build();
-		((Commandable)exportCommandable).setMenu(CommandBuilder.getInstance().menuModel(exportMenu, Table.class, ""));
+		if(exportCommandable!=null)
+			((Commandable)exportCommandable).setMenu(CommandBuilder.getInstance().menuModel(exportMenu, Table.class, ""));
 		
 		if(Boolean.TRUE.equals(lazyLoad)){
-			/*openRowCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
-				private static final long serialVersionUID = 1120566504648934547L;
-				@SuppressWarnings("unchecked")
-				@Override
-				public void serve(UICommand command, Object parameter) {
-					AbstractIdentifiable identifiable;
-					if(((Row<?>)parameter).getData() instanceof AbstractFormModel<?>)
-						identifiable = ((AbstractFormModel<?>)((Row<?>)parameter).getData()).getIdentifiable();
-					else if(((Row<?>)parameter).getData() instanceof AbstractIdentifiable)
-						identifiable = (AbstractIdentifiable) ((Row<?>)parameter).getData();
-					else
-						;
-					WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
-							new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
-						,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
-						UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
-						?UIManager.getInstance().getCrudReadParameter():null});
-				}
-			});*/
+			
 		}
 		
 		setNumberOfNullUiIndex(null);

@@ -189,9 +189,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		if(editable==null)
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
-		removeRowCommandable.getCommand().setConfirm(inplaceEdit);
+		if(removeRowCommandable!=null)
+			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
-		logTrace("Table build - Identifiable {}", identifiableClass.getSimpleName());
+		logTrace("Table build - Identifiable {}", identifiableClass==null?null:identifiableClass.getSimpleName());
 		super.build();
 		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
 			if(!Boolean.TRUE.equals(getLazyLoad())){
@@ -238,7 +239,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected abstract void open(DATA data);
 	
 	public Boolean isDataTreeType(){
-		return AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);//TODO should be businessEntityInfos.getClazz()
+		return rowDataClass==null?Boolean.FALSE:AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);//TODO should be businessEntityInfos.getClazz()
 	}
 	/*
 	public String getTitle(){
