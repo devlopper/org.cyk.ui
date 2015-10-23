@@ -13,6 +13,7 @@ import javax.inject.Named;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.api.AjaxListener;
@@ -87,6 +88,12 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		windowHierachyMenu = userSession.getContextualMenu();
+		windowHierachyMenu.setRenderType(UIMenu.RenderType.BREAD_CRUMB);
+		windowHierachyMenuModel = userSession.getContextualMenuModel();
+		
+		System.out.println(windowHierachyMenu);
+		System.out.println(windowHierachyMenuModel);
 		AjaxListener ajaxListener = null;
 		/*
 		setAjaxListener(form, "textOneLine", "change", new String[]{"textManyLine"},new String[]{"textManyLine","textManyLine2"}, String.class,new ListenValueMethod<String>() {

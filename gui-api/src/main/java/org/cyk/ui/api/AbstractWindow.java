@@ -46,8 +46,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject transient protected TimeBusiness timeBusiness;
 	
 	@Getter @Setter protected UserDeviceType userDeviceType;
-	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu;
-	
+	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu;
 	
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
@@ -223,6 +222,11 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	protected UICommandable createViewCommandRequest(String labelId,Object viewId){
 		return createViewCommandRequest(labelId, null, viewId);
+	}
+	
+	@Override
+	public Boolean getShowWindowHierachyMenu() {
+		return windowHierachyMenu!=null && !windowHierachyMenu.getCommandables().isEmpty();
 	}
 
 }

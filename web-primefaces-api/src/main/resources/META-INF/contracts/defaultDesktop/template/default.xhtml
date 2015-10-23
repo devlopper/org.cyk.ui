@@ -52,7 +52,18 @@
 			</pe:layoutPane>
 			
 			<pe:layoutPane id="contentPane" position="center" styleClassContent="maincenterpanecontent" >
-				<f:facet name="header"><h:outputText value="#{pageController.contentTitle}" /> </f:facet>
+				<f:facet name="header">
+					<!--p:outputPanel rendered="#{pageController.showWindowHierachyMenu}" >
+						<h:form>
+							<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+								<ui:param name="model" value="#{pageController.windowHierachyMenuModel}" />
+								<ui:param name="menu" value="#{pageController.windowHierachyMenu}" />
+							</ui:include>
+						</h:form>
+					</p:outputPanel-->
+					<h:outputText value="#{pageController.contentTitle}" />
+				</f:facet>
+				
 			 	<h:form id="form" enctype="multipart/form-data" >
 			 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/sounds.xhtml" />	
 				 	<pe:layoutPane id="contentp" position="center">

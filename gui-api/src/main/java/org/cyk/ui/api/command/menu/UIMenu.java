@@ -8,7 +8,7 @@ import org.cyk.ui.api.command.UICommandable.ViewType;
 
 public interface UIMenu {
 	
-	enum RenderType{PLAIN,SLIDE,PANEL,TAB}
+	enum RenderType{PLAIN,SLIDE,PANEL,TAB,BREAD_CRUMB}
 	
 	Collection<UICommandable> getCommandables();
 

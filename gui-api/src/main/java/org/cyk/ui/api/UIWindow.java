@@ -31,6 +31,8 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	Boolean getShowMainMenu();
 	
+	Boolean getShowWindowHierachyMenu();
+	
 	Boolean getRenderedAsDialog();
 	
 	/**
@@ -52,6 +54,10 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	UIMenu getContentMenu();
 	
 	void setContentMenu(UIMenu aMenu);
+	
+	UIMenu getWindowHierachyMenu();
+	
+	void setWindowHierachyMenu(UIMenu aMenu);
 	
 	/*
 	<DATA> HierarchycalData<DATA> hierarchyInstance();

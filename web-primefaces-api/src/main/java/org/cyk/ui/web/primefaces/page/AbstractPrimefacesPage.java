@@ -65,7 +65,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@Getter protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
 	
-	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel;
+	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel,windowHierachyMenuModel;
 	private String mobilePageTransition="flip";
 	@Getter protected Boolean mobilePageReverse=Boolean.TRUE,showTreeMenu=Boolean.FALSE;
 	@Getter protected Tree treeMenu;
