@@ -29,6 +29,8 @@ public class EventCrudOnePage extends AbstractCrudOnePage<Event> implements Seri
 
 	@Inject private EventBusiness eventBusiness;
 	
+	private Boolean future = Boolean.TRUE;
+	
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
