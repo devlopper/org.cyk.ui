@@ -22,4 +22,7 @@ public interface UIMenu {
 	
 	RenderType getRenderType();
 	void setRenderType(RenderType aRenderType);
+	
+	Integer getRequestedCommandableIndex();
+	void setRequestedCommandableIndex(Integer value);
 }

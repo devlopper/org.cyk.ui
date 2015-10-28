@@ -46,7 +46,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject transient protected TimeBusiness timeBusiness;
 	
 	@Getter @Setter protected UserDeviceType userDeviceType;
-	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu;
+	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu,detailsMenu;
 	
 	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();

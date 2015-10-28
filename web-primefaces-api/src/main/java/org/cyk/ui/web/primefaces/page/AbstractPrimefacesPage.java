@@ -21,6 +21,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
@@ -67,7 +68,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@Getter protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
 	
-	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel,windowHierachyMenuModel;
+	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel,windowHierachyMenuModel,detailsMenuModel;
 	private String mobilePageTransition="flip";
 	@Getter protected Boolean mobilePageReverse=Boolean.TRUE,showTreeMenu=Boolean.FALSE;
 	@Getter protected Tree treeMenu;
@@ -116,9 +117,16 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(contextualMenu!=null && contextualMenu.getCommandables().isEmpty())
 			contextualMenu = null;
 		
+		if(detailsMenu!=null && detailsMenu.getCommandables().isEmpty())
+			detailsMenu = null;
+		else if(detailsMenu!=null)
+			detailsMenu.setRenderType(UIMenu.RenderType.TAB);
+			
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");
+		
+		detailsMenuModel = CommandBuilder.getInstance().menuModel(detailsMenu, getClass(), "detailsMenu");
 		
 		for(PrimefacesPageListener listener : getListeners())
 			listener.targetDependentInitialisationEnded(this); 
