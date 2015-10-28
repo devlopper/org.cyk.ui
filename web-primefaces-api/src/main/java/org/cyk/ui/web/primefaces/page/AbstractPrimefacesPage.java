@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import lombok.Getter;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -35,6 +36,7 @@ import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.AbstractWebPage;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.CommandBuilder;
@@ -289,22 +291,25 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return null;
 	}
 	
-	protected void configureDetailsTable(Table<?> table,String titleId,Boolean rowMasterOpenable){
+	@SuppressWarnings("unchecked")
+	protected void configureDetailsTable(Table<?> table,String titleId,final Crud[] cruds){
 		table.getColumnListeners().add(new DefaultColumnAdapter());
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(titleId))
 			table.setShowHeader(Boolean.FALSE);
 		else
 			table.setTitle(text(titleId));
-		table.setShowToolBar(Boolean.FALSE);
+		
+		table.setShowToolBar(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.CREATE)));
+		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.UPDATE)) || Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.DELETE)));
+		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.READ)));
+		
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
 		
-		if(Boolean.TRUE.equals(rowMasterOpenable)){
-			table.setShowOpenCommand(Boolean.TRUE);
+		if(Boolean.TRUE.equals(table.getShowOpenCommand())){
 			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
-				@SuppressWarnings("unchecked")
 				@Override
 				public void serve(UICommand command, Object parameter) {
 					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
@@ -313,10 +318,20 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				}
 			});
 		}
+		
+		((Table<Object>)table).getRowListeners().add(new RowAdapter<Object>(){
+			@Override
+			public void added(Row<Object> row) {
+				super.added(row);
+				row.setOpenable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.READ)));
+				row.setUpdatable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.UPDATE)));
+				row.setDeletable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.DELETE)));
+			}
+		});
 	}
 	
 	protected void configureDetailsTable(Table<?> table,String titleId){
-		configureDetailsTable(table, titleId, Boolean.FALSE);
+		configureDetailsTable(table, titleId, null);
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form

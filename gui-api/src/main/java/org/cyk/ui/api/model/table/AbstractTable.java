@@ -75,6 +75,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected DATA master;
 	protected List<DATA> hierarchyData = new ArrayList<>();
+	protected Collection<DATA> initialData;
 	
 	protected UICommand lastExecutedCommand;
 	protected RenderType renderType = RenderType.TABLE;
@@ -183,8 +184,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		if(globalFilter==null)
 			globalFilter = identifiableConfiguration==null?lazyLoad:identifiableConfiguration.getGlobalFiltering();
 		inplaceEdit = businessEntityInfos==null?Boolean.FALSE:StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) /*|| !lazyLoad*/;
-		showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
-		showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
+		if(showEditColumn==null)
+			showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
+		if(showAddRemoveColumn==null)
+			showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
 		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
 		if(editable==null)
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
@@ -217,6 +220,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
 			
 		}
+		
+		if(initialData!=null)
+			for(DATA data : initialData)
+				addRow(data);
 	}
 	
 	protected abstract void __createTree__();
@@ -481,6 +488,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				__fields__(fields,field.getType(),annotations);
 			}
 		}
+	}
+	
+	public Collection<DATA> getInitialData(){
+		if(initialData==null)
+			initialData = new ArrayList<>();
+		return initialData;
 	}
 	
 }
