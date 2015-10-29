@@ -8,10 +8,10 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
@@ -33,8 +33,6 @@ import org.cyk.ui.api.model.ItemCollectionListener.ItemCollectionAdapter;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
-import org.cyk.ui.api.model.table.Cell;
-import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
@@ -49,7 +47,7 @@ import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.ui.web.primefaces.UserSession;
-import org.cyk.utility.common.model.table.TableListener;
+import org.cyk.utility.common.cdi.BeanAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -119,9 +117,16 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		
 		if(detailsMenu!=null && detailsMenu.getCommandables().isEmpty())
 			detailsMenu = null;
-		else if(detailsMenu!=null)
+		else if(detailsMenu!=null){
 			detailsMenu.setRenderType(UIMenu.RenderType.TAB);
+			String selectedDetails = requestParameter(webManager.getRequestParameterTabId());
+			if(StringUtils.isBlank(selectedDetails)){
+				
+			}else{
+				detailsMenu.setRequestedCommandable(selectedDetails);
+			}
 			
+		}
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		
 		contentMenuModel = CommandBuilder.getInstance().menuModel(contentMenu, getClass(), "contentMenu");
@@ -169,6 +174,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/**/
 	
 	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
+		if(Boolean.FALSE.equals(form.getRendered()))
+			return;
 		form.setShowCommands(Boolean.FALSE);
 	}
 	
@@ -219,20 +226,26 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	/**
 	 * Call after page init
 	 */
-	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsTableConfigurationListener<?,T> listener){
 		@SuppressWarnings("unchecked")
-		Table<T> table = (Table<T>) createTable(aClass, null, null);
-		table.getColumnListeners().add(new DefaultColumnAdapter());
-		if(listener!=null)
-			table.getColumnListeners().add(listener);
-		configureDetailsTable(table, titleId);
+		Table<T> table = (Table<T>) createTable(listener.getIdentifiableClass(), null, null);
+		if(listener.getRendered()==null)
+			if(StringUtils.isBlank(listener.getTabId()))
+				table.setRendered(Boolean.TRUE);
+			else
+				setRenderedIfDetailsMenuCommandable(listener.getTabId(), table);
+		
+		//TODO we can go out from here???
+		
+		//table.getColumnListeners().add(new DefaultColumnAdapter());
+		
+		configureDetailsTable(aClass,table, listener);
 		buildTable(table);
-		if(collection!=null)
-			table.addRows(collection);
 		
 		table.setInplaceEdit(Boolean.FALSE);
-		table.setShowEditColumn(editable);
-		if(Boolean.TRUE.equals(editable)){
+		/*table.setShowEditColumn(ArrayUtils.contains(cruds, Crud.UPDATE));
+		
+		if(Boolean.TRUE.equals(table.getShowEditColumn())){
 			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 5577628912554608271L;
 				@SuppressWarnings("unchecked")
@@ -251,8 +264,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			});
 		}
 		
-		table.setShowAddRemoveColumn(deletable);
-		if(Boolean.TRUE.equals(deletable)){
+		table.setShowAddRemoveColumn(ArrayUtils.contains(cruds, Crud.DELETE));
+		if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
 			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 5577628912554608271L;
 				@SuppressWarnings("unchecked")
@@ -271,16 +284,16 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			});
 		}
 		((Commandable)table.getAddRowCommandable()).getButton().setRendered(Boolean.FALSE);
-		
+		*/
 		return table;
 	}
-	
-	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Boolean editable,Boolean deletable,final String identifiableFieldName){
-		return createDetailsTable(aClass, collection, null, titleId, editable, deletable, identifiableFieldName);
+	/*
+	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Crud[] cruds,final String identifiableFieldName){
+		return createDetailsTable(aClass, collection, null, titleId, cruds, identifiableFieldName);
 	}
 	
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId){
-		return createDetailsTable(aClass, collection,listener, titleId, Boolean.FALSE,Boolean.FALSE,null);
+		return createDetailsTable(aClass, collection,listener, titleId,null,null);
 	}
 	
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
@@ -294,23 +307,31 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection){
 		return createDetailsTable(aClass, collection, "");
 	}
-	
+	*/
 	protected AbstractIdentifiable detailsTableRowIdentifiable(Object rowData){
 		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void configureDetailsTable(Table<?> table,String titleId,final Crud[] cruds){
+	protected <T> void configureDetailsTable(Class<T> aClass,Table<T> table,final DetailsTableConfigurationListener<?,?> listener){
+		if(Boolean.FALSE.equals(table.getRendered()))
+			return;
 		table.getColumnListeners().add(new DefaultColumnAdapter());
+		if(listener.getColumnAdapter()!=null)
+			table.getColumnListeners().add(listener.getColumnAdapter());
+		
 		table.setEditable(Boolean.FALSE);
-		if(StringUtils.isBlank(titleId))
+		if(StringUtils.isBlank(listener.getTitleId()))
 			table.setShowHeader(Boolean.FALSE);
 		else
-			table.setTitle(text(titleId));
+			table.setTitle(text(listener.getTitleId()));
 		
-		table.setShowToolBar(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.CREATE)));
-		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.UPDATE)) || Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.DELETE)));
-		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.READ)));
+		table.setShowToolBar(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE)));
+		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)) || Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
+		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
+		
+		for(Object object : listener.getDatas())
+			table.addRow((T) object);
 		
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
@@ -331,15 +352,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			@Override
 			public void added(Row<Object> row) {
 				super.added(row);
-				row.setOpenable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.READ)));
-				row.setUpdatable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.UPDATE)));
-				row.setDeletable(Boolean.TRUE.equals(ArrayUtils.contains(cruds, Crud.DELETE)));
+				row.setOpenable(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
+				row.setUpdatable(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)));
+				row.setDeletable(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
 			}
 		});
-	}
-	
-	protected void configureDetailsTable(Table<?> table,String titleId){
-		configureDetailsTable(table, titleId, null);
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
@@ -363,6 +380,76 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Override
 	protected String classSelector(WebInput<?, ?, ?, ?> input) {
 		return PrimefacesManager.getInstance().classSelector(input);
+	}
+	
+	/**/
+	
+	public static interface DetailsTableConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA>{
+		Crud[] getCruds();
+		String getTitleId();
+		Collection<IDENTIFIABLE> getIdentifiables();
+		Collection<ROW_DATA> getDatas();
+		ROW_DATA createData(IDENTIFIABLE identifiable);
+		Class<ROW_DATA> getDataClass();
+		Class<IDENTIFIABLE> getIdentifiableClass();
+		ColumnAdapter getColumnAdapter();
+		IDENTIFIABLE getIdentifiable(ROW_DATA data);
+		Boolean getRendered();
+		String getTabId();
+	}
+	
+	@Getter @Setter
+	public static class DetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends BeanAdapter implements DetailsTableConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+		private static final long serialVersionUID = 6031762560954439308L;
+		private Class<IDENTIFIABLE> identifiableClass;
+		private Class<ROW_DATA> dataClass;
+		private ColumnAdapter columnAdapter;
+		private Boolean rendered=null;
+		private String tabId;
+		
+		public DetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
+			super();
+			this.identifiableClass = identifiableClass;
+			this.dataClass = dataClass;
+		}
+		
+		@Override
+		public Crud[] getCruds() {
+			return null;
+		}
+		@Override
+		public String getTitleId() {
+			return null;
+		}
+		@Override
+		public Collection<IDENTIFIABLE> getIdentifiables() {
+			return null;
+		}
+		@SuppressWarnings("unchecked")
+		@Override
+		public ROW_DATA createData(IDENTIFIABLE identifiable) {
+			ROW_DATA data = newInstance(dataClass);
+			if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
+				((AbstractOutputDetails<IDENTIFIABLE>)data).setMaster(identifiable);
+			}
+			return data;
+		}
+		@Override
+		public Collection<ROW_DATA> getDatas() {
+			Collection<ROW_DATA> datas = new ArrayList<>();
+			Collection<IDENTIFIABLE> identifiables = getIdentifiables();
+			if(identifiables!=null)
+				for(IDENTIFIABLE identifiable : identifiables)
+					datas.add(createData(identifiable));
+			return datas;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public IDENTIFIABLE getIdentifiable(ROW_DATA data) {
+			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+		}
+		
 	}
 	
 }

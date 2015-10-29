@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.web.api.AbstractWebUserSession;
-import org.cyk.ui.web.api.NavigationHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.Constant;
@@ -34,7 +33,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 	public void init(FilterConfig filterConfig) throws ServletException {}
 	
 	protected Boolean goTo(Boolean condition,String relativeUrl,HttpServletRequest request,HttpServletResponse response,RedirectType redirectType) throws IOException{
-		relativeUrl = (relativeUrl.startsWith(NavigationHelper.SLASH)?relativeUrl:NavigationHelper.SLASH+relativeUrl);
+		relativeUrl = (relativeUrl.startsWith(Constant.CHARACTER_SLASH.toString())?relativeUrl:Constant.CHARACTER_SLASH+relativeUrl);
 		if(Boolean.TRUE.equals(condition))
         	if(redirectType==null || RedirectType.REDIRECT.equals(redirectType))
         		response.sendRedirect(request.getContextPath()+relativeUrl);

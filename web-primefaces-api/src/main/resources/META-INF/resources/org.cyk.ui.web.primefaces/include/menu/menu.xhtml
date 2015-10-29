@@ -8,6 +8,6 @@
 	<p:menu model="#{model}" rendered="#{menu.renderType.ordinal()==0}" />
 	<p:slideMenu model="#{model}" rendered="#{menu.renderType.ordinal()==1}" />
 	<p:panelMenu model="#{model}" rendered="#{menu.renderType.ordinal()==2}" />
- 	<p:tabMenu model="#{model}" rendered="#{menu.renderType.ordinal()==3}" activeIndex="#{menu.requestedCommandableIndex}"/>
+ 	<p:tabMenu model="#{model}" rendered="#{menu.renderType.ordinal()==3}" activeIndex="#{menu.requestedCommandable.index}" />
  	<p:breadCrumb model="#{model}" rendered="#{menu.renderType.ordinal()==4}" />				
 </ui:composition>

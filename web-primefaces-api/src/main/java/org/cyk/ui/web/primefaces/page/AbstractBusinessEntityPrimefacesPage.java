@@ -11,6 +11,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
@@ -85,6 +86,10 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		//if(businessEntityInfos==null)
 		//	return new ArrayList<>();
 		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
+	}
+	
+	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType){
+		return addDetailsMenuCommandable(labelId,labelId, iconType, businessEntityInfos.getUiConsultViewId());
 	}
 	
 }

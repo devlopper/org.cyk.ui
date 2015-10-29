@@ -3,15 +3,19 @@ package org.cyk.ui.web.api;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 
 import javax.inject.Singleton;
 
+import lombok.extern.java.Log;
+
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.extern.java.Log;
 
 @Log @Singleton
 public class NavigationHelper extends AbstractBean implements Serializable {
@@ -19,8 +23,6 @@ public class NavigationHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 7627367286110326059L;
 	
 	private static NavigationHelper INSTANCE; 
-	
-	public static final String SLASH = "/";
 	
 	public static final String QUERY_START = "?";
 	private static final String QUERY_SEPARATOR = "&";
@@ -58,6 +60,15 @@ public class NavigationHelper extends AbstractBean implements Serializable {
 		} catch (UnsupportedEncodingException e) {
 			log.log(Level.SEVERE,e.toString(),e);
 		}
+	}
+	
+	public Collection<Parameter> getParameters(String url){
+		Collection<Parameter> collection = new ArrayList<>();
+		for(String pair : StringUtils.split(StringUtils.substringAfter(url, QUERY_START),QUERY_SEPARATOR)){
+			String[] values = StringUtils.split(pair,QUERY_NAME_VALUE_SEPARATOR);
+			collection.add(new Parameter(values[0], values[1]));
+		}
+		return collection;
 	}
 	
 	public static NavigationHelper getInstance() {

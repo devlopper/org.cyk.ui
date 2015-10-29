@@ -97,6 +97,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	@Override
 	public void build() {
 		super.build();
+		if(Boolean.FALSE.equals(rendered))
+			return;
 		if(exportCommandable!=null)
 			((Commandable)exportCommandable).setMenu(CommandBuilder.getInstance().menuModel(exportMenu, Table.class, ""));
 		

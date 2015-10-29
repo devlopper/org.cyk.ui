@@ -25,6 +25,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected UICommand command;
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
 	@Getter @Setter protected String identifier,label,tooltip;
+	@Getter @Setter protected Integer index;
 	@Getter @Setter protected IconType iconType;
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;

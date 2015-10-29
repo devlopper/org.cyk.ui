@@ -27,6 +27,7 @@ public abstract class AbstractView extends AbstractBean implements View,Serializ
 	@Getter protected Collection<View> children = new ArrayList<>();
 	@Getter protected Collection<ViewListener> viewListeners = new ArrayList<>();
 	@Getter @Setter protected UserDeviceType userDeviceType = UserDeviceType.DESKTOP;
+	@Getter @Setter protected Boolean rendered=Boolean.TRUE;
 	
 	protected UIProvider uiProvider = UIProvider.getInstance();
 	

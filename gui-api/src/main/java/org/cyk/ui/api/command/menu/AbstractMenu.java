@@ -23,16 +23,28 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	private static final long serialVersionUID = 101308477938178448L;
 
 	protected RenderType renderType = RenderType.PLAIN;
-	protected Integer requestedCommandableIndex;
+	protected UICommandable requestedCommandable;
 	
 	protected Collection<UICommandable> commandables = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
 		public boolean add(UICommandable aCommandable){
-			if(StringUtils.isBlank(aCommandable.getIdentifier()))
+			if(StringUtils.isBlank(aCommandable.getIdentifier())){
 				aCommandable.setIdentifier(RandomStringUtils.randomAlphabetic(4));
+				aCommandable.setIndex(size());
+			}
 			return super.add(aCommandable);
 		}
 	};
+	
+	public Integer getIndex(String anIdentifier) {
+		Integer index = 0;
+		for(UICommandable commandable : commandables)
+			if(commandable.getIdentifier().equals(anIdentifier))
+				break;
+			else
+				index++;
+		return index;
+	}
 	
 	@Override
 	public UICommandable commandable(String anIdentifier) {
@@ -92,4 +104,12 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 		return commandable;
 	}
 	
+	@Override
+	public void setRequestedCommandable(String identifier) {
+		setRequestedCommandable(commandable(identifier));	
+	}
+	@Override
+	public void setRequestedCommandable(UICommandable commandable) {
+		requestedCommandable = commandable;
+	}
 }

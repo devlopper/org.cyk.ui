@@ -23,6 +23,10 @@ public interface UIMenu {
 	RenderType getRenderType();
 	void setRenderType(RenderType aRenderType);
 	
-	Integer getRequestedCommandableIndex();
-	void setRequestedCommandableIndex(Integer value);
+	UICommandable getRequestedCommandable();
+	void setRequestedCommandable(UICommandable commandable);
+	void setRequestedCommandable(String identifier);
+	
+	//void setRequestedCommandable(String identifier);
+	//Integer getIndex(String anIdentifier);
 }

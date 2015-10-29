@@ -12,6 +12,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.party.Party;
@@ -49,8 +50,16 @@ public class EventListPage extends AbstractPrimefacesPage implements Serializabl
 		onComingEventTable = eventDetailsTable(eventBusiness.findOnComings(parties));
 	}
 	
-	private Table<EventDetails> eventDetailsTable(Collection<Event> events){
-		Table<EventDetails> table = createDetailsTable(EventDetails.class, eventDetails(events), null,Boolean.TRUE,Boolean.TRUE,"event");
+	private Table<EventDetails> eventDetailsTable(final Collection<Event> events){
+		//eventDetails(events), null,new Crud[]{Crud.UPDATE,Crud.DELETE},"event"
+		Table<EventDetails> table = createDetailsTable(EventDetails.class, new DetailsTableConfigurationAdapter<Event,EventDetails>(Event.class, EventDetails.class){
+			private static final long serialVersionUID = -8587220438981754160L;
+			@Override
+			public Collection<Event> getIdentifiables() {
+				return events;
+			}
+			
+		});
 		for(Row<EventDetails> row : table.getRows()){
 			row.setUpdatable(userSession.getUser().equals(row.getData().getEvent().getOwner()));
 			row.setDeletable(row.getUpdatable());

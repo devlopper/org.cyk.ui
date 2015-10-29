@@ -13,9 +13,12 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<ui:decorate template="#{cc.value.templateId}">
-			<ui:param name="form" value="#{cc.value}"/>
-		</ui:decorate>
+		<ui:fragment rendered="#{cc.value.rendered}" >
+			<ui:decorate template="#{cc.value.templateId}">
+				<ui:param name="form" value="#{cc.value}"/>
+			</ui:decorate>
+		</ui:fragment>
+		
 		
 		<!--
 		<ui:include src="include/controls.xhtml" >

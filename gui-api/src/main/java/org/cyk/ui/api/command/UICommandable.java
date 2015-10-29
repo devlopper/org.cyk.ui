@@ -19,6 +19,9 @@ public interface UICommandable {
 	String getIdentifier();
 	void setIdentifier(String anIdentifier);
 	
+	Integer getIndex();
+	void setIndex(Integer index);
+	
 	String getLabel();
 	void setLabel(String label);
 	

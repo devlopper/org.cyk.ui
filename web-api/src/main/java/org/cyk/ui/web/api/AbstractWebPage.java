@@ -26,9 +26,13 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.UserDeviceType;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
@@ -106,6 +110,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 				else if(control instanceof WebOutput<?, ?, ?, ?>)
 					;//((WebOutput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");
 			}
+		
 	}
 	
 	@Override
@@ -322,6 +327,33 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	protected String classSelector(WebInput<?, ?, ?, ?> input){
 		return "@(."+input.getUniqueCssClass()+")";
 	}
+	
+	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType,String outcome){
+		if(detailsMenu==null)
+			detailsMenu = new DefaultMenu();
+		UICommandable commandable = detailsMenu.addCommandable(labelId, iconType, outcome);
+		commandable.setIdentifier(identifier);
+		commandable.getParameters().addAll(NavigationHelper.getInstance().getParameters(url));
+		commandable.setParameter(webManager.getRequestParameterTabId(), commandable.getIdentifier());
+		
+		return commandable;
+	}
+	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType,String outcome){
+		return addDetailsMenuCommandable(labelId,labelId, iconType, outcome);
+	}
+	
+	protected Boolean isDetailsMenuCommandable(String identifier){
+		return identifier!=null && identifier.equals(requestParameter(webManager.getRequestParameterTabId()));
+	}
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData){
+		formOneData.setRendered(isDetailsMenuCommandable(identifier));
+		return formOneData.getRendered();
+	}
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,AbstractTable<?, ?, ?> table){
+		table.setRendered(isDetailsMenuCommandable(identifier));
+		return table.getRendered();
+	}
+	
 	
 	/**/
 	

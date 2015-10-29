@@ -66,7 +66,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected BusinessEntityInfos businessEntityInfos;
 	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericReportBasedOnDynamicBuilder();
 	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.FALSE,
-			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow;
+			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow,rendered=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		crudOneRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
@@ -179,6 +179,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@Override
 	public void build() {
+		if(Boolean.FALSE.equals(rendered))
+			return;
+		
 		lazyLoad = lazyLoad==null?businessEntityInfos!=null && !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()):lazyLoad;
 		//globalFilter = lazyLoad;
 		if(globalFilter==null)
@@ -222,8 +225,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		}
 		
 		if(initialData!=null)
-			for(DATA data : initialData)
-				addRow(data);
+			addRows(initialData);
 	}
 	
 	protected abstract void __createTree__();
