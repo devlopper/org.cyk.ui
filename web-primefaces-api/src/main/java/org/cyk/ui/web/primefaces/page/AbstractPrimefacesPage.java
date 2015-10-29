@@ -119,13 +119,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			detailsMenu = null;
 		else if(detailsMenu!=null){
 			detailsMenu.setRenderType(UIMenu.RenderType.TAB);
-			String selectedDetails = requestParameter(webManager.getRequestParameterTabId());
-			if(StringUtils.isBlank(selectedDetails)){
-				
-			}else{
-				detailsMenu.setRequestedCommandable(selectedDetails);
-			}
-			
+			detailsMenu.setRequestedCommandable(requestParameter(webManager.getRequestParameterTabId()));
 		}
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		
@@ -173,15 +167,25 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	/**/
 	
-	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
+	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form,DetailsFormOneDataConfigurationListener<?,?> listener){
 		if(Boolean.FALSE.equals(form.getRendered()))
 			return;
 		form.setShowCommands(Boolean.FALSE);
+		if(listener!=null){
+			if(listener.getRendered()==null)
+				if(StringUtils.isBlank(listener.getTabId()))
+					form.setRendered(Boolean.TRUE);
+				else
+					setRenderedIfDetailsMenuCommandable(listener.getTabId(), form,listener.getEnabledInDefaultTab());
+		}
+	}
+	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
+		configureDetailsForm(form,null);
 	}
 	
 	protected DetailsBlock<MenuModel> createDetailsBlock(AbstractIdentifiable master,AbstractOutputDetails<?> details,String editOutcome,UICommandable...links){
 		DetailsBlock<MenuModel> detailsBlock = new DetailsBlock<MenuModel>(null,createFormOneData(details, Crud.READ));
-		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData());
+		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData(),null);
 		Collection<UICommandable> commandables = new ArrayList<>();
 		@SuppressWarnings("unchecked")
 		OutputDetailsConfiguration configuration = uiManager.findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
@@ -228,86 +232,23 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	 */
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsTableConfigurationListener<?,T> listener){
 		@SuppressWarnings("unchecked")
-		Table<T> table = (Table<T>) createTable(listener.getIdentifiableClass(), null, null);
+		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
 		if(listener.getRendered()==null)
 			if(StringUtils.isBlank(listener.getTabId()))
 				table.setRendered(Boolean.TRUE);
 			else
-				setRenderedIfDetailsMenuCommandable(listener.getTabId(), table);
-		
+				setRenderedIfDetailsMenuCommandable(listener.getTabId(), table,listener.getEnabledInDefaultTab());
 		//TODO we can go out from here???
 		
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		
 		configureDetailsTable(aClass,table, listener);
-		buildTable(table);
-		
+		table.getColumnListeners().add(new DefaultColumnAdapter());
+		//buildTable(table);
 		table.setInplaceEdit(Boolean.FALSE);
-		/*table.setShowEditColumn(ArrayUtils.contains(cruds, Crud.UPDATE));
-		
-		if(Boolean.TRUE.equals(table.getShowEditColumn())){
-			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
-				private static final long serialVersionUID = 5577628912554608271L;
-				@SuppressWarnings("unchecked")
-				@Override
-				public void serve(UICommand command, Object parameter) {
-					AbstractIdentifiable identifiable = null;
-					if(StringUtils.isNotBlank(identifiableFieldName)){
-						Object data = ((Row<T>)parameter).getData();
-						identifiable = (AbstractIdentifiable) commonUtils.readField(data, FieldUtils.getField(aClass,identifiableFieldName , Boolean.TRUE), Boolean.FALSE);
-					}else
-						identifiable = detailsTableRowIdentifiable(((Row<T>)parameter).getData());
-					
-					if(identifiable!=null)
-						redirectToEditOne(identifiable);
-				}
-			});
-		}
-		
-		table.setShowAddRemoveColumn(ArrayUtils.contains(cruds, Crud.DELETE));
-		if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
-			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
-				private static final long serialVersionUID = 5577628912554608271L;
-				@SuppressWarnings("unchecked")
-				@Override
-				public void serve(UICommand command, Object parameter) {
-					AbstractIdentifiable identifiable = null;
-					if(StringUtils.isNotBlank(identifiableFieldName)){
-						Object data = ((Row<T>)parameter).getData();
-						identifiable = (AbstractIdentifiable) commonUtils.readField(data, FieldUtils.getField(aClass,identifiableFieldName , Boolean.TRUE), Boolean.FALSE);
-					}else
-						identifiable = detailsTableRowIdentifiable(((Row<T>)parameter).getData());
-					
-					if(identifiable!=null)
-						redirectToDeleteOne(identifiable);
-				}
-			});
-		}
-		((Commandable)table.getAddRowCommandable()).getButton().setRendered(Boolean.FALSE);
-		*/
 		return table;
 	}
-	/*
-	protected <T> Table<T> createDetailsTable(final Class<T> aClass,Collection<T> collection,String titleId,Crud[] cruds,final String identifiableFieldName){
-		return createDetailsTable(aClass, collection, null, titleId, cruds, identifiableFieldName);
-	}
 	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,ColumnAdapter listener,String titleId){
-		return createDetailsTable(aClass, collection,listener, titleId,null,null);
-	}
-	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,String titleId){
-		return createDetailsTable(aClass, collection,null, titleId);
-	}
-	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection,TableListener<Row<T>, Column, T, String, Cell, String> listener){
-		return createDetailsTable(aClass, collection,listener);
-	}
-	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,Collection<T> collection){
-		return createDetailsTable(aClass, collection, "");
-	}
-	*/
 	protected AbstractIdentifiable detailsTableRowIdentifiable(Object rowData){
 		return null;
 	}
@@ -316,10 +257,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected <T> void configureDetailsTable(Class<T> aClass,Table<T> table,final DetailsTableConfigurationListener<?,?> listener){
 		if(Boolean.FALSE.equals(table.getRendered()))
 			return;
-		table.getColumnListeners().add(new DefaultColumnAdapter());
+		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		if(listener.getColumnAdapter()!=null)
 			table.getColumnListeners().add(listener.getColumnAdapter());
 		
+		table.setLazyLoad(Boolean.FALSE);
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(listener.getTitleId()))
 			table.setShowHeader(Boolean.FALSE);
@@ -331,7 +273,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
 		
 		for(Object object : listener.getDatas())
-			table.addRow((T) object);
+			table.getInitialData().add((T) object);
 		
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
@@ -396,6 +338,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		IDENTIFIABLE getIdentifiable(ROW_DATA data);
 		Boolean getRendered();
 		String getTabId();
+		Boolean getAutoAddTabCommandable();
+		Boolean getEnabledInDefaultTab();
 	}
 	
 	@Getter @Setter
@@ -405,7 +349,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		private Class<ROW_DATA> dataClass;
 		private ColumnAdapter columnAdapter;
 		private Boolean rendered=null;
-		private String tabId;
+		private String tabId,titleId;
+		private Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
 		
 		public DetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
 			super();
@@ -418,8 +363,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			return null;
 		}
 		@Override
-		public String getTitleId() {
-			return null;
+		public String getTabId() {
+			if(tabId==null)
+				tabId = getTitleId();
+			return tabId;
 		}
 		@Override
 		public Collection<IDENTIFIABLE> getIdentifiables() {
@@ -428,10 +375,16 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		@SuppressWarnings("unchecked")
 		@Override
 		public ROW_DATA createData(IDENTIFIABLE identifiable) {
-			ROW_DATA data = newInstance(dataClass);
+			ROW_DATA data = null;
 			if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
+				try {
+					data = dataClass.getConstructor(identifiableClass).newInstance(identifiable);
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
 				((AbstractOutputDetails<IDENTIFIABLE>)data).setMaster(identifiable);
-			}
+			}else
+				data = newInstance(dataClass);
 			return data;
 		}
 		@Override
@@ -442,6 +395,69 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				for(IDENTIFIABLE identifiable : identifiables)
 					datas.add(createData(identifiable));
 			return datas;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public IDENTIFIABLE getIdentifiable(ROW_DATA data) {
+			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+		}
+		
+	}
+	
+	public static interface DetailsFormOneDataConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA>{
+		Crud[] getCruds();
+		DATA createData(IDENTIFIABLE identifiable);
+		Class<DATA> getDataClass();
+		Class<IDENTIFIABLE> getIdentifiableClass();
+		IDENTIFIABLE getIdentifiable(DATA data);
+		Boolean getRendered();
+		String getTitleId();
+		String getTabId();
+		Boolean getAutoAddTabCommandable();
+		Boolean getEnabledInDefaultTab();
+	}
+	
+	@Getter @Setter
+	public static class DetailsFormOneDataConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends BeanAdapter implements DetailsFormOneDataConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+		private static final long serialVersionUID = 6031762560954439308L;
+		private Class<IDENTIFIABLE> identifiableClass;
+		private Class<ROW_DATA> dataClass;
+		private Boolean rendered=null;
+		private String tabId,titleId;
+		private Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
+		
+		public DetailsFormOneDataConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
+			super();
+			this.identifiableClass = identifiableClass;
+			this.dataClass = dataClass;
+		}
+		
+		@Override
+		public Crud[] getCruds() {
+			return null;
+		}
+		@Override
+		public String getTabId() {
+			if(tabId==null)
+				tabId = getTitleId();
+			return tabId;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public ROW_DATA createData(IDENTIFIABLE identifiable) {
+			ROW_DATA data = null;
+			if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
+				try {
+					data = dataClass.getConstructor(identifiableClass).newInstance(identifiable);
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+				((AbstractOutputDetails<IDENTIFIABLE>)data).setMaster(identifiable);
+			}else
+				data = newInstance(dataClass);
+			return data;
 		}
 		
 		@SuppressWarnings("unchecked")

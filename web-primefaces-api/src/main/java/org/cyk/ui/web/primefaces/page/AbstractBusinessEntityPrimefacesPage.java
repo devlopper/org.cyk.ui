@@ -15,6 +15,8 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
+import org.cyk.ui.web.primefaces.Table;
+import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.primefaces.model.menu.MenuModel;
 
 @Getter
@@ -90,6 +92,30 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	
 	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType){
 		return addDetailsMenuCommandable(labelId,labelId, iconType, businessEntityInfos.getUiConsultViewId());
+	}
+	
+	@Override
+	protected void configureDetailsForm(FormOneData<?> form,DetailsFormOneDataConfigurationListener<?, ?> listener) {
+		super.configureDetailsForm(form, listener);
+		if(listener!=null){
+			if(Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
+				addDetailsMenuCommandable(listener.getTitleId(), null);
+			}
+		}
+	}
+	
+	@Override
+	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsTableConfigurationListener<?, ?> listener) {
+		super.configureDetailsTable(aClass, table, listener);
+		if(Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
+			addDetailsMenuCommandable(listener.getTabId(), null);
+		}
+	}
+	
+	@Override
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,DetailsTableConfigurationListener<?, T> listener) {
+		
+		return super.createDetailsTable(aClass, listener);
 	}
 	
 }

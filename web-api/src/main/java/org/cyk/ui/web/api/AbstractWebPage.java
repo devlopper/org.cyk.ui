@@ -342,16 +342,26 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return addDetailsMenuCommandable(labelId,labelId, iconType, outcome);
 	}
 	
-	protected Boolean isDetailsMenuCommandable(String identifier){
-		return identifier!=null && identifier.equals(requestParameter(webManager.getRequestParameterTabId()));
+	protected Boolean isDetailsMenuCommandable(String identifier,Boolean defaultValue){
+		String requestParameterIdentifier = requestParameter(webManager.getRequestParameterTabId());
+		if(StringUtils.isBlank(requestParameterIdentifier)){
+			return defaultValue;
+		}
+		return identifier.equals(/*detailsMenu==null?*/requestParameterIdentifier/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
 	}
-	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData){
-		formOneData.setRendered(isDetailsMenuCommandable(identifier));
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData,Boolean defaultDetails){
+		formOneData.setRendered(isDetailsMenuCommandable(identifier,defaultDetails));
 		return formOneData.getRendered();
 	}
-	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,AbstractTable<?, ?, ?> table){
-		table.setRendered(isDetailsMenuCommandable(identifier));
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData){
+		return setRenderedIfDetailsMenuCommandable(identifier, formOneData, Boolean.FALSE);
+	}
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,AbstractTable<?, ?, ?> table,Boolean defaultDetails){
+		table.setRendered(isDetailsMenuCommandable(identifier,defaultDetails));
 		return table.getRendered();
+	}
+	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,AbstractTable<?, ?, ?> table){
+		return setRenderedIfDetailsMenuCommandable(identifier, table,Boolean.FALSE);
 	}
 	
 	

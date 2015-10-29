@@ -224,8 +224,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			
 		}
 		
-		if(initialData!=null)
+		if(initialData!=null){
 			addRows(initialData);
+		}
 	}
 	
 	protected abstract void __createTree__();
