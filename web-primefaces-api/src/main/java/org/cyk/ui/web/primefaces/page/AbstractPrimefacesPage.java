@@ -29,6 +29,7 @@ import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
+import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.api.model.ItemCollectionListener.ItemCollectionAdapter;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
@@ -179,6 +180,15 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 					setRenderedIfDetailsMenuCommandable(listener.getTabId(), form,listener.getEnabledInDefaultTab());
 		}
 	}
+	
+	protected <T> org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> createDetailsForm(Class<T> aClass,AbstractIdentifiable identifiable,final DetailsFormOneDataConfigurationListener<?,T> listener){
+		org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> details = 
+				(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T>) createFormOneData(newInstance(aClass, new Class<?>[]{identifiable.getClass()}, new Object[]{identifiable}), Crud.READ);
+		configureDetailsForm(details,listener);
+		
+		return details;
+	}
+	
 	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form){
 		configureDetailsForm(form,null);
 	}
@@ -227,9 +237,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return createDetailsBlock(master, details, editOutcome,new Commandable[]{});
 	}
 	
-	/**
-	 * Call after page init
-	 */
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsTableConfigurationListener<?,T> listener){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
@@ -272,6 +279,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)) || Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
 		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
 		
+		table.setIdentifiableClass(listener.getIdentifiableClass());
+		
 		for(Object object : listener.getDatas())
 			table.getInitialData().add((T) object);
 		
@@ -302,7 +311,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
-			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables){
+			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE> listener){
 		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
 		form.getItemCollections().add(collection);
 		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE,IDENTIFIABLE>(){
@@ -312,8 +321,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				item.setForm(createFormOneData(item,Crud.CREATE));
 			}
 		});
+		if(listener!=null)
+			collection.getItemCollectionListeners().add(listener);
+		if(identifiables!=null)
+			for(IDENTIFIABLE identifiable : identifiables)
+				collection.add(identifiable);
 		return collection;
 	}
+	
 
 	public String mobilePageOutcome(String pageId){
 		return navigationManager.mobilePageOutcome(pageId,mobilePageTransition,mobilePageReverse);
@@ -326,16 +341,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	/**/
 	
-	public static interface DetailsTableConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA>{
+	public static interface DetailsConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA>{
 		Crud[] getCruds();
 		String getTitleId();
-		Collection<IDENTIFIABLE> getIdentifiables();
-		Collection<ROW_DATA> getDatas();
-		ROW_DATA createData(IDENTIFIABLE identifiable);
-		Class<ROW_DATA> getDataClass();
+		DATA createData(IDENTIFIABLE identifiable);
+		Class<DATA> getDataClass();
 		Class<IDENTIFIABLE> getIdentifiableClass();
-		ColumnAdapter getColumnAdapter();
-		IDENTIFIABLE getIdentifiable(ROW_DATA data);
+		IDENTIFIABLE getIdentifiable(DATA data);
 		Boolean getRendered();
 		String getTabId();
 		Boolean getAutoAddTabCommandable();
@@ -343,50 +355,71 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@Getter @Setter
-	public static class DetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends BeanAdapter implements DetailsTableConfigurationListener<IDENTIFIABLE,ROW_DATA>{
-		private static final long serialVersionUID = 6031762560954439308L;
-		private Class<IDENTIFIABLE> identifiableClass;
-		private Class<ROW_DATA> dataClass;
-		private ColumnAdapter columnAdapter;
-		private Boolean rendered=null;
-		private String tabId,titleId;
-		private Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
+	public static class AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends BeanAdapter implements DetailsConfigurationListener<IDENTIFIABLE,DATA>{
+		protected static final long serialVersionUID = 6031762560954439308L;
+		protected Class<IDENTIFIABLE> identifiableClass;
+		protected Class<DATA> dataClass;
+		protected Boolean rendered=null;
+		protected String tabId,titleId;
+		protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
+		protected Crud[] cruds;
 		
-		public DetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
+		public AbstractDetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
 			super();
 			this.identifiableClass = identifiableClass;
 			this.dataClass = dataClass;
+			titleId = UIManager.getInstance().businessEntityInfos(identifiableClass).getUiLabelId();
 		}
 		
-		@Override
-		public Crud[] getCruds() {
-			return null;
-		}
 		@Override
 		public String getTabId() {
 			if(tabId==null)
 				tabId = getTitleId();
 			return tabId;
 		}
+
+		@Override
+		public DATA createData(IDENTIFIABLE identifiable) {
+			DATA data = null;
+			if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
+				data = newInstance(getDataClass(), new Class<?>[]{getIdentifiableClass()}, new Object[]{identifiable});
+			else
+				data = newInstance(dataClass);
+			return data;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public IDENTIFIABLE getIdentifiable(DATA data) {
+			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+		}
+		
+	}
+	
+	/**/
+	
+	public static interface DetailsTableConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends DetailsConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+		Collection<IDENTIFIABLE> getIdentifiables();
+		Collection<ROW_DATA> getDatas();
+		ColumnAdapter getColumnAdapter();
+	}
+	
+	@Getter @Setter
+	public static class DetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE,ROW_DATA> implements DetailsTableConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+		private static final long serialVersionUID = 6031762560954439308L;
+		private ColumnAdapter columnAdapter;
+		
+		public DetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
+			super(identifiableClass,dataClass);
+			this.identifiableClass = identifiableClass;
+			this.dataClass = dataClass;
+		}
+		
 		@Override
 		public Collection<IDENTIFIABLE> getIdentifiables() {
 			return null;
 		}
-		@SuppressWarnings("unchecked")
-		@Override
-		public ROW_DATA createData(IDENTIFIABLE identifiable) {
-			ROW_DATA data = null;
-			if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
-				try {
-					data = dataClass.getConstructor(identifiableClass).newInstance(identifiable);
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
-				((AbstractOutputDetails<IDENTIFIABLE>)data).setMaster(identifiable);
-			}else
-				data = newInstance(dataClass);
-			return data;
-		}
+		
 		@Override
 		public Collection<ROW_DATA> getDatas() {
 			Collection<ROW_DATA> datas = new ArrayList<>();
@@ -397,73 +430,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			return datas;
 		}
 		
-		@SuppressWarnings("unchecked")
-		@Override
-		public IDENTIFIABLE getIdentifiable(ROW_DATA data) {
-			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
-		}
-		
 	}
 	
-	public static interface DetailsFormOneDataConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA>{
-		Crud[] getCruds();
-		DATA createData(IDENTIFIABLE identifiable);
-		Class<DATA> getDataClass();
-		Class<IDENTIFIABLE> getIdentifiableClass();
-		IDENTIFIABLE getIdentifiable(DATA data);
-		Boolean getRendered();
-		String getTitleId();
-		String getTabId();
-		Boolean getAutoAddTabCommandable();
-		Boolean getEnabledInDefaultTab();
+	public static interface DetailsFormOneDataConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends DetailsConfigurationListener<IDENTIFIABLE,DATA>{
+		
 	}
 	
 	@Getter @Setter
-	public static class DetailsFormOneDataConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends BeanAdapter implements DetailsFormOneDataConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+	public static class DetailsFormOneDataConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE,DATA> implements DetailsFormOneDataConfigurationListener<IDENTIFIABLE,DATA>{
 		private static final long serialVersionUID = 6031762560954439308L;
-		private Class<IDENTIFIABLE> identifiableClass;
-		private Class<ROW_DATA> dataClass;
-		private Boolean rendered=null;
-		private String tabId,titleId;
-		private Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
 		
-		public DetailsFormOneDataConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
-			super();
-			this.identifiableClass = identifiableClass;
-			this.dataClass = dataClass;
-		}
-		
-		@Override
-		public Crud[] getCruds() {
-			return null;
-		}
-		@Override
-		public String getTabId() {
-			if(tabId==null)
-				tabId = getTitleId();
-			return tabId;
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public ROW_DATA createData(IDENTIFIABLE identifiable) {
-			ROW_DATA data = null;
-			if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
-				try {
-					data = dataClass.getConstructor(identifiableClass).newInstance(identifiable);
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
-				((AbstractOutputDetails<IDENTIFIABLE>)data).setMaster(identifiable);
-			}else
-				data = newInstance(dataClass);
-			return data;
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public IDENTIFIABLE getIdentifiable(ROW_DATA data) {
-			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+		public DetailsFormOneDataConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
+			super(identifiableClass,dataClass);
 		}
 		
 	}

@@ -93,6 +93,12 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	}
 	
 	@Override
+	public UICommandable addParameter(AbstractIdentifiable identifiable) {
+		addParameter(UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier(), identifiable.getIdentifier());
+		return this;
+	}
+	
+	@Override
 	public UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable, AbstractOutputDetails<?> details) {
 		addParameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(identifiable.getClass()));
 		addParameter(UIManager.getInstance().getCrudParameter(), crudParameter);

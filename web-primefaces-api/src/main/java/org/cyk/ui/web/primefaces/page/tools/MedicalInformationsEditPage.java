@@ -36,7 +36,7 @@ public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractAct
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,null);
+		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,null,null);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			@Override

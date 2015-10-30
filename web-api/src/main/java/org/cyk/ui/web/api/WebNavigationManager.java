@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -386,12 +387,16 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass){
-		redirectTo(editOneOutcome(aClass),new Object[]{
+	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass,Collection<Parameter> parameters){
+		Object[] parametersArray = new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass),
 				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
-				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
-		});
+				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()}; //TODO must be parameterized
+		//ArrayUtils.addAll(parametersArray, parametersToArray(parameters));
+		redirectTo(editOneOutcome(aClass),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
+	}
+	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass){
+		redirectToDynamicCrudOne(aClass,null);
 	}
 	
 	public void redirectToDynamicCrudMany(Class<? extends AbstractIdentifiable> dataClass,AbstractIdentifiable data){

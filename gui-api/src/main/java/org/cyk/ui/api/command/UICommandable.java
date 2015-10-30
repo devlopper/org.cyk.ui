@@ -72,6 +72,8 @@ public interface UICommandable {
 	UICommandable setParameter(String name,Object value);
 	Parameter getParameter(String name);
 	 
+	UICommandable addParameter(AbstractIdentifiable identifiable);
+	
 	UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
 	UICommandable addChild(String labelId,IconType iconType,ViewType viewType,Collection<Parameter> parameters);
 	void addChild(UICommandable aCommandable);

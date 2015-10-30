@@ -6,8 +6,10 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
@@ -110,6 +112,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		if(Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
 			addDetailsMenuCommandable(listener.getTabId(), null);
 		}
+		
+		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
+			table.getAddRowCommandable().addParameter(identifiable);
+		}
+		
 	}
 	
 	@Override

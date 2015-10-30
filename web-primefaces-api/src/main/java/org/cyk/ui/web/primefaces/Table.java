@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
@@ -146,9 +148,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	}
 	
 	@Override
-	protected void crudOnePage() {
+	protected void crudOnePage(Collection<Parameter> parameters) {
 		if(addRowCommandable.getViewId()==null){
-			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiableClass);
+			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiableClass,parameters);
 		}else{
 			WebNavigationManager.getInstance().redirectTo(addRowCommandable);
 		}

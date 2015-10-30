@@ -32,7 +32,7 @@ public class ActorRelationshipEditPage extends AbstractCrudOnePage<AbstractActor
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		collection = createItemCollection(form,"qwerty",RelationshipItem.class,PersonRelationship.class,null);
+		collection = createItemCollection(form,"qwerty",RelationshipItem.class,PersonRelationship.class,null,null);
 		
 	}
 			

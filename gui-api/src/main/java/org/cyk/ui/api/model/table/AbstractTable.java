@@ -71,7 +71,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		crudOneRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
-	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE;
+	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE,built=Boolean.FALSE;
 	
 	protected DATA master;
 	protected List<DATA> hierarchyData = new ArrayList<>();
@@ -179,7 +179,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@Override
 	public void build() {
-		if(Boolean.FALSE.equals(rendered))
+		if(Boolean.TRUE.equals(built) || Boolean.FALSE.equals(rendered))
 			return;
 		
 		lazyLoad = lazyLoad==null?businessEntityInfos!=null && !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()):lazyLoad;
@@ -227,6 +227,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		if(initialData!=null){
 			addRows(initialData);
 		}
+		
+		built = Boolean.TRUE;
 	}
 	
 	protected abstract void __createTree__();
@@ -368,7 +370,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;
 			}else{
-				crudOnePage();
+				crudOnePage(addRowCommandable.getParameters());
 			}
 				
 		}else if(command==initRowEditCommandable.getCommand()){
@@ -441,7 +443,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	protected abstract void crudOnePage(DATA data,Crud crud);
 
-	protected abstract void crudOnePage();
+	protected abstract void crudOnePage(Collection<Parameter> parameters);
 	protected abstract void exportDataTableToPdfPage();
 	protected abstract void exportDataTableToXlsPage();
 	protected abstract void printDataPage();
