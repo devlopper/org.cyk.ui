@@ -5,12 +5,16 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
@@ -91,16 +95,20 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			listener.afterInitialisationEnded(this); 
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected Object data(Class<?> aClass){
 		try{
 			if(identifiable==null)
-				identifiable =  (ENTITY) businessEntityInfos.getClazz().newInstance();
+				identifiable = instanciateIdentifiable();
 			return identifiableFormData(aClass);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected ENTITY instanciateIdentifiable(){
+		return (ENTITY) newInstance(businessEntityInfos.getClazz());
 	}
 	
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
@@ -203,5 +211,18 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	
 	protected void addInputAdapter(String fieldName,WebInputAdapter inputAdapter){
 		addInputAdapter(form, fieldName, inputAdapter);
+	}
+
+	protected void setChoices(String fieldName,Collection<?> collection){
+		List list = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName).getList();
+		list.clear();
+		for(Object object : collection)
+			list.add(new SelectItem(object, getChoiceLabel(object)));
+	}
+	
+	protected String getChoiceLabel(Object object){
+		if(object instanceof AbstractEnumeration)
+			return ((AbstractEnumeration)object).getName();
+		return object.toString();
 	}
 }

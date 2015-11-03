@@ -115,8 +115,11 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
-				for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
-					listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
+				org.cyk.utility.common.annotation.user.interfaces.InputChoice annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class);
+				Boolean loadChoices = annotation!= null && annotation.load();
+				if(Boolean.TRUE.equals(loadChoices))
+					for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+						listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
 			}else if(control instanceof InputFile){
 				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;
 				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);				
