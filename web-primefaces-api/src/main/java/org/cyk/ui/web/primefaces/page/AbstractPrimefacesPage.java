@@ -298,6 +298,17 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				}
 			});
 		}
+		if(Boolean.TRUE.equals(table.getShowEditColumn())){
+			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 8640883295366346645L;
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
+						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE);
+					}
+				}
+			});
+		}
 		
 		((Table<Object>)table).getRowListeners().add(new RowAdapter<Object>(){
 			@Override
