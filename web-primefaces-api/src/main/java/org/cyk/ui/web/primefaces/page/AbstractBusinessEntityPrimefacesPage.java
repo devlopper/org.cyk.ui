@@ -99,24 +99,33 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@Override
 	protected void configureDetailsForm(FormOneData<?> form,DetailsFormOneDataConfigurationListener<?, ?> listener) {
 		super.configureDetailsForm(form, listener);
-		if(listener!=null){
-			if(Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
-				addDetailsMenuCommandable(listener.getTitleId(), null);
-			}
-		}
+		addDetailsMenuCommandable(listener);
 	}
 	
 	@Override
 	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsTableConfigurationListener<?, ?> listener) {
 		super.configureDetailsTable(aClass, table, listener);
-		if(Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
-			addDetailsMenuCommandable(listener.getTabId(), null);
-		}
-		
+		addDetailsMenuCommandable(listener);
 		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
 			table.getAddRowCommandable().addParameter(identifiable);
 		}
-		
+	}
+	
+	protected void addDetailsMenuCommandable(DetailsConfigurationListener<?, ?> listener){
+		if(listener!=null){
+			if(StringUtils.isNotBlank(listener.getTabId()) && Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
+				Boolean found = Boolean.FALSE;
+				if(detailsMenu!=null)
+					for(UICommandable commandable : detailsMenu.getCommandables()){
+						if(commandable.getIdentifier().equals(listener.getTabId())){
+							found = Boolean.TRUE;
+							break;
+						}
+				}
+				if(Boolean.FALSE.equals(found))
+					addDetailsMenuCommandable(listener.getTitleId(), null);
+			}
+		}
 	}
 	
 	@Override
