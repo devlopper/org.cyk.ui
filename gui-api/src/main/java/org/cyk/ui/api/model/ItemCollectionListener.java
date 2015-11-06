@@ -11,6 +11,8 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 	
 	void delete(AbstractItemCollection<TYPE,IDENTIFIABLE> itemCollection,TYPE item);
 
+	void write(TYPE item);
+	
 	/**/
 	
 	public static class ItemCollectionAdapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBean implements ItemCollectionListener<TYPE,IDENTIFIABLE>{
@@ -26,6 +28,8 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 		@Override
 		public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE> itemCollection,TYPE item) {}
 	
+		@Override
+		public void write(TYPE item) {}
 	}
 	
 }

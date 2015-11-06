@@ -22,14 +22,14 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 	protected List<CELL> cells;
 	protected Boolean editable = Boolean.FALSE;
 	protected String rowHeader="HEADER",title="TITLE";
-	protected Collection<SpreadsheetListener> listeners = new ArrayList<>();
+	protected Collection<SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL>> listeners = new ArrayList<>();
 
-	public Spreadsheet(SPREADSHEET spreadsheet,List<ROW> rows,List<COLUMN> columns, List<CELL> cells) {
+	public Spreadsheet(SPREADSHEET spreadsheet,Collection<ROW> rows,Collection<COLUMN> columns, Collection<CELL> cells) {
 		super();
 		this.spreadsheet = spreadsheet;
-		this.rows = rows;
-		this.columns = columns;
-		this.cells = cells;
+		this.rows = new ArrayList<>(rows);
+		this.columns = new ArrayList<>(columns);
+		this.cells = new ArrayList<>(cells);
 	}
 	
 	public CELL cell(Integer row, Integer column) {
@@ -39,7 +39,7 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 	public String cellText(Integer row, Integer column) {
 		int index = row * columns.size() + column;
 		Object value = null;
-		for(SpreadsheetListener listener : listeners){
+		for(SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL> listener : listeners){
 			Object v = listener.getCellValue(index);
 			if(v!=null)
 				value = v;
@@ -49,7 +49,7 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 	
 	public String columnText(Integer index) {
 		Object value = null;
-		for(SpreadsheetListener listener : listeners){
+		for(SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL> listener : listeners){
 			Object v = listener.getColumnTitle(index);
 			if(v!=null)
 				value = v;
@@ -59,7 +59,7 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 	
 	public String rowText(Integer index) {
 		Object value = null;
-		for(SpreadsheetListener listener : listeners){
+		for(SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL> listener : listeners){
 			Object v = listener.getRowTitle(index);
 			if(v!=null)
 				value = v;
@@ -67,15 +67,22 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 		return value==null?"":value.toString();
 	}
 	
+	public void write(){
+		for(SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL> listener : listeners)
+			for(CELL cell : cells)
+				listener.write(cell);
+	}
+	
 	/**/
 	
-	public static interface SpreadsheetListener{
+	public static interface SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL>{
 		Object getColumnTitle(Integer index);
 		Object getRowTitle(Integer index);
 		Object getCellValue(Integer index);
+		void write(CELL cell);
 	}
 	
-	public static class SpreadsheetAdapter extends BeanAdapter implements SpreadsheetListener{
+	public static class SpreadsheetAdapter<SPREADSHEET,ROW,COLUMN,CELL> extends BeanAdapter implements SpreadsheetListener<SPREADSHEET,ROW,COLUMN,CELL>{
 		private static final long serialVersionUID = 4768546989989564581L;
 
 		@Override
@@ -93,6 +100,10 @@ public class Spreadsheet<SPREADSHEET,ROW,COLUMN,CELL> implements Serializable {
 			return null;
 		}
 		
+		@Override
+		public void write(CELL cell) {
+				
+		}
 	}
 
 }

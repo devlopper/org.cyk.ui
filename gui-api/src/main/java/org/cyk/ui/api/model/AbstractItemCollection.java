@@ -97,5 +97,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		}
 		return collection;
 	}
+	
+	public void transfer(){
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
+			for(TYPE item : items)
+				listener.write(item);
+	}
 
 }
