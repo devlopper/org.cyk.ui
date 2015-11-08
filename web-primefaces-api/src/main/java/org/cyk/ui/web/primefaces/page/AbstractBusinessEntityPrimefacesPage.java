@@ -44,6 +44,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		identifiable = identifiableFromRequestParameter((Class<ENTITY>)businessEntityInfos.getClazz());
 		formModelClassId = __formModelClassId__();
 		formModelClass = __formModelClass__();
+		for(BusinessEntityFormPageListener<?> listener : getListeners()){
+			Class<?> fmc = listener.getFormModelClass();
+			if(fmc!=null)
+				formModelClass = fmc;
+		}
 		contentTitle = text(businessEntityInfos.getUiLabelId());
 		
 		for(BusinessEntityFormPageListener<?> listener : getListeners())

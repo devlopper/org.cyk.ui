@@ -19,4 +19,6 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 	
 	ENTITY getIdentifiable(Object data);
 	
+	Class<?> getFormModelClass();
+	
 }

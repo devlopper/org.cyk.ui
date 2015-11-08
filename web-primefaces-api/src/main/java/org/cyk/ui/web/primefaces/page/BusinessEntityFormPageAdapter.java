@@ -84,4 +84,10 @@ public class BusinessEntityFormPageAdapter<ENTITY_TYPE extends AbstractIdentifia
 		return createFormConfiguration(crud, null);
 	}
 
+	
+	@Override
+	public Class<?> getFormModelClass() {
+		return null;
+	}
+
 }

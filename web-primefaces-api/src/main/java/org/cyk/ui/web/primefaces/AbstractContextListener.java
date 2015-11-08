@@ -9,6 +9,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
@@ -21,6 +22,7 @@ import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
@@ -79,14 +81,24 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	
 	protected <ACTOR extends AbstractActor> void registerActorForm(Class<ACTOR> actorClass){
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,DefaultActorEditFormModel.class,DefaultActorReadFormModel.class);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),DefaultActorReadFormModel.class);
 		uiManager.registerConfiguration(configuration);
 		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
 		
-		registerBusinessEntityFormOnePageListener(actorClass,new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass));
+		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
 		registerBusinessEntityFormManyPageListener(actorClass,new DefaultActorCrudManyPageAdapter<ACTOR>(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
+	}
+	
+	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
+		return new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass);
+	}
+	
+	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
+		if(AbstractActor.class.isAssignableFrom(clazz))
+			return DefaultActorEditFormModel.class;
+		return null;
 	}
 	
 	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener){

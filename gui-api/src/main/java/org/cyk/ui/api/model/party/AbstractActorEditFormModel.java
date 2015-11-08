@@ -20,8 +20,8 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@Input @InputText private String registrationCode;
-	@Input @InputCalendar private Date registrationDate;
+	@Input @InputText protected String registrationCode;
+	@Input @InputCalendar protected Date registrationDate;
 	
 	@IncludeInputs(layout=Layout.VERTICAL) 
 	private DefaultPersonEditFormModel personFormModel = new DefaultPersonEditFormModel();
