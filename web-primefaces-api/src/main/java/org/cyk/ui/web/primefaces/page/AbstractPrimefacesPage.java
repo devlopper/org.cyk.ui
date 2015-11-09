@@ -364,7 +364,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		Boolean getAutoAddTabCommandable();
 		Boolean getEnabledInDefaultTab();
 		Boolean getIsIdentifiableMaster();
-		Collection<AbstractIdentifiable> getMasters();
+		Collection<? extends AbstractIdentifiable> getMasters();
 	}
 	
 	@Getter @Setter
@@ -377,7 +377,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
 		protected Crud[] cruds;
 		protected Boolean isIdentifiableMaster=Boolean.TRUE;
-		protected Collection<AbstractIdentifiable> masters;
+		protected Collection<? extends AbstractIdentifiable> masters;
 		
 		public AbstractDetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
 			super();
