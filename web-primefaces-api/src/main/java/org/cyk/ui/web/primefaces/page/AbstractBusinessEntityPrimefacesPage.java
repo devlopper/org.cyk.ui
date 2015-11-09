@@ -112,7 +112,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		super.configureDetailsTable(aClass, table, listener);
 		addDetailsMenuCommandable(listener);
 		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
-			table.getAddRowCommandable().addParameter(identifiable);
+			if(Boolean.TRUE.equals(listener.getIsIdentifiableMaster()))
+				table.getAddRowCommandable().addParameter(identifiable);
+			if(listener.getMasters()!=null)
+				for(AbstractIdentifiable master : listener.getMasters())
+			table.getAddRowCommandable().addParameter(master);
 		}
 	}
 	
