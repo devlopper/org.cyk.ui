@@ -21,10 +21,13 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.model.AbstractEnumeration;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -41,7 +44,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
-	private static final String COLON = ":";
+	private static final String ID_SEPARATOR = Constant.CHARACTER_COLON.toString();
 	private final Collection<ReportBasedOnDynamicBuilderServletListener> reportBasedOnDynamicBuilderServletListeners = new ArrayList<>();
 	
 	@Inject private LanguageBusiness languageBusiness;
@@ -60,8 +63,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String formId = "form";
 	private final String formContentId = "contentPanel";
 	private final String formMenuId = "menuPanel";
-	private final String formContentFullId = COLON+formId+COLON+formContentId;
-	private final String formMenuFullId = COLON+formId+COLON+formMenuId;
+	private final String formContentFullId = ID_SEPARATOR+formId+ID_SEPARATOR+formContentId;
+	private final String formMenuFullId = ID_SEPARATOR+formId+ID_SEPARATOR+formMenuId;
 	
 	private final String blockUIDialogWidgetId = "blockUIDialogWidget";
 	private final String messageDialogWidgetId = "messageDialogWidget";
@@ -129,7 +132,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	/**/
 	
 	public String getClientId(String[] clientId,Boolean root){
-		return (Boolean.TRUE.equals(root)?COLON:"")+StringUtils.join(clientId,COLON);
+		return (Boolean.TRUE.equals(root)?ID_SEPARATOR:"")+StringUtils.join(clientId,ID_SEPARATOR);
 	}
 	
 	public String getClientId(String clientId,Boolean root){
@@ -152,7 +155,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public void updateInForm(String[] clientId){
-		update(formId+COLON+StringUtils.join(clientId,COLON));
+		update(formId+ID_SEPARATOR+StringUtils.join(clientId,ID_SEPARATOR));
 	}
 	
 	public void updateInFormContent(String clientId){
@@ -160,7 +163,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public void updateInFormContent(String[] clientId){
-		updateInForm(formId+COLON+formContentId+COLON+StringUtils.join(clientId,COLON));
+		updateInForm(formId+ID_SEPARATOR+formContentId+ID_SEPARATOR+StringUtils.join(clientId,ID_SEPARATOR));
 	}
 	
 	/**/
@@ -179,4 +182,33 @@ public class WebManager extends AbstractBean implements Serializable {
 		throwValidationException("exception.value.unknown",new Object[]{value});
 	}
 	
+	public List<SelectItem> getSelectItems(Class<?> aClass){
+		List<SelectItem> list = new ArrayList<>();		
+		if(AbstractIdentifiable.class.isAssignableFrom(aClass)){
+			@SuppressWarnings("unchecked")
+			Collection<? extends AbstractIdentifiable> identifiables = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) aClass).find().all();
+			list = getSelectItems(identifiables);
+		}else if(aClass.isEnum()){
+			for(Enum<?> value : (Enum<?>[])aClass.getEnumConstants())
+				list.add(getSelectItem(value));
+		}	
+		return list;
+	}
+	
+	public List<SelectItem> getSelectItems(Collection<?> collection){
+		List<SelectItem> list = new ArrayList<>();
+		for(Object object : collection){
+			list.add(getSelectItem(object));
+		}
+		return list;
+	}
+	
+	public SelectItem getSelectItem(Object identifiable) {
+		return new SelectItem(identifiable,
+				identifiable instanceof AbstractIdentifiable
+					?(identifiable instanceof AbstractEnumeration
+							?((AbstractEnumeration)identifiable).getName()
+							:((AbstractIdentifiable)identifiable).getUiString())
+					:identifiable.toString());
+	}
 }

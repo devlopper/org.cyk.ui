@@ -72,6 +72,13 @@
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
 				 			<p:focus context="contentPanel" />
 				 			<ui:fragment rendered="#{not pageController.renderViewError}" >
+				 				<ui:fragment rendered="#{pageController.showDetailsMenu}">
+					 				<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+										<ui:param name="model" value="#{pageController.detailsMenuModel}" />
+										<ui:param name="menu" value="#{pageController.detailsMenu}" />
+									</ui:include>
+				 				</ui:fragment>
+				 				
 				 				<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
 				 			</ui:fragment>
 				 			<ui:fragment rendered="#{pageController.renderViewError}" >

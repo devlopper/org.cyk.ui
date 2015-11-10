@@ -30,6 +30,7 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	Boolean getShowContextualMenu();
 	
 	Boolean getShowMainMenu();
+	Boolean getShowDetailsMenu();
 	
 	Boolean getShowWindowHierachyMenu();
 	

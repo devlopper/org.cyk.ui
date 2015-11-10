@@ -28,7 +28,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE>> itemCollectionListeners = new ArrayList<>();
-	protected Boolean deletable = Boolean.TRUE;
+	protected Boolean deletable = Boolean.TRUE,autoWrite=Boolean.TRUE;
 	protected UICommandable addCommandable,deleteCommandable;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
@@ -98,7 +98,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		return collection;
 	}
 	
-	public void transfer(){
+	public void write(){
 		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
 			for(TYPE item : items)
 				listener.write(item);

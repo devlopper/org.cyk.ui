@@ -276,8 +276,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			table.setTitle(text(listener.getTitleId()));
 		
 		table.setShowToolBar(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE)));
-		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)) || Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
 		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
+		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)));
+		table.setShowAddRemoveColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
 		
 		table.setIdentifiableClass(listener.getIdentifiableClass());
 		
@@ -305,6 +306,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				public void serve(UICommand command, Object parameter) {
 					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
 						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE);
+					}
+				}
+			});
+		}
+		
+		if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
+			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 8640883295366346645L;
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
+						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.DELETE);
 					}
 				}
 			});
