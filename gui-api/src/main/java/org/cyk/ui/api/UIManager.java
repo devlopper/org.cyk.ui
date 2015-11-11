@@ -20,6 +20,7 @@ import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventParticipationBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
@@ -82,6 +83,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private CollectionLoadMethod collectionLoadMethod;
 	
+	@Inject private FormatterBusiness formatterBusiness;
 	@Inject private LanguageBusiness languageBusiness;
 	@Inject private ContactCollectionBusiness contactCollectionBusiness;
 	@Inject private ApplicationBusiness applicationBusiness;

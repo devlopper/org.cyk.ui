@@ -69,7 +69,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow,rendered=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
-		crudOneRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
+		updateRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
 	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE,built=Boolean.FALSE;
 	
@@ -106,8 +106,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		openRowCommandable = UIProvider.getInstance().createCommandable(this, "command.open", IconType.ACTION_OPEN, null, null);
 		openRowCommandable.setShowLabel(Boolean.FALSE);
 		
-		crudOneRowCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
-		crudOneRowCommandable.setShowLabel(Boolean.FALSE);
+		updateRowCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
+		updateRowCommandable.setShowLabel(Boolean.FALSE);
 		
 		searchCommandable = UIProvider.getInstance().createCommandable(this, "command.search", IconType.ACTION_SEARCH, null, null);
 		searchCommandable.setShowLabel(Boolean.FALSE);
@@ -418,7 +418,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				crudOnePage(row.getData(),Crud.DELETE);
 			}
 			
-		}else if(command==crudOneRowCommandable.getCommand()){
+		}else if(command==updateRowCommandable.getCommand()){
 			//System.out.println("AbstractTable.serve() : CrudOne");
 			//Row<DATA> row = (Row<DATA>) parameter;
 			//crudOnePage(row.getData(),Crud.UPDATE);

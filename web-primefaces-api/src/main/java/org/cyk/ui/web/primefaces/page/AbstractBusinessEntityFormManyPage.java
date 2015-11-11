@@ -107,7 +107,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
 		
 		table.setMaster(identifiable);
-		table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+		table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 2679004450545381808L;
 			@Override
 			public void serve(UICommand command, Object parameter) {

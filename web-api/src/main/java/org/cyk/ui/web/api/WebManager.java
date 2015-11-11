@@ -21,8 +21,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
@@ -203,12 +203,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		return list;
 	}
 	
-	public SelectItem getSelectItem(Object identifiable) {
-		return new SelectItem(identifiable,
-				identifiable instanceof AbstractIdentifiable
-					?(identifiable instanceof AbstractEnumeration
-							?((AbstractEnumeration)identifiable).getName()
-							:((AbstractIdentifiable)identifiable).getUiString())
-					:identifiable.toString());
+	public SelectItem getSelectItem(Object object) {
+		return new SelectItem(object,UIManager.getInstance().getFormatterBusiness().format(object,ContentType.TEXT));
 	}
 }

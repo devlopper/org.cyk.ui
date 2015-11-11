@@ -12,8 +12,10 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
@@ -40,9 +42,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
@@ -153,12 +152,12 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 
 	@Override
 	protected SelectItem item(AbstractIdentifiable identifiable) {
-		return new SelectItem(identifiable,identifiable instanceof AbstractEnumeration?((AbstractEnumeration)identifiable).getName():identifiable.getUiString());
+		return WebManager.getInstance().getSelectItem(identifiable); 
 	}
 	
 	@Override
 	protected SelectItem item(Enum<?> anEnum) {
-		return new SelectItem(anEnum,anEnum.toString());
+		return WebManager.getInstance().getSelectItem(anEnum); 
 	}
 	
 	public void connectSocket(String socket,String channel){

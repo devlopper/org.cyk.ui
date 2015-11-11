@@ -115,7 +115,7 @@
 		        
 		        <p:column rendered="#{cc.value.showEditColumn}" width="35">
 		        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" /> 
-		        	<cyk:command value="#{cc.value.crudOneRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
+		        	<cyk:command value="#{cc.value.updateRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
 		        </p:column>
 		        
 		        <p:column rendered="#{cc.value.showAddRemoveColumn}" width="90">

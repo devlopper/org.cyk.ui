@@ -300,7 +300,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			});
 		}
 		if(Boolean.TRUE.equals(table.getShowEditColumn())){
-			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+			table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
 				public void serve(UICommand command, Object parameter) {
@@ -312,7 +312,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		}
 		
 		if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
-			table.getCrudOneRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
 				public void serve(UICommand command, Object parameter) {
