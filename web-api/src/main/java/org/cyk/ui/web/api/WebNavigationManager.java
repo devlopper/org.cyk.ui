@@ -438,12 +438,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType,String viewId){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
-		commandable.setViewId(editOneOutcome(identifiable.getClass()));
+		commandable.setViewId(StringUtils.isBlank(viewId)?editOneOutcome(identifiable.getClass()):viewId);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudUpdateParameter(), identifiable);
 		return commandable;
+	}
+	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+		return createUpdateCommandable(identifiable, labelid, iconType,null);
 	}
 	
 	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){

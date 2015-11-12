@@ -117,7 +117,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return Boolean.TRUE;
 	}
 	public Boolean getShowDetailsMenu(){
-		return Boolean.FALSE;
+		return detailsMenu!=null && detailsMenu.getCommandables().size()>1;
 	}
 	
 	protected abstract <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> __createFormOneData__();
