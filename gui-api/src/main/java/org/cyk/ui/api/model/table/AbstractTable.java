@@ -415,7 +415,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 					UIManager.getInstance().getGenericBusiness().delete(identifiable);
 				deleteRowAt(row.getIndex().intValue());
 			}else{
-				crudOnePage(row.getData(),Crud.DELETE);
+				//crudOnePage(row.getData(),Crud.DELETE);
 			}
 			
 		}else if(command==updateRowCommandable.getCommand()){
