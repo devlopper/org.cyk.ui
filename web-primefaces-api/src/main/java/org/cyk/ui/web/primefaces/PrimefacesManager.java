@@ -12,23 +12,14 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
-import org.cyk.ui.api.UIProvider;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
-import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
-import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
@@ -48,6 +39,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
@@ -101,13 +95,13 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		return ContentType.HTML;
 	}
 	
-	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType/*,Boolean popup*/){
+	/*public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.setOnClick(JavaScriptHelper.getInstance().openWindow(identifiable.getIdentifier().toString(), 
 				WebNavigationManager.getInstance().reportUrl(identifiable, reportIdentifier, "pdf", Boolean.FALSE), 300, 300));
 		return commandable;
-	}
+	}*/
 	
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){
 		dialogParams.put("modal", true);  

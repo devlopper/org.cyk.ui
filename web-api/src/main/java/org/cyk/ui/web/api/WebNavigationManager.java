@@ -469,10 +469,19 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType,Boolean popup){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		commandable.setViewType(ViewType.TOOLS_REPORT);
-		commandable.getParameters().addAll(reportParameters(identifiable, reportIdentifier,Boolean.FALSE));
-		//commandable.seto
+		if(Boolean.TRUE.equals(popup)){
+			commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+			commandable.setOnClick(JavaScriptHelper.getInstance().openWindow(identifiable.getIdentifier().toString(), 
+				reportUrl(identifiable, reportIdentifier, "pdf", Boolean.FALSE), 300, 300));
+		}else{
+			commandable.setViewType(ViewType.TOOLS_REPORT);
+			commandable.getParameters().addAll(reportParameters(identifiable, reportIdentifier,Boolean.FALSE));
+		}
 		return commandable;
+	}
+	
+	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType){
+		return createReportCommandable(identifiable, reportIdentifier, labelid, iconType, Boolean.TRUE);
 	}
 	
 	/**/
