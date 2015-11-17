@@ -20,9 +20,15 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
@@ -93,6 +99,14 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	@Override
 	public ContentType contentType() {
 		return ContentType.HTML;
+	}
+	
+	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType/*,Boolean popup*/){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.setOnClick(JavaScriptHelper.getInstance().openWindow(identifiable.getIdentifier().toString(), 
+				WebNavigationManager.getInstance().reportUrl(identifiable, reportIdentifier, "pdf", Boolean.FALSE), 300, 300));
+		return commandable;
 	}
 	
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){

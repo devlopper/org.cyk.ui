@@ -66,6 +66,9 @@ public interface UICommandable {
 	Object getViewId();
 	void setViewId(Object aViewId);
 	
+	NavigationMode getNavigationMode();
+	void setNavigationMode(NavigationMode aNavigationMode);
+	
 	Collection<Parameter> getParameters();
 	void setParameters(Collection<Parameter> theParameters);
 	UICommandable addParameter(String name,Object value);
@@ -87,11 +90,18 @@ public interface UICommandable {
 	UICommandable addPreviousViewParameter();
 	UICommandable addDefaultParameters();
 	
+	/* Events */
+	
+	String getOnClick();
+	void setOnClick(String value);
+	
 	/**/
 	
 	public enum RenderType{BUTTON,LINK}
 	
 	public enum CommandRequestType{UI_VIEW,BUSINESS_PROCESSING}
+	
+	public enum NavigationMode{DEFAULT,CLICK}
 	
 	public enum EventListener{NONE,CLICK}
 	

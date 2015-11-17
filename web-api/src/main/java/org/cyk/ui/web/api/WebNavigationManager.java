@@ -34,6 +34,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
+import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
@@ -354,14 +355,14 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String reportUrl(AbstractIdentifiable identifiable,String reportIdentifier,String fileExtension,Boolean print){
-		Collection<UICommandable.Parameter> parameters = reportParameters(identifiable, reportIdentifier, fileExtension,print);
+		Collection<Parameter> parameters = reportParameters(identifiable, reportIdentifier, fileExtension,print);
 		return url(outcomeToolsReport, parametersToArray(parameters), Boolean.FALSE, Boolean.FALSE);
 	}
 	
 	public Object[] parametersToArray(Collection<Parameter> parameters){
 		Object[] objects = new Object[parameters.size()*2];
 		int i=0;
-		for(UICommandable.Parameter parameter : parameters){
+		for(Parameter parameter : parameters){
 			objects[i] = parameter.getName();
 			objects[i+1] = parameter.getValue();
 			i += 2;
@@ -465,32 +466,46 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
+	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType,Boolean popup){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.setViewType(ViewType.TOOLS_REPORT);
+		commandable.getParameters().addAll(reportParameters(identifiable, reportIdentifier,Boolean.FALSE));
+		//commandable.seto
+		return commandable;
+	}
+	
 	/**/
 	
 	public Collection<Parameter> crudOneParameters(Class<? extends AbstractIdentifiable> aClass){
-		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
+		Collection<Parameter> parameters = new ArrayList<Parameter>();
 		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass)));
 		parameters.add(new Parameter(uiManager.getCrudParameter(),uiManager.getCrudCreateParameter()));
 		return parameters;
 	}
 	
 	public Collection<Parameter> crudManyParameters(AbstractIdentifiable anIdentifiable){
-		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
+		Collection<Parameter> parameters = new ArrayList<Parameter>();
 		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(anIdentifiable.getClass())));
 		parameters.add(new Parameter(webManager.getRequestParameterIdentifiable(), anIdentifiable==null?null:anIdentifiable.getIdentifier()));
 		return parameters;
 	}
 	
-	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print){
-		Collection<Parameter> parameters = new ArrayList<UICommandable.Parameter>();
-		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterClass(),uiManager.keyFromClass(anIdentifiable.getClass())));
-		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterIdentifiable(),anIdentifiable.getIdentifier()));
-		parameters.add(new UICommandable.Parameter(uiManager.getFileExtensionParameter(),fileExtension));
-		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterWindowMode(),webManager.getRequestParameterWindowModeDialog()));
-		parameters.add(new UICommandable.Parameter(uiManager.getReportIdentifierParameter(),reportIdentifier));
-		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterOutcome(),outcomeReport));
-		parameters.add(new UICommandable.Parameter(webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print)));
+	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print,String windowMode){
+		Collection<Parameter> parameters = new ArrayList<Parameter>();
+		parameters.add(new Parameter(webManager.getRequestParameterClass(),uiManager.keyFromClass(anIdentifiable.getClass())));
+		parameters.add(new Parameter(webManager.getRequestParameterIdentifiable(),anIdentifiable.getIdentifier()));
+		parameters.add(new Parameter(uiManager.getFileExtensionParameter(),fileExtension));
+		if(StringUtils.isNotBlank(windowMode))
+			parameters.add(new Parameter(webManager.getRequestParameterWindowMode(),windowMode));
+		parameters.add(new Parameter(uiManager.getReportIdentifierParameter(),reportIdentifier));
+		parameters.add(new Parameter(webManager.getRequestParameterOutcome(),outcomeReport));
+		parameters.add(new Parameter(webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print)));
 		return parameters;
+	}
+	
+	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print){
+		return reportParameters(anIdentifiable, reportIdentifier, fileExtension, print, webManager.getRequestParameterWindowModeDialog());
 	}
 	
 	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,Boolean print){

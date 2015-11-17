@@ -24,12 +24,13 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Setter protected UIMessageManager messageManager;
 	@Getter @Setter protected UICommand command;
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
-	@Getter @Setter protected String identifier,label,tooltip;
+	@Getter @Setter protected String identifier,label,tooltip,onClick;
 	@Getter @Setter protected Integer index;
 	@Getter @Setter protected IconType iconType;
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
+	@Getter @Setter protected NavigationMode navigationMode = NavigationMode.DEFAULT;
 	@Getter @Setter protected Class<?> dynamicClass; 
 	@Getter @Setter protected EventListener eventListener;
 	@Getter @Setter protected RenderType renderType;

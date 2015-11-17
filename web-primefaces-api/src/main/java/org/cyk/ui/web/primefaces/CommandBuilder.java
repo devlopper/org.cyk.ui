@@ -47,7 +47,7 @@ public class CommandBuilder implements Serializable {
 			commandButton.setTitle(aCommandable.getTooltip());
 		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			commandButton.setProcess("@this");		
-		
+		commandButton.setOnclick(aCommandable.getOnClick());
 		return commandButton;
 	}
 	
@@ -98,6 +98,7 @@ public class CommandBuilder implements Serializable {
 					if(aCommandable.getBusinessEntityInfos()!=null)
 						menuItem.setParam(WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(aCommandable.getBusinessEntityInfos()));
 				}
+				//TODO navigation mode to be handled
 				for(Parameter parameter : aCommandable.getParameters()){
 					if(StringUtils.isBlank(parameter.getName()) || parameter.getValue()==null)
 						;
@@ -105,6 +106,7 @@ public class CommandBuilder implements Serializable {
 						menuItem.setParam(parameter.getName(), parameter.getValue());
 				}
 				
+				menuItem.setOnclick(aCommandable.getOnClick());
 			}else{
 				
 				menuItem.setUpdate(WebManager.getInstance().getFormContentFullId());//TODO make it constant
