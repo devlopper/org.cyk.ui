@@ -109,7 +109,7 @@
 		
 		<navigation-case>
 			<from-outcome>actorConsultView</from-outcome>
-			<to-view-id>/private/__tools__/crud/consultactor.jsf</to-view-id>
+			<to-view-id>/private/__role__/__manager__/actor/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

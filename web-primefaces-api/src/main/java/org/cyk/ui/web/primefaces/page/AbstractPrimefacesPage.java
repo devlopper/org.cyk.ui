@@ -168,7 +168,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	/**/
 	
-	protected void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form,DetailsFormOneDataConfigurationListener<?,?> listener){
+	protected <I extends AbstractIdentifiable> void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form,DetailsConfigurationListener.Form<I,?> listener){
 		if(Boolean.FALSE.equals(form.getRendered()))
 			return;
 		form.setShowCommands(Boolean.FALSE);
@@ -181,9 +181,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		}
 	}
 	
-	protected <T> org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> createDetailsForm(Class<T> aClass,AbstractIdentifiable identifiable,final DetailsFormOneDataConfigurationListener<?,T> listener){
+	protected <T,I extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> createDetailsForm(Class<T> aClass,I identifiable
+			,final DetailsConfigurationListener.Form<I,T> listener){
 		org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> details = 
-				(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T>) createFormOneData(newInstance(aClass, new Class<?>[]{identifiable.getClass()}, new Object[]{identifiable}), Crud.READ);
+				(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T>) createFormOneData(listener.createData(identifiable), Crud.READ);
 		configureDetailsForm(details,listener);
 		
 		return details;
@@ -237,7 +238,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return createDetailsBlock(master, details, editOutcome,new Commandable[]{});
 	}
 	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsTableConfigurationListener<?,T> listener){
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsConfigurationListener.Table<?,T> listener){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
 		if(listener.getRendered()==null)
@@ -261,7 +262,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> void configureDetailsTable(Class<T> aClass,Table<T> table,final DetailsTableConfigurationListener<?,?> listener){
+	protected <T> void configureDetailsTable(Class<T> aClass,Table<T> table,final DetailsConfigurationListener.Table<?,?> listener){
 		if(Boolean.FALSE.equals(table.getRendered()))
 			return;
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
@@ -378,101 +379,103 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		Boolean getEnabledInDefaultTab();
 		Boolean getIsIdentifiableMaster();
 		Collection<? extends AbstractIdentifiable> getMasters();
-	}
-	
-	@Getter @Setter
-	public static class AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends BeanAdapter implements DetailsConfigurationListener<IDENTIFIABLE,DATA>{
-		protected static final long serialVersionUID = 6031762560954439308L;
-		protected Class<IDENTIFIABLE> identifiableClass;
-		protected Class<DATA> dataClass;
-		protected Boolean rendered=null;
-		protected String tabId,titleId;
-		protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
-		protected Crud[] cruds;
-		protected Boolean isIdentifiableMaster=Boolean.TRUE;
-		protected Collection<? extends AbstractIdentifiable> masters;
 		
-		public AbstractDetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
-			super();
-			this.identifiableClass = identifiableClass;
-			this.dataClass = dataClass;
-			titleId = UIManager.getInstance().businessEntityInfos(identifiableClass).getUiLabelId();
-		}
+		/*  */
 		
-		@Override
-		public String getTabId() {
-			if(tabId==null)
-				tabId = getTitleId();
-			return tabId;
-		}
+		@Getter @Setter
+		public static class AbstractDetailsConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends BeanAdapter implements DetailsConfigurationListener<IDENTIFIABLE,DATA>{
+			protected static final long serialVersionUID = 6031762560954439308L;
+			protected Class<IDENTIFIABLE> identifiableClass;
+			protected Class<DATA> dataClass;
+			protected Boolean rendered=null;
+			protected String tabId,titleId;
+			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
+			protected Crud[] cruds;
+			protected Boolean isIdentifiableMaster=Boolean.TRUE;
+			protected Collection<? extends AbstractIdentifiable> masters;
+			
+			public AbstractDetailsConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
+				super();
+				this.identifiableClass = identifiableClass;
+				this.dataClass = dataClass;
+				titleId = UIManager.getInstance().businessEntityInfos(identifiableClass).getUiLabelId();
+			}
+			
+			@Override
+			public String getTabId() {
+				if(tabId==null)
+					tabId = getTitleId();
+				return tabId;
+			}
 
-		@Override
-		public DATA createData(IDENTIFIABLE identifiable) {
-			DATA data = null;
-			if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
-				data = newInstance(getDataClass(), new Class<?>[]{getIdentifiableClass()}, new Object[]{identifiable});
-			else
-				data = newInstance(dataClass);
-			return data;
+			@Override
+			public DATA createData(IDENTIFIABLE identifiable) {
+				DATA data = null;
+				if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
+					data = newInstance(getDataClass(), new Class<?>[]{getIdentifiableClass()}, new Object[]{identifiable});
+				else
+					data = newInstance(dataClass);
+				return data;
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public IDENTIFIABLE getIdentifiable(DATA data) {
+				return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+			}
+			
 		}
 		
-		@SuppressWarnings("unchecked")
-		@Override
-		public IDENTIFIABLE getIdentifiable(DATA data) {
-			return ((AbstractOutputDetails<IDENTIFIABLE>)data).getMaster();
+		/**/
+		
+		public static interface Table<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends DetailsConfigurationListener<IDENTIFIABLE,ROW_DATA>{
+			Collection<IDENTIFIABLE> getIdentifiables();
+			Collection<ROW_DATA> getDatas();
+			ColumnAdapter getColumnAdapter();
+			/**/
+			@Getter @Setter
+			public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends AbstractDetailsConfigurationAdapter<IDENTIFIABLE,ROW_DATA> implements Table<IDENTIFIABLE,ROW_DATA>{
+				private static final long serialVersionUID = 6031762560954439308L;
+				private ColumnAdapter columnAdapter;
+				
+				public Adapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
+					super(identifiableClass,dataClass);
+					this.identifiableClass = identifiableClass;
+					this.dataClass = dataClass;
+				}
+				
+				@Override
+				public Collection<IDENTIFIABLE> getIdentifiables() {
+					return null;
+				}
+				
+				@Override
+				public Collection<ROW_DATA> getDatas() {
+					Collection<ROW_DATA> datas = new ArrayList<>();
+					Collection<IDENTIFIABLE> identifiables = getIdentifiables();
+					if(identifiables!=null)
+						for(IDENTIFIABLE identifiable : identifiables)
+							datas.add(createData(identifiable));
+					return datas;
+				}
+				
+			}
+			
+		}
+		
+		public static interface Form<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends DetailsConfigurationListener<IDENTIFIABLE,DATA>{
+		
+			/**/
+			@Getter @Setter
+			public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends AbstractDetailsConfigurationAdapter<IDENTIFIABLE,DATA> implements Form<IDENTIFIABLE,DATA>{
+				private static final long serialVersionUID = 6031762560954439308L;
+				
+				public Adapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
+					super(identifiableClass,dataClass);
+				}	
+			}	
 		}
 		
 	}
-	
-	/**/
-	
-	public static interface DetailsTableConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends DetailsConfigurationListener<IDENTIFIABLE,ROW_DATA>{
-		Collection<IDENTIFIABLE> getIdentifiables();
-		Collection<ROW_DATA> getDatas();
-		ColumnAdapter getColumnAdapter();
-		
-	}
-	
-	@Getter @Setter
-	public static class DetailsTableConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE,ROW_DATA> implements DetailsTableConfigurationListener<IDENTIFIABLE,ROW_DATA>{
-		private static final long serialVersionUID = 6031762560954439308L;
-		private ColumnAdapter columnAdapter;
-		
-		public DetailsTableConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
-			super(identifiableClass,dataClass);
-			this.identifiableClass = identifiableClass;
-			this.dataClass = dataClass;
-		}
-		
-		@Override
-		public Collection<IDENTIFIABLE> getIdentifiables() {
-			return null;
-		}
-		
-		@Override
-		public Collection<ROW_DATA> getDatas() {
-			Collection<ROW_DATA> datas = new ArrayList<>();
-			Collection<IDENTIFIABLE> identifiables = getIdentifiables();
-			if(identifiables!=null)
-				for(IDENTIFIABLE identifiable : identifiables)
-					datas.add(createData(identifiable));
-			return datas;
-		}
-		
-	}
-	
-	public static interface DetailsFormOneDataConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends DetailsConfigurationListener<IDENTIFIABLE,DATA>{
-		
-	}
-	
-	@Getter @Setter
-	public static class DetailsFormOneDataConfigurationAdapter<IDENTIFIABLE extends AbstractIdentifiable,DATA> extends AbstractDetailsTableConfigurationAdapter<IDENTIFIABLE,DATA> implements DetailsFormOneDataConfigurationListener<IDENTIFIABLE,DATA>{
-		private static final long serialVersionUID = 6031762560954439308L;
-		
-		public DetailsFormOneDataConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
-			super(identifiableClass,dataClass);
-		}
-		
-	}
-	
+
 }

@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.page.crud;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,28 +12,81 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.AbstractOutputDetails;
-import org.cyk.ui.api.model.DetailsBlock;
+import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
-import org.primefaces.model.menu.MenuModel;
 
 @Getter @Setter
 public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> extends AbstractConsultPage<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	protected DetailsBlock<MenuModel> mainDetails,medicalDetails,contactDetails,jobDetails,relationshipDetails,otherDetails;
+	private FormOneData<MainDetails> mainDetails;
+	private FormOneData<MedicalDetails> medicalDetails;
+	private FormOneData<ContactDetails> contactDetails;
+	private FormOneData<JobDetails> jobDetails;
+	private FormOneData<RelationshipDetails> relationshipDetails;
+	private FormOneData<SignatureDetails> signatureDetails;
+	//private FormOneData<MainDetails> otherDetails;
+	
 	protected Boolean showMainDetails=Boolean.TRUE,showContactDetails=Boolean.FALSE,showRelationshipDetails=Boolean.FALSE,showJobDetails=Boolean.FALSE
 			,showMedicalDetails=Boolean.FALSE;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		
+		mainDetails = createDetailsForm(MainDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<MainDetails>(
+				(Class<AbstractActor>) identifiable.getClass(),MainDetails.class){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public MainDetails createData(AbstractActor identifiable) {
+				return new MainDetails(identifiable);
+			}
+			@Override
+			public Boolean getEnabledInDefaultTab() {
+				return Boolean.TRUE;
+			}
+			@Override
+			public String getTitleId() {
+				return businessEntityInfos.getUiLabelId();
+			}
+		});
+		
+		contactDetails = createDetailsForm(ContactDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<ContactDetails>((Class<AbstractActor>) identifiable.getClass(),ContactDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ContactDetails createData(AbstractActor identifiable) {
+				return new ContactDetails(identifiable);
+			}
+			@Override
+			public String getTitleId() {
+				return "contacts";
+			}
+		});
+		
+		signatureDetails = createDetailsForm(SignatureDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<SignatureDetails>((Class<AbstractActor>) identifiable.getClass(),SignatureDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public SignatureDetails createData(AbstractActor identifiable) {
+				return new SignatureDetails(identifiable);
+			}
+			@Override
+			public String getTitleId() {
+				return "signature";
+			}
+		});
+		
+		/*
 		if(Boolean.TRUE.equals(showMainDetails))
 			mainDetails = createDetailsBlock(new MainDetails(identifiable));
 		if(Boolean.TRUE.equals(showContactDetails))
@@ -42,7 +97,19 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			jobDetails = createDetailsBlock(new JobDetails(identifiable));
 		if(Boolean.TRUE.equals(showMedicalDetails))
 			medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
+			*/
 		//otherDetails = createDetailsBlock(new OtherDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
+	}
+	
+	@Override
+	protected Collection<UICommandable> contextualCommandables() {
+		UICommandable contextualMenu = UIProvider.getInstance().createCommandable("button", null),commandable=null;
+		contextualMenu.setLabel(contentTitle); 
+		
+		commandable = navigationManager.createUpdateCommandable(identifiable, "command.edit", null);
+		contextualMenu.getChildren().add(commandable);
+		
+		return Arrays.asList(contextualMenu);
 	}
 		
 	@Getter @Setter
@@ -141,11 +208,35 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 	}
 	
 	@Getter @Setter
+	public static class SignatureDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
+		private static final long serialVersionUID = -1498269103849317057L;
+		@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File specimen;
+		public SignatureDetails(AbstractActor actor) {
+			super(actor);
+			Person person = actor.getPerson();
+			if(person.getExtendedInformations()!=null){
+				if(person.getExtendedInformations().getSignatureSpecimen()!=null)
+					specimen = person.getExtendedInformations().getSignatureSpecimen();
+			}
+		}
+	}
+	
+	@Getter @Setter
 	public static class OtherDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
 		
 		public OtherDetails(AbstractActor actor) {
 			super(actor);
 		}
+	}
+	
+	public static class ActorDetailsFormOneDataConfigurationAdapter<DETAILS extends AbstractOutputDetails<AbstractActor>> extends DetailsConfigurationListener.Form.Adapter<AbstractActor,DETAILS>{
+
+		private static final long serialVersionUID = -9101575271431241099L;
+
+		public ActorDetailsFormOneDataConfigurationAdapter(Class<AbstractActor> actorClass,Class<DETAILS> detailsClass) {
+			super(actorClass, detailsClass);
+		}
+		
 	}
 }

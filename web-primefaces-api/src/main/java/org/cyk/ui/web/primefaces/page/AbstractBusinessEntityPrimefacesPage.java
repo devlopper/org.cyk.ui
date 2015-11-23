@@ -102,13 +102,13 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	@Override
-	protected void configureDetailsForm(FormOneData<?> form,DetailsFormOneDataConfigurationListener<?, ?> listener) {
+	protected <I extends AbstractIdentifiable> void configureDetailsForm(FormOneData<?> form,DetailsConfigurationListener.Form<I, ?> listener) {
 		super.configureDetailsForm(form, listener);
 		addDetailsMenuCommandable(listener);
 	}
 	
 	@Override
-	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsTableConfigurationListener<?, ?> listener) {
+	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsConfigurationListener.Table<?, ?> listener) {
 		super.configureDetailsTable(aClass, table, listener);
 		addDetailsMenuCommandable(listener);
 		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
@@ -138,7 +138,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	@Override
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,DetailsTableConfigurationListener<?, T> listener) {
+	protected <T> Table<T> createDetailsTable(Class<T> aClass,DetailsConfigurationListener.Table<?, T> listener) {
 		
 		return super.createDetailsTable(aClass, listener);
 	}

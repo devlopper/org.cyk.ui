@@ -30,6 +30,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	private ENTITY identifiable;
 	
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
+	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File signatureSpecimen;
 	@Input @InputText @ReportColumn protected String title,surname,firstName,lastName,birthDate,birthLocation,sex/*,maritalStatus*/,nationality;
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
@@ -61,6 +62,8 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 				birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
 			if(person.getExtendedInformations().getMaritalStatus()!=null)
 				;//maritalStatus = person.getExtendedInformations().getMaritalStatus().getName();
+			if(person.getExtendedInformations().getSignatureSpecimen()!=null)
+				signatureSpecimen=person.getExtendedInformations().getSignatureSpecimen();
 		}
 		/*
 		if(person.getMedicalInformations()!=null){
@@ -103,6 +106,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	public static final String FIELD_MARITAL_STATUS = "maritalStatus";
 	public static final String FIELD_NATIONALITY = "nationality";
 	public static final String FIELD_TITLE = "title";
+	public static final String FIELD_SIGNATURE_SPECIMEN = "signatureSpecimen";
 	
 	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";

@@ -20,10 +20,13 @@ import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
+import org.cyk.utility.common.FileExtensionGroup;
+import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputEditor;
+import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -52,6 +55,8 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	@Input @InputChoice @InputOneChoice @InputOneCombo private JobTitle jobTitle;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private JobFunction jobFunction;
 	
+	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
+	
 	@Override
 	public void write() {
 		super.write();
@@ -75,6 +80,10 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 			else
 				location.setComment(birthLocation);
 		}
+		
+		if(signatureSpecimen!=null)
+			getExtendedInformations(Boolean.TRUE).setSignatureSpecimen(signatureSpecimen);
+		
 		/*if(identifiable.getExtendedInformations()!=null){
 			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
 			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
@@ -99,7 +108,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 			if(identifiable.getExtendedInformations().getBirthLocation()!=null)
 				birthLocation = identifiable.getExtendedInformations().getBirthLocation().getComment();
 			title = identifiable.getExtendedInformations().getTitle();
-			
+			signatureSpecimen = identifiable.getExtendedInformations().getSignatureSpecimen();
 		}
 	}
 	
@@ -125,6 +134,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	public static final String FIELD_MARITAL_STATUS = "maritalStatus";
 	public static final String FIELD_NATIONALITY = "nationality";
 	public static final String FIELD_TITLE = "title";
+	public static final String FIELD_SIGNATURE_SPECIMEN = "signatureSpecimen";
 	
 	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";
