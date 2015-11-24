@@ -1,5 +1,6 @@
 package org.cyk.ui.web.primefaces.test.form;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -21,10 +22,14 @@ import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
+import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
+import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
@@ -93,6 +98,8 @@ public class ContextListener extends AbstractContextListener {
 					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
 			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(
 					DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
+			
+			
 		}
 	}
 	
@@ -103,6 +110,43 @@ public class ContextListener extends AbstractContextListener {
 		}
 		
 		super.registerBusinessEntityFormManyPageListener(actorClass, listener);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass) {
+		if(actorClass.equals(Actor.class)){
+			System.out.println("ContextListener.getActorCrudOnePageAdapter()");
+			return (AbstractActorCrudOnePageAdapter<ACTOR>) new ActorCrudOnePageAdapter();
+		}
+		return super.getActorCrudOnePageAdapter(actorClass);
+	}
+	
+	/**/
+	
+	private static class ActorCrudOnePageAdapter extends AbstractActorCrudOnePageAdapter.Default<Actor>{
+
+		private static final long serialVersionUID = -5657492205127185872L;
+
+		public ActorCrudOnePageAdapter() {
+			super(Actor.class);
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void afterInitialisationEnded(AbstractBean bean) {
+			super.afterInitialisationEnded(bean);
+			if(bean instanceof AbstractActorConsultPage){
+				((AbstractActorConsultPage<AbstractActor>)bean).getMainDetails().getControlSetListeners().add(new ControlSetAdapter<AbstractActorConsultPage.MainDetails>(){
+					@Override
+					public Boolean build(Field field) {
+						System.out.println("Call : "+field.getName());
+						return !field.getName().equals("photo");
+					}
+				});
+			}
+		}
+		
 	}
 	
 }
