@@ -15,6 +15,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtensionGroup;
@@ -60,6 +61,10 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			public String getTitleId() {
 				return businessEntityInfos.getUiLabelId();
 			}
+			@Override
+			public String getTabId() {
+				return DefaultPersonEditFormModel.TAB_PERSON_ID;
+			}
 		});
 		
 		contactDetails = createDetailsForm(ContactDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<ContactDetails>((Class<AbstractActor>) identifiable.getClass(),ContactDetails.class){
@@ -71,6 +76,10 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			@Override
 			public String getTitleId() {
 				return "contacts";
+			}
+			@Override
+			public String getTabId() {
+				return DefaultPersonEditFormModel.TAB_CONTACT_ID;
 			}
 		});
 		
@@ -84,21 +93,11 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			public String getTitleId() {
 				return "signature";
 			}
+			@Override
+			public String getTabId() {
+				return DefaultPersonEditFormModel.TAB_SIGNATURE_ID;
+			}
 		});
-		
-		/*
-		if(Boolean.TRUE.equals(showMainDetails))
-			mainDetails = createDetailsBlock(new MainDetails(identifiable));
-		if(Boolean.TRUE.equals(showContactDetails))
-			contactDetails = createDetailsBlock(new ContactDetails(identifiable));
-		if(Boolean.TRUE.equals(showRelationshipDetails))
-			relationshipDetails = createDetailsBlock(new RelationshipDetails(identifiable));
-		if(Boolean.TRUE.equals(showJobDetails))
-			jobDetails = createDetailsBlock(new JobDetails(identifiable));
-		if(Boolean.TRUE.equals(showMedicalDetails))
-			medicalDetails = createDetailsBlock(new MedicalDetails(identifiable));
-			*/
-		//otherDetails = createDetailsBlock(new OtherDetails(identifiable),navigationManager.getOutcomeDynamicCrudOne());
 	}
 	
 	@Override
@@ -107,6 +106,11 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 		contextualMenu.setLabel(contentTitle); 
 		
 		commandable = navigationManager.createUpdateCommandable(identifiable, "command.edit", null);
+		
+		if(StringUtils.isEmpty(selectedTabId))
+			;
+		else
+			commandable.addParameter(webManager.getRequestParameterTabId(), selectedTabId);
 		contextualMenu.getChildren().add(commandable);
 		
 		return Arrays.asList(contextualMenu);

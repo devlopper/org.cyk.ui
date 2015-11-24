@@ -5,22 +5,49 @@ import java.io.Serializable;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
+import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
-import org.cyk.ui.web.primefaces.page.DefaultBusinessEntityFormOnePageAdapter;
+import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 
-public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends DefaultBusinessEntityFormOnePageAdapter<ACTOR> implements Serializable {
+public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends BusinessEntityFormOnePageListener.Adapter.Default<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 
 	public AbstractActorCrudOnePageAdapter(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
-		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, Type.INPUT_SET_SMALLEST);
+		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
 		//configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);
 		//configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
 		
+		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_PERSON_ID);
+		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
+		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
+		
+		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_SIGNATURE_ID);
+		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
+		
+		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_CONTACT_ID);
+		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);
+		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER);
+		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
+		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_POSTALBOX);
+		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_HOME_LOCATION);
+		
+		
+	}
+	
+	/**/
+	
+	public static class Default<ACTOR extends AbstractActor> extends AbstractActorCrudOnePageAdapter<ACTOR> implements Serializable {
+
+		private static final long serialVersionUID = 4370361826462886031L;
+
+		public Default(Class<ACTOR> entityTypeClass) {
+			super(entityTypeClass);
+		}
+
 	}
 
 }

@@ -15,7 +15,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
-import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
+import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
@@ -88,17 +88,18 @@ public class ContextListener extends AbstractContextListener {
 	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener) {
 		super.registerBusinessEntityFormOnePageListener(actorClass, listener);
 		if(actorClass.equals(Actor.class)){
-			listener.getFormConfigurationMap().get(Crud.CREATE).get(Type.INPUT_SET_SMALLEST).addFieldNames(DefaultPersonEditFormModel.FIELD_SURNAME
+			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addFieldNames(DefaultPersonEditFormModel.FIELD_SURNAME
 					,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION
 					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
-			listener.getFormConfigurationMap().get(Crud.CREATE).get(Type.INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
+			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(
+					DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
 		}
 	}
 	
 	@Override
 	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener) {
 		if(actorClass.equals(Actor.class)){
-			listener.getFormConfigurationMap().get(Crud.READ).get(Type.INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
+			listener.getFormConfigurationMap().get(Crud.READ).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
 		}
 		
 		super.registerBusinessEntityFormManyPageListener(actorClass, listener);

@@ -399,14 +399,17 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				this.identifiableClass = identifiableClass;
 				this.dataClass = dataClass;
 				titleId = UIManager.getInstance().businessEntityInfos(identifiableClass).getUiLabelId();
+				
+				tabId = getTitleId();
 			}
 			
+			/*
 			@Override
 			public String getTabId() {
 				if(tabId==null)
 					tabId = getTitleId();
 				return tabId;
-			}
+			}*/
 
 			@Override
 			public DATA createData(IDENTIFIABLE identifiable) {

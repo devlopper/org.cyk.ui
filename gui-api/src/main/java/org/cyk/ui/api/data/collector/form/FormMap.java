@@ -8,14 +8,13 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.data.collector.form.FormConfiguration.Type;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public class FormMap extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6946914245453887414L;
 
-	private final Map<Crud,Map<Type, Class<?>>> one = new HashMap<>() , many = new HashMap<>();
+	private final Map<Crud,Map<String, Class<?>>> one = new HashMap<>() , many = new HashMap<>();
 	
 	/**/
 	
@@ -45,8 +44,8 @@ public class FormMap extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public Class<?> get(Boolean one,Crud crud,Type type){
-		return __get__(map(one),crud,type==null?Type.DEFAULT:type);
+	public Class<?> get(Boolean one,Crud crud,String type){
+		return __get__(map(one),crud,type==null?FormConfiguration.TYPE_INPUT_SET_DEFAULT:type);
 	}
 	public Class<?> get(Boolean one,Crud crud){
 		return get(one, crud,null);
@@ -65,14 +64,14 @@ public class FormMap extends AbstractBean implements Serializable {
 		return getMany(Crud.READ);
 	}
 	
-	public void put(Boolean one,Crud crud,Type type,Class<?> aClass){
-		__put__(map(one), crud, type==null?Type.DEFAULT:type, aClass);
+	public void put(Boolean one,Crud crud,String type,Class<?> aClass){
+		__put__(map(one), crud, type==null?FormConfiguration.TYPE_INPUT_SET_DEFAULT:type, aClass);
 	}
 	public void put(Boolean one,Crud crud,Class<?> aClass){
 		put(one, crud, null, aClass);
 	}
 	
-	public void putEdit(Boolean one,Type type,Class<?> aClass){
+	public void putEdit(Boolean one,String type,Class<?> aClass){
 		put(one, Crud.CREATE, type, aClass);
 		put(one, Crud.UPDATE, type, aClass);
 	}
@@ -82,12 +81,12 @@ public class FormMap extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	private Class<?> __get__(Map<Crud,Map<Type, Class<?>>> map,Crud crud,Type type){
+	private Class<?> __get__(Map<Crud,Map<String, Class<?>>> map,Crud crud,String type){
 		return map.get(crud).get(type);
 	}
 	
-	private void __put__(Map<Crud,Map<Type, Class<?>>> map,Crud crud,Type type,Class<?> aClass){
-		Map<Type, Class<?>> typeMap = map.get(crud);
+	private void __put__(Map<Crud,Map<String, Class<?>>> map,Crud crud,String type,Class<?> aClass){
+		Map<String, Class<?>> typeMap = map.get(crud);
 		if(typeMap==null){
 			typeMap = new HashMap<>();
 			map.put(crud, typeMap);
@@ -95,7 +94,7 @@ public class FormMap extends AbstractBean implements Serializable {
 		typeMap.put(type, aClass);
 	}
 	
-	private Map<Crud,Map<Type, Class<?>>> map(Boolean one){
+	private Map<Crud,Map<String, Class<?>>> map(Boolean one){
 		return Boolean.TRUE.equals(one)?this.one:this.many;
 	}
 	

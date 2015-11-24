@@ -57,7 +57,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@Inject protected RoleManager roleManager;
 	
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
-		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage;
+		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage,selectedTabId;
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn,renderViewError;
 	private String windowMode;
 	@Getter private Layout layout = new Layout(DEFAULT_LAYOUT);
@@ -74,6 +74,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 			windowMode = webManager.getRequestParameterWindowModeNormal();
 		url = navigationManager.getRequestUrl();
 		previousUrl = requestParameter(webManager.getRequestParameterPreviousUrl());
+		selectedTabId = requestParameter(webManager.getRequestParameterTabId());
 		
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		
@@ -338,16 +339,16 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		
 		return commandable;
 	}
+	/*
 	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType,String outcome){
 		return addDetailsMenuCommandable(labelId,labelId, iconType, outcome);
-	}
+	}*/
 	
 	protected Boolean isDetailsMenuCommandable(String identifier,Boolean defaultValue){
-		String requestParameterIdentifier = requestParameter(webManager.getRequestParameterTabId());
-		if(StringUtils.isBlank(requestParameterIdentifier)){
+		if(StringUtils.isBlank(selectedTabId)){
 			return defaultValue;
 		}
-		return identifier.equals(/*detailsMenu==null?*/requestParameterIdentifier/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
+		return identifier.equals(/*detailsMenu==null?*/selectedTabId/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
 	}
 	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData,Boolean defaultDetails){
 		formOneData.setRendered(isDetailsMenuCommandable(identifier,defaultDetails));

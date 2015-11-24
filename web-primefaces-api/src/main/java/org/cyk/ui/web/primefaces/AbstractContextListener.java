@@ -22,9 +22,8 @@ import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudManyPageAdapter;
-import org.cyk.ui.web.primefaces.page.tools.DefaultActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener implements Serializable {
@@ -86,13 +85,13 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
 		
 		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
-		registerBusinessEntityFormManyPageListener(actorClass,new DefaultActorCrudManyPageAdapter<ACTOR>(actorClass));
+		registerBusinessEntityFormManyPageListener(actorClass,new AbstractActorCrudManyPageAdapter.Default<ACTOR>(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
 	
 	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
-		return new DefaultActorCrudOnePageAdapter<ACTOR>(actorClass);
+		return new AbstractActorCrudOnePageAdapter.Default<ACTOR>(actorClass);
 	}
 	
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
@@ -111,7 +110,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){
 		OutputDetailsConfiguration detailsConfiguration = new OutputDetailsConfiguration(outputDetailsClass);
 		//detailsConfiguration.setName(languageBusiness.findText("baseinformations"));
-		detailsConfiguration.setEditFormConfiguration(new FormConfiguration(FormConfiguration.Type.DEFAULT));
+		detailsConfiguration.setEditFormConfiguration(new FormConfiguration(FormConfiguration.TYPE_INPUT_SET_DEFAULT));
 		detailsConfiguration.getEditFormConfiguration().addFieldNames(fieldNames);
 		detailsConfiguration.setUiEditViewId(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());
 		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);

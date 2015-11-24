@@ -97,8 +97,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
 	}
 	
-	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType){
-		return addDetailsMenuCommandable(labelId,labelId, iconType, businessEntityInfos.getUiConsultViewId());
+	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType){
+		return addDetailsMenuCommandable(identifier,labelId, iconType, businessEntityInfos.getUiConsultViewId());
+	}
+	protected UICommandable addDetailsMenuCommandables(String labelId,IconType iconType){
+		return addDetailsMenuCommandable(labelId,labelId, iconType);
 	}
 	
 	@Override
@@ -132,7 +135,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 						}
 				}
 				if(Boolean.FALSE.equals(found))
-					addDetailsMenuCommandable(listener.getTitleId(), null);
+					addDetailsMenuCommandable(listener.getTabId(),listener.getTitleId(), null);
 			}
 		}
 	}

@@ -16,10 +16,10 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 218887156564236022L;
 
-	private Type type;
+	private String type;
 	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
 	
-	public FormConfiguration(Type type) {
+	public FormConfiguration(String type) {
 		super();
 		this.type = type;
 	}
@@ -66,12 +66,8 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 
 	/**/
 	
-	public static enum Type{
-		INPUT_SET_SMALLEST,
-		INPUT_SET_BIGGEST,
-		
-		DEFAULT,
-		;
-	}
+	public static final String TYPE_INPUT_SET_SMALLEST = "TYPE_INPUT_SET_SMALLEST";
+	public static final String TYPE_INPUT_SET_BIGGEST = "TYPE_INPUT_SET_BIGGEST";
+	public static final String TYPE_INPUT_SET_DEFAULT = "TYPE_INPUT_SET_DEFAULT";
 	
 }
