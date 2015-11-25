@@ -106,10 +106,13 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 				if(configuration==null || configuration.getFormMap()==null){
 					
 				}else{
-					if(StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null){
+					if(StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
 						businessEntityInfos.setUiEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
-					}
+					
 					if(StringUtils.isBlank(businessEntityInfos.getUiListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
+						businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
+					
+					if(StringUtils.isBlank(businessEntityInfos.getUiConsultViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.READ)!=null)
 						businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
 				}
 				
