@@ -78,9 +78,9 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			
 		}
 		
-		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+		for(BusinessEntityFormOnePageListener<?> listener : getListeners()){
 			listener.initialisationEnded(this); 
-		
+		}
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
 			listener.afterInitialisationStarted(this);
 		
-		// your Code gere
+		// your code here
 		
 		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
@@ -214,6 +214,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		addInputAdapter(form, fieldName, inputAdapter);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void setChoices(String fieldName,Collection<?> collection){
 		List list = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName).getList();
 		list.clear();

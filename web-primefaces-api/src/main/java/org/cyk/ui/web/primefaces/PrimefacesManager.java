@@ -28,6 +28,7 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
+import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.PrimefacesPageListener;
 import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.cyk.utility.common.annotation.Deployment;
@@ -64,6 +65,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private final Collection<BusinessEntityFormPageListener<?>> businessEntityFormPageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
+	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
@@ -204,6 +206,15 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		Collection<BusinessEntityFormManyPageListener<?>> results = new ArrayList<>();
 		if(aClass!=null)
 			for(BusinessEntityFormManyPageListener<?> listener : businessEntityFormManyPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add(listener);
+		return results;
+	}
+	
+	public Collection<ConsultPageListener<?>> getConsultPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<ConsultPageListener<?>> results = new ArrayList<>();
+		if(aClass!=null)
+			for(ConsultPageListener<?> listener : consultPageListeners)
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
 					results.add(listener);
 		return results;

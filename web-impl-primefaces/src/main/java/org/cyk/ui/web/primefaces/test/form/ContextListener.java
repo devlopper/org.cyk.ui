@@ -26,10 +26,10 @@ import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
-import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
+import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
-import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
@@ -114,37 +114,35 @@ public class ContextListener extends AbstractContextListener {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass) {
+	protected <ACTOR extends AbstractActor> AbstractActorConsultPageAdapter<ACTOR> getActorConsultPageAdapter(Class<ACTOR> actorClass) {
 		if(actorClass.equals(Actor.class)){
-			System.out.println("ContextListener.getActorCrudOnePageAdapter()");
-			return (AbstractActorCrudOnePageAdapter<ACTOR>) new ActorCrudOnePageAdapter();
+			return (AbstractActorConsultPageAdapter<ACTOR>) new ActorConsultPageAdapter();
 		}
-		return super.getActorCrudOnePageAdapter(actorClass);
+		return super.getActorConsultPageAdapter(actorClass);
 	}
 	
 	/**/
 	
-	private static class ActorCrudOnePageAdapter extends AbstractActorCrudOnePageAdapter.Default<Actor>{
+	private static class ActorConsultPageAdapter extends AbstractActorConsultPage.Adapter<Actor>{
 
 		private static final long serialVersionUID = -5657492205127185872L;
 
-		public ActorCrudOnePageAdapter() {
+		public ActorConsultPageAdapter() {
 			super(Actor.class);
 		}
 		
 		@SuppressWarnings("unchecked")
 		@Override
-		public void afterInitialisationEnded(AbstractBean bean) {
-			super.afterInitialisationEnded(bean);
-			if(bean instanceof AbstractActorConsultPage){
-				((AbstractActorConsultPage<AbstractActor>)bean).getMainDetails().getControlSetListeners().add(new ControlSetAdapter<AbstractActorConsultPage.MainDetails>(){
+		public <DETAILS> ControlSetAdapter<DETAILS> getControlSetAdapter(Class<DETAILS> detailsClass) {
+			if(MainDetails.class.equals(detailsClass)){
+				return (ControlSetAdapter<DETAILS>) new ControlSetAdapter<MainDetails>(){
 					@Override
 					public Boolean build(Field field) {
-						System.out.println("Call : "+field.getName());
-						return !field.getName().equals("photo");
+						return true;//field.getName().equals("photo");
 					}
-				});
+				};
 			}
+			return super.getControlSetAdapter(detailsClass);
 		}
 		
 	}

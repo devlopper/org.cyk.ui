@@ -16,13 +16,16 @@ import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.AbstractOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
 public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> extends AbstractConsultPage<ACTOR> implements Serializable {
@@ -42,8 +45,8 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initialisation() {
-		super.initialisation();
+	protected void consultInitialisation() {
+		super.consultInitialisation();
 		
 		mainDetails = createDetailsForm(MainDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<MainDetails>(
 				(Class<AbstractActor>) identifiable.getClass(),MainDetails.class){
@@ -242,5 +245,36 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			super(actorClass, detailsClass);
 		}
 		
+	}
+	
+	public static class Adapter<ACTOR extends AbstractActor> extends AbstractActorConsultPageAdapter.Default<ACTOR>{
+		private static final long serialVersionUID = -5657492205127185872L;
+		
+		public Adapter(Class<ACTOR> entityTypeClass) {
+			super(entityTypeClass);
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void initialisationEnded(AbstractBean bean) {
+			super.initialisationEnded(bean);
+			if(bean instanceof AbstractActorConsultPage){
+				ControlSetAdapter<MainDetails> mainDetailsControlSetAdapter = getControlSetAdapter(MainDetails.class);
+				if(mainDetailsControlSetAdapter!=null)
+					((AbstractActorConsultPage<AbstractActor>)bean).getMainDetails().getControlSetListeners().add(mainDetailsControlSetAdapter);
+				
+				ControlSetAdapter<ContactDetails> contactDetailsControlSetAdapter = getControlSetAdapter(ContactDetails.class);
+				if(contactDetailsControlSetAdapter!=null)
+					((AbstractActorConsultPage<AbstractActor>)bean).getContactDetails().getControlSetListeners().add(contactDetailsControlSetAdapter);
+				
+				ControlSetAdapter<SignatureDetails> signatureDetailsControlSetAdapter = getControlSetAdapter(SignatureDetails.class);
+				if(signatureDetailsControlSetAdapter!=null)
+					((AbstractActorConsultPage<AbstractActor>)bean).getSignatureDetails().getControlSetListeners().add(signatureDetailsControlSetAdapter);
+			}
+		}
+		
+		public <DETAILS> ControlSetAdapter<DETAILS> getControlSetAdapter(Class<DETAILS> detailsClass){
+			return null;
+		}
 	}
 }

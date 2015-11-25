@@ -21,7 +21,9 @@ import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
+import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
@@ -85,13 +87,20 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
 		
 		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
-		registerBusinessEntityFormManyPageListener(actorClass,new AbstractActorCrudManyPageAdapter.Default<ACTOR>(actorClass));
+		registerBusinessEntityFormManyPageListener(actorClass,getActorCrudManyPageAdapter(actorClass));
+		registerConsultPageListener(actorClass, getActorConsultPageAdapter(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
 	
 	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
 		return new AbstractActorCrudOnePageAdapter.Default<ACTOR>(actorClass);
+	}
+	protected <ACTOR extends AbstractActor> AbstractActorCrudManyPageAdapter<ACTOR> getActorCrudManyPageAdapter(Class<ACTOR> actorClass){
+		return new AbstractActorCrudManyPageAdapter.Default<ACTOR>(actorClass);
+	}
+	protected <ACTOR extends AbstractActor> AbstractActorConsultPageAdapter<ACTOR> getActorConsultPageAdapter(Class<ACTOR> actorClass){
+		return new AbstractActorConsultPageAdapter.Default<ACTOR>(actorClass);
 	}
 	
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
@@ -105,6 +114,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener){
 		primefacesManager.getBusinessEntityFormManyPageListeners().add(listener);
+	}
+	protected <ACTOR extends AbstractActor> void registerConsultPageListener(Class<ACTOR> actorClass,ConsultPageListener<?> listener){
+		primefacesManager.getConsultPageListeners().add(listener);
 	}
 	
 	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){

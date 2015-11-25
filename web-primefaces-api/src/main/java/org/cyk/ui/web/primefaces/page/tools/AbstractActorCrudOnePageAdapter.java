@@ -18,10 +18,10 @@ public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActo
 		FormConfiguration configuration = createFormConfiguration(Crud.CREATE, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
-		
+		/*
 		configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_NAME,DefaultPersonEditFormModel.FIELD_LAST_NAME);
-		
+		*/
 		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_PERSON_ID);
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
