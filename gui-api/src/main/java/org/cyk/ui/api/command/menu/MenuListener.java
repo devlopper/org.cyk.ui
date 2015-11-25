@@ -6,6 +6,7 @@ import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 
 public interface MenuListener {
 
+	Boolean moduleGroupCreateable(AbstractUserSession userSession,ModuleGroup group);
 	void moduleGroupCreated(AbstractUserSession userSession,ModuleGroup group,UICommandable commandable);
 	
 	//void systemMenu(UserSession userSession,SystemMenu systemMenu);

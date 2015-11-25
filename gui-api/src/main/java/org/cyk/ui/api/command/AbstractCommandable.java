@@ -15,7 +15,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
-import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 

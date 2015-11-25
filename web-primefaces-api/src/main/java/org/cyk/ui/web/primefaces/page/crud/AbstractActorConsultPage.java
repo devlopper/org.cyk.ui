@@ -14,7 +14,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
@@ -101,6 +101,8 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 				return DefaultPersonEditFormModel.TAB_SIGNATURE_ID;
 			}
 		});
+		
+		
 	}
 	
 	@Override
@@ -150,6 +152,16 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 					birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
 			}
 		}
+		
+		public static final String FIELD_REGISTRATION_CODE = "registrationCode";
+		public static final String FIELD_REGISTRATION_DATE = "registrationDate";
+		public static final String FIELD_TITLE = "title";
+		public static final String FIELD_FIRSTNAME = "firstName";
+		public static final String FIELD_LASTNAMES = "lastNames";
+		public static final String FIELD_SURNAME = "surname";
+		public static final String FIELD_BIRTHDATE = "birthDate";
+		public static final String FIELD_BIRTHLOCATION = "birthLocation";
+		public static final String FIELD_SEX = "sex";
 	}
 	
 	@Getter @Setter

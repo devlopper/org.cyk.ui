@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor @Deprecated
+@Getter @Setter @NoArgsConstructor @Deprecated //FIXME what to do ???
 public class ClassConfiguration<CLASS> implements Serializable {
 
 	private static final long serialVersionUID = 524804677149804204L;

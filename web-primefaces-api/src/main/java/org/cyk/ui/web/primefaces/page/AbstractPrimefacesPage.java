@@ -26,7 +26,7 @@ import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
-import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.ui.api.model.ItemCollectionListener;

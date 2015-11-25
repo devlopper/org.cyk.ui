@@ -94,6 +94,14 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public UICommandable createModuleGroup(AbstractUserSession userSession,ModuleGroup moduleGroup) {
+		Boolean moduleGroupCreateable = Boolean.TRUE;
+		for(MenuListener listener : menuListeners){
+			Boolean v = listener.moduleGroupCreateable(userSession,moduleGroup);
+			if(v!=null)
+				moduleGroupCreateable = v;
+		}
+		if(Boolean.FALSE.equals(moduleGroupCreateable))
+			return null;
 		UICommandable commandableGroup = null,c;
 		groupsMap.put(moduleGroup, commandableGroup);
 		switch(moduleGroup){

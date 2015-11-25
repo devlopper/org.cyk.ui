@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.Clazz;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 
 @Getter @Setter
 public class OutputDetailsConfiguration extends Clazz implements Serializable {

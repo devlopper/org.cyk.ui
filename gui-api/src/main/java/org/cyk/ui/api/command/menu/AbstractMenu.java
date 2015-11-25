@@ -97,6 +97,8 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 
 	@Override
 	public UICommandable addCommandable(UICommandable commandable) {
+		if(commandable==null)
+			return null;
 		/*if( (commandable.getViewId()==null || commandable.getViewType()==null) && commandable.getChildren().isEmpty() )
 			;
 		else*/

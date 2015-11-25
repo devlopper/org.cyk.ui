@@ -148,6 +148,9 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	public void businessModuleGroupCreated(AbstractUserSession userSession,UICommandable commandableGroup) {}
 	
 	@Override
+	public Boolean moduleGroupCreateable(AbstractUserSession userSession,ModuleGroup group) {return Boolean.TRUE;}
+	
+	@Override
 	public void moduleGroupCreated(AbstractUserSession userSession, ModuleGroup group,UICommandable commandable) {}
 	
 	@Override

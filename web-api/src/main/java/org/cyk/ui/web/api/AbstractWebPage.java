@@ -339,6 +339,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		
 		return commandable;
 	}
+	public UICommandable removeDetailsMenuCommandable(String identifier){
+		if(detailsMenu==null)
+			return null;
+		return detailsMenu.remove(identifier);
+	}
 	/*
 	protected UICommandable addDetailsMenuCommandable(String labelId,IconType iconType,String outcome){
 		return addDetailsMenuCommandable(labelId,labelId, iconType, outcome);
