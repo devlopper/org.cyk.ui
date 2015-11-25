@@ -52,7 +52,11 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		super.initialisation();
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.initialisationStarted(this); 
-		
+		/*
+		if(formModelClass==null)
+			if(identifiableConfiguration!=null)
+				formModelClass = identifiableConfiguration.getFormMap().get(Boolean.FALSE, Crud.READ);
+		*/
 		/*Class<?> aFormClass = __formModelClass__();
 		if(aFormClass==null){
 			// TODO Form can be provided by URL parameter registered in Form Map

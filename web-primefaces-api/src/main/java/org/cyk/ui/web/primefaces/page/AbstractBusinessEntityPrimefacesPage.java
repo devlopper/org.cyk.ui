@@ -49,6 +49,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 			if(fmc!=null)
 				formModelClass = fmc;
 		}
+		
 		contentTitle = text(businessEntityInfos.getUiLabelId());
 		
 		for(BusinessEntityFormPageListener<?> listener : getListeners())
