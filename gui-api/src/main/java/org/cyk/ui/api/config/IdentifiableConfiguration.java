@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Clazz;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormMap;
 
 @Getter @Setter @NoArgsConstructor 
-public class IdentifiableConfiguration extends ClassConfiguration<AbstractIdentifiable> implements Serializable {
+public class IdentifiableConfiguration extends Clazz implements Serializable {
 
 	private static final long serialVersionUID = 524804677149804204L;
 
@@ -23,11 +24,22 @@ public class IdentifiableConfiguration extends ClassConfiguration<AbstractIdenti
 			Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,
 			Class<?> readOneFormModelClass) {
 		super(identifiableClass);
-		formMap = new FormMap(identifiableClass,editOneFormModelClass,readOneFormModelClass);
+		setForms(editOneFormModelClass, readOneFormModelClass);
 	}
+	
+	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass){
+		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass);
+	}
+	
 	/*
 	public Class<? extends AbstractIdentifiable> getIdentifiableClass(){
 		return clazz;
 	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Class<? extends AbstractIdentifiable> getClazz() {
+		return (Class<? extends AbstractIdentifiable>) super.getClazz();
+	}
 	
 }

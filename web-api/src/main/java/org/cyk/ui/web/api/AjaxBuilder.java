@@ -1,18 +1,15 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.cyk.ui.api.data.collector.control.Input;
-import org.cyk.ui.api.data.collector.form.FormOneData;
-import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
-import org.cyk.ui.web.api.data.collector.control.WebInput;
-import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.Getter;
+import lombok.Setter;
 
+import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.utility.common.cdi.AbstractBean;
+
+@Getter @Setter
 public class AjaxBuilder extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -7938368076994108266L;
@@ -52,7 +49,7 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	}
 	
 	public AjaxBuilder updatedFieldNames(String...names){
-		this.updatedFieldNames = updatedFieldNames;
+		this.updatedFieldNames = names;
 		return this;
 	}
 	

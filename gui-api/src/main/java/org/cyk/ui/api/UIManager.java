@@ -194,18 +194,27 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return applicationBusiness.findCurrentInstance();
 	}
 	
-	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId){
-		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
+	public void configBusinessIdentifiable(BusinessEntityInfos businessEntityInfos,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId){
 		businessEntityInfos.setUiIconName(iconName);
 		businessEntityInfos.setUiIconExtension(iconExtension);
 		businessEntityInfos.setUiConsultViewId(consultViewId);
 		businessEntityInfos.setUiListViewId(listViewId);
 		businessEntityInfos.setUiEditViewId(editViewId);
 	}
+	
+	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
+		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId);
+	}
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
 				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix);
+	}
+	
+	public void useCustomConsultView(Class<?> clazz){
+		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
+		businessEntityInfos.setUiConsultViewId(businessEntityInfos.getVarName()+consultViewSuffix);
 	}
 	
 	public String identifiableConsultViewId(AbstractIdentifiable identifiable){

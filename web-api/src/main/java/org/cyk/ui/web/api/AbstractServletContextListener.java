@@ -101,6 +101,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		
 		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
 			if(CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
+				//uiManager.configBusinessIdentifiable(businessEntityInfos.getClazz(), null);
 				@SuppressWarnings("unchecked")
 				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 				if(configuration==null || configuration.getFormMap()==null){

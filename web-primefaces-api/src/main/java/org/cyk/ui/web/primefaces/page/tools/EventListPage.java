@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.page.tools;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -64,13 +63,13 @@ public class EventListPage extends AbstractPrimefacesPage implements Serializabl
 		}
 		return table;
 	}
-	
+	/*
 	private Collection<EventDetails> eventDetails(Collection<Event> events){
 		Collection<EventDetails> collection = new ArrayList<EventDetails>();
 		for(Event event : events)
 			collection.add(new EventDetails(event));
 		return collection;
-	}
+	}*/
 	
 	public String details(EventDetails eventDetails){
 		this.selected = eventDetails;
