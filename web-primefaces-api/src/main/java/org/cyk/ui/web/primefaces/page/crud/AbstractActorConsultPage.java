@@ -10,14 +10,17 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.ContactDetailsAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtensionGroup;
@@ -70,10 +73,10 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		});
 		
-		contactDetails = createDetailsForm(ContactDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<ContactDetails>((Class<AbstractActor>) identifiable.getClass(),ContactDetails.class){
+		contactDetails = createDetailsForm(ContactDetails.class, identifiable.getPerson().getContactCollection(), new ContactDetailsAdapter(){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public ContactDetails createData(AbstractActor identifiable) {
+			public ContactDetails createData(ContactCollection identifiable) {
 				return new ContactDetails(identifiable);
 			}
 			@Override
@@ -83,6 +86,22 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			@Override
 			public String getTabId() {
 				return DefaultPersonEditFormModel.TAB_CONTACT_ID;
+			}
+		});
+		
+		jobDetails = createDetailsForm(JobDetails.class, identifiable, new ActorDetailsFormOneDataConfigurationAdapter<JobDetails>((Class<AbstractActor>) identifiable.getClass(),JobDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public JobDetails createData(AbstractActor identifiable) {
+				return new JobDetails(identifiable);
+			}
+			@Override
+			public String getTitleId() {
+				return "job";
+			}
+			@Override
+			public String getTabId() {
+				return DefaultPersonEditFormModel.TAB_JOB_ID;
 			}
 		});
 		
@@ -153,6 +172,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		}
 		
+		public static final String FIELD_PHOTO = "photo";
 		public static final String FIELD_REGISTRATION_CODE = "registrationCode";
 		public static final String FIELD_REGISTRATION_DATE = "registrationDate";
 		public static final String FIELD_TITLE = "title";
@@ -163,20 +183,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 		public static final String FIELD_BIRTHLOCATION = "birthLocation";
 		public static final String FIELD_SEX = "sex";
 	}
-	
-	@Getter @Setter
-	public static class ContactDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
-		private static final long serialVersionUID = -1498269103849317057L;
-		@Input @InputText private String phoneNumbers,electronicMails,locations,postalBoxes;
-		public ContactDetails(AbstractActor actor) {
-			super(actor);
-			phoneNumbers = StringUtils.join(actor.getPerson().getContactCollection().getPhoneNumbers(),Constant.CHARACTER_COMA);
-			electronicMails = StringUtils.join(actor.getPerson().getContactCollection().getElectronicMails(),Constant.CHARACTER_COMA);
-			locations = StringUtils.join(actor.getPerson().getContactCollection().getLocations(),Constant.CHARACTER_COMA);
-			postalBoxes = StringUtils.join(actor.getPerson().getContactCollection().getPostalBoxs(),Constant.CHARACTER_COMA);
-		}
-	}
-	
+		
 	@Getter @Setter
 	public static class MedicalDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
@@ -213,6 +220,8 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 					contacts = StringUtils.join(person.getJobInformations().getContactCollection().getPhoneNumbers(),Constant.CHARACTER_COMA);
 			}
 		}
+		
+		public static final String FIELD_FUNCTION = "function";
 	}
 	
 	@Getter @Setter
@@ -282,6 +291,10 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 				ControlSetAdapter<SignatureDetails> signatureDetailsControlSetAdapter = getControlSetAdapter(SignatureDetails.class);
 				if(signatureDetailsControlSetAdapter!=null)
 					((AbstractActorConsultPage<AbstractActor>)bean).getSignatureDetails().getControlSetListeners().add(signatureDetailsControlSetAdapter);
+				
+				ControlSetAdapter<JobDetails> jobDetailsControlSetAdapter = getControlSetAdapter(JobDetails.class);
+				if(jobDetailsControlSetAdapter!=null)
+					((AbstractActorConsultPage<AbstractActor>)bean).getJobDetails().getControlSetListeners().add(jobDetailsControlSetAdapter);
 			}
 		}
 		

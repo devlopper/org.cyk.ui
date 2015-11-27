@@ -13,6 +13,7 @@ import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.party.person.BloodGroup;
 import org.cyk.system.root.model.party.person.JobFunction;
+import org.cyk.system.root.model.party.person.JobInformations;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
 import org.cyk.system.root.model.party.person.Person;
@@ -84,6 +85,9 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		if(signatureSpecimen!=null)
 			getExtendedInformations(Boolean.TRUE).setSignatureSpecimen(signatureSpecimen);
 		
+		if(jobFunction!=null)
+			getJobInformations(Boolean.TRUE).setFunction(jobFunction);
+		
 		/*if(identifiable.getExtendedInformations()!=null){
 			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
 			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
@@ -101,6 +105,15 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		return personExtendedInformations;
 	}
 	
+	private JobInformations getJobInformations(Boolean createIfNull){
+		JobInformations jobInformations = identifiable.getJobInformations();
+		if(jobInformations==null)
+			if(Boolean.TRUE.equals(createIfNull))
+				jobInformations = new JobInformations(identifiable);
+		identifiable.setJobInformations(jobInformations);
+		return jobInformations;
+	}
+	
 	@Override
 	public void read() {
 		super.read();
@@ -109,6 +122,9 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 				birthLocation = identifiable.getExtendedInformations().getBirthLocation().getComment();
 			title = identifiable.getExtendedInformations().getTitle();
 			signatureSpecimen = identifiable.getExtendedInformations().getSignatureSpecimen();
+		}
+		if(identifiable.getJobInformations()!=null){
+			jobFunction = identifiable.getJobInformations().getFunction();
 		}
 	}
 	
@@ -153,5 +169,6 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	public static final String TAB_PERSON_ID = "person";
 	public static final String TAB_CONTACT_ID = "contacts";
 	public static final String TAB_SIGNATURE_ID = "signature";
+	public static final String TAB_JOB_ID = "job";
 	
 }

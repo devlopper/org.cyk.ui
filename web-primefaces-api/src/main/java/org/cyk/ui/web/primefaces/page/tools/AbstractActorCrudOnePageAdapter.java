@@ -26,15 +26,18 @@ public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActo
 		configuration.addRequiredFieldNames(DefaultPersonEditFormModel.FIELD_NAME);
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_LAST_NAME);
 		
-		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_SIGNATURE_ID);
-		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
-		
 		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_CONTACT_ID);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_POSTALBOX);
 		configuration.addFieldNames(ContactCollectionEditFormModel.FIELD_HOME_LOCATION);
+		
+		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_SIGNATURE_ID);
+		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
+		
+		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_JOB_ID);
+		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_JOB_FUNCTION);
 			
 	}
 	

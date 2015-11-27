@@ -68,11 +68,24 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	public static UICommandable __remove__(String anIdentifier,List<UICommandable> commandables) {
 		if(commandables==null)
 			return null;
+		Integer index = null;
 		for(int i=0;i<commandables.size();i++){
-			if(commandables.get(i).getIdentifier().equals(anIdentifier))
-				return commandables.remove(i);
+			UICommandable pCommandable = commandables.get(i);
+			if(index==null){
+				if(pCommandable.getIdentifier().equals(anIdentifier))
+					index = i;
+			}else if(commandables.get(i).getIndex()!=null)
+				pCommandable.setIndex(pCommandable.getIndex()-1);
 		}
-		return null;
+		
+		UICommandable commandable = null;
+		if(index==null){
+			
+		}else{
+			commandables.remove(index.intValue());
+			//System.out.println("Index : "+index+" ::: "+commandables);
+		}
+		return commandable;
 	}
 	
 	@Override

@@ -154,6 +154,6 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	
 	@Override
 	public String toString() {
-		return getLabel();
+		return index+","+identifier+","+label;
 	}
 }

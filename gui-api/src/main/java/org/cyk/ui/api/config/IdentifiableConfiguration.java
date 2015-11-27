@@ -31,11 +31,6 @@ public class IdentifiableConfiguration extends Clazz implements Serializable {
 		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass);
 	}
 	
-	/*
-	public Class<? extends AbstractIdentifiable> getIdentifiableClass(){
-		return clazz;
-	}*/
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends AbstractIdentifiable> getClazz() {
