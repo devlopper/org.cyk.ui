@@ -15,7 +15,9 @@ import org.cyk.utility.common.annotation.user.interfaces.InputText;
 @Getter @Setter
 public class ContactDetails extends AbstractOutputDetails<ContactCollection> implements Serializable {
 	private static final long serialVersionUID = -1498269103849317057L;
+	
 	@Input @InputText private String phoneNumbers,electronicMails,locations,postalBoxes;
+	
 	public ContactDetails(ContactCollection contactCollection) {
 		super(contactCollection);
 		phoneNumbers = StringUtils.join(contactCollection.getPhoneNumbers(),Constant.CHARACTER_COMA);
