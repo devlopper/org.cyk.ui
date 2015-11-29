@@ -90,9 +90,9 @@ public class ContextListener extends AbstractContextListener {
 	}
 		
 	@Override
-	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener) {
-		super.registerBusinessEntityFormOnePageListener(actorClass, listener);
-		if(actorClass.equals(Actor.class)){
+	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormOnePageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormOnePageListener<?> listener) {
+		super.registerBusinessEntityFormOnePageListener(aClass, listener);
+		if(aClass.equals(Actor.class)){
 			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addFieldNames(DefaultPersonEditFormModel.FIELD_SURNAME
 					,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION
 					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
@@ -104,12 +104,12 @@ public class ContextListener extends AbstractContextListener {
 	}
 	
 	@Override
-	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener) {
-		if(actorClass.equals(Actor.class)){
+	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormManyPageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormManyPageListener<?> listener) {
+		if(aClass.equals(Actor.class)){
 			listener.getFormConfigurationMap().get(Crud.READ).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
 		}
 		
-		super.registerBusinessEntityFormManyPageListener(actorClass, listener);
+		super.registerBusinessEntityFormManyPageListener(aClass, listener);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -167,7 +167,6 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	/**/
 	
 	public static final String TAB_PERSON_ID = "person";
-	public static final String TAB_CONTACT_ID = "contacts";
 	public static final String TAB_SIGNATURE_ID = "signature";
 	public static final String TAB_JOB_ID = "job";
 	

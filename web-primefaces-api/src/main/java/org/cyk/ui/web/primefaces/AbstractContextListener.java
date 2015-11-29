@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -109,13 +110,13 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		return null;
 	}
 	
-	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormOnePageListener(Class<ACTOR> actorClass,BusinessEntityFormOnePageListener<?> listener){
+	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormOnePageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormOnePageListener<?> listener){
 		primefacesManager.getBusinessEntityFormOnePageListeners().add(listener);
 	}
-	protected <ACTOR extends AbstractActor> void registerBusinessEntityFormManyPageListener(Class<ACTOR> actorClass,BusinessEntityFormManyPageListener<?> listener){
+	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormManyPageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormManyPageListener<?> listener){
 		primefacesManager.getBusinessEntityFormManyPageListeners().add(listener);
 	}
-	protected <ACTOR extends AbstractActor> void registerConsultPageListener(Class<ACTOR> actorClass,ConsultPageListener<?> listener){
+	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerConsultPageListener(Class<IDENTIFIABLE> aClass,ConsultPageListener<?> listener){
 		primefacesManager.getConsultPageListeners().add(listener);
 	}
 	

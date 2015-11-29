@@ -30,5 +30,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends Party> extends Ab
 			identifiable.setContactCollection(new ContactCollection());
 		contactCollectionFormModel.setIdentifiable(identifiable.getContactCollection());
 	}
+	
+	public static final String TAB_CONTACT_ID = "contacts";
 
 }
