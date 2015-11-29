@@ -37,7 +37,7 @@ public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActo
 		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
 		
 		configuration = createFormConfiguration(Crud.UPDATE, DefaultPersonEditFormModel.TAB_JOB_ID);
-		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_JOB_FUNCTION);
+		configuration.addFieldNames(DefaultPersonEditFormModel.FIELD_JOB_TITLE);
 			
 	}
 	
