@@ -283,8 +283,6 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		}
 		
-		public <DETAILS> ControlSetAdapter<DETAILS> getControlSetAdapter(Class<DETAILS> detailsClass){
-			return null;
-		}
+		
 	}
 }
