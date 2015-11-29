@@ -102,7 +102,7 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 		if(identifiable.getLocations()==null)
 			identifiable.setLocations(new ArrayList<Location>());
 		for(Location p : identifiable.getLocations())
-			if(p.getType().equals(type))
+			if(p.getType()!=null && p.getType().equals(type))
 				return p.getComment();
 		return null;
 	}
