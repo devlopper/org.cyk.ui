@@ -206,7 +206,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		}
 		
-		public static final String FIELD_FUNCTION = "function";
+		public static final String FIELD_TITLE = "title";
 	}
 	
 	@Getter @Setter
