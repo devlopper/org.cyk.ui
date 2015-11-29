@@ -87,6 +87,8 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		
 		if(jobFunction!=null)
 			getJobInformations(Boolean.TRUE).setFunction(jobFunction);
+		if(jobTitle!=null)
+			getJobInformations(Boolean.TRUE).setTitle(jobTitle);
 		
 		/*if(identifiable.getExtendedInformations()!=null){
 			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
@@ -125,6 +127,7 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 		}
 		if(identifiable.getJobInformations()!=null){
 			jobFunction = identifiable.getJobInformations().getFunction();
+			jobTitle = identifiable.getJobInformations().getTitle();
 		}
 	}
 	
