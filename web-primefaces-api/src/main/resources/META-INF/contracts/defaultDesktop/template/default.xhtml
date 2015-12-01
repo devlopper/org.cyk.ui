@@ -70,7 +70,7 @@
 				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
-				 			<h:outputText value="#{pageController.text}" rendered="#{not empty pageController.text}" />
+				 			<h:outputText value="#{pageController.text}" rendered="#{not empty pageController.text}" escape="false"/>
 				 			<p:focus context="contentPanel" />
 				 			<ui:fragment rendered="#{not pageController.renderViewError}" >
 				 				<ui:fragment rendered="#{pageController.showDetailsMenu}">
