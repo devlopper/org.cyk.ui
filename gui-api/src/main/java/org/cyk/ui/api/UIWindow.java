@@ -36,6 +36,9 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	Boolean getRenderedAsDialog();
 	
+	String getText();
+	void setText(String text);
+	
 	/**
 	 * The UI message manager
 	 * @return

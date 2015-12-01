@@ -53,6 +53,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected Collection<AbstractEventCalendar> eventCalendars = new ArrayList<>();
 	
 	@Getter protected String title,contentTitle="Content";
+	@Getter @Setter protected String text;
 	
 	@Override
 	protected void initialisation() {
