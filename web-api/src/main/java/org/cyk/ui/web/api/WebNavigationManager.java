@@ -26,6 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -455,6 +456,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		commandable.setViewId(consultOneOutcome(identifiable.getClass()));
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), identifiable);
+		return commandable;
+	}
+	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,IconType iconType){
+		UICommandable commandable = createConsultCommandable(identifiable, "button", iconType);
+		commandable.setLabel(RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable));
 		return commandable;
 	}
 	
