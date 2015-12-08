@@ -27,7 +27,7 @@
        		
        		<cc:insertChildren/>
        		
-       		<p:column width="4%" rendered="#{cc.value.deletable}">
+       		<p:column width="4%" rendered="#{cc.value.deleteCommandable.rendered}">
        			<!--p:commandButton title="#{uiManager.text('command.delete')}" icon="ui-icon-minus" action="#{cc.value.delete(item)}" /-->
        			<cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/>
        		</p:column>
