@@ -122,9 +122,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			if(value instanceof File)
 				return ((File)value).getIdentifier().toString();// A mechanism, will be used to retrieve file data from business using file identifier
 			else if(value instanceof AbstractModelElement)
-				return ((AbstractModelElement)value).getUiString();
+				return RootBusinessLayer.getInstance().getFormatterBusiness().format(value);
 			else
-				return value.toString();
+				return RootBusinessLayer.getInstance().getFormatterBusiness().format(value);
 		}else if(value instanceof Date)
 			return UIManager.getInstance().getTimeBusiness().format(field, (Date)value);
 		else if(value instanceof Boolean)

@@ -51,7 +51,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 		if(person.getSex()!=null)
 			sex = person.getSex().getName();
 		if(person.getNationality()!=null)
-			nationality = person.getNationality().getUiString();
+			nationality = RootBusinessLayer.getInstance().getFormatterBusiness().format(person.getNationality());
 		if(person.getBirthDate()!=null)
 			birthDate = RootBusinessLayer.getInstance().getTimeBusiness().formatDate(person.getBirthDate());
 		
@@ -59,7 +59,7 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 			if(person.getExtendedInformations().getTitle()!=null)
 				title = person.getExtendedInformations().getTitle().getName();
 			if(person.getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = person.getExtendedInformations().getBirthLocation().getUiString();
+				birthLocation = RootBusinessLayer.getInstance().getFormatterBusiness().format(person.getExtendedInformations().getBirthLocation());
 			if(person.getExtendedInformations().getMaritalStatus()!=null)
 				;//maritalStatus = person.getExtendedInformations().getMaritalStatus().getName();
 			if(person.getExtendedInformations().getSignatureSpecimen()!=null)
