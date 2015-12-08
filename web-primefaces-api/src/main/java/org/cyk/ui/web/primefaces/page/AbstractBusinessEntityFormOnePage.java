@@ -22,10 +22,12 @@ import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
+import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.omnifaces.util.Faces;
@@ -117,6 +119,13 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		else{
 			return identifiable;
 		}
+	}
+	
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
+			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE> listener) {
+		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
+		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
+		return collection;
 	}
 	
 	@Override
