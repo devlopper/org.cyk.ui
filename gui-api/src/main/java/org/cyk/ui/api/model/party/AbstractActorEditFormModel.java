@@ -51,7 +51,7 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 	/**/
 	
 	@Getter @Setter
-	public static class Default<ACTOR extends AbstractActor> extends AbstractActorEditFormModel<ACTOR>  implements Serializable {
+	public static class Default extends AbstractActorEditFormModel<AbstractActor>  implements Serializable {
 
 		private static final long serialVersionUID = -3897201743383535836L;
 			

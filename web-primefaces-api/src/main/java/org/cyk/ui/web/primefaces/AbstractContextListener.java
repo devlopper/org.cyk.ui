@@ -104,10 +104,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		return new AbstractActorConsultPageAdapter.Default<ACTOR>(actorClass);
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return (Class<? extends AbstractFormModel<?>>) AbstractActorEditFormModel.Default.class;
+			return AbstractActorEditFormModel.Default.class;
 		return null;
 	}
 	
