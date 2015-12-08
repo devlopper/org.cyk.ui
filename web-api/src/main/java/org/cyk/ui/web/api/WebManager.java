@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
-import org.cyk.ui.api.SelectItemBuildAdapter;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
@@ -122,7 +121,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public <TYPE> List<SelectItem> buildSelectItems(Class<TYPE> aClass){
-		return buildSelectItems(aClass, new SelectItemBuildAdapter<TYPE>());
+		return buildSelectItems(aClass, new SelectItemBuildListener.Adapter.Default<TYPE>());
 	}
 	
 	public String libraryName(AbstractWebManager webManager){

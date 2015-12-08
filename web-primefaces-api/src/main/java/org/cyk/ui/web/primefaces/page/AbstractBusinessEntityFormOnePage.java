@@ -14,7 +14,6 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
@@ -228,12 +227,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		List list = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName).getList();
 		list.clear();
 		for(Object object : collection)
-			list.add(new SelectItem(object, getChoiceLabel(object)));
+			list.add(getSelectItem(object));
 	}
 	
-	protected String getChoiceLabel(Object object){
-		if(object instanceof AbstractEnumeration)
-			return ((AbstractEnumeration)object).getName();
-		return object.toString();
+	protected SelectItem getSelectItem(Object object){
+		return webManager.getSelectItem(object);
 	}
 }
