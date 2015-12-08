@@ -14,6 +14,7 @@ import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
+import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
@@ -23,7 +24,7 @@ import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
-import org.cyk.ui.web.primefaces.page.crud.ConsultActorPage;
+import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
@@ -45,16 +46,17 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
 		
-		OutputDetailsConfiguration outputDetailsConfiguration;
+		//OutputDetailsConfiguration outputDetailsConfiguration;
 		
-		registerOutputDetailsConfiguration(ConsultActorPage.MainDetails.class,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_NAME
+		registerOutputDetailsConfiguration(AbstractActorConsultPage.MainDetails.class,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_NAME
 				,DefaultPersonEditFormModel.FIELD_LAST_NAME,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE
 				,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_NATIONALITY);
 		
-		registerOutputDetailsConfiguration(ConsultActorPage.ContactDetails.class, ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER
+		registerOutputDetailsConfiguration(ContactDetails.class, ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER
 				,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL
 				,ContactCollectionEditFormModel.FIELD_HOME_LOCATION,ContactCollectionEditFormModel.FIELD_POSTALBOX);
 		
+		/*
 		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class);
 		outputDetailsConfiguration.setUiEditViewId(webNavigationManager.getOutcomeEditActorMedicalInformations());
 		
@@ -63,6 +65,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		registerOutputDetailsConfiguration(ConsultActorPage.JobDetails.class,DefaultPersonEditFormModel.FIELD_COMPANY,DefaultPersonEditFormModel.FIELD_JOB_TITLE
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
+		*/
 	}
 	
 	@Override
