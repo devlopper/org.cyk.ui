@@ -17,7 +17,7 @@ import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
+import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
@@ -97,7 +97,7 @@ public class ContextListener extends AbstractContextListener {
 					,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION
 					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
 			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(
-					DefaultActorEditFormModel.FIELD_REGISTRATION_CODE);
+					AbstractActorEditFormModel.FIELD_REGISTRATION_CODE);
 			
 			
 		}

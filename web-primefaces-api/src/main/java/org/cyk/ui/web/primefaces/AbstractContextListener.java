@@ -6,15 +6,15 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
-import org.cyk.ui.api.model.party.DefaultActorEditFormModel;
+import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
@@ -106,7 +106,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return DefaultActorEditFormModel.class;
+			return AbstractActorEditFormModel.Default.class;
 		return null;
 	}
 	
