@@ -1,12 +1,17 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -15,16 +20,27 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = -7938368076994108266L;
 
 	private FormOneData<?, ?, ?, ?, ?, ?> form;
-	private String fieldName;
-	private String event;
+	private String fieldName,event,classSelectorSymbol="$",classSelectorFormat="%s(.%s)",processed;
 	private String[] crossedFieldNames;
 	private String[] updatedFieldNames;
 	private Class<?> valueClass;
-	private ListenValueMethod<?> method;
+	private ListenValueMethod<Object> method;
+	private WebInput<?, ?, ?, ?> input;
 	
+	@SuppressWarnings("unchecked")
 	public <TYPE> AjaxBuilder method(Class<TYPE> valueClass,ListenValueMethod<TYPE> method){
 		this.valueClass = valueClass;
-		this.method = method;
+		this.method = (ListenValueMethod<Object>) method;
+		return this;
+	}
+	
+	public AjaxBuilder classSelectorSymbol(String classSelectorSymbol){
+		this.classSelectorSymbol = classSelectorSymbol;
+		return this;
+	}
+	
+	public AjaxBuilder classSelectorFormat(String classSelectorFormat){
+		this.classSelectorFormat = classSelectorFormat;
 		return this;
 	}
 	
@@ -35,6 +51,7 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 
 	public AjaxBuilder fieldName(String fieldName){
 		this.fieldName = fieldName;
+		input = form.findInputByClassByFieldName(WebInput.class, fieldName);
 		return this;
 	}
 
@@ -53,16 +70,14 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 		return this;
 	}
 	
-	public AjaxListener build(){
-		/*
-		WebInput<?, ?, ?, ?> webInput = form.findInputByClassByFieldName(WebInput.class, fieldName);
-		
+	public <TYPE> AjaxListener build(){
 		final Set<String> processes = new HashSet<>();
-		processes.add(classSelector(webInput));
-		for(String crossFieldName : crossedFieldNames)
-			processes.add(classSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
+		processes.add(getClassSelector(input));
+		if(crossedFieldNames!=null)
+			for(String crossFieldName : crossedFieldNames)
+				processes.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
 		
-		AjaxListener ajaxAdapter = new AjaxAdapter(event) {
+		input.setAjaxListener(new AjaxListener.Adapter.Default(event) {
 			private static final long serialVersionUID = 4750417275636910265L;
 			@Override
 			public void listen() {
@@ -75,22 +90,24 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 			public String getProcess() {
 				return StringUtils.join(processes,",");
 			}
-		};
+		});
 		
 		Set<String> updated = new HashSet<>();
-		updated.add(classSelector(webInput));
-		for(String updatedFieldName : updatedFieldNames)
-			updated.add(classSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
-		ajaxAdapter.setUpdate(StringUtils.join(updated,","));
+		if(updatedFieldNames!=null){
+			for(String updatedFieldName : updatedFieldNames)
+				updated.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
+			input.getAjaxListener().setUpdate(StringUtils.join(updated,","));
+		}
 		
-		form.findInputByClassByFieldName(WebInput.class, fieldName).setAjaxListener(ajaxAdapter);
-		return ajaxAdapter;
-		*/
 		return null;
 	}
 	
 	/**/
 	
+	private String getClassSelector(WebInput<?, ?, ?, ?> input){
+		return String.format(classSelectorFormat, classSelectorSymbol,input.getUniqueCssClass());
+	}
 	
+	/**/
 	
 }

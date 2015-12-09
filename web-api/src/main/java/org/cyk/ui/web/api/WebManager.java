@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
@@ -178,6 +179,10 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public void updateInFormContent(String[] clientId){
 		updateInForm(formId+ID_SEPARATOR+formContentId+ID_SEPARATOR+StringUtils.join(clientId,ID_SEPARATOR));
+	}
+	
+	public String getClassSelector(WebInput<?, ?, ?, ?> input){
+		return "@(."+input.getUniqueCssClass()+")";
 	}
 	
 	/**/

@@ -259,19 +259,21 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
+	
 	protected <TYPE> AjaxListener setAjaxListener(final FormOneData<?, ?, ?, ?, ?, ?> form,final String fieldName,String event
 			,String[] crossFieldNames,String[] updatedFieldNames,Class<TYPE> valueClass,final ListenValueMethod<TYPE> method){
 		
 		WebInput<?, ?, ?, ?> webInput = form.findInputByClassByFieldName(WebInput.class, fieldName);
 		if(webInput==null)
 			return null;
+		
 		final Set<String> processes = new HashSet<>();
 		processes.add(classSelector(webInput));
 		if(crossFieldNames!=null)
 			for(String crossFieldName : crossFieldNames)
 				processes.add(classSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
 		
-		AjaxListener ajaxAdapter = new AjaxAdapter(event) {
+		AjaxListener ajaxAdapter = new AjaxListener.Adapter.Default(event) {
 			private static final long serialVersionUID = 4750417275636910265L;
 			@Override
 			public void listen() {
@@ -292,9 +294,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 				updated.add(classSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
 			ajaxAdapter.setUpdate(StringUtils.join(updated,","));
 		}
+		
 		webInput.setAjaxListener(ajaxAdapter);
 		return ajaxAdapter;
 	}
+	
 	
 	protected String inputRowVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
 		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.findInputByFieldName(fieldName);

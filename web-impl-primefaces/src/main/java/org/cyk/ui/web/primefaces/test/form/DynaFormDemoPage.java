@@ -16,6 +16,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.test.model.MyIdentifiable;
+import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.data.collector.control.WebInputNumber;
@@ -88,12 +89,13 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		windowHierachyMenu = userSession.getContextualMenu();
+		/*windowHierachyMenu = userSession.getContextualMenu();
 		windowHierachyMenu.setRenderType(UIMenu.RenderType.BREAD_CRUMB);
 		windowHierachyMenuModel = userSession.getContextualMenuModel();
-		
-		System.out.println(windowHierachyMenu);
-		System.out.println(windowHierachyMenuModel);
+		*/
+		//System.out.println(windowHierachyMenu);
+		//System.out.println(windowHierachyMenuModel);
+		AjaxBuilder ajaxBuilder = new AjaxBuilder();
 		AjaxListener ajaxListener = null;
 		/*
 		setAjaxListener(form, "textOneLine", "change", new String[]{"textManyLine"},new String[]{"textManyLine","textManyLine2"}, String.class,new ListenValueMethod<String>() {
@@ -104,14 +106,35 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			}
 		});
 		*/
+		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("number1").event("change").crossedFieldNames(new String[]{"number2"}).updatedFieldNames(new String[]{"sumResult","multiplyResult"})
+			.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
+				@Override
+				public void execute(BigDecimal value) {
+					System.out.println("C1");
+					setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
+					setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
+				}
+			}).build();
+		
+		/*
 		ajaxListener = setAjaxListener(form, "number1", "change", new String[]{"number2"},new String[]{"sumResult","multiplyResult"}, BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
 			}
-		});
+		});*/
 		
+		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("number2").event("change").crossedFieldNames(new String[]{"number1"}).updatedFieldNames(new String[]{"sumResult","multiplyResult"})
+		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
+			@Override
+			public void execute(BigDecimal value) {
+				System.out.println("C2");
+				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number1")));
+				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
+			}
+		}).build();
+		/*
 		setAjaxListener(form, "number2", "change", new String[]{"number1"}, new String[]{"sumResult","multiplyResult"},BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
@@ -119,6 +142,16 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
 			}
 		});
+		*/
+		/*
+		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("canSum").event("change")
+		.method(Boolean.class,new ListenValueMethod<Boolean>() {
+			@Override
+			public void execute(Boolean value) {
+				System.out.println("C3 : "+value);
+				onComplete(inputRowVisibility(form,"sumResult",value),inputRowVisibility(form,"multiplyResult",value));
+			}
+		}).build();*/
 		
 		ajaxListener = setAjaxListener(form, "canSum", "change", null, null,Boolean.class,new ListenValueMethod<Boolean>() {
 			@Override
