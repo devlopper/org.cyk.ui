@@ -56,6 +56,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static ContentType CONTENT_TYPE = ContentType.TEXT;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
+	private static final Map<Class<?>,SelectItemBuildListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
 	//private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
@@ -302,23 +303,21 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return null;
 	}
 	
-	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass){
-		IdentifiableConfiguration config = IDENTIFIABLE_CONFIGURATION_MAP.get(aClass);
-		/*
-		if(config==null){
-			for(Entry<Class<? extends AbstractIdentifiable>, IdentifiableConfiguration> entry : IDENTIFIABLE_CONFIGURATION_MAP.entrySet()){
-				if(entry.getKey().isAssignableFrom(aClass)){
-					config = entry.getValue();
-					break;
-				}
-			}
-		}
-		*/
-		return config;
-	}
 	
 	public void registerConfiguration(IdentifiableConfiguration configuration){
 		IDENTIFIABLE_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
+	}
+	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass){
+		IdentifiableConfiguration config = IDENTIFIABLE_CONFIGURATION_MAP.get(aClass);
+		return config;
+	}
+	
+	public void registerSelectItemBuildListener(Class<?> aClass,SelectItemBuildListener listener){
+		SELECTITEM_BUILD_LISTENER_MAP.put(aClass, listener);
+	}
+	public SelectItemBuildListener findSelectItemBuildListener(Class<?> aClass){
+		SelectItemBuildListener listener = SELECTITEM_BUILD_LISTENER_MAP.get(aClass);
+		return listener==null?SelectItemBuildListener.DEFAULT:listener;
 	}
 	
 	public OutputDetailsConfiguration findOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> aClass){

@@ -21,8 +21,6 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.ContentType;
 import org.cyk.ui.api.SelectItemBuildListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
@@ -82,11 +80,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterPreviousUrl = "previousurl";
 	private final String requestParameterPrint = "print";
 	private final String requestParameterTabId = "tabid";
-	/*
-	private final String requestParameterFileExtension = "fileextension";
-	private final String requestParameterPdf = "pdf";
-	private final String requestParameterXls = "xls";
-	*/
+	
 	private final String requestParameterUrl = "url";
 	private final String requestParameterOutcome = "outcome";
 	
@@ -111,17 +105,57 @@ public class WebManager extends AbstractBean implements Serializable {
 		return null;
 	}
 	
-	public <TYPE> List<SelectItem> buildSelectItems(Class<TYPE> aClass,SelectItemBuildListener<TYPE> selectItemBuildListener){
-		List<SelectItem> list = new ArrayList<>();
-		if(Boolean.TRUE.equals(selectItemBuildListener.nullable()))
-			list.add(new SelectItem(null, selectItemBuildListener.nullLabel()));
-		for(TYPE type : selectItemBuildListener.collection(aClass))
-			list.add(new SelectItem(type,selectItemBuildListener.label(type)));
+	/*
+	public List<SelectItem> getSelectItems(Class<?> aClass){
+		List<SelectItem> list = new ArrayList<>();		
+		if(AbstractIdentifiable.class.isAssignableFrom(aClass)){
+			@SuppressWarnings("unchecked")
+			Collection<? extends AbstractIdentifiable> identifiables = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) aClass).find().all();
+			list = getSelectItems(identifiables);
+		}else if(aClass.isEnum()){
+			for(Enum<?> value : (Enum<?>[])aClass.getEnumConstants())
+				list.add(getSelectItem(value));
+		}	
 		return list;
 	}
 	
-	public <TYPE> List<SelectItem> buildSelectItems(Class<TYPE> aClass){
-		return buildSelectItems(aClass, new SelectItemBuildListener.Adapter.Default<TYPE>());
+	public List<SelectItem> getSelectItems(Collection<?> collection){
+		List<SelectItem> list = new ArrayList<>();
+		for(Object object : collection){
+			list.add(getSelectItem(object));
+		}
+		return list;
+	}
+	*/
+	
+	public SelectItem getSelectItem(Object object,SelectItemBuildListener selectItemBuildListener) {
+		SelectItem selectItem = new SelectItem(object,selectItemBuildListener.label(object));
+		return selectItem;
+	}
+	
+	public SelectItem getSelectItem(Object object) {
+		return getSelectItem(object, UIManager.getInstance().findSelectItemBuildListener(object.getClass()));
+	}
+	
+	public List<SelectItem> buildSelectItems(Collection<?> collection,SelectItemBuildListener selectItemBuildListener){
+		List<SelectItem> list = new ArrayList<>();
+		if(Boolean.TRUE.equals(selectItemBuildListener.nullable()))
+			list.add(new SelectItem(null, selectItemBuildListener.nullLabel()));
+		for(Object object : collection)
+			list.add(getSelectItem(object, selectItemBuildListener));
+		return list;
+	}
+	
+	public List<SelectItem> buildSelectItems(Class<?> aClass,Collection<?> collection){
+		return buildSelectItems(collection, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	}
+	
+	public List<SelectItem> buildSelectItems(Class<?> aClass,SelectItemBuildListener selectItemBuildListener){
+		return buildSelectItems(selectItemBuildListener.collection(aClass), selectItemBuildListener);
+	}
+	
+	public List<SelectItem> buildSelectItems(Class<?> aClass){
+		return buildSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
 	}
 	
 	public String libraryName(AbstractWebManager webManager){
@@ -181,28 +215,4 @@ public class WebManager extends AbstractBean implements Serializable {
 		throwValidationException("exception.value.unknown",new Object[]{value});
 	}
 	
-	public List<SelectItem> getSelectItems(Class<?> aClass){
-		List<SelectItem> list = new ArrayList<>();		
-		if(AbstractIdentifiable.class.isAssignableFrom(aClass)){
-			@SuppressWarnings("unchecked")
-			Collection<? extends AbstractIdentifiable> identifiables = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) aClass).find().all();
-			list = getSelectItems(identifiables);
-		}else if(aClass.isEnum()){
-			for(Enum<?> value : (Enum<?>[])aClass.getEnumConstants())
-				list.add(getSelectItem(value));
-		}	
-		return list;
-	}
-	
-	public List<SelectItem> getSelectItems(Collection<?> collection){
-		List<SelectItem> list = new ArrayList<>();
-		for(Object object : collection){
-			list.add(getSelectItem(object));
-		}
-		return list;
-	}
-	
-	public SelectItem getSelectItem(Object object) {
-		return new SelectItem(object,UIManager.getInstance().getFormatterBusiness().format(object,ContentType.TEXT));
-	}
 }
