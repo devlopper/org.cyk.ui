@@ -372,6 +372,22 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
+	public UICommandable createMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
+		UICommandable c = crud(businessEntityInfos,null, iconType);
+		if(StringUtils.isEmpty(businessEntityInfos.getUiCreateManyViewId()))
+			;
+		else{
+			c.setViewId(businessEntityInfos.getUiCreateManyViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		}
+		logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+		return c;
+	}
+	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+		return createMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
 	/**/
 	
 	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
