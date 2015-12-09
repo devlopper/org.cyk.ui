@@ -6,4 +6,14 @@ public interface InputChoice<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM>
 
 	List<CHOICE_ITEM> getList();
 
+	Boolean getFiltered();
+	void setFiltered(Boolean filtered);
+	
+	FilterMode getFilterMode();
+	void setFilterMode(FilterMode filterMode);
+	
+	/**/
+	
+	public static enum FilterMode{STARTS_WITH,CONTAINS,ENDS_WITH}
+	
 }

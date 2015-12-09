@@ -120,6 +120,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 				if(Boolean.TRUE.equals(loadChoices))
 					for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
 						listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
+				inputChoice.setFiltered(Boolean.TRUE);
 				
 			}else if(control instanceof InputFile){
 				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;

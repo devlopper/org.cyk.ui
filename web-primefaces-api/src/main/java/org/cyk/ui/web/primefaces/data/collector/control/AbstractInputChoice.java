@@ -24,10 +24,23 @@ org.cyk.ui.api.data.collector.control.InputChoice<VALUE_TYPE,DynaFormModel,DynaF
 	private static final long serialVersionUID = -1270441695945429412L;
 
 	protected List<SelectItem> list = new ArrayList<SelectItem>();
-
+	protected Boolean filtered;
+	protected FilterMode filterMode = FilterMode.CONTAINS;
+	protected String filterModeAsString;
+	
 	@Override
 	public Converter getConverter() {
 		return ObjectConverter.getInstance();
+	}
+	
+	public String getFilterModeAsString(){
+		if(filterModeAsString==null)
+			switch(filterMode){
+			case STARTS_WITH: filterModeAsString = "startsWith"; break;
+			case CONTAINS: filterModeAsString = "contains"; break;
+			case ENDS_WITH: filterModeAsString = "endsWith"; break;
+			}
+		return filterModeAsString;
 	}
 	
 }
