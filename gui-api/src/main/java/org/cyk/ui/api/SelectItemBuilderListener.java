@@ -7,39 +7,39 @@ import java.util.Collection;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 
-public interface SelectItemBuildListener {
+public interface SelectItemBuilderListener {
 
-	SelectItemBuildListener DEFAULT = new SelectItemBuildListener.Adapter.Default();
+	SelectItemBuilderListener DEFAULT = new SelectItemBuilderListener.Adapter.Default();
 	
-	String label(Object object);
-	Boolean nullable();
-	String nullLabel();
-	Collection<Object> collection(Class<?> aClass);
+	String getLabel(Object object);
+	Boolean getNullable();
+	String getNullLabel();
+	Collection<Object> getCollection(Class<?> aClass);
 	void built(Class<?> aClass,Object item);
 	
 	/**/
 	
-	public static class Adapter implements SelectItemBuildListener,Serializable {
+	public static class Adapter implements SelectItemBuilderListener,Serializable {
 
 		private static final long serialVersionUID = -715019422940050534L;
 
 		@Override
-		public String label(Object object) {
+		public String getLabel(Object object) {
 			return null;
 		}
 
 		@Override
-		public Boolean nullable() {
+		public Boolean getNullable() {
 			return null;
 		}
 
 		@Override
-		public String nullLabel() {
+		public String getNullLabel() {
 			return null;
 		}
 
 		@Override
-		public Collection<Object> collection(Class<?> aClass) {
+		public Collection<Object> getCollection(Class<?> aClass) {
 			return null;
 		}
 		
@@ -53,23 +53,23 @@ public interface SelectItemBuildListener {
 			private static final long serialVersionUID = -715019422940050534L;
 
 			@Override
-			public String label(Object object) {
+			public String getLabel(Object object) {
 				return RootBusinessLayer.getInstance().getFormatterBusiness().format(object);
 			}
 
 			@Override
-			public Boolean nullable() {
+			public Boolean getNullable() {
 				return Boolean.TRUE;
 			}
 
 			@Override
-			public String nullLabel() {
+			public String getNullLabel() {
 				return UIManager.getInstance().text("input.choice.select.message");
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Collection<Object> collection(Class<?> aClass) {
+			public Collection<Object> getCollection(Class<?> aClass) {
 				Collection<Object> collection = new ArrayList<>();
 				if(AbstractIdentifiable.class.isAssignableFrom(aClass))
 					for(AbstractIdentifiable identifiable : UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) aClass).find().all())
@@ -77,8 +77,6 @@ public interface SelectItemBuildListener {
 				return collection;
 			}
 		}
-
-
 	}
 
 	

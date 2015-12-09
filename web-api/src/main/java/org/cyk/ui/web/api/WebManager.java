@@ -21,7 +21,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.ui.api.SelectItemBuildListener;
+import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
 import org.cyk.utility.common.Constant;
@@ -104,32 +104,13 @@ public class WebManager extends AbstractBean implements Serializable {
 				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
 		return null;
 	}
-	
-	/*
-	public List<SelectItem> getSelectItems(Class<?> aClass){
-		List<SelectItem> list = new ArrayList<>();		
-		if(AbstractIdentifiable.class.isAssignableFrom(aClass)){
-			@SuppressWarnings("unchecked")
-			Collection<? extends AbstractIdentifiable> identifiables = UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) aClass).find().all();
-			list = getSelectItems(identifiables);
-		}else if(aClass.isEnum()){
-			for(Enum<?> value : (Enum<?>[])aClass.getEnumConstants())
-				list.add(getSelectItem(value));
-		}	
-		return list;
+		
+	public SelectItem getSelectItem(Object object,SelectItemBuilderListener selectItemBuildListener) {
+		SelectItem selectItem = new SelectItem(object,selectItemBuildListener.getLabel(object));
+		return selectItem;
 	}
-	
-	public List<SelectItem> getSelectItems(Collection<?> collection){
-		List<SelectItem> list = new ArrayList<>();
-		for(Object object : collection){
-			list.add(getSelectItem(object));
-		}
-		return list;
-	}
-	*/
-	
-	public SelectItem getSelectItem(Object object,SelectItemBuildListener selectItemBuildListener) {
-		SelectItem selectItem = new SelectItem(object,selectItemBuildListener.label(object));
+	public SelectItem getNullSelectItem(Class<?> aClass,SelectItemBuilderListener selectItemBuildListener) {
+		SelectItem selectItem = new SelectItem(null,selectItemBuildListener.getNullLabel());
 		return selectItem;
 	}
 	
@@ -137,25 +118,25 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getSelectItem(object, UIManager.getInstance().findSelectItemBuildListener(object.getClass()));
 	}
 	
-	public List<SelectItem> buildSelectItems(Collection<?> collection,SelectItemBuildListener selectItemBuildListener){
+	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection,SelectItemBuilderListener selectItemBuildListener){
 		List<SelectItem> list = new ArrayList<>();
-		if(Boolean.TRUE.equals(selectItemBuildListener.nullable()))
-			list.add(new SelectItem(null, selectItemBuildListener.nullLabel()));
+		if(Boolean.TRUE.equals(selectItemBuildListener.getNullable()))
+			list.add(getNullSelectItem(aClass, selectItemBuildListener));
 		for(Object object : collection)
 			list.add(getSelectItem(object, selectItemBuildListener));
 		return list;
 	}
 	
-	public List<SelectItem> buildSelectItems(Class<?> aClass,Collection<?> collection){
-		return buildSelectItems(collection, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection){
+		return getSelectItems(aClass,collection, UIManager.getInstance().findSelectItemBuildListener(aClass));
 	}
 	
-	public List<SelectItem> buildSelectItems(Class<?> aClass,SelectItemBuildListener selectItemBuildListener){
-		return buildSelectItems(selectItemBuildListener.collection(aClass), selectItemBuildListener);
+	public List<SelectItem> getSelectItems(Class<?> aClass,SelectItemBuilderListener selectItemBuildListener){
+		return getSelectItems(aClass,selectItemBuildListener.getCollection(aClass), selectItemBuildListener);
 	}
 	
-	public List<SelectItem> buildSelectItems(Class<?> aClass){
-		return buildSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	public List<SelectItem> getSelectItems(Class<?> aClass){
+		return getSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
 	}
 	
 	public String libraryName(AbstractWebManager webManager){

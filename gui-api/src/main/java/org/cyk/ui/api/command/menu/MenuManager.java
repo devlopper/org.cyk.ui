@@ -22,6 +22,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.Role;
@@ -374,6 +375,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable createMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
+		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
 		if(StringUtils.isEmpty(businessEntityInfos.getUiCreateManyViewId()))
 			;
 		else{

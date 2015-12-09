@@ -56,7 +56,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static ContentType CONTENT_TYPE = ContentType.TEXT;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
-	private static final Map<Class<?>,SelectItemBuildListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
+	private static final Map<Class<?>,SelectItemBuilderListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
 	//private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
@@ -315,12 +315,12 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return config;
 	}
 	
-	public void registerSelectItemBuildListener(Class<?> aClass,SelectItemBuildListener listener){
+	public void registerSelectItemBuildListener(Class<?> aClass,SelectItemBuilderListener listener){
 		SELECTITEM_BUILD_LISTENER_MAP.put(aClass, listener);
 	}
-	public SelectItemBuildListener findSelectItemBuildListener(Class<?> aClass){
-		SelectItemBuildListener listener = SELECTITEM_BUILD_LISTENER_MAP.get(aClass);
-		return listener==null?SelectItemBuildListener.DEFAULT:listener;
+	public SelectItemBuilderListener findSelectItemBuildListener(Class<?> aClass){
+		SelectItemBuilderListener listener = SELECTITEM_BUILD_LISTENER_MAP.get(aClass);
+		return listener==null?SelectItemBuilderListener.DEFAULT:listener;
 	}
 	
 	public OutputDetailsConfiguration findOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> aClass){
