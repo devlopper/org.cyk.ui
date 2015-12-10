@@ -20,9 +20,11 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = -7938368076994108266L;
 
 	private FormOneData<?, ?, ?, ?, ?, ?> form;
-	private String fieldName,event,classSelectorSymbol="$",classSelectorFormat="%s(.%s)",processed;
+	private String fieldName,event,classSelectorSymbol="$",classSelectorFormat="%s(.%s)";
 	private String[] crossedFieldNames;
 	private String[] updatedFieldNames;
+	private Set<String> processed = new HashSet<>();
+	private Set<String> updated = new HashSet<>();
 	private Class<?> valueClass;
 	private ListenValueMethod<Object> method;
 	private WebInput<?, ?, ?, ?> input;
@@ -70,13 +72,7 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 		return this;
 	}
 	
-	public <TYPE> AjaxListener build(){
-		final Set<String> processes = new HashSet<>();
-		processes.add(getClassSelector(input));
-		if(crossedFieldNames!=null)
-			for(String crossFieldName : crossedFieldNames)
-				processes.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
-		
+	public <TYPE> void build(){
 		input.setAjaxListener(new AjaxListener.Adapter.Default(event) {
 			private static final long serialVersionUID = 4750417275636910265L;
 			@Override
@@ -85,21 +81,19 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 				TYPE value = (TYPE) form.findInputByClassByFieldName(Input.class, fieldName).getValue();
 				method.execute(value);
 			}
-
-			@Override
-			public String getProcess() {
-				return StringUtils.join(processes,",");
-			}
 		});
 		
-		Set<String> updated = new HashSet<>();
+		processed.add(getClassSelector(input));
+		if(crossedFieldNames!=null)
+			for(String crossFieldName : crossedFieldNames)
+				processed.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
+		input.getAjaxListener().setProcess(StringUtils.join(processed,","));
+		
 		if(updatedFieldNames!=null){
 			for(String updatedFieldName : updatedFieldNames)
 				updated.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
-			input.getAjaxListener().setUpdate(StringUtils.join(updated,","));
 		}
-		
-		return null;
+		input.getAjaxListener().setUpdate(StringUtils.join(updated,","));
 	}
 	
 	/**/

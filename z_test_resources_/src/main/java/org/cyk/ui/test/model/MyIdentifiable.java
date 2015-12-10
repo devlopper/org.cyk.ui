@@ -41,7 +41,7 @@ public class MyIdentifiable extends AbstractIdentifiable implements Serializable
 	
 	@OutputSeperator(label=@Text(value="results")) 
 	@OutputText(label=@Text(type=ValueType.VALUE,value="This is the results section")) 
-	@Input(readOnly=true) @InputText 
+	@Input(readOnly=false) @InputText 
 	private String sumResult;
 	@Input(readOnly=true) @InputText private String multiplyResult;
 	

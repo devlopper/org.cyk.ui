@@ -22,8 +22,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.ItemCollectionListener;
-import org.cyk.ui.web.api.AjaxListener;
-import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
@@ -187,8 +186,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		return null;
 	}
 	
-	protected <TYPE> AjaxListener setAjaxListener(final String fieldName,String event,String[] crossFieldNames,String[] updatedFieldNames,final Class<TYPE> valueClass,ListenValueMethod<TYPE> method){
-		return setAjaxListener(form, fieldName, event, crossFieldNames,updatedFieldNames,valueClass, method);
+	protected AjaxBuilder createAjaxBuilder(String fieldName){
+		return super.createAjaxBuilder(form, fieldName);
 	}
 	
 	protected void setFieldValue(String inputName,Object value){

@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -26,7 +27,6 @@ import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.ui.api.model.ItemCollectionListener;
@@ -38,7 +38,7 @@ import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.AbstractWebPage;
-import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.EventCalendar;
@@ -48,6 +48,7 @@ import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -164,6 +165,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	protected Boolean commandsEqual(UICommandable commandable,UICommand command){
 		return commandable.getCommand() == command;
+	}
+	
+	@Override
+	protected AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
+		return super.createAjaxBuilder(form, fieldName).classSelectorSymbol(Constant.CHARACTER_AT.toString());
 	}
 	
 	/**/
@@ -358,12 +364,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public String mobilePageOutcome(String pageId){
 		return navigationManager.mobilePageOutcome(pageId,mobilePageTransition,mobilePageReverse);
 	}
-	
-	@Override
-	protected String classSelector(WebInput<?, ?, ?, ?> input) {
-		return PrimefacesManager.getInstance().classSelector(input);
-	}
-	
+		
 	/**/
 	
 	public static interface DetailsConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA>{

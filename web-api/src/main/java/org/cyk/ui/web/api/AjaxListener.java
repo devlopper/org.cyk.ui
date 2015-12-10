@@ -70,5 +70,9 @@ public interface AjaxListener {
 		}
 		
 	}
+	
+	/**/
+	
+	String EVENT_CHANGE = "change";
 
 }

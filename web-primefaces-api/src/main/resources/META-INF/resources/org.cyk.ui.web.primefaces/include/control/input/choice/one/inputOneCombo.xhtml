@@ -16,10 +16,13 @@
 			<p:selectOneMenu id="inputOneCombo" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" disabled="#{control.disabled}" filter="#{control.filtered}" 
-				filterMatchMode="#{control.filterMode}">
+				filterMatchMode="#{control.filterMode}" widgetVar="#{control.widgetVar}" onchange="#{control.onChange}">
+				<!--
 				<f:attribute name="fieldId" value="#{control.id}" />
 				<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>
+				-->
 				<f:selectItems value="#{control.list}" />
+				<ui:include src="body.xhtml" />
 			</p:selectOneMenu>				
 		</ui:define>
 	</ui:decorate>

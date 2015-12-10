@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,25 +9,21 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.menu.UIMenu;
-import org.cyk.ui.api.data.collector.form.ControlSet;
+import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.test.model.MyEntity.MyEnum;
 import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.api.AjaxBuilder;
-import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
-import org.cyk.ui.web.api.data.collector.control.WebInputNumber;
-import org.cyk.ui.web.api.data.collector.control.WebInputOneCombo;
-import org.cyk.ui.web.api.data.collector.control.WebInputText;
-import org.cyk.ui.web.api.data.collector.control.WebInputTextarea;
-import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
-
-import lombok.Getter;
-import lombok.Setter;
+import org.cyk.utility.common.Constant;
 
 @Named
 @ViewScoped
@@ -93,86 +88,61 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		windowHierachyMenu.setRenderType(UIMenu.RenderType.BREAD_CRUMB);
 		windowHierachyMenuModel = userSession.getContextualMenuModel();
 		*/
-		//System.out.println(windowHierachyMenu);
-		//System.out.println(windowHierachyMenuModel);
-		AjaxBuilder ajaxBuilder = new AjaxBuilder();
-		AjaxListener ajaxListener = null;
-		/*
-		setAjaxListener(form, "textOneLine", "change", new String[]{"textManyLine"},new String[]{"textManyLine","textManyLine2"}, String.class,new ListenValueMethod<String>() {
-			@Override
-			public void execute(String value) {
-				setFieldValue(form,"textManyLine", form.findInputByFieldName("textManyLine").getValue()+" NEW - "+value);
-				setFieldValue(form,"textManyLine2", value);
-			}
-		});
-		*/
-		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("number1").event("change").crossedFieldNames(new String[]{"number2"}).updatedFieldNames(new String[]{"sumResult","multiplyResult"})
-			.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
-				@Override
-				public void execute(BigDecimal value) {
-					System.out.println("C1");
-					setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
-					setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
-				}
-			}).build();
 		
-		/*
-		ajaxListener = setAjaxListener(form, "number1", "change", new String[]{"number2"},new String[]{"sumResult","multiplyResult"}, BigDecimal.class,new ListenValueMethod<BigDecimal>() {
+		createAjaxBuilder(form,"number1").crossedFieldNames("number2").updatedFieldNames("sumResult","multiplyResult")
+		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
+				System.out
+						.println("DynaFormDemoPage.afterInitialisation().new ListenValueMethod() {...}.execute()");
 			}
-		});*/
+		}).build();
 		
-		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("number2").event("change").crossedFieldNames(new String[]{"number1"}).updatedFieldNames(new String[]{"sumResult","multiplyResult"})
+		createAjaxBuilder(form,"number2").crossedFieldNames("number1").updatedFieldNames("sumResult","multiplyResult")
 		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
-				System.out.println("C2");
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number1")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
 			}
 		}).build();
-		/*
-		setAjaxListener(form, "number2", "change", new String[]{"number1"}, new String[]{"sumResult","multiplyResult"},BigDecimal.class,new ListenValueMethod<BigDecimal>() {
-			@Override
-			public void execute(BigDecimal value) {
-				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number1")));
-				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number1")));
-			}
-		});
-		*/
-		/*
-		ajaxBuilder.classSelectorSymbol("@").form(form).fieldName("canSum").event("change")
+		
+		createAjaxBuilder(form,"canSum")
 		.method(Boolean.class,new ListenValueMethod<Boolean>() {
 			@Override
 			public void execute(Boolean value) {
-				System.out.println("C3 : "+value);
 				onComplete(inputRowVisibility(form,"sumResult",value),inputRowVisibility(form,"multiplyResult",value));
 			}
-		}).build();*/
+		}).build();
 		
-		ajaxListener = setAjaxListener(form, "canSum", "change", null, null,Boolean.class,new ListenValueMethod<Boolean>() {
+		AjaxBuilder ajaxBuilder = createAjaxBuilder(form,"myEnum").updatedFieldNames("textOneLine")
+		.method(MyEnum.class,new ListenValueMethod<MyEnum>() {
 			@Override
-			public void execute(Boolean value) {
-				//form.findInputByFieldName("sumResult").setDisabled(value);
-				//form.findInputByClassByFieldName(WebInput.class, "sumResult").getReadOnlyValueCss().addInline("background-color:red !important;");
-				//setFieldValue(form,"sumResult", value?BigDecimal.ONE:BigDecimal.ZERO);
-				//setFieldValue(form,"textManyLine2", "Can Sum : "+value);
-				//Ajax.oncomplete(javaScriptHelper.hide("."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()));
-				//System.out.println(javaScriptHelper.hide("."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()));
-				//System.out.println("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').hide();");
-				onComplete(inputRowVisibility(form,"sumResult",value),inputRowVisibility(form,"multiplyResult",value));
-				/*
-				if(Boolean.TRUE.equals(value))
-					rowVisibility(form.findInputByClassByFieldName(WebInput.class, "sumResult"), "show")
-					Ajax.oncomplete("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').closest('tr').show();");
-				else
-					Ajax.oncomplete("$('."+form.findInputByClassByFieldName(WebInput.class, "sumResult").getUniqueCssClass()+"').closest('tr').hide();");
-					*/
+			public void execute(MyEnum value) {
+				if(MyEnum.V2.equals(value)){
+					setFieldValue(form,"textOneLine", "Your two val");
+					//setFieldValue(form,"sumResult", new BigDecimal("102030"));
+					//setFieldValue(form,"multiplyResult", new BigDecimal("1278"));
+					//((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, "textOneLine")).setValue("Update here");
+					//((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, "number1")).setValue(new BigDecimal("159"));
+					//((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, "number2")).setValue(new BigDecimal("753"));
+				}else if(MyEnum.v55.equals(value)){
+					setFieldValue(form,"textOneLine", stringValue(form, "textOneLine",Constant.EMPTY_STRING)+" : "+value);
+					setFieldValue(form,"multiplyResult", new BigDecimal("9900880077"));
+				}
+				value = MyEnum.v55;
 			}
 		});
+		//debug(((WebInput) form.findInputByClassByFieldName(WebInput.class, "textOneLine")).getCss());
+		//System.out.println("Class : "+((WebInput) form.findInputByClassByFieldName(WebInput.class, "textOneLine")).getUniqueCssClass());
+		//ajaxBuilder.getUpdated().add("@(.cyk-ui-form-inputfield)");
+		ajaxBuilder.build();
+		
+		//System.out.println("ddd");
+		//debug(((WebInput) form.findInputByClassByFieldName(WebInput.class, "number1")).getCss());
+		//debug(((WebInput) form.findInputByClassByFieldName(WebInput.class, "number2")).getCss());
 		
 		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnClick("alert('They clicked me!!!');");
 		//form.findInputByClassByFieldName(WebInputText.class, "textOneLine").setOnChange("alert('We on changed.');");

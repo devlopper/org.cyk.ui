@@ -2,21 +2,24 @@ package org.cyk.ui.api;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-import org.cyk.utility.common.Constant;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.Constant;
 
 @Getter @Setter
 public class CascadeStyleSheet implements Serializable {
 
 	private static final long serialVersionUID = 738142431416512052L;
 
-	private String clazz="",inline="";
+	private static final String CLAZZ_SEPARATOR = Constant.CHARACTER_SPACE.toString();
+	private static final String INLINE_SEPARATOR = Constant.CHARACTER_SEMI_COLON.toString();
+	
+	private String clazz=Constant.EMPTY_STRING,inline=Constant.EMPTY_STRING;
 	
 	public CascadeStyleSheet addClasses(String...classes){
-		clazz=clazz+StringUtils.join(classes,Constant.CHARACTER_SPACE);
+		clazz = CommonUtils.getInstance().concatenate(clazz, classes, CLAZZ_SEPARATOR);
 		return this;
 	}
 	
@@ -25,12 +28,16 @@ public class CascadeStyleSheet implements Serializable {
 	}
 	
 	public CascadeStyleSheet addInlines(String...inlines){
-		inline=inline+StringUtils.join(inlines);
+		inline = CommonUtils.getInstance().concatenate(inline, inlines, INLINE_SEPARATOR);
 		return this;
 	}
 	
 	public CascadeStyleSheet addInline(String inline){
 		return addInlines(inline);
 	}
+	
+	/**/
+	
+	
 	
 }

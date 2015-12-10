@@ -5,8 +5,6 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -33,7 +31,6 @@ import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.table.AbstractTable;
-import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
@@ -185,7 +182,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		if(Boolean.TRUE.equals(input.getReadOnly()))
 			onCompleteUpdate((WebInput<?, ?, ?, ?>) input, value,Boolean.FALSE);
 		else
-		((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName)).setValue(value);
+			((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName)).setValue(value);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -259,46 +256,9 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
-	
-	protected <TYPE> AjaxListener setAjaxListener(final FormOneData<?, ?, ?, ?, ?, ?> form,final String fieldName,String event
-			,String[] crossFieldNames,String[] updatedFieldNames,Class<TYPE> valueClass,final ListenValueMethod<TYPE> method){
-		
-		WebInput<?, ?, ?, ?> webInput = form.findInputByClassByFieldName(WebInput.class, fieldName);
-		if(webInput==null)
-			return null;
-		
-		final Set<String> processes = new HashSet<>();
-		processes.add(classSelector(webInput));
-		if(crossFieldNames!=null)
-			for(String crossFieldName : crossFieldNames)
-				processes.add(classSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
-		
-		AjaxListener ajaxAdapter = new AjaxListener.Adapter.Default(event) {
-			private static final long serialVersionUID = 4750417275636910265L;
-			@Override
-			public void listen() {
-				@SuppressWarnings("unchecked")
-				TYPE value = (TYPE) form.findInputByClassByFieldName(Input.class, fieldName).getValue();
-				method.execute(value);
-			}
-
-			@Override
-			public String getProcess() {
-				return StringUtils.join(processes,",");
-			}
-		};
-		
-		Set<String> updated = new HashSet<>();
-		if(updatedFieldNames!=null){
-			for(String updatedFieldName : updatedFieldNames)
-				updated.add(classSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
-			ajaxAdapter.setUpdate(StringUtils.join(updated,","));
-		}
-		
-		webInput.setAjaxListener(ajaxAdapter);
-		return ajaxAdapter;
+	protected AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
+		return new AjaxBuilder().form(form).fieldName(fieldName).event(AjaxListener.EVENT_CHANGE);
 	}
-	
 	
 	protected String inputRowVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
 		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.findInputByFieldName(fieldName);
@@ -327,10 +287,6 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	protected Date dateValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Date nullValue){
 		return fieldValue(form,fieldName, Date.class,nullValue);
-	}
-	
-	protected String classSelector(WebInput<?, ?, ?, ?> input){
-		return "@(."+input.getUniqueCssClass()+")";
 	}
 	
 	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType,String outcome){
