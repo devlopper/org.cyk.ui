@@ -5,9 +5,6 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-
-import javax.faces.model.SelectItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -221,15 +218,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		addInputAdapter(form, fieldName, inputAdapter);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void setChoices(String fieldName,Collection<?> collection){
-		List list = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName).getList();
-		list.clear();
-		for(Object object : collection)
-			list.add(getSelectItem(object));
+		webManager.setChoices(form, fieldName, collection);
 	}
 	
-	protected SelectItem getSelectItem(Object object){
-		return webManager.getSelectItem(object);
-	}
 }

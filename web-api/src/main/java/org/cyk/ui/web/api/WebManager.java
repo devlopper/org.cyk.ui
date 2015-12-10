@@ -23,6 +23,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
 import org.cyk.utility.common.Constant;
@@ -140,6 +142,19 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
 	}
 	
+	public void setChoices(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Collection<?> collection){
+		InputChoice<?, ?, ?, ?, ?, ?> inputChoice = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName);
+		@SuppressWarnings("unchecked")
+		List<SelectItem> list = (List<SelectItem>) inputChoice.getList();
+		list.clear();
+		list.addAll(getSelectItems(inputChoice.getField().getType(), collection));
+		
+		/*
+		for(Object object : collection)
+			list.add(getSelectItem(object));
+		*/
+	}
+	
 	public String libraryName(AbstractWebManager webManager){
 		return webManager.getLibraryName();
 	}
@@ -181,6 +196,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		updateInForm(formId+ID_SEPARATOR+formContentId+ID_SEPARATOR+StringUtils.join(clientId,ID_SEPARATOR));
 	}
 	
+	//TODO should not be here
 	public String getClassSelector(WebInput<?, ?, ?, ?> input){
 		return "@(."+input.getUniqueCssClass()+")";
 	}
