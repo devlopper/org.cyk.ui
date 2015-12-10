@@ -218,8 +218,11 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		addInputAdapter(form, fieldName, inputAdapter);
 	}
 
+	protected void setChoices(String fieldName,Collection<?> collection,Object selected){
+		webManager.setChoices(form, fieldName, collection,selected);
+	}
 	protected void setChoices(String fieldName,Collection<?> collection){
-		webManager.setChoices(form, fieldName, collection);
+		setChoices(fieldName, collection,null);
 	}
 	
 	protected Object getChoice(String fieldName,Integer index){

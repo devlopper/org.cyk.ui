@@ -142,12 +142,16 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
 	}
 	
-	public void setChoices(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Collection<?> collection){
-		InputChoice<?, ?, ?, ?, ?, ?> inputChoice = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName);
-		@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
+	public void setChoices(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Collection<?> collection,Object selected){
+		InputChoice<Object, ?, ?, ?, ?, ?> inputChoice = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, fieldName);
 		List<SelectItem> list = (List<SelectItem>) inputChoice.getList();
 		list.clear();
 		list.addAll(getSelectItems(inputChoice.getField().getType(), collection));
+		inputChoice.setValue(selected);
+	}
+	public void setChoices(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Collection<?> collection){
+		setChoices(form, fieldName, collection,null);
 	}
 	
 	public Object getChoice(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Integer index){
