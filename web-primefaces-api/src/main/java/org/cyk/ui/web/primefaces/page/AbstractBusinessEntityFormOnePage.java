@@ -222,4 +222,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		webManager.setChoices(form, fieldName, collection);
 	}
 	
+	protected Object getChoice(String fieldName,Integer index){
+		return webManager.getChoice(form, fieldName, index);
+	}
+	
 }
