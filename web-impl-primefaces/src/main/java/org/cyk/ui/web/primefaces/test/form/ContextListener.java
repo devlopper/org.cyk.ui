@@ -60,7 +60,7 @@ public class ContextListener extends AbstractContextListener {
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
 		
-		uiManager.businessEntityInfos(UserAccount.class).setUiEditViewId("useraccountcrudone");
+		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
 		
 		uiManager.getBusinesslisteners().add(new BusinessAdapter(){
 			private static final long serialVersionUID = 4605368263736933413L;

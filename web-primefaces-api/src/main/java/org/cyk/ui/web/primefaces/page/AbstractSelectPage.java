@@ -25,7 +25,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter
+@Getter @Setter //TODO for what FORM is used ?
 public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FORM> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
@@ -37,6 +37,11 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		
+		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+			selectPageListener.initialisationStarted(this);
+		}
+		
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.ok"));
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
@@ -51,12 +56,21 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 				return super.build(field);
 			}
 		});
+		
+		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+			selectPageListener.initialisationEnded(this);
+		}
 	}
 		
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		addInputAdapter(AbstractSelectForm.FIELD_IDENTIFIER,new WebInput.WebInputAdapter(){
+		
+		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+			selectPageListener.afterInitialisationStarted(this);
+		}
+		
+		addInputListener(AbstractSelectForm.FIELD_IDENTIFIER,new WebInput.WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
@@ -67,7 +81,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 			}
 		});
 		
-		addInputAdapter(AbstractSelectForm.FIELD_IDENTIFIABLE,new WebInput.WebInputAdapter(){
+		addInputListener(AbstractSelectForm.FIELD_IDENTIFIABLE,new WebInput.WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -78,6 +92,10 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 				super.validate(facesContext, uiComponent, value);
 			}
 		});
+		
+		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+			selectPageListener.afterInitialisationEnded(this);
+		}
 	}
 	
 	

@@ -33,11 +33,11 @@ public class FormMap extends AbstractBean implements Serializable {
 			
 		}else{
 			if(get(Boolean.TRUE, Crud.CREATE) != null)
-				businessEntityInfos.setUiEditViewId(null);
+				businessEntityInfos.getUserInterface().setEditViewId(null);
 			if(get(Boolean.TRUE, Crud.READ) != null)
-				businessEntityInfos.setUiConsultViewId(null);
+				businessEntityInfos.getUserInterface().setConsultViewId(null);
 			if(get(Boolean.FALSE, Crud.READ) != null)
-				businessEntityInfos.setUiListViewId(null);	
+				businessEntityInfos.getUserInterface().setListViewId(null);	
 		}
 		
 	}

@@ -76,6 +76,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static final Collection<ComponentCreationListener> componentCreationListeners = new ArrayList<>();
 	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
+	private final String selectViewSuffix="SelectView";
 	private final String consultViewSuffix="ConsultView";
 	private final String listViewSuffix="ListView";
 	private final String editViewSuffix="EditView";
@@ -157,7 +158,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
 		for(BusinessEntityInfos infos : applicationBusiness.findBusinessEntitiesInfos()){
 			BUSINESS_ENTITIES_INFOS_MAP.put(infos.getClazz(), infos);
-			infos.setUiLabel(text(infos.getUiLabelId()));//for those registered late
+			infos.getUserInterface().setLabel(text(infos.getUserInterface().getLabelId()));//for those registered late
 		}
 		
 		for(Entry<Class<?>, BusinessEntityInfos> entry : BUSINESS_ENTITIES_INFOS_MAP.entrySet()){
@@ -197,36 +198,38 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public void configBusinessIdentifiable(BusinessEntityInfos businessEntityInfos,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId
-			,String createManyViewId){
-		businessEntityInfos.setUiIconName(iconName);
-		businessEntityInfos.setUiIconExtension(iconExtension);
-		businessEntityInfos.setUiConsultViewId(consultViewId);
-		businessEntityInfos.setUiListViewId(listViewId);
-		businessEntityInfos.setUiEditViewId(editViewId);
-		businessEntityInfos.setUiCreateManyViewId(createManyViewId);
+			,String createManyViewId,String selectViewId){
+		businessEntityInfos.getUserInterface().setIconName(iconName);
+		businessEntityInfos.getUserInterface().setIconExtension(iconExtension);
+		businessEntityInfos.getUserInterface().setConsultViewId(consultViewId);
+		businessEntityInfos.getUserInterface().setListViewId(listViewId);
+		businessEntityInfos.getUserInterface().setEditViewId(editViewId);
+		businessEntityInfos.getUserInterface().setCreateManyViewId(createManyViewId);
+		businessEntityInfos.getUserInterface().setSelectViewId(selectViewId);
 	}
 	
-	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId,String createManyViewId){
+	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId,String createManyViewId,String selectViewId){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
-		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId);
+		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId,selectViewId);
 	}
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
-				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix);
+				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix,
+				businessEntityInfos.getVarName()+selectViewSuffix);
 	}
 	
 	public void useCustomConsultView(Class<?> clazz){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
-		businessEntityInfos.setUiConsultViewId(businessEntityInfos.getVarName()+consultViewSuffix);
+		businessEntityInfos.getUserInterface().setConsultViewId(businessEntityInfos.getVarName()+consultViewSuffix);
 	}
 	
 	public String identifiableConsultViewId(AbstractIdentifiable identifiable){
-		return businessEntityInfos(identifiable.getClass()).getUiConsultViewId();
+		return businessEntityInfos(identifiable.getClass()).getUserInterface().getConsultViewId();
 	}
 	
 	public String identifiableEditViewId(AbstractIdentifiable identifiable){
-		return businessEntityInfos(identifiable.getClass()).getUiEditViewId();
+		return businessEntityInfos(identifiable.getClass()).getUserInterface().getEditViewId();
 	}
 	
 	public String text(String code){

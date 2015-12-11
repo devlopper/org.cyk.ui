@@ -156,18 +156,18 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 								redirectListener = listener; 
 						if(redirectListener==null){
 							logWarning("No listener found to redirect to consult view {} , {} , {}"
-									,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),data);
+									,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),data);
 						}else{
 							redirectListener.redirectToConsultView(data);
 						}
 					}else{
 						logTrace("Redirecting to consult view from page. {} , {} , {}"
-								,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
+								,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
 					
-						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
+						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUserInterface().getConsultViewId(), 
 								new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 							,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
-							UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
+							UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
 							?UIManager.getInstance().getCrudReadParameter():null});
 							
 					}

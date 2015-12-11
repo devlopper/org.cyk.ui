@@ -95,7 +95,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());
 		mobileViewMapping();
-		uiManager.businessEntityInfos(Event.class).setUiEditViewId(webNavigationManager.getOutcomeEventCrudOne());
+		uiManager.businessEntityInfos(Event.class).getUserInterface().setEditViewId(webNavigationManager.getOutcomeEventCrudOne());
 		
 		identifiableConfiguration(event);
 		
@@ -107,14 +107,14 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 				if(configuration==null || configuration.getFormMap()==null){
 					
 				}else{
-					if(StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
-						businessEntityInfos.setUiEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
+						businessEntityInfos.getUserInterface().setEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
 					
-					if(StringUtils.isBlank(businessEntityInfos.getUiConsultViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.READ)!=null)
-						businessEntityInfos.setUiConsultViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getConsultViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.READ)!=null)
+						businessEntityInfos.getUserInterface().setConsultViewId(webNavigationManager.getOutcomeDynamicCrudOne());
 					
-					if(StringUtils.isBlank(businessEntityInfos.getUiListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
-						businessEntityInfos.setUiListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
+						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
 					
 				}
 				

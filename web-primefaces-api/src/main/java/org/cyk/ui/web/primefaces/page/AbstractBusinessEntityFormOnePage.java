@@ -20,7 +20,7 @@ import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.web.api.AjaxBuilder;
-import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
+import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputListener;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
@@ -214,8 +214,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		return inputRowVisibility(form, fieldName, visible);
 	}
 	
-	protected void addInputAdapter(String fieldName,WebInputAdapter inputAdapter){
-		addInputAdapter(form, fieldName, inputAdapter);
+	protected void addInputListener(String fieldName,WebInputListener listener){
+		addInputListener(form, fieldName, listener);
 	}
 
 	protected void setChoices(String fieldName,Collection<?> collection,Object selected){

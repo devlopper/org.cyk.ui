@@ -33,7 +33,7 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
-import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputAdapter;
+import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputListener;
 import org.cyk.ui.web.api.data.collector.control.WebOutput;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Ajax;
@@ -333,12 +333,12 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
-	protected void addInputAdapter(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form,String fieldName,WebInputAdapter inputAdapter){
+	protected void addInputListener(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form,String fieldName,WebInputListener listener){
 		WebInput<?, ?, ?, ?> webInput = ((WebInput<?, ?, ?, ?>)form.findInputByFieldName(fieldName));
-		if(webInput==null)
-			logError("Cannot add web input adapter to field named {} because field not found", fieldName);
+		if(listener==null)
+			logError("Cannot add web input listener to field named {} because field not found", fieldName);
 		else
-			webInput.getWebInputListeners().add(inputAdapter);
+			webInput.getWebInputListeners().add(listener);
 	}
 
 	/**/

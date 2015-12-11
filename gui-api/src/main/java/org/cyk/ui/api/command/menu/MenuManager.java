@@ -211,7 +211,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			
 			Collections.sort(list, new BusinessEntityInfosMenuItemComparator());
 			for(BusinessEntityInfos businessEntityInfos : list){
-				p = commandable(businessEntityInfos.getUiLabelId(), null);
+				p = commandable(businessEntityInfos.getUserInterface().getLabelId(), null);
 				
 				map.get(businessEntityInfos.getClazz().getPackage().getName()).addChild(p);
 				//menu.addCommandable(p);
@@ -320,7 +320,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,IconType iconType){
-		UICommandable commandable = commandable(businessEntityInfos.getUiLabelId(), iconType);
+		UICommandable commandable = commandable(businessEntityInfos.getUserInterface().getLabelId(), iconType);
 		commandable.setBusinessEntityInfos(businessEntityInfos);
 		commandable.setViewType(viewType);
 		return commandable;
@@ -328,10 +328,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
-		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 		else{
-			c.setViewId(businessEntityInfos.getUiEditViewId());
+			c.setViewId(businessEntityInfos.getUserInterface().getEditViewId());
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		}
@@ -347,10 +347,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 		UICommandable c = crud(businessEntityInfos, null, iconType);
 		//c.setLabel(UIManager.getInstance().getLanguageBusiness().findText("list.of",
 		//		new Object[]{UIManager.getInstance().getLanguageBusiness().findText(businessEntityInfos.getUiLabelId())}));
-		if(StringUtils.isEmpty(businessEntityInfos.getUiListViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getListViewId()))
 			c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
 		else{
-			c.setViewId(businessEntityInfos.getUiListViewId());
+			c.setViewId(businessEntityInfos.getUserInterface().getListViewId());
 			c.setCommandRequestType(CommandRequestType.UI_VIEW);
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 		}
@@ -364,7 +364,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
 		UICommandable commandable,p;
 		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
-		commandable = commandable(businessEntityInfos.getUiLabelId(), null);
+		commandable = commandable(businessEntityInfos.getUserInterface().getLabelId(), null);
 		commandable.getChildren().add(p=crudOne(aClass, IconType.ACTION_ADD));
 		p.setLabel(UIManager.getInstance().text("command.item.add"));
 		commandable.getChildren().add(p=crudMany(aClass, IconType.THING_LIST));
@@ -376,14 +376,31 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UICommandable createMany(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
 		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
-		if(StringUtils.isEmpty(businessEntityInfos.getUiCreateManyViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getCreateManyViewId()))
 			;
 		else{
-			c.setViewId(businessEntityInfos.getUiCreateManyViewId());
+			c.setViewId(businessEntityInfos.getUserInterface().getCreateManyViewId());
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		}
 		logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+		return c;
+	}
+	public UICommandable createSelect(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
+		return createSelect(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
+	public UICommandable createSelect(BusinessEntityInfos businessEntityInfos,IconType iconType){
+		UICommandable c = crud(businessEntityInfos,null, iconType);
+		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()));
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectViewId()))
+			;
+		else{
+			c.setViewId(businessEntityInfos.getUserInterface().getSelectViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+		}
+		logTrace("select view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
 	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){

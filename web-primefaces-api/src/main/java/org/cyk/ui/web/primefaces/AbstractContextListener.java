@@ -88,7 +88,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected <ACTOR extends AbstractActor> void registerActorForm(Class<ACTOR> actorClass){
 		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),DefaultActorReadFormModel.class);
 		uiManager.registerConfiguration(configuration);
-		uiManager.businessEntityInfos(actorClass).setUiConsultViewId("actorConsultView");
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setConsultViewId("actorConsultView");
 		
 		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
 		registerBusinessEntityFormManyPageListener(actorClass,getActorCrudManyPageAdapter(actorClass));

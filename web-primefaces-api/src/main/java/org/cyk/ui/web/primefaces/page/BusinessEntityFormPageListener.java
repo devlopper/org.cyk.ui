@@ -69,11 +69,11 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 			if(identifiable!=null){
 				BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiable.getClass());
 				logTrace("Redirecting to consult view from listener : {} , {} , {}"
-						,businessEntityInfos.getUiConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
-				WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUiConsultViewId(), 
+						,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
+				WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUserInterface().getConsultViewId(), 
 						new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
 					,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier(),
-					UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUiEditViewId().equals(businessEntityInfos.getUiConsultViewId())
+					UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
 					?UIManager.getInstance().getCrudReadParameter():null});
 			}
 		}

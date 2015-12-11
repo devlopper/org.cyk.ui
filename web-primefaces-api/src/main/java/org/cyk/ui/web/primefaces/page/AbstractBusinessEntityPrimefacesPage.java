@@ -50,7 +50,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 				formModelClass = fmc;
 		}
 		
-		contentTitle = text(businessEntityInfos.getUiLabelId());
+		contentTitle = text(businessEntityInfos.getUserInterface().getLabelId());
 		
 		for(BusinessEntityFormPageListener<?> listener : getListeners())
 			listener.initialisationEnded(this); 
@@ -99,7 +99,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType){
-		return addDetailsMenuCommandable(identifier,labelId, iconType, businessEntityInfos.getUiConsultViewId());
+		return addDetailsMenuCommandable(identifier,labelId, iconType, businessEntityInfos.getUserInterface().getConsultViewId());
 	}
 	protected UICommandable addDetailsMenuCommandables(String labelId,IconType iconType){
 		return addDetailsMenuCommandable(labelId,labelId, iconType);

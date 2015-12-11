@@ -12,6 +12,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
@@ -31,6 +34,7 @@ import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.PrimefacesPageListener;
 import org.cyk.ui.web.primefaces.page.ReportPageListener;
+import org.cyk.ui.web.primefaces.page.SelectPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.primefaces.context.RequestContext;
@@ -40,9 +44,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
@@ -66,6 +67,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
 	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
+	private final Collection<SelectPageListener<?>> selectPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
@@ -215,6 +217,15 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		Collection<ConsultPageListener<?>> results = new ArrayList<>();
 		if(aClass!=null)
 			for(ConsultPageListener<?> listener : consultPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add(listener);
+		return results;
+	}
+	
+	public Collection<SelectPageListener<?>> getSelectPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<SelectPageListener<?>> results = new ArrayList<>();
+		if(aClass!=null)
+			for(SelectPageListener<?> listener : selectPageListeners)
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
 					results.add(listener);
 		return results;

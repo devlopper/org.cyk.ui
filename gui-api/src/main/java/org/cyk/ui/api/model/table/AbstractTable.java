@@ -187,7 +187,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		//globalFilter = lazyLoad;
 		if(globalFilter==null)
 			globalFilter = identifiableConfiguration==null?lazyLoad:identifiableConfiguration.getGlobalFiltering();
-		inplaceEdit = businessEntityInfos==null?Boolean.FALSE:StringUtils.isBlank(businessEntityInfos.getUiEditViewId()) /*|| !lazyLoad*/;
+		inplaceEdit = businessEntityInfos==null?Boolean.FALSE:StringUtils.isBlank(businessEntityInfos.getUserInterface().getEditViewId()) /*|| !lazyLoad*/;
 		if(showEditColumn==null)
 			showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
 		if(showAddRemoveColumn==null)

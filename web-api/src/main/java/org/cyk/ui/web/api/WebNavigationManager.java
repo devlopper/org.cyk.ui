@@ -268,7 +268,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	/* */
 	
 	public String createOneUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic){
-		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudOne:businessEntityInfos.getUiEditViewId(), new Object[]{
+		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudOne:businessEntityInfos.getUserInterface().getEditViewId(), new Object[]{
 				webManager.getRequestParameterClass(),uiManager.keyFromClass(businessEntityInfos)
 				,uiManager.getCrudParameter(),uiManager.getCrudCreateParameter()
 			});
@@ -279,7 +279,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String createManyUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic,Boolean actionOutcome,Boolean partial){
-		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudMany:businessEntityInfos.getUiListViewId(), new Object[]{
+		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudMany:businessEntityInfos.getUserInterface().getListViewId(), new Object[]{
 				webManager.getRequestParameterClass(),uiManager.keyFromClass(businessEntityInfos)
 			},actionOutcome,partial);
 	}
@@ -338,21 +338,21 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public String editOneOutcome(Class<? extends AbstractIdentifiable> aClass){
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		//IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass);
-		if(StringUtils.isEmpty(businessEntityInfos.getUiEditViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 			//if(Boolean.TRUE.equals(identifiableConfiguration.getFileSupport()))
 				//return outcomeDynamicCrudOneWithFileSupport;
 			//else
 				return outcomeDynamicCrudOne;
 		else
-			return businessEntityInfos.getUiEditViewId();
+			return businessEntityInfos.getUserInterface().getEditViewId();
 	}
 	
 	public String consultOneOutcome(Class<? extends AbstractIdentifiable> aClass){
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
-		if(StringUtils.isEmpty(businessEntityInfos.getUiConsultViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getConsultViewId()))
 			return outcomeDynamicCrudOne;
 		else
-			return businessEntityInfos.getUiConsultViewId();
+			return businessEntityInfos.getUserInterface().getConsultViewId();
 	}
 	
 	public String reportUrl(AbstractIdentifiable identifiable,String reportIdentifier,String fileExtension,Boolean print){
