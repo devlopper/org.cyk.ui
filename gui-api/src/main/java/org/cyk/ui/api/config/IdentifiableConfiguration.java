@@ -22,13 +22,14 @@ public class IdentifiableConfiguration extends Clazz implements Serializable {
 
 	public IdentifiableConfiguration(Class<? extends AbstractIdentifiable> identifiableClass,
 			Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,
-			Class<?> readOneFormModelClass) {
+			Class<?> readOneFormModelClass,Class<?> queryFormModelClass) {
 		super(identifiableClass);
-		setForms(editOneFormModelClass, readOneFormModelClass);
+		setForms(editOneFormModelClass, readOneFormModelClass,queryFormModelClass);
 	}
 	
-	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass){
-		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass);
+	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass
+			,Class<?> queryFormModelClass){
+		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass,queryFormModelClass);
 	}
 	
 	@SuppressWarnings("unchecked")

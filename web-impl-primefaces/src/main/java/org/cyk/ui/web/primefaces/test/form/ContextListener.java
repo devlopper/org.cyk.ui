@@ -29,6 +29,7 @@ import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
+import org.cyk.ui.web.primefaces.test.business.ActorQueryFormModel;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
@@ -46,6 +47,12 @@ public class ContextListener extends AbstractContextListener {
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
 		
+	}
+	
+	@Override
+	public void contextInitialized(ServletContextEvent event) {
+		super.contextInitialized(event);
+		primefacesManager.getSelectPageListeners().add(new ActorSelectPageAdapter());
 	}
 	
 	@Override
@@ -119,6 +126,13 @@ public class ContextListener extends AbstractContextListener {
 			return (AbstractActorConsultPageAdapter<ACTOR>) new ActorConsultPageAdapter();
 		}
 		return super.getActorConsultPageAdapter(actorClass);
+	}
+	
+	@Override
+	protected Class<?> getQueryFormModelClass(Class<?> clazz) {
+		if(Actor.class.equals(clazz))
+			return ActorQueryFormModel.class;
+		return super.getQueryFormModelClass(clazz);
 	}
 	
 	/**/

@@ -4,21 +4,37 @@ import java.io.Serializable;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 
-public interface SelectPageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener<ENTITY> {
+import lombok.Getter;
+import lombok.Setter;
+
+public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener<ENTITY> {
 
 	/**/
 	
-	public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener.Adapter<ENTITY_TYPE> implements SelectPageListener<ENTITY_TYPE>,Serializable {
+	ENTITY findByIdentifier(IDENTIFIER_TYPE identifier);
+	
+	Type getType();
+	void setType(Type type);
+	
+	@Getter @Setter
+	public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements SelectPageListener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
 
 		private static final long serialVersionUID = -7944074776241690783L;
 
+		protected Type type = Type.IDENTIFIABLE;
+		
 		public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
 			super(entityTypeClass);
 		}
 
+		@Override
+		public ENTITY_TYPE findByIdentifier(IDENTIFIER_TYPE identifier) {
+			return null;
+		}
+		
 		/**/
 		
-		public static class Default<ENTITY extends AbstractIdentifiable> extends SelectPageListener.Adapter<ENTITY> implements Serializable {
+		public static class Default<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends SelectPageListener.Adapter<ENTITY,IDENTIFIER_TYPE> implements Serializable {
 
 			private static final long serialVersionUID = -4255109770974601234L;
 
@@ -28,5 +44,9 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable> extends
 				
 		}
 	}
+	
+	public static enum Type{IDENTIFIER,IDENTIFIABLE}
+
+	
 	
 }

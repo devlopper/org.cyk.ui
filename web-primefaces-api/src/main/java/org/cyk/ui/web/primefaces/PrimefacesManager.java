@@ -67,7 +67,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
 	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
-	private final Collection<SelectPageListener<?>> selectPageListeners = new ArrayList<>();
+	private final Collection<SelectPageListener<?,?>> selectPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
@@ -222,12 +222,13 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		return results;
 	}
 	
-	public Collection<SelectPageListener<?>> getSelectPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<SelectPageListener<?>> results = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	public Collection<SelectPageListener<?,Object>> getSelectPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<SelectPageListener<?,Object>> results = new ArrayList<>();
 		if(aClass!=null)
-			for(SelectPageListener<?> listener : selectPageListeners)
+			for(SelectPageListener<?,?> listener : selectPageListeners)
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add(listener);
+					results.add((SelectPageListener<?, Object>) listener);
 		return results;
 	}
 	

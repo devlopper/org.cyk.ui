@@ -2,75 +2,70 @@ package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.AbstractQueryFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
-import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
-import org.cyk.utility.common.annotation.user.interfaces.InputText;
-import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter //TODO for what FORM is used ?
-public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FORM> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
-	public static enum Type{IDENTIFIER,IDENTIFIABLE}
-	
-	protected Type type = Type.IDENTIFIABLE;
+	private SelectPageListener.Type type = SelectPageListener.Type.IDENTIFIABLE;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
-		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationStarted(this);
-		}
 		
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.ok"));
+		for(SelectPageListener<?,?> selectPageListener : getListeners()){
+			SelectPageListener.Type v = selectPageListener.getType();
+			if(v!=null)
+				type = v;
+		}
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			@Override
 			public Boolean build(Field field) {
 				switch(type){
 				case IDENTIFIER:
-					return AbstractSelectForm.FIELD_IDENTIFIER.equals(field.getName());
+					return AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName());
 				case IDENTIFIABLE:
-					return AbstractSelectForm.FIELD_IDENTIFIABLE.equals(field.getName());
+					return AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName());
 				}
 				return super.build(field);
 			}
 		});
 		
-		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationEnded(this);
-		}
 	}
 		
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		
-		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.afterInitialisationStarted(this);
-		}
 		
-		addInputListener(AbstractSelectForm.FIELD_IDENTIFIER,new WebInput.WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIER,new WebInput.WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
@@ -81,7 +76,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 			}
 		});
 		
-		addInputListener(AbstractSelectForm.FIELD_IDENTIFIABLE,new WebInput.WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIABLE,new WebInput.WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -93,45 +88,57 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable,FOR
 			}
 		});
 		
-		for(SelectPageListener<?> selectPageListener : primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz())){
+		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.afterInitialisationEnded(this);
-		}
 	}
 	
+	@Override
+	protected Class<?> __formModelClass__() {
+		if(identifiableConfiguration==null || identifiableConfiguration.getFormMap()==null || identifiableConfiguration.getFormMap().getQuery()==null){
+			logError("No query form explicitly defined for entity {}",businessEntityInfos.getClazz());
+			return null;
+		}
+		return identifiableConfiguration.getFormMap().getQuery();
+	}
 	
+	@Override
+	protected Object data(Class<?> aClass) {
+		return newInstance(aClass);
+	}
 	
 	@Override
 	protected Crud crudFromRequestParameter() {
 		return Crud.CREATE;
 	}
-	@Override
-	protected BusinessEntityInfos fetchBusinessEntityInfos() {
-		return uiManager.businessEntityInfos(identifiableClass());
-	}
-	
-	@Override
-	protected Object data(Class<?> aClass) {
-		return newInstance(__formModelClass__());
-	}
-	
+
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		WebNavigationManager.getInstance().redirectToDynamicConsultOne(identifiable);
 	}
 	
-	protected abstract Class<ENTITY> identifiableClass();
-	protected abstract ENTITY find(String identifier);
+	protected Class<ENTITY> identifiableClass(){
+		Class<ENTITY> identifiableClass = null;
+		for(SelectPageListener<?,?> selectPageListener : getListeners()){
+			@SuppressWarnings("unchecked")
+			Class<ENTITY> v = (Class<ENTITY>) selectPageListener.getEntityTypeClass();
+			if(v!=null)
+				identifiableClass = v;
+		}
+		return identifiableClass;
+	}
+	protected ENTITY find(Object identifier){
+		ENTITY entity = null;
+		for(SelectPageListener<?,Object> selectPageListener : getListeners()){
+			@SuppressWarnings("unchecked")
+			ENTITY v = (ENTITY) selectPageListener.findByIdentifier(identifier);
+			if(v!=null)
+				entity = v;
+		}
+		return entity;
+	}
 	
-	@Getter @Setter
-	public static abstract class AbstractSelectForm<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBean implements Serializable{
-		private static final long serialVersionUID = -4741435164709063863L;
-		
-		@Input @InputText @NotNull protected String identifier;
-		@Input @InputChoice @InputOneCombo @NotNull protected IDENTIFIABLE identifiable;
-		
-		public static final String FIELD_IDENTIFIER = "identifier";
-		public static final String FIELD_IDENTIFIABLE = "identifiable";
-		
+	private Collection<SelectPageListener<?,Object>> getListeners(){
+		return primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz());
 	}
 	
 }

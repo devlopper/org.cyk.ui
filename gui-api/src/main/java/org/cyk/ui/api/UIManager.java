@@ -165,7 +165,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class,null);
 		registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
@@ -215,8 +215,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
-				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix,
-				businessEntityInfos.getVarName()+selectViewSuffix);
+				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix
+				,/*businessEntityInfos.getVarName()+selectViewSuffix*/null);
 	}
 	
 	public void useCustomConsultView(Class<?> clazz){

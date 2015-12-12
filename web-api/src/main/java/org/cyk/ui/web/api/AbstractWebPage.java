@@ -335,7 +335,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	protected void addInputListener(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form,String fieldName,WebInputListener listener){
 		WebInput<?, ?, ?, ?> webInput = ((WebInput<?, ?, ?, ?>)form.findInputByFieldName(fieldName));
-		if(listener==null)
+		if(webInput==null)
 			logError("Cannot add web input listener to field named {} because field not found", fieldName);
 		else
 			webInput.getWebInputListeners().add(listener);

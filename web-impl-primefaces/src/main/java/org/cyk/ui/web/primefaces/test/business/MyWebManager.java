@@ -11,7 +11,6 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
-import org.cyk.ui.web.primefaces.test.form.ActorFormModel;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 
@@ -41,6 +40,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		//systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(Person.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
+		systemMenu.getBusinesses().add(menuManager.createSelect(Actor.class, IconType.PERSON));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		

@@ -10,16 +10,20 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class FormMap extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6946914245453887414L;
 
 	private final Map<Crud,Map<String, Class<?>>> one = new HashMap<>() , many = new HashMap<>();
+	@Getter @Setter private Class<?> query;
 	
 	/**/
 	
 	public FormMap(Class<? extends AbstractIdentifiable> identifiableClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,
-			Class<?> readOneFormModelClass) {
+			Class<?> readOneFormModelClass,Class<?> queryFormModelClass) {
 		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiableClass);
 		
 		put(Boolean.TRUE, Crud.CREATE, editOneFormModelClass);
@@ -39,6 +43,8 @@ public class FormMap extends AbstractBean implements Serializable {
 			if(get(Boolean.FALSE, Crud.READ) != null)
 				businessEntityInfos.getUserInterface().setListViewId(null);	
 		}
+		
+		this.query = queryFormModelClass;
 		
 	}
 	

@@ -60,6 +60,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public static final Boolean MOBILE_PAGE_REVERSE=Boolean.TRUE;
 	public static final String PAGE_CRUD_MANY = "/private/__tools__/crud/crudmany.jsf";
 	public static final String PAGE_CRUD_ONE = "/private/__tools__/crud/crudone.jsf";
+	public static final String PAGE_SELECT = "/private/__tools__/select.jsf";
 	
 	/**
 	 * 
@@ -88,6 +89,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	@Getter private String outcomeDynamicCrudOne = "dynamicCrudOne";
 	@Getter private String outcomeDynamicCrudMany = "dynamicCrudMany";
+	@Getter private String outcomeDynamicSelect = "dynamicSelect";
 	@Getter private String outcomeLogout = "useraccountlogout";
 	@Getter private String outcomeEditActorRelationship = "editActorRelationship";
 	@Getter private String outcomeEditActorMedicalInformations = "editMedicalInformations";

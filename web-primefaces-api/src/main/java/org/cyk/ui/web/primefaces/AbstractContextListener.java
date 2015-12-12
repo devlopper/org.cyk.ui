@@ -13,6 +13,7 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
+import org.cyk.ui.api.model.AbstractActorQueryFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
@@ -86,9 +87,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	
 	protected <ACTOR extends AbstractActor> void registerActorForm(Class<ACTOR> actorClass){
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),DefaultActorReadFormModel.class);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),getReadFormModelClass(actorClass)
+				,getQueryFormModelClass(actorClass));
 		uiManager.registerConfiguration(configuration);
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setConsultViewId("actorConsultView");
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectViewId(webNavigationManager.getOutcomeDynamicSelect());
 		
 		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
 		registerBusinessEntityFormManyPageListener(actorClass,getActorCrudManyPageAdapter(actorClass));
@@ -110,6 +113,18 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
 			return AbstractActorEditFormModel.Default.class;
+		return null;
+	}
+	
+	protected Class<?> getReadFormModelClass(Class<?> clazz){
+		if(AbstractActor.class.isAssignableFrom(clazz))
+			return DefaultActorReadFormModel.class;
+		return null;
+	}
+	
+	protected Class<?> getQueryFormModelClass(Class<?> clazz){
+		if(AbstractActor.class.isAssignableFrom(clazz))
+			return AbstractActorQueryFormModel.Default.class;
 		return null;
 	}
 	

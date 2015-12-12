@@ -24,7 +24,6 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.CommonUtils;
-import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements 
@@ -49,13 +48,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@SuppressWarnings("unchecked")
 	@Override
 	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
-		FieldOverride fieldOverride = data.getClass().getAnnotation(FieldOverride.class);
-		Class<?> type = null;
-		if(fieldOverride==null || !field.getName().equals(fieldOverride.name())){
-			type = field.getType();
-		}else{
-			type = fieldOverride.type();
-		}
+		Class<?> type = UIProvider.getInstance().getFieldType(data.getClass(), field);
 		
 		if(List.class.equals(type))
 	        type = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
@@ -63,9 +56,13 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		Boolean itemWrapper = itemWrapper(inputChoice);
 		
 		if(AbstractIdentifiable.class.isAssignableFrom(type)){
-			for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
-				AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
-				list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+			if(AbstractIdentifiable.class.equals(type)){
+				logError("Cannot find data from entity {}", type);
+			}else{
+				for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
+					AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
+					list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+				}
 			}
 		}else if(type.isEnum()){
 			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())

@@ -15,13 +15,23 @@ import org.cyk.ui.test.model.Actor;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 
-@Singleton @Deployment(initialisationType=InitialisationType.EAGER)
+@Singleton @Deployment(initialisationType=InitialisationType.EAGER) @Getter
 public class GuiBusinessLayer extends AbstractBusinessLayer implements Serializable {
 
 	private static final long serialVersionUID = -462780912429013933L;
 
 	@Inject private ActorBusiness actorBusiness;
-	@Inject @Getter private GuiReportRepository reportRepository;
+	@Inject private GuiReportRepository reportRepository;
+	
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+	}
+	
+	public static GuiBusinessLayer getInstance() {
+		return INSTANCE;
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -46,5 +56,7 @@ public class GuiBusinessLayer extends AbstractBusinessLayer implements Serializa
 	protected void setConstants() {
 		
 	}
+	
+	private static GuiBusinessLayer INSTANCE;
 
 }

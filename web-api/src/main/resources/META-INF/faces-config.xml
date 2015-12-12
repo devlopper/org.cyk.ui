@@ -82,6 +82,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>dynamicSelect</from-outcome>
+			<to-view-id>/private/__tools__/select.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>toolscalendar</from-outcome>
 			<to-view-id>/private/__tools__/event/agenda.xhtml</to-view-id>
 			<redirect />
