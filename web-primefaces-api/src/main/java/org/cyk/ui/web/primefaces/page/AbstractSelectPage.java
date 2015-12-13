@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
@@ -32,6 +33,8 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 	private static final long serialVersionUID = -7392513843271510254L;
 
 	private SelectPageListener.Type type = SelectPageListener.Type.IDENTIFIABLE;
+	
+	private String actionIdentifier;
 	
 	@Override
 	protected void initialisation() {
@@ -137,7 +140,12 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 
 	@Override
 	public void serve(UICommand command, Object parameter) {
-		WebNavigationManager.getInstance().redirectToDynamicConsultOne(identifiable);
+		if(StringUtils.isBlank(actionIdentifier)){
+			WebNavigationManager.getInstance().redirectToDynamicConsultOne(identifiable);
+		}else{
+			for(SelectPageListener<?,?> selectPageListener : getListeners())
+				selectPageListener.serve(parameter,actionIdentifier);
+		}	
 	}
 	
 	protected Class<ENTITY> identifiableClass(){

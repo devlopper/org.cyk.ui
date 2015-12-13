@@ -16,6 +16,8 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 	Type getType();
 	void setType(Type type);
 	
+	void serve(Object data, String actionIdentifier);
+	
 	@Getter @Setter
 	public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements SelectPageListener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
 
@@ -33,6 +35,9 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 			return null;
 		}
 		
+		@Override
+		public void serve(Object data, String actionIdentifier) {}
+		
 		/**/
 		
 		public static class Default<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends SelectPageListener.Adapter<ENTITY,IDENTIFIER_TYPE> implements Serializable {
@@ -47,6 +52,8 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 	}
 	
 	public static enum Type{IDENTIFIER,IDENTIFIABLE,CUSTOM}
+
+	
 
 	
 	
