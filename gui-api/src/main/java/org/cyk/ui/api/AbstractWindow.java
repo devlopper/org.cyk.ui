@@ -4,12 +4,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
@@ -18,6 +17,7 @@ import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -30,7 +30,11 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -231,6 +235,20 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Override
 	public Boolean getShowWindowHierachyMenu() {
 		return windowHierachyMenu!=null && !windowHierachyMenu.getCommandables().isEmpty();
+	}
+	
+	protected String formatUsingBusiness(Object[] objects,String separator){
+		List<String> list = new ArrayList<>();
+		for(Object object : objects)
+			list.add(RootBusinessLayer.getInstance().getFormatterBusiness().format(object));
+		return StringUtils.join(list,separator);
+	}
+	protected String formatUsingBusiness(Object[] objects){
+		return formatUsingBusiness(objects, Constant.CHARACTER_SLASH.toString());
+	}
+	
+	protected String formatUsingBusiness(Object object){
+		return formatUsingBusiness(new Object[]{object});
 	}
 
 }
