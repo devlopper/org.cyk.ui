@@ -183,49 +183,49 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		return null;
 	}
 	
-	protected AjaxBuilder createAjaxBuilder(String fieldName){
+	public AjaxBuilder createAjaxBuilder(String fieldName){
 		return super.createAjaxBuilder(form, fieldName);
 	}
 	
-	protected void setFieldValue(String inputName,Object value){
+	public void setFieldValue(String inputName,Object value){
 		setFieldValue(form, inputName, value);
 	}
 	
-	protected <TYPE> TYPE fieldValue(String fieldName,Class<TYPE> typeClass,TYPE nullValue){
+	public <TYPE> TYPE fieldValue(String fieldName,Class<TYPE> typeClass,TYPE nullValue){
 		return fieldValue(form,fieldName, typeClass,nullValue);
 	}
 	
-	protected BigDecimal bigDecimalValue(String fieldName,BigDecimal nullValue){
+	public BigDecimal bigDecimalValue(String fieldName,BigDecimal nullValue){
 		return bigDecimalValue(form,fieldName,nullValue);
 	}
-	protected BigDecimal bigDecimalValue(String fieldName){
+	public BigDecimal bigDecimalValue(String fieldName){
 		return bigDecimalValue(fieldName, BigDecimal.ZERO);
 	}
-	protected String stringValue(String fieldName,String nullValue){
+	public String stringValue(String fieldName,String nullValue){
 		return stringValue(form,fieldName,nullValue);
 	}
-	protected String stringValue(String fieldName){
+	public String stringValue(String fieldName){
 		return stringValue(fieldName,"");
 	}
-	protected Date dateValue(String fieldName,Date nullValue){
+	public Date dateValue(String fieldName,Date nullValue){
 		return dateValue(form,fieldName,nullValue);
 	}
-	protected String inputRowVisibility(String fieldName,Boolean visible){
+	public String inputRowVisibility(String fieldName,Boolean visible){
 		return inputRowVisibility(form, fieldName, visible);
 	}
 	
-	protected void addInputListener(String fieldName,WebInputListener listener){
+	public void addInputListener(String fieldName,WebInputListener listener){
 		addInputListener(form, fieldName, listener);
 	}
 
-	protected void setChoices(String fieldName,Collection<?> collection,Object selected){
+	public void setChoices(String fieldName,Collection<?> collection,Object selected){
 		webManager.setChoices(form, fieldName, collection,selected);
 	}
-	protected void setChoices(String fieldName,Collection<?> collection){
+	public void setChoices(String fieldName,Collection<?> collection){
 		setChoices(fieldName, collection,null);
 	}
 	
-	protected Object getChoice(String fieldName,Integer index){
+	public Object getChoice(String fieldName,Integer index){
 		return webManager.getChoice(form, fieldName, index);
 	}
 	

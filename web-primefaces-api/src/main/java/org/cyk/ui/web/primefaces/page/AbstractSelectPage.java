@@ -6,16 +6,22 @@ import java.util.Collection;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -44,13 +50,31 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			@Override
 			public Boolean build(Field field) {
-				switch(type){
-				case IDENTIFIER:
-					return AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName());
-				case IDENTIFIABLE:
-					return AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName());
+				if(type==null){
+					return super.build(field);
+				}else
+					switch(type){
+					case IDENTIFIER:
+						return AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName());
+					case IDENTIFIABLE:
+						return !AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName())/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
+					case CUSTOM:
+						return super.build(field);
+					default:
+						return super.build(field);
+					}
+			}
+			@Override
+			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+				if(AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())){
+					Class<?> aClass = null;
+					for(SelectPageListener<?,?> selectPageListener : getListeners())
+						if(selectPageListener.getEntityTypeClass()!=null)
+							aClass = selectPageListener.getEntityTypeClass();
+					if(aClass!=null)
+						return languageBusiness.findClassLabelText(aClass);
 				}
-				return super.build(field);
+				return super.fiedLabel(controlSet, field);
 			}
 		});
 		

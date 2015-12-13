@@ -554,5 +554,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		*/
 	}
 	
+	public void useDynamicSelectView(Class<?> clazz){
+		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(clazz);
+		businessEntityInfos.getUserInterface().setSelectViewId(outcomeDynamicSelect);
+	}
+	
 	
 }

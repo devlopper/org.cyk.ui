@@ -29,6 +29,7 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 
 		@Override
 		public ENTITY_TYPE findByIdentifier(IDENTIFIER_TYPE identifier) {
+			logWarning("findByIdentifier has not been override , so it will always return null");
 			return null;
 		}
 		
@@ -45,7 +46,7 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 		}
 	}
 	
-	public static enum Type{IDENTIFIER,IDENTIFIABLE}
+	public static enum Type{IDENTIFIER,IDENTIFIABLE,CUSTOM}
 
 	
 	

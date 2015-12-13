@@ -116,6 +116,9 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
 						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
 					
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
+						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicSelect());	
+					
 				}
 				
 			}

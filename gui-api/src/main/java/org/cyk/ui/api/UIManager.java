@@ -103,6 +103,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private Locale locale = Locale.FRENCH;
 	
 	/* constants */
+	private final String actionIdentifierParameter = "actid";
 	private final String userAccountParameter = "ridp";
 	private final String reportIdentifierParameter = "ridp";
 	private final String formModelParameter = "formmodel";
@@ -216,7 +217,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
 				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix
-				,/*businessEntityInfos.getVarName()+selectViewSuffix*/null);
+				,businessEntityInfos.getVarName()+selectViewSuffix);
 	}
 	
 	public void useCustomConsultView(Class<?> clazz){

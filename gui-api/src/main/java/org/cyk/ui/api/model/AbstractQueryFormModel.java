@@ -21,7 +21,7 @@ public abstract class AbstractQueryFormModel<IDENTIFIABLE extends AbstractIdenti
 	private static final long serialVersionUID = -4741435164709063863L;
 	
 	@Input @InputText @NotNull protected IDENTIFIER identifier;
-	@Input @InputChoice @InputOneCombo @NotNull protected IDENTIFIABLE identifiable;
+	@Input @InputChoice(load=false) @InputOneCombo @NotNull protected IDENTIFIABLE identifiable;
 	
 	public static final String FIELD_IDENTIFIER = "identifier";
 	public static final String FIELD_IDENTIFIABLE = "identifiable";

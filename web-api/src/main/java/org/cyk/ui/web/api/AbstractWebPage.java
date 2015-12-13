@@ -256,7 +256,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	
 	/**/
 	
-	protected AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
+	public AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
 		return new AjaxBuilder().form(form).fieldName(fieldName).event(AjaxListener.EVENT_CHANGE);
 	}
 	

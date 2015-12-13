@@ -168,7 +168,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@Override
-	protected AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
+	public AjaxBuilder createAjaxBuilder(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName){
 		return super.createAjaxBuilder(form, fieldName).classSelectorSymbol(Constant.CHARACTER_AT.toString());
 	}
 	
