@@ -42,8 +42,8 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		
 		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationStarted(this);
-		
-		form.setShowCommands(Boolean.TRUE);
+		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
+		//form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.ok"));
 		for(SelectPageListener<?,?> selectPageListener : getListeners()){
 			SelectPageListener.Type v = selectPageListener.getType();
