@@ -244,21 +244,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public String textInputValueRequired(String nameId){
 		return languageBusiness.findText("input.value.required", new Object[]{text(nameId)});
 	}
-	/*
-	public String textOfClass(Class<?> aClass){
-		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
-		if(businessEntityInfos==null)
-			return "###???###";
-		return text(businessEntityInfos.getUiLabelId());
-	}*/
-	
-	/*
-	public String uiLabelIdOfClass(Class<?> aClass){
-		BusinessEntityInfos businessEntityInfos = businessEntityInfos(aClass);
-		if(businessEntityInfos==null)
-			return "?UNKNOWN_UI_ID-"+aClass.getSimpleName()+"?";
-		return businessEntityInfos.getUiLabelId();
-	}*/
 	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
 		for(BusinessEntityInfos infos : theClasses){
@@ -350,16 +335,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public Integer collectionSize(Collection<?> collection){
 		return collection.size();
 	}
-	
-	/**/
-	/*
-	public String textAnnotationValue(Field field,Text text) {
-		return languageBusiness.findAnnotationText(field, text);
-	}*/
-	/*
-	public String fieldLabel(Field field) {
-		return languageBusiness.findFieldLabelText(field);
-	}*/
 		
 	/**/
 	public static abstract class AbstractLoadDataMethod<T> extends AbstractMethod<Collection<T>, Class<T>> {

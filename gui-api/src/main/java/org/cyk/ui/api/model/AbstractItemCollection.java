@@ -28,7 +28,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE>> itemCollectionListeners = new ArrayList<>();
-	protected Boolean autoWrite=Boolean.TRUE;
+	protected Boolean autoWrite=Boolean.TRUE,showApplicable=Boolean.FALSE;
 	protected UICommandable addCommandable,deleteCommandable;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
