@@ -97,7 +97,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	public Collection<IDENTIFIABLE> getIdentifiables(){
 		Collection<IDENTIFIABLE> collection = new ArrayList<>();
 		for(AbstractItemCollectionItem<IDENTIFIABLE> item : items){
-			collection.add(item.getIdentifiable());
+			if(Boolean.TRUE.equals(item.getApplicable()))
+				collection.add(item.getIdentifiable());
 		}
 		return collection;
 	}

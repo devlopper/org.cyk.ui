@@ -20,8 +20,6 @@ public abstract class AbstractWebItemCollection<TYPE extends AbstractItemCollect
 	
 	protected String identifier;
 	
-	protected String applicableUpdate;
-	
 	public AbstractWebItemCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
 		super(itemClass,identifiableClass);
 		this.identifier = identifier;

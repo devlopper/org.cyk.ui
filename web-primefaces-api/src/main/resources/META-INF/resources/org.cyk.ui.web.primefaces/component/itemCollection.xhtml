@@ -27,18 +27,12 @@
        		
        		<cc:insertChildren/>
        		
-       		<p:column width="10%" headerText="#{cc.value.applicableValueQuestion.label}" >
-       			<h:selectBooleanCheckbox value="#{item.applicable}" >
+       		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.applicableValueQuestion.rendered}">
+       			<p:selectBooleanCheckbox value="#{item.applicable}" >
 					<f:selectItems value="#{cc.value.applicableValueQuestion.answers}" />
 					<p:ajax event="change" update="#{cc.value.applicableValueQuestion.update}" />
-				</h:selectBooleanCheckbox>	
+				</p:selectBooleanCheckbox>	
        		</p:column>
-       		
-       		<!--p:column width="10%" headerText="#{uiManager.text('applicable')}" rendered="#{cc.value.showApplicable}">
-       			<p:selectOneButton value="#{item.applicable}" >
-					<f:selectItems value="#{cc.value.applicableItems}" />
-				</p:selectOneButton>	
-       		</p:column-->
        		
        		<p:column width="4%" rendered="#{cc.value.deleteCommandable.rendered}">
        			<!--p:commandButton title="#{uiManager.text('command.delete')}" icon="ui-icon-minus" action="#{cc.value.delete(item)}" /-->
