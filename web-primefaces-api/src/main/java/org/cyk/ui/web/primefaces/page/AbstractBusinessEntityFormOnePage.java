@@ -145,11 +145,15 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 						AbstractFormModel<?> formModel = (AbstractFormModel<?>) parameter;
 						formModel.write();
 						for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
+							if(Boolean.TRUE.equals(itemCollection.getAutoWrite())){
+								itemCollection.write();
+							}
 							//TODO do write here in case we do not auto math input as fields
-							for(AbstractItemCollectionItem<?> item : itemCollection.getItems()){
+							/*for(AbstractItemCollectionItem<?> item : itemCollection.getItems()){
+								System.out.println("2 : ");
 								item.getForm().getSelectedFormData().applyValuesToFields();
 								item.write();
-							}
+							}*/
 						}
 					}
 				}
