@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -17,8 +14,11 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.utility.common.cdi.AbstractBean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter @Setter
-public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBean implements Serializable {
+public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -3543754685060813767L;
 
@@ -27,8 +27,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
-	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE>> itemCollectionListeners = new ArrayList<>();
-	protected Boolean autoWrite=Boolean.TRUE,showApplicable=Boolean.FALSE;
+	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
+	protected Boolean autoWrite=Boolean.TRUE;
+	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
@@ -56,12 +57,15 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				delete((TYPE) parameter);
 			}
 		});
+		
+		applicableValueQuestion = createApplicableValueQuestion();
+		
 	}
 	
 	public void add(IDENTIFIABLE identifiable){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
 		
 		items.add(instance);
@@ -72,7 +76,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			instance.getForm().setDynamic(Boolean.TRUE);
 			instance.getForm().build();
 		}
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.add(this,instance);
 		updateTable();
 	}
@@ -83,7 +87,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public void delete(TYPE item){
 		items.remove(item);
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);
 		updateTable();
 	}
@@ -99,9 +103,13 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 	
 	public void write(){
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE> listener : itemCollectionListeners)
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			for(TYPE item : items)
 				listener.write(item);
+	}
+	
+	protected AbstractApplicableValueQuestion<SELECT_ITEM> createApplicableValueQuestion(){
+		return null;
 	}
 
 }

@@ -7,9 +7,6 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -30,7 +27,6 @@ import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.ui.api.model.ItemCollectionListener;
-import org.cyk.ui.api.model.ItemCollectionListener.ItemCollectionAdapter;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
@@ -55,6 +51,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl> implements Serializable {
 
@@ -342,13 +341,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
-			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE> listener){
+			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener){
 		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
 		form.getItemCollections().add(collection);
-		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE,IDENTIFIABLE>(){
+		collection.getItemCollectionListeners().add(new ItemCollectionListener.Adapter<TYPE,IDENTIFIABLE,SelectItem>(){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
-			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE> itemCollection,TYPE item) {
+			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
 				item.setForm(createFormOneData(item,Crud.CREATE));
 			}
 		});

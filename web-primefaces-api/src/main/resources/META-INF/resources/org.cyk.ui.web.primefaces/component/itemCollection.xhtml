@@ -27,6 +27,13 @@
        		
        		<cc:insertChildren/>
        		
+       		<p:column width="10%" headerText="#{cc.value.applicableValueQuestion.label}" >
+       			<h:selectBooleanCheckbox value="#{item.applicable}" >
+					<f:selectItems value="#{cc.value.applicableValueQuestion.answers}" />
+					<p:ajax event="change" update="#{cc.value.applicableValueQuestion.update}" />
+				</h:selectBooleanCheckbox>	
+       		</p:column>
+       		
        		<!--p:column width="10%" headerText="#{uiManager.text('applicable')}" rendered="#{cc.value.showApplicable}">
        			<p:selectOneButton value="#{item.applicable}" >
 					<f:selectItems value="#{cc.value.applicableItems}" />

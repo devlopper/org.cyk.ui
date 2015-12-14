@@ -18,4 +18,5 @@ public abstract class AbstractItemCollectionItem<IDENTIFIABLE extends AbstractId
 	
 	protected Boolean applicable=Boolean.TRUE;
 	
+	
 }

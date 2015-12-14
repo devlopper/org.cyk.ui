@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.faces.model.SelectItem;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -117,7 +119,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
-			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE> listener) {
+			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
 		return collection;
@@ -142,7 +144,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 					if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
 						AbstractFormModel<?> formModel = (AbstractFormModel<?>) parameter;
 						formModel.write();
-						for(AbstractItemCollection<?,?> itemCollection : form.getItemCollections()){
+						for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
 							//TODO do write here in case we do not auto math input as fields
 							for(AbstractItemCollectionItem<?> item : itemCollection.getItems()){
 								item.getForm().getSelectedFormData().applyValuesToFields();
