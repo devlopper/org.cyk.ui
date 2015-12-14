@@ -15,6 +15,8 @@ public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE
 		super(identifier,itemClass,identifiableClass);
 		//((Commandable)addCommandable).getButton().setProcess("@this");
 		//((Commandable)deleteCommandable).getButton().setProcess("@this");
+		
+		((Commandable)deleteCommandable).getButton().setImmediate(Boolean.TRUE);
 	}
 	
 	@Override
