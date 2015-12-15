@@ -258,5 +258,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected String formatUsingBusiness(Object object){
 		return formatUsingBusiness(new Object[]{object});
 	}
+	
+	protected String formatPathUsingBusiness(Class<?> rootClass,Object object){
+		return formatUsingBusiness(RootBusinessLayer.getInstance().getClazzBusiness().findPathOf(rootClass, object));
+	}
 
 }
