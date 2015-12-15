@@ -32,6 +32,7 @@ import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness; 
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
@@ -195,7 +196,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public Application getApplication(){
-		return applicationBusiness.findCurrentInstance();
+		return RootBusinessLayer.getInstance().getApplication();
 	}
 	
 	public void configBusinessIdentifiable(BusinessEntityInfos businessEntityInfos,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId

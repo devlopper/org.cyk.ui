@@ -11,6 +11,7 @@ import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleSecuredView;
@@ -89,7 +90,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 	}
 	
 	protected static void role(Map<String,String> map,String path,Role role){
-		if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
+		if(RootBusinessLayer.getInstance().getApplication()==null)
 			return;
 		map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,role.getIdentifier()));
 	}
@@ -114,7 +115,7 @@ public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmen
 		}
 		
 		protected void permission(String path,Class<? extends AbstractIdentifiable> aClass,Crud aCrud){
-			if(UIManager.getInstance().getApplicationBusiness().findCurrentInstance()==null)
+			if(RootBusinessLayer.getInstance().getApplication()==null)
 				return;
 			permission(path, RoleManager.getInstance().getPermissionBusiness().find(aClass, aCrud).getIdentifier().toString());
 		}

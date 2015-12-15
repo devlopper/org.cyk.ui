@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -37,7 +38,7 @@ public abstract class AbstractLicensePage extends AbstractBusinessEntityFormOneP
 	@SuppressWarnings("unchecked")
 	@Override
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass) {
-		return (T) applicationBusiness.findCurrentInstance().getLicense();
+		return (T) RootBusinessLayer.getInstance().getApplication().getLicense();
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.AbstractUserSession;
@@ -48,9 +49,9 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	
 		Boolean doFilterChain = Boolean.FALSE;
 		
-		if(!goTo(applicationBusiness.findCurrentInstance()==null, PATH_INSTALL, request, response)){
+		if(!goTo(RootBusinessLayer.getInstance().getApplication()==null, PATH_INSTALL, request, response)){
 			if(Boolean.TRUE.equals(licenseBusiness.getEnabled())){
-				License license = applicationBusiness.findCurrentInstance().getLicense();
+				License license = RootBusinessLayer.getInstance().getApplication().getLicense();
 				if(!goTo(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), PATH_LICENSE_EXPIRED, request, response))
 					doFilterChain = Boolean.TRUE;
 				else{
