@@ -297,6 +297,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			});
 	}
 	
+	public String getConsultUrl(AbstractIdentifiable data){
+		return url(consultOneOutcome(data.getClass()),new Object[]{
+				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
+				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
+				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
+				//,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+		},Boolean.FALSE,Boolean.FALSE);
+	}
+	
 	public String exportDataTableFileUrl(Class<?> aClass,String fileExtension,Boolean print){
 		return url(outcomeExportDataTable, new Object[]{
 				webManager.getRequestParameterClass(),uiManager.keyFromClass(aClass)

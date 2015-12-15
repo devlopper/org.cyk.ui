@@ -26,6 +26,7 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 		if(Crud.DELETE.equals(crud)){
 			form.getSubmitCommandable().setLabel(text("command.delete"));
 		}
+		
 	}
 	
 	@Override
@@ -55,7 +56,11 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	public Object succeed(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			switch(crud){
-			case CREATE:case UPDATE:messageDialogOkButtonOnClick=javaScriptHelper.windowHref(url); //WebNavigationManager.getInstance().redirectToUrl(url);
+			case CREATE:case UPDATE:
+				if(Boolean.TRUE.equals(consultOnSuccess())){
+					messageDialogOkButtonOnClick=javaScriptHelper.windowHref(previousUrl = navigationManager.getConsultUrl(identifiable));
+				}else
+					messageDialogOkButtonOnClick=javaScriptHelper.windowHref(url); //WebNavigationManager.getInstance().redirectToUrl(url);
 				break;
 			default:
 				if(StringUtils.isNotEmpty(previousUrl))
@@ -66,5 +71,9 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 			}
 		}
 		return super.succeed(command, parameter);
+	}
+	
+	protected Boolean consultOnSuccess(){
+		return Boolean.FALSE;
 	}
 }

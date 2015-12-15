@@ -21,8 +21,8 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 
 	private FormOneData<?, ?, ?, ?, ?, ?> form;
 	private String fieldName,event,classSelectorSymbol="$",classSelectorFormat="%s(.%s)";
-	private String[] crossedFieldNames;
-	private String[] updatedFieldNames;
+	private Set<String> crossedFieldNames = new HashSet<>();
+	private Set<String> updatedFieldNames = new HashSet<>();
 	private Set<String> processed = new HashSet<>();
 	private Set<String> updated = new HashSet<>();
 	private Class<?> valueClass;
@@ -63,12 +63,16 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	}
 	
 	public AjaxBuilder crossedFieldNames(String...names){
-		this.crossedFieldNames = names;
+		for(String v : names)
+			if(v!=null)
+				crossedFieldNames.add(v);
 		return this;
 	}
 	
 	public AjaxBuilder updatedFieldNames(String...names){
-		this.updatedFieldNames = names;
+		for(String v : names)
+			if(v!=null)
+				updatedFieldNames.add(v);
 		return this;
 	}
 	
