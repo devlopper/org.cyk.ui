@@ -50,20 +50,17 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Inject private LanguageBusiness languageBusiness;
 	
-	private List<SelectItem> yesOrNoSelectItems = new ArrayList<>();
-	private List<SelectItem> yesOrNoOrDoNotKnowSelectItems = new ArrayList<>();
+	private List<SelectItem> booleanSelectItems = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
 		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
-		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
-		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
-		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
+		booleanSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+		booleanSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
+		booleanSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 		
-		yesOrNoSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
-		yesOrNoSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 	}
 	
 	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();

@@ -247,6 +247,14 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return formatUsingBusiness(objects, Constant.CHARACTER_SLASH.toString());
 	}
 	
+	protected String formatUsingBusiness(Collection<Object> objects,String separator){
+		return formatUsingBusiness(objects.toArray(), separator);
+	}
+	
+	protected String formatUsingBusiness(Collection<Object> objects){
+		return formatUsingBusiness(objects.toArray());
+	}
+	
 	protected String formatUsingBusiness(Object object){
 		return formatUsingBusiness(new Object[]{object});
 	}
