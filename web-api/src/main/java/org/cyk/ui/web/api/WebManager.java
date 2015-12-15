@@ -51,13 +51,17 @@ public class WebManager extends AbstractBean implements Serializable {
 	@Inject private LanguageBusiness languageBusiness;
 	
 	private List<SelectItem> yesOrNoSelectItems = new ArrayList<>();
+	private List<SelectItem> yesOrNoOrDoNotKnowSelectItems = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
 		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
-		yesOrNoSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
+		yesOrNoOrDoNotKnowSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
+		
 		yesOrNoSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
 		yesOrNoSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 	}
