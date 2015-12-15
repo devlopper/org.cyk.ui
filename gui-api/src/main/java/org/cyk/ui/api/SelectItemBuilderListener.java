@@ -9,6 +9,8 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 
 public interface SelectItemBuilderListener {
 
+	String NULL_LABEL_ID = "input.choice.select.message";
+	
 	SelectItemBuilderListener DEFAULT = new SelectItemBuilderListener.Adapter.Default();
 	
 	String getLabel(Object object);
@@ -64,7 +66,7 @@ public interface SelectItemBuilderListener {
 
 			@Override
 			public String getNullLabel() {
-				return UIManager.getInstance().text("input.choice.select.message");
+				return UIManager.getInstance().text(NULL_LABEL_ID);
 			}
 
 			@SuppressWarnings("unchecked")

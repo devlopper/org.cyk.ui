@@ -21,6 +21,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.InputChoice;
@@ -49,11 +50,16 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Inject private LanguageBusiness languageBusiness;
 	
+	private List<SelectItem> yesOrNoSelectItems = new ArrayList<>();
+	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
 		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
+		yesOrNoSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+		yesOrNoSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
+		yesOrNoSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 	}
 	
 	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?>>, Collection<Field>>();
