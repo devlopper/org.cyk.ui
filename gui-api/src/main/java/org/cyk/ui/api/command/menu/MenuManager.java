@@ -392,7 +392,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable createSelect(BusinessEntityInfos businessEntityInfos,String actionIdentifier,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
-		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()));
+		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
+				+ (StringUtils.isBlank(actionIdentifier)?"":("."+actionIdentifier))));
 		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectViewId()))
 			;
 		else{
