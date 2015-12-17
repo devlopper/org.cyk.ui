@@ -9,8 +9,10 @@ import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.BusinessAdapter;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonSearchCriteria;
@@ -40,6 +42,7 @@ public class ContextListener extends AbstractContextListener {
 
 	@Inject private PersonBusiness personBusiness;
 	@Inject private ActorBusiness actorBusiness;
+	@Inject private FileBusiness fileBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -80,6 +83,8 @@ public class ContextListener extends AbstractContextListener {
 					return (Collection<T>) personBusiness.findByCriteria(p);
 				}else if(Actor.class.equals(dataClass)){
 					return (Collection<T>) actorBusiness.findAll();
+				}else if(File.class.equals(dataClass)){
+					return (Collection<T>) fileBusiness.findAll();
 				}
 				return super.find(dataClass, configuration);
 			}
@@ -90,6 +95,8 @@ public class ContextListener extends AbstractContextListener {
 					return personBusiness.countByCriteria(new PersonSearchCriteria(configuration.getGlobalFilter()));
 				}else if(Actor.class.equals(dataClass)){
 					return actorBusiness.countAll();
+				}else if(File.class.equals(dataClass)){
+					return fileBusiness.countAll();
 				}
 				return super.count(dataClass, configuration);
 			}

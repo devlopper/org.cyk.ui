@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -25,6 +26,8 @@ import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
+import org.cyk.ui.web.primefaces.page.FileDetails;
+import org.cyk.ui.web.primefaces.page.FileEditPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
@@ -46,6 +49,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));
 		
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null));
+		uiManager.configBusinessIdentifiable(File.class, null);
 		
 		//OutputDetailsConfiguration outputDetailsConfiguration;
 		

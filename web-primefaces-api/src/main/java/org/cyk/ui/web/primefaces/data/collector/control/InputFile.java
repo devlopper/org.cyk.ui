@@ -91,12 +91,15 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	
 	@Override
 	public void applyValueToField() throws IllegalAccessException {
-		try {
-			value = UIManager.getInstance().getFileBusiness().process(IOUtils.toByteArray(file.getInputstream()), file.getFileName());
-			FieldUtils.writeField(field, getObject(), value, Boolean.TRUE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if(StringUtils.isNotBlank(file.getFileName()))
+			try {
+				if(file.getInputstream()!=null){
+					value = UIManager.getInstance().getFileBusiness().process(IOUtils.toByteArray(file.getInputstream()), file.getFileName());
+					FieldUtils.writeField(field, getObject(), value, Boolean.TRUE);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 		
 }

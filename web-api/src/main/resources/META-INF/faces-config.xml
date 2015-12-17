@@ -45,6 +45,21 @@
 			<to-view-id>/private/__role__/__manager__/referenceentity.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileListView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileEditView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileConsultView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		<!-- Security Manager -->
 		<navigation-case>
