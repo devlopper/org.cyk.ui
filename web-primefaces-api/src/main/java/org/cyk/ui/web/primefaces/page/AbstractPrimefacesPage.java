@@ -63,7 +63,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Inject @Getter transient protected UIManager uiManager;
 	@Inject @Getter transient protected PrimefacesMessageManager messageManager;
 	@Inject @Getter protected UserSession userSession;
-	@Inject protected PrimefacesManager primefacesManager;
+	@Inject transient protected PrimefacesManager primefacesManager;
 	
 	@Getter protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
 	

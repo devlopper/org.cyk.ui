@@ -18,7 +18,7 @@ public abstract class AbstractDashboardPage extends AbstractPrimefacesPage imple
 
 	private static final long serialVersionUID = 9040359120893077422L;
 
-	@Inject protected ChartManager chartManager;
+	@Inject transient protected ChartManager chartManager;
 	
 	protected DashboardModel model = new DefaultDashboardModel();
 	protected DashboardColumn currentColumn;

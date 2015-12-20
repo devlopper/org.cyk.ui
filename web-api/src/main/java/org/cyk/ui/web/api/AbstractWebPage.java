@@ -51,7 +51,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@Inject transient protected WebNavigationManager navigationManager;
 	@Inject transient protected JavaScriptHelper javaScriptHelper;
 	@Inject protected RoleBusiness roleBusiness;
-	@Inject protected RoleManager roleManager;
+	@Inject transient protected RoleManager roleManager;
 	
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
 		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage,selectedTabId;

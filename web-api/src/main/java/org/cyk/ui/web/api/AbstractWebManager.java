@@ -15,10 +15,10 @@ public abstract class AbstractWebManager extends AbstractApplicationUIManager im
 
 	private static final long serialVersionUID = 406884223652214395L;
 
-	@Inject protected WebNavigationManager webNavigationManager;
-	@Inject protected WebManager webManager;
-	@Inject protected RoleManager roleManager;
-	@Inject protected JavaScriptHelper javaScriptHelper;
+	@Inject protected transient WebNavigationManager webNavigationManager;
+	@Inject protected transient WebManager webManager;
+	@Inject protected transient RoleManager roleManager;
+	@Inject protected transient JavaScriptHelper javaScriptHelper;
 	
 	@Override
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass,
