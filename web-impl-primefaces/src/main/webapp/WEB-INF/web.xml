@@ -9,6 +9,7 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 		<multipart-config>
 		    <location>/webapptmp</location>
 		    <max-file-size>20848820</max-file-size>
@@ -22,9 +23,15 @@
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 
-	<!--context-param>
-		<param-name>org.cyk.logoPath</param-name>
-		<param-value>/org.cyk.ui.web.primefaces.test/images/logo/beauty.png</param-value>
-	</context-param-->
+	<servlet>
+		<servlet-name>Push Servlet</servlet-name>
+		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Push Servlet</servlet-name>
+		<url-pattern>/primepush/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>

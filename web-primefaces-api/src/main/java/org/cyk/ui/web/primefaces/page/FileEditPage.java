@@ -29,9 +29,9 @@ public class FileEditPage extends AbstractCrudOnePage<File> implements Serializa
 	
 	@Override
 	protected void update() {
-		File file = ((Form)form.getData()).file;
-		System.out.println("FileEditPage.update()");
-		debug(form.findInputByFieldName("file").getValue());
+		//File file = ((Form)form.getData()).file;
+		//System.out.println("FileEditPage.update()");
+		//debug(form.findInputByFieldName("file").getValue());
 		//RootBusinessLayer.getInstance().getFileBusiness().process(identifiable, arg1, arg2);
 		//RootBusinessLayer.getInstance().getFileBusiness().update(identifiable, arg1, arg2);
 	}

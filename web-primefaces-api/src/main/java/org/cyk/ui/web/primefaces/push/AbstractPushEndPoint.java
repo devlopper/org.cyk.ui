@@ -18,7 +18,7 @@ public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean impleme
     
 	private static final long serialVersionUID = 3545052196460272570L;
 
-	protected final EventBus bus = PrimefacesManager.getInstance().getEventBus();
+	protected EventBus bus;// = PrimefacesManager.getInstance().getEventBus();
 	
 	//FIXME : Annotation are not found
 	/*
@@ -27,7 +27,12 @@ public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean impleme
 	*/
 	
 	@OnOpen
-    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {}
+    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {
+		if(PrimefacesManager.getInstance().getEventBus()==null){
+			PrimefacesManager.getInstance().setEventBus(bus = eventBus);
+			logInfo("Atmosphere Event Bus has been set to {}",eventBus);
+		}
+	}
 	
     @OnMessage(encoders = {JSONEncoder.class})
     public MESSAGE onMessage(MESSAGE message) {

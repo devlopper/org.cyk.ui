@@ -15,6 +15,12 @@
 	<groupId>org.cyk.ui.web</groupId>
 	<artifactId>web-primefaces-api</artifactId>
 	<packaging>jar</packaging>
+	
+	<properties>
+		<version.primefaces>5.2</version.primefaces>
+		<version.primefaces.themes>1.0.10</version.primefaces.themes>
+		<version.primefaces.extensions>3.2.0</version.primefaces.extensions>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -30,17 +36,17 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.1</version>
+			<version>${version.primefaces}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>
-			<version>1.0.10</version>
+			<version>${version.primefaces.themes}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces.extensions</groupId>
 			<artifactId>primefaces-extensions</artifactId>
-			<version>3.2.0</version>
+			<version>${version.primefaces.extensions}</version>
 		</dependency>
 		
 		<dependency>

@@ -70,6 +70,7 @@
 	<filter>
 		<filter-name>applicationSecurityFilter</filter-name>
 		<filter-class>org.cyk.ui.web.api.servlet.SecurityFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>applicationSecurityFilter</filter-name>
@@ -83,6 +84,7 @@
 	<filter>
 		<filter-name>userAgentFilter</filter-name>
 		<filter-class>org.cyk.ui.web.api.servlet.UserAgentFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>userAgentFilter</filter-name>
@@ -108,6 +110,7 @@
 	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>shiroFilter</filter-name>

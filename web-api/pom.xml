@@ -15,6 +15,15 @@
 	<artifactId>web-api</artifactId>
 	<packaging>jar</packaging>	
 
+	<properties>
+		<version.omnifaces>2.0</version.omnifaces>
+		<version.shiro>1.2.3</version.shiro>
+		<version.prettyfaces>3.0.0.Alpha4</version.prettyfaces>
+		<version.atmosphere>2.3.0</version.atmosphere>
+		<version.itext>2.1.7</version.itext>
+		<version.poi>3.7</version.poi>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.cyk.ui.api</groupId>
@@ -26,7 +35,7 @@
 		<dependency>
 			<groupId>org.omnifaces</groupId>
 			<artifactId>omnifaces</artifactId>
-			<version>2.0</version>
+			<version>${version.omnifaces}</version>
 		</dependency>
 		
 		<!-- Apache Commons -->
@@ -40,46 +49,46 @@
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-web</artifactId>
-			<version>1.2.3</version>
+			<version>${version.shiro}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-ehcache</artifactId>
-			<version>1.2.3</version>
+			<version>${version.shiro}</version>
 		</dependency>
 		
 		<!-- Pretty faces -->
 		<dependency>
 		    <groupId>org.ocpsoft.rewrite</groupId>
 			<artifactId>rewrite-servlet</artifactId>
-			<version>3.0.0.Alpha4</version>
+			<version>${version.prettyfaces}</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.ocpsoft.rewrite</groupId>
 		    <artifactId>rewrite-config-prettyfaces</artifactId>
-		    <version>3.0.0.Alpha4</version>
+		    <version>${version.prettyfaces}</version>
 		</dependency>
 		
 		<!-- PDF -->
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
-			<version>2.1.7</version>
+			<version>${version.itext}</version>
 		</dependency>
 		
 		<!-- Excel -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.7</version>
+			<version>${version.poi}</version>
 		</dependency>
 		
 		<!-- Push  -->
 		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-runtime</artifactId>
-			<version>2.2.2</version>
+			<version>${version.atmosphere}</version>
 			<!--version>2.3.3</version-->
 		</dependency>
 	</dependencies>

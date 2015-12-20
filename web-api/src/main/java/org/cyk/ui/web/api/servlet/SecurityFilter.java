@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
-import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -31,7 +30,6 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	private static final String PATH_LICENSE_EXPIRED = "license/expired";
 	private static final String PATH_ACCESS_DENIED = "access/denied";
 	
-	@Inject private ApplicationBusiness applicationBusiness;
 	@Inject private UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	@Inject private LicenseBusiness licenseBusiness;
 	
