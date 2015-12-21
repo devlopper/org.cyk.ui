@@ -2,6 +2,8 @@ package org.cyk.ui.web.primefaces.push;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.push.EventBus;
@@ -11,14 +13,12 @@ import org.primefaces.push.annotation.OnMessage;
 import org.primefaces.push.annotation.OnOpen;
 import org.primefaces.push.impl.JSONEncoder;
 
-import lombok.Getter;
-
 @Getter
 public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean implements Serializable {
     
 	private static final long serialVersionUID = 3545052196460272570L;
 
-	protected EventBus bus;// = PrimefacesManager.getInstance().getEventBus();
+	protected EventBus bus;
 	
 	//FIXME : Annotation are not found
 	/*
@@ -27,12 +27,7 @@ public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean impleme
 	*/
 	
 	@OnOpen
-    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {
-		if(PrimefacesManager.getInstance().getEventBus()==null){
-			PrimefacesManager.getInstance().setEventBus(bus = eventBus);
-			logInfo("Atmosphere Event Bus has been set to {}",eventBus);
-		}
-	}
+    public void onOpen(RemoteEndpoint remoteEndpoint, EventBus eventBus) {}
 	
     @OnMessage(encoders = {JSONEncoder.class})
     public MESSAGE onMessage(MESSAGE message) {
@@ -45,5 +40,10 @@ public abstract class AbstractPushEndPoint<MESSAGE> extends AbstractBean impleme
     protected abstract String getChannel();
     protected abstract String getReceiver();
     
+    public EventBus getBus(){
+    	if(bus==null)
+    		bus = PrimefacesManager.getInstance().getEventBus();
+    	return bus;
+    }
     
 }

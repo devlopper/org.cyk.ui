@@ -165,11 +165,11 @@ public class CommandBuilder implements Serializable {
 		case ACTION_REMOVE:return "ui-icon-trash";
 		case ACTION_ADMINISTRATE:return "ui-icon-gear";
 		case ACTION_HELP:return "ui-icon-help";
-		case ACTION_APPLY:return "ui-icon-check";
+		case ACTION_APPLY:return  "fa fa-save" /*"fa fa-check" /*"ui-icon-check"*/;
 		case ACTION_EDIT:return "ui-icon-pencil";
 		case ACTION_GO_BACK:return "ui-icon-arrow-e";
-		case ACTION_OK:return "ui-icon-check";
-		case ACTION_SAVE:return "ui-icon-check";
+		case ACTION_OK:return "fa fa-check";
+		case ACTION_SAVE:return "fa fa-save";
 		case ACTION_SEARCH:return "ui-icon-search";
 		case ACTION_PREVIEW:return "ui-icon-image";
 		case ACTION_LOGOUT:return "ui-icon-extlink";
@@ -194,7 +194,7 @@ public class CommandBuilder implements Serializable {
 		case THING_HOME: return "ui-icon-home";
 		case THING_CONNECTED: return "ui-icon-newin";
 		
-		case PERSON:return "ui-icon-person";
+		case PERSON:return "fa fa-user";
 		default:return null;
 		}
 	}

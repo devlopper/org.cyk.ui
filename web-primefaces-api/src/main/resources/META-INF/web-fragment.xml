@@ -15,6 +15,32 @@
    		<param-value>true</param-value>
 	</context-param>
 	
+    <mime-mapping>
+	    <extension>eot</extension>
+	    <mime-type>application/vnd.ms-fontobject</mime-type>
+	</mime-mapping>
+	<mime-mapping>  
+	    <extension>otf</extension>  
+	    <mime-type>font/opentype</mime-type>  
+	</mime-mapping>      
+	<mime-mapping>  
+	    <extension>ttf</extension>  
+	    <mime-type>application/x-font-ttf</mime-type>  
+	</mime-mapping>      
+	<mime-mapping>  
+	    <extension>woff</extension>  
+	    <mime-type>application/x-font-woff</mime-type>  
+	</mime-mapping>
+	<mime-mapping>  
+	    <extension>woff2</extension>  
+	    <mime-type>application/x-font-woff2</mime-type>  
+	</mime-mapping>
+	<mime-mapping>  
+	    <extension>svg</extension>  
+	    <mime-type>image/svg+xml</mime-type>  
+	</mime-mapping>
+	
+	
 	<!--context-param>
 		<param-name>primefaces.UPLOADER</param-name>
 		<param-value>auto|native|commons</param-value>
@@ -42,10 +68,10 @@
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping-->
 
-	<!--servlet>
+	<servlet>
 		<servlet-name>Push Servlet</servlet-name>
 		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
+		 <load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 		<init-param>
             <param-name>org.atmosphere.cpr.packages</param-name>
@@ -59,5 +85,5 @@
 	<servlet-mapping>
 		<servlet-name>Push Servlet</servlet-name>
 		<url-pattern>/primepush/*</url-pattern>
-	</servlet-mapping-->
+	</servlet-mapping>
 </web-fragment>

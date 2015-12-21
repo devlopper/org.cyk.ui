@@ -88,15 +88,21 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();	
-		if(EventBusFactory.getDefault()==null)
-			logInfo("Atmosphere Event Bus will be set later");
-		else{
-			eventBus = EventBusFactory.getDefault().eventBus();
-			logInfo("Atmosphere Event Bus has been initialized");
-		}
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
+	}
+	
+	public EventBus getEventBus(){
+		if(eventBus==null){
+			if(EventBusFactory.getDefault()==null)
+				logInfo("Atmosphere Event Bus cannot be initialized because Default Factory is null");
+			else{
+				eventBus = EventBusFactory.getDefault().eventBus();
+				logInfo("Atmosphere Event Bus has been initialized");
+			}
+		}
+		return eventBus;
 	}
 	
 	@Override

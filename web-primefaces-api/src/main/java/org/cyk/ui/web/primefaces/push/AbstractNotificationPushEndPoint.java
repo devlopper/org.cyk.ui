@@ -20,12 +20,12 @@ public abstract class AbstractNotificationPushEndPoint extends AbstractPushEndPo
 		if(facesMessage==null)
 			return;
 		if(Boolean.TRUE.equals(notification.getAll()))
-			bus.publish("/"+UIManager.PUSH_NOTIFICATION_CHANNEL+"/*", facesMessage);
+			getBus().publish("/"+UIManager.PUSH_NOTIFICATION_CHANNEL+"/*", facesMessage);
 		else{
 			for(UserAccount userAccount : notification.getUserAccounts()){
 				Collection<AbstractUserSession> userSessions = AbstractUserSession.find(userAccount);
 				if(userSessions.size()>1)
-					System.out.println("User sessions found : "+userSessions.size());
+					logWarning("User sessions found {} ",userSessions.size());
 				for(AbstractUserSession userSession : userSessions)
 					userSession.notificationFired(notification, facesMessage);
 			}
