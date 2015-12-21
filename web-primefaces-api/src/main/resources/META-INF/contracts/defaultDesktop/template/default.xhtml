@@ -66,12 +66,18 @@
 				
 			 	<h:form id="form" enctype="multipart/form-data" >
 			 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/sounds.xhtml" />	
+			 		<p:idleMonitor timeout="#{pageController.userActiveTimeout}">
+				        <p:ajax event="idle" listener="#{pageController.onUserInactive}" update=":form:contentPanel" />
+				        <p:ajax event="active" listener="#{pageController.onUserActive}" update=":form:contentp" />
+				    </p:idleMonitor>
 				 	<pe:layoutPane id="contentp" position="center">
 				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
 				 			<h:outputText value="#{pageController.text}" rendered="#{not empty pageController.text}" escape="false"/>
 				 			<p:focus context="contentPanel" />
+				 			<!--p:progressBar widgetVar="progressBar" ajax="true" value="#{pageController.progress}" labelTemplate="{value}%" styleClass="animated" 
+								global="false" interval="1000" /-->
 				 			<ui:fragment rendered="#{not pageController.renderViewError}" >
 				 				<ui:fragment rendered="#{pageController.showDetailsMenu}">
 					 				<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
@@ -134,6 +140,12 @@
 							<td><h:outputText value="#{uiManager.text('processing.request')}" /></td>
 							<td><p:graphicImage library="org.cyk.ui.web.primefaces" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
 						</tr> </table>
+						<ui:fragment rendered="#{pageController.executionProgress!=null}">
+							<p:separator/>
+							<p:progressBar widgetVar="#{webManager.progressBarWidgetId}" ajax="true" value="#{pageController.executionProgress.currentAmountOfWorkDone}" labelTemplate="{value}%" 
+								styleClass="animated"  global="false" interval="1000" >
+	    					</p:progressBar>
+    					</ui:fragment>
 					</p:dialog>
 				</h:form>
 			</pe:layoutPane>

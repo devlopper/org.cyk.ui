@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
@@ -18,6 +21,7 @@ import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -32,9 +36,8 @@ import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
+import org.cyk.utility.common.computation.ExecutionProgress;
+import org.joda.time.DateTimeConstants;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -48,6 +51,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
 	@Inject transient protected NumberBusiness numberBusiness;
 	@Inject transient protected TimeBusiness timeBusiness;
+	
+	@Getter @Setter protected Long userActiveTimeout = DateTimeConstants.MILLIS_PER_MINUTE * 10l;
+	@Getter @Setter protected ExecutionProgress executionProgress;// = new ExecutionProgress();
 	
 	@Getter @Setter protected UserDeviceType userDeviceType;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu,detailsMenu;
@@ -129,6 +135,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	
 	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
 		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
+		
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
 		form.setUserDeviceType(userDeviceType);
@@ -263,4 +270,20 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		return formatUsingBusiness(RootBusinessLayer.getInstance().getClazzBusiness().findPathOf(rootClass, object));
 	}
 
+	/**/
+	/**
+	 * Is call when the user becomes inactive after an amount of time on the window
+	 */
+	public void onUserInactive(){
+		//System.out.println("AbstractWindow.onUserInactive()");
+		getMessageManager().message(SeverityType.WARNING, "window.idle.warning", Boolean.TRUE).showDialog();
+	}
+	/**
+	 * Is call when the user becomes active on the window
+	 */
+	public void onUserActive(){
+		//System.out.println("AbstractWindow.onUserActive()");
+		//getMessageManager().message(SeverityType.WARNING, "window.idle.warning", Boolean.TRUE).showGrowl();
+	}
+	
 }

@@ -17,18 +17,19 @@
  
 	<properties>
 		<version.omnifaces>2.0</version.omnifaces>
-		<version.shiro>1.2.3</version.shiro>
+		<version.shiro>1.2.4</version.shiro>
 		<version.prettyfaces>3.0.0.Alpha4</version.prettyfaces>
 		<version.atmosphere>2.4.1.4</version.atmosphere>
 		<version.itext>2.1.7</version.itext>
 		<version.poi>3.7</version.poi> 
+		<version.cyk>0.0.1</version.cyk>
 	</properties>
 	
 	<dependencies>
 		<dependency>
 			<groupId>org.cyk.ui.api</groupId>
 			<artifactId>gui-api</artifactId>
-			<version>0.0.1</version>
+			<version>${version.cyk}</version>
 		</dependency>
 		
 		<!-- Utilities -->
@@ -89,7 +90,6 @@
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-runtime</artifactId>
 			<version>${version.atmosphere}</version>
-			<!--version>2.3.3</version-->
 		</dependency>
 	</dependencies>
 </project>

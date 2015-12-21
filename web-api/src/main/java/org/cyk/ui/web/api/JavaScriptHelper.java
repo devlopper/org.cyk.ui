@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Singleton @Named
@@ -34,7 +35,7 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	}
 	
 	public String formatInstruction(String instruction){
-		StringBuilder builder= new StringBuilder(instruction);
+		StringBuilder builder= new StringBuilder(instruction==null?Constant.EMPTY_STRING:instruction);
 		if(!StringUtils.endsWith(builder, INSTRUCTION_SEPARATOR))
 			builder.append(INSTRUCTION_SEPARATOR);
 		

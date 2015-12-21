@@ -45,7 +45,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
-import org.cyk.ui.web.api.security.shiro.WebEnvironmentAdapter;
+import org.cyk.ui.web.api.security.shiro.WebEnvironmentListener;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
@@ -126,7 +126,8 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
-		WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
+		//WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
+		WebEnvironmentListener.Adapter.DATA_SOURCE = Realm.DATA_SOURCE;
 		
 		if(Boolean.TRUE.equals(alarmScanningEnabled(event)))
 			RootBusinessLayer.getInstance().enableAlarmScanning(alarmScanningDelay(event), alarmScanningPeriod(event),alarmScanningRemoteEndPoints(event));

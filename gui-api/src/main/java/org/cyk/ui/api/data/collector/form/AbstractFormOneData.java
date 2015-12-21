@@ -41,7 +41,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	/**/
 	
 	public AbstractFormOneData() {
-		submitCommandable = uiProvider.createCommandable(this,"command.save",IconType.ACTION_OK, EventListener.NONE,ProcessGroup.FORM);
+		submitCommandable = uiProvider.createCommandable(this,"command.save",IconType.ACTION_SAVE, EventListener.NONE,ProcessGroup.FORM);
 	}
 	
 	@Override

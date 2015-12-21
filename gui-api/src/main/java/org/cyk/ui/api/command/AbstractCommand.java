@@ -20,6 +20,7 @@ import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.command.CommandListener.AfterServeState;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.computation.ExecutionProgress;
 
 @Log
 public abstract class AbstractCommand implements UICommand , Serializable {
@@ -27,7 +28,8 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	private static final long serialVersionUID = 3245517653342272298L;
 
 	@Setter protected UIMessageManager messageManager;
-	@Getter @Setter protected Boolean confirm=Boolean.FALSE;
+	@Getter @Setter protected Boolean confirm=Boolean.FALSE,showExecutionProgress=Boolean.FALSE;
+	@Getter @Setter protected ExecutionProgress executionProgress;
 	@Getter protected Collection<CommandListener> commandListeners = new ArrayList<>();
 	
 	public Object execute(Object object){

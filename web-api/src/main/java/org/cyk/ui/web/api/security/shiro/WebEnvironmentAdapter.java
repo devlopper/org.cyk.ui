@@ -18,7 +18,7 @@ import org.cyk.system.root.model.security.RoleSecuredView;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.cdi.AbstractBean;
-
+@Deprecated
 public class WebEnvironmentAdapter extends AbstractBean implements WebEnvironmentListener,Serializable {
 
 	private static final long serialVersionUID = 4907315709148031667L;

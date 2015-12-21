@@ -3,6 +3,7 @@ package org.cyk.ui.api.command;
 import java.util.Collection;
 
 import org.cyk.ui.api.UIMessageManager;
+import org.cyk.utility.common.computation.ExecutionProgress;
 
 /**
  * An element on which user can interact to request something
@@ -25,5 +26,11 @@ public interface UICommand {
 		
 	UIMessageManager getMessageManager();
 	void setMessageManager(UIMessageManager messageManager);
+	
+	void setExecutionProgress(ExecutionProgress executionProgress);
+	ExecutionProgress getExecutionProgress();
+	
+	Boolean getShowExecutionProgress();
+	void setShowExecutionProgress(Boolean value);
 	
 }

@@ -7,6 +7,9 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -51,9 +54,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl> implements Serializable {
 
@@ -128,6 +128,31 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		
 		detailsMenuModel = CommandBuilder.getInstance().menuModel(detailsMenu, getClass(), "detailsMenu");
 		
+		/*for(FormOneData<?, ?, ?, ?, ?, ?> form : formOneDatas){
+			System.out.println("FFF");
+			if(Boolean.TRUE.equals(form.getSubmitCommandable().getCommand().getShowExecutionProgress())){
+				final String progressBarWidgetVar = ((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>)form).getProgressBarWidgetVar();
+				System.out
+						.println("AbstractPrimefacesPage.targetDependentInitialisation() : "+progressBarWidgetVar+" : "+form.getSubmitCommandable().getOnClick());
+				//Starts on click
+				JavaScriptHelper.getInstance().add(form.getSubmitCommandable().getOnClick(), PrimefacesManager.getInstance().getStartScript(progressBarWidgetVar));
+				//Cancel on execution ends
+				form.getSubmitCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+					private static final long serialVersionUID = -4119943624542439662L;
+					@Override
+					public Object succeed(UICommand command, Object parameter) {
+						Ajax.oncomplete(PrimefacesManager.getInstance().getCancelScript(progressBarWidgetVar));
+						return super.succeed(command, parameter);
+					}
+					@Override
+					public Object fail(UICommand command, Object parameter,Throwable throwable) {
+						Ajax.oncomplete(PrimefacesManager.getInstance().getCancelScript(progressBarWidgetVar));
+						return super.fail(command, parameter, throwable);
+					}
+				});
+			}
+		}*/
+		
 		for(PrimefacesPageListener listener : getListeners())
 			listener.targetDependentInitialisationEnded(this); 
 	}
@@ -148,7 +173,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	@Override
 	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
-		FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
+		final FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
+		
 		return form;
 	}
 

@@ -20,8 +20,12 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.command.CommandAdapter;
+import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
@@ -37,6 +41,7 @@ import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.cyk.ui.web.primefaces.page.SelectPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -61,6 +66,9 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public static final String CSS_CLASS_DATATABLE_ROW_ODD = "ui-datatable-odd";
 	public static final String CSS_CLASS_DATATABLE_ROW_SUMMARY = "ui-datatable-summaryrow";
 	public static final String CSS_CLASS_WIDGET_HEADER = "ui-widget-header";
+	
+	private static final String SCRIPT_START_FORMAT = "PF('%s').start();";
+	private static final String SCRIPT_CANCEL_FORMAT = "PF('%s').cancel();";
 	
 	private final Collection<PrimefacesPageListener> pageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormPageListener<?>> businessEntityFormPageListeners = new ArrayList<>();
@@ -196,6 +204,13 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			return "";
 		return String.format(CLASS_SELECTOR_FORMAT, input.getUniqueCssClass());
 	}
+	
+	public String getStartScript(String widgetVar){
+		return String.format(SCRIPT_START_FORMAT, widgetVar);
+	}
+	public String getCancelScript(String widgetVar){
+		return String.format(SCRIPT_CANCEL_FORMAT, widgetVar);
+	}
 
 	public Collection<BusinessEntityFormPageListener<?>> getBusinessEntityFormPageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<BusinessEntityFormPageListener<?>> results = new ArrayList<>();
@@ -241,6 +256,30 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
 					results.add((SelectPageListener<?, Object>) listener);
 		return results;
+	}
+	
+	public void configureProgressBar(UICommandable commandable,final String progressBarWidgetVar){
+		if(commandable.getCommand().getExecutionProgress()==null)
+			return;
+		//Starts on click
+		commandable.setOnClick(JavaScriptHelper.getInstance().add(commandable.getOnClick(), PrimefacesManager.getInstance().getStartScript(progressBarWidgetVar)));
+		//Cancel on execution ends
+		commandable.getCommand().getCommandListeners().add(new CommandAdapter(){
+			private static final long serialVersionUID = -4119943624542439662L;	
+			@Override
+			public void serve(UICommand command, Object parameter) {
+				command.getExecutionProgress().setCurrentAmountOfWorkDone(0l);
+			}
+			@Override
+			public Boolean notifyAfterServe(UICommand command,AfterServeState state) {
+				Ajax.oncomplete(PrimefacesManager.getInstance().getCancelScript(progressBarWidgetVar));
+				return super.notifyAfterServe(command, state);
+			}
+		});
+	}
+	
+	public void configureProgressBar(UICommandable commandable){
+		configureProgressBar(commandable, WebManager.getInstance().getProgressBarWidgetId());
 	}
 	
 }

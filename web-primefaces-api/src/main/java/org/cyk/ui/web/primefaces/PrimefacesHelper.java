@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-@Named @Singleton
+@Named @Singleton @Deprecated
 public class PrimefacesHelper implements Serializable {
 	
 	private static final long serialVersionUID = 3723311292500943181L;

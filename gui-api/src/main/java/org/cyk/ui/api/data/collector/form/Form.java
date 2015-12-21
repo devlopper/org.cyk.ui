@@ -18,5 +18,5 @@ public interface Form<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View {
 	
 	void setDynamic(Boolean value);
 	Boolean getDynamic();
-		
+	
 }

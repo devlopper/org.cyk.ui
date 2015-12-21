@@ -18,7 +18,9 @@ public class FormOneData<DATA> extends AbstractWebFormOneData<DATA, DynaFormMode
 
 	{
 		templateId = "/org.cyk.ui.web.primefaces/template/form/one/default.xhtml";
-	} 
+	}
+	
+	private String progressBarWidgetVar = "progressBar";
 	
 	@Override
 	public FormData<DATA> createFormData() {
@@ -29,6 +31,4 @@ public class FormOneData<DATA> extends AbstractWebFormOneData<DATA, DynaFormMode
 		return formData;
 	}
 	
-	
-
 }

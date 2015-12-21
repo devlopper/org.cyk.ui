@@ -10,7 +10,7 @@ public class WebEnvironment extends IniWebEnvironment implements Serializable {
 
 	private static final long serialVersionUID = -9184798357687299784L;
 	
-	public static WebEnvironmentListener LISTENER = new WebEnvironmentAdapter();
+	public static WebEnvironmentListener LISTENER = new WebEnvironmentListener.Adapter.Default();// WebEnvironmentAdapter();
 	
 	@Override
 	protected Ini createIni(String arg0, boolean arg1) throws ConfigurationException {
