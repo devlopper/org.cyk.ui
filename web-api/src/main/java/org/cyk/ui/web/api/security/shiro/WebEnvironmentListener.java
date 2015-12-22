@@ -14,11 +14,12 @@ import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
+import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
+import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.system.root.model.security.RoleSecuredView;
-import org.cyk.ui.api.UIManager;
+import org.cyk.system.root.model.security.RoleUniformResourceLocator;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -114,10 +115,19 @@ public interface WebEnvironmentListener {
 					for(Entry<String, String> entry : securedUrlProvider.urls.entrySet())
 						urlsSection.put(entry.getKey(), entry.getValue());
 				
+				/*
 				for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
 					role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
+				*/
+				
+				RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness();
+				UniformResourceLocatorBusiness uniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness();
+				
+				for(RoleUniformResourceLocator roleUniformResourceLocator : roleUniformResourceLocatorBusiness.findAll())
+					role(urlsSection,uniformResourceLocatorBusiness.findPath(roleUniformResourceLocator.getUniformResourceLocator())
+							, roleUniformResourceLocator.getRole());
 
-				//TODO this is a trick to handle role ordering. Instead try using sorting. if A and B have common prefix then if A followed by ** then B comes first then A
+				// TODO this is a trick to handle role ordering. Instead try using sorting. if A and B have common prefix then if A followed by ** then B comes first then A
 				// B = common_prefix/a_sub_space
 				// A = common_prefix/**
 				urlsSection.remove("/private/**");
@@ -126,18 +136,7 @@ public interface WebEnvironmentListener {
 				logInfo("Secured views");
 				for(Entry<String, String> entry : urlsSection.entrySet())
 					logInfo(entry);
-			}
-			
-			/**/
-			
-			protected void roleUser(){
-				//WebEnvironmentAdapter.role(urlsSection,"/private/**", "USER1");
-				//WebEnvironmentAdapter.role(urlsSection,"/private/**", Role.USER);//TODO content should be moved to desktop or mobile and this removed
-				//WebEnvironmentAdapter.role(urlsSection,"/mobile/private/**", Role.USER);
-				//WebEnvironmentAdapter.role(urlsSection,"/desktop/private/**", Role.USER);
-			}
-			
-			
+			}			
 			
 			/**/
 			

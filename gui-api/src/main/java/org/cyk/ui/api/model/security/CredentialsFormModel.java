@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.security;
+package org.cyk.ui.api.model.security;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.validation.Client;
 
 @Getter @Setter
-public class CredentialsInputs implements Serializable {
+public class CredentialsFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  

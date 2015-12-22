@@ -1,5 +1,9 @@
 package org.cyk.ui.web.primefaces;
 
+import org.cyk.system.root.business.api.BusinessLayer;
+import org.cyk.system.root.business.api.BusinessLayerListener;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.security.Installation;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 
@@ -14,6 +18,14 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     
     @Override
     protected void businesses() {
+    	RootBusinessLayer.getInstance().getBusinessLayerListeners().add(new BusinessLayerListener.Adapter.Default(){
+			private static final long serialVersionUID = 6148913289155659043L;
+			@Override
+    		public void beforeInstall(BusinessLayer businessLayer,Installation installation) {
+    			installation.getApplication().setUniformResourceLocatorFilteringEnabled(Boolean.TRUE);
+    			super.beforeInstall(businessLayer, installation);
+    		}
+    	});
     	installApplication();
     	System.exit(0);
     }

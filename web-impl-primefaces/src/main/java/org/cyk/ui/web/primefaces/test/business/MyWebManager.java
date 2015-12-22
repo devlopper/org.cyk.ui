@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.command.UICommandable.IconType;
@@ -42,7 +43,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		systemMenu.getBusinesses().add(menuManager.crudMany(Person.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.createSelect(Actor.class,null, IconType.PERSON));
-		systemMenu.getBusinesses().add(menuManager.crudMany(File.class, null));
+		systemMenu.getBusinesses().add(menuManager.crudMany(UserAccount.class, null));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		

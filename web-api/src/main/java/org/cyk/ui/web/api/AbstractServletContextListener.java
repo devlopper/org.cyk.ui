@@ -131,10 +131,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		
 		if(Boolean.TRUE.equals(alarmScanningEnabled(event)))
 			RootBusinessLayer.getInstance().enableAlarmScanning(alarmScanningDelay(event), alarmScanningPeriod(event),alarmScanningRemoteEndPoints(event));
+		
+		
 	}
 	
 	protected void addUrls(ServletContextEvent event){
-		uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.FALSE);
 		//TODO use shiro object instead for better management
 		addUrl(Role.USER,"/private/index.jsf");
 	}
@@ -281,7 +282,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	//TODO this logic should be moved on root business
 	protected void addUrl(String roleCode,String relativeUrl,Object...parameters){
 		addUrl(roleCode, uniformResourceLocatorBuilder.newUniformResourceLocator()
-				.setPath(servletContext.getContextPath()+relativeUrl).addParameters(parameters).build());
+			.setAddress(servletContext.getContextPath()+relativeUrl).addParameters(parameters).build());
 	}
 	
 	protected void addUrl(String roleCode,UniformResourceLocator uniformResourceLocator){
@@ -333,15 +334,15 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	}
 	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
-		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
+		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
 				//.addAnyInstanceOf(aClass)
 				.addClassParameter(aClass)
 				.addParameters(parameters));
 		if(Boolean.TRUE.equals(dynamic)){
-			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
+			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()
 					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}else{
-			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setPath(servletContext.getContextPath()
+			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()
 					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}
 		

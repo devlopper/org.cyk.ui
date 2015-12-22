@@ -61,6 +61,22 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>userAccountListView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/useraccount/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountEditView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/useraccount/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountConsultView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/useraccount/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<!-- Security Manager -->
 		<navigation-case>
 			<from-outcome>security</from-outcome>

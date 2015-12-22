@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.web.primefaces.page.security.CredentialsInputs;
+import org.cyk.ui.api.model.security.CredentialsFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -24,6 +24,6 @@ public class UserCredentials implements Serializable {
 	private String name;
 	
 	@IncludeInputs
-	private CredentialsInputs credentialsInputs = new CredentialsInputs();
+	private CredentialsFormModel credentialsInputs = new CredentialsFormModel();
 	
 }

@@ -11,6 +11,7 @@ import org.cyk.system.root.business.api.BusinessAdapter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -85,6 +86,8 @@ public class ContextListener extends AbstractContextListener {
 					return (Collection<T>) actorBusiness.findAll();
 				}else if(File.class.equals(dataClass)){
 					return (Collection<T>) fileBusiness.findAll();
+				}else if(UserAccount.class.equals(dataClass)){
+					return (Collection<T>) RootBusinessLayer.getInstance().getUserAccountBusiness().findAll();
 				}
 				return super.find(dataClass, configuration);
 			}
@@ -97,6 +100,8 @@ public class ContextListener extends AbstractContextListener {
 					return actorBusiness.countAll();
 				}else if(File.class.equals(dataClass)){
 					return fileBusiness.countAll();
+				}else if(UserAccount.class.equals(dataClass)){
+					return RootBusinessLayer.getInstance().getUserAccountBusiness().countAll();
 				}
 				return super.count(dataClass, configuration);
 			}

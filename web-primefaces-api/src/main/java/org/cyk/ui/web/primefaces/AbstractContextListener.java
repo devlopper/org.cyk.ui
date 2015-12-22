@@ -10,6 +10,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -20,6 +21,7 @@ import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.api.model.security.UserAccountDetails;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -29,6 +31,7 @@ import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.FileDetails;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
@@ -74,6 +77,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
 		*/
 	
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserAccount.class, UserAccountEditPage.Form.class, UserAccountDetails.class,null));
+		uiManager.configBusinessIdentifiable(UserAccount.class, null);
 	}
 	
 	@Override
