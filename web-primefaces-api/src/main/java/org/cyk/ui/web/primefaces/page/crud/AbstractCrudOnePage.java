@@ -8,6 +8,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
+import org.cyk.utility.common.computation.ExecutionProgress;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,20 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 			form.getSubmitCommandable().setLabel(text("command.delete"));
 		}
 		
+		form.getSubmitCommandable().getCommand().setExecutionProgress(createExecutionProgress());
+		
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		executionProgress = form.getSubmitCommandable().getCommand().getExecutionProgress();
+		if(executionProgress!=null)
+			primefacesManager.configureProgressBar(form.getSubmitCommandable());
+	}
+	
+	protected ExecutionProgress createExecutionProgress(){
+		return null;
 	}
 	
 	@Override

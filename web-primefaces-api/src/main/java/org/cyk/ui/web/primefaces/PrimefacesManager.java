@@ -268,7 +268,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			private static final long serialVersionUID = -4119943624542439662L;	
 			@Override
 			public void serve(UICommand command, Object parameter) {
-				command.getExecutionProgress().setCurrentAmountOfWorkDone(0l);
+				command.getExecutionProgress().clear();
 			}
 			@Override
 			public Boolean notifyAfterServe(UICommand command,AfterServeState state) {

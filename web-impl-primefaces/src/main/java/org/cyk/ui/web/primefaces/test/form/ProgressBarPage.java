@@ -7,12 +7,14 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.RootBusinessServiceSimulatorBusiness;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.test.model.MyEntity.MyEnum;
@@ -41,6 +43,8 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 	private MyIdentifiable entityWithAnnotation = new MyIdentifiable();
 	private FormOneData<MyIdentifiable> form;
 	
+	@Inject private RootBusinessServiceSimulatorBusiness rootBusinessServiceSimulatorBusiness;
+	
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
@@ -51,8 +55,7 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 		//form.setFieldsRequiredMessage("Champs obligatoire");
 		form.setDynamic(Boolean.TRUE);
 		
-		form.getSubmitCommandable().getCommand().setExecutionProgress(executionProgress = new ExecutionProgress());
-		//form.getSubmitCommandable().getCommand().getExecutionProgress().setCurrentAmountOfWorkDone(0l);
+		form.getSubmitCommandable().getCommand().setExecutionProgress(executionProgress = new ExecutionProgress("TEST",100d));
 		
 		primefacesManager.configureProgressBar(form.getSubmitCommandable());
 		
@@ -61,26 +64,9 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+5);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+10);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+10);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+30);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+5);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+5);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+25);
-				pause(1000);executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone()+10);
-				
-				//Ajax.oncomplete("PF('progressBar').cancel();");
-			}
-			
-			@Override
-			public Object succeed(UICommand command, Object parameter) {
-				//Ajax.oncomplete("PF('progressBar').cancel();");
-				return super.succeed(command, parameter);
+				rootBusinessServiceSimulatorBusiness.simulateExecutionProgress(executionProgressListener);
 			}
 		});
-		
-		//form.getSubmitCommandable().setOnClick("PF('progressBar').start();");
 	}
 	
 	@Override

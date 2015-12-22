@@ -37,6 +37,7 @@ import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
+import org.cyk.utility.common.computation.ExecutionProgressListener;
 import org.joda.time.DateTimeConstants;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -53,7 +54,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject transient protected TimeBusiness timeBusiness;
 	
 	@Getter @Setter protected Long userActiveTimeout = DateTimeConstants.MILLIS_PER_MINUTE * 10l;
-	@Getter @Setter protected ExecutionProgress executionProgress;// = new ExecutionProgress();
+	@Getter @Setter protected ExecutionProgress executionProgress;
+	protected ExecutionProgressListener executionProgressListener;
 	
 	@Getter @Setter protected UserDeviceType userDeviceType;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu,detailsMenu;
@@ -105,6 +107,17 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 
 		for(AbstractEventCalendar eventCalendar : eventCalendars)
 			eventCalendar.targetDependentInitialisation();
+		
+		if(executionProgress!=null && executionProgressListener==null){
+			executionProgressListener = new ExecutionProgressListener.Adapter.Default(){
+				private static final long serialVersionUID = 6123373968139743440L;
+				@Override
+				public void valueChanged(ExecutionProgress executionProgress,String fieldName, Object oldValue) {
+					AbstractWindow.this.executionProgress.setCurrentAmountOfWorkDone(executionProgress.getCurrentAmountOfWorkDone());
+					super.valueChanged(executionProgress, fieldName, oldValue);
+				}
+			};
+		}
 	}
 	
 	protected void buildTables(){
