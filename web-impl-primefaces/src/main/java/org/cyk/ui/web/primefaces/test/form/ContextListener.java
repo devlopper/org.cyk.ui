@@ -7,16 +7,10 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
-import org.cyk.system.root.business.api.BusinessAdapter;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.api.file.FileBusiness;
-import org.cyk.system.root.business.api.party.person.PersonBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.BusinessListener;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.AbstractActor;
-import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonSearchCriteria;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
@@ -41,9 +35,7 @@ public class ContextListener extends AbstractContextListener {
 
 	private static final long serialVersionUID = -3211898049670089807L;
 
-	@Inject private PersonBusiness personBusiness;
 	@Inject private ActorBusiness actorBusiness;
-	@Inject private FileBusiness fileBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -73,35 +65,21 @@ public class ContextListener extends AbstractContextListener {
 		
 		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
 		
-		uiManager.getBusinesslisteners().add(new BusinessAdapter(){
+		BusinessListener.LISTENERS.add(new BusinessListener.Adapter.Default(){
 			private static final long serialVersionUID = 4605368263736933413L;
 			@SuppressWarnings("unchecked")
 			@Override
 			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, DataReadConfiguration configuration) {
-				if(Person.class.equals(dataClass)){
-					PersonSearchCriteria p = new PersonSearchCriteria(configuration.getGlobalFilter());
-					p.getReadConfig().set(configuration);
-					return (Collection<T>) personBusiness.findByCriteria(p);
-				}else if(Actor.class.equals(dataClass)){
+				if(Actor.class.equals(dataClass)){
 					return (Collection<T>) actorBusiness.findAll();
-				}else if(File.class.equals(dataClass)){
-					return (Collection<T>) fileBusiness.findAll();
-				}else if(UserAccount.class.equals(dataClass)){
-					return (Collection<T>) RootBusinessLayer.getInstance().getUserAccountBusiness().findAll();
 				}
 				return super.find(dataClass, configuration);
 			}
 			
 			@Override
 			public <T extends AbstractIdentifiable> Long count(Class<T> dataClass, DataReadConfiguration configuration) {
-				if(Person.class.equals(dataClass)){
-					return personBusiness.countByCriteria(new PersonSearchCriteria(configuration.getGlobalFilter()));
-				}else if(Actor.class.equals(dataClass)){
+				if(Actor.class.equals(dataClass)){
 					return actorBusiness.countAll();
-				}else if(File.class.equals(dataClass)){
-					return fileBusiness.countAll();
-				}else if(UserAccount.class.equals(dataClass)){
-					return RootBusinessLayer.getInstance().getUserAccountBusiness().countAll();
 				}
 				return super.count(dataClass, configuration);
 			}

@@ -190,7 +190,9 @@ public class CommandBuilder implements Serializable {
 		case THING_REPORT: return "ui-icon-document";
 		case THING_SECURITY: return "ui-icon-key";
 		case THING_TOOLS: return "ui-icon-wrench";
-		case THING_USERACCOUNT: return "ui-icon-suitcase";
+		case THING_URL: return "fa fa-link";
+		case THING_ROLE: return "fa fa-lock";
+		case THING_USERACCOUNT: return "fa fa-key";
 		case THING_HOME: return "ui-icon-home";
 		case THING_CONNECTED: return "ui-icon-newin";
 		

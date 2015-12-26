@@ -43,7 +43,7 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 	private MyIdentifiable entityWithAnnotation = new MyIdentifiable();
 	private FormOneData<MyIdentifiable> form;
 	
-	@Inject private RootBusinessServiceSimulatorBusiness rootBusinessServiceSimulatorBusiness;
+	@Inject transient private RootBusinessServiceSimulatorBusiness rootBusinessServiceSimulatorBusiness;
 	
 	@Override
 	protected void initialisation() { 

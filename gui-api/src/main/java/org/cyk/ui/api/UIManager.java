@@ -12,11 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.BusinessListener;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
@@ -30,8 +26,9 @@ import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
-import org.cyk.system.root.business.api.time.TimeBusiness; 
+import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.BusinessListener;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -48,6 +45,9 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 import org.cyk.utility.common.computation.DataReadConfiguration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -73,7 +73,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return INSTANCE;
 	}
 	
-	private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
+	//private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
 	public static final Collection<ComponentCreationListener> componentCreationListeners = new ArrayList<>();
 	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
@@ -347,7 +347,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		private static final long serialVersionUID = 7640865186916095212L;
 	}
 	
-
+	/*
 	public <T extends AbstractIdentifiable> Long count(Class<T> aClass, DataReadConfiguration dataReadConfiguration) {
 		for(BusinessListener listener : businessListeners){
 			Long count = listener.count(aClass, dataReadConfiguration);
@@ -365,10 +365,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		}
 		return null;
 	}
-	
+	/*
 	public Collection<BusinessListener> getBusinesslisteners() {
 		return businessListeners;
-	}
+	}*/
 	
 	public Boolean isMobileDevice(UserDeviceType userDeviceType){
 		return userDeviceType==null || !UserDeviceType.DESKTOP.equals(userDeviceType);

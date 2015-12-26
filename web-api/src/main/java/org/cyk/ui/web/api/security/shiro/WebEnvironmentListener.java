@@ -7,28 +7,28 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
-import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
-import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleUniformResourceLocator;
 import org.cyk.ui.web.api.security.RoleManager;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public interface WebEnvironmentListener {
 
 	Collection<SecuredUrlProvider> SECURED_URL_PROVIDERS = new ArrayList<>();
 	
 	void ini(WebEnvironment environment,Ini anIni);
-	
 	
 	/**/
 	public static abstract class SecuredUrlProvider{
@@ -88,6 +88,13 @@ public interface WebEnvironmentListener {
 			map.put(path,String.format(ROLES_FORMAT,FILTER_VAR,role.getIdentifier()));
 		}
 		
+		protected String convertToPath(UniformResourceLocator uniformResourceLocator){
+			String path = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness().findPath(uniformResourceLocator);
+			if(StringUtils.endsWith(path, Constant.CHARACTER_SLASH.toString()))
+				path = path + "**";
+			return path;
+		}
+		
 		/**/
 		@Getter @Setter
 		public static class Default extends Adapter implements Serializable {
@@ -120,18 +127,17 @@ public interface WebEnvironmentListener {
 					role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());
 				*/
 				
-				RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness();
-				UniformResourceLocatorBusiness uniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness();
-				
-				for(RoleUniformResourceLocator roleUniformResourceLocator : roleUniformResourceLocatorBusiness.findAll())
-					role(urlsSection,uniformResourceLocatorBusiness.findPath(roleUniformResourceLocator.getUniformResourceLocator())
-							, roleUniformResourceLocator.getRole());
+				/*
+				for(RoleUniformResourceLocator roleUniformResourceLocator : RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().findAll())
+					role(urlsSection,convertToPath(roleUniformResourceLocator.getUniformResourceLocator()), roleUniformResourceLocator.getRole());
+				*/
 
 				// TODO this is a trick to handle role ordering. Instead try using sorting. if A and B have common prefix then if A followed by ** then B comes first then A
 				// B = common_prefix/a_sub_space
 				// A = common_prefix/**
-				urlsSection.remove("/private/**");
+				//urlsSection.remove("/private/**");
 				urlsSection.put("/private/**", "user");
+				//role(urlsSection, "/private/**", Role.USER);
 				
 				logInfo("Secured views");
 				for(Entry<String, String> entry : urlsSection.entrySet())

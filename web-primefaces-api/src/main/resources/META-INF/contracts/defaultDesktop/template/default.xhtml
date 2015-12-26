@@ -66,9 +66,9 @@
 				
 			 	<h:form id="form" enctype="multipart/form-data" >
 			 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/sounds.xhtml" />	
-			 		<p:idleMonitor timeout="#{pageController.userActiveTimeout}">
+			 		<p:idleMonitor timeout="#{pageController.userActiveTimeout}" rendered="true">
 				        <p:ajax event="idle" listener="#{pageController.onUserInactive}" update=":form:contentPanel" />
-				        <p:ajax event="active" listener="#{pageController.onUserActive}" update=":form:contentp" />
+				        <p:ajax event="active" listener="#{pageController.onUserActive}" update=":form:contentPanel" />
 				    </p:idleMonitor>
 				 	<pe:layoutPane id="contentp" position="center">
 				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->

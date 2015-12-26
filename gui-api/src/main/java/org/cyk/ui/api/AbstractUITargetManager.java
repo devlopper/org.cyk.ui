@@ -79,7 +79,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return collection;
 		}else */if(field.getName().equals("roles")){
 			collection = new ArrayList<>();
-			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getAdministratorRole())))
+			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getRoleAdministrator())))
 				collection.add(role);
 			return collection;
 		}else

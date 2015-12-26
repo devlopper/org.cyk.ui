@@ -2,7 +2,6 @@ package org.cyk.ui.web.api.servlet;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -15,11 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
+import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.License;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
-import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.utility.common.CommonUtils;
 
 public class SecurityFilter extends AbstractFilter implements Filter,Serializable {
@@ -29,8 +29,11 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	private static final String PATH_INSTALL = "install";
 	private static final String PATH_LICENSE_EXPIRED = "license/expired";
 	private static final String PATH_ACCESS_DENIED = "access/denied";
+	private static final String PATH_UNREGISTERED = "path/unregistered";
 	
 	@Inject private UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
+	@Inject private RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness;
+	@Inject private UserAccountBusiness userAccountBusiness;
 	@Inject private LicenseBusiness licenseBusiness;
 	
 	@Override
@@ -38,11 +41,14 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		AbstractUserSession userSession = userSession(request);
-		Collection<UniformResourceLocator> uniformResourceLocators;
+		//Collection<UniformResourceLocator> uniformResourceLocators;
+		UserAccount userAccount;
 		if(userSession==null){
-			uniformResourceLocators = AbstractServletContextListener.getUrls();
+			//uniformResourceLocators = AbstractServletContextListener.getUrls();
+			userAccount= null;
 		}else{
-			uniformResourceLocators = AbstractServletContextListener.getUrls(userSession.getUserAccount());
+			userAccount = userSession.getUserAccount();
+			//uniformResourceLocators = AbstractServletContextListener.getUrls(userSession.getUserAccount());
 		}
 	
 		Boolean doFilterChain = Boolean.FALSE;
@@ -61,10 +67,17 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		}
 			
 		if(Boolean.TRUE.equals(doFilterChain)){
-			if(userSession==null || uniformResourceLocators==null || uniformResourceLocatorBusiness.isAccessible(url(request),uniformResourceLocators))
+			if(userSession==null || userAccount==null || userAccountBusiness.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
 				filterChain.doFilter(servletRequest, servletResponse);
-			else
-				goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+			else if( uniformResourceLocatorBusiness.isAccessible(url(request)) ){
+				if( roleUniformResourceLocatorBusiness.isAccessibleByUserAccount(url(request),userAccount) )
+					filterChain.doFilter(servletRequest, servletResponse);
+				else
+					goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+			}else{
+				goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.REDIRECT);
+				//goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+			}
 		}
 	}
 

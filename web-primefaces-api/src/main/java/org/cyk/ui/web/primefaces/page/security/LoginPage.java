@@ -88,7 +88,6 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		UserAccount userAccount = userAccountBusiness.connect(credentials);
 		SecurityUtils.getSubject().login(new UsernamePasswordToken(credentials.getUsername(), credentials.getPassword(),rememberMe));
 		userSession.init(userAccount);
-		logInfo("User has logged in : Username={} , Roles={}", userAccount.getCredentials().getUsername(),userAccount.getRoles());
 		((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(Boolean.FALSE)).setAttribute(WebManager.getInstance().getSessionAttributeUserSession(), userSession);
 	}
 	

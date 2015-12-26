@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.shiro.SecurityUtils;
 import org.cyk.ui.api.AbstractUserSession;
-import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Faces;
 
 public abstract class AbstractWebUserSession extends AbstractUserSession implements HttpSessionBindingListener , Serializable {
@@ -30,16 +29,6 @@ public abstract class AbstractWebUserSession extends AbstractUserSession impleme
 	@Override
 	protected void __invalidateSession__() {
 		Faces.invalidateSession();
-	}
-
-	@Override
-	public Boolean getIsAdministrator() {
-		return RoleManager.getInstance().isAdministrator(null);
-	}
-
-	@Override
-	public Boolean getIsManager() {
-		return RoleManager.getInstance().isManager(null);
 	}
 	
 	/**/

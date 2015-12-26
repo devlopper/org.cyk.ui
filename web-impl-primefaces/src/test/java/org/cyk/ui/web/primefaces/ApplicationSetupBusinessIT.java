@@ -23,6 +23,9 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
 			@Override
     		public void beforeInstall(BusinessLayer businessLayer,Installation installation) {
     			installation.getApplication().setUniformResourceLocatorFilteringEnabled(Boolean.TRUE);
+    			installation.getApplication().setWebContext("gui-primefaces");
+    			installation.getApplication().setName("GuiApp");
+    			installation.getManagerCredentials().setUsername("zadi");
     			super.beforeInstall(businessLayer, installation);
     		}
     	});

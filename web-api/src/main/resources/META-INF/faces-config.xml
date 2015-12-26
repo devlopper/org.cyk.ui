@@ -61,28 +61,61 @@
 			<redirect />
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>userAccountListView</from-outcome>
-			<to-view-id>/private/__role__/__manager__/useraccount/list.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>userAccountEditView</from-outcome>
-			<to-view-id>/private/__role__/__manager__/useraccount/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>userAccountConsultView</from-outcome>
-			<to-view-id>/private/__role__/__manager__/useraccount/consult.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
 		<!-- Security Manager -->
 		<navigation-case>
 			<from-outcome>security</from-outcome>
 			<to-view-id>/private/__role__/__securitymanager__/index.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>uniformResourceLocatorListView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/uniformresourcelocator/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>uniformResourceLocatorEditView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/uniformresourcelocator/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>uniformResourceLocatorConsultView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/uniformresourcelocator/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>roleListView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleEditView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleConsultView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userAccountListView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountEditView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountConsultView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>useraccounts</from-outcome>
 			<to-view-id>/private/__role__/__securitymanager__/listuseraccount.jsf</to-view-id>

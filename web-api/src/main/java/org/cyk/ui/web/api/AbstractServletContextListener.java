@@ -1,12 +1,7 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -24,6 +19,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.message.MailBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
@@ -33,7 +29,6 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -55,8 +50,8 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	private static final long serialVersionUID = 5382833444089348823L;
 	
 	/*TODO to be moved on business with caching concept*/
-	public static final Map<String, Collection<UniformResourceLocator>> ROLE_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
-	public static final Map<Long, Collection<UniformResourceLocator>> USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
+	//public static final Map<String, Collection<UniformResourceLocator>> ROLE_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
+	//public static final Map<Long, Collection<UniformResourceLocator>> USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP = new HashMap<>();
 	
 	@Inject protected GenericBusiness genericBusiness;
 	@Inject protected EventBusiness eventBusiness;
@@ -74,6 +69,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected RootBusinessLayer rootBusinessLayer;
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
+	@Inject protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness;
 	protected UniformResourceLocatorBuilder uniformResourceLocatorBuilder = new UniformResourceLocatorBuilder();
 	
 	protected ServletContext servletContext;
@@ -272,11 +268,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	}
 	
 	protected void addUrl(String roleCode,UniformResourceLocatorBuilder builder){
-		Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
-		if(uniformResourceLocators==null)
+		//Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
+		/*if(uniformResourceLocators==null)
 			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
-		
-		uniformResourceLocators.add(builder.build());
+		*/
+		//uniformResourceLocators.add(builder.build());
 	}
 	
 	//TODO this logic should be moved on root business
@@ -286,11 +282,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	}
 	
 	protected void addUrl(String roleCode,UniformResourceLocator uniformResourceLocator){
-		Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
+		/*Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
 		if(uniformResourceLocators==null)
 			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
 		
-		uniformResourceLocators.add(uniformResourceLocator);
+		uniformResourceLocators.add(uniformResourceLocator);*/
 	}
 	
 	protected void addCrudUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean list,Crud...cruds){
@@ -354,6 +350,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	}
 	
 	//TODO to be moved to business
+	/*
 	public static Collection<UniformResourceLocator> getUrls(UserAccount userAccount){
 		if(userAccount.getRoles().contains(RootBusinessLayer.getInstance().getManagerRole()))
 			return null;
@@ -376,5 +373,6 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	public static Collection<UniformResourceLocator> getUrls(){
 		return ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(RootBusinessLayer.getInstance().getUserRole().getCode());
 	}
+	*/
 
 }

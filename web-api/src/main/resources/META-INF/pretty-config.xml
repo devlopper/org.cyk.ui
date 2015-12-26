@@ -42,6 +42,11 @@
 		<view-id value="/public/__error__/401.jsf" />
 	</url-mapping> 
 	
+	<url-mapping id="pathUnregistered">
+		<pattern value="/path/unregistered" />
+		<view-id value="/public/__error__/pathunregistered.jsf" />
+	</url-mapping> 
+	
 	<!-- Secured -->
 	   
 	<url-mapping id="home1">

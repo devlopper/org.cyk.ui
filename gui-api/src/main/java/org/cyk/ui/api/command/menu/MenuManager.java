@@ -21,11 +21,14 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
@@ -171,7 +174,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		business(userSession,menu);
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.REPORT));
 		
-		if(userSession.getIsManager()){
+		if(Boolean.TRUE.equals(userSession.getIsManager())){
 			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
 			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
 		}
@@ -236,12 +239,18 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	public UIMenu securityMenu(AbstractUserSession userSession){
-		UIMenu menu = new DefaultMenu();UICommandable p;
+		UIMenu menu = new DefaultMenu();//UICommandable p;
+		/*
 		menu.addCommandable(p = commandable("user.account.create", IconType.ACTION_ADD,ViewType.USER_ACCOUNT_CRUD_ONE));
 		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
 		menu.addCommandable(commandable("user.accounts", IconType.THING_LIST,ViewType.USER_ACCOUNTS));
 		
 		menu.addCommandable(commandable("roles", IconType.THING_LIST).addReadAllParameters(Role.class));
+		*/
+		menu.addCommandable(crudMany(UniformResourceLocator.class, IconType.THING_URL));
+		menu.addCommandable(crudMany(Role.class, IconType.THING_ROLE));
+		menu.addCommandable(crudMany(UserAccount.class, IconType.THING_USERACCOUNT));
+		
 		return menu;
 	}
 	
@@ -326,8 +335,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
+		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoActionText(Crud.CREATE, 
+				(Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz(), Boolean.TRUE, Boolean.TRUE));
 		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 		else{

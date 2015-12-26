@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
@@ -78,6 +79,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.getControlSetListeners().add((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
 		form.setShowCommands(Boolean.FALSE);
 		
+		form.getSubmitCommandable().setIconType(IconType.ACTION_SEARCH);
 		form.getSubmitCommandable().setLabel(text("command.search"));
 		form.getSubmitCommandable().getCommand().setMessageManager(messageManager);
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);

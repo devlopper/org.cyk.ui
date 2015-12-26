@@ -16,6 +16,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.security.Role;
@@ -38,7 +39,7 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	@Getter @Setter protected UserAccount userAccount;
 	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu,mobileApplicationMenu;
 	@Getter @Setter protected String notificationChannel;
-	@Getter protected Boolean logoutCalled;
+	@Getter protected Boolean logoutCalled,isAdministrator,isManager;
 	@Getter @Setter protected UIMenu contextualMenu;
 	
 	//FIXME not called. because of Session Scope ?
@@ -70,6 +71,9 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	
 	public void init(UserAccount userAccount){
 		logoutCalled = Boolean.FALSE;
+		isAdministrator = RootBusinessLayer.getInstance().getUserAccountBusiness().hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator());
+		isManager = RootBusinessLayer.getInstance().getUserAccountBusiness().hasRole(userAccount, RootBusinessLayer.getInstance().getRoleManager());
+		
 		setUserAccount(userAccount);
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));
 		setMobileApplicationMenu(MenuManager.getInstance().mobileApplicationMenu(this));
@@ -123,9 +127,9 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 	
 	protected abstract void __invalidateSession__();
 
-	public abstract Boolean getIsAdministrator();
+	/*public abstract Boolean getIsAdministrator();
 
-	public abstract Boolean getIsManager();
+	public abstract Boolean getIsManager();*/
 	
 	public Boolean hasRole(String roleCode){
 		for(Role role : userAccount.getRoles())

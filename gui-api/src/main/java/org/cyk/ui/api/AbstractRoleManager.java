@@ -25,6 +25,4 @@ public abstract class AbstractRoleManager<REQUEST> extends AbstractBean implemen
 	
 	public abstract Boolean isSecurityManager(REQUEST request);
 	
-	public abstract Boolean isBusinessActor(REQUEST request);
-	
 }

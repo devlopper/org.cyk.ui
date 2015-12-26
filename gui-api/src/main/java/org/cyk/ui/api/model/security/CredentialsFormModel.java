@@ -20,12 +20,13 @@ public class CredentialsFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  
-	@IncludeInputs(layout=Layout.VERTICAL)
-	private Credentials credentials = new Credentials();
+	@IncludeInputs(layout=Layout.VERTICAL) private Credentials credentials = new Credentials();
 	
 	@Input(label=@Text(value="field.password.confirmation"))
 	@InputPassword
 	@NotNull(groups={Client.class})
 	private String passwordConfirmation;
+	
+	public static final String FIELD_PASSWORD_CONFIRMATION = "passwordConfirmation";
 	
 }
