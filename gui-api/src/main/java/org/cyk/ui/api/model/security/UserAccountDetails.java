@@ -14,7 +14,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputText;
 public class UserAccountDetails extends AbstractOutputDetails<UserAccount> implements Serializable{
 	private static final long serialVersionUID = -4741435164709063863L;
 	
-	@Input @InputText private String names,username,roles;
+	@Input @InputText private String names,username,roles,disabled;
 	
 	public UserAccountDetails(UserAccount userAccount) {
 		super(userAccount);
@@ -23,6 +23,7 @@ public class UserAccountDetails extends AbstractOutputDetails<UserAccount> imple
 		else if(userAccount.getUser() instanceof Application)
 			names = ((Application)userAccount.getUser()).getName();
 		username = userAccount.getCredentials().getUsername();
-		roles = StringUtils.join(userAccount.getRoles(),Constant.CHARACTER_SEMI_COLON);
+		roles = StringUtils.join(userAccount.getRoles(),Constant.CHARACTER_COMA);
+		disabled = formatResponse(userAccount.getDisabled());
 	}
 }

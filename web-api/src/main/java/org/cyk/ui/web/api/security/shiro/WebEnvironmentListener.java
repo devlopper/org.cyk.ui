@@ -16,7 +16,6 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.system.root.model.security.RoleUniformResourceLocator;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;

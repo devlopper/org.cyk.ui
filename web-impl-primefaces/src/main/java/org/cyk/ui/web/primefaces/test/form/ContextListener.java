@@ -52,14 +52,6 @@ public class ContextListener extends AbstractContextListener {
 	}
 	
 	@Override
-	protected void addUrls(ServletContextEvent event) {
-		super.addUrls(event);
-		//uniformResourceLocatorBusiness.setFilteringEnabled(Boolean.FALSE);
-		//addUrl(rootBusinessLayer.getUserRole().getCode(),"/private/index.jsf");
-		//addCrudUrl(rootBusinessLayer.getUserRole().getCode(), Actor.class, Boolean.TRUE,Crud.CREATE);
-	}
-	
-	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {
 		super.identifiableConfiguration(event);
 		

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
@@ -18,6 +18,6 @@ public class RoleDetails extends AbstractEnumerationDetails<Role> implements Ser
 	public RoleDetails(Role role) {
 		super(role);
 		uniformResourceLocators = StringUtils.join(rootBusinessLayer.getRoleUniformResourceLocatorBusiness().findByRoles(Arrays.asList(role))
-				,Constant.CHARACTER_SEMI_COLON);
+				,ContentType.TEXT.getNewLineMarker());
 	}
 }

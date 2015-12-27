@@ -2,12 +2,15 @@ package org.cyk.ui.web.primefaces.page.security;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
@@ -38,15 +41,21 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		
+		Collection<RoleUniformResourceLocator> roleUniformResourceLocators = null;
+		if(Crud.CREATE.equals(crud))
+			roleUniformResourceLocators = new ArrayList<RoleUniformResourceLocator>();
+		else 
+			roleUniformResourceLocators = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().findByRoles(Arrays.asList(identifiable));
 		roleUniformResourceLocatorCollection = createItemCollection(RoleUniformResourceLocatorItem.class, RoleUniformResourceLocator.class, 
-				new ArrayList<RoleUniformResourceLocator>(),new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator>(){
+				roleUniformResourceLocators,new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator>(){
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
 				super.instanciated(itemCollection, item);
-				item.getIdentifiable().setUniformResourceLocator(((Form)form.getData()).getUniformResourceLocator());
-				item.getIdentifiable().setRole(identifiable);
+				if(item.getIdentifiable().getUniformResourceLocator()==null)
+					item.getIdentifiable().setUniformResourceLocator(((Form)form.getData()).getUniformResourceLocator());
+				if(item.getIdentifiable().getRole()==null)
+					item.getIdentifiable().setRole(identifiable);
 				item.setAddress(item.getIdentifiable().getUniformResourceLocator().toString());
 		
 			}	

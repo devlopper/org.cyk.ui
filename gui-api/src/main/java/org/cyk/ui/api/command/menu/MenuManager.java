@@ -240,13 +240,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UIMenu securityMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();//UICommandable p;
-		/*
-		menu.addCommandable(p = commandable("user.account.create", IconType.ACTION_ADD,ViewType.USER_ACCOUNT_CRUD_ONE));
-		p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
-		menu.addCommandable(commandable("user.accounts", IconType.THING_LIST,ViewType.USER_ACCOUNTS));
-		
-		menu.addCommandable(commandable("roles", IconType.THING_LIST).addReadAllParameters(Role.class));
-		*/
 		menu.addCommandable(crudMany(UniformResourceLocator.class, IconType.THING_URL));
 		menu.addCommandable(crudMany(Role.class, IconType.THING_ROLE));
 		menu.addCommandable(crudMany(UserAccount.class, IconType.THING_USERACCOUNT));
