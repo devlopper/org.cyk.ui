@@ -52,6 +52,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
 	@Inject transient protected NumberBusiness numberBusiness;
 	@Inject transient protected TimeBusiness timeBusiness;
+	@Inject transient protected RootBusinessLayer rootBusinessLayer;
 	
 	@Getter @Setter protected Long userActiveTimeout = DateTimeConstants.MILLIS_PER_MINUTE * 10l;
 	@Getter @Setter protected ExecutionProgress executionProgress;

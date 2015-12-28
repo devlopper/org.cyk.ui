@@ -1,9 +1,13 @@
 package org.cyk.ui.api.model;
 
+import java.util.Collection;
+
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> {
+	
+	Collection<IDENTIFIABLE> load();
 	
 	void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
 	
@@ -19,6 +23,11 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 
 		private static final long serialVersionUID = 5920340778121618178L;
 
+		@Override
+		public Collection<IDENTIFIABLE> load() {
+			return null;
+		}
+		
 		@Override
 		public void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
 

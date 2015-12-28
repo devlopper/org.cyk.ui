@@ -9,6 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -16,16 +19,13 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryFormModel;
+import org.cyk.ui.web.api.WebInputListener;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -92,7 +92,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		for(SelectPageListener<?,?> selectPageListener : getListeners())
 			selectPageListener.afterInitialisationStarted(this);
 		
-		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIER,new WebInput.WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIER,new WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
@@ -103,7 +103,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});
 		
-		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIABLE,new WebInput.WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIABLE,new WebInputListener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
 			@Override

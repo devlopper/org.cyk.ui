@@ -121,6 +121,7 @@ public interface WebEnvironmentListener {
 					for(Entry<String, String> entry : securedUrlProvider.urls.entrySet())
 						urlsSection.put(entry.getKey(), entry.getValue());
 				
+				//TODO should be deleted because it is done via security filter
 				/*
 				for(RoleSecuredView roleSecuredView : UIManager.getInstance().getRoleSecuredViewBusiness().findAll())
 					role(urlsSection,roleSecuredView.getViewId(), roleSecuredView.getAccessor());

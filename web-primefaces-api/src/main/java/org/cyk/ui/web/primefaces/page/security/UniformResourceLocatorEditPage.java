@@ -1,15 +1,16 @@
 package org.cyk.ui.web.primefaces.page.security;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.Crud;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -23,9 +24,6 @@ import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Named @ViewScoped @Getter @Setter
 public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformResourceLocator> implements Serializable {
 
@@ -36,11 +34,14 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		List<UniformResourceLocatorParameter> uniformResourceLocatorParameters = Crud.CREATE.equals(crud) ? new ArrayList<UniformResourceLocatorParameter>() 
-				: new ArrayList<UniformResourceLocatorParameter>(RootBusinessLayer.getInstance().getUniformResourceLocatorParameterBusiness().findByUniformResourceLocator(identifiable));
-		uniformResourceLocatorParameterCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class, 
-				uniformResourceLocatorParameters,new ItemCollectionWebAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter>(){
+		uniformResourceLocatorParameterCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class
+				,new ItemCollectionWebAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter>(){
 			private static final long serialVersionUID = -3872058204105902514L;
+			@Override
+			public Collection<UniformResourceLocatorParameter> load() {
+				return rootBusinessLayer.getUniformResourceLocatorParameterBusiness().findByUniformResourceLocator(identifiable);
+			}
+			
 			@Override
 			public void instanciated(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
 				super.instanciated(itemCollection, item);

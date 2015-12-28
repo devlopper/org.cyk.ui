@@ -1,13 +1,15 @@
 package org.cyk.ui.web.primefaces.page.security;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -18,11 +20,8 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.ControlSet;
-import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.security.CredentialsFormModel;
-import org.cyk.ui.web.api.ItemCollectionWebAdapter;
-import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Binding;
@@ -38,15 +37,10 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Named @ViewScoped @Getter @Setter
 public class UserAccountEditPage extends AbstractCrudOnePage<UserAccount> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-	
-	private ItemCollection<RoleItem,Role> roleCollection;
 	
 	@Override
 	protected void initialisation() {
@@ -61,20 +55,6 @@ public class UserAccountEditPage extends AbstractCrudOnePage<UserAccount> implem
 					if(Crud.UPDATE.equals(crud))
 						input.setRequired(Boolean.FALSE);
 			}
-		});
-		roleCollection = createItemCollection(RoleItem.class, Role.class, 
-				new ArrayList<Role>(),new ItemCollectionWebAdapter<RoleItem,Role>(){
-			private static final long serialVersionUID = -3872058204105902514L;
-			@Override
-			public void instanciated(AbstractItemCollection<RoleItem, Role,SelectItem> itemCollection,RoleItem item) {
-				super.instanciated(itemCollection, item);
-				/*
-				item.setIdentifier(((Form)form.getData()).getRole());
-				item.setNames(item.getIdentifiable().getStudent().getPerson().getNames());
-				item.setClassroomSession(RootBusinessLayer.getInstance().getFormatterBusiness().format(item.getIdentifiable().getClassroomSessionDivisionSubject()
-						.getClassroomSessionDivision().getClassroomSession()));
-				*/
-			}	
 		});
 	}
 	

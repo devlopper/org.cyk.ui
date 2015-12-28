@@ -1,8 +1,6 @@
 package org.cyk.ui.web.primefaces.page.security;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import javax.faces.model.SelectItem;
@@ -10,12 +8,13 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.Crud;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleUniformResourceLocator;
-import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -28,9 +27,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Named @ViewScoped @Getter @Setter
 public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializable {
 
@@ -41,14 +37,13 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		Collection<RoleUniformResourceLocator> roleUniformResourceLocators = null;
-		if(Crud.CREATE.equals(crud))
-			roleUniformResourceLocators = new ArrayList<RoleUniformResourceLocator>();
-		else 
-			roleUniformResourceLocators = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().findByRoles(Arrays.asList(identifiable));
-		roleUniformResourceLocatorCollection = createItemCollection(RoleUniformResourceLocatorItem.class, RoleUniformResourceLocator.class, 
-				roleUniformResourceLocators,new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator>(){
+		roleUniformResourceLocatorCollection = createItemCollection(RoleUniformResourceLocatorItem.class, RoleUniformResourceLocator.class
+				,new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator>(){
 			private static final long serialVersionUID = -3872058204105902514L;
+			@Override
+			public Collection<RoleUniformResourceLocator> load() {
+				return rootBusinessLayer.getRoleUniformResourceLocatorBusiness().findByRole(identifiable);
+			}
 			@Override
 			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
 				super.instanciated(itemCollection, item);
@@ -62,13 +57,13 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 		});
 	}
 	
-	@Override
+	/*@Override
 	public void transfer(UICommand command, Object object) throws Exception {
 		super.transfer(command, object);
 		if(roleUniformResourceLocatorCollection.getAddCommandable().getCommand() == command ){
 			form.getSelectedFormData().applyValuesToFields();
 		}
-	}
+	}*/
 	
 	@Override
 	protected void create() {

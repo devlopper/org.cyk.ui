@@ -13,4 +13,6 @@ public class UserAccountConsultPage extends AbstractUserAccountConsultPage imple
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
+	
+	
 }

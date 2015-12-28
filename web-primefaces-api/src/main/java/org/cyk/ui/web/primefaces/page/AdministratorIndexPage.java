@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @RequestScoped @Getter @Setter
-public class PrivateIndexPage extends AbstractPrimefacesPage implements Serializable {
+public class AdministratorIndexPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 

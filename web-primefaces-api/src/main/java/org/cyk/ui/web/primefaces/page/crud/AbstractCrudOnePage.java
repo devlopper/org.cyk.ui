@@ -22,19 +22,18 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	protected void initialisation() {
 		super.initialisation();
 		form.setDynamic(Boolean.TRUE);
-		contentTitle = text("page.crud.one."+crud.name().toLowerCase())+" "+contentTitle;
-		title = contentTitle;
 		if(Crud.DELETE.equals(crud)){
 			form.getSubmitCommandable().setLabel(text("command.delete"));
 		}
 		
-		form.getSubmitCommandable().getCommand().setExecutionProgress(createExecutionProgress());
-		
+		form.getSubmitCommandable().getCommand().setExecutionProgress(createExecutionProgress());	
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		contentTitle = languageBusiness.findDoActionText(crud, identifiable.getClass(), Boolean.TRUE, Crud.CREATE.equals(crud));
+		title = contentTitle;
 		executionProgress = form.getSubmitCommandable().getCommand().getExecutionProgress();
 		if(executionProgress!=null)
 			primefacesManager.configureProgressBar(form.getSubmitCommandable());

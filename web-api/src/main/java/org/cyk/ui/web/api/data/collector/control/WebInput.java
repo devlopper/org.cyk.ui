@@ -1,6 +1,5 @@
 package org.cyk.ui.web.api.data.collector.control;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import javax.faces.component.UIComponent;
@@ -10,7 +9,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.web.api.AjaxListener;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.ui.web.api.WebInputListener;
 
 
 public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, ROW, LABEL, CONTROL> {
@@ -33,27 +32,7 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 	
 	/**/
 	
-	public static interface WebInputListener{
-		
-		void validate(FacesContext facesContext,UIComponent uiComponent,Object value) throws ValidatorException;
-		
-		/**/
-		
-		public static class Adapter extends BeanAdapter implements WebInputListener,Serializable{
 
-			private static final long serialVersionUID = -8747839786713747954L;
-
-			@Override
-			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {}
-			
-			/**/
-			
-			public static class Default extends Adapter implements Serializable{
-				private static final long serialVersionUID = -2890801679859553209L;
-				
-			}
-		}
-	}
 	
 	
 	

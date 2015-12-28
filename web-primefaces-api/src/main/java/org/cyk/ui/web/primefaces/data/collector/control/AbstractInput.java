@@ -20,6 +20,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.AjaxListener;
+import org.cyk.ui.web.api.WebInputListener;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;

@@ -132,6 +132,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandableGroup.setLabel(userSession.getUserAccount().getCredentials().getUsername());
 			commandableGroup.addChild(notificationsCommandable());
 			c = commandableGroup.addChild("command.useraccount", IconType.THING_USERACCOUNT, ViewType.USER_ACCOUNT_CONSULT, null);
+			//c.addDefaultParameters();
+			//c.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), userSession.getUserAccount());
 			c.setIdentifier(COMMANDABLE_USER_ACCOUNT_IDENTIFIER);
 			commandableGroup.addChild(logoutCommandable());
 			

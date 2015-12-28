@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.web.api.AjaxBuilder;
-import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputListener;
+import org.cyk.ui.web.api.WebInputListener;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
@@ -119,7 +120,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
-			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? new ArrayList<IDENTIFIABLE>() : listener.load();
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
 		return collection;
@@ -157,6 +159,14 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 						}
 					}
 				}
+		}else{
+			if(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud)){
+				for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
+					if(itemCollection.getAddCommandable().getCommand()==command && Boolean.TRUE.equals(itemCollection.getAutoApplyMasterFormFieldValues()) ){
+						form.getSelectedFormData().applyValuesToFields();
+					}
+				}
+			}
 		}
 	}
 

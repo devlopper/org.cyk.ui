@@ -28,7 +28,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
-	protected Boolean autoWrite=Boolean.TRUE;
+	protected Boolean autoWrite=Boolean.TRUE,autoApplyMasterFormFieldValues=Boolean.TRUE;
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
 

@@ -33,7 +33,6 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
-import org.cyk.ui.web.api.data.collector.control.WebInput.WebInputListener;
 import org.cyk.ui.web.api.data.collector.control.WebOutput;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Ajax;

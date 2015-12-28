@@ -15,6 +15,12 @@ public class ConnectedUserAccountConsultPage extends AbstractUserAccountConsultP
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		contextualMenu = userSession.getUserAccountMenu();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass) {
