@@ -124,7 +124,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	
 	protected String buildContentTitle(){
-		return null;
+		return "Content Title";
 	}
 	
 	protected void buildTables(){

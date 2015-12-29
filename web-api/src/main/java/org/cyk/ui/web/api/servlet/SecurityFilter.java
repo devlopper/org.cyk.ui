@@ -75,7 +75,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				else
 					goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
 			}else{
-				goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.REDIRECT);
+				goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.FORWARD);
 				//goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
 			}
 		}
