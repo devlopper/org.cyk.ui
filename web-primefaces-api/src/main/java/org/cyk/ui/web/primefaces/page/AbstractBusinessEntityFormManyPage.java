@@ -9,7 +9,9 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
@@ -177,6 +179,15 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
+	}
+	
+	@Override
+	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
+		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
+		parameters.setActionIdentifier(CommonBusinessAction.LIST);
+		parameters.setOne(Boolean.FALSE);
+		
+		return parameters;
 	}
 	
 	protected void redirectToCrudOne(Crud crud,Object data){

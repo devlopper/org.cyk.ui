@@ -51,7 +51,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 					item.getIdentifiable().setUniformResourceLocator(((Form)form.getData()).getUniformResourceLocator());
 				if(item.getIdentifiable().getRole()==null)
 					item.getIdentifiable().setRole(identifiable);
-				item.setAddress(item.getIdentifiable().getUniformResourceLocator().toString());
+				item.setName(item.getIdentifiable().getUniformResourceLocator().getName());
 		
 			}	
 		});
@@ -90,7 +90,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 	@Getter @Setter
 	public static class RoleUniformResourceLocatorItem extends AbstractItemCollectionItem<RoleUniformResourceLocator> implements Serializable {
 		private static final long serialVersionUID = 3828481396841243726L;
-		private String address;
+		private String name;
 	}
 	
 }

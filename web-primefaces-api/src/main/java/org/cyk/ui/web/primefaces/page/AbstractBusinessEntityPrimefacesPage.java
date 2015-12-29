@@ -10,15 +10,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.utility.common.Constant;
 import org.primefaces.model.menu.MenuModel;
 
 @Getter
@@ -29,7 +31,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 
 	protected BusinessEntityInfos businessEntityInfos;
 	protected IdentifiableConfiguration identifiableConfiguration ;
-	protected ENTITY identifiable;
+	protected ENTITY identifiable;//TODO is it the right place ???
 	protected String formModelClassId;
 	protected Class<?> formModelClass;
 	
@@ -69,6 +71,30 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		
 		for(BusinessEntityFormPageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
+	}
+	
+	@Override
+	protected String buildContentTitle() {
+		StringBuilder stringBuilder = new StringBuilder(languageBusiness.findDoSomethingText(getContentTitleDoSomethingTextParameters()));
+		if(identifiable==null){
+			
+		}else{
+			if(identifiable.getIdentifier()==null)
+				;
+			else
+				stringBuilder.append(" "+Constant.CHARACTER_VERTICAL_BAR+" "+formatUsingBusiness(identifiable));
+		}
+		return stringBuilder.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
+		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+		parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) /*identifiable.getClass()*/businessEntityInfos.getClazz());
+		parameters.setOne(Boolean.TRUE);
+		parameters.setGlobal(Boolean.FALSE);
+		parameters.setVerb(Boolean.FALSE);
+		return parameters;
 	}
 	
 	protected BusinessEntityInfos fetchBusinessEntityInfos(){

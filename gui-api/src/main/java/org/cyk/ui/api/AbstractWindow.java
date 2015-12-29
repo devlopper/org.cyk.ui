@@ -82,6 +82,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		contentTitle = buildContentTitle();
+		title = contentTitle;
 		Collection<UICommandable> contextualCommandables = contextualCommandables();
 		if(contextualCommandables!=null){
 			if(contextualMenu==null)
@@ -119,6 +121,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 				}
 			};
 		}
+	}
+	
+	protected String buildContentTitle(){
+		return null;
 	}
 	
 	protected void buildTables(){

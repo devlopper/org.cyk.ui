@@ -6,6 +6,8 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
@@ -36,10 +38,15 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		for(ConsultPageListener<?> listener : getListeners())
 			listener.afterInitialisationStarted(this);
 		
-		// your code here
-		
 		for(ConsultPageListener<?> listener : getListeners())
 			listener.afterInitialisationEnded(this); 
+	}
+	
+	@Override
+	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
+		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
+		parameters.setActionIdentifier(CommonBusinessAction.CONSULT);
+		return parameters;
 	}
 	
 	private Collection<ConsultPageListener<?>> getListeners(){

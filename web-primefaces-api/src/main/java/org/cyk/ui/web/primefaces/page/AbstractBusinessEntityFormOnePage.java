@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
@@ -95,6 +96,13 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			listener.afterInitialisationEnded(this); 
 	}
 	
+	@Override
+	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
+		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
+		parameters.setActionIdentifier(crud);
+		return parameters;
+	}
+		
 	protected Object data(Class<?> aClass){
 		try{
 			if(identifiable==null)

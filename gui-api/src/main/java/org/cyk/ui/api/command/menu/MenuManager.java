@@ -21,7 +21,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -333,8 +334,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 	@SuppressWarnings("unchecked")
 	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
-		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoActionText(Crud.CREATE, 
-				(Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz(), Boolean.TRUE, Boolean.TRUE));
+		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+		parameters.setActionIdentifier(CommonBusinessAction.CREATE);
+		parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+		parameters.setVerb(Boolean.TRUE);
+		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(parameters));
 		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 		else{
