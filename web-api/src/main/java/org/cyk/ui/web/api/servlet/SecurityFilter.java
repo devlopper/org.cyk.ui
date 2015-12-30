@@ -64,8 +64,10 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 							, PATH_LICENSE_EXPIRED, request, response))
 						doFilterChain = Boolean.TRUE;
 					else{
-						if(!Boolean.TRUE.equals(application.getLicense().getExpired()))
-							licenseBusiness.expire(application.getLicense());
+						if(!Boolean.TRUE.equals(application.getLicense().getExpired())){
+							application.getLicense().setExpired(Boolean.TRUE);
+							licenseBusiness.update(application.getLicense());
+						}
 					}
 				}else
 					doFilterChain = Boolean.TRUE;
