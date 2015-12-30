@@ -9,14 +9,11 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/contentOnly.xhtml">
- 		<ui:param name="pageController" value="#{licenseExpandPage}" />
+ 		<ui:param name="pageController" value="#{licenseExpiredPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{licenseExpandPage.form}" />
+ 			<h1>Expired</h1>	
  		</ui:define>
  		
- 		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{licenseExpandPage.form.submitCommandable}" executeParameter="#{licenseExpandPage.form.data}" />
- 		</ui:define>
  	</ui:decorate>
  
 </html>

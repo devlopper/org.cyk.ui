@@ -17,7 +17,7 @@ import org.cyk.system.root.business.api.security.LicenseBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.security.License;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.utility.common.CommonUtils;
@@ -44,41 +44,49 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		//Collection<UniformResourceLocator> uniformResourceLocators;
 		UserAccount userAccount;
 		if(userSession==null){
-			//uniformResourceLocators = AbstractServletContextListener.getUrls();
 			userAccount= null;
 		}else{
-			userAccount = userSession.getUserAccount();
-			//uniformResourceLocators = AbstractServletContextListener.getUrls(userSession.getUserAccount());
-		}
-	
-		Boolean doFilterChain = Boolean.FALSE;
-		
-		if(!goTo(RootBusinessLayer.getInstance().getApplication()==null, PATH_INSTALL, request, response)){
-			if(Boolean.TRUE.equals(licenseBusiness.getEnabled())){
-				License license = RootBusinessLayer.getInstance().getApplication().getLicense();
-				if(!goTo(license.getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated()), PATH_LICENSE_EXPIRED, request, response))
-					doFilterChain = Boolean.TRUE;
-				else{
-					if(!Boolean.TRUE.equals(license.getExpired()))
-						licenseBusiness.expire(license);
-				}
-			}else
-				doFilterChain = Boolean.TRUE;
-		}
-			
-		if(Boolean.TRUE.equals(doFilterChain)){
-			if(userSession==null || userAccount==null || userAccountBusiness.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
+			/*if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
 				filterChain.doFilter(servletRequest, servletResponse);
-			else if( uniformResourceLocatorBusiness.isAccessible(url(request)) ){
-				if( roleUniformResourceLocatorBusiness.isAccessibleByUserAccount(url(request),userAccount) )
+				return;
+			}*/
+			userAccount = userSession.getUserAccount();
+		}
+		
+		if(userAccount==null || userSession.getIsAdministrator()){
+			filterChain.doFilter(servletRequest, servletResponse);
+		}else{
+			Boolean doFilterChain = Boolean.FALSE;
+			Application application = getApplication();
+			if(!goTo(application==null, PATH_INSTALL, request, response)){
+				if(Boolean.TRUE.equals(application.getLicense().getExpirable())){
+					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
+							, PATH_LICENSE_EXPIRED, request, response))
+						doFilterChain = Boolean.TRUE;
+					else{
+						if(!Boolean.TRUE.equals(application.getLicense().getExpired()))
+							licenseBusiness.expire(application.getLicense());
+					}
+				}else
+					doFilterChain = Boolean.TRUE;
+			}
+				
+			if(Boolean.TRUE.equals(doFilterChain)){
+				if(userSession==null || userAccount==null || userAccountBusiness.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
 					filterChain.doFilter(servletRequest, servletResponse);
-				else
-					goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
-			}else{
-				goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.FORWARD);
-				//goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+				else if( uniformResourceLocatorBusiness.isAccessible(url(request)) ){
+					if( roleUniformResourceLocatorBusiness.isAccessibleByUserAccount(url(request),userAccount) )
+						filterChain.doFilter(servletRequest, servletResponse);
+					else
+						goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+				}else{
+					goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.FORWARD);
+					//goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
+				}
 			}
 		}
+	
+		
 	}
 
 }

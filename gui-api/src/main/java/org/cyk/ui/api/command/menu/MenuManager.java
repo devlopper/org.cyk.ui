@@ -28,6 +28,7 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractApplicationUIManager;
@@ -243,6 +244,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UIMenu securityMenu(AbstractUserSession userSession){
 		UIMenu menu = new DefaultMenu();//UICommandable p;
+		//if(Boolean.TRUE.equals(userSession.getIsAdministrator()))
+		menu.addCommandable(crudMany(License.class, null));
 		menu.addCommandable(crudMany(UniformResourceLocator.class, IconType.THING_URL));
 		menu.addCommandable(crudMany(Role.class, IconType.THING_ROLE));
 		menu.addCommandable(crudMany(UserAccount.class, IconType.THING_USERACCOUNT));

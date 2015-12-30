@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.web.api.AbstractWebUserSession;
 import org.cyk.ui.web.api.WebManager;
@@ -53,6 +55,10 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 	
 	@Override
 	public void destroy() {}
+	
+	protected Application getApplication(){
+		return RootBusinessLayer.getInstance().getApplication();
+	}
 	
 	protected URL url(HttpServletRequest request){
 		try {

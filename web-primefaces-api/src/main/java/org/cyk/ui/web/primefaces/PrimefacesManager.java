@@ -41,6 +41,7 @@ import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.cyk.ui.web.primefaces.page.SelectPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
 import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -189,6 +190,19 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	@Override
 	protected SelectItem item(Enum<?> anEnum) {
 		return WebManager.getInstance().getSelectItem(anEnum); 
+	}
+	
+	@Override
+	protected Collection<SelectItem> getChoiceSetSelectItems(ChoiceSet choiceSet,Boolean nullable) {
+		Collection<SelectItem> collection = new ArrayList<>();
+		switch(choiceSet){
+		case YES_NO: 
+			collection.addAll(Boolean.TRUE.equals(nullable) ? WebManager.getInstance().getBooleanSelectItems() : WebManager.getInstance().getBooleanSelectItemsNoNull());
+			break;
+		case AUTO:
+			break;
+		}
+		return collection;
 	}
 	
 	public void connectSocket(String socket,String channel){

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.geography.LocalityBusiness;
@@ -24,6 +25,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements 
@@ -48,6 +50,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@SuppressWarnings("unchecked")
 	@Override
 	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
+		ChoiceSet choiceSet = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class).set();
 		Class<?> type = UIProvider.getInstance().getFieldType(data.getClass(), field);
 		
 		if(List.class.equals(type))
@@ -67,8 +70,12 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		}else if(type.isEnum()){
 			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())
 				list.add(item(value));
+		}else if(Boolean.class.equals(type) || boolean.class.equals(type)){
+			list.addAll(getChoiceSetSelectItems(choiceSet,field.getAnnotation(NotNull.class)==null));		
 		}
 	}
+	
+	protected abstract Collection<SELECTITEM> getChoiceSetSelectItems(ChoiceSet choiceSet,Boolean nullable);
 	
 	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field){
 		Collection<AbstractIdentifiable> collection = null;

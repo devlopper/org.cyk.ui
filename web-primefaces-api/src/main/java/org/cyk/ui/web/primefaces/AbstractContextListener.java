@@ -11,6 +11,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -23,6 +24,7 @@ import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.api.model.security.LicenseDetails;
 import org.cyk.ui.api.model.security.RoleDetails;
 import org.cyk.ui.api.model.security.UniformResourceLocatorDetails;
 import org.cyk.ui.api.model.security.UserAccountDetails;
@@ -35,6 +37,7 @@ import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.FileDetails;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
@@ -83,6 +86,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
 		*/
 	
+		uiManager.registerConfiguration(new IdentifiableConfiguration(License.class, LicenseEditPage.Form.class, LicenseDetails.class,null));
+		uiManager.configBusinessIdentifiable(License.class, null);
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(UniformResourceLocator.class, UniformResourceLocatorEditPage.Form.class, UniformResourceLocatorDetails.class,null));
 		uiManager.configBusinessIdentifiable(UniformResourceLocator.class, null);
 		

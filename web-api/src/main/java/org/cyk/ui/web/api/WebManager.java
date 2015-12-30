@@ -51,6 +51,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	@Inject private LanguageBusiness languageBusiness;
 	
 	private List<SelectItem> booleanSelectItems = new ArrayList<>();
+	private List<SelectItem> booleanSelectItemsNoNull = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -60,6 +61,9 @@ public class WebManager extends AbstractBean implements Serializable {
 		booleanSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
 		booleanSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
 		booleanSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
+		
+		booleanSelectItemsNoNull.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
+		booleanSelectItemsNoNull.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 		
 	}
 	

@@ -8,12 +8,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
- 	<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/contentOnly.xhtml">
- 		<ui:param name="pageController" value="#{licenseExpiredPage}" />
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{licenseConsultPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{licenseExpiredPage.form}" />	
+ 			<cyk:formOneData value="#{licenseConsultPage.details}" />
  		</ui:define>
- 		
  	</ui:decorate>
  
 </html>
