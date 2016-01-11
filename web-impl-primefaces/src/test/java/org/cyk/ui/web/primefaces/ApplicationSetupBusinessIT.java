@@ -1,8 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
-import org.cyk.system.root.business.api.BusinessLayer;
-import org.cyk.system.root.business.api.BusinessLayerListener;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
+import org.cyk.system.root.business.impl.party.ApplicationBusinessImplListener;
 import org.cyk.system.root.model.security.Installation;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
@@ -18,15 +17,14 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     
     @Override
     protected void businesses() {
-    	RootBusinessLayer.getInstance().getBusinessLayerListeners().add(new BusinessLayerListener.Adapter.Default(){
-			private static final long serialVersionUID = 6148913289155659043L;
-			@Override
-    		public void beforeInstall(BusinessLayer businessLayer,Installation installation) {
+    	ApplicationBusinessImpl.LISTENERS.add(new ApplicationBusinessImplListener.Adapter.Default(){
+			private static final long serialVersionUID = -7737204312141333272L;
+    		@Override
+    		public void installationStarted(Installation installation) {
     			installation.getApplication().setUniformResourceLocatorFilteringEnabled(Boolean.TRUE);
     			installation.getApplication().setWebContext("gui-primefaces");
     			installation.getApplication().setName("GuiApp");
-    			installation.getManagerCredentials().setUsername("zadi");
-    			super.beforeInstall(businessLayer, installation);
+    			super.installationStarted(installation);
     		}
     	});
     	installApplication();
