@@ -3,6 +3,8 @@ package org.cyk.ui.web.primefaces.page.crud;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -57,30 +59,45 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		return primefacesManager.getConsultPageListeners(businessEntityInfos.getClazz());
 	}
 	
-	protected Boolean showContextualEditCommandable(){
-		return Boolean.FALSE;
-	}
 	protected Boolean showContextualHierarchyConsultCommandables(){
+		return Boolean.TRUE;
+	}
+	protected Boolean showContextualEditCommandable(){
+		return Boolean.TRUE;
+	}
+	/*
+	protected Boolean showContextualCreateCommandables(){
 		return Boolean.FALSE;
-	}
-	protected Collection<Class<? extends AbstractIdentifiable>> getCreateableClasses(){
-		
-	}
+	}*/
+	
+	protected void processIdentifiableContextualCommandable(UICommandable commandable) {}
 	
 	@Override
 	protected Collection<UICommandable> contextualCommandables() {
-		UICommandable contextualMenu = UIProvider.getInstance().createCommandable("button", null),commandable=null;
+		UICommandable contextualMenu = UIProvider.getInstance().createCommandable("button", null);
 		contextualMenu.setLabel(formatUsingBusiness(identifiable)); 
 		
-		if(Boolean.TRUE.equals(showContextualHierarchyConsultCommandables()))
-			for(Object ancestor : RootBusinessLayer.getInstance().getClazzBusiness().findParentsOf(businessEntityInfos.getUserInterface().getHierarchyHighestAncestorClass(),identifiable))
-				contextualMenu.getChildren().add(commandable = navigationManager.createConsultCommandable((AbstractIdentifiable) ancestor, null));
+		if(Boolean.TRUE.equals(showContextualHierarchyConsultCommandables())){
+			List<Object> parents = RootBusinessLayer.getInstance().getClazzBusiness().findParentsOf(businessEntityInfos.getUserInterface().getHierarchyHighestAncestorClass(),identifiable);
+			Collections.reverse(parents);
+			for(Object ancestor : parents)
+				contextualMenu.getChildren().add(navigationManager.createConsultCommandable((AbstractIdentifiable) ancestor, null));
+		}
 		
 		if(Boolean.TRUE.equals(showContextualEditCommandable())){
-			commandable = navigationManager.createUpdateCommandable(identifiable, "command.edit", null);
-			contextualMenu.getChildren().add(commandable);
+			contextualMenu.getChildren().add(navigationManager.createUpdateCommandable(identifiable, "command.edit", null));
 		}
-		return Arrays.asList(contextualMenu);
+		
+		/*
+		if(Boolean.TRUE.equals(showContextualCreateCommandables()))
+			for(Class<?> clazz : businessEntityInfos.getManyToOneClasses())
+				contextualMenu.getChildren().add(commandable = navigationManager.createCreateCommandable((Class<? extends AbstractIdentifiable>)clazz
+						,RootBusinessLayer.getInstance().getApplicationBusiness().findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
+		*/
+		
+		processIdentifiableContextualCommandable(contextualMenu);
+		
+		return contextualMenu.getChildren().isEmpty() ? null : Arrays.asList(contextualMenu);
 	}
 
 }
