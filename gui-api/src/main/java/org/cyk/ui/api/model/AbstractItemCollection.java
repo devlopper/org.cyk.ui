@@ -70,6 +70,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		items.add(instance);
 		
+		read(instance);
+		
 		if(instance.getForm()==null)
 			;
 		else{
@@ -82,7 +84,19 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 	
 	public void add(){
-		add(newInstance(identifiableClass));
+		add(instanciate());
+	}
+	
+	protected IDENTIFIABLE instanciate(){
+		IDENTIFIABLE instance = null;
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners){
+			IDENTIFIABLE v = listener.instanciate(this);
+			if(v!=null)
+				instance = v;
+		}
+		if(instance==null)
+			instance = newInstance(identifiableClass);
+		return instance;
 	}
 	
 	public void delete(TYPE item){
@@ -107,6 +121,16 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			for(TYPE item : items)
 				listener.write(item);
+	}
+	
+	public void read(){
+		for(TYPE item : items)
+			read(item);
+	}
+
+	public void read(TYPE item){
+		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+			listener.read(item);
 	}
 	
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> createApplicableValueQuestion(){

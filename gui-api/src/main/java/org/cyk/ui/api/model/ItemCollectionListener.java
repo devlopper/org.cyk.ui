@@ -9,13 +9,23 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 	
 	Collection<IDENTIFIABLE> load();
 	
+	IDENTIFIABLE instanciate(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
+	
 	void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
 	
 	void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
 	
 	void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
 
+	/**
+	 * Take value from item fields to identifiable fields
+	 */
 	void write(TYPE item);
+	
+	/**
+	 * Take value from identifiable fields to item fields
+	 */
+	void read(TYPE item);
 	
 	/**/
 	
@@ -29,16 +39,19 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 		}
 		
 		@Override
-		public void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
+		public IDENTIFIABLE instanciate(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection) {
+			return null;
+		}
+		
+		@Override public void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
 
-		@Override
-		public void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection, TYPE item) {}
+		@Override public void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection, TYPE item) {}
 
-		@Override
-		public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
+		@Override public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
 	
-		@Override
-		public void write(TYPE item) {}
+		@Override public void write(TYPE item) {}
+		
+		@Override public void read(TYPE item) {}
 	}
 	
 }
