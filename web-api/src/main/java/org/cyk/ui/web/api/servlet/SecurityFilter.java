@@ -53,11 +53,11 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			userAccount = userSession.getUserAccount();
 		}
 		
-		if(userAccount==null || userSession.getIsAdministrator()){
+		Application application = getApplication();
+		if(userAccount==null || userSession.getIsAdministrator() || (application!=null && Boolean.FALSE.equals(application.getUniformResourceLocatorFilteringEnabled()))){
 			filterChain.doFilter(servletRequest, servletResponse);
 		}else{
 			Boolean doFilterChain = Boolean.FALSE;
-			Application application = getApplication();
 			if(!goTo(application==null, PATH_INSTALL, request, response)){
 				if(Boolean.TRUE.equals(application.getLicense().getExpirable())){
 					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
