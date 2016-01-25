@@ -71,7 +71,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		table.setEditable(Boolean.FALSE);
 		table.setGlobalFilter(Boolean.FALSE);
 		table.setShowToolBar(Boolean.FALSE);
-		table.getAddRowCommandable().setRendered(Boolean.FALSE);
+		//table.getAddRowCommandable().setRendered(Boolean.FALSE);
 		table.setShowOpenCommand(Boolean.TRUE);
 		table.setIdentifiableClass(__entityClass__());
 		
