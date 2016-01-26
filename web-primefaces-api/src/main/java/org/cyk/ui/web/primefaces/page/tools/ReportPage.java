@@ -28,6 +28,11 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 	}
 	
 	@Override
+	protected String buildContentTitle() {
+		return requestParameter(webManager.getRequestParameterTitle());
+	}
+	
+	@Override
 	protected String url(){
 		logTrace("Building report url");
 		Collection<Object> parametersCollection = new ArrayList<Object>();
