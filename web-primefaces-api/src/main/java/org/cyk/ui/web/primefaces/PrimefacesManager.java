@@ -20,6 +20,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -31,6 +32,7 @@ import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
+import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
@@ -162,6 +164,9 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				e.printStackTrace();
 			}
 			pickList.getDualListModel().setTarget(targetList);
+		}else if(inputChoice instanceof InputOneCombo){
+			if( !list.isEmpty() && ((SelectItem)list.get(0)).getValue()!=null )
+				list.add(0, WebManager.getInstance().getNullSelectItem(field.getType(), SelectItemBuilderListener.DEFAULT));
 		}
 	}
 	/*

@@ -120,6 +120,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			org.cyk.utility.common.annotation.user.interfaces.Input inputAnnotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.Input.class);
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
+			input.setDisabled(Boolean.TRUE.equals(inputAnnotation.disabled()));
 			
 			if(Boolean.TRUE.equals(input.getReadOnly())){
 				if(input.getField().getType().equals(File.class)){
