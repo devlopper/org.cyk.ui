@@ -8,8 +8,8 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.model.security.License;
-import org.cyk.ui.api.model.security.LicenseDetails;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 

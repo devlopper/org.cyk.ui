@@ -8,8 +8,8 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.ui.api.model.mathematics.MovementDetails;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 

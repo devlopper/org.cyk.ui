@@ -5,13 +5,13 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.network.UniformResourceLocator;
-import org.cyk.ui.api.model.security.UniformResourceLocatorDetails;
-import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
+import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
 @Named @ViewScoped @Getter @Setter
 public class UniformResourceLocatorConsultPage extends AbstractConsultPage<UniformResourceLocator> implements Serializable {

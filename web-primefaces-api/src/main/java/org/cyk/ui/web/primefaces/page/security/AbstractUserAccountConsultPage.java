@@ -2,14 +2,14 @@ package org.cyk.ui.web.primefaces.page.security;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.ui.api.model.security.UserAccountDetails;
-import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.impl.security.UserAccountDetails;
+import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
 @Getter @Setter
 public abstract class AbstractUserAccountConsultPage extends AbstractConsultPage<UserAccount> implements Serializable {

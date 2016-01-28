@@ -11,11 +11,11 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.model.mathematics.MovementCollectionDetails;
-import org.cyk.ui.api.model.mathematics.MovementDetails;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
