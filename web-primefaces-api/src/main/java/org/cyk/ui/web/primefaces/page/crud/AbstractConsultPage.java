@@ -13,6 +13,7 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
@@ -65,13 +66,18 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	protected Boolean showContextualEditCommandable(){
 		return Boolean.TRUE;
 	}
-	/*
+	
 	protected Boolean showContextualCreateCommandables(){
 		return Boolean.FALSE;
-	}*/
+	}
 	
 	protected void processIdentifiableContextualCommandable(UICommandable commandable) {}
 	
+	protected Collection<Class<? extends Identifiable<?>>> getManyToOneClasses(){
+		return businessEntityInfos.getManyToOneClasses();
+	}
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Collection<UICommandable> contextualCommandables() {
 		UICommandable contextualMenu = UIProvider.getInstance().createCommandable("button", null);
@@ -88,12 +94,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 			contextualMenu.getChildren().add(navigationManager.createUpdateCommandable(identifiable, "command.edit", null));
 		}
 		
-		/*
 		if(Boolean.TRUE.equals(showContextualCreateCommandables()))
-			for(Class<?> clazz : businessEntityInfos.getManyToOneClasses())
-				contextualMenu.getChildren().add(commandable = navigationManager.createCreateCommandable((Class<? extends AbstractIdentifiable>)clazz
+			for(Class<?> clazz : getManyToOneClasses())
+				contextualMenu.getChildren().add(navigationManager.createCreateCommandable(identifiable,(Class<? extends AbstractIdentifiable>)clazz
 						,RootBusinessLayer.getInstance().getApplicationBusiness().findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
-		*/
 		
 		processIdentifiableContextualCommandable(contextualMenu);
 		

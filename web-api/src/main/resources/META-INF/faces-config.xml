@@ -20,6 +20,38 @@
 			<redirect />
 		</navigation-case>
 		
+		<!-- movement -->
+		<navigation-case>
+			<from-outcome>movementEditView</from-outcome>
+			<to-view-id>/private/mathematics/movement/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementListView</from-outcome>
+			<to-view-id>/private/mathematics/movement/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementConsultView</from-outcome>
+			<to-view-id>/private/mathematics/movement/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionEditView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionListView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionConsultView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<!-- Member -->
 		<navigation-case>
 			<from-outcome>useraccountconsult</from-outcome>

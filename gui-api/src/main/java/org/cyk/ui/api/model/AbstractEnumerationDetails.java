@@ -1,4 +1,4 @@
-package org.cyk.ui.api.model.security;
+package org.cyk.ui.api.model;
 
 import java.io.Serializable;
 
