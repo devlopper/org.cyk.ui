@@ -121,7 +121,6 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
 			input.setKeepShowingInputOnReadOnly(inputAnnotation.readOnly());//FIXME a mic mac to solve issue of value not submitted when rendering output text
-			//input.setShowReadOnlyValue(Boolean.FALSE);
 			input.setDisabled(Boolean.TRUE.equals(inputAnnotation.disabled()));
 			
 			if(Boolean.TRUE.equals(input.getReadOnly())){

@@ -36,6 +36,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		return getMovement().getCollection().getValue();
 	}
 	
+	protected BigDecimal computeNextTotal(BigDecimal increment){
+		return RootBusinessLayer.getInstance().getMovementCollectionBusiness()
+				.computeValue(getMovement().getCollection(), ((AbstractMovementForm<?>)form.getData()).getAction(), increment);
+	}
+	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
@@ -92,7 +97,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	
 	protected void selectMovementCollection(MovementCollection movementCollection){
 		setChoices(AbstractMovementForm.FIELD_ACTION, Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
-		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, movementCollection.getValue());
+		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, getCurrentTotal());
 		selectMovementAction(null);
 	}
 	protected void selectMovementAction(MovementAction movementAction){
@@ -101,9 +106,8 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		updateNextTotal(null);
 	}
 	
-	protected void updateNextTotal(BigDecimal value){
-		setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, value==null?null:RootBusinessLayer.getInstance().getMovementCollectionBusiness()
-				.computeValue(getMovement().getCollection(), ((AbstractMovementForm<?>)form.getData()).getAction(), value));
+	protected void updateNextTotal(BigDecimal increment){
+		setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, increment==null?null:computeNextTotal(increment));
 	}
 	
 	@Getter @Setter
