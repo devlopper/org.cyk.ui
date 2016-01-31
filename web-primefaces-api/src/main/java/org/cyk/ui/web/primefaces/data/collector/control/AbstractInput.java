@@ -38,7 +38,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected CascadeStyleSheet readOnlyValueCss = new CascadeStyleSheet(); 
 	protected Field field;
 	protected VALUE_TYPE value;
-	protected Boolean required,readOnly,disabled;
+	protected Boolean required,readOnly,disabled,keepShowingInputOnReadOnly;
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	protected AjaxListener ajaxListener;
 	protected String onChange;

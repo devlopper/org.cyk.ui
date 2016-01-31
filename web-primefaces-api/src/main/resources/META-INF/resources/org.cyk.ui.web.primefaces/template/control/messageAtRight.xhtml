@@ -6,17 +6,19 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
  	
- 	<ui:fragment rendered="#{not input.readOnly}"><table style="border: none;">
- 		<ui:fragment rendered="#{not empty input.description}"><tr>
- 			<td colspan="2" style="border: none;"><h:outputText value="#{input.description}" escape="false" /> </td>
- 		</tr></ui:fragment>
- 		<tr>
- 			<td style="border: none;"><ui:insert name="input" /></td>
- 			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>
- 		</tr>
- 	</table></ui:fragment>
+ 	<ui:fragment rendered="#{not input.readOnly or input.keepShowingInputOnReadOnly}">
+ 		<table style="border: none;">
+	 		<ui:fragment rendered="#{not empty input.description}"><tr>
+	 			<td colspan="2" style="border: none;"><h:outputText value="#{input.description}" escape="false" /> </td>
+	 		</tr></ui:fragment>
+	 		<tr>
+	 			<td style="border: none;"><ui:insert name="input" /></td>
+	 			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>
+	 		</tr>
+	 	</table>
+ 	</ui:fragment>
  	
- 	<ui:fragment rendered="#{input.readOnly}">
+ 	<ui:fragment rendered="#{input.readOnly and not input.keepShowingInputOnReadOnly}">
  		<h:outputText value=" : " />	
  		<h:outputText value="#{input.readOnlyValue}" style="#{input.readOnlyValueCss.inline}" styleClass="#{input.readOnlyValueCss.clazz}" escape="false"/>		
 	</ui:fragment>

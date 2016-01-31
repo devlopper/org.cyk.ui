@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.inject.Singleton;
 
+import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
@@ -43,6 +44,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.createSelect(Actor.class,null, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(MovementCollection.class, null));
+		systemMenu.getBusinesses().add(menuManager.crudMany(Movement.class, null));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		

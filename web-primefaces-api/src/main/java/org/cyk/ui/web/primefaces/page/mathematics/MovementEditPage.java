@@ -5,7 +5,9 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementCollection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,14 @@ public class MovementEditPage extends AbstractMovementEditPage<Movement> impleme
 	@Override
 	protected Movement getMovement() {
 		return identifiable;
+	}
+	
+	@Override
+	protected Movement instanciateIdentifiable() {
+		Long collectionIdentifier = requestParameterLong(MovementCollection.class);
+		if(collectionIdentifier==null)
+			return super.instanciateIdentifiable();
+		return RootBusinessLayer.getInstance().getMovementBusiness().instanciate(RootBusinessLayer.getInstance().getMovementCollectionBusiness().find(collectionIdentifier), Boolean.TRUE);
 	}
 	
 	@Getter @Setter

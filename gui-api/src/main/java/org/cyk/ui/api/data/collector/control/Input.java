@@ -18,6 +18,9 @@ public interface Input<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> exten
 	String getReadOnlyValue();
 	void setReadOnlyValue(String aReadOnlyValue);
 	
+	Boolean getKeepShowingInputOnReadOnly();
+	void setKeepShowingInputOnReadOnly(Boolean value);
+	
 	Object getObject();
 	void setObject(Object anObject);
 	
