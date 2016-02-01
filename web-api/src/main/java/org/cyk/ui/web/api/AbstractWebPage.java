@@ -178,6 +178,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	@SuppressWarnings("unchecked")
 	protected void setFieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value){
 		Input<Object, ?, ?, ?, ?, ?> input = ((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName));
+		if(input==null)
+			return;
 		if(Boolean.TRUE.equals(input.getReadOnly()) && !Boolean.TRUE.equals(((Input<?, ?, ?, ?, ?, ?>)input).getKeepShowingInputOnReadOnly())){
 			onCompleteUpdate((WebInput<?, ?, ?, ?>) input, value,Boolean.FALSE);
 			//onCompleteUpdate((WebInput<?, ?, ?, ?>) input, value,Boolean.TRUE);

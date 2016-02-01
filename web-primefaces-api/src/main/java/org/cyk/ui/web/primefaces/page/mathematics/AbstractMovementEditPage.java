@@ -38,7 +38,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	
 	protected BigDecimal computeNextTotal(BigDecimal increment){
 		return RootBusinessLayer.getInstance().getMovementCollectionBusiness()
-				.computeValue(getMovement().getCollection(), ((AbstractMovementForm<?>)form.getData()).getAction(), increment);
+				.computeValue(getMovement().getCollection(), (MovementAction) form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
 	}
 	
 	@Override
@@ -96,17 +96,23 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	}
 	
 	protected void selectMovementCollection(MovementCollection movementCollection){
-		setChoices(AbstractMovementForm.FIELD_ACTION, Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
-		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, getCurrentTotal());
+		setFieldValue(AbstractMovementForm.FIELD_COLLECTION, movementCollection);
+		setChoices(AbstractMovementForm.FIELD_ACTION, movementCollection==null?null
+				:Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
+		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, movementCollection==null?null:getCurrentTotal());
 		selectMovementAction(null);
 	}
 	protected void selectMovementAction(MovementAction movementAction){
-		((AbstractMovementForm<?>)form.getData()).setAction(movementAction);
-		setFieldValue(AbstractMovementForm.FIELD_VALUE, null);
+		//((AbstractMovementForm<?>)form.getData()).setAction(movementAction);
+		setFieldValue(AbstractMovementForm.FIELD_ACTION, movementAction);
+		//System.out.println("AbstractMovementEditPage.selectMovementAction()");
+		//debug(form.getData());
+		//setFieldValue(AbstractMovementForm.FIELD_VALUE, null);
 		updateNextTotal(null);
 	}
 	
 	protected void updateNextTotal(BigDecimal increment){
+		setFieldValue(AbstractMovementForm.FIELD_VALUE, increment);
 		setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, increment==null?null:computeNextTotal(increment));
 	}
 	
