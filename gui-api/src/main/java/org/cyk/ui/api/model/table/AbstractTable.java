@@ -163,7 +163,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				}else{
 					Object value = commonUtils.getFieldValueContainer(row.getData(), column.getField());
 					if(value!=null){
-						System.out.println("Creating field control V : "+value+" O : "+value.getClass().getSimpleName()+" , F : "+column.getField().getName());
 						cell.setControl(UIProvider.getInstance().createFieldControl(value, column.getField()));
 					}
 					

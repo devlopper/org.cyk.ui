@@ -400,13 +400,14 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToDynamicCreate(AbstractIdentifiable parent,Class<? extends AbstractIdentifiable> childClass){
-		redirectTo(editOneOutcome(childClass),new Object[]{
+	public void redirectToDynamicCreate(AbstractIdentifiable parent,Class<? extends AbstractIdentifiable> childClass,Collection<Parameter> parameters){
+		Object[] parametersArray = new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(childClass),
 				uiManager.businessEntityInfos(parent.getClass()).getIdentifier(), parent.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
 				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
-		});
+		};
+		redirectTo(editOneOutcome(childClass),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
 	}
 	
 	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass,Collection<Parameter> parameters){
