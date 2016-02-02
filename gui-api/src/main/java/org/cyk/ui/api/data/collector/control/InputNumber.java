@@ -5,7 +5,10 @@ public interface InputNumber<MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> extends In
 
 	Number getMinimum();
 	void setMinimum(Number value);
+	void setMaximumToInfinite();
 	
 	Number getMaximum();
 	void setMaximum(Number value);
+	void setMinimumToInfinite();
+	
 }

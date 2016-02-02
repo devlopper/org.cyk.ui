@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.data.collector.control;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.logging.Level;
 
 import javax.faces.convert.Converter;
@@ -36,4 +37,21 @@ org.cyk.ui.api.data.collector.control.InputNumber<DynaFormModel,DynaFormRow,Dyna
 		return null;
 	}
 	
+	@Override
+	public void setMinimumToInfinite() {
+		Class<?> wrapper = ClassUtils.primitiveToWrapper(field.getType());
+		if(BigDecimal.class.equals(field.getType()))
+			minimum = new BigDecimal(Long.MIN_VALUE);
+		else if(Long.class.equals(wrapper))
+			minimum = Long.MIN_VALUE;
+	}
+	
+	@Override
+	public void setMaximumToInfinite() {
+		Class<?> wrapper = ClassUtils.primitiveToWrapper(field.getType());
+		if(BigDecimal.class.equals(field.getType()))
+			maximum = new BigDecimal(Long.MAX_VALUE);
+		else if(Long.class.equals(wrapper))
+			maximum = Long.MAX_VALUE;	
+	}
 }

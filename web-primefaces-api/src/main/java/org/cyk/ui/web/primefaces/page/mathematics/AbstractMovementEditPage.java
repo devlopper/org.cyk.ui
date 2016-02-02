@@ -93,6 +93,9 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		}).build();
 		selectMovementCollection(getMovement().getCollection());
 		
+		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputOneChoice.class, Form.FIELD_ACTION).setValue(getCashRegisterMovement().getMovement().getAction());
+		form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_CURRENT_TOTAL).setMinimumToInfinite();
+		form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_NEXT_TOTAL).setMinimumToInfinite();
 	}
 	
 	protected void selectMovementCollection(MovementCollection movementCollection){
@@ -100,14 +103,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		setChoices(AbstractMovementForm.FIELD_ACTION, movementCollection==null?null
 				:Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
 		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, movementCollection==null?null:getCurrentTotal());
-		selectMovementAction(null);
+		Movement movement = getMovement();
+		selectMovementAction(movement==null?null:movement.getAction());
 	}
 	protected void selectMovementAction(MovementAction movementAction){
-		//((AbstractMovementForm<?>)form.getData()).setAction(movementAction);
 		setFieldValue(AbstractMovementForm.FIELD_ACTION, movementAction);
-		//System.out.println("AbstractMovementEditPage.selectMovementAction()");
-		//debug(form.getData());
-		//setFieldValue(AbstractMovementForm.FIELD_VALUE, null);
 		updateNextTotal(null);
 	}
 	

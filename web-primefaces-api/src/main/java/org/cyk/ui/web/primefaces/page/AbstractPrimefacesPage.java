@@ -285,6 +285,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.getColumnListeners().add(new DefaultColumnAdapter());
 		//buildTable(table);
 		table.setInplaceEdit(Boolean.FALSE);
+		table.setTitle(null);//TODO can be in listener as boolean method or computed base on others details
 		return table;
 	}
 	
