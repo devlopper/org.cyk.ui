@@ -372,6 +372,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public Object[] parametersToArray(Collection<Parameter> parameters){
+		if(parameters==null || parameters.isEmpty())
+			return new Object[]{};
 		Object[] objects = new Object[parameters.size()*2];
 		int i=0;
 		for(Parameter parameter : parameters){

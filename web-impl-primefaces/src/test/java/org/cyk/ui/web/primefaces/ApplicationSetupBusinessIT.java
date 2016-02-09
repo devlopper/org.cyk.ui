@@ -29,7 +29,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     		}
     	});
     	installApplication();
-    	create(RootBusinessLayer.getInstance().getMovementCollectionBusiness().instanciate("MyMovCol", "ComeIn", "ComeOut"));
+    	create(RootBusinessLayer.getInstance().getMovementCollectionBusiness().instanciateOne("MyMovCol", "ComeIn", "ComeOut"));
     	System.exit(0);
     }
     

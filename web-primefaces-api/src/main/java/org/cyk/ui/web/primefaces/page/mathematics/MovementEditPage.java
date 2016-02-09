@@ -27,7 +27,7 @@ public class MovementEditPage extends AbstractMovementEditPage<Movement> impleme
 		Long collectionIdentifier = requestParameterLong(MovementCollection.class);
 		if(collectionIdentifier==null)
 			return super.instanciateIdentifiable();
-		return RootBusinessLayer.getInstance().getMovementBusiness().instanciate(RootBusinessLayer.getInstance().getMovementCollectionBusiness().find(collectionIdentifier), Boolean.TRUE);
+		return RootBusinessLayer.getInstance().getMovementBusiness().instanciateOne(RootBusinessLayer.getInstance().getMovementCollectionBusiness().find(collectionIdentifier), Boolean.TRUE);
 	}
 	
 	@Getter @Setter
