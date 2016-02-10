@@ -102,6 +102,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}
 			input.setReadOnlyValue(readOnlyValue(field, data));
 			input.setRequired(field.getAnnotation(NotNull.class)!=null);
+			
 			if(Boolean.TRUE.equals(input.getRequired()))
 				input.setRequiredMessage(UIManager.getInstance().getLanguageBusiness().findText("input.value.required", new Object[]{input.getLabel()}));
 			

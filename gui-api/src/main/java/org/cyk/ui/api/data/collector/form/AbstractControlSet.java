@@ -92,21 +92,26 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,Field field){
+	protected String getFieldLabel(Field field){
 		String fieldLabel = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field);
 		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
 			String c = listener.fiedLabel(this, field);
 			if(StringUtils.isNotBlank(c))
 				fieldLabel = c;
 		}
+		return fieldLabel;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addField(Object object,Field field){
 		Boolean showFieldLabel = Boolean.TRUE;
 		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
 			Boolean value = listener.showFieldLabel(this, field);
 			if(value!=null)
 				showFieldLabel = value;
 		}
+		String fieldLabel = getFieldLabel(field);
 		if(Boolean.TRUE.equals(showFieldLabel)){
 			OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM> label = (OutputLabel<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(fieldLabel);
 			/*
@@ -119,6 +124,8 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		if(control instanceof Input<?,?,?,?,?,?>){
 			org.cyk.utility.common.annotation.user.interfaces.Input inputAnnotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.Input.class);
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
+			input.setRequiredMessage(null);//Required message will be computed base on label
+			input.setLabel(fieldLabel);
 			input.setReadOnly(Boolean.TRUE.equals(inputAnnotation.readOnly()) || !Boolean.TRUE.equals(getFormData().getForm().getEditable()));
 			input.setKeepShowingInputOnReadOnly(inputAnnotation.readOnly());//FIXME a mic mac to solve issue of value not submitted when rendering output text
 			input.setDisabled(Boolean.TRUE.equals(inputAnnotation.disabled()));

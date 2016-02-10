@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.AjaxListener;
 import org.cyk.ui.web.api.WebInputListener;
@@ -73,6 +74,12 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 		this.readOnly = value;
 		if(Boolean.TRUE.equals(required) && Boolean.TRUE.equals(readOnly))
 			setRequired(Boolean.FALSE);
+	}
+	
+	public void setLabel(String label){
+		this.label = label;
+		if(this.requiredMessage==null)
+			this.requiredMessage = UIManager.getInstance().getLanguageBusiness().findText("input.value.required", new Object[]{label});
 	}
 	
 }
