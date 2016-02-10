@@ -129,7 +129,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
 			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
-		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? new ArrayList<IDENTIFIABLE>() : listener.load();
+		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? listener.create() : listener.load();
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
 		return collection;

@@ -1,11 +1,14 @@
 package org.cyk.ui.api.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> {
+	
+	Collection<IDENTIFIABLE> create();
 	
 	Collection<IDENTIFIABLE> load();
 	
@@ -30,9 +33,13 @@ public interface ItemCollectionListener<TYPE extends AbstractItemCollectionItem<
 	/**/
 	
 	public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM>{
-
 		private static final long serialVersionUID = 5920340778121618178L;
 
+		@Override
+		public Collection<IDENTIFIABLE> create() {
+			return new ArrayList<>();
+		}
+		
 		@Override
 		public Collection<IDENTIFIABLE> load() {
 			return null;
