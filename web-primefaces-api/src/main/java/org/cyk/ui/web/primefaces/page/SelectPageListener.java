@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,15 @@ public interface SelectPageListener<ENTITY extends AbstractIdentifiable,IDENTIFI
 			logWarning("findByIdentifier has not been override , so it will always return null");
 			return null;
 		}
+		
+		@Override
+		public void afterInitialisationEnded(AbstractBean bean) {
+			super.afterInitialisationEnded(bean);
+			final SelectPage selectPage = (SelectPage) bean;
+			initialiseSelect(selectPage);
+		}
+		
+		protected void initialiseSelect(SelectPage selectPage){}
 		
 		@Override
 		public void serve(Object data, String actionIdentifier) {}

@@ -176,7 +176,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void setFieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value){
+	public void setFieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value){
 		Input<Object, ?, ?, ?, ?, ?> input = ((Input<Object, ?, ?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName));
 		if(input==null)
 			return;
@@ -188,7 +188,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value,Boolean onServer){
+	public void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value,Boolean onServer){
 		if(Boolean.TRUE.equals(onServer)){
 			((Input<Object, ?, ?, ?, ?, ?>) input).setValue(value);
 		}else{
@@ -196,11 +196,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		}
 	}
 	
-	protected void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value){
+	public void onCompleteUpdate(WebInput<?, ?, ?, ?> input,Object value){
 		onCompleteUpdate(input, value, Boolean.TRUE);
 	}
 	
-	protected void onCompleteUpdate(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value,Boolean onServer){
+	public void onCompleteUpdate(FormOneData<?, ?, ?, ?, ?, ?> form,String inputName,Object value,Boolean onServer){
 		onCompleteUpdate((WebInput<?, ?, ?, ?>) form.findInputByClassByFieldName(Input.class, inputName),value,onServer);
 	}
 	

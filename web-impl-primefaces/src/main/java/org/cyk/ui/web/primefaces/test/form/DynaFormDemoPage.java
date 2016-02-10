@@ -89,12 +89,16 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		windowHierachyMenuModel = userSession.getContextualMenuModel();
 		*/
 		
-		createAjaxBuilder(form,"number1").crossedFieldNames("number2").updatedFieldNames("sumResult","multiplyResult")
+		createAjaxBuilder(form,"number1").crossedFieldNames("number2").updatedFieldNames("sumResult","multiplyResult","myEnum","textManyLine2")
 		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
 			public void execute(BigDecimal value) {
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
+				setFieldValue(form,"myEnum", MyEnum.V3);
+				
+				setFieldValue(form,"textManyLine2", "Jesus is there");
+				
 				System.out
 						.println("DynaFormDemoPage.afterInitialisation().new ListenValueMethod() {...}.execute()");
 			}

@@ -9,14 +9,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryFormModel;
 import org.cyk.ui.web.api.WebInputListener;
@@ -26,6 +25,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -120,6 +122,14 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 	}
 	
 	@Override
+	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
+		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
+		parameters.setActionIdentifier("choice");
+		parameters.setForWhat(MenuManager.getInstance().getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
+		return parameters;
+	}
+		
+	@Override
 	protected Class<?> __formModelClass__() {
 		if(identifiableConfiguration==null || identifiableConfiguration.getFormMap()==null || identifiableConfiguration.getFormMap().getQuery()==null){
 			logError("No query form explicitly defined for entity {}",businessEntityInfos.getClazz());
@@ -158,6 +168,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		}
 		return identifiableClass;
 	}
+	
 	protected ENTITY find(Object identifier){
 		ENTITY entity = null;
 		for(SelectPageListener<?,Object> selectPageListener : getListeners()){

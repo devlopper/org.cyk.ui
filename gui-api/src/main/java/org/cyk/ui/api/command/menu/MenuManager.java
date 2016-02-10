@@ -41,6 +41,7 @@ import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -406,8 +407,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable createSelect(BusinessEntityInfos businessEntityInfos,String actionIdentifier,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
-		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
-				+ (StringUtils.isBlank(actionIdentifier)?"":("."+actionIdentifier))));
+		c.setLabel(getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
 		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectViewId()))
 			;
 		else{
@@ -421,6 +421,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
 		return createMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
+	}
+	
+	public String getSelectCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
+		return RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
+				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
 	}
 	
 	/**/

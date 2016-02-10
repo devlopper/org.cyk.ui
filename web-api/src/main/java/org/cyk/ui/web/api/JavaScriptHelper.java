@@ -69,7 +69,7 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	public String update(WebInput<?, ?, ?, ?> input,Object value){
 		if( Boolean.TRUE.equals(((Input<?, ?, ?, ?, ?, ?>)input).getReadOnly()) && !Boolean.TRUE.equals(((Input<?, ?, ?, ?, ?, ?>)input).getKeepShowingInputOnReadOnly())){
 			return "$('."+input.getUniqueCssClass()+"').html('"+value+"');";
-		}else{
+		}else{System.out.println("JavaScriptHelper.update()");
 			return "$('."+input.getUniqueCssClass()+"').val('"+value+"');";
 		}
 	}
