@@ -41,18 +41,18 @@ public class MyIdentifiable extends AbstractIdentifiable implements Serializable
 	
 	@OutputSeperator(label=@Text(value="results")) 
 	@OutputText(label=@Text(type=ValueType.VALUE,value="This is the results section")) 
-	@Input(readOnly=false) @InputText 
+	@Input(disabled=true) @InputText 
 	private String sumResult;
-	@Input(readOnly=true) @InputText private String multiplyResult;
+	@Input(disabled=true) @InputText private String multiplyResult = "159753.852";
 	
-	@Input
+	@Input(disabled=true)
 	@InputChoice
 	@InputOneChoice
 	@InputOneCombo
-	private MyEnum myEnum;
+	private MyEnum myEnum = MyEnum.V3;
 	
-	@Input @InputTextarea
-	private String textManyLine2;
+	@Input(disabled=true) @InputTextarea
+	private String textManyLine2 = "Text Many Line Two";
 	
 	//@IncludeInputs
 	//@OutputSeperator

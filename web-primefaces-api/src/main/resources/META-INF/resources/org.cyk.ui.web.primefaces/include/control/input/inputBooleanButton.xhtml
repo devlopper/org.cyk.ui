@@ -17,7 +17,7 @@
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}"
 				onLabel="#{control.onState.label}" offLabel="#{control.offState.label}" 
-				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}">
+				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}" disabled="#{control.disabled}">
 				
 				<ui:include src="body.xhtml" />
 			</p:selectBooleanButton>				

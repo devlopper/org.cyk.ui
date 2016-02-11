@@ -3,30 +3,7 @@
     font-weight: bold !important;
     opacity: 1 !important;
     cursor: default !important;
-    background-image: none !important;
 }
-
-/*input[type=text]:disabled {
-    background: #ffff00;
-    color:black;
-    font-style:italic;
-    font-weight: bold;
-    opacity: 1;
-}
-*/
-
-/*
-input[type=text]:enabled {
-    background: #ffff00 !important;
-}
-select option{
-   background: #ffff00 !important;
-}
-
-label:disabled{
-   background: #ff00ff !important;
-}
-*/
 
 .ui-widget, .ui-widget .ui-widget {
     font-size: 95%;
