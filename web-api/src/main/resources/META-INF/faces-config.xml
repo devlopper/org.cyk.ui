@@ -107,6 +107,11 @@
 			<to-view-id>/private/__role__/__manager__/file/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileConsultManyView</from-outcome>
+			<to-view-id>/private/file/consultmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		<!-- Security Manager -->
 		<navigation-case>
@@ -258,6 +263,17 @@
 		<navigation-case>
 			<from-outcome>reportservlet</from-outcome>
 			<to-view-id>/private/__tools__/export/_cyk_report_/_business_/_jasper_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileservlet</from-outcome>
+			<to-view-id>/_cyk_file_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>imageservlet</from-outcome>
+			<to-view-id>/_cyk_file_image/</to-view-id>
 			<redirect />
 		</navigation-case>
 		
