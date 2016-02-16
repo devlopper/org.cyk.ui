@@ -164,6 +164,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		list.clear();
 		if(collection!=null)
 			list.addAll(getSelectItems(inputChoice.getField().getType(), collection));
+		
 		inputChoice.setValue(selected);
 	}
 	public void setChoices(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Collection<?> collection){

@@ -1,5 +1,6 @@
 package org.cyk.ui.web.api.servlet.report;
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.file.report.jasper.JasperReportBusinessImpl;
+import org.cyk.system.root.model.Mime;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.report.AbstractReport;
 import org.cyk.system.root.model.file.report.AbstractReportConfiguration;
 import org.cyk.ui.web.api.WebManager;
@@ -39,7 +42,7 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 	protected abstract REPORT createReport(HttpServletRequest request,AbstractReportConfiguration<MODEL, REPORT> configuration);
 	
 	@Override
-	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response) {
+	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response,Collection<File> files,Mime mime) {
 		return report.getBytes();
 	}
 
@@ -49,7 +52,7 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 	}
 
 	@Override
-	protected String fileExtension(HttpServletRequest request, HttpServletResponse response) {
+	protected String fileExtension(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {
 		return report.getFileExtension();
 	}
 

@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.data.collector.control;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.model.SelectItem;
 
@@ -32,6 +34,20 @@ org.cyk.ui.api.data.collector.control.InputManyPickList<VALUE_TYPE,DynaFormModel
 		dualListModel = new DualListModel<>();
 		sourceCaption = UIManager.getInstance().text("list");
 		targetCaption = UIManager.getInstance().text("selecteditems");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setList(List<SelectItem> list) {
+		super.setList(list);
+		dualListModel.setSource(new ArrayList<VALUE_TYPE>());
+		for(SelectItem selectItem : list)
+			if(selectItem.getValue()!=null)
+				dualListModel.getSource().add((VALUE_TYPE) selectItem.getValue());
+	}
+	
+	public void updateDualListModel() {
+		setList(list);
 	}
 
 	@Override

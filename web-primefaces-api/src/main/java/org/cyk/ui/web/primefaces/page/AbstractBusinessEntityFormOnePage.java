@@ -3,7 +3,6 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -19,6 +18,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -28,6 +28,7 @@ import org.cyk.ui.web.api.WebInputListener;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.omnifaces.util.Faces;
 
@@ -244,6 +245,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 
 	public void setChoices(String fieldName,Collection<?> collection,Object selected){
 		webManager.setChoices(form, fieldName, collection,selected);
+		InputChoice<?, ?, ?, ?, ?, ?> inputChoice = (InputChoice<?, ?, ?, ?, ?, ?>) form.findInputByFieldName(fieldName);
+		if(inputChoice instanceof org.cyk.ui.api.data.collector.control.InputManyPickList){
+			((InputManyPickList<?>)inputChoice).updateDualListModel();
+		}
 	}
 	public void setChoices(String fieldName,Collection<?> collection){
 		setChoices(fieldName, collection,null);
