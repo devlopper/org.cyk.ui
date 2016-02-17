@@ -28,6 +28,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -117,6 +118,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
 	@Getter private String outcomeReportTable = "exportdatatableservlet";
 	@Getter private String outcomeReport = "reportservlet";
+	@Getter private String outcomeFileConsultMany = "fileConsultManyView";
 	
 	@Getter private String pathFileServlet = FileServlet.PATH;
 	@Getter private String pathImageServlet = ImageServlet.PATH;
@@ -447,6 +449,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		redirectTo(outcomeToolsExportDataTableToXls,new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
 				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+		});
+	}
+	
+	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,String fileExtension){
+		redirectTo(outcomeFileConsultMany,new Object[]{
+				uiManager.getIdentifiableParameter(), StringUtils.join(Utils.ids(identifiables),Constant.CHARACTER_COMA),
+				uiManager.getFileExtensionParameter(), fileExtension
 		});
 	}
 	
