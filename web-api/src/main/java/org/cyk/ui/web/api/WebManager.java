@@ -96,6 +96,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String requestParameterPrint = "print";
 	private final String requestParameterTabId = "tabid";
 	private final String requestParameterTitle = "title";
+	private final String requestParameterAttachment = "attachment";
 	
 	private final String requestParameterUrl = "url";
 	private final String requestParameterOutcome = "outcome";

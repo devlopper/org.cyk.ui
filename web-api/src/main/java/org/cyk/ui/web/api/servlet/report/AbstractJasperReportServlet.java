@@ -56,11 +56,6 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 		return report.getFileExtension();
 	}
 
-	@Override
-	protected Boolean isAttachment(HttpServletRequest request, HttpServletResponse response) {
-		return Boolean.FALSE;
-	}
-
 	protected Boolean printRequestParameter(HttpServletRequest request){
 		try {
 			return Boolean.parseBoolean(request.getParameter(WebManager.getInstance().getRequestParameterPrint()));

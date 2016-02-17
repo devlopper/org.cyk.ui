@@ -16,9 +16,5 @@ public class ImageServlet extends AbstractFileServlet implements Serializable {
 	protected void initialisation(HttpServletRequest request, HttpServletResponse response) {
 		
 	}
-	
-	@Override
-	protected Boolean isAttachment(HttpServletRequest request, HttpServletResponse response) {
-		return Boolean.TRUE;
-	}
+		
 }

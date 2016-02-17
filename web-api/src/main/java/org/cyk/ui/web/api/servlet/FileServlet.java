@@ -17,8 +17,4 @@ public class FileServlet extends AbstractFileServlet implements Serializable {
 		
 	}
 
-	@Override
-	protected Boolean isAttachment(HttpServletRequest request, HttpServletResponse response) {
-		return Boolean.TRUE;
-	}
 }

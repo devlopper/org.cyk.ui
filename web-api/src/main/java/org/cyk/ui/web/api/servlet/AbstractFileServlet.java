@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Getter;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +41,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 			getServletContext(),request, response, 
 			fileName(request, response)+" "+System.currentTimeMillis() + "."+ extension, 
 			bytes.length,
-			new ByteArrayInputStream(bytes),!Boolean.TRUE.equals(isAttachment(request, response)),1024);
+			new ByteArrayInputStream(bytes),getAttachmentType(request, response),1024);
 		
 	}
 	
@@ -67,9 +69,21 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		return files==null || files.isEmpty()?Constant.EMPTY_STRING:files.iterator().next().getExtension();
 	}
 	
-	protected abstract Boolean isAttachment(HttpServletRequest request,HttpServletResponse response);
+	protected AttachmentType getAttachmentType(HttpServletRequest request,HttpServletResponse response){
+		String attachmentTypeString = requestParameter(request,webManager.getRequestParameterAttachment());
+		AttachmentType attachmentType = null;
+		if(StringUtils.isBlank(attachmentTypeString))
+			attachmentType = getAttachmentTypeWhenNotSpecified();
+		else
+			attachmentType = AttachmentType.valueOf(attachmentTypeString);
+		return attachmentType;
+	}
 	
-	public static void send(ServletContext servletContext,HttpServletRequest request, HttpServletResponse response,String fileName, int contentLength, InputStream inputStream,boolean inline,int bufferSize) throws IOException {
+	protected AttachmentType getAttachmentTypeWhenNotSpecified(){
+		return AttachmentType.IN;
+	}
+	
+	public static void send(ServletContext servletContext,HttpServletRequest request, HttpServletResponse response,String fileName, int contentLength, InputStream inputStream,AttachmentType attachmentType,int bufferSize) throws IOException {
 		String contentType = servletContext.getMimeType(fileName);
 		if (contentType == null) {
 			//log.warning("Unknown content type of file : " + fileName);
@@ -80,7 +94,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		response.setBufferSize(bufferSize);
 		response.setContentType(contentType);
 		response.setHeader("Content-Length", String.valueOf(contentLength));
-		response.setHeader("Content-Disposition", (inline?"inline":"attachment")+"; filename=\""+ fileName + "\"");
+		response.setHeader("Content-Disposition", attachmentType.getIdentifier()+"; filename=\""+ fileName + "\"");
 
 		BufferedInputStream input = null;
 		BufferedOutputStream output = null;
@@ -100,12 +114,15 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	protected Collection<File> getFiles(HttpServletRequest request, HttpServletResponse response){
 		Collection<File> collection = new ArrayList<>();
 		String[] identifiers = StringUtils.split(request.getParameter("identifier"),Constant.CHARACTER_COMA.charValue());
-		for(String identifier : identifiers)
-		try {
-			collection.add(fileBusiness.find(Long.parseLong(identifier)));
-		} catch (NumberFormatException e) {
-			return null;
-		}
+		if(identifiers==null)
+			;
+		else
+			for(String identifier : identifiers)
+				try {
+					collection.add(fileBusiness.find(Long.parseLong(identifier)));
+				} catch (NumberFormatException e) {
+					return null;
+				}
 		return collection;
 	}
 	
@@ -113,5 +130,21 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	
 	protected String fileExtensionRequestParameter(HttpServletRequest request){
 		return requestParameter(request, uiManager.getFileExtensionParameter());
+	}
+	
+	/**/
+	
+	@Getter
+	public static enum AttachmentType{
+		IN("inline"),
+		OUT("attachment"),
+		
+		;
+		
+		private String identifier;
+		
+		private AttachmentType(String identifier) {
+			this.identifier = identifier;
+		}
 	}
 }

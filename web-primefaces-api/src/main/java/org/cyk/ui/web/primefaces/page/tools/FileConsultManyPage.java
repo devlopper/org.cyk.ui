@@ -36,19 +36,7 @@ public class FileConsultManyPage extends AbstractPrimefacesPage implements Seria
 		Object[] parametersArray = parametersCollection.toArray();
 		
 		exporter.setFileUrl(navigationManager.url("fileservlet", parametersArray,Boolean.FALSE,Boolean.FALSE));
-		//"image/jpeg"
 		exporter.setType(RootBusinessLayer.getInstance().getFileBusiness().findMime(requestParameter(uiManager.getFileExtensionParameter())));
-		/*String servletOutcome = null;
-		switch(Mime.getByIdentifier(exporter.getType())){
-		case IMAGE_JPEG:
-			servletOutcome = "imageservlet";
-			break;
-		case PDF:
-			servletOutcome = "fileservlet";
-			break;
-		}*/
-		//exporter.setType("application/pdf");
-		debug(exporter);
 	}
 	
 	@Override

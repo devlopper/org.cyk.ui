@@ -22,9 +22,17 @@
 	    	<h:outputLink value="#{cc.value.fileUrl}" ><h:outputText value="#{cc.value.clickToDownload}" /></h:outputLink>
 	    </object>
 	    
-	    <!--img src="#{request.contextPath}/_cyk_servlet_file_image_/?identifier=353" alt="image" width="200" height="200" />
+	    <!--object type="application/pdf" data="#{cc.value.fileUrl}" height="700px" width="100%">
+	    	Your browser can't display pdf, <a href="#{cc.value.fileUrl}">click</a> to download pdf instead.
+	    </object-->
 	    
-	    <img src="/gui-primefaces/_cyk_servlet_file_image_/?identifier=353" alt="image" width="200" height="200" /-->
+	    <!--h3>PDF</h3><object type="application/pdf" data="#{request.contextPath}/_cyk_servlet_file_/?identifier=3158" height="300px" width="100%" internalinstanceid="5">
+            Your browser can't display pdf, <a href="#{request.contextPath}/_cyk_servlet_file_/?identifier=3158">click</a> to download pdf instead.
+        </object-->
+	    
+	    <!--img src="#{request.contextPath}/_cyk_servlet_file_image_/?identifier=195" alt="image" width="200" height="200" /-->
+	    
+	    <!--img src="/gui-primefaces/_cyk_servlet_file_image_/?identifier=353" alt="image" width="200" height="200" /-->
 	    
 	</cc:implementation>
 
