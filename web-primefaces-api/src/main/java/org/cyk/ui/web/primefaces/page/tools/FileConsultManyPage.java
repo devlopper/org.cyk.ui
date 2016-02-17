@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import lombok.Getter;
 
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.omnifaces.util.Faces;
@@ -34,9 +35,18 @@ public class FileConsultManyPage extends AbstractPrimefacesPage implements Seria
 		}
 		Object[] parametersArray = parametersCollection.toArray();
 		
-		exporter.setFileUrl("/gui-primefaces"+navigationManager.url("imageservlet", parametersArray,Boolean.FALSE,Boolean.TRUE));
-		//exporter.setFileUrl("/gui-primefaces/_cyk_file_image/?identifier=353");
-		exporter.setType("image/jpeg");
+		exporter.setFileUrl(navigationManager.url("fileservlet", parametersArray,Boolean.FALSE,Boolean.FALSE));
+		//"image/jpeg"
+		exporter.setType(RootBusinessLayer.getInstance().getFileBusiness().findMime(requestParameter(uiManager.getFileExtensionParameter())));
+		/*String servletOutcome = null;
+		switch(Mime.getByIdentifier(exporter.getType())){
+		case IMAGE_JPEG:
+			servletOutcome = "imageservlet";
+			break;
+		case PDF:
+			servletOutcome = "fileservlet";
+			break;
+		}*/
 		//exporter.setType("application/pdf");
 		debug(exporter);
 	}

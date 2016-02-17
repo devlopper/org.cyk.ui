@@ -37,6 +37,8 @@ import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.web.api.security.RoleManager;
+import org.cyk.ui.web.api.servlet.FileServlet;
+import org.cyk.ui.web.api.servlet.ImageServlet;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -115,6 +117,9 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
 	@Getter private String outcomeReportTable = "exportdatatableservlet";
 	@Getter private String outcomeReport = "reportservlet";
+	
+	@Getter private String pathFileServlet = FileServlet.PATH;
+	@Getter private String pathImageServlet = ImageServlet.PATH;
 	
 	@Inject private NavigationHelper navigationHelper;
 	@Inject private WebManager webManager;

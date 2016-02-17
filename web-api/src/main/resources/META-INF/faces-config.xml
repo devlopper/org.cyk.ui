@@ -267,13 +267,12 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>fileservlet</from-outcome>
-			<to-view-id>/_cyk_file_/</to-view-id>
+			<to-view-id>/_cyk_servlet_file_/</to-view-id>
 			<redirect />
 		</navigation-case>
-		
 		<navigation-case>
 			<from-outcome>imageservlet</from-outcome>
-			<to-view-id>/_cyk_file_image/</to-view-id>
+			<to-view-id>/_cyk_servlet_file_image_/</to-view-id>
 			<redirect />
 		</navigation-case>
 		

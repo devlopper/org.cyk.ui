@@ -93,7 +93,6 @@
 			  				<f:facet name="output">
 			  					<ui:fragment rendered="#{cc.value.cell(row,column).isFile}" >
 			  						<ui:fragment rendered="#{cc.value.cell(row,column).isImage}">
-			  							<!--img src="#{request.contextPath}/_cyk_file_image/?identifier=#{cc.value.cell(row,column)}" alt="image" width="32" height="32" /-->
 			  							<cyk:image identifier="#{cc.value.cell(row,column)}" />
 			  						</ui:fragment>
 			  					</ui:fragment>
