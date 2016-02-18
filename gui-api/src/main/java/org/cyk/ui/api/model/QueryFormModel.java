@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class QueryFormModel<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractQueryFormModel<IDENTIFIABLE,String> implements Serializable{
+public class QueryFormModel<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractQueryOneFormModel<IDENTIFIABLE,String> implements Serializable{
 	private static final long serialVersionUID = -4741435164709063863L;
 	
 }

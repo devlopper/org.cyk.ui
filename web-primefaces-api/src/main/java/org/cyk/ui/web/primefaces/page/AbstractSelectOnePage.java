@@ -9,6 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
@@ -17,24 +20,22 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.data.collector.form.ControlSet;
-import org.cyk.ui.api.model.AbstractQueryFormModel;
-import org.cyk.ui.web.api.WebInputListener;
+import org.cyk.ui.api.model.AbstractQueryOneFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter @Setter
-public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
+public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
-	private SelectPageListener.Type type = SelectPageListener.Type.IDENTIFIABLE;
+	private AbstractSelectOnePage.Listener.Type type = AbstractSelectOnePage.Listener.Type.IDENTIFIABLE;
 	
 	private String actionIdentifier;
 	
@@ -42,13 +43,13 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 	protected void initialisation() {
 		super.initialisation();
 		
-		for(SelectPageListener<?,?> selectPageListener : getListeners())
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationStarted(this);
 		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
 		//form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.ok"));
-		for(SelectPageListener<?,?> selectPageListener : getListeners()){
-			SelectPageListener.Type v = selectPageListener.getType();
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners()){
+			AbstractSelectOnePage.Listener.Type v = selectPageListener.getType();
 			if(v!=null)
 				type = v;
 		}
@@ -60,9 +61,9 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 				}else
 					switch(type){
 					case IDENTIFIER:
-						return AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName());
+						return AbstractQueryOneFormModel.FIELD_IDENTIFIER.equals(field.getName());
 					case IDENTIFIABLE:
-						return !AbstractQueryFormModel.FIELD_IDENTIFIER.equals(field.getName())/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
+						return !AbstractQueryOneFormModel.FIELD_IDENTIFIER.equals(field.getName())/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
 					case CUSTOM:
 						return super.build(field);
 					default:
@@ -71,9 +72,9 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 			}
 			@Override
 			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
-				if(AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())){
+				if(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE.equals(field.getName())){
 					Class<?> aClass = null;
-					for(SelectPageListener<?,?> selectPageListener : getListeners())
+					for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 						if(selectPageListener.getEntityTypeClass()!=null)
 							aClass = selectPageListener.getEntityTypeClass();
 					if(aClass!=null)
@@ -83,7 +84,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});
 		
-		for(SelectPageListener<?,?> selectPageListener : getListeners())
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationEnded(this);
 	}
 		
@@ -91,10 +92,10 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		
-		for(SelectPageListener<?,?> selectPageListener : getListeners())
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.afterInitialisationStarted(this);
 		
-		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIER,new WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryOneFormModel.FIELD_IDENTIFIER,new WebInput.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
@@ -105,7 +106,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});
 		
-		addInputListener(AbstractQueryFormModel.FIELD_IDENTIFIABLE,new WebInputListener.Adapter.Default(){
+		addInputListener(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE,new WebInput.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -117,7 +118,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 			}
 		});
 		
-		for(SelectPageListener<?,?> selectPageListener : getListeners())
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.afterInitialisationEnded(this);
 	}
 	
@@ -131,11 +132,11 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		
 	@Override
 	protected Class<?> __formModelClass__() {
-		if(identifiableConfiguration==null || identifiableConfiguration.getFormMap()==null || identifiableConfiguration.getFormMap().getQuery()==null){
+		if(identifiableConfiguration==null || identifiableConfiguration.getFormMap()==null || identifiableConfiguration.getFormMap().getQueryOne()==null){
 			logError("No query form explicitly defined for entity {}",businessEntityInfos.getClazz());
 			return null;
 		}
-		return identifiableConfiguration.getFormMap().getQuery();
+		return identifiableConfiguration.getFormMap().getQueryOne();
 	}
 	
 	@Override
@@ -153,14 +154,14 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		if(StringUtils.isBlank(actionIdentifier)){
 			WebNavigationManager.getInstance().redirectToDynamicConsultOne(identifiable);
 		}else{
-			for(SelectPageListener<?,?> selectPageListener : getListeners())
+			for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 				selectPageListener.serve(parameter,actionIdentifier);
 		}	
 	}
 	
 	protected Class<ENTITY> identifiableClass(){
 		Class<ENTITY> identifiableClass = null;
-		for(SelectPageListener<?,?> selectPageListener : getListeners()){
+		for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners()){
 			@SuppressWarnings("unchecked")
 			Class<ENTITY> v = (Class<ENTITY>) selectPageListener.getEntityTypeClass();
 			if(v!=null)
@@ -171,7 +172,7 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 	
 	protected ENTITY find(Object identifier){
 		ENTITY entity = null;
-		for(SelectPageListener<?,Object> selectPageListener : getListeners()){
+		for(AbstractSelectOnePage.Listener<?,Object> selectPageListener : getListeners()){
 			@SuppressWarnings("unchecked")
 			ENTITY v = (ENTITY) selectPageListener.findByIdentifier(identifier);
 			if(v!=null)
@@ -180,8 +181,67 @@ public abstract class AbstractSelectPage<ENTITY extends AbstractIdentifiable> ex
 		return entity;
 	}
 	
-	private Collection<SelectPageListener<?,Object>> getListeners(){
-		return primefacesManager.getSelectPageListeners(businessEntityInfos.getClazz());
+	private Collection<AbstractSelectOnePage.Listener<?,Object>> getListeners(){
+		return primefacesManager.getSelectOnePageListeners(businessEntityInfos.getClazz());
 	}
 	
+	/**/
+	
+	public interface Listener<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener<ENTITY> {
+
+		/**/
+		
+		ENTITY findByIdentifier(IDENTIFIER_TYPE identifier);
+		
+		Type getType();
+		void setType(Type type);
+		
+		void serve(Object data, String actionIdentifier);
+		
+		@Getter @Setter
+		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
+
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			protected Type type = Type.IDENTIFIABLE;
+			
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super(entityTypeClass);
+			}
+
+			@Override
+			public ENTITY_TYPE findByIdentifier(IDENTIFIER_TYPE identifier) {
+				logWarning("findByIdentifier has not been override , so it will always return null");
+				return null;
+			}
+			
+			@Override
+			public void afterInitialisationEnded(AbstractBean bean) {
+				super.afterInitialisationEnded(bean);
+				final AbstractSelectOnePage<?> selectPage = (AbstractSelectOnePage<?>) bean;
+				initialiseSelect(selectPage);
+			}
+			
+			protected void initialiseSelect(AbstractSelectOnePage<?> selectPage){}
+			
+			@Override
+			public void serve(Object data, String actionIdentifier) {}
+			
+			/**/
+			
+			public static class Default<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends Listener.Adapter<ENTITY,IDENTIFIER_TYPE> implements Serializable {
+
+				private static final long serialVersionUID = -4255109770974601234L;
+
+				public Default(Class<ENTITY> entityTypeClass) {
+					super(entityTypeClass);
+				}
+					
+			}
+		}
+		
+		public static enum Type{IDENTIFIER,IDENTIFIABLE,CUSTOM}
+		
+	}
+
 }

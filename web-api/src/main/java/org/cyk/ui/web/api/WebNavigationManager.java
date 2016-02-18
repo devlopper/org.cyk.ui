@@ -45,6 +45,7 @@ import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
 
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
@@ -93,7 +94,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	@Getter private String outcomeDynamicCrudOne = "dynamicCrudOne";
 	@Getter private String outcomeDynamicCrudMany = "dynamicCrudMany";
-	@Getter private String outcomeDynamicSelect = "dynamicSelect";
+	@Getter private String outcomeDynamicSelectOne = "dynamicSelectOne";
+	@Getter private String outcomeDynamicSelectMany = "dynamicSelectMany";
 	@Getter private String outcomeLogout = "useraccountlogout";
 	@Getter private String outcomeEditActorRelationship = "editActorRelationship";
 	@Getter private String outcomeEditActorMedicalInformations = "editMedicalInformations";
@@ -128,8 +130,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Inject private WebManager webManager;
 	@Inject private UIManager uiManager;
 	@Inject private RoleManager roleManager;
-	
-	@Getter private Collection<WebNavigationManagerListener> webNavigationManagerListeners = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -337,7 +337,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		if(roleManager.isAdministrator(null))
 			url = url("administratorindex",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		else
-			for(WebNavigationManagerListener listener : webNavigationManagerListeners){
+			for(Listener listener : Listener.COLLECTION){
 				String v = listener.homeUrl(userSession);
 				if(v!=null)
 					url = v;
@@ -594,8 +594,39 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void useDynamicSelectView(Class<?> clazz){
 		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(clazz);
-		businessEntityInfos.getUserInterface().setSelectViewId(outcomeDynamicSelect);
+		businessEntityInfos.getUserInterface().setSelectOneViewId(outcomeDynamicSelectOne);
+		businessEntityInfos.getUserInterface().setSelectManyViewId(outcomeDynamicSelectMany);
 	}
 	
+	/**/
+	
+	public interface Listener {
+
+		Collection<Listener> COLLECTION = new ArrayList<>();
+		
+		String homeUrl(AbstractUserSession userSession);
+		
+		/**/
+		
+		public static class Adapter extends BeanAdapter implements Listener,Serializable{
+
+			private static final long serialVersionUID = -6865620540167646004L;
+
+			@Override
+			public String homeUrl(AbstractUserSession userSession) {
+				return null;
+			}
+			
+			/**/
+			
+			public static class Default extends Adapter implements Serializable{
+
+				private static final long serialVersionUID = 3989646511932404057L;
+				
+			}
+			
+		}
+		
+	}
 	
 }

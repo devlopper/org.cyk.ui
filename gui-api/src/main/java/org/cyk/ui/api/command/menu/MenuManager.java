@@ -401,24 +401,43 @@ public class MenuManager extends AbstractBean implements Serializable {
 		logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
-	public UICommandable createSelect(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,IconType iconType){
-		return createSelect(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, iconType);
+	public UICommandable createSelectOne(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,IconType iconType){
+		return createSelectOne(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, iconType);
 	}
 	
-	public UICommandable createSelect(BusinessEntityInfos businessEntityInfos,String actionIdentifier,IconType iconType){
+	public UICommandable createSelectOne(BusinessEntityInfos businessEntityInfos,String actionIdentifier,IconType iconType){
 		UICommandable c = crud(businessEntityInfos,null, iconType);
 		c.setLabel(getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectViewId()))
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectOneViewId()))
 			;
 		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getSelectViewId());
+			c.setViewId(businessEntityInfos.getUserInterface().getSelectOneViewId());
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 			if(StringUtils.isNotBlank(actionIdentifier))
 				c.getParameters().add(new Parameter(UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier));
 		}
-		logTrace("select view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+		logTrace("select one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
+	
+	public UICommandable createSelectMany(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,IconType iconType){
+		return createSelectMany(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, iconType);
+	}
+	public UICommandable createSelectMany(BusinessEntityInfos businessEntityInfos,String actionIdentifier,IconType iconType){
+		UICommandable c = crud(businessEntityInfos,null, iconType);
+		c.setLabel(getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
+		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectManyViewId()))
+			;
+		else{
+			c.setViewId(businessEntityInfos.getUserInterface().getSelectManyViewId());
+			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			if(StringUtils.isNotBlank(actionIdentifier))
+				c.getParameters().add(new Parameter(UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier));
+		}
+		logTrace("select many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+		return c;
+	}
+	
 	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,IconType iconType){
 		return createMany(UIManager.getInstance().businessEntityInfos(aClass), iconType);
 	}

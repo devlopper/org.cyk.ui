@@ -198,8 +198,13 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>dynamicSelect</from-outcome>
-			<to-view-id>/private/__tools__/select.xhtml</to-view-id>
+			<from-outcome>dynamicSelectOne</from-outcome>
+			<to-view-id>/private/__tools__/selectone.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dynamicSelectMany</from-outcome>
+			<to-view-id>/private/__tools__/selectmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

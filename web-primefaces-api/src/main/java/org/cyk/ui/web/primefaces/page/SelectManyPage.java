@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
-public class SelectPage extends AbstractSelectPage<AbstractIdentifiable> implements Serializable {
+public class SelectManyPage extends AbstractSelectManyPage<AbstractIdentifiable> implements Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
 	

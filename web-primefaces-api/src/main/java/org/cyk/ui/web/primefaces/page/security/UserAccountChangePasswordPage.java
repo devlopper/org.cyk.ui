@@ -17,7 +17,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.web.api.WebInputListener;
+import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputPassword;
@@ -31,7 +31,7 @@ public class UserAccountChangePasswordPage extends AbstractCrudOnePage<UserAccou
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		addInputListener(Form.FIELD_CURRENT_PASSWORD, new WebInputListener.Adapter(){
+		addInputListener(Form.FIELD_CURRENT_PASSWORD, new WebInput.Listener.Adapter(){
 			private static final long serialVersionUID = 7526066306750441853L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value) throws ValidatorException {
@@ -39,7 +39,7 @@ public class UserAccountChangePasswordPage extends AbstractCrudOnePage<UserAccou
 					webManager.throwValidationException("invalidcurrentpassword", new Object[]{});
 			}
 		});
-		addInputListener(Form.FIELD_NEW_PASSWORD_CONFIRMATION, new WebInputListener.Adapter(){
+		addInputListener(Form.FIELD_NEW_PASSWORD_CONFIRMATION, new WebInput.Listener.Adapter(){
 			private static final long serialVersionUID = 7526066306750441853L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value) throws ValidatorException {

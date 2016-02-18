@@ -75,7 +75,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public static final Collection<ComponentCreationListener> componentCreationListeners = new ArrayList<>();
 	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
-	private final String selectViewSuffix="SelectView";
+	private final String selectOneViewSuffix="SelectOneView";
+	private final String selectManyViewSuffix="SelectManyView";
 	private final String consultViewSuffix="ConsultView";
 	private final String listViewSuffix="ListView";
 	private final String editViewSuffix="EditView";
@@ -165,7 +166,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class,null);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class,null,null);
 		registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
@@ -198,25 +199,27 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public void configBusinessIdentifiable(BusinessEntityInfos businessEntityInfos,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId
-			,String createManyViewId,String selectViewId){
+			,String createManyViewId,String selectOneViewId,String selectManyViewId){
 		businessEntityInfos.getUserInterface().setIconName(iconName);
 		businessEntityInfos.getUserInterface().setIconExtension(iconExtension);
 		businessEntityInfos.getUserInterface().setConsultViewId(consultViewId);
 		businessEntityInfos.getUserInterface().setListViewId(listViewId);
 		businessEntityInfos.getUserInterface().setEditViewId(editViewId);
 		businessEntityInfos.getUserInterface().setCreateManyViewId(createManyViewId);
-		businessEntityInfos.getUserInterface().setSelectViewId(selectViewId);
+		businessEntityInfos.getUserInterface().setSelectOneViewId(selectOneViewId);
+		businessEntityInfos.getUserInterface().setSelectManyViewId(selectManyViewId);
 	}
 	
-	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId,String createManyViewId,String selectViewId){
+	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId,String createManyViewId
+			,String selectOneViewId,String selectManyViewId){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
-		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId,selectViewId);
+		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId,selectOneViewId,selectManyViewId);
 	}
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
 				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix
-				,businessEntityInfos.getVarName()+selectViewSuffix);
+				,businessEntityInfos.getVarName()+selectOneViewSuffix,businessEntityInfos.getVarName()+selectManyViewSuffix);
 	}
 	
 	public void useCustomConsultView(Class<?> clazz){

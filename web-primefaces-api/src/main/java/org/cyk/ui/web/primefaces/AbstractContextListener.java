@@ -26,7 +26,8 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.AbstractActorQueryFormModel;
+import org.cyk.ui.api.model.AbstractActorQueryManyFormModel;
+import org.cyk.ui.api.model.AbstractActorQueryOneFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
@@ -68,7 +69,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		webManager.getReportBasedOnDynamicBuilderServletListeners().add(new DefaultReportBasedOnDynamicBuilderServletAdapter<>());
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(File.class, null);
 		
 		//OutputDetailsConfiguration outputDetailsConfiguration;
@@ -92,21 +93,23 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
 		*/
 	
-		uiManager.registerConfiguration(new IdentifiableConfiguration(License.class, LicenseEditPage.Form.class, LicenseDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(License.class, LicenseEditPage.Form.class, LicenseDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(License.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UniformResourceLocator.class, UniformResourceLocatorEditPage.Form.class, UniformResourceLocatorDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UniformResourceLocator.class, UniformResourceLocatorEditPage.Form.class
+				, UniformResourceLocatorDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(UniformResourceLocator.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Role.class, RoleEditPage.Form.class, RoleDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Role.class, RoleEditPage.Form.class, RoleDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(Role.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserAccount.class, UserAccountEditPage.Form.class, UserAccountDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserAccount.class, UserAccountEditPage.Form.class, UserAccountDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(UserAccount.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementCollection.class, MovementCollectionEditPage.Form.class, MovementCollectionDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementCollection.class, MovementCollectionEditPage.Form.class, MovementCollectionDetails.class
+				,null,null));
 		uiManager.configBusinessIdentifiable(MovementCollection.class, null);
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
 	}
 	
@@ -129,10 +132,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	
 	protected <ACTOR extends AbstractActor> void registerActorForm(Class<ACTOR> actorClass){
 		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),getReadFormModelClass(actorClass)
-				,getQueryFormModelClass(actorClass));
+				,getQueryOneFormModelClass(actorClass),getQueryManyFormModelClass(actorClass));
 		uiManager.registerConfiguration(configuration);
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setConsultViewId("actorConsultView");
-		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectViewId(webNavigationManager.getOutcomeDynamicSelect());
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());
 		
 		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
 		registerBusinessEntityFormManyPageListener(actorClass,getActorCrudManyPageAdapter(actorClass));
@@ -163,9 +167,15 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		return null;
 	}
 	
-	protected Class<?> getQueryFormModelClass(Class<?> clazz){
+	protected Class<?> getQueryOneFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return AbstractActorQueryFormModel.Default.class;
+			return AbstractActorQueryOneFormModel.Default.class;
+		return null;
+	}
+	
+	protected Class<?> getQueryManyFormModelClass(Class<?> clazz){
+		if(AbstractActor.class.isAssignableFrom(clazz))
+			return AbstractActorQueryManyFormModel.Default.class;
 		return null;
 	}
 	

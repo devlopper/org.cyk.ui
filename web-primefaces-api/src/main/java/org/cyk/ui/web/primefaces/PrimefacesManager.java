@@ -34,13 +34,14 @@ import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
+import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.PrimefacesPageListener;
 import org.cyk.ui.web.primefaces.page.ReportPageListener;
-import org.cyk.ui.web.primefaces.page.SelectPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -78,7 +79,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
 	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
-	private final Collection<SelectPageListener<?,?>> selectPageListeners = new ArrayList<>();
+	private final Collection<AbstractSelectOnePage.Listener<?,?>> selectOnePageListeners = new ArrayList<>();
+	private final Collection<AbstractSelectManyPage.Listener<?,?>> selectManyPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
@@ -268,12 +270,22 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<SelectPageListener<?,Object>> getSelectPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<SelectPageListener<?,Object>> results = new ArrayList<>();
+	public Collection<AbstractSelectOnePage.Listener<?,Object>> getSelectOnePageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<AbstractSelectOnePage.Listener<?,Object>> results = new ArrayList<>();
 		if(aClass!=null)
-			for(SelectPageListener<?,?> listener : selectPageListeners)
+			for(AbstractSelectOnePage.Listener<?,?> listener : selectOnePageListeners)
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add((SelectPageListener<?, Object>) listener);
+					results.add((AbstractSelectOnePage.Listener<?, Object>) listener);
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<AbstractSelectManyPage.Listener<?,Object>> getSelectManyPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<AbstractSelectManyPage.Listener<?,Object>> results = new ArrayList<>();
+		if(aClass!=null)
+			for(AbstractSelectManyPage.Listener<?,?> listener : selectManyPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add((AbstractSelectManyPage.Listener<?, Object>) listener);
 		return results;
 	}
 	

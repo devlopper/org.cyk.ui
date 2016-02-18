@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public abstract class AbstractQueryFormModel<IDENTIFIABLE extends AbstractIdentifiable,IDENTIFIER> extends AbstractBean implements Serializable{
+public abstract class AbstractQueryOneFormModel<IDENTIFIABLE extends AbstractIdentifiable,IDENTIFIER> extends AbstractBean implements Serializable{
 	private static final long serialVersionUID = -4741435164709063863L;
 	
 	@Input @InputText @NotNull protected IDENTIFIER identifier;
@@ -29,7 +29,7 @@ public abstract class AbstractQueryFormModel<IDENTIFIABLE extends AbstractIdenti
 	/**/
 	
 	@Getter @Setter @FieldOverrides(value={@FieldOverride(name=FIELD_IDENTIFIER,type=String.class)})
-	public static class Default<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractQueryFormModel<IDENTIFIABLE,String> implements Serializable {
+	public static class Default<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractQueryOneFormModel<IDENTIFIABLE,String> implements Serializable {
 		private static final long serialVersionUID = -3756660150800681378L;
 		
 	}

@@ -8,13 +8,13 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{selectPage}" />
+ 		<ui:param name="pageController" value="#{selectOnePage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{selectPage.form}" />
+ 			<cyk:formOneData value="#{selectOnePage.form}" />
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{selectPage.form.submitCommandable}" executeParameter="#{selectPage.form.data}" />
+ 			<cyk:command value="#{selectOnePage.form.submitCommandable}" executeParameter="#{selectOnePage.form.data}" />
  		</ui:define>
  		
  	</ui:decorate>

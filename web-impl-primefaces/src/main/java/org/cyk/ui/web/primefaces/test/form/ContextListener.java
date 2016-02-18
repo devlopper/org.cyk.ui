@@ -26,7 +26,8 @@ import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
-import org.cyk.ui.web.primefaces.test.business.ActorQueryFormModel;
+import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
+import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
@@ -48,7 +49,8 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		primefacesManager.getSelectPageListeners().add(new ActorSelectPageAdapter());
+		primefacesManager.getSelectOnePageListeners().add(new ActorSelectOnePageAdapter());
+		primefacesManager.getSelectManyPageListeners().add(new ActorSelectManyPageAdapter());
 	}
 	
 	@Override
@@ -111,10 +113,17 @@ public class ContextListener extends AbstractContextListener {
 	}
 	
 	@Override
-	protected Class<?> getQueryFormModelClass(Class<?> clazz) {
+	protected Class<?> getQueryOneFormModelClass(Class<?> clazz) {
 		if(Actor.class.equals(clazz))
-			return ActorQueryFormModel.class;
-		return super.getQueryFormModelClass(clazz);
+			return ActorQueryOneFormModel.class;
+		return super.getQueryOneFormModelClass(clazz);
+	}
+	
+	@Override
+	protected Class<?> getQueryManyFormModelClass(Class<?> clazz) {
+		if(Actor.class.equals(clazz))
+			return ActorQueryManyFormModel.class;
+		return super.getQueryManyFormModelClass(clazz);
 	}
 	
 	/**/

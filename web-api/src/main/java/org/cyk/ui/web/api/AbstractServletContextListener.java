@@ -45,7 +45,7 @@ import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
 
-public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener,WebNavigationManagerListener,Serializable {
+public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener,WebNavigationManager.Listener,Serializable {
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
@@ -80,7 +80,7 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 		@SuppressWarnings("unused")
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
-		webNavigationManager.getWebNavigationManagerListeners().add(this);	
+		WebNavigationManager.Listener.COLLECTION.add(this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
 	}
 	
@@ -112,8 +112,11 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
 						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
 					
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
-						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicSelect());	
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectOneViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
+						businessEntityInfos.getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
+					
+					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectManyViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
+						businessEntityInfos.getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());	
 					
 				}
 				

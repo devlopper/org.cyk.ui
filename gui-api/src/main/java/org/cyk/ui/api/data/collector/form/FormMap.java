@@ -18,12 +18,12 @@ public class FormMap extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 6946914245453887414L;
 
 	private final Map<Crud,Map<String, Class<?>>> one = new HashMap<>() , many = new HashMap<>();
-	@Getter @Setter private Class<?> query;
+	@Getter @Setter private Class<?> queryOne,queryMany;
 	
 	/**/
 	
 	public FormMap(Class<? extends AbstractIdentifiable> identifiableClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,
-			Class<?> readOneFormModelClass,Class<?> queryFormModelClass) {
+			Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass,Class<?> queryManyFormModelClass) {
 		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiableClass);
 		
 		put(Boolean.TRUE, Crud.CREATE, editOneFormModelClass);
@@ -44,8 +44,8 @@ public class FormMap extends AbstractBean implements Serializable {
 				businessEntityInfos.getUserInterface().setListViewId(null);	
 		}
 		
-		this.query = queryFormModelClass;
-		
+		this.queryOne = queryOneFormModelClass;
+		this.queryMany = queryManyFormModelClass;
 	}
 	
 	/**/

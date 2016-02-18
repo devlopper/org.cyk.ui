@@ -21,7 +21,6 @@ import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.AjaxListener;
-import org.cyk.ui.web.api.WebInputListener;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -43,7 +42,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	protected AjaxListener ajaxListener;
 	protected String onChange;
-	protected Collection<WebInputListener> webInputListeners = new ArrayList<>();
+	protected Collection<WebInput.Listener> webInputListeners = new ArrayList<>();
 	
 	{
 		readOnlyValueCss.addClass(getUniqueCssClass());
@@ -61,7 +60,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
-		for(WebInputListener listener : webInputListeners)
+		for(WebInput.Listener listener : webInputListeners)
 			listener.validate(facesContext, uiComponent, value);
 	}
 	

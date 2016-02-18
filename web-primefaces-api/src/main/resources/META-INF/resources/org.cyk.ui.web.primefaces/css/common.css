@@ -207,7 +207,8 @@ border: none;
 	/*background: yellow;*/
 }
 
-.cyk-ui-form-inputfield,.cyk-ui-form-inputfield input{
+
+.cyk-ui-form-inputfield,.cyk-ui-form-inputfield input , .cyk-ui-form-inputfield .ui-picklist-list-wrapper ul{
 	width: 300px !important;
 }
 .ui-selectonemenu .cyk-ui-form-inputfield,.cyk-ui-form-inputfield{
