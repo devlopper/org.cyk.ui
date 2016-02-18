@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.file.report.jasper.JasperReportBusinessImpl;
-import org.cyk.system.root.model.Mime;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.report.AbstractReport;
 import org.cyk.system.root.model.file.report.AbstractReportConfiguration;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.servlet.AbstractFileServlet;
+import org.cyk.utility.common.FileExtension;
 
 public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractReport<?>/*,CONFIGURATION extends AbstractReportConfiguration<?, AbstractReport<?>>*/> extends AbstractFileServlet implements Serializable {
 
@@ -42,7 +42,7 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 	protected abstract REPORT createReport(HttpServletRequest request,AbstractReportConfiguration<MODEL, REPORT> configuration);
 	
 	@Override
-	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response,Collection<File> files,Mime mime) {
+	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response,Collection<File> files,FileExtension fileExtension) {
 		return report.getBytes();
 	}
 

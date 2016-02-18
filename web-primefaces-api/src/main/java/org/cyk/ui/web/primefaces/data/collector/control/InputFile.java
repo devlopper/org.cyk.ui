@@ -21,6 +21,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.utility.common.FileExtension;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -39,7 +40,7 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	
 	private Boolean previewable = Boolean.FALSE,clearable = Boolean.FALSE; 
 	private Long minimumSize,maximumSize;
-	private Set<String> extensions = new HashSet<>();
+	private Set<FileExtension> extensions = new HashSet<>();
 	private String allowTypes,extensionsAsString,mode="simple";
 	private Integer previewWidth=150,previewHeight=150;
 	

@@ -20,9 +20,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
-import org.cyk.system.root.model.Mime;
 import org.cyk.system.root.model.file.File;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.FileExtension;
 
 public abstract class AbstractFileServlet extends AbstractServlet implements Serializable {
 
@@ -34,7 +34,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		initialisation(request, response);
 		Collection<File> files = getFiles(request, response);
 		String extension = fileExtension(request, response, files);
-		byte[] bytes = bytes(request,response,files,Mime.getByIdentifier(fileBusiness.findMime(extension)));
+		byte[] bytes = bytes(request,response,files,FileExtension.getByValue(extension));
 		if(bytes==null)
 			return;
 		send(
@@ -47,7 +47,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	
 	protected abstract void initialisation(HttpServletRequest request,HttpServletResponse response);
 	
-	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response,Collection<File> files,Mime mime) {
+	protected byte[] bytes(HttpServletRequest request, HttpServletResponse response,Collection<File> files,FileExtension fileExtension) {
 		if(files==null || files.isEmpty())
 			return null;
 		if(files.size()==1)
@@ -58,7 +58,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 				return null;
 			}
 		else
-			return fileBusiness.merge(files, mime).toByteArray();
+			return fileBusiness.merge(files, fileExtension).toByteArray();
 	}
 	
 	protected String fileName(HttpServletRequest request, HttpServletResponse response) {
