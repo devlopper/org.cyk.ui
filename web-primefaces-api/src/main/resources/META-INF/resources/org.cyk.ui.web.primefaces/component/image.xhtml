@@ -16,7 +16,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<img src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?identifier=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
+		<img src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?#{uiManager.identifiableParameter}=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
 			class="#{cc.attrs.styleClass}"
 		/>
 	</cc:implementation>

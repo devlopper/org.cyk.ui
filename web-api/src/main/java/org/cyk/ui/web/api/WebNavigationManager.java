@@ -41,6 +41,7 @@ import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.servlet.FileServlet;
 import org.cyk.ui.web.api.servlet.ImageServlet;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -452,10 +453,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,String fileExtension){
+	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
 		redirectTo(outcomeFileConsultMany,new Object[]{
 				uiManager.getIdentifiableParameter(), StringUtils.join(Utils.ids(identifiables),Constant.CHARACTER_COMA),
-				uiManager.getFileExtensionParameter(), fileExtension
+				uiManager.getFileExtensionParameter(), fileExtension.getValue()
 		});
 	}
 	

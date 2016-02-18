@@ -113,7 +113,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	
 	protected Collection<File> getFiles(HttpServletRequest request, HttpServletResponse response){
 		Collection<File> collection = new ArrayList<>();
-		String[] identifiers = StringUtils.split(request.getParameter("identifier"),Constant.CHARACTER_COMA.charValue());
+		String[] identifiers = StringUtils.split(request.getParameter(uiManager.getIdentifiableParameter()),Constant.CHARACTER_COMA.charValue());
 		if(identifiers==null)
 			;
 		else
