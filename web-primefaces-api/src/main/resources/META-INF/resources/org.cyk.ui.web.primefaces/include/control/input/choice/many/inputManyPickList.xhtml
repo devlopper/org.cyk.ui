@@ -13,7 +13,7 @@
 		<ui:param name="input" value="#{control}" />
 		<ui:param name="forId" value="inputManyPickList" />
 		<ui:define name="input">
-			<p:pickList id="inputManyPickList" value="#{control.dualListModel}" var="choice" itemLabel="#{choice.uiString}" itemValue="#{choice}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
+			<p:pickList id="inputManyPickList" value="#{control.dualListModel}" var="choice" itemLabel="#{uiManager.format(choice)}" itemValue="#{choice}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				rendered="#{not data.readOnly}" requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}"
 				showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" showCheckbox="true">

@@ -56,11 +56,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<?>,SelectItemBuilderListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
-	//private static final Map<Class<? extends AbstractOutputDetails<?>>,OutputDetailsConfiguration> OUTPUT_DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final Map<Class<? extends AbstractIdentifiable>,IdentifiableConfiguration> IDENTIFIABLE_CONFIGURATION_MAP = new HashMap<>();
 	public static final Map<String, Class<?>> FORM_MODEL_MAP = new HashMap<>();
-	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_MANY_FORM_MODEL_MAP = new HashMap<>();
-	//public static final Map<Class<? extends AbstractIdentifiable>,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>>> DEFAULT_ONE_FORM_MODEL_MAP = new HashMap<>();
 	
 	public static final String PUSH_CHANNEL_VAR = "channel";
 	public static final String PUSH_RECEIVER_VAR = "receiver";
@@ -264,22 +261,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public Class<? extends AbstractOutputDetails<?>> getOutputDetailsClassFromKey(String key){
-		/*
-		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
-			if(entry.getValue().getRuntimeIdentifier().equals(key))
-				return entry.getKey();
-		logWarning("No OutputDetails class found for {}", key);
-		*/
 		return (Class<? extends AbstractOutputDetails<?>>) clazzBusiness.find(key).getClazz();
 	}
 	
 	public OutputDetailsConfiguration getOutputDetailsConfigurationFromKey(String key){
-		/*
-		for(Entry<Class<? extends AbstractOutputDetails<?>>, OutputDetailsConfiguration> entry : OUTPUT_DETAILS_CONFIGURATION_MAP.entrySet())
-			if(entry.getValue().getRuntimeIdentifier().equals(key))
-				return entry.getValue();
-		logWarning("No OutputDetailsConfiguration class found for {}", key);
-		*/
 		return (OutputDetailsConfiguration) clazzBusiness.find(key);
 	}
 	
@@ -350,6 +335,10 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public Boolean isMobileDevice(UserDeviceType userDeviceType){
 		return userDeviceType==null || !UserDeviceType.DESKTOP.equals(userDeviceType);
+	}
+	
+	public String format(Object object){
+		return RootBusinessLayer.getInstance().getFormatterBusiness().format(object);
 	}
 	
 }
