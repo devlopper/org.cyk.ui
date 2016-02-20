@@ -113,16 +113,28 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	
 	protected Collection<File> getFiles(HttpServletRequest request, HttpServletResponse response){
 		Collection<File> collection = new ArrayList<>();
-		String[] identifiers = StringUtils.split(request.getParameter(uiManager.getIdentifiableParameter()),Constant.CHARACTER_COMA.charValue());
-		if(identifiers==null)
-			;
-		else
-			for(String identifier : identifiers)
+		Collection<Long> identifiers = new ArrayList<>();
+		String identifiable = requestParameter(request, uiManager.getIdentifiableParameter());
+		String encodedParameter = requestParameter(request, uiManager.getEncodedParameter());
+		if(uiManager.getIdentifiableParameter().equals(encodedParameter)){
+			identifiers.addAll(webManager.decodeIdentifiersRequestParameterValue(identifiable));
+		}else{
+			String[] identifiersAsString = StringUtils.split(identifiable,Constant.CHARACTER_COMA.charValue());
+			for(String identifier : identifiersAsString)
 				try {
-					collection.add(fileBusiness.find(Long.parseLong(identifier)));
+					identifiers.add(Long.parseLong(identifier));
 				} catch (NumberFormatException e) {
 					return null;
 				}
+		}
+		
+		for(Long identifier : identifiers)
+			try {
+				collection.add(fileBusiness.find(identifier));
+			} catch (NumberFormatException e) {
+				return null;
+			}
+		
 		return collection;
 	}
 	

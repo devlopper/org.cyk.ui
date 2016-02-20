@@ -18,17 +18,12 @@ import javax.inject.Singleton;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -47,6 +42,10 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
 
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
@@ -455,8 +454,9 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
 		redirectTo(outcomeFileConsultMany,new Object[]{
-				uiManager.getIdentifiableParameter(), StringUtils.join(Utils.ids(identifiables),Constant.CHARACTER_COMA),
-				uiManager.getFileExtensionParameter(), fileExtension.getValue()
+				uiManager.getIdentifiableParameter(), WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
+				,uiManager.getFileExtensionParameter(), fileExtension.getValue()
+				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
 		});
 	}
 	

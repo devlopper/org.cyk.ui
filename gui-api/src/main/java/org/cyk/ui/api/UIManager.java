@@ -110,6 +110,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String windowParameter="windowParam";
 	private final String fileExtensionParameter="fileExtensionParam";
 	private final String printParameter="print";
+	private final String encodedParameter="encoded";
 	private final String pdfParameter="pdf";
 	private final String xlsParameter="xls";
 	private final String detailsParameter="details";

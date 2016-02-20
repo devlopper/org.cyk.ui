@@ -19,7 +19,9 @@ import javax.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.language.LanguageEntry;
+import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.InputChoice;
@@ -232,7 +234,10 @@ public class WebManager extends AbstractBean implements Serializable {
 		Long highest = RootBusinessLayer.getInstance().getNumberBusiness().findHighest(identifiers);
 		String number = RootBusinessLayer.getInstance().getNumberBusiness().concatenate(identifiers, highest.toString().length());
 		number = RootBusinessLayer.getInstance().getNumberBusiness().encodeToBase62(number);
-		return highest+REQUEST_PARAMETER_TOKEN_SEPERATOR+number;
+		return highest.toString().length()+REQUEST_PARAMETER_TOKEN_SEPERATOR+number;
+	}
+	public String encodeIdentifiablesAsRequestParameterValue(Collection<? extends AbstractIdentifiable> identifiables){
+		return encodeIdentifiersAsRequestParameterValue(Utils.ids(identifiables));
 	}
 	
 	public Collection<Long> decodeIdentifiersRequestParameterValue(String value){
