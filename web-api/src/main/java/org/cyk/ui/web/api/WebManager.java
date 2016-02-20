@@ -16,11 +16,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.Part;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
@@ -35,10 +33,15 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
 import org.omnifaces.util.Ajax;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Singleton @Named @Getter @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebManager extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -1690449792881915040L;
+	
+	private static final String REQUEST_PARAMETER_TOKEN_SEPERATOR = Constant.CHARACTER_UNDESCORE.toString();
 	
 	private static WebManager INSTANCE;
 	public static WebManager getInstance() {
@@ -223,6 +226,19 @@ public class WebManager extends AbstractBean implements Serializable {
 	//TODO should not be here
 	public String getClassSelector(WebInput<?, ?, ?, ?> input){
 		return "@(."+input.getUniqueCssClass()+")";
+	}
+	
+	public String encodeIdentifiersAsRequestParameterValue(Collection<Long> identifiers){
+		Long highest = RootBusinessLayer.getInstance().getNumberBusiness().findHighest(identifiers);
+		String number = RootBusinessLayer.getInstance().getNumberBusiness().concatenate(identifiers, highest.toString().length());
+		number = RootBusinessLayer.getInstance().getNumberBusiness().encodeToBase62(number);
+		return highest+REQUEST_PARAMETER_TOKEN_SEPERATOR+number;
+	}
+	
+	public Collection<Long> decodeIdentifiersRequestParameterValue(String value){
+		String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
+		String number = RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
+		return RootBusinessLayer.getInstance().getNumberBusiness().deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
 	}
 	
 	/**/
