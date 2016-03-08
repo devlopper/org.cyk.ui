@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 	}
 	
 	public void setMetricCollection(MetricCollection value){
+		this.metricCollection = value;
 		isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
 		showNumberColumn = isNumber;
 		showStringColumn = !isNumber;
@@ -43,6 +45,16 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : RootBusinessLayer.getInstance().getNumberBusiness().format(interval.getLow().getValue())));
 			}
 		}
+	}
+	
+	/**/
+	
+	@Getter @Setter
+	public static class AbstractMetricValueItem<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractItemCollectionItem<IDENTIFIABLE> implements Serializable {
+		private static final long serialVersionUID = 3828481396841243726L;
+		private String name;
+		private BigDecimal numberValue;
+		private String stringValue;
 	}
 
 }
