@@ -11,9 +11,11 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.mathematics.MetricValue;
 import org.cyk.system.root.model.mathematics.MetricValueInputted;
 import org.cyk.system.root.model.mathematics.MetricValueType;
 import org.cyk.ui.api.SelectItemBuilderListener;
+import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 
 import lombok.Getter;
@@ -56,6 +58,33 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 		private String name;
 		private BigDecimal numberValue;
 		private String stringValue;
+	}
+	
+	/**/
+	
+	public static class Adapter<TYPE extends AbstractMetricValueItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection.Adapter<TYPE, IDENTIFIABLE> {
+
+		private static final long serialVersionUID = -91522966404798240L;
+		
+		@Override
+		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
+			super.instanciated(itemCollection, item);
+			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
+			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue());
+			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue());
+		}	
+		@Override
+		public void write(TYPE item) {
+			super.write(item);
+			getMetricValue(item.getIdentifiable()).setNumberValue(item.getNumberValue());
+			getMetricValue(item.getIdentifiable()).setStringValue(item.getStringValue());
+		}
+		
+		protected MetricValue getMetricValue(IDENTIFIABLE identifiable){
+			return (MetricValue) commonUtils.readProperty(identifiable, METRIC_VALUE);
+		}
+		
+		public static final String METRIC_VALUE = "metricValue";
 	}
 
 }

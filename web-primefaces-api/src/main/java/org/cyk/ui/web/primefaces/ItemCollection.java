@@ -8,6 +8,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.model.AbstractApplicableValueQuestion;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.AbstractWebItemCollection;
+import org.cyk.ui.web.api.ItemCollectionWebAdapter;
 import org.cyk.ui.web.api.WebManager;
 
 public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends AbstractWebItemCollection<TYPE,IDENTIFIABLE> implements Serializable {
@@ -30,6 +31,14 @@ public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE
 	@Override
 	protected AbstractApplicableValueQuestion<SelectItem> createApplicableValueQuestion() {
 		return new ApplicableValueQuestion();
+	}
+	
+	/**/
+	
+	public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollectionWebAdapter<TYPE, IDENTIFIABLE> {
+
+		private static final long serialVersionUID = -91522966404798240L;
+		
 	}
 
 }

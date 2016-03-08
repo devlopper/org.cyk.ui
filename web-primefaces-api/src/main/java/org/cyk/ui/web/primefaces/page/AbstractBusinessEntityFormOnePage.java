@@ -8,13 +8,11 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -27,10 +25,14 @@ import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
+import org.cyk.ui.web.primefaces.MetricValueCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -134,6 +136,15 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
 		return collection;
+	}
+	
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> MetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
+			MetricCollection metricCollection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+		MetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (MetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
+		metricValueCollection.setMetricCollection(metricCollection);
+		metricValueCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
+		metricValueCollection.getAddCommandable().setRendered(Boolean.FALSE);
+		return metricValueCollection;
 	}
 	
 	@Override
