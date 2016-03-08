@@ -14,7 +14,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<p:dataTable id="datatable" value="#{cc.value.items}" var="item" rowIndexVar="index" emptyMessage="" >
+		<p:dataTable id="datatable" value="#{cc.value.items}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}">
         	<f:facet name="header"><h:outputText value="#{cc.value.label}" /> </f:facet>	
        		<p:column headerText="#" width="4%">
        			<h:outputText value="#{index+1}" />

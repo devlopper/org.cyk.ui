@@ -35,6 +35,7 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 	
 	public void setMetricCollection(MetricCollection value){
 		this.metricCollection = value;
+		setLabel(this.metricCollection.getName());
 		isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
 		showNumberColumn = isNumber;
 		showStringColumn = !isNumber;
@@ -42,7 +43,7 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 			choices.add(new SelectItem(null, RootBusinessLayer.getInstance().getLanguageBusiness().findText(SelectItemBuilderListener.NULL_LABEL_ID)));
 			for(Interval interval : RootBusinessLayer.getInstance().getIntervalBusiness().findByCollection(metricCollection.getValueIntervalCollection())){
 				choices.add(new SelectItem(MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : interval.getLow().getValue()
-						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : RootBusinessLayer.getInstance().getNumberBusiness().format(interval.getLow().getValue())));
+						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? RootBusinessLayer.getInstance().getIntervalBusiness().findRelativeCode(interval) : RootBusinessLayer.getInstance().getNumberBusiness().format(interval.getLow().getValue())));
 			}
 		}
 	}
