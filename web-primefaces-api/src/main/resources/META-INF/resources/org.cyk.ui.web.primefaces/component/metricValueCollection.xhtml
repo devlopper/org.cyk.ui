@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.MetricValueCollection">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<cyk:itemCollection value="#{cc.value}" >
+			<p:column headerText="#{uiManager.text('field.name')}" >
+				<h:outputText value="#{item.name}" />
+			</p:column>
+			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showNumberColumn}">
+				<pe:inputNumber value="#{item.numberValue}" required="true" requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}"
+					minValue="#{cc.value.metricCollection.valueIntervalCollection.lowestValue}" 
+					maxValue="#{cc.value.metricCollection.valueIntervalCollection.highestValue}"
+					decimalPlaces="#{cc.value.metricCollection.valueIntervalCollection.numberOfDecimalAfterDot}"
+					rendered="#{not cc.value.showCombobox}"   />
+				
+				<p:selectOneMenu value="#{item.numberValue}" rendered="#{cc.value.showCombobox}" >
+					<f:selectItems value="#{cc.value.choices}" />
+				</p:selectOneMenu>	
+			</p:column>
+			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showStringColumn}">
+				<p:inputText value="#{item.stringValue}" required="true" requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}"
+				 rendered="#{not cc.value.showCombobox}"/>
+				 
+				 <p:selectOneMenu value="#{item.stringValue}" rendered="#{cc.value.showCombobox}" >
+					<f:selectItems value="#{cc.value.choices}" />
+				</p:selectOneMenu>
+			</p:column>
+			
+		</cyk:itemCollection>
+			
+	</cc:implementation>
+
+</ui:composition>

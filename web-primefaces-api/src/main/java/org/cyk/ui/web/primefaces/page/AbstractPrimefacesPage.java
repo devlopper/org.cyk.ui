@@ -367,9 +367,15 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		});
 	}
 	
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> instanciateItemCollection
+		(String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass){
+		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
+		return collection;
+	}
+	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
 			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener){
-		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
+		ItemCollection<TYPE,IDENTIFIABLE> collection = instanciateItemCollection(identifier, aClass, identifiableClass);
 		form.getItemCollections().add(collection);
 		collection.getItemCollectionListeners().add(new ItemCollectionListener.Adapter<TYPE,IDENTIFIABLE,SelectItem>(){
 			private static final long serialVersionUID = 4920928936636548919L;
