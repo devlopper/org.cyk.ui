@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.test.form;
 
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
+import org.cyk.ui.web.api.servlet.SecurityFilter;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
@@ -51,6 +53,15 @@ public class ContextListener extends AbstractContextListener {
 		super.contextInitialized(event);
 		primefacesManager.getSelectOnePageListeners().add(new ActorSelectOnePageAdapter());
 		primefacesManager.getSelectManyPageListeners().add(new ActorSelectManyPageAdapter());
+		
+		SecurityFilter.Listener.COLLECTION.add(new SecurityFilter.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 4605368263736933413L;
+			
+			@Override
+			public Boolean isUrlAccessible(URL url) {
+				return super.isUrlAccessible(url);
+			}
+		});
 	}
 	
 	@Override
