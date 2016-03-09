@@ -14,9 +14,11 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -34,6 +36,7 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
 import org.omnifaces.util.Ajax;
+import org.omnifaces.util.Faces;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -260,6 +263,56 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	public void throwValidationExceptionUnknownValue(Object value){
 		throwValidationException("exception.value.unknown",new Object[]{value});
+	}
+	
+	/* Request parameter handling */
+	
+	public String getRequestParameter(HttpServletRequest request,String name){
+		return request.getParameter(name);
+	}
+	public String getRequestParameter(String name){
+		return getRequestParameter(Faces.getRequest(),name);
+	}
+	
+	public Long getRequestParameterLong(HttpServletRequest request,Class<? extends AbstractIdentifiable> identifiableClass){
+		return getRequestParameterAsLong(request,UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+	}
+	public Long getRequestParameterLong(Class<? extends AbstractIdentifiable> identifiableClass){
+		return getRequestParameterLong(Faces.getRequest(), identifiableClass);
+	}
+	
+	public Long getRequestParameterAsLong(HttpServletRequest request,String name){
+		try {
+			return Long.parseLong(getRequestParameter(request,name));
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+	public Long getRequestParameterAsLong(String name){
+		return getRequestParameterAsLong(Faces.getRequest(), name);
+	}
+	
+	public Boolean hasRequestParameter(HttpServletRequest request,String name){
+		return StringUtils.isNotEmpty(getRequestParameter(name));
+	}
+	public Boolean hasRequestParameter(String name){
+		return hasRequestParameter(Faces.getRequest(),name);
+	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,String identifierId){
+		if(hasRequestParameter(request,identifierId))
+			return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
+		return null;
+	}
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass, WebManager.getInstance().getRequestParameterIdentifiable());
+	}
+	
+	public Crud getCrudFromRequestParameter(HttpServletRequest request){
+		return UIManager.getInstance().getCrudValue(getRequestParameter(request,UIManager.getInstance().getCrudParameter()));
+	}
+	public Crud getCrudFromRequestParameter(){
+		return getCrudFromRequestParameter(Faces.getRequest());
 	}
 	
 }

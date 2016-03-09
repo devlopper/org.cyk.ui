@@ -208,6 +208,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		onCompleteUpdate(form, inputName, value, Boolean.TRUE);
 	}
 	
+	//TODO those methods should delegate to web manager
+	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))
 			return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));

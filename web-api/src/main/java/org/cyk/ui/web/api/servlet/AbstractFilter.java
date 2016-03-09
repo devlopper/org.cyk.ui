@@ -23,6 +23,7 @@ import org.cyk.system.root.business.api.security.LicenseBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
@@ -108,10 +109,12 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 		
 		/**/
 		
-		public static class AbstractAdapter extends BeanAdapter implements AbstractListener,Serializable{
+		public static class Adapter extends BeanAdapter implements AbstractListener,Serializable{
 
 			private static final long serialVersionUID = -2057765010522840493L;
 
+			protected WebManager webManager = WebManager.getInstance();
+			
 			protected UserAccountBusiness userAccountBusiness = RootBusinessLayer.getInstance().getUserAccountBusiness();
 			protected LicenseBusiness licenseBusiness = RootBusinessLayer.getInstance().getLicenseBusiness();
 			protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness();
@@ -121,10 +124,10 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 			public void filter(Application application, AbstractUserSession userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
 					, FilterChain filterChain) throws IOException, ServletException {	
 			}
-		
+			
 			/**/
 			
-			public static class AbstractDefault extends AbstractAdapter implements Serializable{
+			public static class Default extends Adapter implements Serializable{
 
 				private static final long serialVersionUID = -2057765010522840493L;
 				

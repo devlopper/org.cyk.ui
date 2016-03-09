@@ -146,7 +146,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		
 		/**/
 		
-		public static class Adapter extends AbstractAdapter implements Listener,Serializable{
+		public static class Adapter extends AbstractListener.Adapter implements Listener,Serializable{
 
 			private static final long serialVersionUID = -2057765010522840493L;
 		
@@ -167,7 +167,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			
 			/**/
 			
-			public static class Default extends Adapter implements Serializable{
+			public static class Default extends Listener.Adapter implements Serializable{
 
 				private static final long serialVersionUID = -2057765010522840493L;
 				
