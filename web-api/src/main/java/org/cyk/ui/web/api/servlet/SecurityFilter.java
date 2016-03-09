@@ -117,6 +117,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				else {
 					if(Boolean.TRUE.equals(isUrlAccessible(url))){
 						Boolean isUrlAccessibleByUserAccount = isUrlAccessibleByUserAccount(url,userAccount,request);
+						System.out.println("SecurityFilter.__filter__() : "+isUrlAccessibleByUserAccount);
 						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount)){
 							for(Entry<String, UrlConstraint> entry : URL_CONSTRAINTS.entrySet()){
 								if(url.getPath().equalsIgnoreCase(Constant.CHARACTER_SLASH+application.getWebContext()+entry.getKey())){
