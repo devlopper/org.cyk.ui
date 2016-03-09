@@ -293,7 +293,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public Boolean hasRequestParameter(HttpServletRequest request,String name){
-		return StringUtils.isNotEmpty(getRequestParameter(name));
+		return StringUtils.isNotEmpty(getRequestParameter(request,name));
 	}
 	public Boolean hasRequestParameter(String name){
 		return hasRequestParameter(Faces.getRequest(),name);

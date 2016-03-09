@@ -354,4 +354,5 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 			west = layout.west;
 		}
 	}
+	
 }

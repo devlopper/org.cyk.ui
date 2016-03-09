@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +20,7 @@ import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.Constant;
 
 public class SecurityFilter extends AbstractFilter implements Filter,Serializable {
 
@@ -26,6 +30,8 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	private static final String PATH_LICENSE_EXPIRED = "license/expired";
 	private static final String PATH_ACCESS_DENIED = "access/denied";
 	private static final String PATH_UNREGISTERED = "path/unregistered";
+	
+	public static final Map<String,UrlConstraint> URL_CONSTRAINTS = new HashMap<>();
 	
 	/*
 	@Override
@@ -109,19 +115,16 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 						.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
 					filterChain.doFilter(request, response);
 				else {
-					Boolean isUrlAccessible = Boolean.TRUE;
-					for(Listener listener : Listener.COLLECTION){
-						Boolean v = listener.isUrlAccessible(url);
-						if(v!=null)
-							isUrlAccessible = v;
-					}
-						
-					if(Boolean.TRUE.equals(isUrlAccessible)){
-						Boolean isUrlAccessibleByUserAccount = Boolean.TRUE;
-						for(Listener listener : Listener.COLLECTION){
-							Boolean v = listener.isUrlAccessibleByUserAccount(url,userAccount);
-							if(v!=null)
-								isUrlAccessibleByUserAccount = v;
+					if(Boolean.TRUE.equals(isUrlAccessible(url))){
+						Boolean isUrlAccessibleByUserAccount = isUrlAccessibleByUserAccount(url,userAccount,request);
+						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount)){
+							for(Entry<String, UrlConstraint> entry : URL_CONSTRAINTS.entrySet()){
+								if(url.getPath().equalsIgnoreCase(Constant.CHARACTER_SLASH+application.getWebContext()+entry.getKey())){
+									Boolean v = entry.getValue().isAccessAllowed(userSession, userAccount, url, request, response);
+									if(v!=null)
+										isUrlAccessibleByUserAccount = v;
+								}
+							}
 						}
 						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount))
 							filterChain.doFilter(request, response);
@@ -136,13 +139,33 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		}	
 	}
 	
+	private Boolean isUrlAccessible(URL url){
+		Boolean value = Boolean.TRUE;
+		for(Listener listener : Listener.COLLECTION){
+			Boolean v = listener.isUrlAccessible(url);
+			if(v!=null)
+				value = v;
+		}
+		return value;
+	}
+	
+	private Boolean isUrlAccessibleByUserAccount(URL url,UserAccount userAccount,HttpServletRequest request){
+		Boolean value = Boolean.TRUE;
+		for(Listener listener : Listener.COLLECTION){
+			Boolean v = listener.isUrlAccessibleByUserAccount(url,userAccount,request);
+			if(v!=null)
+				value = v;
+		}
+		return value;
+	}
+	
 	public static interface Listener extends AbstractListener {
 		
 		Collection<Listener> COLLECTION = new ArrayList<>();
 		
 		Boolean isUrlFiltered();
 		Boolean isUrlAccessible(URL url);
-		Boolean isUrlAccessibleByUserAccount(URL url,UserAccount userAccount);
+		Boolean isUrlAccessibleByUserAccount(URL url,UserAccount userAccount,HttpServletRequest request);
 		
 		/**/
 		
@@ -161,7 +184,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			}
 
 			@Override
-			public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount) {
+			public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount,HttpServletRequest request) {
 				return null;
 			}
 			
@@ -182,7 +205,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				}
 				
 				@Override
-				public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount) {
+				public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount,HttpServletRequest request) {
 					return RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().isAccessibleByUserAccount(url,userAccount);
 				}
 			
@@ -192,4 +215,11 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		}
 	}
 
+	/**/
+	
+	public static interface UrlConstraint {
+		
+		Boolean isAccessAllowed(AbstractUserSession userSession,UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response);
+		
+	}
 }
