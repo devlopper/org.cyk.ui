@@ -264,6 +264,16 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	public void setChoices(String fieldName,Collection<?> collection){
 		setChoices(fieldName, collection,null);
 	}
+	public Object setChoicesAndGetAutoSelected(String fieldName,Collection<?> collection){
+		Object selected = null;
+		if(collection!=null && collection.size() == 1)
+			selected =  collection.iterator().next();
+		setChoices(fieldName, collection,selected);
+		return selected;
+		//if(selected!=null)
+		//	page.setFieldValue(classroomSessionDivisionFieldName, classroomSessionDivision);
+	}
+	
 	
 	public Object getChoice(String fieldName,Integer index){
 		return webManager.getChoice(form, fieldName, index);

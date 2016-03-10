@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
@@ -26,12 +27,16 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 
 	private static final long serialVersionUID = 8708257664271661158L;
 
+	static{
+		SecurityFilter.Listener.COLLECTION.add(new SecurityFilter.Listener.Adapter.Default());
+	}
+	
 	private static final String PATH_INSTALL = "install";
 	private static final String PATH_LICENSE_EXPIRED = "license/expired";
 	private static final String PATH_ACCESS_DENIED = "access/denied";
 	private static final String PATH_UNREGISTERED = "path/unregistered";
 	
-	public static final Map<String,UrlConstraint> URL_CONSTRAINTS = new HashMap<>();
+	public static final Map<UniformResourceLocator,UniformResourceLocatorRuntimeConstraint> UNIFORM_RESOURCE_LOCATOR_CONSTRAINTS = new HashMap<>();
 	
 	/*
 	@Override
@@ -117,11 +122,10 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				else {
 					if(Boolean.TRUE.equals(isUrlAccessible(url))){
 						Boolean isUrlAccessibleByUserAccount = isUrlAccessibleByUserAccount(url,userAccount,request);
-						System.out.println("SecurityFilter.__filter__() : "+isUrlAccessibleByUserAccount);
 						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount)){
-							for(Entry<String, UrlConstraint> entry : URL_CONSTRAINTS.entrySet()){
+							for(Entry<UniformResourceLocator, UniformResourceLocatorRuntimeConstraint> entry : UNIFORM_RESOURCE_LOCATOR_CONSTRAINTS.entrySet()){
 								if(url.getPath().equalsIgnoreCase(Constant.CHARACTER_SLASH+application.getWebContext()+entry.getKey())){
-									Boolean v = entry.getValue().isAccessAllowed(userSession, userAccount, url, request, response);
+									Boolean v = entry.getValue().isAccessibleByUserAccount(userSession, userAccount,entry.getKey(), request, response);
 									if(v!=null)
 										isUrlAccessibleByUserAccount = v;
 								}
@@ -211,16 +215,19 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				}
 			
 			}
-
 			
 		}
 	}
 
 	/**/
 	
-	public static interface UrlConstraint {
-		
-		Boolean isAccessAllowed(AbstractUserSession userSession,UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response);
+	public static void addUniformResourceLocatorRuntimeConstraint(UniformResourceLocator uniformResourceLocator,UniformResourceLocatorRuntimeConstraint uniformResourceLocatorRuntimeConstraint){
+		UNIFORM_RESOURCE_LOCATOR_CONSTRAINTS.put(uniformResourceLocator, uniformResourceLocatorRuntimeConstraint);
+	}
+	
+	public static interface UniformResourceLocatorRuntimeConstraint {
+	
+		Boolean isAccessibleByUserAccount(AbstractUserSession userSession,UserAccount userAccount,UniformResourceLocator uniformResourceLocator,HttpServletRequest request, HttpServletResponse response);
 		
 	}
 }

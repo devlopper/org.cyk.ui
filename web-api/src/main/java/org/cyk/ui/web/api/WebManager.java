@@ -304,9 +304,26 @@ public class WebManager extends AbstractBean implements Serializable {
 			return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
 		return null;
 	}
-	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass){
-		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass, WebManager.getInstance().getRequestParameterIdentifiable());
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,String identifierId){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,identifierId);
 	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
+		return getIdentifiableFromRequestParameter(request,aClass,Boolean.TRUE.equals(useBusinessEntityInfosIdentifier) 
+				? UIManager.getInstance().businessEntityInfos(aClass).getIdentifier() 
+				: WebManager.getInstance().getRequestParameterIdentifiable());
+	}
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,useBusinessEntityInfosIdentifier);
+	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass){
+		return getIdentifiableFromRequestParameter(request,aClass,Boolean.FALSE);
+	}
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass);
+	}
+	
 	
 	public Crud getCrudFromRequestParameter(HttpServletRequest request){
 		return UIManager.getInstance().getCrudValue(getRequestParameter(request,UIManager.getInstance().getCrudParameter()));
