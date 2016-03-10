@@ -2,7 +2,6 @@ package org.cyk.ui.web.primefaces;
 
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
-import org.cyk.system.root.business.impl.party.ApplicationBusinessImplListener;
 import org.cyk.system.root.model.security.Installation;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
@@ -18,7 +17,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     
     @Override
     protected void businesses() {
-    	ApplicationBusinessImpl.LISTENERS.add(new ApplicationBusinessImplListener.Adapter.Default(){
+    	ApplicationBusinessImpl.Listener.COLLECTION.add(new ApplicationBusinessImpl.Listener.Adapter.Default(){
 			private static final long serialVersionUID = -7737204312141333272L;
     		@Override
     		public void installationStarted(Installation installation) {
