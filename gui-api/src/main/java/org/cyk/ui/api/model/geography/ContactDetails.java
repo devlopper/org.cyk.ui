@@ -20,10 +20,15 @@ public class ContactDetails extends AbstractOutputDetails<ContactCollection> imp
 	
 	public ContactDetails(ContactCollection contactCollection) {
 		super(contactCollection);
-		phoneNumbers = StringUtils.join(contactCollection.getPhoneNumbers(),Constant.CHARACTER_COMA);
-		electronicMails = StringUtils.join(contactCollection.getElectronicMails(),Constant.CHARACTER_COMA);
-		locations = StringUtils.join(contactCollection.getLocations(),Constant.CHARACTER_COMA);
-		postalBoxes = StringUtils.join(contactCollection.getPostalBoxs(),Constant.CHARACTER_COMA);
+		if(contactCollection==null){
+			
+		}else{
+			phoneNumbers = StringUtils.join(contactCollection.getPhoneNumbers(),Constant.CHARACTER_COMA);
+			electronicMails = StringUtils.join(contactCollection.getElectronicMails(),Constant.CHARACTER_COMA);
+			locations = StringUtils.join(contactCollection.getLocations(),Constant.CHARACTER_COMA);
+			postalBoxes = StringUtils.join(contactCollection.getPostalBoxs(),Constant.CHARACTER_COMA);
+		}
+		
 	}
 	
 	
