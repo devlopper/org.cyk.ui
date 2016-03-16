@@ -75,7 +75,7 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 		createAjaxBuilder(form,"number1").crossedFieldNames("number2").updatedFieldNames("sumResult","multiplyResult")
 		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
-			public void execute(BigDecimal value) {
+			public void execute(BigDecimal value) { 
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
 				System.out
