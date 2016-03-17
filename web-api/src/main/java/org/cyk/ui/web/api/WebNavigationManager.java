@@ -454,7 +454,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
 		redirectTo(outcomeFileConsultMany,new Object[]{
-				uiManager.getIdentifiableParameter(), WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
+				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
+						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,uiManager.getFileExtensionParameter(), fileExtension.getValue()
 				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
 		});

@@ -244,9 +244,15 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public Collection<Long> decodeIdentifiersRequestParameterValue(String value){
-		String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
-		String number = RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
-		return RootBusinessLayer.getInstance().getNumberBusiness().deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
+		Collection<Long> identifiers;
+		if(StringUtils.isBlank(value))
+			identifiers = null;
+		else{
+			String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
+			String number = RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
+			identifiers = RootBusinessLayer.getInstance().getNumberBusiness().deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
+		}
+		return identifiers;
 	}
 	
 	/**/

@@ -19,6 +19,12 @@
 	    
     <h:head>
     	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
+    	
+    	<!--script type="text/javascript">
+			$(window).load(function() {
+				$(".loader").fadeOut("slow");
+			})
+		</script-->
     </h:head>
     
 	<h:body>
@@ -74,6 +80,19 @@
 				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
+				 			<!--div class="loader"></div-->
+				 			<!--style>
+					 			.loader {
+									position: fixed;
+									left: 0px;
+									top: 0px;
+									width: 100%;
+									height: 100%;
+									z-index: 9999;
+									background: url("#{resource['org.cyk.ui.web.primefaces/images:processing.gif']}") 50% 50% no-repeat rgb(249,249,249);
+								}
+							</style-->
+				 			
 				 			<h:outputText value="#{pageController.text}" rendered="#{not empty pageController.text}" escape="false"/>
 				 			<p:focus context="contentPanel" />
 				 			<!--p:progressBar widgetVar="progressBar" ajax="true" value="#{pageController.progress}" labelTemplate="{value}%" styleClass="animated" 
