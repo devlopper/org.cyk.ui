@@ -164,10 +164,11 @@
 							<p:outputPanel autoUpdate="true">
 								<h:outputText value="#{pageController.executionProgress.currentExecutionStep.message}" escape="false" />
 							</p:outputPanel>
+							<p:spacer height="5" />
 							<p:progressBar widgetVar="#{webManager.progressBarWidgetId}" ajax="true" value="#{pageController.executionProgress.currentAmountOfWorkDone}" labelTemplate="{value}%" 
 								styleClass="animated"  global="false" interval="1000" >
 	    					</p:progressBar>
-	    					
+	    					<p:spacer height="5" />
 	    					<p:fieldset legend="details" toggleable="true" style="width:500px;">
 	    						<p:outputPanel autoUpdate="true">	
 	    							<p:dataTable var="executionStep" value="#{pageController.executionProgress.executionSteps}" scrollable="true" scrollHeight="150">
