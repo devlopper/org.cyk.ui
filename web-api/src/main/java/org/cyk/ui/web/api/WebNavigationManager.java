@@ -391,13 +391,17 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return objects;
 	}
 	
-	public void redirectToDynamicConsultOne(AbstractIdentifiable data){
-		redirectTo(consultOneOutcome(data.getClass()),new Object[]{
+	public void redirectToDynamicConsultOne(AbstractIdentifiable data,Collection<Parameter> parameters){
+		Object[] parametersArray = new Object[]{
 				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
 				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
 				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
 				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
-		});
+		};
+		redirectTo(consultOneOutcome(data.getClass()),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
+	}
+	public void redirectToDynamicConsultOne(AbstractIdentifiable data){
+		redirectToDynamicConsultOne(data,null);
 	}
 	
 	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
