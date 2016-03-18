@@ -161,9 +161,29 @@
 						</tr> </table>
 						<ui:fragment rendered="#{pageController.executionProgress!=null}">
 							<p:separator/>
+							<p:outputPanel autoUpdate="true">
+								<h:outputText value="#{pageController.executionProgress.currentExecutionStep.message}" escape="false" />
+							</p:outputPanel>
 							<p:progressBar widgetVar="#{webManager.progressBarWidgetId}" ajax="true" value="#{pageController.executionProgress.currentAmountOfWorkDone}" labelTemplate="{value}%" 
 								styleClass="animated"  global="false" interval="1000" >
 	    					</p:progressBar>
+	    					
+	    					<p:fieldset legend="details" toggleable="true" style="width:500px;">
+	    						<p:outputPanel autoUpdate="true">	
+	    							<p:dataTable var="executionStep" value="#{pageController.executionProgress.executionSteps}" scrollable="true" scrollHeight="150">
+	    								<p:column headerText="#{uiManager.text('field.name')}">
+	    									<h:outputText value="#{executionStep.message}" escape="false" />
+	    								</p:column>
+	    								<p:column headerText="#{uiManager.text('field.status')}">
+	    									<h:outputText value="#{executionStep.status}" escape="false" />
+	    								</p:column>
+	    								<p:column headerText="#{uiManager.text('field.duration')}">
+	    									<h:outputText value="#{executionStep.duration}" escape="false" />
+	    								</p:column>
+	    							</p:dataTable>
+	    						</p:outputPanel>
+	    					</p:fieldset>
+
     					</ui:fragment>
 					</p:dialog>
 				</h:form>
