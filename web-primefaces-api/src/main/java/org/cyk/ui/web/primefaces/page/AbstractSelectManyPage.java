@@ -121,7 +121,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		for(AbstractSelectManyPage.Listener<?,?> selectPageListener : getListeners())
-			selectPageListener.serve(parameter,actionIdentifier);
+			selectPageListener.serve(this,parameter,actionIdentifier);
 	}
 	
 	protected Class<ENTITY> identifiableClass(){
@@ -158,7 +158,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 
 		/**/
 		Collection<ENTITY> getIdentifiables(AbstractSelectManyPage<?> selectManyPage);
-		void serve(Object data, String actionIdentifier);
+		void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		
 		@Getter @Setter
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
@@ -184,7 +184,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 			}
 			
 			@Override
-			public void serve(Object data, String actionIdentifier) {}
+			public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {}
 			
 			/**/
 			

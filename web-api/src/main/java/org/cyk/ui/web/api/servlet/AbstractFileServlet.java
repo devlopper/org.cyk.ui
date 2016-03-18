@@ -35,8 +35,10 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		Collection<File> files = getFiles(request, response);
 		String extension = fileExtension(request, response, files);
 		byte[] bytes = bytes(request,response,files,FileExtension.getByValue(extension));
+		
 		if(bytes==null)
 			return;
+		
 		send(
 			getServletContext(),request, response, 
 			fileName(request, response)+" "+System.currentTimeMillis() + "."+ extension, 
@@ -117,7 +119,9 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		String identifiable = requestParameter(request, uiManager.getIdentifiableParameter());
 		String encodedParameter = requestParameter(request, uiManager.getEncodedParameter());
 		if(uiManager.getIdentifiableParameter().equals(encodedParameter)){
-			identifiers.addAll(webManager.decodeIdentifiersRequestParameterValue(identifiable));
+			Collection<Long> r = webManager.decodeIdentifiersRequestParameterValue(identifiable);
+			if(r!=null)
+				identifiers.addAll(r);
 		}else{
 			String[] identifiersAsString = StringUtils.split(identifiable,Constant.CHARACTER_COMA.charValue());
 			for(String identifier : identifiersAsString)

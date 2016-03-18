@@ -59,12 +59,17 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 		
 		primefacesManager.configureProgressBar(form.getSubmitCommandable());
 		
+		executionProgress = new ExecutionProgress("Check execution progresse!!!", 100d);
+		
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4119943624542439662L;
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
-				rootBusinessServiceSimulatorBusiness.simulateExecutionProgress(executionProgressListener);
+				executionProgress.clear();
+				//executionProgress.setCurrentExecutionStep("Starting my work");
+				//executionProgress.getExecutionProgressListeners().add(executionProgressListener);
+				rootBusinessServiceSimulatorBusiness.simulateExecutionProgress(executionProgress);
 			}
 		});
 	}
@@ -75,7 +80,7 @@ public class ProgressBarPage extends AbstractPrimefacesPage implements Serializa
 		createAjaxBuilder(form,"number1").crossedFieldNames("number2").updatedFieldNames("sumResult","multiplyResult")
 		.method(BigDecimal.class,new ListenValueMethod<BigDecimal>() {
 			@Override
-			public void execute(BigDecimal value) {
+			public void execute(BigDecimal value) { 
 				setFieldValue(form,"sumResult", value.add(bigDecimalValue(form, "number2")));
 				setFieldValue(form,"multiplyResult", value.multiply(bigDecimalValue(form, "number2")));
 				System.out

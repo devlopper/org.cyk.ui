@@ -13,14 +13,22 @@
 	</cc:interface>
 
 	<cc:implementation>
+		
 		<!--object type="application/pdf" data="#{cc.value.fileUrl}" height="700px" width="100%">
 	    	Your browser can't display pdf, <a href="#{cc.value.fileUrl}">click</a> to download pdf instead.
 	    </object-->
 	    
-	    <object type="#{cc.value.type}" data="#{cc.value.fileUrl}" height="#{cc.value.height}" width="#{cc.value.width}">
+	    <!--div class="loaderg" style="position: absolute;">
+	    	<p:graphicImage library="org.cyk.ui.web.primefaces" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>
+	    </div-->
+	    
+	    <object type="#{cc.value.type}" data="#{cc.value.fileUrl}" height="#{cc.value.height}" width="#{cc.value.width}"
+	    	style="background: red important;" standby="YEES">
 	    	<h:outputText value="#{cc.value.linkMessage} : " />
 	    	<h:outputLink value="#{cc.value.fileUrl}" ><h:outputText value="#{cc.value.clickToDownload}" /></h:outputLink>
+	    	<!--param value="transparent" name="wmode"/-->
 	    </object>
+	    
 	    
 	    <!--object type="application/pdf" data="#{cc.value.fileUrl}" height="700px" width="100%">
 	    	Your browser can't display pdf, <a href="#{cc.value.fileUrl}">click</a> to download pdf instead.
