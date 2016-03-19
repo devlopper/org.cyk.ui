@@ -25,7 +25,8 @@
 					decimalPlaces="#{cc.value.metricCollection.valueIntervalCollection.numberOfDecimalAfterDot}"
 					rendered="#{not cc.value.showCombobox}"   />
 				
-				<p:selectOneMenu value="#{item.numberValue}" rendered="#{cc.value.showCombobox}" >
+				<p:selectOneMenu value="#{item.numberValue}" rendered="#{cc.value.showCombobox}" required="true" 
+					requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}">
 					<f:selectItems value="#{cc.value.choices}" />
 				</p:selectOneMenu>	
 			</p:column>
@@ -33,7 +34,8 @@
 				<p:inputText value="#{item.stringValue}" required="true" requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}"
 				 rendered="#{not cc.value.showCombobox}"/>
 				 
-				 <p:selectOneMenu value="#{item.stringValue}" rendered="#{cc.value.showCombobox}" >
+				 <p:selectOneMenu value="#{item.stringValue}" rendered="#{cc.value.showCombobox}" required="true"
+				 	requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}">
 					<f:selectItems value="#{cc.value.choices}" />
 				</p:selectOneMenu>
 			</p:column>
