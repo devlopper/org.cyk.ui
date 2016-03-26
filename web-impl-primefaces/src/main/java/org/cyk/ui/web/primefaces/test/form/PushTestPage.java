@@ -7,6 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -26,6 +27,6 @@ public class PushTestPage extends AbstractPrimefacesPage implements Serializable
     	System.out.println("PushTestPage.send()");
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         System.out.println("PushTestPage.send() : "+eventBus);
-        eventBus.publish("/pushChannelGlobal", new FacesMessage(StringEscapeUtils.escapeHtml4(summary), StringEscapeUtils.escapeHtml4(detail)));
+        eventBus.publish(PrimefacesManager.PUSH_CHANNEL_GLOBAL, new FacesMessage(StringEscapeUtils.escapeHtml4(summary), StringEscapeUtils.escapeHtml4(detail)));
     }
 }

@@ -19,9 +19,13 @@
 		<version.omnifaces>2.0</version.omnifaces>
 		<version.shiro>1.2.4</version.shiro>
 		<version.prettyfaces>3.0.0.Alpha4</version.prettyfaces>
-		<!--version.atmosphere>2.4.1.4</version.atmosphere-->
+		
 		<!--version.atmosphere>2.2.2</version.atmosphere-->
-		<version.atmosphere>2.4.0</version.atmosphere>
+		<!--version.atmosphere>2.4.0</version.atmosphere-->
+		<version.atmosphere>2.4.1.4</version.atmosphere>
+		<!--version.atmosphere>2.4.2</version.atmosphere-->
+		<!--version.atmosphere>2.4.3</version.atmosphere-->
+		
 		<version.itext>2.1.7</version.itext>
 		<version.poi>3.7</version.poi> 
 		<version.cyk>0.0.1</version.cyk>

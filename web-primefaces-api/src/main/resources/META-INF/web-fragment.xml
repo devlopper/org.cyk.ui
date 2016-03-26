@@ -82,13 +82,34 @@
             <param-name>org.atmosphere.cpr.packages</param-name>
             <param-value>org.cyk.ui.web.primefaces.push</param-value>
    		</init-param-->
-   		<init-param>
+   		<!--init-param>
 		   <param-name>org.atmosphere.cpr.asyncSupport</param-name>
 		   <param-value>org.atmosphere.container.GlassFishServ30WebSocketSupport</param-value>
-		</init-param>
+		</init-param-->
    		<init-param>
             <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
             <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
+        </init-param>
+        
+        <init-param>
+      		<param-name>org.atmosphere.useNative</param-name>
+      		<param-value>true</param-value>
+   		</init-param>
+   		<init-param>
+      		<param-name>org.atmosphere.cpr.sessionSupport</param-name>
+      		<param-value>true</param-value>
+   		</init-param>
+   		<init-param>
+        	<param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+           	<param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
+        </init-param>
+        <init-param>
+           	<param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+           	<param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+        </init-param>
+        <init-param>
+           	<param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
+           	<param-value>1800000</param-value>
         </init-param>
 	</servlet>
 	<servlet-mapping>
