@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -43,6 +40,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Getter @Setter
 public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> extends Table<Row<DATA>, Column, DATA, String, Cell, String> implements CommandListener,Serializable {
@@ -53,19 +53,17 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	public static final String COMMANDABLE_EXPORT_PDF_IDENTIFIER = "print";
 	
 	public enum RowMenuLocation{MAIN_MENU,BY_ROW}
-	public enum UsedFor{ENTITY_INPUT,FIELD_INPUT}
 	public enum RenderType{TABLE,LIST,GRID}
 	
 	protected List<DATA> editing = new ArrayList<>();
 	private Boolean __justAdded__ = null;
 	
-	protected UsedFor usedFor = UsedFor.ENTITY_INPUT;
 	protected Crud crud;
 	protected Class<? extends AbstractIdentifiable> identifiableClass;
 	protected IdentifiableConfiguration identifiableConfiguration;
 	protected BusinessEntityInfos businessEntityInfos;
 	protected String title,reportIdentifier=RootBusinessLayer.getInstance().getParameterGenericReportBasedOnDynamicBuilder();
-	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.FALSE,
+	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow,rendered=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
 	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
@@ -170,8 +168,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			}
 		});
 		
-		
-		showToolBar = UsedFor.ENTITY_INPUT.equals(usedFor);
 	}
 	
 	protected void reportCommandable(UICommandable commandable,String fileExtension){
@@ -196,7 +192,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			showEditColumn = businessEntityInfos!=null; //true;//UsedFor.ENTITY_INPUT.equals(usedFor);
 		if(showAddRemoveColumn==null)
 			showAddRemoveColumn = businessEntityInfos!=null; //Boolean.TRUE;
-		persistOnApplyRowEdit = persistOnRemoveRow = UsedFor.ENTITY_INPUT.equals(usedFor);
+		persistOnApplyRowEdit = persistOnRemoveRow = Boolean.TRUE;
 		if(editable==null)
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
@@ -205,30 +201,26 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 		
 		logTrace("Table build - Identifiable {}", identifiableClass==null?null:identifiableClass.getSimpleName());
 		super.build();
-		if(UsedFor.ENTITY_INPUT.equals(usedFor)){
-			if(!Boolean.TRUE.equals(getLazyLoad())){
-				DataReadConfiguration configuration = new DataReadConfiguration();
-				load(configuration);
-			}
-			if(Boolean.TRUE.equals(getShowHierarchy())){
-				MODEL hierarchyNode = createHierarchyNode();
-				hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));
-				createTree();
-				/*
-				tree.build(hierarchyNode);
-				for(DATA d : hierarchyData)
-					tree.populate(d);	
-				tree.expand(master, Boolean.TRUE);
-				*/
-				tree.build(rowDataClass, hierarchyData, (DATA)master);
-				
-				showOpenCommand = getShowHierarchy();
-			}
-			
-		}else if(UsedFor.FIELD_INPUT.equals(usedFor)){
-			
-		}
 		
+		if(!Boolean.TRUE.equals(getLazyLoad())){
+			DataReadConfiguration configuration = new DataReadConfiguration();
+			load(configuration);
+		}
+		if(Boolean.TRUE.equals(getShowHierarchy())){
+			MODEL hierarchyNode = createHierarchyNode();
+			hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));
+			createTree();
+			/*
+			tree.build(hierarchyNode);
+			for(DATA d : hierarchyData)
+				tree.populate(d);	
+			tree.expand(master, Boolean.TRUE);
+			*/
+			tree.build(rowDataClass, hierarchyData, (DATA)master);
+			
+			showOpenCommand = getShowHierarchy();
+		}
+			
 		if(initialData!=null){
 			addRows(initialData);
 		}
@@ -270,7 +262,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	}
 	
 	public Boolean getShowFooterCommandBlock(){
-		return UsedFor.FIELD_INPUT.equals(usedFor);
+		return Boolean.FALSE;
 	}
 	
 	//TODO to be moved later in CrudManyPage i think. For now I need it to work
@@ -290,6 +282,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				collection.add(node);
 		else{
 			//business.findHierarchy( master);
+			System.out.println("AbstractTable.addRowOfRoot()");
 			root = getReferenceFromHierarchy(root,hierarchyData);
 			if( ((AbstractDataTreeNode)root).getChildren()!=null)
 				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)root).getChildren())
@@ -306,14 +299,20 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	
 	@SuppressWarnings("unchecked")
 	public DATA getReferenceFromHierarchy(DATA identifiable,List<DATA> list){
-		Integer index = list.indexOf(identifiable);
-		if(index>-1)
-			return list.get(index);
-		for(DATA data : list){
-			DATA c = getReferenceFromHierarchy(identifiable, (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
-			if(c!=null)
-				return c;
+		if(list==null){
+			 
+		}else{
+			Integer index = list.indexOf(identifiable);
+			if(index>-1)
+				return list.get(index);
+			for(DATA data : list){
+				System.out.println("AbstractTable.getReferenceFromHierarchy() : "+((AbstractDataTreeNode)data).getChildren());
+				DATA c = getReferenceFromHierarchy(identifiable, (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
+				if(c!=null)
+					return c;
+			}
 		}
+		
 		return null;
 	}
 	

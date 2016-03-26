@@ -8,9 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
@@ -33,11 +30,13 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
-import org.cyk.ui.api.model.table.AbstractTable.UsedFor;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
 import org.joda.time.DateTimeConstants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -168,9 +167,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected abstract AbstractTable<Object,?,?> __createTable__();
 	
 	@SuppressWarnings("unchecked")
-	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,UsedFor usedFor,Crud crud) {
+	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,Crud crud) {
 		AbstractTable<Object,?,?> table = __createTable__();
-		table.setUsedFor(usedFor);
 		/*
 		System.out.println("AbstractWindow.createTable() : "+customFormModelClass);
 		System.out.println(aDataClass);
@@ -183,15 +181,13 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		
 		table.setCrud(crud);
 		table.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(aDataClass));
-		if(UsedFor.FIELD_INPUT.equals(usedFor))
-			table.setLazyLoad(Boolean.FALSE);
 		((AbstractBean)table).postConstruct();		
 		tables.add(table);
 		return table;
 	}
 	
 	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<?> customFormModelClass) {
-		return createTable(aDataClass, crudConfig,customFormModelClass,UsedFor.ENTITY_INPUT, Crud.READ);
+		return createTable(aDataClass, crudConfig,customFormModelClass, Crud.READ);
 	}
 	
 	@Override

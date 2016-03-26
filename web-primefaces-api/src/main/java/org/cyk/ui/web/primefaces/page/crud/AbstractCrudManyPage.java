@@ -46,6 +46,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 							results.add(node);
 					else{
 						//business.findHierarchy( master);
+						//System.out.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.load()");
+						//debug(table.getMaster());
 						table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
 						if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
 							for(AbstractDataTreeNode node : ((AbstractDataTreeNode)table.getMaster()).getChildren())
