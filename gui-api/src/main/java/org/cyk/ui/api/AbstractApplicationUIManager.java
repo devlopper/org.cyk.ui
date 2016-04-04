@@ -18,6 +18,7 @@ import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.cdi.BeanAdapter;
 
 public abstract class AbstractApplicationUIManager extends AbstractBean implements Serializable {
 
@@ -70,5 +71,20 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass){
 		businessClassConfig(aClass,formModelClass,null);
+	}
+
+	/**/
+	
+	public static interface Listener {
+		
+		/**/
+		
+		public static class Adapter extends BeanAdapter implements Listener,Serializable {
+			private static final long serialVersionUID = 3034803382486669232L;
+			
+			/**/
+			
+		}
+		
 	}
 }
