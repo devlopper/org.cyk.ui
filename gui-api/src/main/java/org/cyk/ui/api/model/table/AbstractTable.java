@@ -141,7 +141,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			}
 		});
 		rowListeners.add(new RowAdapter<DATA>(){
-			
+			@Override
+			public void added(Row<DATA> row) {
+				super.added(row);
+				if(Boolean.TRUE.equals(getShowHierarchy()))
+					row.setDeletable(Boolean.TRUE);
+			}
 		});
 		
 		cellListeners.add(new CellAdapter<DATA>(){
@@ -282,7 +287,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				collection.add(node);
 		else{
 			//business.findHierarchy( master);
-			System.out.println("AbstractTable.addRowOfRoot()");
+			//System.out.println("AbstractTable.addRowOfRoot()");
 			root = getReferenceFromHierarchy(root,hierarchyData);
 			if( ((AbstractDataTreeNode)root).getChildren()!=null)
 				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)root).getChildren())
@@ -306,7 +311,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 			if(index>-1)
 				return list.get(index);
 			for(DATA data : list){
-				System.out.println("AbstractTable.getReferenceFromHierarchy() : "+((AbstractDataTreeNode)data).getChildren());
+				//System.out.println("AbstractTable.getReferenceFromHierarchy() : "+((AbstractDataTreeNode)data).getChildren());
 				DATA c = getReferenceFromHierarchy(identifiable, (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
 				if(c!=null)
 					return c;
@@ -366,9 +371,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 					if(isDataTreeType())
 						if(master==null)
 							;
-						else
-							((AbstractDataTreeNode)d).setNode(new NestedSetNode( ((AbstractDataTreeNode)master).getNode().getSet(), 
-								((AbstractDataTreeNode)master).getNode()));// debug(master);
+						else{
+							((AbstractDataTreeNode)d).setParent((AbstractDataTreeNode)master);
+							//setNode(new NestedSetNode( ((AbstractDataTreeNode)master).getNode().getSet(), 
+								//((AbstractDataTreeNode)master).getNode()));// debug(master);
+							//debug(((AbstractDataTreeNode)d));
+						}
 				}
 				editing.add(d);
 				addRow(d);
@@ -415,8 +423,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 				}else{
 					identifiable = ((AbstractFormModel<?>)row.getData()).getIdentifiable();
 				}
-				if(Boolean.TRUE.equals(persistOnRemoveRow))
+				if(Boolean.TRUE.equals(persistOnRemoveRow)){
 					UIManager.getInstance().getGenericBusiness().delete(identifiable);
+				}
 				deleteRowAt(row.getIndex().intValue());
 			}else{
 				//crudOnePage(row.getData(),Crud.DELETE);
