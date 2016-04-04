@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -16,7 +19,6 @@ import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusines
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandListener;
@@ -39,9 +41,6 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Table;
-
-import lombok.Getter;
-import lombok.Setter;
 
 
 @Getter @Setter

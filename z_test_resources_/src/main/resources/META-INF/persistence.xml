@@ -7,9 +7,6 @@
 		<jar-file>../lib/root-model-0.0.1.jar</jar-file>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<property name="eclipselink.target-server" value="Glassfish"/>
-			<property name="eclipselink.target-database" value="MySQL" />
-			
 			<property name="eclipselink.logging.level" value="OFF" />
 			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
 			<!--
