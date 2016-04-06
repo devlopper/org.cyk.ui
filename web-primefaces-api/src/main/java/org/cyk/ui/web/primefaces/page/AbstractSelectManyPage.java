@@ -18,6 +18,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -195,7 +196,11 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
 				}
-					
+				
+				@Override
+				public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {
+					WebNavigationManager.getInstance().redirectToDynamicProcessManyPage(getIdentifiables(selectManyPage), actionIdentifier);
+				}
 			}
 		}
 		

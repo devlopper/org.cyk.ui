@@ -121,6 +121,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeReportTable = "exportdatatableservlet";
 	@Getter private String outcomeReport = "reportservlet";
 	@Getter private String outcomeFileConsultMany = "fileConsultManyView";
+	@Getter private String outcomeProcessMany = "dynamicProcessMany";
 	
 	@Getter private String pathFileServlet = FileServlet.PATH;
 	@Getter private String pathImageServlet = ImageServlet.PATH;
@@ -461,6 +462,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,uiManager.getFileExtensionParameter(), fileExtension.getValue()
+				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
+		});
+	}
+	
+	public void redirectToDynamicProcessManyPage(Collection<? extends AbstractIdentifiable> identifiables,String actionIdentifier){
+		redirectTo(outcomeProcessMany,new Object[]{
+				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
+						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
+				,uiManager.getActionIdentifierParameter(), actionIdentifier
 				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
 		});
 	}

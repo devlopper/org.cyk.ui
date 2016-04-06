@@ -74,6 +74,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	private final String selectOneViewSuffix="SelectOneView";
 	private final String selectManyViewSuffix="SelectManyView";
+	private final String processManyViewSuffix="ProcessManyView";
 	private final String consultViewSuffix="ConsultView";
 	private final String listViewSuffix="ListView";
 	private final String editViewSuffix="EditView";
@@ -197,7 +198,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public void configBusinessIdentifiable(BusinessEntityInfos businessEntityInfos,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId
-			,String createManyViewId,String selectOneViewId,String selectManyViewId){
+			,String createManyViewId,String selectOneViewId,String selectManyViewId,String processManyViewId){
 		businessEntityInfos.getUserInterface().setIconName(iconName);
 		businessEntityInfos.getUserInterface().setIconExtension(iconExtension);
 		businessEntityInfos.getUserInterface().setConsultViewId(consultViewId);
@@ -206,18 +207,21 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		businessEntityInfos.getUserInterface().setCreateManyViewId(createManyViewId);
 		businessEntityInfos.getUserInterface().setSelectOneViewId(selectOneViewId);
 		businessEntityInfos.getUserInterface().setSelectManyViewId(selectManyViewId);
+		businessEntityInfos.getUserInterface().setProcessManyViewId(processManyViewId);
 	}
 	
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName,String iconExtension,String consultViewId,String listViewId,String editViewId,String createManyViewId
-			,String selectOneViewId,String selectManyViewId){
+			,String selectOneViewId,String selectManyViewId,String processManyViewId){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
-		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId,selectOneViewId,selectManyViewId);
+		configBusinessIdentifiable(businessEntityInfos, iconName, iconExtension, consultViewId, listViewId, editViewId,createManyViewId,selectOneViewId,selectManyViewId
+				,processManyViewId);
 	}
 	public void configBusinessIdentifiable(Class<?> clazz,String iconName){
 		BusinessEntityInfos businessEntityInfos = businessEntityInfos(clazz);
 		configBusinessIdentifiable(clazz, iconName, "png", businessEntityInfos.getVarName()+consultViewSuffix,
 				businessEntityInfos.getVarName()+listViewSuffix,businessEntityInfos.getVarName()+editViewSuffix,businessEntityInfos.getVarName()+createManyViewSuffix
-				,businessEntityInfos.getVarName()+selectOneViewSuffix,businessEntityInfos.getVarName()+selectManyViewSuffix);
+				,businessEntityInfos.getVarName()+selectOneViewSuffix,businessEntityInfos.getVarName()+selectManyViewSuffix
+				,businessEntityInfos.getVarName()+processManyViewSuffix);
 	}
 	
 	public void useCustomConsultView(Class<?> clazz){

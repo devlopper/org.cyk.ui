@@ -34,6 +34,7 @@ import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
@@ -81,6 +82,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
 	private final Collection<AbstractSelectOnePage.Listener<?,?>> selectOnePageListeners = new ArrayList<>();
 	private final Collection<AbstractSelectManyPage.Listener<?,?>> selectManyPageListeners = new ArrayList<>();
+	private final Collection<AbstractProcessManyPage.Listener<?,?>> processManyPageListeners = new ArrayList<>();
 	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
@@ -286,6 +288,16 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			for(AbstractSelectManyPage.Listener<?,?> listener : selectManyPageListeners)
 				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
 					results.add((AbstractSelectManyPage.Listener<?, Object>) listener);
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<AbstractProcessManyPage.Listener<?,Object>> getProcessManyPageListeners(Class<? extends Identifiable<?>> aClass){
+		Collection<AbstractProcessManyPage.Listener<?,Object>> results = new ArrayList<>();
+		if(aClass!=null)
+			for(AbstractProcessManyPage.Listener<?,?> listener : processManyPageListeners)
+				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+					results.add((AbstractProcessManyPage.Listener<?, Object>) listener);
 		return results;
 	}
 	

@@ -208,6 +208,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>dynamicProcessMany</from-outcome>
+			<to-view-id>/private/__tools__/processmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>toolscalendar</from-outcome>
 			<to-view-id>/private/__tools__/event/agenda.xhtml</to-view-id>
 			<redirect />
