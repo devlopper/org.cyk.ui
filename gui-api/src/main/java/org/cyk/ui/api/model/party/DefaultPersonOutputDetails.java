@@ -8,11 +8,11 @@ import lombok.Setter;
 import org.cyk.system.root.model.party.person.Person;
 
 @Getter @Setter 
-public class DefaultPersonReadFormModel extends AbstractPersonReadFormModel<Person>  implements Serializable {
+public class DefaultPersonOutputDetails extends AbstractPersonOutputDetails<Person>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	public DefaultPersonReadFormModel(Person person) {
+	public DefaultPersonOutputDetails(Person person) {
 		super(person);
 	}
 	

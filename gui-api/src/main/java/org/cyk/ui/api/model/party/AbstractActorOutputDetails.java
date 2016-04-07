@@ -14,7 +14,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
 @Getter @Setter
-public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> extends AbstractPersonReadFormModel<ACTOR>  implements Serializable {
+public abstract class AbstractActorOutputDetails<ACTOR extends AbstractActor> extends AbstractPersonOutputDetails<ACTOR>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
@@ -22,7 +22,7 @@ public abstract class AbstractActorReadFormModel<ACTOR extends AbstractActor> ex
 	
 	@Input @InputText @ReportColumn @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
 
-	public AbstractActorReadFormModel(ACTOR actor) {
+	public AbstractActorOutputDetails(ACTOR actor) {
 		super(actor);
 		registrationCode = actor.getRegistration().getCode();
 	}

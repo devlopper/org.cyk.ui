@@ -255,6 +255,35 @@ public class WebManager extends AbstractBean implements Serializable {
 		return identifiers;
 	}
 	
+	public Collection<Long> decodeIdentifiersRequestParameter(String name,HttpServletRequest request){
+		Collection<Long> identifiers = new ArrayList<>();
+		String identifiable = getRequestParameter(request, name);
+		//TODO many parameters can be encoded
+		String encodedParameter = getRequestParameter(request, UIManager.getInstance().getEncodedParameter());
+		if(name.equals(encodedParameter)){
+			Collection<Long> r = decodeIdentifiersRequestParameterValue(identifiable);
+			if(r!=null)
+				identifiers.addAll(r);
+		}else{
+			String[] identifiersAsString = StringUtils.split(identifiable,Constant.CHARACTER_COMA.charValue());
+			for(String identifier : identifiersAsString)
+				try {
+					identifiers.add(Long.parseLong(identifier));
+				} catch (NumberFormatException e) {
+					return null;
+				}
+		}
+		return identifiers;
+	}
+	public Collection<Long> decodeIdentifiersRequestParameter(String name){
+		return decodeIdentifiersRequestParameter(name, Faces.getRequest());
+	}
+	public Collection<Long> decodeIdentifiersRequestParameter(HttpServletRequest request){
+		return decodeIdentifiersRequestParameter(UIManager.getInstance().getIdentifiableParameter(), request);
+	}
+	public Collection<Long> decodeIdentifiersRequestParameter(){
+		return decodeIdentifiersRequestParameter(UIManager.getInstance().getIdentifiableParameter(), Faces.getRequest());
+	}
 	/**/
 	
 	public void throwValidationException(String messageId,Object[] messageParams,String detailsId,Object[] detailsParams){

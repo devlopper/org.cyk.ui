@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.model.party.Party;
-import org.cyk.ui.api.model.geography.ContactCollectionReadFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionOutputDetails;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
@@ -20,7 +20,7 @@ public abstract class AbstractPartyReadFormModel<PARTY extends Party> extends Ab
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
-	protected ContactCollectionReadFormModel contactCollectionFormModel = new ContactCollectionReadFormModel();
+	protected ContactCollectionOutputDetails contactCollectionFormModel = new ContactCollectionOutputDetails();
 	
 	@Override
 	public void setIdentifiable(PARTY identifiable) {

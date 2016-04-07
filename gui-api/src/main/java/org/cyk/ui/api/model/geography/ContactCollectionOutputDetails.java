@@ -11,8 +11,8 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
-@Getter @Setter
-public class ContactCollectionReadFormModel extends AbstractContactCollectionFormModel implements Serializable {
+@Getter @Setter //TODO base class should change
+public class ContactCollectionOutputDetails extends AbstractContactCollectionFormModel implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 

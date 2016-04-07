@@ -447,6 +447,11 @@ public class MenuManager extends AbstractBean implements Serializable {
 				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
 	}
 	
+	public String getCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
+		return RootBusinessLayer.getInstance().getLanguageBusiness().findText(businessEntityInfos.getVarName().toLowerCase()
+				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
+	}
+	
 	/**/
 	
 	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{

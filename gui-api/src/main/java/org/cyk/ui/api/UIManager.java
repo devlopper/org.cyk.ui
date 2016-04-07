@@ -37,7 +37,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
-import org.cyk.ui.api.model.party.DefaultPersonReadFormModel;
+import org.cyk.ui.api.model.party.DefaultPersonOutputDetails;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -165,7 +165,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonReadFormModel.class,null,null);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonOutputDetails.class,null,null);
 		registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
@@ -259,7 +259,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			}
 		}
 	}
-	
+	//TODO to be renamed
 	public BusinessEntityInfos classFromKey(String key){
 		return entitiesRequestParameterIdMap.get(key);
 	}

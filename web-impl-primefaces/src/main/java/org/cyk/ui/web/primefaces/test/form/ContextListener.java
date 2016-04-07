@@ -15,7 +15,7 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
-import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
+import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
@@ -51,7 +51,15 @@ public class ContextListener extends AbstractContextListener {
 		super.contextInitialized(event);
 		primefacesManager.getSelectOnePageListeners().add(new ActorSelectOnePageAdapter());
 		primefacesManager.getSelectManyPageListeners().add(new ActorSelectManyPageAdapter());
+		primefacesManager.getProcessManyPageListeners().add(new ActorProcessManyPageAdapter());
 		
+		/*
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, AbstractActorQueryOneFormModel.Default.class
+				, ActorOutputDetails.class,null,AbstractActorQueryManyFormModel.Default.class));
+		
+		uiManager.configBusinessIdentifiable(Actor.class, null);
+		webNavigationManager.useDynamicSelectView(Actor.class);
+		*/
 	}
 	
 	@Override
@@ -98,7 +106,7 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormManyPageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormManyPageListener<?> listener) {
 		if(aClass.equals(Actor.class)){
-			listener.getFormConfigurationMap().get(Crud.READ).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
+			listener.getFormConfigurationMap().get(Crud.READ).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorOutputDetails.FIELD_REGISTRATION_CODE);
 		}
 		
 		super.registerBusinessEntityFormManyPageListener(aClass, listener);

@@ -466,10 +466,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToDynamicProcessManyPage(Collection<? extends AbstractIdentifiable> identifiables,String actionIdentifier){
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,String actionIdentifier){
 		redirectTo(outcomeProcessMany,new Object[]{
 				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
+				,uiManager.getClassParameter(),uiManager.businessEntityInfos(identifiableClass).getIdentifier()
 				,uiManager.getActionIdentifierParameter(), actionIdentifier
 				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
 		});

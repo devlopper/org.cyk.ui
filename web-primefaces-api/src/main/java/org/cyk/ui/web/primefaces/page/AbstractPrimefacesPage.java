@@ -447,8 +447,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			@Override
 			public DATA createData(IDENTIFIABLE identifiable) {
 				DATA data = null;
-				if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
-					data = newInstance(getDataClass(), new Class<?>[]{getIdentifiableClass()}, new Object[]{identifiable});
+				if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
+					try {
+						data = commonUtils.getConstructor(getDataClass(), new Class<?>[]{getIdentifiableClass()}).newInstance(identifiable);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					//data = newInstance(getDataClass(), new Class<?>[]{getIdentifiableClass()}, new Object[]{identifiable});
+				}
 				else
 					data = newInstance(dataClass);
 				return data;

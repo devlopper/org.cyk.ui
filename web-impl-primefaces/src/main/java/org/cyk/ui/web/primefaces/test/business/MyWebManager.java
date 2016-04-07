@@ -43,7 +43,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		systemMenu.getBusinesses().add(menuManager.crudMany(Person.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.createSelectOne(Actor.class,null, IconType.PERSON));
-		systemMenu.getBusinesses().add(menuManager.createSelectMany(Actor.class,null, IconType.PERSON));
+		systemMenu.getBusinesses().add(menuManager.createSelectMany(Actor.class,"myactionid", IconType.PERSON));
 		systemMenu.getBusinesses().add(menuManager.crudMany(MovementCollection.class, null));
 		systemMenu.getBusinesses().add(menuManager.crudMany(Movement.class, null));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));

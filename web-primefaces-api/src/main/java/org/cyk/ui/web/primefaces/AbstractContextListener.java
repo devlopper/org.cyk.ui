@@ -31,7 +31,7 @@ import org.cyk.ui.api.model.AbstractActorQueryOneFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
-import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
+import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
@@ -163,7 +163,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	
 	protected Class<?> getReadFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return DefaultActorReadFormModel.class;
+			return DefaultActorOutputDetails.class;
 		return null;
 	}
 	

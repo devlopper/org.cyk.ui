@@ -5,8 +5,8 @@ import java.io.Serializable;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.party.AbstractActorReadFormModel;
-import org.cyk.ui.api.model.party.DefaultActorReadFormModel;
+import org.cyk.ui.api.model.party.AbstractActorOutputDetails;
+import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
@@ -20,9 +20,9 @@ public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractAct
 	public AbstractActorCrudManyPageAdapter(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
 		FormConfiguration configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-		configuration.addRequiredFieldNames(DefaultActorReadFormModel.FIELD_REGISTRATION_CODE);
-		configuration.addRequiredFieldNames(DefaultActorReadFormModel.FIELD_FIRST_NAME);
-		configuration.addFieldNames(DefaultActorReadFormModel.FIELD_LAST_NAME);
+		configuration.addRequiredFieldNames(DefaultActorOutputDetails.FIELD_REGISTRATION_CODE);
+		configuration.addRequiredFieldNames(DefaultActorOutputDetails.FIELD_FIRST_NAME);
+		configuration.addFieldNames(DefaultActorOutputDetails.FIELD_LAST_NAME);
 		//configuration.addFieldNames(ContactCollectionReadFormModel.FIELD_CONTACTS); // Because of lazy load
 	}
 	
@@ -34,7 +34,7 @@ public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractAct
 	@SuppressWarnings("unchecked")
 	@Override
 	public ACTOR getIdentifiable(Object data) {
-		return ((AbstractActorReadFormModel<ACTOR>)data).getIdentifiable();
+		return ((AbstractActorOutputDetails<ACTOR>)data).getMaster()/*Identifiable()*/;
 	}
 	
 	@Override

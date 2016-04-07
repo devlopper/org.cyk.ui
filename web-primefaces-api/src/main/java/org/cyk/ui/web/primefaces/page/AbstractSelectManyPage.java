@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindClassLabelTextParameters;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
@@ -197,9 +198,14 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 					super(entityTypeClass);
 				}
 				
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
 				public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {
-					WebNavigationManager.getInstance().redirectToDynamicProcessManyPage(getIdentifiables(selectManyPage), actionIdentifier);
+					if(StringUtils.isBlank(actionIdentifier))
+						logTrace("No action identifier found for {} to process many", selectManyPage.getBusinessEntityInfos().getClazz());
+					else
+						WebNavigationManager.getInstance().redirectToDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
+							,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier);
 				}
 			}
 		}

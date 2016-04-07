@@ -7,44 +7,75 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.api.command.menu.MenuManager;
+import org.cyk.ui.web.primefaces.Table;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
-public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements CommandListener,Serializable {
+public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
 	private String actionIdentifier;
+	private Table<ProcessItem> table;
 	
-	private FormOneData<Object> form;
-	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.initialisationStarted(this);
+		Class<ENTITY> entityClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
+		@SuppressWarnings("rawtypes")
+		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,ProcessItem>(entityClass
+				, ProcessItem.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<ENTITY> getIdentifiables() {
+				Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
+				return (Collection<ENTITY>) genericBusiness.use(identifiableClass).findByIdentifiers(identifiers);
+			}
+			
+			@Override
+			public Boolean getEnabledInDefaultTab() {
+				return Boolean.TRUE;
+			}
+			@Override
+			public String getTabId() {
+				return "1";
+			}
+		};
+		table = createDetailsTable(entityClass, listener);
 		
+		/*
 		Object formData = null;
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
 			Object v = processPageListener.getFormData(this, actionIdentifier);
 			if(v!=null)
 				formData = v;
-		}
+		}*/
+		/*
 		form = (FormOneData<Object>) createFormOneData(formData,Crud.CREATE);
 		form.setDynamic(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.ok"));
-		
+		*/
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.initialisationEnded(this);
 	}
-		
+	
+	@Override
+	public String getContentTitle() {
+		return MenuManager.getInstance().getCommandableLabel(businessEntityInfos, actionIdentifier);
+	}
+	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
@@ -52,45 +83,31 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.afterInitialisationStarted(this);
 		
-		/*
-		addInputListener(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE,new WebInput.Listener.Adapter.Default(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("unchecked")
-			@Override
-			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
-				identifiable = (ENTITY) value;
-				if(identifiable==null)
-					webManager.throwValidationExceptionUnknownValue(value);
-				super.validate(facesContext, uiComponent, value);
-			}
-		});
-		*/
-		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.afterInitialisationEnded(this);
 	}
 	
 	@Override
-	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
-		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
-		parameters.setActionIdentifier(actionIdentifier);
-		return parameters;
-	}
-		
-	@Override
-	protected Class<?> __formModelClass__() {
-		if(identifiableConfiguration==null || identifiableConfiguration.getFormMap()==null || identifiableConfiguration.getFormMap().getQueryMany()==null){
-			logError("No query many form explicitly defined for entity {}",businessEntityInfos.getClazz());
-			return null;
-		}
-		return identifiableConfiguration.getFormMap().getQueryMany();
+	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
+		return null;
 	}
 	
 	@Override
 	protected Crud crudFromRequestParameter() {
-		return Crud.READ;
+		return Crud.CREATE;
 	}
 
+	@Override
+	protected Class<?> __formModelClass__() {
+		Class<?> formDataClass = null;
+		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
+			Class<?> v = processPageListener.getFormDataClass(this, actionIdentifier);
+			if(v!=null)
+				formDataClass = v;
+		}
+		return formDataClass;
+	}
+	
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
@@ -106,6 +123,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 	public interface Listener<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener<ENTITY> {
 
 		/**/
+		Class<?> getFormDataClass(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		Object getFormData(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier);
 		
@@ -117,7 +135,10 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
 				super(entityTypeClass);
 			}
-			
+			@Override
+			public Class<?> getFormDataClass(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
+				return null;
+			}
 			@Override
 			public Object getFormData(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return null;
@@ -150,4 +171,17 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		
 	}
 
+	/**/
+	
+	@Getter @Setter
+	public static class ProcessItem extends AbstractOutputDetails<AbstractIdentifiable> implements Serializable{
+		private static final long serialVersionUID = 2840997923510834856L;
+		
+		@Input @InputText private String name;
+		
+		public ProcessItem(AbstractIdentifiable identifiable) {
+			super(identifiable);
+			name = rootBusinessLayer.getFormatterBusiness().format(identifiable);
+		}
+	}
 }

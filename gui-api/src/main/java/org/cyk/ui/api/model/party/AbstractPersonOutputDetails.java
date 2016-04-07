@@ -5,11 +5,12 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.api.model.geography.ContactCollectionReadFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionOutputDetails;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -20,14 +21,13 @@ import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.ReportColumn;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
-import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
-public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean  implements Serializable {
+public abstract class AbstractPersonOutputDetails<ENTITY extends AbstractIdentifiable> extends AbstractOutputDetails<ENTITY>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	private ENTITY identifiable;
+	//private ENTITY identifiable;
 	
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File signatureSpecimen;
@@ -35,13 +35,13 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
-	protected ContactCollectionReadFormModel contactCollectionFormModel = new ContactCollectionReadFormModel();
+	protected ContactCollectionOutputDetails contactCollection = new ContactCollectionOutputDetails();
 	
 	//@Input @InputText @ReportColumn protected String bloodGroup,allergicReactionResponse,allergicReactionType,allergies,medications,otherMedicalInformations;
 	//@Input @InputText @ReportColumn protected String jobCompany,jobFunction,jobTitle,jobContacts;
 	
-	public AbstractPersonReadFormModel(ENTITY entity){
-		identifiable = entity;
+	public AbstractPersonOutputDetails(ENTITY entity){
+		super(entity);
 		Person person = getPerson(entity);
 		//photo = person.getImage();
 		firstName = person.getName();
@@ -86,8 +86,8 @@ public abstract class AbstractPersonReadFormModel<ENTITY extends AbstractIdentif
 				jobContacts = StringUtils.join(person.getJobInformations().getContactCollection().getPhoneNumbers(),Constant.CHARACTER_COMA);
 		}
 		*/
-		contactCollectionFormModel.setIdentifiable(person.getContactCollection());
-		contactCollectionFormModel.read();
+		contactCollection.setIdentifiable(person.getContactCollection());
+		contactCollection.read();
 		
 		
 	}
