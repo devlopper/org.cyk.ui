@@ -12,8 +12,11 @@
  		
  		<ui:define name="body">
  			<cyk:table value="#{processManyPage.table}" />
- 			<p:separator/>
- 			<cyk:formOneData value="#{processManyPage.form}" />
+ 			<ui:fragment rendered="#{processManyPage.showForm}" >
+ 				<p:separator/>
+ 				<cyk:formOneData value="#{processManyPage.form}" />
+ 			</ui:fragment>
+ 			
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">

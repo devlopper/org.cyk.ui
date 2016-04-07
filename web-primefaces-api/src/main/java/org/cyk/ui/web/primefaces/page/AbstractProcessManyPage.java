@@ -24,6 +24,8 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 
 	private String actionIdentifier;
 	private Table<ProcessItem> table;
+	private Collection<ENTITY> elements;
+	private Boolean showForm;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -34,14 +36,16 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			processPageListener.initialisationStarted(this);
 		Class<ENTITY> entityClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
+		Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
+		elements = (Collection<ENTITY>) genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
+		
 		@SuppressWarnings("rawtypes")
 		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,ProcessItem>(entityClass
 				, ProcessItem.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<ENTITY> getIdentifiables() {
-				Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
-				return (Collection<ENTITY>) genericBusiness.use(identifiableClass).findByIdentifiers(identifiers);
+				return elements;
 			}
 			
 			@Override
@@ -54,6 +58,12 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			}
 		};
 		table = createDetailsTable(entityClass, listener);
+		
+		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
+			Boolean v = processPageListener.getShowForm();
+			if(v!=null)
+				showForm = v;
+		}
 		
 		/*
 		Object formData = null;
@@ -125,6 +135,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		/**/
 		Class<?> getFormDataClass(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		Object getFormData(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
+		Boolean getShowForm();
 		void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier);
 		
 		@Getter @Setter
@@ -143,7 +154,10 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			public Object getFormData(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return null;
 			}
-			
+			@Override
+			public Boolean getShowForm() {
+				return Boolean.FALSE;
+			}
 			@Override
 			public void afterInitialisationEnded(AbstractBean bean) {
 				super.afterInitialisationEnded(bean);
