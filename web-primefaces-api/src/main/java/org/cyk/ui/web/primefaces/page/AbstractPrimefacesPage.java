@@ -93,6 +93,12 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		
 		for(PrimefacesPageListener listener : getListeners())
 			listener.afterInitialisationEnded(this); 
+		
+		//debug(tables.iterator().next());
+		//System.out.println("Tables : "+tables.iterator().next());
+		
+		for(AbstractTable<?, ?, ?> table : tables)
+			onDocumentLoadJavaScript = tableFormatJavaScript((org.cyk.ui.web.primefaces.Table<?>) table, Boolean.TRUE);
 	}
 	
 	private Collection<PrimefacesPageListener> getListeners(){
@@ -272,6 +278,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsConfigurationListener.Table<?,T> listener){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
+		table.setShowHeader(Boolean.FALSE);
+		//System.out.println("Show header : "+table.getShowHeader());
+		//tableFormatJavaScript(table, Boolean.TRUE);
 		if(listener.getRendered()==null)
 			if(StringUtils.isBlank(listener.getTabId()))
 				table.setRendered(Boolean.TRUE);
