@@ -60,7 +60,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		table = createDetailsTable(entityClass, listener);
 		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
-			Boolean v = processPageListener.getShowForm();
+			Boolean v = processPageListener.getShowForm(this,actionIdentifier);
 			if(v!=null)
 				showForm = v;
 		}
@@ -135,7 +135,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		/**/
 		Class<?> getFormDataClass(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		Object getFormData(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
-		Boolean getShowForm();
+		Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier);
 		void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier);
 		
 		@Getter @Setter
@@ -155,7 +155,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				return null;
 			}
 			@Override
-			public Boolean getShowForm() {
+			public Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return Boolean.FALSE;
 			}
 			@Override
