@@ -42,7 +42,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 			selectPageListener.initialisationStarted(this);
 		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
 		//form.setShowCommands(Boolean.TRUE);
-		form.getSubmitCommandable().setLabel(text("command.ok"));
+		form.getSubmitCommandable().setLabel(text("command.select"));
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			@Override

@@ -75,8 +75,9 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		/*
 		form = (FormOneData<Object>) createFormOneData(formData,Crud.CREATE);
 		form.setDynamic(Boolean.TRUE);
-		form.getSubmitCommandable().setLabel(text("command.ok"));
 		*/
+		form.getSubmitCommandable().setLabel(text("command.execute"));
+	
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.initialisationEnded(this);
 	}
