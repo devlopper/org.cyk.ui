@@ -90,6 +90,8 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE selectedAs(Class<TYPE> aClass){
 		Object data = nodeModel(selected).getData();
+		if(data!=null && data instanceof HierarchyNode)
+			data = ((HierarchyNode)data).getData();
 		if(data==null)
 			return null;
 		return aClass.isAssignableFrom(data.getClass())?(TYPE)data:null;
@@ -273,6 +275,8 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 
 		String label(Object data);
 		
+		Boolean isRedirectable(NODE node);
+		
 		/**/
 		
 		public class Adapter<NODE, MODEL extends HierarchyNode> implements Serializable, Listener<NODE, MODEL> {
@@ -341,6 +345,11 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 
 			@Override
 			public Boolean isLeaf(NODE node) {
+				return null;
+			}
+			
+			@Override
+			public Boolean isRedirectable(NODE node) {
 				return null;
 			}
 

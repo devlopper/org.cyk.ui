@@ -22,7 +22,7 @@
 	
 	<cyk:tree value="#{pageController.treeMenu}" rendered="#{pageController.showTreeMenu}" />
 	
-	<cyk:tree value="#{userSession.navigator}" rendered="#{userSession.navigator != null}" />
+	<cyk:tree value="#{userSession.navigatorTree}" rendered="#{userSession.navigatorTree != null}" />
 	
 	<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
 		<ui:param name="model" value="#{pageController.contextualMenuModel}" />

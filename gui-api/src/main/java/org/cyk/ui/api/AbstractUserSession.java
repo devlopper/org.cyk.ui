@@ -41,7 +41,7 @@ public abstract class AbstractUserSession<NODE,MODEL extends HierarchyNode> exte
 	protected Locale locale = Locale.FRENCH;
 	protected UserAccount userAccount;
 	protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu,mobileApplicationMenu;
-	protected AbstractTree<NODE,MODEL> navigator;
+	protected AbstractTree<NODE,MODEL> navigatorTree;
 	protected String notificationChannel;
 	protected Boolean logoutCalled,isAdministrator,isManager;
 	protected UIMenu contextualMenu;

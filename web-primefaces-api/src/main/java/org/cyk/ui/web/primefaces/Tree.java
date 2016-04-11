@@ -72,10 +72,10 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			@Override
 			public void nodeSelected(TreeNode node) {
-				if(StringUtils.isNotBlank(outcome))
-					redirectTo(outcome);
-				else
-					super.nodeSelected(node);
+				//if(StringUtils.isNotBlank(outcome))
+					redirect();
+				//else
+				//	super.nodeSelected(node);
 			}
 		});
 	}
@@ -89,7 +89,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 		this.outcome = outcome;
 	}
 	
-	public void redirectTo(String outcome){
+	public void redirect(){
 		WebHierarchyNode model = nodeModel(selected);
 		String v_outcome = model == null ? outcome : model.getConsultViewId();
 		if(StringUtils.isBlank(v_outcome))
@@ -101,7 +101,8 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 		else{
 			if(StringUtils.isBlank(v_outcome))
 				v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
-			parameters = new Object[]{data.getClass(), data};
+			parameters = new Object[]{/*data.getClass()*/UIManager.getInstance().getIdentifiableParameter(), data,UIManager.getInstance().getClassParameter(),
+					UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()};
 		}
 		logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
 		WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);

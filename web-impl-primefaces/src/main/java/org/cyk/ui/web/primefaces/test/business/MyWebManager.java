@@ -53,14 +53,14 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		
-		userSession.setNavigator(new Tree());
+		userSession.setNavigatorTree(new Tree());
 		WebHierarchyNode root = new WebHierarchyNode(null);
 		
 		Collection<WebHierarchyNode> nodes = new ArrayList<>();
 		nodes.add(new WebHierarchyNode(null, "A", Boolean.FALSE));
 		nodes.add(new WebHierarchyNode(null, "B", Boolean.FALSE));
 		nodes.add(new WebHierarchyNode(null, "C", Boolean.FALSE));
-		userSession.getNavigator().build(WebHierarchyNode.class, nodes, null);
+		userSession.getNavigatorTree().build(WebHierarchyNode.class, nodes, null);
 		
 		return systemMenu;
 	}
