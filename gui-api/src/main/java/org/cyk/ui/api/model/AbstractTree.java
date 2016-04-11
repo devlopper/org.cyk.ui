@@ -15,30 +15,20 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 
 	private static final long serialVersionUID = 763364839529624006L;
 	
+	public static final String ROOT = "Root";
+	
 	@Getter protected NODE root,index;
 	@Getter @Setter protected NODE selected,lastExpanded;
-	@Getter @Setter protected Boolean dynamic = Boolean.TRUE;
+	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
 	
-	@Getter protected Collection<TreeListener<NODE,MODEL>> treeListeners = new ArrayList<>();
+	@Getter protected Collection<Listener<NODE,MODEL>> treeListeners = new ArrayList<>();
 	
 	public AbstractTree() {
-		treeListeners.add(new TreeAdapter<NODE,MODEL>(){
-			private static final long serialVersionUID = 763364839529624006L;
-			public Collection<Object> children(Object object) {
-				if(object instanceof AbstractDataTreeNode){
-					Collection<Object> collection = new ArrayList<>();
-					if(((AbstractDataTreeNode)object).getChildren()!=null)
-						for(Object o : ((AbstractDataTreeNode)object).getChildren())
-							collection.add(o);
-					return collection;
-				}
-				return null;
-			};
-		});
+		treeListeners.add(new Listener.Adapter.Default<NODE,MODEL>());
 	}
 	
 	public void build(MODEL model){
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			NODE r = listener.createRootNode();
 			if(r!=null)
 				root = r;
@@ -49,7 +39,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		else{
 			index = createNode(model, root);
 		}
-		for(TreeListener<NODE,MODEL> listener : treeListeners)
+		for(Listener<NODE,MODEL> listener : treeListeners)
 			listener.expandNode(index);
 	}
 	
@@ -72,13 +62,13 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		if(Boolean.TRUE.equals(selected)){
 			//WebHierarchyNode webHierarchyNode = (WebHierarchyNode) node.getData();
 			//webHierarchyNode.getCss().addClass("cyk-ui-tree-node-selected ui-state-highlight");
-			for(TreeListener<NODE,MODEL> listener : treeListeners)
+			for(Listener<NODE,MODEL> listener : treeListeners)
 				listener.selectNode(node);
 			this.selected = node;
 		}
 		
 		do{
-			for(TreeListener<NODE,MODEL> listener : treeListeners)
+			for(Listener<NODE,MODEL> listener : treeListeners)
 				listener.expandNode(node);
 			node = parentNode(node);
 		}while(node!=null);
@@ -87,13 +77,13 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	public void nodeSelected(NODE node){
 		//System.out.println("AbstractTree.nodeSelected() : "+node);
 		lastExpanded = selected = node;
-		for(TreeListener<NODE,MODEL> listener : treeListeners)
+		for(Listener<NODE,MODEL> listener : treeListeners)
 			listener.nodeSelected(node);
 	}
 	
 	public void nodeExpanded(NODE node){
 		lastExpanded = node;
-		for(TreeListener<NODE,MODEL> listener : treeListeners)
+		for(Listener<NODE,MODEL> listener : treeListeners)
 			listener.nodeExpanded(node);
 	}
 	
@@ -148,14 +138,14 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	private NODE createNode(MODEL model,NODE parent){
 		NODE node = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			NODE r = listener.createNode(model,parent);
 			if(r!=null)
 				node = r;
 		}
 		/*
 		if(parent!=root)
-			for(TreeListener<NODE,MODEL> listener : treeListeners){
+			for(Listener<NODE,MODEL> listener : treeListeners){
 				String label = listener.label(model.getData());
 				if(StringUtils.isNotBlank(label))
 					model.setLabel(label);
@@ -166,7 +156,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	private NODE parentNode(NODE node){
 		NODE parent = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			NODE r = listener.parentNode(node);
 			if(r!=null)
 				parent = r;
@@ -176,7 +166,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	private MODEL createModel(Object node){
 		MODEL model = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			MODEL r = listener.createModel(node);
 			if(r!=null)
 				model = r;
@@ -187,7 +177,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	public MODEL nodeModel(NODE node){
 		MODEL data = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			MODEL r = listener.nodeModel(node);
 			if(r!=null)
 				data = r;
@@ -197,7 +187,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	public Collection<Object> children(Object object){
 		Collection<Object> collection = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			Collection<Object> r = listener.children(object);
 			if(r!=null)
 				collection = r;
@@ -207,7 +197,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	public Collection<NODE> nodeChildren(NODE node){
 		Collection<NODE> collection = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			Collection<NODE> r = listener.nodeChildren(node);
 			if(r!=null)
 				collection = r;
@@ -217,7 +207,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	public Boolean isLeaf(NODE node){
 		Boolean isLeaf = null;
-		for(TreeListener<NODE,MODEL> listener : treeListeners){
+		for(Listener<NODE,MODEL> listener : treeListeners){
 			Boolean v = listener.isLeaf(node);
 			if(v!=null)
 				isLeaf = v;
@@ -251,6 +241,128 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			return !Boolean.TRUE.equals(isLeaf(node)) && parentNode(node)!=root;
 		else
 			return !Boolean.TRUE.equals(isLeaf(node)) && node != lastExpanded;
+	}
+	
+	/**/
+	
+	public static interface Listener<NODE,MODEL extends HierarchyNode> {
+
+		NODE createRootNode();
+		
+		NODE createNode(MODEL model,NODE parent);
+		
+		void nodeSelected(NODE node);
+		
+		void nodeExpanded(NODE node);
+		
+		void expandNode(NODE node);
+		
+		void selectNode(NODE node);
+		
+		NODE parentNode(NODE node);
+		
+		MODEL createModel(Object object);
+		
+		MODEL nodeModel(NODE node);
+		
+		Boolean isLeaf(NODE node);
+		
+		Collection<Object> children(Object object);
+		
+		Collection<NODE> nodeChildren(NODE node);
+
+		String label(Object data);
+		
+		/**/
+		
+		public class Adapter<NODE, MODEL extends HierarchyNode> implements Serializable, Listener<NODE, MODEL> {
+
+			private static final long serialVersionUID = 6046223006911747854L;
+
+			@Override
+			public NODE createRootNode() {
+				return null;
+			}
+
+			@Override
+			public NODE createNode(MODEL model, NODE parent) {
+				return null;
+			}
+
+			@Override
+			public void nodeSelected(NODE node) {
+				
+			}
+
+			@Override
+			public void expandNode(NODE node) {
+				
+			}
+			
+			@Override
+			public void selectNode(NODE node) {
+				
+			}
+
+			@Override
+			public NODE parentNode(NODE node) {
+				return null;
+			}
+
+			@Override
+			public MODEL createModel(Object object) {
+				return null;
+			}
+
+			@Override
+			public MODEL nodeModel(NODE node) {
+				return null;
+			}
+
+			@Override
+			public Collection<Object> children(Object object) {
+				return null;
+			}
+
+			@Override
+			public Collection<NODE> nodeChildren(NODE node) {
+				return null;
+			}
+		 
+			@Override
+			public String label(Object data) {
+				return UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data); 
+			}
+
+			@Override
+			public void nodeExpanded(NODE node) {
+				
+			}
+
+			@Override
+			public Boolean isLeaf(NODE node) {
+				return null;
+			}
+
+			/**/
+			
+			public static class Default<NODE, MODEL extends HierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
+				private static final long serialVersionUID = -7748963854147708112L;
+				
+				public Collection<Object> children(Object object) {
+					if(object instanceof AbstractDataTreeNode){
+						Collection<Object> collection = new ArrayList<>();
+						if(((AbstractDataTreeNode)object).getChildren()!=null)
+							for(Object o : ((AbstractDataTreeNode)object).getChildren())
+								collection.add(o);
+						return collection;
+					}
+					return null;
+				}
+				
+			}
+		}
+
 	}
 	
 }

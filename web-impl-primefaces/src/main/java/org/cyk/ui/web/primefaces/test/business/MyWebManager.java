@@ -1,6 +1,8 @@
 package org.cyk.ui.web.primefaces.test.business;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.inject.Singleton;
 
@@ -12,7 +14,9 @@ import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
+import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
+import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 
@@ -49,6 +53,14 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		
+		userSession.setNavigator(new Tree());
+		WebHierarchyNode root = new WebHierarchyNode(null);
+		
+		Collection<WebHierarchyNode> nodes = new ArrayList<>();
+		nodes.add(new WebHierarchyNode(null, "A", Boolean.FALSE));
+		nodes.add(new WebHierarchyNode(null, "B", Boolean.FALSE));
+		nodes.add(new WebHierarchyNode(null, "C", Boolean.FALSE));
+		userSession.getNavigator().build(WebHierarchyNode.class, nodes, null);
 		
 		return systemMenu;
 	}

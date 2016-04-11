@@ -1,6 +1,8 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -17,6 +19,8 @@ import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.HierarchyNode;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
@@ -35,7 +39,7 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	
 	@Getter @Setter protected String identifier;
 	
-	public abstract SystemMenu systemMenu(AbstractUserSession userSession);
+	public abstract SystemMenu systemMenu(AbstractUserSession<?,?> userSession);
 	
 	protected BusinessEntityInfos businessEntityInfos(Class<? extends AbstractIdentifiable> aClass){
 		return uiManager.businessEntityInfos(aClass);
@@ -71,6 +75,37 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	
 	protected void businessClassConfig(Class<? extends AbstractIdentifiable> aClass,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> formModelClass){
 		businessClassConfig(aClass,formModelClass,null);
+	}
+	
+	protected <NODE,NODE_MODEL extends HierarchyNode> AbstractTree<NODE,NODE_MODEL> getNavigator(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
+		AbstractTree<NODE,NODE_MODEL> navigator = createNavigatorTree(userSession);
+		Collection<NODE_MODEL> nodes = new ArrayList<>();
+		Collection<?> datas = getNavigatorTreeNodeDatas(userSession);
+		if(datas!=null){
+			for(Object data : datas){
+				NODE_MODEL nodeModel = createHierarchyNodeClassInstance(nodeClass, nodeModelClass, userSession, data);
+				nodeModel.setExpanded(Boolean.FALSE);
+				nodes.add(nodeModel);
+			}
+		}
+		
+		navigator.build(nodeModelClass, nodes, null);
+		return navigator;
+	}
+	
+	protected <NODE,NODE_MODEL extends HierarchyNode> AbstractTree<NODE,NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE,NODE_MODEL> userSession){
+		return null;
+	}
+	protected <NODE,NODE_MODEL extends HierarchyNode> Collection<?> getNavigatorTreeNodeDatas(AbstractUserSession<NODE,NODE_MODEL> userSession){
+		return null;
+	}
+	protected <NODE,NODE_MODEL extends HierarchyNode> NODE_MODEL createHierarchyNodeClassInstance(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,AbstractUserSession<NODE,NODE_MODEL> userSession,Object data){
+		try {
+			return commonUtils.getConstructor(nodeModelClass, new Class<?>[]{Object.class}).newInstance(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**/

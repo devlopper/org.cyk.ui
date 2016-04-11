@@ -34,7 +34,6 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.HierarchyNode;
-import org.cyk.ui.api.model.TreeAdapter;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -236,7 +235,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> exten
 	protected void createTree(){
 		__createTree__();	
 		if(tree!=null){
-			tree.getTreeListeners().add(new TreeAdapter<NODE,MODEL>(){
+			tree.getTreeListeners().add(new AbstractTree.Listener.Adapter.Default<NODE,MODEL>(){
 				private static final long serialVersionUID = 6817293162423539828L;
 				@SuppressWarnings("unchecked")
 				@Override

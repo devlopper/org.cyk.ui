@@ -2,11 +2,11 @@ package org.cyk.ui.api.model;
 
 import java.io.Serializable;
 
-import org.cyk.ui.api.UIManager;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 
 @Getter @Setter @NoArgsConstructor
 public class HierarchyNode implements Serializable {
@@ -16,12 +16,20 @@ public class HierarchyNode implements Serializable {
 	private Object data;
 	private String label;
 	private Boolean expanded=Boolean.TRUE;
+	private String consultViewId;
 	
 	public HierarchyNode(Object data) {
 		super();
 		this.data = data;
 		if(data!=null)
-			this.label = UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data);
+			this.label = RootBusinessLayer.getInstance().getFormatterBusiness().format(data); //UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data);
+	}
+	
+	public HierarchyNode(Object data, String label, Boolean expanded) {
+		super();
+		this.data = data;
+		this.label = label;
+		this.expanded = expanded;
 	}
 	
 	@Override

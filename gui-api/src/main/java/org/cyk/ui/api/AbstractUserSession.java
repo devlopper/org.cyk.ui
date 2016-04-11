@@ -23,24 +23,28 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.UIMenu;
+import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.HierarchyNode;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractUserSession extends AbstractBean implements Serializable {
+@Getter @Setter
+public abstract class AbstractUserSession<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 958643519183802472L;
 
-	private static final Map<String, AbstractUserSession> USER_SESSION_MAP = new HashMap<>();
+	private static final Map<String, AbstractUserSession<?,?>> USER_SESSION_MAP = new HashMap<>();
 	
 	@Inject protected UserAccountBusiness userAccountBusiness;
 	
-	@Getter protected String identifier;
+	protected String identifier;
 	protected Long timestamp;
-	@Getter @Setter protected Locale locale = Locale.FRENCH;
-	@Getter @Setter protected UserAccount userAccount;
-	@Getter @Setter protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu,mobileApplicationMenu;
-	@Getter @Setter protected String notificationChannel;
-	@Getter protected Boolean logoutCalled,isAdministrator,isManager;
-	@Getter @Setter protected UIMenu contextualMenu;
+	protected Locale locale = Locale.FRENCH;
+	protected UserAccount userAccount;
+	protected UIMenu applicationMenu,referenceEntityMenu,securityMenu,userAccountMenu,mobileApplicationMenu;
+	protected AbstractTree<NODE,MODEL> navigator;
+	protected String notificationChannel;
+	protected Boolean logoutCalled,isAdministrator,isManager;
+	protected UIMenu contextualMenu;
 	
 	//FIXME not called. because of Session Scope ?
 	/*
@@ -138,24 +142,24 @@ public abstract class AbstractUserSession extends AbstractBean implements Serial
 		return Boolean.FALSE;
 	}
 	
-	public static void register(AbstractUserSession userSession){
+	public static void register(AbstractUserSession<?,?> userSession){
 		USER_SESSION_MAP.put(userSession.getIdentifier(), userSession);
 	}
 	
-	public static void unRegister(AbstractUserSession userSession){
+	public static void unRegister(AbstractUserSession<?,?> userSession){
 		USER_SESSION_MAP.remove(userSession.getIdentifier());
 	}
 	
-	public static Collection<AbstractUserSession> find(UserAccount userAccount){
-		Collection<AbstractUserSession> collection = new ArrayList<>();
-		for(Entry<String, AbstractUserSession> entry : USER_SESSION_MAP.entrySet())
+	public static Collection<AbstractUserSession<?,?>> find(UserAccount userAccount){
+		Collection<AbstractUserSession<?,?>> collection = new ArrayList<>();
+		for(Entry<String, AbstractUserSession<?,?>> entry : USER_SESSION_MAP.entrySet())
 			if(entry.getValue().getUserAccount().equals(userAccount))
 				collection.add(entry.getValue());
 		return collection;
 	}
 	
 	public static void logout(UserAccount userAccount){
-		for(AbstractUserSession session : find(userAccount))
+		for(AbstractUserSession<?,?> session : find(userAccount))
 			session.logout();
 	}
 }

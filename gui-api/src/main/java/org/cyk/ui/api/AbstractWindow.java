@@ -52,7 +52,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	@Inject transient protected TimeBusiness timeBusiness;
 	@Inject transient protected RootBusinessLayer rootBusinessLayer;
 	
-	@Getter @Setter protected Long userActiveTimeout = DateTimeConstants.MILLIS_PER_MINUTE * 10l;
+	@Getter @Setter protected Long userActiveTimeout = DateTimeConstants.MILLIS_PER_MINUTE * 10l;//TODO should come from outside
 	@Getter @Setter protected ExecutionProgress executionProgress;
 	protected ExecutionProgress.Listener executionProgressListener;
 	

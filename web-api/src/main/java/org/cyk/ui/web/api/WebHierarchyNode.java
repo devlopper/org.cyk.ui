@@ -18,5 +18,9 @@ public class WebHierarchyNode extends HierarchyNode implements Serializable {
 	public WebHierarchyNode(Object data) {
 		super(data);
 	}
+
+	public WebHierarchyNode(Object data, String label, Boolean expanded) {
+		super(data, label, expanded);
+	}
 	
 }

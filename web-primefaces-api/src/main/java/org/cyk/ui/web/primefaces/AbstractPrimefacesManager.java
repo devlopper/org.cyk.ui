@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.HierarchyNode;
 import org.cyk.ui.web.api.AbstractWebManager;
 
 public abstract class AbstractPrimefacesManager extends AbstractWebManager implements Serializable {
@@ -41,6 +44,12 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 	
 	public String getLibraryName(){
 		return "org.cyk.ui.web.primefaces."+identifier;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected <NODE, NODE_MODEL extends HierarchyNode> AbstractTree<NODE, NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE, NODE_MODEL> userSession) {
+		return (AbstractTree<NODE, NODE_MODEL>) new Tree();
 	}
 	
 	/**/

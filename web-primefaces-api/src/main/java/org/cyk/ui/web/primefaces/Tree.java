@@ -8,10 +8,11 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.TreeAdapter;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.Constant;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -24,11 +25,11 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 	private String outcome;
 	
 	public Tree() {
-		treeListeners.add(new TreeAdapter<TreeNode, WebHierarchyNode>(){
+		treeListeners.add(new Listener.Adapter.Default<TreeNode, WebHierarchyNode>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public TreeNode createRootNode() {
-				return new DefaultTreeNode("Root", null);
+				return new DefaultTreeNode(ROOT, null);
 			}
 			
 			@Override
@@ -89,14 +90,21 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 	}
 	
 	public void redirectTo(String outcome){
+		WebHierarchyNode model = nodeModel(selected);
+		String v_outcome = model == null ? outcome : model.getConsultViewId();
+		if(StringUtils.isBlank(v_outcome))
+			v_outcome = outcome;
 		Object data = selectedAs(AbstractIdentifiable.class);
 		Object[] parameters = null;
 		if(data==null)
 			;
-		else
+		else{
+			if(StringUtils.isBlank(v_outcome))
+				v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
 			parameters = new Object[]{data.getClass(), data};
-		//System.out.println("Tree.redirectTo() "+StringUtils.join(parameters," , "));
-		WebNavigationManager.getInstance().redirectTo(outcome,parameters);
+		}
+		logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
+		WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);
 	}
 		
 }
