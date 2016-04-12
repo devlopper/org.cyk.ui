@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
+import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.Getter;
@@ -250,10 +253,74 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			return !Boolean.TRUE.equals(isLeaf(node)) && node != lastExpanded;
 	}
 	
+	protected Boolean isRedirectable(final NODE node){
+		return ListenerUtils.getInstance().getValue(Boolean.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,Boolean>() {
+			@Override
+			public Boolean execute(Listener<NODE,MODEL> listener) {
+				return listener.isRedirectable(node);
+			}
+		});
+	}
+	
+	public void redirectTo(NODE node){
+		if(Boolean.TRUE.equals(isRedirectable(node))){
+			String viewId = getRedirectToViewId(node);
+			if(StringUtils.isBlank(viewId)){
+				logTrace("No viewId specified to redirect node {}", node);
+			}else{
+				Object[] parameters = getRedirectToParameters(node);
+				logTrace("Tree Redirecting to {} with parameters {}", viewId,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
+				__redirectTo__(node, viewId, parameters);	
+			}
+		}else{
+			
+		}
+	}
+	
+	protected abstract void __redirectTo__(NODE node,String viewId,Object[] parameters);
+	
+	protected String getRedirectToViewId(final NODE node){
+		return ListenerUtils.getInstance().getValue(String.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,String>() {
+			@Override
+			public String execute(Listener<NODE,MODEL> listener) {
+				return listener.getRedirectToViewId(node);
+			}
+		});
+		/*
+		String viewId = null;
+		for(Listener<NODE,MODEL> listener : treeListeners){
+			String v = listener.getRedirectToViewId(node);
+			if(v!=null)
+				viewId = v;
+		}
+		return viewId;
+		*/
+	}
+	
+	protected Object[] getRedirectToParameters(final NODE node){
+		return ListenerUtils.getInstance().getValue(Object[].class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,Object[]>() {
+			@Override
+			public Object[] execute(Listener<NODE,MODEL> listener) {
+				return listener.getRedirectToParameters(node);
+			}
+		});
+		/*
+		Object[] parameters = null;
+		for(Listener<NODE,MODEL> listener : treeListeners){
+			Object[] v = listener.getRedirectToParameters(node);
+			if(v!=null)
+				parameters = v;
+		}
+		return parameters;
+		*/
+	}
+	
 	/**/
 	
 	public static interface Listener<NODE,MODEL extends HierarchyNode> {
 
+		AbstractTree<NODE, MODEL> getTree();
+		
 		NODE createRootNode();
 		
 		NODE createNode(MODEL model,NODE parent);
@@ -282,14 +349,20 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		
 		Boolean isRedirectable(NODE node);
 		
-		void redirect(NODE node);
+		String getRedirectToViewId(NODE node);
 		
+		Object[] getRedirectToParameters(NODE node);
 		/**/
 		
 		public class Adapter<NODE, MODEL extends HierarchyNode> implements Serializable, Listener<NODE, MODEL> {
 
 			private static final long serialVersionUID = 6046223006911747854L;
 
+			@Override
+			public AbstractTree<NODE, MODEL> getTree() {
+				return null;
+			}
+			
 			@Override
 			public NODE createRootNode() {
 				return null;
@@ -360,9 +433,19 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 				return null;
 			}
 			
-			@Override
-			public void redirect(NODE node) {}
+			//@Override
+			//public void redirect(NODE node) {}
 
+			@Override
+			public String getRedirectToViewId(NODE node) {
+				return null;
+			}
+
+			@Override
+			public Object[] getRedirectToParameters(NODE node) {
+				return null;
+			}
+			
 			/**/
 			
 			public static class Default<NODE, MODEL extends HierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
@@ -382,13 +465,16 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 				@Override
 				public void nodeSelected(NODE node) {
 					//System.out.println("AbstractTree.Listener.Adapter.Default.nodeSelected() : "+isRedirectable(node));
-					if(Boolean.TRUE.equals(isRedirectable(node)))
-						redirect(node);
-					else
-						super.nodeSelected(node);
+					AbstractTree<NODE, MODEL> tree = getTree();
+					if(Boolean.TRUE.equals(isRedirectable(node)) && tree!=null)
+						tree.redirectTo(node);
+					//else
+					//	super.nodeSelected(node);
 				}
 				
 			}
+
+			
 		}
 
 	}

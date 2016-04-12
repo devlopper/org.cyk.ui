@@ -13,7 +13,6 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.utility.common.Constant;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -74,6 +73,35 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			
 			@Override
+			public String getRedirectToViewId(TreeNode node) {
+				WebHierarchyNode model = nodeModel(selected);
+				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
+				if(StringUtils.isBlank(v_outcome))
+					v_outcome = consultViewId;
+				Object data = selectedAs(AbstractIdentifiable.class);
+				if(data==null)
+					;
+				else{
+					if(StringUtils.isBlank(v_outcome))
+						v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
+				}
+				return v_outcome;
+			}
+			
+			@Override
+			public Object[] getRedirectToParameters(TreeNode node) {
+				Object data = selectedAs(AbstractIdentifiable.class);
+				Object[] parameters = null;
+				if(data==null)
+					;
+				else{
+					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()
+							,UIManager.getInstance().getIdentifiableParameter(), data};
+				}
+				return parameters;
+			}
+			
+			/*@Override
 			public void redirect(TreeNode node) {
 				WebHierarchyNode model = nodeModel(selected);
 				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
@@ -91,13 +119,18 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 				}
 				logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
 				WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);
-			}
+			}*/
 			
 			@Override
 			public Boolean isRedirectable(TreeNode node) {
 				return Boolean.TRUE; //nodeModel(node).getData() instanceof AbstractIdentifiable;
 			}
 		});
+	}
+	
+	@Override
+	protected void __redirectTo__(TreeNode node, String viewId,Object[] parameters) {
+		WebNavigationManager.getInstance().redirectTo(viewId,parameters);
 	}
 
 	public void onNodeSelect(NodeSelectEvent event){
