@@ -287,7 +287,6 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			Object object = getRedirectionObject(node);
 			Crud crud = getRedirectionCrud(node);
 			String viewId = getRedirectToViewId(node,crud,object);
-			
 			if(StringUtils.isBlank(viewId)){
 				logTrace("No viewId specified to redirect node {}", node);
 			}else{

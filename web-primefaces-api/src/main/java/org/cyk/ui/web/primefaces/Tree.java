@@ -86,12 +86,12 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 				String v_outcome = model == null ? (edit ? editViewId : consultViewId) : (edit ? model.getEditViewId() : model.getConsultViewId());
 				if(StringUtils.isBlank(v_outcome))
 					v_outcome = edit ? editViewId : consultViewId;
-				Object data = getRedirectionObject(node);
-				if(data==null)
+				//Object data = getRedirectionObject(node);
+				if(object==null)
 					;
 				else{
 					if(StringUtils.isBlank(v_outcome)){
-						ClassUserInterface userInterface = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface();
+						ClassUserInterface userInterface = UIManager.getInstance().businessEntityInfos(object.getClass()).getUserInterface();
 						v_outcome = edit ? userInterface.getEditViewId() : userInterface.getConsultViewId();
 					}
 				}
@@ -100,14 +100,17 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			
 			@Override
 			public Object[] getRedirectToParameters(TreeNode node,Crud crud,Object object) {
-				Object data = getRedirectionObject(node);
+				//Object data = getRedirectionObject(node);
+				Object nodeObject = ((WebHierarchyNode)node.getData()).getData();
 				Object[] parameters = null;
-				if(data==null)
+				if(object==null)
 					;
 				else{
-					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()
+					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(object.getClass()).getIdentifier()
 							,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudParameterValue(crud)
-							,UIManager.getInstance().getIdentifiableParameter(), Crud.CREATE.equals(crud) ? null : data};
+							,UIManager.getInstance().getIdentifiableParameter(), Crud.CREATE.equals(crud) ? null : object
+									,UIManager.getInstance().businessEntityInfos(nodeObject.getClass()).getIdentifier()
+									,nodeObject instanceof AbstractIdentifiable ? ((AbstractIdentifiable)nodeObject).getIdentifier() : null};
 				}
 				return parameters;
 			}
