@@ -125,6 +125,11 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			public Boolean isRedirectable(TreeNode node) {
 				return Boolean.TRUE; //nodeModel(node).getData() instanceof AbstractIdentifiable;
 			}
+			
+			@Override
+			public AbstractTree<TreeNode, WebHierarchyNode> getTree() {
+				return Tree.this;
+			}
 		});
 	}
 	
