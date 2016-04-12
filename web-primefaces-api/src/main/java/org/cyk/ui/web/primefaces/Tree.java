@@ -3,11 +3,10 @@ package org.cyk.ui.web.primefaces;
 import java.io.Serializable;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.userinterface.ClassUserInterface;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
@@ -16,6 +15,9 @@ import org.cyk.ui.web.api.WebNavigationManager;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Serializable {
@@ -73,30 +75,39 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			
 			@Override
-			public String getRedirectToViewId(TreeNode node) {
+			public Object getRedirectionObject(TreeNode node) {
+				return selectedAs(AbstractIdentifiable.class);
+			}
+			
+			@Override
+			public String getRedirectToViewId(TreeNode node,Crud crud,Object object) {
+				Boolean edit = Crud.isCreateOrUpdate(crud);
 				WebHierarchyNode model = nodeModel(selected);
-				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
+				String v_outcome = model == null ? (edit ? editViewId : consultViewId) : (edit ? model.getEditViewId() : model.getConsultViewId());
 				if(StringUtils.isBlank(v_outcome))
-					v_outcome = consultViewId;
-				Object data = selectedAs(AbstractIdentifiable.class);
+					v_outcome = edit ? editViewId : consultViewId;
+				Object data = getRedirectionObject(node);
 				if(data==null)
 					;
 				else{
-					if(StringUtils.isBlank(v_outcome))
-						v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
+					if(StringUtils.isBlank(v_outcome)){
+						ClassUserInterface userInterface = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface();
+						v_outcome = edit ? userInterface.getEditViewId() : userInterface.getConsultViewId();
+					}
 				}
 				return v_outcome;
 			}
 			
 			@Override
-			public Object[] getRedirectToParameters(TreeNode node) {
-				Object data = selectedAs(AbstractIdentifiable.class);
+			public Object[] getRedirectToParameters(TreeNode node,Crud crud,Object object) {
+				Object data = getRedirectionObject(node);
 				Object[] parameters = null;
 				if(data==null)
 					;
 				else{
 					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()
-							,UIManager.getInstance().getIdentifiableParameter(), data};
+							,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudParameterValue(crud)
+							,UIManager.getInstance().getIdentifiableParameter(), Crud.CREATE.equals(crud) ? null : data};
 				}
 				return parameters;
 			}
@@ -131,6 +142,8 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 				return Tree.this;
 			}
 		});
+		
+		redirectable = Boolean.TRUE;
 	}
 	
 	@Override

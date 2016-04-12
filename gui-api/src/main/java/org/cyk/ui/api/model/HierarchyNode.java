@@ -16,7 +16,7 @@ public class HierarchyNode implements Serializable {
 	private Object data;
 	private String label;
 	private Boolean expanded=Boolean.TRUE;
-	private String consultViewId;
+	private String consultViewId,editViewId;
 	
 	public HierarchyNode(Object data) {
 		super();

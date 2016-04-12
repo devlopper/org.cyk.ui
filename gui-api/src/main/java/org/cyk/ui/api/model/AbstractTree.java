@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.Constant;
@@ -23,7 +25,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	@Getter protected NODE root,index;
 	@Getter @Setter protected NODE selected,lastExpanded;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
-	@Getter @Setter protected String consultViewId;
+	@Getter @Setter protected String consultViewId,editViewId;
 	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE;
 	
 	@Getter protected Collection<Listener<NODE,MODEL>> treeListeners = new ArrayList<>();
@@ -262,13 +264,34 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		});
 	}
 	
+	protected Object getRedirectionObject(final NODE node){
+		return ListenerUtils.getInstance().getValue(Object.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,Object>() {
+			@Override
+			public Object execute(Listener<NODE,MODEL> listener) {
+				return listener.getRedirectionObject(node);
+			}
+		});
+	}
+	
+	protected Crud getRedirectionCrud(final NODE node){
+		return ListenerUtils.getInstance().getValue(Crud.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,Crud>() {
+			@Override
+			public Crud execute(Listener<NODE,MODEL> listener) {
+				return listener.getRedirectionCrud(node);
+			}
+		});
+	}
+	
 	public void redirectTo(NODE node){
 		if(Boolean.TRUE.equals(isRedirectable(node))){
-			String viewId = getRedirectToViewId(node);
+			Object object = getRedirectionObject(node);
+			Crud crud = getRedirectionCrud(node);
+			String viewId = getRedirectToViewId(node,crud,object);
+			
 			if(StringUtils.isBlank(viewId)){
 				logTrace("No viewId specified to redirect node {}", node);
 			}else{
-				Object[] parameters = getRedirectToParameters(node);
+				Object[] parameters = getRedirectToParameters(node,crud,object);
 				logTrace("Tree Redirecting to {} with parameters {}", viewId,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
 				__redirectTo__(node, viewId, parameters);	
 			}
@@ -279,40 +302,22 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	protected abstract void __redirectTo__(NODE node,String viewId,Object[] parameters);
 	
-	protected String getRedirectToViewId(final NODE node){
+	protected String getRedirectToViewId(final NODE node,final Crud crud,final Object object){
 		return ListenerUtils.getInstance().getValue(String.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,String>() {
 			@Override
 			public String execute(Listener<NODE,MODEL> listener) {
-				return listener.getRedirectToViewId(node);
+				return listener.getRedirectToViewId(node,crud,object);
 			}
 		});
-		/*
-		String viewId = null;
-		for(Listener<NODE,MODEL> listener : treeListeners){
-			String v = listener.getRedirectToViewId(node);
-			if(v!=null)
-				viewId = v;
-		}
-		return viewId;
-		*/
 	}
 	
-	protected Object[] getRedirectToParameters(final NODE node){
+	protected Object[] getRedirectToParameters(final NODE node,final Crud crud,final Object object){
 		return ListenerUtils.getInstance().getValue(Object[].class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,Object[]>() {
 			@Override
 			public Object[] execute(Listener<NODE,MODEL> listener) {
-				return listener.getRedirectToParameters(node);
+				return listener.getRedirectToParameters(node,crud,object);
 			}
 		});
-		/*
-		Object[] parameters = null;
-		for(Listener<NODE,MODEL> listener : treeListeners){
-			Object[] v = listener.getRedirectToParameters(node);
-			if(v!=null)
-				parameters = v;
-		}
-		return parameters;
-		*/
 	}
 	
 	/**/
@@ -349,9 +354,13 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		
 		Boolean isRedirectable(NODE node);
 		
-		String getRedirectToViewId(NODE node);
+		Object getRedirectionObject(NODE node);
 		
-		Object[] getRedirectToParameters(NODE node);
+		Crud getRedirectionCrud(NODE node);
+		
+		String getRedirectToViewId(NODE node,Crud crud,Object object);
+		
+		Object[] getRedirectToParameters(NODE node,Crud crud,Object object);
 		/**/
 		
 		public class Adapter<NODE, MODEL extends HierarchyNode> implements Serializable, Listener<NODE, MODEL> {
@@ -415,7 +424,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		 
 			@Override
 			public String label(Object data) {
-				return UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data); 
+				return null;//RootBusinessLayer.getInstance().getFormatterBusiness().format(data); 
 			}
 
 			@Override
@@ -433,16 +442,23 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 				return null;
 			}
 			
-			//@Override
-			//public void redirect(NODE node) {}
-
 			@Override
-			public String getRedirectToViewId(NODE node) {
+			public Object getRedirectionObject(NODE node) {
 				return null;
 			}
 
 			@Override
-			public Object[] getRedirectToParameters(NODE node) {
+			public String getRedirectToViewId(NODE node,Crud crud,Object object) {
+				return null;
+			}
+
+			@Override
+			public Object[] getRedirectToParameters(NODE node,Crud crud,Object object) {
+				return null;
+			}
+			
+			@Override
+			public Crud getRedirectionCrud(NODE node) {
 				return null;
 			}
 			
@@ -450,6 +466,11 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			
 			public static class Default<NODE, MODEL extends HierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
 				private static final long serialVersionUID = -7748963854147708112L;
+				
+				@Override
+				public String label(Object data) {
+					return RootBusinessLayer.getInstance().getFormatterBusiness().format(data); 
+				}
 				
 				public Collection<?> children(Object object) {
 					if(object instanceof AbstractDataTreeNode){
@@ -466,7 +487,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 				public void nodeSelected(NODE node) {
 					//System.out.println("AbstractTree.Listener.Adapter.Default.nodeSelected() : "+isRedirectable(node));
 					AbstractTree<NODE, MODEL> tree = getTree();
-					if(Boolean.TRUE.equals(isRedirectable(node)) && tree!=null)
+					if(Boolean.TRUE.equals(isRedirectable(node)) && tree!=null && Boolean.TRUE.equals(tree.getRedirectable()))
 						tree.redirectTo(node);
 					//else
 					//	super.nodeSelected(node);
