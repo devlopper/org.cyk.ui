@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
 
@@ -20,6 +20,8 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	@Getter protected NODE root,index;
 	@Getter @Setter protected NODE selected,lastExpanded;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
+	@Getter @Setter protected String consultViewId;
+	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE;
 	
 	@Getter protected Collection<Listener<NODE,MODEL>> treeListeners = new ArrayList<>();
 	
@@ -39,12 +41,17 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		else{
 			index = createNode(model, root);
 		}
-		for(Listener<NODE,MODEL> listener : treeListeners)
-			listener.expandNode(index);
+		if(Boolean.TRUE.equals(expand))
+			for(Listener<NODE,MODEL> listener : treeListeners)
+				listener.expandNode(index);
 	}
 	
 	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
-		build(createModel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(aClass)));
+		build(UIManager.getInstance().getLanguageBusiness().findClassLabelText(aClass), aClass, aCollection, selected);
+	}
+	
+	public <TYPE> void build(String rootLabel,Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
+		build(createModel(rootLabel));
 		for(TYPE element : aCollection)
 			populate(element);	
 		expand(selected, Boolean.TRUE);
@@ -96,9 +103,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			return null;
 		return aClass.isAssignableFrom(data.getClass())?(TYPE)data:null;
 	}
-	
-
-	
+		
 	public void populate(Object object){
 		populate(object, index);
 	}
@@ -106,7 +111,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	private void populate(Object root,NODE node){
 		@SuppressWarnings("unchecked")
 		NODE childNode = createNode(createModel((NODE) root),node);
-		Collection<Object> children = children(root);
+		Collection<?> children = children(root);
 		if(children!=null)
 			for(Object child : children)
 				populate(child, childNode);
@@ -187,10 +192,10 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		return data;
 	}
 	
-	public Collection<Object> children(Object object){
-		Collection<Object> collection = null;
+	public Collection<?> children(Object object){
+		Collection<?> collection = null;
 		for(Listener<NODE,MODEL> listener : treeListeners){
-			Collection<Object> r = listener.children(object);
+			Collection<?> r = listener.children(object);
 			if(r!=null)
 				collection = r;
 		}
@@ -269,13 +274,15 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		
 		Boolean isLeaf(NODE node);
 		
-		Collection<Object> children(Object object);
+		Collection<?> children(Object object);
 		
 		Collection<NODE> nodeChildren(NODE node);
 
 		String label(Object data);
 		
 		Boolean isRedirectable(NODE node);
+		
+		void redirect(NODE node);
 		
 		/**/
 		
@@ -324,7 +331,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			}
 
 			@Override
-			public Collection<Object> children(Object object) {
+			public Collection<?> children(Object object) {
 				return null;
 			}
 
@@ -352,13 +359,16 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			public Boolean isRedirectable(NODE node) {
 				return null;
 			}
+			
+			@Override
+			public void redirect(NODE node) {}
 
 			/**/
 			
 			public static class Default<NODE, MODEL extends HierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
 				private static final long serialVersionUID = -7748963854147708112L;
 				
-				public Collection<Object> children(Object object) {
+				public Collection<?> children(Object object) {
 					if(object instanceof AbstractDataTreeNode){
 						Collection<Object> collection = new ArrayList<>();
 						if(((AbstractDataTreeNode)object).getChildren()!=null)
@@ -367,6 +377,15 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 						return collection;
 					}
 					return null;
+				}
+				
+				@Override
+				public void nodeSelected(NODE node) {
+					//System.out.println("AbstractTree.Listener.Adapter.Default.nodeSelected() : "+isRedirectable(node));
+					if(Boolean.TRUE.equals(isRedirectable(node)))
+						redirect(node);
+					else
+						super.nodeSelected(node);
 				}
 				
 			}

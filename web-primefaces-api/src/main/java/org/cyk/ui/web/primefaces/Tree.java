@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.WebHierarchyNode;
@@ -22,10 +23,11 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 
 	private static final long serialVersionUID = 763364839529624006L;
 	
-	private String outcome;
+	private CascadeStyleSheet css = new CascadeStyleSheet();
+	private Listener<TreeNode, WebHierarchyNode> listener;
 	
 	public Tree() {
-		treeListeners.add(new Listener.Adapter.Default<TreeNode, WebHierarchyNode>(){
+		treeListeners.add(listener = new Listener.Adapter.Default<TreeNode, WebHierarchyNode>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public TreeNode createRootNode() {
@@ -70,12 +72,30 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			public Boolean isLeaf(TreeNode node) {
 				return node.isLeaf();
 			}
+			
 			@Override
-			public void nodeSelected(TreeNode node) {
-				//if(StringUtils.isNotBlank(outcome))
-					redirect();
-				//else
-				//	super.nodeSelected(node);
+			public void redirect(TreeNode node) {
+				WebHierarchyNode model = nodeModel(selected);
+				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
+				if(StringUtils.isBlank(v_outcome))
+					v_outcome = consultViewId;
+				Object data = selectedAs(AbstractIdentifiable.class);
+				Object[] parameters = null;
+				if(data==null)
+					;
+				else{
+					if(StringUtils.isBlank(v_outcome))
+						v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
+					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()
+							,UIManager.getInstance().getIdentifiableParameter(), data};
+				}
+				logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
+				WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);
+			}
+			
+			@Override
+			public Boolean isRedirectable(TreeNode node) {
+				return Boolean.TRUE; //nodeModel(node).getData() instanceof AbstractIdentifiable;
 			}
 		});
 	}
@@ -84,28 +104,9 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 		nodeSelected(event.getTreeNode());
 	}
 	
-	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected,String outcome){
+	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected,String consultViewId){
 		build(aClass, aCollection,selected);
-		this.outcome = outcome;
-	}
-	
-	public void redirect(){
-		WebHierarchyNode model = nodeModel(selected);
-		String v_outcome = model == null ? outcome : model.getConsultViewId();
-		if(StringUtils.isBlank(v_outcome))
-			v_outcome = outcome;
-		Object data = selectedAs(AbstractIdentifiable.class);
-		Object[] parameters = null;
-		if(data==null)
-			;
-		else{
-			if(StringUtils.isBlank(v_outcome))
-				v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
-			parameters = new Object[]{/*data.getClass()*/UIManager.getInstance().getIdentifiableParameter(), data,UIManager.getInstance().getClassParameter(),
-					UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()};
-		}
-		logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
-		WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);
+		this.consultViewId = consultViewId;
 	}
 		
 }
