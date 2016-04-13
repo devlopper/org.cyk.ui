@@ -505,6 +505,17 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return createUpdateCommandable(identifiable, labelid, iconType,null);
 	}
 	
+	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType,String viewId){
+		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
+		commandable.setViewId(StringUtils.isBlank(viewId)?editOneOutcome(identifiable.getClass()):viewId);
+		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		commandable.addCrudParameters(UIManager.getInstance().getCrudDeleteParameter(), identifiable);
+		return commandable;
+	}
+	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+		return createDeleteCommandable(identifiable, labelid, iconType,null);
+	}
+	
 	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(consultOneOutcome(identifiable.getClass()));

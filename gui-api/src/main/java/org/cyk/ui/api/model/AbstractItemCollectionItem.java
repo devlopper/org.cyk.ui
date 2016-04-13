@@ -15,7 +15,6 @@ public abstract class AbstractItemCollectionItem<IDENTIFIABLE extends AbstractId
 	private static final long serialVersionUID = 8464025197835827526L;
 
 	protected FormOneData<? extends AbstractItemCollectionItem<IDENTIFIABLE>,?,?,?,?,?> form;
-	
 	protected Boolean applicable=Boolean.TRUE;
 	
 	

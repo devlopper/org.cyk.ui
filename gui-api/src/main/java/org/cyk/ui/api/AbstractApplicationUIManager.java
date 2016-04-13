@@ -10,7 +10,9 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.api.party.person.AbstractActorBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -94,12 +96,22 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		return null;
 	}
 	*/
+	
+	public void initialiseNavigatorTree(AbstractUserSession userSession){
+		
+	}
+	
 	protected <NODE,NODE_MODEL extends HierarchyNode> AbstractTree<NODE,NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE,NODE_MODEL> userSession){
 		return null;
 	}
 	protected <NODE,NODE_MODEL extends HierarchyNode,TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
 		return null;
 	}
+	
+	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<?,?> userSession,AbstractActorBusiness<?> actorBusiness){
+		return actorBusiness.findByPerson((Person) userSession.getUser())!=null;
+	}
+	
 	/*
 	protected <NODE,NODE_MODEL extends HierarchyNode> NODE_MODEL createHierarchyNodeClassInstance(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,AbstractUserSession<NODE,NODE_MODEL> userSession,Object data){
 		try {

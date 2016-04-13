@@ -16,6 +16,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 
@@ -66,6 +67,9 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	protected Boolean showContextualEditCommandable(){
 		return Boolean.TRUE;
 	}
+	protected Boolean showContextualDeleteCommandable(){
+		return Boolean.TRUE;
+	}
 	
 	protected Boolean showContextualCreateCommandables(){
 		return Boolean.FALSE;
@@ -91,7 +95,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		}
 		
 		if(Boolean.TRUE.equals(showContextualEditCommandable())){
-			contextualMenu.getChildren().add(navigationManager.createUpdateCommandable(identifiable, "command.edit", null));
+			contextualMenu.getChildren().add(navigationManager.createUpdateCommandable(identifiable, "command.edit", IconType.ACTION_UPDATE));
+		}
+		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
+			contextualMenu.getChildren().add(navigationManager.createDeleteCommandable(identifiable, "command.delete", IconType.ACTION_DELETE));
 		}
 		
 		if(Boolean.TRUE.equals(showContextualCreateCommandables()))

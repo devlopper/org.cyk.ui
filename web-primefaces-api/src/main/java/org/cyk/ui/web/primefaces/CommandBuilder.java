@@ -180,6 +180,8 @@ public class CommandBuilder implements Serializable {
 		case ACTION_EXPORT_PDF: return "ui-icon-";
 		case ACTION_SET: return "ui-icon-wrench";
 		case ACTION_DOWNLOAD: return "fa fa-download";
+		case ACTION_UPDATE: return "fa fa-edit";
+		case ACTION_DELETE: return "fa fa-remove";
 		
 		case THING_APPLICATION: return "ui-icon-";
 		case THING_CALENDAR: return "ui-icon-calendar";

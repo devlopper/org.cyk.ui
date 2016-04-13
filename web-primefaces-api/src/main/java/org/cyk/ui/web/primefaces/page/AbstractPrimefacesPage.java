@@ -29,7 +29,6 @@ import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.api.model.DetailsBlockCollection;
-import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
@@ -383,18 +382,28 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
-			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener){
+			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener){
 		ItemCollection<TYPE,IDENTIFIABLE> collection = instanciateItemCollection(identifier, aClass, identifiableClass);
 		form.getItemCollections().add(collection);
-		collection.getItemCollectionListeners().add(new ItemCollectionListener.Adapter<TYPE,IDENTIFIABLE,SelectItem>(){
+		
+		collection.getItemCollectionListeners().add(new AbstractItemCollection.Listener.Adapter<TYPE,IDENTIFIABLE,SelectItem>(){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
 			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
 				item.setForm(createFormOneData(item,Crud.CREATE));
 			}
 		});
-		if(listener!=null)
+		if(listener!=null){
 			collection.getItemCollectionListeners().add(listener);
+			collection.setEditable(Crud.isCreateOrUpdate(listener.getCrud()));
+			collection.getAddCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) && Boolean.TRUE.equals(listener.isShowAddButton()));
+			collection.getDeleteCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) &&  collection.getAddCommandable().getRendered());
+			
+		}
+		
+		collection.setShowFooter(collection.getAddCommandable().getRendered());
+		onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, collection.getFormatJavaScript());
+		
 		if(identifiables!=null)
 			for(IDENTIFIABLE identifiable : identifiables)
 				collection.add(identifiable);

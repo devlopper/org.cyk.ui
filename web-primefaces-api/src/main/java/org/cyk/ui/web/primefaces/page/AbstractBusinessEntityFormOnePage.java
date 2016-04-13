@@ -8,6 +8,9 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
@@ -20,7 +23,6 @@ import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
-import org.cyk.ui.api.model.ItemCollectionListener;
 import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.Commandable;
@@ -30,9 +32,6 @@ import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.omnifaces.util.Faces;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -131,7 +130,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
-			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
 		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? listener.create() : listener.load();
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
@@ -139,7 +138,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> MetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
-			MetricCollection metricCollection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,ItemCollectionListener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+			MetricCollection metricCollection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
 		MetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (MetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
 		metricValueCollection.setMetricCollection(metricCollection);
 		metricValueCollection.getDeleteCommandable().setRendered(Boolean.FALSE);

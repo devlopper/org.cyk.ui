@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -27,10 +28,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
-	protected Collection<ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
+	protected Collection<Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
 	protected Boolean autoWrite=Boolean.TRUE,autoApplyMasterFormFieldValues=Boolean.TRUE;
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
+	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,editable=Boolean.TRUE;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
 		//itemClass = (Class<TYPE>) parameterizedClass(Object.class, 0); //(Class<TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -65,7 +67,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	public void add(IDENTIFIABLE identifiable){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
 		
 		items.add(instance);
@@ -78,7 +80,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			instance.getForm().setDynamic(Boolean.TRUE);
 			instance.getForm().build();
 		}
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.add(this,instance);
 		updateTable();
 	}
@@ -89,7 +91,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	protected IDENTIFIABLE instanciate(){
 		IDENTIFIABLE instance = null;
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners){
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners){
 			IDENTIFIABLE v = listener.instanciate(this);
 			if(v!=null)
 				instance = v;
@@ -101,7 +103,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public void delete(TYPE item){
 		items.remove(item);
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);
 		updateTable();
 	}
@@ -118,7 +120,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 	
 	public void write(){
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			for(TYPE item : items)
 				listener.write(item);
 	}
@@ -129,12 +131,84 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 
 	public void read(TYPE item){
-		for(ItemCollectionListener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.read(item);
 	}
 	
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> createApplicableValueQuestion(){
 		return null;
 	}
+	
+	/**/
+	
+	public static interface Listener<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> {
+		
+		Collection<IDENTIFIABLE> create();
+		
+		Collection<IDENTIFIABLE> load();
+		
+		Crud getCrud();
+		
+		IDENTIFIABLE instanciate(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
+		
+		void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
+		
+		void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
+		
+		void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
+
+		/**
+		 * Take value from item fields to identifiable fields
+		 */
+		void write(TYPE item);
+		
+		/**
+		 * Take value from identifiable fields to item fields
+		 */
+		void read(TYPE item);
+		
+		Boolean isShowAddButton();
+		
+		/**/
+		
+		public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>{
+			private static final long serialVersionUID = 5920340778121618178L;
+
+			@Override
+			public Collection<IDENTIFIABLE> create() {
+				return new ArrayList<>();
+			}
+			@Override
+			public Crud getCrud() {
+				return null;
+			}
+			@Override
+			public Collection<IDENTIFIABLE> load() {
+				return null;
+			}
+			
+			@Override
+			public IDENTIFIABLE instanciate(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection) {
+				return null;
+			}
+			
+			@Override public void add(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
+
+			@Override public void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection, TYPE item) {}
+
+			@Override public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
+		
+			@Override public void write(TYPE item) {}
+			
+			@Override public void read(TYPE item) {}
+			
+			@Override
+			public Boolean isShowAddButton() {
+				return null;
+			}
+		}
+		
+	}
+
 
 }
