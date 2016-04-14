@@ -12,7 +12,7 @@ import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.utility.common.cdi.AbstractBean;
 

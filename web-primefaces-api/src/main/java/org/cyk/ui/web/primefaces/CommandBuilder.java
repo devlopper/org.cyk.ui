@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.WebManager;
@@ -40,7 +39,7 @@ public class CommandBuilder implements Serializable {
 			commandButton.setValue(aCommandable.getLabel());
 		commandButton.setUpdate(aCommandable.getUpdate());
 		if(aCommandable.getIconType()!=null)
-			commandButton.setIcon(icon(aCommandable.getIconType()));
+			commandButton.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
 		if(StringUtils.isEmpty(aCommandable.getTooltip()))
 			commandButton.setTitle(aCommandable.getLabel());
 		else
@@ -57,7 +56,7 @@ public class CommandBuilder implements Serializable {
 			menuItem.setValue(aCommandable.getLabel());
 			menuItem.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIconType()!=null)
-				menuItem.setIcon(icon(aCommandable.getIconType()));
+				menuItem.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
 					if(aCommandable.getViewId()!=null){
@@ -138,7 +137,7 @@ public class CommandBuilder implements Serializable {
 			DefaultSubMenu subMenu = new DefaultSubMenu(aCommandable.getLabel());
 			subMenu.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIconType()!=null)
-				subMenu.setIcon(icon(aCommandable.getIconType()));
+				subMenu.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
 			for(UICommandable commandable : aCommandable.getChildren())
 				menuItem(commandable, subMenu, managedBeanName, fields);
 			return subMenu;
@@ -153,55 +152,6 @@ public class CommandBuilder implements Serializable {
 			model.addElement(menuItem(commandable,null, Introspector.decapitalize(managedBeanClass.getSimpleName()), fieldName));
 		}
 		return model;
-	}
-	
-	private String icon(IconType iconType){
-		if(iconType==null)
-			return null;
-		switch(iconType){
-		case ACTION_ADD:return "ui-icon-plus";
-		case ACTION_CANCEL:return "ui-icon-close";
-		case ACTION_OPEN:return "ui-icon-folder-open";
-		case ACTION_REMOVE:return "ui-icon-trash";
-		case ACTION_ADMINISTRATE:return "ui-icon-gear";
-		case ACTION_HELP:return "ui-icon-help";
-		case ACTION_APPLY:return  "fa fa-save" /*"fa fa-check" /*"ui-icon-check"*/;
-		case ACTION_EDIT:return "ui-icon-pencil";
-		case ACTION_GO_BACK:return "ui-icon-arrow-e";
-		case ACTION_OK:return "fa fa-check";
-		case ACTION_SAVE:return "fa fa-save";
-		case ACTION_SEARCH:return "ui-icon-search";
-		case ACTION_PREVIEW:return "ui-icon-image";
-		case ACTION_LOGOUT:return "ui-icon-extlink";
-		case ACTION_EXPORT:return "ui-icon-document";
-		case ACTION_PRINT:return "ui-icon-print";
-		case ACTION_CLEAR: return "ui-icon-trash";
-		case ACTION_EXPORT_EXCEL: return "ui-icon-";
-		case ACTION_EXPORT_PDF: return "ui-icon-";
-		case ACTION_SET: return "ui-icon-wrench";
-		case ACTION_DOWNLOAD: return "fa fa-download";
-		case ACTION_UPDATE: return "fa fa-edit";
-		case ACTION_DELETE: return "fa fa-remove";
-		
-		case THING_APPLICATION: return "ui-icon-";
-		case THING_CALENDAR: return "ui-icon-calendar";
-		case THING_CONTROLPANEL: return "ui-icon-gear";
-		case THING_HELP: return "ui-icon-help";
-		case THING_LICENCE: return "ui-icon-document";
-		case THING_LIST: return "ui-icon-document";
-		case THING_NOTIFICATIONS: return "ui-icon-flag";
-		case THING_REPORT: return "ui-icon-document";
-		case THING_SECURITY: return "ui-icon-key";
-		case THING_TOOLS: return "ui-icon-wrench";
-		case THING_URL: return "fa fa-link";
-		case THING_ROLE: return "fa fa-lock";
-		case THING_USERACCOUNT: return "fa fa-key";
-		case THING_HOME: return "ui-icon-home";
-		case THING_CONNECTED: return "ui-icon-newin";
-		
-		case PERSON:return "fa fa-user";
-		default:return null;
-		}
 	}
 	
 }

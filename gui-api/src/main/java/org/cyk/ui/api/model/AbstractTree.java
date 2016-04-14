@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -13,10 +16,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
+public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 763364839529624006L;
 	
@@ -102,8 +102,8 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE selectedAs(Class<TYPE> aClass){
 		Object data = nodeModel(selected).getData();
-		if(data!=null && data instanceof HierarchyNode)
-			data = ((HierarchyNode)data).getData();
+		if(data!=null && data instanceof AbstractHierarchyNode)
+			data = ((AbstractHierarchyNode)data).getData();
 		if(data==null)
 			return null;
 		return aClass.isAssignableFrom(data.getClass())?(TYPE)data:null;
@@ -321,7 +321,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 	
 	/**/
 	
-	public static interface Listener<NODE,MODEL extends HierarchyNode> {
+	public static interface Listener<NODE,MODEL extends AbstractHierarchyNode> {
 
 		AbstractTree<NODE, MODEL> getTree();
 		
@@ -362,7 +362,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 		Object[] getRedirectToParameters(NODE node,Crud crud,Object object);
 		/**/
 		
-		public class Adapter<NODE, MODEL extends HierarchyNode> implements Serializable, Listener<NODE, MODEL> {
+		public class Adapter<NODE, MODEL extends AbstractHierarchyNode> implements Serializable, Listener<NODE, MODEL> {
 
 			private static final long serialVersionUID = 6046223006911747854L;
 
@@ -463,7 +463,7 @@ public abstract class AbstractTree<NODE,MODEL extends HierarchyNode> extends Abs
 			
 			/**/
 			
-			public static class Default<NODE, MODEL extends HierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
+			public static class Default<NODE, MODEL extends AbstractHierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
 				private static final long serialVersionUID = -7748963854147708112L;
 				
 				@Override

@@ -24,11 +24,11 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.HierarchyNode;
+import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
-public abstract class AbstractUserSession<NODE,MODEL extends HierarchyNode> extends AbstractBean implements Serializable {
+public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNode> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 958643519183802472L;
 

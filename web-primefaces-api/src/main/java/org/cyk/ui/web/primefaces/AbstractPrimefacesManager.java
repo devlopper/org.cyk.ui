@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.HierarchyNode;
+import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.web.api.AbstractWebManager;
 
 public abstract class AbstractPrimefacesManager extends AbstractWebManager implements Serializable {
@@ -48,7 +48,7 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <NODE, NODE_MODEL extends HierarchyNode> AbstractTree<NODE, NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE, NODE_MODEL> userSession) {
+	protected <NODE, NODE_MODEL extends AbstractHierarchyNode> AbstractTree<NODE, NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE, NODE_MODEL> userSession) {
 		return (AbstractTree<NODE, NODE_MODEL>) new Tree();
 	}
 	

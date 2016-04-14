@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 
 import lombok.Getter;
 import lombok.Setter;

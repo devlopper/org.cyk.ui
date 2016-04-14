@@ -11,7 +11,7 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.api.WebHierarchyNode;

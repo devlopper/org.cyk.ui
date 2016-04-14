@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.model.table.AbstractTable;
 
 public class AbstractFormManyData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> extends AbstractForm<List<DATA>, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormManyData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> {

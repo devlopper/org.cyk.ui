@@ -16,7 +16,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 

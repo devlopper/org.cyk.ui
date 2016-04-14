@@ -3,7 +3,7 @@ package org.cyk.ui.api.command.menu;
 import java.util.Collection;
 
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 
 public interface UIMenu {

@@ -18,7 +18,7 @@ import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.HierarchyNode;
+import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
@@ -78,7 +78,7 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		businessClassConfig(aClass,formModelClass,null);
 	}
 	
-	protected <NODE,NODE_MODEL extends HierarchyNode,TYPE> AbstractTree<NODE,NODE_MODEL> getNavigator(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
+	protected <NODE,NODE_MODEL extends AbstractHierarchyNode,TYPE> AbstractTree<NODE,NODE_MODEL> getNavigator(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
 		AbstractTree<NODE,NODE_MODEL> navigator = createNavigatorTree(userSession);
 		Collection<TYPE> datas = getNavigatorTreeNodeDatas(dataClass,userSession);
 		/*if(datas!=null){
@@ -101,10 +101,10 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		
 	}
 	
-	protected <NODE,NODE_MODEL extends HierarchyNode> AbstractTree<NODE,NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE,NODE_MODEL> userSession){
+	protected <NODE,NODE_MODEL extends AbstractHierarchyNode> AbstractTree<NODE,NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE,NODE_MODEL> userSession){
 		return null;
 	}
-	protected <NODE,NODE_MODEL extends HierarchyNode,TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
+	protected <NODE,NODE_MODEL extends AbstractHierarchyNode,TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
 		return null;
 	}
 	

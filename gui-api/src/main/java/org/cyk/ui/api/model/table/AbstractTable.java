@@ -25,7 +25,7 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
@@ -33,7 +33,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.HierarchyNode;
+import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -43,7 +43,7 @@ import org.cyk.utility.common.model.table.Table;
 
 
 @Getter @Setter
-public abstract class AbstractTable<DATA,NODE,MODEL extends HierarchyNode> extends Table<Row<DATA>, Column, DATA, String, Cell, String> implements CommandListener,Serializable {
+public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNode> extends Table<Row<DATA>, Column, DATA, String, Cell, String> implements CommandListener,Serializable {
 
 	private static final long serialVersionUID = 581883275700805955L;
  

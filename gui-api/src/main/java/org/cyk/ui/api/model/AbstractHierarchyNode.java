@@ -7,25 +7,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.ui.api.command.IconType;
 
 @Getter @Setter @NoArgsConstructor
-public class HierarchyNode implements Serializable {
+public abstract class AbstractHierarchyNode implements Serializable {
 
 	private static final long serialVersionUID = -7119597731917014456L;
 
-	private Object data;
-	private String label;
-	private Boolean expanded=Boolean.TRUE;
-	private String consultViewId,editViewId;
+	protected Object data;
+	protected String label;
+	protected Boolean expanded=Boolean.TRUE;
+	protected String consultViewId,editViewId;
+	protected IconType collapsedIconType,expandedIconType;
 	
-	public HierarchyNode(Object data) {
+	public AbstractHierarchyNode(Object data) {
 		super();
 		this.data = data;
 		if(data!=null)
-			this.label = RootBusinessLayer.getInstance().getFormatterBusiness().format(data); //UIManager.getInstance().getLanguageBusiness().findObjectLabelText(data);
+			this.label = RootBusinessLayer.getInstance().getFormatterBusiness().format(data);
 	}
 	
-	public HierarchyNode(Object data, String label, Boolean expanded) {
+	public AbstractHierarchyNode(Object data, String label, Boolean expanded) {
 		super();
 		this.data = data;
 		this.label = label;

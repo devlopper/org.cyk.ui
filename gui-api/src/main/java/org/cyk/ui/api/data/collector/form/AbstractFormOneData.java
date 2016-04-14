@@ -14,7 +14,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.model.AbstractItemCollection;
