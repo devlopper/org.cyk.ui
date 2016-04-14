@@ -3,6 +3,9 @@ package org.cyk.ui.web.primefaces;
 import java.io.Serializable;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -10,25 +13,21 @@ import org.cyk.system.root.model.userinterface.ClassUserInterface;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter @Setter
-public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Serializable {
+public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Serializable {
 
 	private static final long serialVersionUID = 763364839529624006L;
 	
 	private CascadeStyleSheet css = new CascadeStyleSheet();
-	private Listener<TreeNode, WebHierarchyNode> listener;
+	private Listener<TreeNode, HierarchyNode> listener;
 	
 	public Tree() {
-		treeListeners.add(listener = new Listener.Adapter.Default<TreeNode, WebHierarchyNode>(){
+		treeListeners.add(listener = new Listener.Adapter.Default<TreeNode, HierarchyNode>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public TreeNode createRootNode() {
@@ -36,13 +35,13 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			
 			@Override
-			public TreeNode createNode(WebHierarchyNode model, TreeNode parent) {
+			public TreeNode createNode(HierarchyNode model, TreeNode parent) {
 				return new DefaultTreeNode(model, parent);
 			}
 			
 			@Override
-			public WebHierarchyNode createModel(Object node) {
-				return new WebHierarchyNode(node);
+			public HierarchyNode createModel(Object node) {
+				return new HierarchyNode(node);
 			}
 			
 			@Override
@@ -66,8 +65,8 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			
 			@Override
-			public WebHierarchyNode nodeModel(TreeNode node) {
-				return (WebHierarchyNode) node.getData();
+			public HierarchyNode nodeModel(TreeNode node) {
+				return (HierarchyNode) node.getData();
 			}
 			@Override
 			public Boolean isLeaf(TreeNode node) {
@@ -82,7 +81,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			@Override
 			public String getRedirectToViewId(TreeNode node,Crud crud,Object object) {
 				Boolean edit = Crud.isCreateOrUpdate(crud);
-				WebHierarchyNode model = nodeModel(selected);
+				HierarchyNode model = nodeModel(selected);
 				String v_outcome = model == null ? (edit ? editViewId : consultViewId) : (edit ? model.getEditViewId() : model.getConsultViewId());
 				if(StringUtils.isBlank(v_outcome))
 					v_outcome = edit ? editViewId : consultViewId;
@@ -101,7 +100,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			@Override
 			public Object[] getRedirectToParameters(TreeNode node,Crud crud,Object object) {
 				//Object data = getRedirectionObject(node);
-				Object nodeObject = ((WebHierarchyNode)node.getData()).getData();
+				Object nodeObject = ((HierarchyNode)node.getData()).getData();
 				Object[] parameters = null;
 				if(object==null)
 					;
@@ -117,7 +116,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			
 			/*@Override
 			public void redirect(TreeNode node) {
-				WebHierarchyNode model = nodeModel(selected);
+				HierarchyNode model = nodeModel(selected);
 				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
 				if(StringUtils.isBlank(v_outcome))
 					v_outcome = consultViewId;
@@ -141,7 +140,7 @@ public class Tree extends AbstractTree<TreeNode, WebHierarchyNode> implements Se
 			}
 			
 			@Override
-			public AbstractTree<TreeNode, WebHierarchyNode> getTree() {
+			public AbstractTree<TreeNode, HierarchyNode> getTree() {
 				return Tree.this;
 			}
 		});

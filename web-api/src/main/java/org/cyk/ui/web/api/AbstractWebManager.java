@@ -11,7 +11,7 @@ import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
 
-public abstract class AbstractWebManager extends AbstractApplicationUIManager implements Serializable {
+public abstract class AbstractWebManager<TREE_NODE,TREE_NODE_MODEL extends WebHierarchyNode> extends AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL> implements Serializable {
 
 	private static final long serialVersionUID = 406884223652214395L;
 

@@ -25,7 +25,7 @@ import org.cyk.utility.common.cdi.BeanAdapter;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractApplicationUIManager extends AbstractBean implements Serializable {
+public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 406884223652214395L;
 
@@ -40,7 +40,7 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 	
 	@Getter @Setter protected String identifier;
 	
-	public abstract SystemMenu systemMenu(AbstractUserSession<?,?> userSession);
+	public abstract SystemMenu systemMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession);
 	
 	protected BusinessEntityInfos businessEntityInfos(Class<? extends AbstractIdentifiable> aClass){
 		return uiManager.businessEntityInfos(aClass);
@@ -78,8 +78,8 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		businessClassConfig(aClass,formModelClass,null);
 	}
 	
-	protected <NODE,NODE_MODEL extends AbstractHierarchyNode,TYPE> AbstractTree<NODE,NODE_MODEL> getNavigator(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
-		AbstractTree<NODE,NODE_MODEL> navigator = createNavigatorTree(userSession);
+	protected <TYPE> AbstractTree<TREE_NODE,TREE_NODE_MODEL> getNavigator(Class<TREE_NODE> nodeClass,Class<TREE_NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
+		AbstractTree<TREE_NODE,TREE_NODE_MODEL> navigator = createNavigatorTree(userSession);
 		Collection<TYPE> datas = getNavigatorTreeNodeDatas(dataClass,userSession);
 		/*if(datas!=null){
 			for(Object data : datas){
@@ -91,38 +91,22 @@ public abstract class AbstractApplicationUIManager extends AbstractBean implemen
 		navigator.build(dataClass, datas, null);
 		return navigator;
 	}
-	/*
-	protected <NODE,NODE_MODEL extends HierarchyNode> AbstractTree.Listener<NODE, NODE_MODEL> getNavigatorTreeListener(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
-		return null;
-	}
-	*/
 	
-	public void initialiseNavigatorTree(AbstractUserSession userSession){
+	public void initialiseNavigatorTree(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
 		
 	}
 	
-	protected <NODE,NODE_MODEL extends AbstractHierarchyNode> AbstractTree<NODE,NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE,NODE_MODEL> userSession){
+	protected AbstractTree<TREE_NODE,TREE_NODE_MODEL> createNavigatorTree(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
 		return null;
 	}
-	protected <NODE,NODE_MODEL extends AbstractHierarchyNode,TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<NODE,NODE_MODEL> userSession){
+	protected <TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
 		return null;
 	}
 	
-	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<?,?> userSession,AbstractActorBusiness<?> actorBusiness){
+	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,AbstractActorBusiness<?> actorBusiness){
 		return actorBusiness.findByPerson((Person) userSession.getUser())!=null;
 	}
 	
-	/*
-	protected <NODE,NODE_MODEL extends HierarchyNode> NODE_MODEL createHierarchyNodeClassInstance(Class<NODE> nodeClass,Class<NODE_MODEL> nodeModelClass,AbstractUserSession<NODE,NODE_MODEL> userSession,Object data){
-		try {
-			return commonUtils.getConstructor(nodeModelClass, new Class<?>[]{Object.class}).newInstance(data);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	*/
-
 	/**/
 	
 	public static interface Listener {

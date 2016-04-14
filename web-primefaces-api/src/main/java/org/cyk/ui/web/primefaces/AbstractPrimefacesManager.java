@@ -10,10 +10,10 @@ import lombok.Setter;
 
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.web.api.AbstractWebManager;
+import org.primefaces.model.TreeNode;
 
-public abstract class AbstractPrimefacesManager extends AbstractWebManager implements Serializable {
+public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeNode,HierarchyNode> implements Serializable {
 
 	private static final long serialVersionUID = 5307129721480611811L;
 
@@ -46,10 +46,9 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager imple
 		return "org.cyk.ui.web.primefaces."+identifier;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	protected <NODE, NODE_MODEL extends AbstractHierarchyNode> AbstractTree<NODE, NODE_MODEL> createNavigatorTree(AbstractUserSession<NODE, NODE_MODEL> userSession) {
-		return (AbstractTree<NODE, NODE_MODEL>) new Tree();
+	protected AbstractTree<TreeNode, HierarchyNode> createNavigatorTree(AbstractUserSession<TreeNode, HierarchyNode> userSession) {
+		return new Tree();
 	}
 	
 	/**/

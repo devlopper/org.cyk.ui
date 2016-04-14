@@ -23,7 +23,6 @@ import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
-import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
@@ -36,7 +35,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
-public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> implements Serializable {
+public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> implements Serializable {
 
 	private static final long serialVersionUID = -2915809915934469649L;
 	
@@ -125,8 +124,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,WebHierarchyNode> i
 	}
 	
 	@Override
-	protected WebHierarchyNode createHierarchyNode() {
-		return new WebHierarchyNode(null);
+	protected HierarchyNode createHierarchyNode() {
+		return new HierarchyNode(null);
 	}
 	
 	public void onRowEditInit(RowEditEvent rowEditEvent){

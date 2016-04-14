@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -50,12 +49,14 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			for(Listener<NODE,MODEL> listener : treeListeners)
 				listener.expandNode(index);
 	}
-	
-	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
-		build(UIManager.getInstance().getLanguageBusiness().findClassLabelText(aClass), aClass, aCollection, selected);
-	}
-	
-	public <TYPE> void build(String rootLabel,Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
+		
+	public <TYPE> void build(final Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
+		String rootLabel = ListenerUtils.getInstance().getValue(String.class, treeListeners, new ListenerUtils.GetValueMethodListener<Listener<NODE,MODEL>,String>() {
+			@Override
+			public String execute(Listener<NODE,MODEL> listener) {
+				return listener.getRootNodeLabel(aClass);
+			}
+		});
 		build(createModel(rootLabel));
 		for(TYPE element : aCollection)
 			populate(element);	
@@ -326,7 +327,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 		AbstractTree<NODE, MODEL> getTree();
 		
 		NODE createRootNode();
-		
+		String getRootNodeLabel(Class<?> dataClass);
 		NODE createNode(MODEL model,NODE parent);
 		
 		void nodeSelected(NODE node);
@@ -370,7 +371,10 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			public AbstractTree<NODE, MODEL> getTree() {
 				return null;
 			}
-			
+			@Override
+			public String getRootNodeLabel(Class<?> dataClass) {
+				return null;
+			}
 			@Override
 			public NODE createRootNode() {
 				return null;
@@ -466,6 +470,10 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			public static class Default<NODE, MODEL extends AbstractHierarchyNode> extends Adapter<NODE, MODEL> implements Serializable {
 				private static final long serialVersionUID = -7748963854147708112L;
 				
+				@Override
+				public String getRootNodeLabel(Class<?> dataClass) {
+					return RootBusinessLayer.getInstance().getLanguageBusiness().findClassLabelText(dataClass);
+				}
 				@Override
 				public String label(Object data) {
 					return RootBusinessLayer.getInstance().getFormatterBusiness().format(data); 
