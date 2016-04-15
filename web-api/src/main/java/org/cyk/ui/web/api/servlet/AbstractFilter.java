@@ -48,7 +48,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		HttpSession session = request.getSession(Boolean.FALSE);
-		AbstractUserSession userSession = (AbstractUserSession) (session == null ? null : session.getAttribute(WebManager.getInstance().getSessionAttributeUserSession()));
+		AbstractUserSession<?,?> userSession = (AbstractUserSession<?,?>) (session == null ? null : session.getAttribute(WebManager.getInstance().getSessionAttributeUserSession()));
 		UserAccount userAccount;
 		if(userSession==null){
 			userAccount= null;
@@ -66,7 +66,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 		
 	}
 	
-	protected void __filter__(Application application, AbstractUserSession userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
+	protected void __filter__(Application application, AbstractUserSession<?,?> userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
 			, FilterChain filterChain) throws IOException, ServletException {	
 		Collection<AbstractListener> listeners = getListeners();
 		if(listeners!=null)
@@ -104,7 +104,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 	
 	public static interface AbstractListener {
 		
-		void filter(Application application,AbstractUserSession userSession,UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException;
+		void filter(Application application,AbstractUserSession<?,?> userSession,UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException;
 		
 		/**/
 		
@@ -120,7 +120,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 			protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness();
 			
 			@Override
-			public void filter(Application application, AbstractUserSession userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
+			public void filter(Application application, AbstractUserSession<?,?> userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
 					, FilterChain filterChain) throws IOException, ServletException {	
 			}
 			

@@ -88,7 +88,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	}*/
 	
 	@Override
-	protected void __filter__(Application application, AbstractUserSession userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
+	protected void __filter__(Application application, AbstractUserSession<?,?> userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
 			, FilterChain filterChain)throws IOException, ServletException {
 		Boolean isUrlFiltered = Boolean.TRUE;
 		for(Listener listener : Listener.COLLECTION){
@@ -227,7 +227,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	
 	public static interface UniformResourceLocatorRuntimeConstraint {
 	
-		Boolean isAccessibleByUserAccount(AbstractUserSession userSession,UserAccount userAccount,UniformResourceLocator uniformResourceLocator,HttpServletRequest request, HttpServletResponse response);
+		Boolean isAccessibleByUserAccount(AbstractUserSession<?,?> userSession,UserAccount userAccount,UniformResourceLocator uniformResourceLocator,HttpServletRequest request, HttpServletResponse response);
 		
 	}
 }
