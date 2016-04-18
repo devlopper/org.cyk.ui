@@ -372,6 +372,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		case THING_FOLDER_COLLAPSED: return "fa fa-folder";
 		case THING_FOLDER_EXPANDED: return "fa fa-folder-open";
 		case THING_TABLE: return "fa fa-table";
+		case THING_MONEY: return "fa fa-money";
+		case THING_AGENDA:return "fa fa-calendar-o";
 		
 		case PERSON:return "fa fa-user";
 		default:return null;

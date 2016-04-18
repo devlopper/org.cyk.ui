@@ -30,6 +30,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
+	public static Boolean SHOW_COLLECTION_FIELD = Boolean.TRUE;
+	public static Boolean SHOW_ACTION_FIELD = Boolean.TRUE;
+	
+	protected MovementAction movementAction;
+	
 	protected abstract Movement getMovement();
 	
 	protected BigDecimal getCurrentTotal(){
@@ -44,6 +49,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		movementAction  = webManager.getIdentifiableFromRequestParameter(MovementAction.class, Boolean.TRUE);
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			@Override
 			public Boolean build(Field field) {
@@ -57,10 +63,10 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	}
 	
 	protected Boolean showCollectionField(){
-		return Boolean.TRUE;
+		return SHOW_COLLECTION_FIELD;
 	}
 	protected Boolean showActionField(){
-		return Boolean.TRUE;
+		return SHOW_ACTION_FIELD;
 	}
 	
 	@Override
@@ -104,10 +110,13 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 				:Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
 		setFieldValue(AbstractMovementForm.FIELD_CURRENT_TOTAL, movementCollection==null?null:getCurrentTotal());
 		Movement movement = getMovement();
-		selectMovementAction(movement==null?null:movement.getAction());
+		if(movement!=null && movementAction!=null)
+			movement.setAction(movementAction);
+		selectMovementAction(movement==null?movementAction:movement.getAction());
 	}
 	protected void selectMovementAction(MovementAction movementAction){
 		setFieldValue(AbstractMovementForm.FIELD_ACTION, movementAction);
+		form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).setDisabled(movementAction!=null);
 		updateNextTotal(null);
 	}
 	
@@ -121,10 +130,10 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;
-		@Input(readOnly=true) @InputNumber @NotNull private BigDecimal currentTotal;
+		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal currentTotal;
 		@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull protected MovementAction action;
 		@Input @InputNumber @NotNull protected BigDecimal value;
-		@Input(readOnly=true) @InputNumber @NotNull private BigDecimal nextTotal;
+		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal nextTotal;
 		
 		protected abstract Movement getMovement();
 		
