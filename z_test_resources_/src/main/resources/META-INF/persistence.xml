@@ -9,6 +9,8 @@
 		<properties>
 			<property name="eclipselink.logging.level" value="OFF" />
 			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			<property name="eclipselink.target-server" value="Glassfish" />
+			<property name="eclipselink.target-database" value="MySql" />
 			<!--
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			-->

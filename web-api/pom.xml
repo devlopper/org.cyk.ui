@@ -17,6 +17,7 @@
  
 	<properties>
 		<version.omnifaces>2.0</version.omnifaces>
+		<!--version.omnifaces>2.3</version.omnifaces-->
 		<version.shiro>1.2.4</version.shiro>
 		<version.prettyfaces>3.0.0.Alpha4</version.prettyfaces>
 		
