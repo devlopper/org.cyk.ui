@@ -22,7 +22,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	public static final String ROOT = "Root";
 	
 	@Getter protected NODE root,index;
-	@Getter @Setter protected NODE selected,lastExpanded;
+	@Getter @Setter protected NODE selected,lastExpanded,lastCollapsed;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
 	@Getter @Setter protected String consultViewId,editViewId;
 	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE;
@@ -65,6 +65,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	}
 	
 	public void expand(Object object,Boolean selected){
+		//System.out.println("AbstractTree.expand() : "+object);
 		if(object==null)
 			return;
 		NODE node = nodeOf(object);
@@ -88,7 +89,6 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	}
 	
 	public void nodeSelected(NODE node){
-		//System.out.println("AbstractTree.nodeSelected() : "+node);
 		lastExpanded = selected = node;
 		for(Listener<NODE,MODEL> listener : treeListeners)
 			listener.nodeSelected(node);
@@ -98,6 +98,12 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 		lastExpanded = node;
 		for(Listener<NODE,MODEL> listener : treeListeners)
 			listener.nodeExpanded(node);
+	}
+	
+	public void nodeCollapsed(NODE node){
+		lastCollapsed = node;
+		for(Listener<NODE,MODEL> listener : treeListeners)
+			listener.nodeCollapsed(node);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -333,8 +339,10 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 		void nodeSelected(NODE node);
 		
 		void nodeExpanded(NODE node);
-		
 		void expandNode(NODE node);
+		
+		void nodeCollapsed(NODE node);
+		void collapseNode(NODE node);
 		
 		void selectNode(NODE node);
 		
@@ -464,6 +472,12 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			public Crud getRedirectionCrud(NODE node) {
 				return null;
 			}
+			
+			@Override
+			public void nodeCollapsed(NODE node) {}
+			
+			@Override
+			public void collapseNode(NODE node) {}
 			
 			/**/
 			

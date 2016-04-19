@@ -14,6 +14,8 @@ import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -52,6 +54,11 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 			@Override
 			public void selectNode(TreeNode node) {
 				node.setSelected(Boolean.TRUE);
+			}
+			
+			@Override
+			public void collapseNode(TreeNode node) {
+				node.setExpanded(Boolean.FALSE);
 			}
 			
 			@Override
@@ -113,27 +120,7 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 				}
 				return parameters;
 			}
-			
-			/*@Override
-			public void redirect(TreeNode node) {
-				HierarchyNode model = nodeModel(selected);
-				String v_outcome = model == null ? consultViewId : model.getConsultViewId();
-				if(StringUtils.isBlank(v_outcome))
-					v_outcome = consultViewId;
-				Object data = selectedAs(AbstractIdentifiable.class);
-				Object[] parameters = null;
-				if(data==null)
-					;
-				else{
-					if(StringUtils.isBlank(v_outcome))
-						v_outcome = UIManager.getInstance().businessEntityInfos(data.getClass()).getUserInterface().getConsultViewId();
-					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(data.getClass()).getIdentifier()
-							,UIManager.getInstance().getIdentifiableParameter(), data};
-				}
-				logTrace("Tree Redirecting to {} with parameters {}", v_outcome,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
-				WebNavigationManager.getInstance().redirectTo(v_outcome,parameters);
-			}*/
-			
+						
 			@Override
 			public Boolean isRedirectable(TreeNode node) {
 				return Boolean.TRUE; //nodeModel(node).getData() instanceof AbstractIdentifiable;
@@ -152,14 +139,23 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 	protected void __redirectTo__(TreeNode node, String viewId,Object[] parameters) {
 		WebNavigationManager.getInstance().redirectTo(viewId,parameters);
 	}
-
-	public void onNodeSelect(NodeSelectEvent event){
-		nodeSelected(event.getTreeNode());
-	}
 	
 	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected,String consultViewId){
 		build(aClass, aCollection,selected);
 		this.consultViewId = consultViewId;
 	}
-		
+	
+	/* Ajax behaviors */
+	
+	public void onNodeSelect(NodeSelectEvent event){
+		nodeSelected(event.getTreeNode());
+	}
+	
+	public void onNodeExpand(NodeExpandEvent event){
+		nodeExpanded(event.getTreeNode());
+	}
+	
+	public void onNodeCollapse(NodeCollapseEvent event){
+		nodeCollapsed(event.getTreeNode());
+	}
 }

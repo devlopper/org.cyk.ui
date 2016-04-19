@@ -16,7 +16,11 @@
 		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
 			<p:tree value="#{cc.value.root}" var="node" selectionMode="single" selection="#{cc.value.selected}" dynamic="#{cc.value.dynamic}" 
 				style="#{cc.value.css.inline}" styleClass="#{cc.value.css.clazz}">
+		        
 		        <p:ajax event="select" listener="#{cc.value.onNodeSelect}" />
+		        <p:ajax event="expand" listener="#{cc.value.onNodeExpand}" />
+		        <p:ajax event="collapse" listener="#{cc.value.onNodeCollapse}" />
+		        
 		        <p:treeNode expanded="#{node.expanded}" collapsedIcon="#{primefacesManager.getIcon(node.collapsedIconType)}" 
 		        	expandedIcon="#{primefacesManager.getIcon(node.expandedIconType)}">
 		            <h:outputText value="#{node.label}" style="#{node.css.inline}" styleClass="#{node.css.clazz}"/>
