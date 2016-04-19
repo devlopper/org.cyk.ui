@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.ui.api.Icon;
 
 public interface UICommandable {
 	 
@@ -28,9 +29,12 @@ public interface UICommandable {
 	Boolean getShowLabel();
 	void setShowLabel(Boolean show);
 	
-	IconType getIconType();
-	void setIconType(IconType anIconType);
+	@Deprecated IconType getIconType();
+	@Deprecated void setIconType(IconType anIconType);
 
+	Icon getIcon();
+	void setIcon(Icon anIcon);
+	
 	String getTooltip();
 	void setTooltip(String label);
 	

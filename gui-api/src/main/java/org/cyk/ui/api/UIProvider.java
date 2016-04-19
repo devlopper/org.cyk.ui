@@ -17,6 +17,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.file.File;
+import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -175,6 +176,13 @@ public class UIProvider extends AbstractBean implements Serializable {
 		return outputImage;
 	}
 	
+	public UICommandable createCommandable(AbstractCommandable.Builder<? extends AbstractCommandable> builder){
+		UICommandable commandable = builder.build();
+		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+			listener.commandableInstanceCreated(commandable);
+		return commandable;
+	}
+	
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		Class<? extends UICommandable> commandableClass = this.commandableClass;
 		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
@@ -200,7 +208,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	public UICommandable createCommandable(String labelId,IconType iconType){
 		return createCommandable(null, labelId, iconType, null, null);
 	}
-	
+	/*
 	public UICommandable createCommandable(String labelId,IconType iconType,ViewType viewType){
 		UICommandable p = createCommandable(null, labelId, iconType, null, null);
 		p.setViewType(viewType);
@@ -214,7 +222,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			p.setCommandRequestType(CommandRequestType.UI_VIEW);
 		return p;
 	}
-	
+	*/
 	/* */
 	
 	public Control<?,?,?,?,?> createControlInstance(Class<? extends Control<?,?,?,?,?>> controlClass){

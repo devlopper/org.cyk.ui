@@ -135,8 +135,8 @@ public abstract class AbstractCommand implements UICommand , Serializable {
 	
 	@Override
 	public UIMessageManager getMessageManager() {
-		if(messageManager==null)
-			throw new RuntimeException("No message manager has been provided.");
+		//if(messageManager==null)
+		//	throw new RuntimeException("No message manager has been provided.");
 		return messageManager;
 	}
 	 

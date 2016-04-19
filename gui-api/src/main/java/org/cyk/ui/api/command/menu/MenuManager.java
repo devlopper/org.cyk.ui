@@ -33,12 +33,14 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.UserDeviceType;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
+import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.Constant;
@@ -75,26 +77,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	private UICommandable homeCommandable(){
-		UICommandable commandable = UIProvider.getInstance().createCommandable("command.home", IconType.THING_HOME,ViewType.HOME);
+		UICommandable commandable = Builder.instanciateOne().setLabelFromId("command.home").setView(ViewType.HOME).setIcon(Icon.THING_HOME).build();
+		//UIProvider.getInstance().createCommandable("command.home", Icon.THING_HOME,ViewType.HOME);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		return commandable;
 	}
 	
 	private UICommandable logoutCommandable(){
-		UICommandable commandable = UIProvider.getInstance().createCommandable("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT);
+		UICommandable commandable = Builder.instanciateOne().setLabelFromId("command.useraccount.logout").setView(ViewType.USERACCOUNT_LOGOUT).setIcon(Icon.ACTION_LOGOUT).build();
+		//UICommandable commandable = UIProvider.getInstance().createCommandable("command.useraccount.logout", Icon.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT);
 		commandable.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
 		return commandable;
 	}
 	
 	private UICommandable notificationsCommandable(){
-		UICommandable commandable = UIProvider.getInstance().createCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
+		UICommandable commandable = Builder.instanciateOne().setLabelFromId("command.notifications").setView(ViewType.NOTIFICATIONS).setIcon(Icon.THING_NOTIFICATIONS).build();
+		//UICommandable commandable = UIProvider.getInstance().createCommandable("command.notifications", Icon.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.setIdentifier(COMMANDABLE_NOTIFICATIONS_IDENTIFIER);
 		return commandable;
 	}
 	
 	private UICommandable agendaCommandable(){
-		UICommandable commandable = UIProvider.getInstance().createCommandable("command.agenda", IconType.THING_CALENDAR, ViewType.TOOLS_AGENDA);
+		UICommandable commandable = Builder.instanciateOne().setLabelFromId("command.agenda").setView(ViewType.TOOLS_AGENDA).setIcon(Icon.THING_CALENDAR).build();
+		//UICommandable commandable = UIProvider.getInstance().createCommandable("command.agenda", Icon.THING_CALENDAR, ViewType.TOOLS_AGENDA);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.setIdentifier(COMMANDABLE_EVENT_CALENDAR_IDENTIFIER);
 		return commandable;

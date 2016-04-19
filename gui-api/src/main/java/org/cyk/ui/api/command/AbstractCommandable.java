@@ -10,12 +10,17 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.MessageManager;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.utility.common.AbstractBuilder;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -27,6 +32,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected String identifier,label,tooltip,onClick;
 	@Getter @Setter protected Integer index;
 	@Getter @Setter protected IconType iconType;
+	@Getter @Setter protected Icon icon;
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
@@ -155,5 +161,67 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Override
 	public String toString() {
 		return index+","+identifier+","+label;
+	}
+	
+	/**/
+	
+	public static class Builder<COMMANDABLE extends AbstractCommandable> extends AbstractBuilder<COMMANDABLE> implements Serializable {
+		private static final long serialVersionUID = 7285848895016815525L;
+
+		public Builder(Class<COMMANDABLE> commandableClass) {
+			super(commandableClass);
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static <COMMANDABLE extends AbstractCommandable> Builder<COMMANDABLE> instanciateOne(){
+			Builder<COMMANDABLE> builder = new Builder<COMMANDABLE>((Class<COMMANDABLE>) UIProvider.getInstance().getCommandableClass());
+			builder.instanciate();
+			return builder;
+		}
+		public Builder<COMMANDABLE> setLabel(String label){
+			instance.setLabel(label);
+			return this;
+		}
+		public Builder<COMMANDABLE> setLabelFromId(String labelId){
+			instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText(labelId));
+			return this;
+		}
+		public Builder<COMMANDABLE> setIcon(Icon icon){
+			instance.setIcon(icon);
+			return this;
+		}
+		public Builder<COMMANDABLE> setCommandListeners(CommandListener...commandListeners){
+			if(commandListeners!=null)
+				for(CommandListener commandListener : commandListeners)
+					instance.getCommand().getCommandListeners().add(commandListener);
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setView(Object view){
+			if(view instanceof ViewType)
+				instance.setViewType((ViewType) view);
+			else
+				instance.setViewId(view);
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> addDefaultParameters(){
+			instance.addDefaultParameters();
+			return this;
+		}
+		
+		@Override
+		public COMMANDABLE build() {
+			if(instance.getCommand()==null)
+				instance.setCommand(new DefaultCommand());
+			
+			if(instance.getCommand().getMessageManager()==null)
+				instance.getCommand().setMessageManager(MessageManager.INSTANCE);
+			
+			if(instance.getViewId() != null)
+				instance.setCommandRequestType(CommandRequestType.UI_VIEW);
+			return instance;
+		}
+
 	}
 }

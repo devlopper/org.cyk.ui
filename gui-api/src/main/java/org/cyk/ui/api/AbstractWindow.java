@@ -19,6 +19,7 @@ import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
@@ -237,17 +238,21 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	}
 	
 	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,ViewType viewType){
-		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewType);
-		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		commandable.addDefaultParameters();
+		UICommandable commandable = UIProvider.getInstance().createCommandable(Builder.instanciateOne().setLabelFromId(labelId).setView(viewType)
+				.setIcon(null).addDefaultParameters());
+		//UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewType);
+		//commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
+		//commandable.addDefaultParameters();
 		return commandable;
 	}
 	protected UICommandable createViewCommandRequest(String labelId,ViewType viewType){
 		return createViewCommandRequest(labelId, null, viewType);
 	}
 	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,Object viewId){
-		UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewId);
-		commandable.addDefaultParameters();
+		UICommandable commandable = UIProvider.getInstance().createCommandable(Builder.instanciateOne().setLabelFromId(labelId).setView(viewId).setIcon(null)
+				.addDefaultParameters());
+		//UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewId);
+		//commandable.addDefaultParameters();
 		return commandable;
 	}
 	protected UICommandable createViewCommandRequest(String labelId,Object viewId){
