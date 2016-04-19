@@ -204,10 +204,10 @@ public class UIProvider extends AbstractBean implements Serializable {
 
 		return commandable;
 	}
-	
+	/*
 	public UICommandable createCommandable(String labelId,IconType iconType){
 		return createCommandable(null, labelId, iconType, null, null);
-	}
+	}*/
 	/*
 	public UICommandable createCommandable(String labelId,IconType iconType,ViewType viewType){
 		UICommandable p = createCommandable(null, labelId, iconType, null, null);

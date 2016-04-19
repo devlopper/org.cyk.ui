@@ -58,7 +58,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		return CommandRequestType.UI_VIEW.equals(commandRequestType);
 	}
 	
-	@Override
+	/*@Override
 	public UICommandable addChild(String labelId, IconType iconType,String viewId,Collection<Parameter> parameters) {
 		UICommandable child = UIProvider.getInstance().createCommandable(labelId, iconType);
 		child.setViewId(viewId);
@@ -78,7 +78,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			child.getParameters().addAll(parameters);
 		addChild(child);
 		return child;
-	}
+	}*/
 	
 	@Override
 	public void addChild(UICommandable aCommandable) {
@@ -210,6 +210,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		
+		public Builder<COMMANDABLE> setParameters(Collection<Parameter> parameters){
+			instance.getParameters().addAll(parameters);
+			return this;
+		}
+		
 		@Override
 		public COMMANDABLE build() {
 			if(instance.getCommand()==null)
@@ -223,5 +228,9 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return instance;
 		}
 
+		@SuppressWarnings("unchecked")
+		public COMMANDABLE create(){
+			return (COMMANDABLE) UIProvider.getInstance().createCommandable(this);
+		}
 	}
 }

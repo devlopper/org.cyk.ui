@@ -51,15 +51,15 @@ public abstract class AbstractView extends AbstractBean implements View,Serializ
 	protected String text(String code){
 		return UIManager.getInstance().text(code);
 	}
-	
-	public UICommandable createCommandable(CommandListener commandListener, String labelId, IconType iconType, EventListener anExecutionPhase, ProcessGroup aProcessGroup) {
+	/*
+	public UICommandable createCommandable(CommandListener commandListener, String labelId, Icon iconType, EventListener anExecutionPhase, ProcessGroup aProcessGroup) {
 		return uiProvider.createCommandable(commandListener, labelId, iconType, anExecutionPhase, aProcessGroup);
 	}
 	
 	public UICommandable createCommandable(CommandListener commandListener, String labelId, IconType iconType) {
 		return createCommandable(commandListener, labelId, iconType, null, null);
 	}
-	
+	*/
 	/* Messages */
 	
 	protected void showMessage(SeverityType severityType,String summaryId,String detailsId) {

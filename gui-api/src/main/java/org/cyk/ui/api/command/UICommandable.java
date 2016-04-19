@@ -81,8 +81,8 @@ public interface UICommandable {
 	 
 	UICommandable addParameter(AbstractIdentifiable identifiable);
 	
-	UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
-	UICommandable addChild(String labelId,IconType iconType,ViewType viewType,Collection<Parameter> parameters);
+	//UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
+	//UICommandable addChild(String labelId,IconType iconType,ViewType viewType,Collection<Parameter> parameters);
 	void addChild(UICommandable aCommandable);
 	
 	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
