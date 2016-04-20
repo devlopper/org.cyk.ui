@@ -10,7 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebUserSession extends AbstractUserSession implements HttpSessionBindingListener , Serializable {
+public abstract class AbstractWebUserSession<NODE,MODEL extends WebHierarchyNode> extends AbstractUserSession<NODE,MODEL> implements HttpSessionBindingListener , Serializable {
 
 	private static final long serialVersionUID = 7799444210756287076L;
 

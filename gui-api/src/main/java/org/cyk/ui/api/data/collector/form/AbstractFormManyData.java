@@ -6,9 +6,9 @@ import java.util.List;
 
 import lombok.Getter;
 
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.model.table.AbstractTable;
 
 public class AbstractFormManyData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> extends AbstractForm<List<DATA>, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormManyData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> {
@@ -21,13 +21,13 @@ public class AbstractFormManyData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> 
 	
 	public AbstractFormManyData(Class<DATA> dataType) {
 		this.dataType = dataType;
-		addCommandable = createCommandable(this,"command.add",IconType.ACTION_OK);
-		deleteCommandable = createCommandable(this,"command.delete",IconType.ACTION_REMOVE);
-		saveCommandable = createCommandable(this,"command.save",IconType.ACTION_SAVE);
-		editCommandable = createCommandable(this,"command.edit",IconType.ACTION_EDIT);
-		openCommandable = createCommandable(this,"command.open",IconType.ACTION_OPEN);
-		cancelEditCommandable = createCommandable(this,"command.cancel",IconType.ACTION_CANCEL);
-		exportCommandable = createCommandable(this,"command.export",IconType.ACTION_EXPORT);
+		addCommandable = createCommandable(this,"command.add",Icon.ACTION_OK);
+		deleteCommandable = createCommandable(this,"command.delete",Icon.ACTION_REMOVE);
+		saveCommandable = createCommandable(this,"command.save",Icon.ACTION_SAVE);
+		editCommandable = createCommandable(this,"command.edit",Icon.ACTION_EDIT);
+		openCommandable = createCommandable(this,"command.open",Icon.ACTION_OPEN);
+		cancelEditCommandable = createCommandable(this,"command.cancel",Icon.ACTION_CANCEL);
+		exportCommandable = createCommandable(this,"command.export",Icon.ACTION_EXPORT);
 	}
 	
 	@Override

@@ -38,8 +38,8 @@ public class CommandBuilder implements Serializable {
 		if(Boolean.TRUE.equals(aCommandable.getShowLabel()))
 			commandButton.setValue(aCommandable.getLabel());
 		commandButton.setUpdate(aCommandable.getUpdate());
-		if(aCommandable.getIconType()!=null)
-			commandButton.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
+		if(aCommandable.getIcon()!=null)
+			commandButton.setIcon(FontAwesomeIconSet.INSTANCE.get(aCommandable.getIcon()));
 		if(StringUtils.isEmpty(aCommandable.getTooltip()))
 			commandButton.setTitle(aCommandable.getLabel());
 		else
@@ -55,8 +55,8 @@ public class CommandBuilder implements Serializable {
 			DefaultMenuItem	menuItem = new DefaultMenuItem();
 			menuItem.setValue(aCommandable.getLabel());
 			menuItem.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
-			if(aCommandable.getIconType()!=null)
-				menuItem.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
+			if(aCommandable.getIcon()!=null)
+				menuItem.setIcon(FontAwesomeIconSet.INSTANCE.get(aCommandable.getIcon()));
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
 					if(aCommandable.getViewId()!=null){
@@ -136,8 +136,8 @@ public class CommandBuilder implements Serializable {
 		}else{
 			DefaultSubMenu subMenu = new DefaultSubMenu(aCommandable.getLabel());
 			subMenu.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
-			if(aCommandable.getIconType()!=null)
-				subMenu.setIcon(PrimefacesManager.getInstance().getIcon(aCommandable.getIconType()));
+			if(aCommandable.getIcon()!=null)
+				subMenu.setIcon(FontAwesomeIconSet.INSTANCE.get(aCommandable.getIcon()));
 			for(UICommandable commandable : aCommandable.getChildren())
 				menuItem(commandable, subMenu, managedBeanName, fields);
 			return subMenu;

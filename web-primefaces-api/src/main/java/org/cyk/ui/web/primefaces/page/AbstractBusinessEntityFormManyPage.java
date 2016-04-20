@@ -12,17 +12,16 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.CellAdapter;
 import org.cyk.ui.api.model.table.Column;
@@ -330,8 +329,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	
 	/**/
 	
-	protected UICommandable createCommandable(String labelId,IconType icon){
-		return UIProvider.getInstance().createCommandable(this, labelId, icon, null, null);
+	protected UICommandable createCommandable(String labelId,Icon icon){
+		return instanciateCommandableBuilder().setLabelFromId(labelId).setIcon(icon).create();
 	}
 
 }

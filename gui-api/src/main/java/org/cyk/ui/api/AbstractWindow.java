@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
@@ -19,12 +22,10 @@ import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
+import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.IconType;
-import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -36,10 +37,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
 import org.joda.time.DateTimeConstants;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
+public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABLE extends AbstractCommandable> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
 	private static final long serialVersionUID = 7282005324574303823L;
 
@@ -236,10 +234,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected Collection<UICommandable> contextualCommandables(){
 		return null;
 	}
-	
-	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,ViewType viewType){
+	/*
+	protected UICommandable createViewCommandRequest(String labelId,Icon icon,ViewType viewType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(Builder.instanciateOne().setLabelFromId(labelId).setView(viewType)
-				.setIcon(null).addDefaultParameters());
+				.setIcon(icon).addDefaultParameters());
 		//UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewType);
 		//commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		//commandable.addDefaultParameters();
@@ -248,7 +246,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected UICommandable createViewCommandRequest(String labelId,ViewType viewType){
 		return createViewCommandRequest(labelId, null, viewType);
 	}
-	protected UICommandable createViewCommandRequest(String labelId,IconType iconType,Object viewId){
+	protected UICommandable createViewCommandRequest(String labelId,Icon iconType,Object viewId){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(Builder.instanciateOne().setLabelFromId(labelId).setView(viewId).setIcon(null)
 				.addDefaultParameters());
 		//UICommandable commandable = UIProvider.getInstance().createCommandable(labelId, iconType,viewId);
@@ -258,7 +256,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 	protected UICommandable createViewCommandRequest(String labelId,Object viewId){
 		return createViewCommandRequest(labelId, null, viewId);
 	}
-	
+	*/
 	@Override
 	public Boolean getShowWindowHierachyMenu() {
 		return windowHierachyMenu!=null && !windowHierachyMenu.getCommandables().isEmpty();
@@ -306,4 +304,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM> extends 
 		//getMessageManager().message(SeverityType.WARNING, "window.idle.warning", Boolean.TRUE).showGrowl();
 	}
 	
+	/**/
+	
+	protected org.cyk.ui.api.command.AbstractCommandable.Builder<COMANDABLE> instanciateCommandableBuilder(){
+		return Builder.instanciateOne();
+	}
 }

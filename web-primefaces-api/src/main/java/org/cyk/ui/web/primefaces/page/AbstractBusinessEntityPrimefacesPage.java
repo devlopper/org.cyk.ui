@@ -13,9 +13,9 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.web.primefaces.Table;
@@ -124,11 +124,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
 	}
 	
-	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType){
-		return addDetailsMenuCommandable(identifier,labelId, iconType, businessEntityInfos.getUserInterface().getConsultViewId());
+	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,Icon icon){
+		return addDetailsMenuCommandable(identifier,labelId, icon, businessEntityInfos.getUserInterface().getConsultViewId());
 	}
-	protected UICommandable addDetailsMenuCommandables(String labelId,IconType iconType){
-		return addDetailsMenuCommandable(labelId,labelId, iconType);
+	protected UICommandable addDetailsMenuCommandables(String labelId,Icon icon){
+		return addDetailsMenuCommandable(labelId,labelId, icon);
 	}
 	
 	@Override

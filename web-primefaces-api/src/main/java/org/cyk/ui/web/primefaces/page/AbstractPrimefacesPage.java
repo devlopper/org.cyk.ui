@@ -15,12 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -54,7 +54,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
 
-public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl> implements Serializable {
+public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,Commandable> implements Serializable {
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
@@ -249,13 +249,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				editOutcome = configuration.getUiEditViewId();
 			
 		if(StringUtils.isNotBlank(editOutcome)){
-			UICommandable commandable = createViewCommandRequest("command.edit",IconType.ACTION_EDIT, editOutcome);
+			UICommandable commandable = instanciateCommandableBuilder().setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).setView(editOutcome)
+					.addCrudParameters(Crud.UPDATE, master/*,details*/).create();
 			/*
 			commandable.addParameter(uiManager.getClassParameter(), uiManager.keyFromClass(master.getClass()));
 			commandable.addParameter(uiManager.getCrudParameter(), uiManager.getCrudUpdateParameter());
 			commandable.addParameter(uiManager.getIdentifiableParameter(), master.getIdentifier());
 			*/
-			commandable.addCrudParameters(uiManager.getCrudUpdateParameter(), master, details);
+			//commandable.addCrudParameters(uiManager.getCrudUpdateParameter(), master, details);
 			commandables.add(commandable);
 		}
 		

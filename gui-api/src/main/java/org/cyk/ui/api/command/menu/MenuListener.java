@@ -4,23 +4,23 @@ import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 
-public interface MenuListener {
+public interface MenuListener<USER_SESSION extends AbstractUserSession<?, ?>> {
 
-	Boolean moduleGroupCreateable(AbstractUserSession userSession,ModuleGroup group);
-	void moduleGroupCreated(AbstractUserSession userSession,ModuleGroup group,UICommandable commandable);
+	Boolean moduleGroupCreateable(USER_SESSION userSession,ModuleGroup group);
+	void moduleGroupCreated(USER_SESSION userSession,ModuleGroup group,UICommandable commandable);
 	
 	//void systemMenu(UserSession userSession,SystemMenu systemMenu);
 
-	void businessModuleGroupCreated(AbstractUserSession userSession,UICommandable commandableGroup);
+	void businessModuleGroupCreated(USER_SESSION userSession,UICommandable commandableGroup);
 	
-	void applicationMenuCreated(AbstractUserSession userSession,UIMenu menu);
+	void applicationMenuCreated(USER_SESSION userSession,UIMenu menu);
 	
-	void referenceEntityMenuCreated(AbstractUserSession userSession,UIMenu menu);
+	void referenceEntityMenuCreated(USER_SESSION userSession,UIMenu menu);
 
-	void referenceEntityGroupCreated(AbstractUserSession userSession,UICommandable referenceEntityGroup);
+	void referenceEntityGroupCreated(USER_SESSION userSession,UICommandable referenceEntityGroup);
 	
-	void calendarMenuCreated(AbstractUserSession userSession,UIMenu menu);
+	void calendarMenuCreated(USER_SESSION userSession,UIMenu menu);
 
-	void sessionContextualMenuCreated(AbstractUserSession userSession,UIMenu menu);
+	void sessionContextualMenuCreated(USER_SESSION userSession,UIMenu menu);
 
 }

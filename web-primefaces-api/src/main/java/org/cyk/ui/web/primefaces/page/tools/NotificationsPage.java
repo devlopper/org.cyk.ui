@@ -12,7 +12,6 @@ import lombok.Getter;
 
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.model.event.Notification;
-import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -37,7 +36,7 @@ public class NotificationsPage extends AbstractPrimefacesPage implements Seriali
 	protected void initialisation() {
 		super.initialisation();
 		loadNotifications();
-		deleteFromSessionCommandable = UIProvider.getInstance().createCommandable("command.yesigotnotification", null);
+		deleteFromSessionCommandable = instanciateCommandableBuilder().setLabelFromId("command.yesigotnotification").create();
 		deleteFromSessionCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 
 			private static final long serialVersionUID = 7665276507747433567L;

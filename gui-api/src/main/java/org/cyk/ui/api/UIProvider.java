@@ -21,11 +21,8 @@ import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
-import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputBooleanButton;
@@ -183,7 +180,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
-	public UICommandable createCommandable(CommandListener commandListener,String labelId,IconType iconType,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
+	@Deprecated
+	public UICommandable createCommandable(CommandListener commandListener,String labelId,Icon icon,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		Class<? extends UICommandable> commandableClass = this.commandableClass;
 		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends UICommandable> c = listener.commandableClassSelected(commandableClass);
@@ -194,7 +192,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		commandable.setCommand(new DefaultCommand());
 		commandable.getCommand().setMessageManager(MessageManager.INSTANCE);
 		commandable.setLabel(UIManager.getInstance().text(labelId));
-		commandable.setIconType(iconType);
+		commandable.setIcon(icon);
 		commandable.setEventListener(anExecutionPhase);
 		commandable.setProcessGroup(aProcessGroup);
 		if(commandListener!=null)

@@ -18,20 +18,19 @@ import javax.inject.Singleton;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
-import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.servlet.FileServlet;
 import org.cyk.ui.web.api.servlet.ImageServlet;
@@ -43,10 +42,6 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
-
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
 	
@@ -55,6 +50,23 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	private static WebNavigationManager INSTANCE;
 	public static WebNavigationManager getInstance() {
 		return INSTANCE;
+	}
+	static{
+		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getDynamicView(Crud crud, Boolean one) {
+				if(Boolean.TRUE.equals(one))
+					return INSTANCE.outcomeDynamicCrudOne;
+				else
+					return INSTANCE.outcomeDynamicCrudMany;
+			}
+			
+			@Override
+			public String getDynamicReportView() {
+				return INSTANCE.outcomeToolsReport;
+			}
+		});
 	}
 	
 	public static final Map<String, String> MOBILE_VIEW_MAP = new HashMap<String, String>();
@@ -332,12 +344,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
-	public String homeUrl(AbstractUserSession userSession){
+	public String homeUrl(AbstractWebUserSession userSession){
 		String url = null;
 		if(roleManager.isAdministrator(null))
 			url = url("administratorindex",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		else
-			for(Listener listener : Listener.COLLECTION){
+			for(Listener<AbstractWebUserSession> listener : Listener.COLLECTION){
 				String v = listener.homeUrl(userSession);
 				if(v!=null)
 					url = v;
@@ -375,7 +387,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String reportUrl(AbstractIdentifiable identifiable,String reportIdentifier,String fileExtension,Boolean print){
-		Collection<Parameter> parameters = reportParameters(identifiable, reportIdentifier, fileExtension,print);
+		Collection<Parameter> parameters = new ArrayList<>();
+		Parameter.addReport(parameters, identifiable, reportIdentifier, fileExtension, print, null);
 		return url(outcomeToolsReport, parametersToArray(parameters), Boolean.FALSE, Boolean.FALSE);
 	}
 	
@@ -494,42 +507,42 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType,String viewId){
+/*	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType,String viewId){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(StringUtils.isBlank(viewId)?editOneOutcome(identifiable.getClass()):viewId);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudUpdateParameter(), identifiable);
 		return commandable;
 	}
-	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+	public UICommandable createUpdateCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType){
 		return createUpdateCommandable(identifiable, labelid, iconType,null);
 	}
 	
-	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType,String viewId){
+	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType,String viewId){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(StringUtils.isBlank(viewId)?editOneOutcome(identifiable.getClass()):viewId);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudDeleteParameter(), identifiable);
 		return commandable;
 	}
-	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+	public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType){
 		return createDeleteCommandable(identifiable, labelid, iconType,null);
 	}
 	
-	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,IconType iconType){
+	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(consultOneOutcome(identifiable.getClass()));
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		commandable.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), identifiable);
 		return commandable;
 	}
-	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,IconType iconType){
+	public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,Icon iconType){
 		UICommandable commandable = createConsultCommandable(identifiable, "button", iconType);
 		commandable.setLabel(RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable));
 		return commandable;
 	}
 	
-	public UICommandable createCreateCommandable(AbstractIdentifiable master,Class<? extends AbstractIdentifiable> identifiableClass,String labelid,IconType iconType){
+	public UICommandable createCreateCommandable(AbstractIdentifiable master,Class<? extends AbstractIdentifiable> identifiableClass,String labelid,Icon iconType){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setViewId(editOneOutcome(identifiableClass));
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
@@ -539,7 +552,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
-	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType,Boolean popup){
+	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,Icon iconType,Boolean popup){
 		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
 		if(Boolean.TRUE.equals(popup)){
@@ -553,11 +566,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
-	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType){
+	public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,Icon iconType){
 		return createReportCommandable(identifiable, reportIdentifier, labelid, iconType, Boolean.TRUE);
 	}
 	
-	/**/
+	
 	
 	public Collection<Parameter> crudOneParameters(Class<? extends AbstractIdentifiable> aClass){
 		Collection<Parameter> parameters = new ArrayList<Parameter>();
@@ -592,7 +605,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,Boolean print){
 		return reportParameters(anIdentifiable, reportIdentifier, uiManager.getPdfParameter(),print);
-	}
+	}*/
 
 	public Boolean isMobileView(HttpServletRequest request){
 		return request.getRequestURI().startsWith(mobileContextPath);
@@ -627,26 +640,26 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public interface Listener {
+	public interface Listener<USER_SESSION extends AbstractWebUserSession> {
 
-		Collection<Listener> COLLECTION = new ArrayList<>();
+		Collection<Listener<AbstractWebUserSession>> COLLECTION = new ArrayList<>();
 		
-		String homeUrl(AbstractUserSession userSession);
+		String homeUrl(USER_SESSION userSession);
 		
 		/**/
 		
-		public static class Adapter extends BeanAdapter implements Listener,Serializable{
+		public static class Adapter<USER_SESSION extends AbstractWebUserSession> extends BeanAdapter implements Listener<USER_SESSION>,Serializable{
 
 			private static final long serialVersionUID = -6865620540167646004L;
 
 			@Override
-			public String homeUrl(AbstractUserSession userSession) {
+			public String homeUrl(USER_SESSION userSession) {
 				return null;
 			}
 			
 			/**/
 			
-			public static class Default extends Adapter implements Serializable{
+			public static class Default<USER_SESSION extends AbstractWebUserSession> extends Adapter<USER_SESSION> implements Serializable{
 
 				private static final long serialVersionUID = 3989646511932404057L;
 				

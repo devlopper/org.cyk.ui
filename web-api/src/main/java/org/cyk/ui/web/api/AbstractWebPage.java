@@ -1,9 +1,7 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -15,30 +13,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractWindow;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.UserDeviceType;
+import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.table.AbstractTable;
-import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutput;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem> implements 
+public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE extends AbstractCommandable> extends AbstractWindow<EDITOR,ROW,OUTPUTLABEL,INPUT,SelectItem,COMMANDABLE> implements 
 	WebUIPage<EDITOR,OUTPUTLABEL,INPUT>,Serializable { 
 
 	private static final long serialVersionUID = -7284361545083572063L;
@@ -58,7 +55,6 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 	private String windowMode;
 	@Getter private Layout layout = new Layout(DEFAULT_LAYOUT);
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
@@ -74,14 +70,17 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		
+		/*
 		Collection<Field> fields = webManager.getRequestParameterFieldsMap().get(getClass());
 		if(fields==null){
 			//scan to find all properties annotated with @RequestParameter
 			webManager.getRequestParameterFieldsMap().put((Class<? extends AbstractWebPage<?,?, ?, ?>>) getClass(), 
 					fields = commonUtils.getAllFields(getClass(), RequestParameter.class));
 		}
+		*/
 		
 		//System.out.println("AbstractWebPage.initialisation() : "+fields);	
+		/*
 		for(Field field : fields){
 			RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
 			Class<? extends AbstractIdentifiable> clazz = (Class<? extends AbstractIdentifiable>) (AbstractIdentifiable.class.equals(requestParameter.type())?field.getType():requestParameter.type());
@@ -91,6 +90,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 				e.printStackTrace();
 			}
 		}
+		*/
 		
 		//getMessageManager().notifications(session.getNotifications()).showGrowl();
 		//System.out.println("AbstractWebPage.initialisation() : "+FacesContext.getCurrentInstance().getMessageList());
@@ -293,10 +293,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT> extends Abst
 		return fieldValue(form,fieldName, Date.class,nullValue);
 	}
 	
-	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,IconType iconType,String outcome){
+	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,Icon icon,String outcome){
 		if(detailsMenu==null)
 			detailsMenu = new DefaultMenu();
-		UICommandable commandable = detailsMenu.addCommandable(labelId, iconType, outcome);
+		UICommandable commandable = detailsMenu.addCommandable(labelId, icon, outcome);
 		commandable.setIdentifier(identifier);
 		commandable.getParameters().addAll(NavigationHelper.getInstance().getParameters(url));
 		commandable.setParameter(webManager.getRequestParameterTabId(), commandable.getIdentifier());

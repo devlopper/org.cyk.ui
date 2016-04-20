@@ -36,9 +36,11 @@ import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.model.AbstractTree.Listener;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonOutputDetails;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -53,6 +55,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private static final long serialVersionUID = -9062523105492591265L;
 	
 	public static ContentType CONTENT_TYPE = ContentType.TEXT;
+	static{
+		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default());
+	}
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<?>,SelectItemBuilderListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
@@ -346,4 +351,88 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return RootBusinessLayer.getInstance().getFormatterBusiness().format(object);
 	}
 	
+	public String getViewIdentifier(final Class<?> aClass, final Crud crud, final Boolean one) {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getView(aClass, crud, one);
+			}
+		});
+	}
+	
+	public String getViewIdentifier(AbstractIdentifiable identifiable, final Crud crud) {
+		return getViewIdentifier(identifiable.getClass(), crud, Boolean.TRUE);
+	}
+	
+	public String getParameterClass() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterClass();
+			}
+		});
+	}
+	
+	public String getParameterFileExtension() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterFileExtension();
+			}
+		});
+	}
+	
+	public String getParameterIdentifiable() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterIdentifiable();
+			}
+		});
+	}
+	
+	public String getParameterViewIdentifier() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterViewIdentifier();
+			}
+		});
+	}
+	
+	public String getParameterPrint() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterPrint();
+			}
+		});
+	}
+	
+	public String getParameterReportIdentifier() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterReportIdentifier();
+			}
+		});
+	}
+	
+	public String getParameterWindowMode() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getParameterWindowMode();
+			}
+		});
+	}
+	
+	public String getViewIdentifierDynamicReport() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+			@Override
+			public String execute(IdentifierProvider listener) {
+				return listener.getDynamicReportView();
+			}
+		});
+	}
 }

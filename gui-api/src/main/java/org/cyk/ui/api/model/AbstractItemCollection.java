@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Serializable {
@@ -40,7 +40,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		this.itemClass = itemClass;
 		this.identifiableClass = identifiableClass;
 		label = UIManager.getInstance().getLanguageBusiness().findClassLabelText(itemClass); //textOfClass(itemClass);
-		addCommandable = UIProvider.getInstance().createCommandable("command.add", IconType.ACTION_ADD);
+		addCommandable = Builder.instanciateOne().setLabelFromId("command.add").setIcon(Icon.ACTION_ADD).create();
 		addCommandable.setShowLabel(Boolean.FALSE);
 		addCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4786916980017894274L;
@@ -49,7 +49,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				add();
 			}
 		});
-		deleteCommandable = UIProvider.getInstance().createCommandable("command.delete", IconType.ACTION_REMOVE);
+		deleteCommandable = Builder.instanciateOne().setLabelFromId("command.delete").setIcon(Icon.ACTION_REMOVE).create();
 		deleteCommandable.setShowLabel(Boolean.FALSE);
 		deleteCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4786916980017894274L;

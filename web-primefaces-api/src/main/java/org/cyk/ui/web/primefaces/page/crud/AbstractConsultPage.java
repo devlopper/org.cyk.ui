@@ -10,13 +10,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
-import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.ConsultPageListener;
 
@@ -84,26 +85,25 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Collection<UICommandable> contextualCommandables() {
-		UICommandable contextualMenu = UIProvider.getInstance().createCommandable("button", null);
-		contextualMenu.setLabel(formatUsingBusiness(identifiable)); 
+		UICommandable contextualMenu = instanciateCommandableBuilder().setLabel(formatUsingBusiness(identifiable)).create(); 
 		
 		if(Boolean.TRUE.equals(showContextualHierarchyConsultCommandables())){
 			List<Object> parents = RootBusinessLayer.getInstance().getClazzBusiness().findParentsOf(businessEntityInfos.getUserInterface().getHierarchyHighestAncestorClass(),identifiable);
 			Collections.reverse(parents);
 			for(Object ancestor : parents)
-				contextualMenu.getChildren().add(navigationManager.createConsultCommandable((AbstractIdentifiable) ancestor, null));
+				contextualMenu.getChildren().add(Builder.createConsult((AbstractIdentifiable) ancestor, null));
 		}
 		
 		if(Boolean.TRUE.equals(showContextualEditCommandable())){
-			contextualMenu.getChildren().add(navigationManager.createUpdateCommandable(identifiable, "command.edit", IconType.ACTION_UPDATE));
+			contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, identifiable,"command.edit", Icon.ACTION_UPDATE));
 		}
 		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
-			contextualMenu.getChildren().add(navigationManager.createDeleteCommandable(identifiable, "command.delete", IconType.ACTION_DELETE));
+			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE));
 		}
 		
 		if(Boolean.TRUE.equals(showContextualCreateCommandables()))
 			for(Class<?> clazz : getManyToOneClasses())
-				contextualMenu.getChildren().add(navigationManager.createCreateCommandable(identifiable,(Class<? extends AbstractIdentifiable>)clazz
+				contextualMenu.getChildren().add(Builder.createCreate(identifiable,(Class<? extends AbstractIdentifiable>)clazz
 						,RootBusinessLayer.getInstance().getApplicationBusiness().findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
 		
 		processIdentifiableContextualCommandable(contextualMenu);

@@ -19,21 +19,22 @@ import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusines
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
+import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -90,40 +91,42 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
 		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?(businessEntityInfos==null?rowDataClass:businessEntityInfos.getClazz()):identifiableConfiguration.getClazz());
-		addRowCommandable = UIProvider.getInstance().createCommandable(this, "command.add", IconType.ACTION_ADD, null, null);
-		addRowCommandable.setIdentifier(COMMANDABLE_ADD_IDENTIFIER);
+		addRowCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
+				.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
 		
-		initRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
-		cancelRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.cancel", IconType.ACTION_CANCEL, null, null);
-		applyRowEditCommandable = UIProvider.getInstance().createCommandable(this, "command.apply", IconType.ACTION_APPLY, null, null);
-		removeRowCommandable = UIProvider.getInstance().createCommandable(this, "command.remove", IconType.ACTION_REMOVE, null, null);
-		removeRowCommandable.setShowLabel(Boolean.FALSE);
+		initRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).create();
+		cancelRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.cancel").setIcon(Icon.ACTION_CANCEL).create();
+		applyRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.apply").setIcon(Icon.ACTION_APPLY).create();
+		removeRowCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.remove").setIcon(Icon.ACTION_REMOVE)
+				.setShowLabel(Boolean.FALSE).create();
 		
-		openRowCommandable = UIProvider.getInstance().createCommandable(this, "command.open", IconType.ACTION_OPEN, null, null);
-		openRowCommandable.setShowLabel(Boolean.FALSE);
+		openRowCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.open").setIcon(Icon.ACTION_OPEN)
+				.setShowLabel(Boolean.FALSE).create();
+	
+		updateRowCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT)
+				.setShowLabel(Boolean.FALSE).create();
 		
-		updateRowCommandable = UIProvider.getInstance().createCommandable(this, "command.edit", IconType.ACTION_EDIT, null, null);
-		updateRowCommandable.setShowLabel(Boolean.FALSE);
+		searchCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.search").setIcon(Icon.ACTION_SEARCH)
+				.setShowLabel(Boolean.FALSE).create();
 		
-		searchCommandable = UIProvider.getInstance().createCommandable(this, "command.search", IconType.ACTION_SEARCH, null, null);
-		searchCommandable.setShowLabel(Boolean.FALSE);
+		exportCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.export").setIcon(Icon.ACTION_EXPORT)
+				.setShowLabel(Boolean.FALSE).setRendered(Boolean.FALSE).create();
 		
-		exportCommandable = UIProvider.getInstance().createCommandable(null, "command.export", IconType.ACTION_EXPORT, null, null);
-		exportCommandable.setRendered(Boolean.FALSE);
-		
-		exportToPdfCommandable = UIProvider.getInstance().createCommandable(this, "command.export.pdf", IconType.ACTION_EXPORT_PDF, null, null);
-		exportToPdfCommandable.setIdentifier(COMMANDABLE_EXPORT_PDF_IDENTIFIER);
+		exportToPdfCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.export.pdf").setIcon(Icon.ACTION_EXPORT_PDF)
+				.setIdentifier(COMMANDABLE_EXPORT_PDF_IDENTIFIER).create();
 		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
 		exportMenu.getCommandables().add(exportToPdfCommandable);
 		
-		exportToXlsCommandable = UIProvider.getInstance().createCommandable(this, "command.export.excel", IconType.ACTION_EXPORT_EXCEL, null, null);
+		exportToXlsCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.export.excel").setIcon(Icon.ACTION_EXPORT_EXCEL)
+				.create();
 		reportCommandable(exportToXlsCommandable, UIManager.getInstance().getXlsParameter());
 		exportMenu.getCommandables().add(exportToXlsCommandable);
 		
-		printCommandable = UIProvider.getInstance().createCommandable(this, "command.print", IconType.ACTION_PRINT, null, null);
+		printCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.print").setIcon(Icon.ACTION_PRINT)
+				.setRendered(Boolean.FALSE).addParameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE).create(); 
 		//reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter()); //has been move on demand because of customization
-		printCommandable.getParameters().add(new Parameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE));
-		printCommandable.setRendered(Boolean.FALSE);
+		//printCommandable.getParameters().add(new Parameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE));
+		//printCommandable.setRendered(Boolean.FALSE);
 		
 		columnListeners.add(new ColumnAdapter(){
 			@Override

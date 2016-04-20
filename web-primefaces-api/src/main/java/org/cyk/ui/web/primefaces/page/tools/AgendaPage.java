@@ -8,7 +8,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.command.IconType;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.primefaces.EventCalendar;
@@ -28,7 +28,7 @@ public class AgendaPage extends AbstractPrimefacesPage implements Serializable {
 		eventCalendar = (EventCalendar) eventCalendarInstance(null);
 		eventCalendar.getParties().add(getUserSession().getUser());
 		contextualMenu = MenuManager.getInstance().calendarMenu(userSession,userDeviceType);
-		contextualMenu.addCommandable("command.list", IconType.THING_LIST, navigationManager.getOutcomeEventList());
+		contextualMenu.addCommandable("command.list", Icon.THING_LIST, navigationManager.getOutcomeEventList());
 		if(uiManager.isMobileDevice(userDeviceType))
 			contextualMenu.setRenderType(UIMenu.RenderType.TAB);
 	}

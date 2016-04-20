@@ -14,12 +14,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.file.File;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.utility.common.FileExtension;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -45,7 +45,7 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 	private Integer previewWidth=150,previewHeight=150;
 	
 	public InputFile() {
-		clearCommandable = UIProvider.getInstance().createCommandable(null, "command.delete", IconType.ACTION_CLEAR, null, null);
+		clearCommandable = Builder.instanciateOne().setLabelFromId("command.delete").setIcon(Icon.ACTION_CLEAR).create();
 		((Commandable)clearCommandable).getButton().setProcess("@this");
 		//((Commandable)clearCommandable).getButton().setRendered(value!=null);
 		clearCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){

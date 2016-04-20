@@ -8,11 +8,14 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
@@ -28,9 +31,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifiable,QUERY,RESULT> extends AbstractBusinessEntityFormManyPage<ENTITY> 
@@ -79,7 +79,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.getControlSetListeners().add((ControlSetListener<QUERY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>) this);
 		form.setShowCommands(Boolean.FALSE);
 		
-		form.getSubmitCommandable().setIconType(IconType.ACTION_SEARCH);
+		form.getSubmitCommandable().setIcon(Icon.ACTION_SEARCH);
 		form.getSubmitCommandable().setLabel(text("command.search"));
 		form.getSubmitCommandable().getCommand().setMessageManager(messageManager);
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);

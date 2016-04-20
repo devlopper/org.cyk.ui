@@ -35,11 +35,8 @@ import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.UserDeviceType;
-import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
@@ -68,7 +65,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	private Map<ModuleGroup, UICommandable> groupsMap = new HashMap<>();
 	
-	@Getter private Collection<MenuListener> menuListeners = new ArrayList<>();
+	@Getter private Collection<MenuListener/*<AbstractUserSession<?, ?>>*/> menuListeners = new ArrayList<>();
+	
 	@Getter @Setter private Boolean autoGenerateReferenceEntityMenu=Boolean.FALSE;
 	
 	@Override
@@ -105,7 +103,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	public UICommandable createModuleGroup(AbstractUserSession<?,?> userSession,ModuleGroup moduleGroup) {
 		Boolean moduleGroupCreateable = Boolean.TRUE;
-		for(MenuListener listener : menuListeners){
+		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners){
 			Boolean v = listener.moduleGroupCreateable(userSession,moduleGroup);
 			if(v!=null)
 				moduleGroupCreateable = v;
@@ -156,7 +154,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			}
 			break;
 		}
-		for(MenuListener listener : menuListeners)
+		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
 			listener.moduleGroupCreated(userSession,moduleGroup, commandableGroup);
 		return commandableGroup;
 	}
@@ -168,6 +166,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return null;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Collection<SystemMenu> systemMenus(AbstractUserSession<?,?> userSession){
 		Collection<SystemMenu> collection = new ArrayList<>();
 		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
@@ -238,7 +237,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			for(SystemMenu systemMenu : systemMenus(userSession)){
 				for(UICommandable referenceEntityGroup : systemMenu.getReferenceEntities()){
 					menu.addCommandable(referenceEntityGroup);
-					for(MenuListener listener : menuListeners)
+					for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
 						listener.referenceEntityGroupCreated(userSession, referenceEntityGroup);
 				}
 			}
@@ -278,13 +277,13 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UIMenu sessionContextualMenu(AbstractUserSession<?,?> userSession){
 		UIMenu menu = new DefaultMenu();
 		UICommandable c;
-		c = menu.addCommandable("command.notifications", IconType.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
+		c = menu.addCommandable("command.notifications", Icon.THING_NOTIFICATIONS, ViewType.NOTIFICATIONS);
 		c.setIdentifier(COMMANDABLE_NOTIFICATIONS_IDENTIFIER);
-		c = menu.addCommandable("command.calendar", IconType.THING_CALENDAR,ViewType.TOOLS_AGENDA);
+		c = menu.addCommandable("command.calendar", Icon.THING_CALENDAR,ViewType.TOOLS_AGENDA);
 		c.setIdentifier(COMMANDABLE_EVENT_CALENDAR_IDENTIFIER);
-		menu.addCommandable("command.useraccount.logout", IconType.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT)
+		menu.addCommandable("command.useraccount.logout", Icon.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT)
 			.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
-		for(MenuListener listener : menuListeners)
+		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
 			listener.sessionContextualMenuCreated(userSession, menu);
 		return menu;
 	}
@@ -295,7 +294,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
 				menu.addCommandable(businessModuleGroup);
-				for(MenuListener listener : menuListeners)
+				for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
 					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
 			}
 		}
@@ -305,7 +304,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getMobileBusinesses()){
 				menu.addCommandable(businessModuleGroup);
-				for(MenuListener listener : menuListeners)
+				for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
 					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
 			}
 		}

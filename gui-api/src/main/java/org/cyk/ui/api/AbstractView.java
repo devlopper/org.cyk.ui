@@ -9,10 +9,10 @@ import lombok.Setter;
 
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -51,15 +51,16 @@ public abstract class AbstractView extends AbstractBean implements View,Serializ
 	protected String text(String code){
 		return UIManager.getInstance().text(code);
 	}
-	/*
-	public UICommandable createCommandable(CommandListener commandListener, String labelId, Icon iconType, EventListener anExecutionPhase, ProcessGroup aProcessGroup) {
-		return uiProvider.createCommandable(commandListener, labelId, iconType, anExecutionPhase, aProcessGroup);
+	
+	public UICommandable createCommandable(CommandListener commandListener, String labelId, Icon icon, EventListener eventListener, ProcessGroup aProcessGroup) {
+		return Builder.instanciateOne().setCommandListener(commandListener).setEventListener(eventListener).setProcessGroup(aProcessGroup).setLabelFromId(labelId)
+				.setIcon(icon).create();
 	}
 	
-	public UICommandable createCommandable(CommandListener commandListener, String labelId, IconType iconType) {
-		return createCommandable(commandListener, labelId, iconType, null, null);
+	public UICommandable createCommandable(CommandListener commandListener, String labelId, Icon icon) {
+		return createCommandable(commandListener, labelId, icon, null, null);
 	}
-	*/
+	
 	/* Messages */
 	
 	protected void showMessage(SeverityType severityType,String summaryId,String detailsId) {

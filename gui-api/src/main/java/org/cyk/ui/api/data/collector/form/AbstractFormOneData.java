@@ -11,10 +11,11 @@ import java.util.Stack;
 import lombok.Getter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
-import org.cyk.ui.api.command.IconType;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.model.AbstractItemCollection;
@@ -41,7 +42,8 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	/**/
 	
 	public AbstractFormOneData() {
-		submitCommandable = uiProvider.createCommandable(this,"command.save",IconType.ACTION_SAVE, EventListener.NONE,ProcessGroup.FORM);
+		submitCommandable = Builder.instanciateOne().setLabelFromId("command.save").setCommandListener(this).setIcon(Icon.ACTION_SAVE)
+				.setEventListener(EventListener.NONE).setProcessGroup(ProcessGroup.FORM).create();
 	}
 	
 	@Override

@@ -29,7 +29,6 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
-import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
@@ -38,6 +37,7 @@ import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.web.api.WebNavigationManager.Listener;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentListener;
@@ -45,7 +45,7 @@ import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
 
-public abstract class AbstractServletContextListener extends AbstractBean implements ServletContextListener,MenuListener,WebNavigationManager.Listener,Serializable {
+public abstract class AbstractServletContextListener<USER_SESSION extends AbstractWebUserSession> extends AbstractBean implements ServletContextListener,MenuListener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
@@ -74,13 +74,14 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	
 	protected ServletContext servletContext;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		@SuppressWarnings("unused")
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
 		menuManager.getMenuListeners().add(this);
-		WebNavigationManager.Listener.COLLECTION.add(this);	
+		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession>) this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
 	}
 	
@@ -146,35 +147,35 @@ public abstract class AbstractServletContextListener extends AbstractBean implem
 	protected void identifiableConfiguration(ServletContextEvent event){}
 	
 	@Override
-	public String homeUrl(AbstractUserSession userSession) {
+	public String homeUrl(USER_SESSION userSession) {
 		return null;
 	}
 	
 	@Override
-	public void applicationMenuCreated(AbstractUserSession userSession, UIMenu menu) {}
+	public void applicationMenuCreated(USER_SESSION userSession, UIMenu menu) {}
 	
 	@Override
-	public void businessModuleGroupCreated(AbstractUserSession userSession,UICommandable commandableGroup) {}
+	public void businessModuleGroupCreated(USER_SESSION userSession,UICommandable commandableGroup) {}
 	
 	@Override
-	public Boolean moduleGroupCreateable(AbstractUserSession userSession,ModuleGroup group) {return Boolean.TRUE;}
+	public Boolean moduleGroupCreateable(USER_SESSION userSession,ModuleGroup group) {return Boolean.TRUE;}
 	
 	@Override
-	public void moduleGroupCreated(AbstractUserSession userSession, ModuleGroup group,UICommandable commandable) {}
+	public void moduleGroupCreated(USER_SESSION userSession, ModuleGroup group,UICommandable commandable) {}
 	
 	@Override
-	public void referenceEntityMenuCreated(AbstractUserSession userSession, UIMenu menu) {}
+	public void referenceEntityMenuCreated(USER_SESSION userSession, UIMenu menu) {}
 	
 	@Override
-	public void referenceEntityGroupCreated(AbstractUserSession userSession,UICommandable referenceEntityGroup) {}
+	public void referenceEntityGroupCreated(USER_SESSION userSession,UICommandable referenceEntityGroup) {}
 	
 	@Override
-	public void calendarMenuCreated(AbstractUserSession userSession, UIMenu menu) {
+	public void calendarMenuCreated(USER_SESSION userSession, UIMenu menu) {
 		
 	}
 	
 	@Override
-	public void sessionContextualMenuCreated(AbstractUserSession userSession,UIMenu menu) {
+	public void sessionContextualMenuCreated(USER_SESSION userSession,UIMenu menu) {
 		
 	}
 	

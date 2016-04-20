@@ -7,10 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.config.OutputDetailsConfiguration;
 
 public interface UICommandable {
 	 
@@ -29,9 +33,6 @@ public interface UICommandable {
 	Boolean getShowLabel();
 	void setShowLabel(Boolean show);
 	
-	@Deprecated IconType getIconType();
-	@Deprecated void setIconType(IconType anIconType);
-
 	Icon getIcon();
 	void setIcon(Icon anIcon);
 	
@@ -81,12 +82,10 @@ public interface UICommandable {
 	 
 	UICommandable addParameter(AbstractIdentifiable identifiable);
 	
-	//UICommandable addChild(String labelId,IconType iconType,String viewId,Collection<Parameter> parameters);
-	//UICommandable addChild(String labelId,IconType iconType,ViewType viewType,Collection<Parameter> parameters);
 	void addChild(UICommandable aCommandable);
 	
-	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
-	UICommandable addCrudParameters(String crudParameter,AbstractIdentifiable identifiable);
+	UICommandable addCrudParameters(Crud crud,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
+	UICommandable addCrudParameters(Crud crud,AbstractIdentifiable identifiable);
 	
 	UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass);
 	UICommandable addReadAllParameters(Class<? extends AbstractIdentifiable> identifiableClass);
@@ -142,6 +141,78 @@ public interface UICommandable {
 		
 		private String name;
 		private Object value;
+		
+		/**/
+		
+		public static Parameter get(Collection<Parameter> parameters,String name) {
+			for(Parameter parameter : parameters)
+				if(parameter.getName().equals(name))
+					return parameter;
+			return null;
+		}
+		
+		public static void setParameter(Collection<Parameter> parameters,String name, Object value) {
+			Parameter parameter = get(parameters,name);
+			if(parameter==null){
+				parameter = new Parameter(name, value);
+				add(parameters,name, value);
+			}else{
+				parameter.setValue(value);
+			}
+		}
+		
+		public static void add(Collection<Parameter> parameters,String name, Object value) {
+			parameters.add(new Parameter(name, value));
+		}
+		
+		public static void add(Collection<Parameter> parameters,AbstractIdentifiable identifiable) {
+			if(identifiable==null)
+				return;
+			add(parameters,UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier(), identifiable.getIdentifier());
+		}
+		
+		public static void addCrud(Collection<Parameter> parameters,Crud crud,AbstractIdentifiable identifiable, AbstractOutputDetails<?> details) {
+			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(identifiable.getClass()));
+			add(parameters,UIManager.getInstance().getCrudParameter(), Crud.CREATE.equals(crud) ? UIManager.getInstance().getCrudCreateParameter() :
+				Crud.READ.equals(crud) ? UIManager.getInstance().getCrudReadParameter() :
+				Crud.UPDATE.equals(crud) ? UIManager.getInstance().getCrudUpdateParameter() : 
+				Crud.DELETE.equals(crud) ? UIManager.getInstance().getCrudDeleteParameter() : null);
+			add(parameters,UIManager.getInstance().getIdentifiableParameter(), identifiable.getIdentifier());
+			if(details!=null){
+				@SuppressWarnings("unchecked")
+				OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
+				add(parameters,UIManager.getInstance().getDetailsParameter(), configuration.getRuntimeIdentifier());
+			}
+		}
+		
+		public static void addCrud(Collection<Parameter> parameters,Crud crud,AbstractIdentifiable identifiable) {
+			addCrud(parameters,crud, identifiable, null);
+		}
+		
+		public static void addCreate(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> identifiableClass) {
+			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+			add(parameters,UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
+		}
+		
+		public static void addReadAllParameters(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> identifiableClass) {
+			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+		}
+		
+		public static void addCreateOne(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> aClass){
+			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(aClass));
+			add(parameters,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudCreateParameter());
+		}
+	
+		public static void addReport(Collection<Parameter> parameters,AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print,String windowMode){
+			add(parameters,UIManager.getInstance().getParameterClass(),UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
+			add(parameters,UIManager.getInstance().getParameterIdentifiable(),anIdentifiable.getIdentifier());
+			add(parameters,UIManager.getInstance().getParameterFileExtension(),fileExtension);
+			if(StringUtils.isNotBlank(windowMode))
+				add(parameters,UIManager.getInstance().getParameterWindowMode(),windowMode);
+			add(parameters,UIManager.getInstance().getParameterReportIdentifier(),reportIdentifier);
+			add(parameters,UIManager.getInstance().getParameterViewIdentifier(),UIManager.getInstance().getViewIdentifierDynamicReport());
+			add(parameters,UIManager.getInstance().getParameterPrint(),Boolean.TRUE.equals(print));
+		}
 	}
 	
 }

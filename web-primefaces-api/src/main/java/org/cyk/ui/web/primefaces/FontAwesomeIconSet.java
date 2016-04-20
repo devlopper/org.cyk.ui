@@ -8,6 +8,8 @@ public class FontAwesomeIconSet extends org.cyk.ui.api.Icon.GetIdentifierListene
 
 	private static final long serialVersionUID = 2468247673572346932L;
 
+	public static final FontAwesomeIconSet INSTANCE = new FontAwesomeIconSet();
+	
 	@Override
 	protected String __get__(Icon icon) {
 		switch(icon){
