@@ -12,6 +12,8 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.api.WebHierarchyNode;
@@ -44,12 +46,12 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		
 		//UICommandable commandable;
 		//systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
-		systemMenu.getBusinesses().add(menuManager.crudMany(Person.class, Icon.PERSON));
-		systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, Icon.PERSON));
-		systemMenu.getBusinesses().add(menuManager.createSelectOne(Actor.class,null, Icon.PERSON));
-		systemMenu.getBusinesses().add(menuManager.createSelectMany(Actor.class,"myactionid", Icon.PERSON));
-		systemMenu.getBusinesses().add(menuManager.crudMany(MovementCollection.class, null));
-		systemMenu.getBusinesses().add(menuManager.crudMany(Movement.class, null));
+		systemMenu.getBusinesses().add(Builder.createList(Person.class, Icon.PERSON));
+		systemMenu.getBusinesses().add(Builder.createList(Actor.class, Icon.PERSON));
+		systemMenu.getBusinesses().add(Builder.createSelectOne(Actor.class,null, Icon.PERSON));
+		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,"myactionid", Icon.PERSON));
+		systemMenu.getBusinesses().add(Builder.createList(MovementCollection.class, null));
+		systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");
 		

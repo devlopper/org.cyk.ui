@@ -20,7 +20,6 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
-import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
@@ -57,11 +56,12 @@ import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
-public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem> implements Serializable {
+public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {
 
 	private static final long serialVersionUID = -3546850417728323300L;
 
 	private static PrimefacesManager INSTANCE;
+	
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
 	private static final String SELECTOR_FORMAT = "@(%s)";
@@ -107,6 +107,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
+		
+		iconIdentifierListener = FontAwesomeIconSet.INSTANCE;
 	}
 	
 	public EventBus getEventBus(){
@@ -125,15 +127,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public ContentType contentType() {
 		return ContentType.HTML;
 	}
-	
-	/*public UICommandable createReportCommandable(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,IconType iconType){
-		UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
-		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		commandable.setOnClick(JavaScriptHelper.getInstance().openWindow(identifiable.getIdentifier().toString(), 
-				WebNavigationManager.getInstance().reportUrl(identifiable, reportIdentifier, "pdf", Boolean.FALSE), 300, 300));
-		return commandable;
-	}*/
-	
+		
 	public void openDialog(String outcome,Map<String, Object> dialogParams,Map<String,List<String>> urlParams){
 		dialogParams.put("modal", true);  
 		dialogParams.put("draggable", false);
@@ -174,18 +168,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				list.add(0, WebManager.getInstance().getNullSelectItem(field.getType(), SelectItemBuilderListener.DEFAULT));
 		}
 	}
-	/*
-	@Override
-	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?, ?, ?, ?, ?, ?> inputChoice, Object data, Field field) {
-		Collection<AbstractIdentifiable> collection = null;
-		if(field.getName().equals("nationality")){
-			collection = new ArrayList<>();
-			for(Locality locality : localityBusiness.findByType(RootBusinessLayer.getInstance().getCountryLocalityType()))
-				collection.add(locality);
-			return collection;
-		}
-		return super.findAll(aClass, inputChoice, data, field);
-	}*/
 	
 	@Override
 	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice) {
@@ -324,10 +306,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	public void configureProgressBar(UICommandable commandable){
 		configureProgressBar(commandable, WebManager.getInstance().getProgressBarWidgetId());
-	}
-
-	public String getIcon(Icon icon){
-		return FontAwesomeIconSet.INSTANCE.get(icon);
 	}
 	
 }

@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
 public interface IdentifierProvider{
@@ -15,8 +15,8 @@ public interface IdentifierProvider{
 	
 	/* View */
 	
-	String getView(Class<?> aClass,Crud crud,Boolean one);
-	String getDynamicView(Crud crud,Boolean one);
+	String getView(Class<?> aClass,CommonBusinessAction commonBusinessAction,Boolean one);
+	String getDynamicView(CommonBusinessAction commonBusinessAction,Boolean one);
 	String getDynamicReportView();
 	
 	/* Parameter */
@@ -37,28 +37,45 @@ public interface IdentifierProvider{
 		/**/
 		
 		@Override
-		public String getView(Class<?> aClass, Crud crud, Boolean one) {
+		public String getView(Class<?> aClass, CommonBusinessAction commonBusinessAction, Boolean one) {
+			if(commonBusinessAction==null)
+				return null;
 			BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
 			String identifier=null;
 			if(Boolean.TRUE.equals(one)){
-				switch(crud){
+				switch(commonBusinessAction){
 				case CREATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
 				case READ:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
 				case UPDATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
 				case DELETE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
-				}
-				if(StringUtils.isEmpty(identifier))
-					identifier = getDynamicView(crud, one);
+				case CONSULT:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
+				case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+				case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectOneViewId();break;
+				case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+				}	
 			}else{
-				
+				switch(commonBusinessAction){
+				case CREATE:identifier=null;break;
+				case READ:identifier=null;break;
+				case UPDATE:identifier=null;break;
+				case DELETE:identifier=null;break;
+				case CONSULT:identifier=null;break;
+				case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+				case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectManyViewId();break;
+				case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+				}	
 			}
+			
 			if(StringUtils.isEmpty(identifier))
-				logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),crud,Boolean.TRUE.equals(one) ? "one":"many");
+				identifier = getDynamicView(commonBusinessAction, one);
+			
+			if(StringUtils.isEmpty(identifier))
+				logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
 			return identifier;
 		}
 		
 		@Override
-		public String getDynamicView(Crud crud, Boolean one) {
+		public String getDynamicView(CommonBusinessAction commonBusinessAction, Boolean one) {
 			return null;
 		}
 		@Override

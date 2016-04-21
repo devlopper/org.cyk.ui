@@ -11,7 +11,7 @@ public interface UIMenu {
 	
 	Collection<UICommandable> getCommandables();
 
-	UICommandable commandable(String anIdentifier);
+	UICommandable getCommandable(String anIdentifier);
 	UICommandable remove(String anIdentifier);
 	
 	UICommandable addCommandable(String labelId,Icon icon);

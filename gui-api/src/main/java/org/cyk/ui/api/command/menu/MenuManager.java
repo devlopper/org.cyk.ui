@@ -135,7 +135,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		case USER_ACCOUNT:
 			commandableGroup = Builder.instanciateOne().setLabel(userSession.getUserAccount().getCredentials().getUsername()).create();
 			commandableGroup.addChild(notificationsCommandable());
-			commandableGroup.addChild(c=Builder.instanciateOne().setLabel("command.useraccount").setIcon(Icon.THING_USERACCOUNT).setView(ViewType.USER_ACCOUNT_CONSULT).create());
+			commandableGroup.addChild(c=Builder.instanciateOne().setLabelFromId("command.useraccount").setIcon(Icon.THING_USERACCOUNT).setView(ViewType.USER_ACCOUNT_CONSULT).create());
 			//c.addDefaultParameters();
 			//c.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), userSession.getUserAccount());
 			c.setIdentifier(COMMANDABLE_USER_ACCOUNT_IDENTIFIER);
@@ -248,10 +248,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UIMenu securityMenu(AbstractUserSession<?,?> userSession){
 		UIMenu menu = new DefaultMenu();//UICommandable p;
 		//if(Boolean.TRUE.equals(userSession.getIsAdministrator()))
-		menu.addCommandable(crudMany(License.class, null));
-		menu.addCommandable(crudMany(UniformResourceLocator.class, Icon.THING_URL));
-		menu.addCommandable(crudMany(Role.class, Icon.THING_ROLE));
-		menu.addCommandable(crudMany(UserAccount.class, Icon.THING_USERACCOUNT));
+		menu.addCommandable(Builder.createList(License.class, null));
+		menu.addCommandable(Builder.createList(UniformResourceLocator.class, Icon.THING_URL));
+		menu.addCommandable(Builder.createList(Role.class, Icon.THING_ROLE));
+		menu.addCommandable(Builder.createList(UserAccount.class, Icon.THING_USERACCOUNT));
 		
 		return menu;
 	}
@@ -358,7 +358,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,Icon icon){
 		return crudOne(UIManager.getInstance().businessEntityInfos(aClass), icon);
 	}
-	
+	/*
 	public UICommandable crudMany(BusinessEntityInfos businessEntityInfos,Icon icon){
 		UICommandable c = crud(businessEntityInfos, null, icon);
 		//c.setLabel(UIManager.getInstance().getLanguageBusiness().findText("list.of",
@@ -376,7 +376,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
 		return crudMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
 	}
-	
+	*/
+	/*
 	public UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
 		UICommandable commandable,p;
 		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
@@ -402,6 +403,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 		logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
+	*/
+	/*
 	public UICommandable createSelectOne(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
 		return createSelectOne(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, icon);
 	}
@@ -413,6 +416,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			;
 		else{
 			c.setViewId(businessEntityInfos.getUserInterface().getSelectOneViewId());
+			c.setCommandRequestType(CommandRequestType.UI_VIEW);
 			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
 			if(StringUtils.isNotBlank(actionIdentifier))
 				c.getParameters().add(new Parameter(UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier));
@@ -438,11 +442,12 @@ public class MenuManager extends AbstractBean implements Serializable {
 		logTrace("select many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 		return c;
 	}
-	
+	*/
+	/*
 	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
 		return createMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
 	}
-	
+	*/
 	public String getSelectCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
 		return RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
 				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));

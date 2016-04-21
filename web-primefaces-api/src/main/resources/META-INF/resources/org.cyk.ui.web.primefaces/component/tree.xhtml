@@ -21,8 +21,8 @@
 		        <p:ajax event="expand" listener="#{cc.value.onNodeExpand}" />
 		        <p:ajax event="collapse" listener="#{cc.value.onNodeCollapse}" />
 		        
-		        <p:treeNode expanded="#{node.expanded}" collapsedIcon="#{primefacesManager.getIcon(node.collapsedIconType)}" 
-		        	expandedIcon="#{primefacesManager.getIcon(node.expandedIconType)}">
+		        <p:treeNode expanded="#{node.expanded}" collapsedIcon="#{primefacesManager.iconIdentifierListener.get(node.collapsedIconType)}" 
+		        	expandedIcon="#{primefacesManager.iconIdentifierListener.get(node.expandedIconType)}">
 		            <h:outputText value="#{node.label}" style="#{node.css.inline}" styleClass="#{node.css.clazz}"/>
 		        </p:treeNode>
 		    </p:tree>

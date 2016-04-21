@@ -10,7 +10,9 @@ import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -150,6 +152,13 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	public static class Builder<COMMANDABLE extends AbstractCommandable> extends AbstractBuilder<COMMANDABLE> implements Serializable {
 		private static final long serialVersionUID = 7285848895016815525L;
 
+		private FindDoSomethingTextParameters labelParameters;
+		private CommonBusinessAction commonBusinessAction;
+		private String actionIdentifier;
+		private Class<? extends AbstractIdentifiable> identifiableClass;
+		private Boolean one;
+		private AbstractIdentifiable master;
+		
 		public Builder(Class<COMMANDABLE> commandableClass) {
 			super(commandableClass);
 		}
@@ -228,6 +237,49 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		
+		public Builder<COMMANDABLE> setLabelParameters(FindDoSomethingTextParameters labelParameters){
+			this.labelParameters = labelParameters;
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setCommonBusinessAction(Object action){
+			if(action instanceof Crud)
+				this.commonBusinessAction = CommonBusinessAction.valueOf( ((Crud)action).name());
+			else if(action instanceof CommonBusinessAction)
+				this.commonBusinessAction = (CommonBusinessAction) action;
+			else
+				this.commonBusinessAction = null;
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setActionIdentifier(String actionIdentifier){
+			this.actionIdentifier = actionIdentifier;
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setIdentifiableClass(Class<? extends AbstractIdentifiable> identifiableClass){
+			this.identifiableClass = identifiableClass;
+			instance.setBusinessEntityInfos(UIManager.getInstance().businessEntityInfos(identifiableClass));
+			return this;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public Builder<COMMANDABLE> setBusinessEntityInfos(BusinessEntityInfos businessEntityInfos){
+			this.identifiableClass = (Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz();
+			instance.setBusinessEntityInfos(businessEntityInfos);
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setOne(Boolean one){
+			this.one = one;
+			return this;
+		}
+		
+		public Builder<COMMANDABLE> setMaster(AbstractIdentifiable master){
+			this.master = master;
+			return this;
+		}
+		
 		/* Parameters */
 		public Builder<COMMANDABLE> addParameter(String name,Object value){
 			Parameter.add(instance.parameters, name, value);
@@ -258,7 +310,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		
 		public static UICommandable createCrud(Crud crud,AbstractIdentifiable identifiable,String labelId,Icon icon,String view){
 			return instanciateOne().setLabelFromId(labelId).setIcon(icon)
-					.setView(StringUtils.isBlank(view)?UIManager.getInstance().getViewIdentifier(identifiable, crud):view)
+					.setView(StringUtils.isBlank(view)?UIManager.getInstance().getViewIdentifier(identifiable, CommonBusinessAction.valueOf(crud.name())):view)
 					.addCrudParameters(crud, identifiable)
 					.create();
 		}
@@ -272,37 +324,27 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		public static UICommandable createConsult(AbstractIdentifiable identifiable,Icon icon){
 			return createConsult(identifiable, icon, null);
 		}
-		/*
-		public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType,String viewId){
-			UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
-			commandable.setViewId(StringUtils.isBlank(viewId)?editOneOutcome(identifiable.getClass()):viewId);
-			commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-			commandable.addCrudParameters(UIManager.getInstance().getCrudDeleteParameter(), identifiable);
-			return commandable;
-		}
-		public UICommandable createDeleteCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType){
-			return createDeleteCommandable(identifiable, labelid, iconType,null);
-		}
 		
-		public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,String labelid,Icon iconType){
-			UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
-			commandable.setViewId(consultOneOutcome(identifiable.getClass()));
-			commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-			commandable.addCrudParameters(UIManager.getInstance().getCrudReadParameter(), identifiable);
-			return commandable;
-		}
-		public UICommandable createConsultCommandable(AbstractIdentifiable identifiable,Icon iconType){
-			UICommandable commandable = createConsultCommandable(identifiable, "button", iconType);
-			commandable.setLabel(RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable));
-			return commandable;
-		}
-		*/
-		public static UICommandable createCreate(AbstractIdentifiable master,Class<? extends AbstractIdentifiable> identifiableClass,String labelId,Icon icon){
+		public static UICommandable createCreate(AbstractIdentifiable master,Class<? extends AbstractIdentifiable> identifiableClass,String labelId,Icon icon){	
 			return instanciateOne().setLabelFromId(labelId).setIcon(icon)
-					.setView(UIManager.getInstance().getViewIdentifier(identifiableClass, Crud.CREATE,Boolean.TRUE))
-					.addParameters(master)
-					.addCreateOneParameters(identifiableClass)
+					.setCommonBusinessAction(Crud.CREATE).setOne(Boolean.TRUE).setIdentifiableClass(identifiableClass).setMaster(master)
+					//.setView(UIManager.getInstance().getViewIdentifier(identifiableClass, Crud.CREATE,Boolean.TRUE))
+					//.addParameters(master)
+					//.addCreateOneParameters(identifiableClass)
 					.create();	
+		}
+		public static UICommandable createCreate(Class<? extends AbstractIdentifiable> identifiableClass,String labelId,Icon icon){
+			return createCreate(null, identifiableClass, labelId, icon);
+		}
+		@SuppressWarnings("unchecked")
+		public static UICommandable createCreate(BusinessEntityInfos businessEntityInfos,Icon icon){
+			return createCreate((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz(), null, icon);
+		}
+		public static UICommandable createCreate(BusinessEntityInfos businessEntityInfos){
+			return createCreate(businessEntityInfos, Icon.ACTION_ADD);
+		}
+		public static UICommandable createCreate(Class<? extends AbstractIdentifiable> identifiableClass){
+			return createCreate(UIManager.getInstance().businessEntityInfos(identifiableClass), Icon.ACTION_ADD);
 		}
 		
 		public static UICommandable createReport(AbstractIdentifiable identifiable,String reportIdentifier,String labelId,Icon icon,Boolean popup){
@@ -310,23 +352,118 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 					.setView(ViewType.TOOLS_REPORT)
 					.addReportParameters(identifiable, reportIdentifier, "pdf", Boolean.TRUE, null)
 					.create();	
-			/*
-			UICommandable commandable = UIProvider.getInstance().createCommandable(labelid, iconType);
-			commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-			if(Boolean.TRUE.equals(popup)){
-				commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-				commandable.setOnClick(JavaScriptHelper.getInstance().openWindow(identifiable.getIdentifier().toString(), 
-					reportUrl(identifiable, reportIdentifier, "pdf", Boolean.FALSE), 300, 300));
-			}else{
-				commandable.setViewType(ViewType.TOOLS_REPORT);
-				commandable.getParameters().addAll(reportParameters(identifiable, reportIdentifier,Boolean.FALSE));
-			}
+		}		
+		public static UICommandable createReport(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,Icon iconType){
+			return createReport(identifiable, reportIdentifier, labelid, iconType, Boolean.TRUE);
+		}
+		
+		private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,Icon icon){
+			UICommandable commandable = Builder.instanciateOne().setLabelFromId(businessEntityInfos.getUserInterface().getLabelId()).setIcon(icon).create();
+			commandable.setBusinessEntityInfos(businessEntityInfos);
+			commandable.setViewType(viewType);
 			return commandable;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,Icon icon){
+			UICommandable c = crud(businessEntityInfos,null, icon);
+			FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+			parameters.setActionIdentifier(CommonBusinessAction.CREATE);
+			parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+			parameters.setVerb(Boolean.TRUE);
+			c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(parameters));
+			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
+				c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
+			else{
+				c.setViewId(businessEntityInfos.getUserInterface().getEditViewId());
+				c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+				c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+			}
+			logTrace("Crud one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+			return c;
+		}
+		
+		public UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,Icon icon){
+			return crudOne(UIManager.getInstance().businessEntityInfos(aClass), icon);
+		}
+		
+		public static UICommandable createList(BusinessEntityInfos businessEntityInfos,Icon icon){
+			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.LIST)
+					.setBusinessEntityInfos(businessEntityInfos)
+					.create();	
+			/*
+			UICommandable c = crud(businessEntityInfos, null, icon);
+			//c.setLabel(UIManager.getInstance().getLanguageBusiness().findText("list.of",
+			//		new Object[]{UIManager.getInstance().getLanguageBusiness().findText(businessEntityInfos.getUiLabelId())}));
+			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getListViewId()))
+				c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
+			else{
+				c.setViewId(businessEntityInfos.getUserInterface().getListViewId());
+				c.setCommandRequestType(CommandRequestType.UI_VIEW);
+				c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+			}
+			return c;
 			*/
 		}
 		
-		public static UICommandable createReport(AbstractIdentifiable identifiable,String reportIdentifier,String labelid,Icon iconType){
-			return createReport(identifiable, reportIdentifier, labelid, iconType, Boolean.TRUE);
+		public static UICommandable createList(Class<? extends AbstractIdentifiable> aClass,Icon icon){
+			return createList(UIManager.getInstance().businessEntityInfos(aClass), icon);
+		}
+		
+		public UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
+			UICommandable commandable,p;
+			BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
+			commandable = Builder.instanciateOne().setLabelFromId(businessEntityInfos.getUserInterface().getLabelId()).create();
+			commandable.getChildren().add(p=crudOne(aClass, Icon.ACTION_ADD));
+			p.setLabel(UIManager.getInstance().text("command.item.add"));
+			//commandable.getChildren().add(p=crudMany(aClass, Icon.THING_LIST));
+			p.setLabel(UIManager.getInstance().text("command.list"));
+			
+			return commandable;
+		}
+		
+		public UICommandable createMany(BusinessEntityInfos businessEntityInfos,Icon icon){
+			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.CREATE).setOne(Boolean.FALSE)
+					.setBusinessEntityInfos(businessEntityInfos)
+					.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()))
+					.create();	
+			/*
+			UICommandable c = crud(businessEntityInfos,null, icon);
+			c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
+			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getCreateManyViewId()))
+				;
+			else{
+				c.setViewId(businessEntityInfos.getUserInterface().getCreateManyViewId());
+				c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
+				c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+			}
+			logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
+			return c;
+			*/
+		}
+		public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
+			return createMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
+		}
+		
+		
+		public static UICommandable createSelectOne(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
+			return createSelectOne(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, icon);
+		}
+		@SuppressWarnings("unchecked")
+		public static UICommandable createSelectOne(BusinessEntityInfos businessEntityInfos,String actionIdentifier,Icon icon){
+			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.SELECT).setOne(Boolean.TRUE).setActionIdentifier(actionIdentifier)
+					.setIdentifiableClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz())
+					.create();	
+		}
+		
+		public static UICommandable createSelectMany(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
+			return createSelectMany(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, icon);
+		}
+		@SuppressWarnings("unchecked")
+		public static UICommandable createSelectMany(BusinessEntityInfos businessEntityInfos,String actionIdentifier,Icon icon){
+			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.SELECT).setOne(Boolean.FALSE).setActionIdentifier(actionIdentifier)
+					.setIdentifiableClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz())
+					.create();	
 		}
 		
 		/**/
@@ -341,8 +478,32 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			if(instance.getCommand().getMessageManager()==null)
 				instance.getCommand().setMessageManager(MessageManager.INSTANCE);
 			
-			if(instance.getViewId() != null)
+			if(instance.getViewId()==null && instance.getViewType()==null)
+				setView(UIManager.getInstance().getViewIdentifier(identifiableClass, commonBusinessAction,one));
+			
+			if(instance.getViewId() != null || instance.getViewType()!=null)
 				instance.setCommandRequestType(CommandRequestType.UI_VIEW);
+			
+			if(StringUtils.isBlank(instance.getLabel()))
+				setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(commonBusinessAction, identifiableClass));
+			
+			if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null)
+				instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(labelParameters));
+			
+			if(master!=null)
+				addParameters(master);
+			
+			if(StringUtils.isNotBlank(actionIdentifier))
+				Parameter.add(instance.getParameters(),UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier);
+			
+			if(CommonBusinessAction.CREATE.equals(commonBusinessAction)){
+				addCreateOneParameters(identifiableClass);
+			}else if(CommonBusinessAction.SELECT.equals(commonBusinessAction)){
+				Parameter.add(instance.getParameters(),UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
+			}else if(CommonBusinessAction.LIST.equals(commonBusinessAction)){
+				Parameter.add(instance.getParameters(),UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
+			}
+			
 			return instance;
 		}
 		
@@ -353,14 +514,24 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return (COMMANDABLE) UIProvider.getInstance().createCommandable(this);
 		}
 		
-		@SuppressWarnings("unchecked")
-		public COMMANDABLE create(String labelId,Icon icon,Object view){
-			return (COMMANDABLE) instanciateOne().setLabelFromId(labelId).setIcon(icon).setView(view)
-				.create();
+		/**/
+		
+		public static AbstractCommandable create(CommandListener commandListener, String labelId, Icon icon,Object view, EventListener eventListener, ProcessGroup aProcessGroup) {
+			return Builder.instanciateOne().setCommandListener(commandListener).setEventListener(eventListener).setProcessGroup(aProcessGroup).setLabelFromId(labelId)
+					.setIcon(icon).setView(view).create();
 		}
 		
-		public COMMANDABLE create(String labelId,Icon icon){
+		public static AbstractCommandable create(CommandListener commandListener, String labelId,Icon icon,Object view){
+			return create(commandListener,labelId,icon,view,null,null);
+		}
+		
+		public static AbstractCommandable create(String labelId,Icon icon,Object view){
+			return create(null,labelId,icon,view);
+		}
+		
+		public static AbstractCommandable create(String labelId,Icon icon){
 			return create(labelId, icon, null);
 		}
+		
 	}
 }

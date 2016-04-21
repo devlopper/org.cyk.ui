@@ -328,9 +328,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	}*/
 	
 	/**/
-	
+	/*
 	protected UICommandable createCommandable(String labelId,Icon icon){
 		return instanciateCommandableBuilder().setLabelFromId(labelId).setIcon(icon).create();
-	}
+	}*/
 
 }

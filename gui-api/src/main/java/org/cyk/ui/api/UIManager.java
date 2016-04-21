@@ -12,9 +12,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
@@ -36,7 +40,6 @@ import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
-import org.cyk.ui.api.model.AbstractTree.Listener;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonOutputDetails;
 import org.cyk.utility.common.AbstractMethod;
@@ -45,9 +48,6 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -351,17 +351,17 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return RootBusinessLayer.getInstance().getFormatterBusiness().format(object);
 	}
 	
-	public String getViewIdentifier(final Class<?> aClass, final Crud crud, final Boolean one) {
+	public String getViewIdentifier(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
 		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
-				return listener.getView(aClass, crud, one);
+				return listener.getView(aClass, commonBusinessAction, one);
 			}
 		});
 	}
 	
-	public String getViewIdentifier(AbstractIdentifiable identifiable, final Crud crud) {
-		return getViewIdentifier(identifiable.getClass(), crud, Boolean.TRUE);
+	public String getViewIdentifier(AbstractIdentifiable identifiable, final CommonBusinessAction commonBusinessAction) {
+		return getViewIdentifier(identifiable.getClass(), commonBusinessAction, Boolean.TRUE);
 	}
 	
 	public String getParameterClass() {

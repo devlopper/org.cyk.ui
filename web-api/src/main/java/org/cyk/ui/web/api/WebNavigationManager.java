@@ -25,6 +25,7 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.IdentifierProvider;
@@ -55,11 +56,19 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public String getDynamicView(Crud crud, Boolean one) {
-				if(Boolean.TRUE.equals(one))
-					return INSTANCE.outcomeDynamicCrudOne;
-				else
-					return INSTANCE.outcomeDynamicCrudMany;
+			public String getDynamicView(CommonBusinessAction commonBusinessAction, Boolean one) {
+				if(ArrayUtils.contains(new CommonBusinessAction[]{CommonBusinessAction.CREATE,CommonBusinessAction.READ
+						,CommonBusinessAction.UPDATE,CommonBusinessAction.DELETE}, commonBusinessAction))
+					if(Boolean.TRUE.equals(one))
+						return INSTANCE.outcomeDynamicCrudOne;
+					else
+						return INSTANCE.outcomeDynamicCrudMany;
+				else if(ArrayUtils.contains(new CommonBusinessAction[]{CommonBusinessAction.SELECT}, commonBusinessAction))
+					if(Boolean.TRUE.equals(one))
+						return INSTANCE.outcomeDynamicSelectOne;
+					else
+						return INSTANCE.outcomeDynamicSelectMany;
+				return null;
 			}
 			
 			@Override

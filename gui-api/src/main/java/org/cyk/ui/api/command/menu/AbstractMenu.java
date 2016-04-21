@@ -45,7 +45,7 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	}
 	
 	@Override
-	public UICommandable commandable(String anIdentifier) {
+	public UICommandable getCommandable(String anIdentifier) {
 		for(UICommandable commandable : commandables)
 			if(commandable.getIdentifier().equals(anIdentifier))
 				return commandable;
@@ -110,7 +110,7 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	
 	@Override
 	public void setRequestedCommandable(String identifier) {
-		UICommandable commandable = StringUtils.isBlank(identifier)?null:commandable(identifier);
+		UICommandable commandable = StringUtils.isBlank(identifier)?null:getCommandable(identifier);
 		if(commandable==null)
 			commandable = commandables.iterator().next();
 		setRequestedCommandable(commandable);	
