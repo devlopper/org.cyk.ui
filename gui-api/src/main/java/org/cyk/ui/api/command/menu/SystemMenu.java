@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.IconType;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.command.UICommandable;
 
 @Getter @Setter
 public class SystemMenu implements Serializable {
@@ -16,7 +16,7 @@ public class SystemMenu implements Serializable {
 	private static final long serialVersionUID = 1266706219852574657L;
 	
 	private String name,nameId;
-	private IconType iconType;
+	private Icon icon;
 	
 	private Collection<UICommandable> referenceEntities = new ArrayList<>();
 	

@@ -187,6 +187,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		return list.isEmpty() ? null : list.get(index.intValue());
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public String libraryName(AbstractWebManager webManager){
 		return webManager.getLibraryName();
 	}

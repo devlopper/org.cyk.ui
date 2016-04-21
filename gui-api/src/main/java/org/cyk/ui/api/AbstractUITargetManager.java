@@ -13,9 +13,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.geography.LocalityBusiness;
 import org.cyk.system.root.business.api.security.RoleBusiness;
@@ -39,8 +36,6 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Inject protected UIProvider uiProvider;
 	@Inject protected LocalityBusiness localityBusiness;
 	@Inject protected RoleBusiness roleBusiness;
-	
-	@Getter @Setter protected Icon.GetIdentifierListener<ICON_IDENTIFIER> iconIdentifierListener;
 	
 	@Override
 	public Class<? extends Control<?, ?, ?, ?, ?>> controlClassSelected(Class<? extends Control<?, ?, ?, ?, ?>> aClass) {

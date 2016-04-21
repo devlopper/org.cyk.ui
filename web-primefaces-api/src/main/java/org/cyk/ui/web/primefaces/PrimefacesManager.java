@@ -21,6 +21,7 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.SelectItemBuilderListener;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -108,7 +109,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
 		
-		iconIdentifierListener = FontAwesomeIconSet.INSTANCE;
+		UIManager.getInstance().setIconIdentifier(FontAwesomeIconSet.INSTANCE);
 	}
 	
 	public EventBus getEventBus(){

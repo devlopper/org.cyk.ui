@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.ui.api.command.IconType;
+import org.cyk.ui.api.Icon;
 
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractHierarchyNode implements Serializable {
@@ -18,7 +18,7 @@ public abstract class AbstractHierarchyNode implements Serializable {
 	protected String label;
 	protected Boolean expanded=Boolean.TRUE;
 	protected String consultViewId,editViewId;
-	protected IconType collapsedIconType,expandedIconType;
+	protected Icon collapsedIcon,expandedIcon;
 	
 	public AbstractHierarchyNode(Object data) {
 		super();

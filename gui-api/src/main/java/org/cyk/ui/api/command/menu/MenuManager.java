@@ -22,7 +22,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.License;
@@ -38,7 +37,6 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
-import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.ListenerUtils.GetValueMethodListener;
 import org.cyk.utility.common.annotation.Deployment;
@@ -319,17 +317,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	/* ---- */
-	/*
-	public String getSelectCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
-		return RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
-				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
-	}
 	
-	public String getCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
-		return RootBusinessLayer.getInstance().getLanguageBusiness().findText(businessEntityInfos.getVarName().toLowerCase()
-				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
-	}
-	*/
 	/**/
 	
 	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{

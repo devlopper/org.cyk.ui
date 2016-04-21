@@ -7,7 +7,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -25,10 +25,10 @@ public class AbstractTimer implements CommandListener, Serializable {
 	protected UICommandable startCommandable,restartCommandable,suspendCommandable,stopCommandable;
 	
 	public AbstractTimer() {
-		startCommandable = UIProvider.getInstance().createCommandable(this,"command.start", null,null,null);
-		stopCommandable = UIProvider.getInstance().createCommandable(this,"command.stop", null,null,null);
-		suspendCommandable = UIProvider.getInstance().createCommandable(this,"command.suspend", null,null,null);
-		restartCommandable = UIProvider.getInstance().createCommandable(this,"command.restart", null,null,null);
+		startCommandable = Builder.create(this,"command.start", null,null);
+		stopCommandable = Builder.create(this,"command.stop", null,null);
+		suspendCommandable = Builder.create(this,"command.suspend", null,null);
+		restartCommandable = Builder.create(this,"command.restart", null,null);
 		
 		restartCommandable.setRendered(Boolean.FALSE);
 		suspendCommandable.setRendered(Boolean.FALSE);

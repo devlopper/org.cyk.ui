@@ -13,7 +13,6 @@ import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
-import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.api.WebHierarchyNode;

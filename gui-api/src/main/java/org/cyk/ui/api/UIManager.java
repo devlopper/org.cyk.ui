@@ -75,6 +75,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	//private static final Collection<BusinessListener> businessListeners = new ArrayList<>();
 	public static final Collection<ComponentCreationListener> componentCreationListeners = new ArrayList<>();
+	@SuppressWarnings("rawtypes")
 	private static final Collection<AbstractApplicationUIManager> applicationUIManagers = new ArrayList<>();
 	
 	private final String selectOneViewSuffix="SelectOneView";
@@ -126,6 +127,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String crudUpdateParameter="update";
 	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
+	
+	@Getter @Setter protected Icon.GetIdentifierListener<String> iconIdentifier;
 	
 	private String windowFooter;
 	
@@ -190,10 +193,12 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Collection<AbstractApplicationUIManager> getApplicationUImanagers() {
 		return applicationUIManagers;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void registerApplicationUImanager(AbstractApplicationUIManager applicationUIManager){
 		applicationUIManagers.add(applicationUIManager);
 	}
