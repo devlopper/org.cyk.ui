@@ -16,8 +16,8 @@ public interface IdentifierProvider{
 	/* View */
 	
 	String getView(Class<?> aClass,CommonBusinessAction commonBusinessAction,Boolean one);
-	String getDynamicView(CommonBusinessAction commonBusinessAction,Boolean one);
-	String getDynamicReportView();
+	String getViewDynamic(CommonBusinessAction commonBusinessAction,Boolean one);
+	String getViewDynamicReport();
 	
 	/* Parameter */
 	
@@ -67,7 +67,7 @@ public interface IdentifierProvider{
 			}
 			
 			if(StringUtils.isEmpty(identifier))
-				identifier = getDynamicView(commonBusinessAction, one);
+				identifier = getViewDynamic(commonBusinessAction, one);
 			
 			if(StringUtils.isEmpty(identifier))
 				logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
@@ -75,11 +75,11 @@ public interface IdentifierProvider{
 		}
 		
 		@Override
-		public String getDynamicView(CommonBusinessAction commonBusinessAction, Boolean one) {
+		public String getViewDynamic(CommonBusinessAction commonBusinessAction, Boolean one) {
 			return null;
 		}
 		@Override
-		public String getDynamicReportView() {
+		public String getViewDynamicReport() {
 			return null;
 		}
 		@Override

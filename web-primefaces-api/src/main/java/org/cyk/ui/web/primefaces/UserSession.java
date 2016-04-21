@@ -11,10 +11,11 @@ import lombok.Getter;
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.web.api.AbstractWebUserSession;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
 
 @SessionScoped @Named
-public class UserSession extends AbstractWebUserSession implements Serializable {
+public class UserSession extends AbstractWebUserSession<TreeNode,HierarchyNode> implements Serializable {
 
 	private static final long serialVersionUID = -4310383407889787288L;
 

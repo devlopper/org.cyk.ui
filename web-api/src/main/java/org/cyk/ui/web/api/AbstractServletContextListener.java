@@ -32,7 +32,6 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.menu.MenuListener;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
 import org.cyk.ui.api.command.menu.UIMenu;
@@ -45,7 +44,7 @@ import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
 
-public abstract class AbstractServletContextListener<USER_SESSION extends AbstractWebUserSession> extends AbstractBean implements ServletContextListener,MenuListener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
+public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends WebHierarchyNode,USER_SESSION extends AbstractWebUserSession<NODE,NODE_MODEL>> extends AbstractBean implements ServletContextListener,MenuManager.Listener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
@@ -74,14 +73,14 @@ public abstract class AbstractServletContextListener<USER_SESSION extends Abstra
 	
 	protected ServletContext servletContext;
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		@SuppressWarnings("unused")
 		String g =  businessManager.findBusinessLayers().toString();//Needed to trigger eager deployment
-		menuManager.getMenuListeners().add(this);
-		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession>) this);	
+		menuManager.addMenuListener((org.cyk.ui.api.command.menu.MenuManager.Listener) this);
+		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession<?,?>>) this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
 	}
 	

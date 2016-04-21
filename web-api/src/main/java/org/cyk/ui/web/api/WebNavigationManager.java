@@ -56,7 +56,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public String getDynamicView(CommonBusinessAction commonBusinessAction, Boolean one) {
+			public String getViewDynamic(CommonBusinessAction commonBusinessAction, Boolean one) {
 				if(ArrayUtils.contains(new CommonBusinessAction[]{CommonBusinessAction.CREATE,CommonBusinessAction.READ
 						,CommonBusinessAction.UPDATE,CommonBusinessAction.DELETE}, commonBusinessAction))
 					if(Boolean.TRUE.equals(one))
@@ -72,7 +72,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			}
 			
 			@Override
-			public String getDynamicReportView() {
+			public String getViewDynamicReport() {
 				return INSTANCE.outcomeToolsReport;
 			}
 		});
@@ -353,12 +353,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
-	public String homeUrl(AbstractWebUserSession userSession){
+	public String homeUrl(AbstractWebUserSession<?,?> userSession){
 		String url = null;
 		if(roleManager.isAdministrator(null))
 			url = url("administratorindex",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 		else
-			for(Listener<AbstractWebUserSession> listener : Listener.COLLECTION){
+			for(Listener<AbstractWebUserSession<?,?>> listener : Listener.COLLECTION){
 				String v = listener.homeUrl(userSession);
 				if(v!=null)
 					url = v;
@@ -649,15 +649,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public interface Listener<USER_SESSION extends AbstractWebUserSession> {
+	public interface Listener<USER_SESSION extends AbstractWebUserSession<?,?>> {
 
-		Collection<Listener<AbstractWebUserSession>> COLLECTION = new ArrayList<>();
+		Collection<Listener<AbstractWebUserSession<?,?>>> COLLECTION = new ArrayList<>();
 		
 		String homeUrl(USER_SESSION userSession);
 		
 		/**/
 		
-		public static class Adapter<USER_SESSION extends AbstractWebUserSession> extends BeanAdapter implements Listener<USER_SESSION>,Serializable{
+		public static class Adapter<USER_SESSION extends AbstractWebUserSession<?,?>> extends BeanAdapter implements Listener<USER_SESSION>,Serializable{
 
 			private static final long serialVersionUID = -6865620540167646004L;
 
@@ -668,7 +668,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			
 			/**/
 			
-			public static class Default<USER_SESSION extends AbstractWebUserSession> extends Adapter<USER_SESSION> implements Serializable{
+			public static class Default<USER_SESSION extends AbstractWebUserSession<?,?>> extends Adapter<USER_SESSION> implements Serializable{
 
 				private static final long serialVersionUID = 3989646511932404057L;
 				

@@ -18,7 +18,6 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryOneFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -126,7 +125,7 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
 		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
 		parameters.setActionIdentifier("choice");
-		parameters.setForWhat(MenuManager.getInstance().getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
+		parameters.setForWhat(languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.TRUE));
 		return parameters;
 	}
 		

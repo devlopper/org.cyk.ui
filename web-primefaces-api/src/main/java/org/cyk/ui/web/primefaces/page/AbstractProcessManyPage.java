@@ -11,7 +11,6 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -84,7 +83,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 	
 	@Override
 	public String getContentTitle() {
-		return MenuManager.getInstance().getCommandableLabel(businessEntityInfos, actionIdentifier);
+		return languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.FALSE);
 	}
 	
 	@Override

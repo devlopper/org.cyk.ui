@@ -52,8 +52,9 @@ import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
+import org.primefaces.model.TreeNode;
 
-public abstract class AbstractContextListener extends AbstractServletContextListener<UserSession> implements Serializable {
+public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
 
 	private static final long serialVersionUID = 592943227142026384L;
 	

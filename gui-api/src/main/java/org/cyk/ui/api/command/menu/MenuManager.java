@@ -21,11 +21,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.CommonBusinessAction;
-import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.License;
@@ -42,12 +39,14 @@ import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.ListenerUtils;
+import org.cyk.utility.common.ListenerUtils.GetValueMethodListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Singleton @Deployment(initialisationType=InitialisationType.EAGER)
+@Singleton @Deployment(initialisationType=InitialisationType.EAGER) @SuppressWarnings("rawtypes")
 public class MenuManager extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4331240830505008164L;
@@ -65,7 +64,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	private Map<ModuleGroup, UICommandable> groupsMap = new HashMap<>();
 	
-	@Getter private Collection<MenuListener/*<AbstractUserSession<?, ?>>*/> menuListeners = new ArrayList<>();
+	@Getter private Collection<Listener> menuListeners = new ArrayList<>();
 	
 	@Getter @Setter private Boolean autoGenerateReferenceEntityMenu=Boolean.FALSE;
 	
@@ -73,6 +72,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+	}
+	
+	public void addMenuListener(Listener listener){
+		menuListeners.add(listener);
 	}
 	
 	private UICommandable homeCommandable(){
@@ -101,13 +104,14 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return commandable;
 	}
 	
-	public UICommandable createModuleGroup(AbstractUserSession<?,?> userSession,ModuleGroup moduleGroup) {
-		Boolean moduleGroupCreateable = Boolean.TRUE;
-		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners){
-			Boolean v = listener.moduleGroupCreateable(userSession,moduleGroup);
-			if(v!=null)
-				moduleGroupCreateable = v;
-		}
+	@SuppressWarnings("unchecked")
+	public UICommandable createModuleGroup(final AbstractUserSession<?,?> userSession,final ModuleGroup moduleGroup) {
+		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getValue(Boolean.class, menuListeners, new GetValueMethodListener<Listener, Boolean>() {
+			@Override
+			public Boolean execute(Listener listener) {
+				return listener.moduleGroupCreateable(userSession,moduleGroup);
+			}
+		});
 		if(Boolean.FALSE.equals(moduleGroupCreateable))
 			return null;
 		UICommandable commandableGroup = null,c;
@@ -154,7 +158,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			}
 			break;
 		}
-		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
+		for(Listener listener : menuListeners)
 			listener.moduleGroupCreated(userSession,moduleGroup, commandableGroup);
 		return commandableGroup;
 	}
@@ -166,7 +170,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return null;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	private Collection<SystemMenu> systemMenus(AbstractUserSession<?,?> userSession){
 		Collection<SystemMenu> collection = new ArrayList<>();
 		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
@@ -200,6 +204,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return menu;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public UIMenu referenceEntityMenu(AbstractUserSession<?,?> userSession){
 		UIMenu menu = new DefaultMenu();
 		if(Boolean.TRUE.equals(autoGenerateReferenceEntityMenu)){
@@ -237,7 +242,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			for(SystemMenu systemMenu : systemMenus(userSession)){
 				for(UICommandable referenceEntityGroup : systemMenu.getReferenceEntities()){
 					menu.addCommandable(referenceEntityGroup);
-					for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
+					for(Listener listener : menuListeners)
 						listener.referenceEntityGroupCreated(userSession, referenceEntityGroup);
 				}
 			}
@@ -274,6 +279,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return menu;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public UIMenu sessionContextualMenu(AbstractUserSession<?,?> userSession){
 		UIMenu menu = new DefaultMenu();
 		UICommandable c;
@@ -283,28 +289,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 		c.setIdentifier(COMMANDABLE_EVENT_CALENDAR_IDENTIFIER);
 		menu.addCommandable("command.useraccount.logout", Icon.ACTION_LOGOUT, ViewType.USERACCOUNT_LOGOUT)
 			.setCommandRequestType(CommandRequestType.BUSINESS_PROCESSING);
-		for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
+		for(Listener listener : menuListeners)
 			listener.sessionContextualMenuCreated(userSession, menu);
 		return menu;
 	}
 	
 	/**/
 	
+	@SuppressWarnings("unchecked")
 	private void business(AbstractUserSession<?,?> userSession,UIMenu menu){
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
 				menu.addCommandable(businessModuleGroup);
-				for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
+				for(Listener listener : menuListeners)
 					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
 			}
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void mobileBusiness(AbstractUserSession<?,?> userSession,UIMenu menu){
 		for(SystemMenu systemMenu : systemMenus(userSession)){
 			for(UICommandable businessModuleGroup : systemMenu.getMobileBusinesses()){
 				menu.addCommandable(businessModuleGroup);
-				for(MenuListener<AbstractUserSession<?, ?>> listener : menuListeners)
+				for(Listener listener : menuListeners)
 					listener.businessModuleGroupCreated(userSession, businessModuleGroup);
 			}
 		}
@@ -312,142 +320,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	/* ---- */
 	/*
-	public UICommandable commandable(String labelId,Icon icon,ViewType viewType){
-		UICommandable commandable = Builder.instanciateOne().setLabelFromId(labelId).setIcon(icon).create();
-		//commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		//commandable.setViewType(viewType);
-		return commandable;
-	}
-	
-	public UICommandable commandable(CommandRequestType aCommandRequestType, String labelId,IconType iconType){
-		UICommandable commandable = createCommandable(null, labelId, iconType, null, null);
-		commandable.setCommandRequestType(aCommandRequestType);
-		return commandable;
-	}
-	
-	public UICommandable commandable(String labelId,IconType iconType){
-		return commandable(CommandRequestType.UI_VIEW, labelId, iconType);
-	}
-	*/
-	private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,Icon icon){
-		UICommandable commandable = Builder.instanciateOne().setLabelFromId(businessEntityInfos.getUserInterface().getLabelId()).setIcon(icon).create();
-		commandable.setBusinessEntityInfos(businessEntityInfos);
-		commandable.setViewType(viewType);
-		return commandable;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public UICommandable crudOne(BusinessEntityInfos businessEntityInfos,Icon icon){
-		UICommandable c = crud(businessEntityInfos,null, icon);
-		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
-		parameters.setActionIdentifier(CommonBusinessAction.CREATE);
-		parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
-		parameters.setVerb(Boolean.TRUE);
-		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(parameters));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
-			c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
-		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getEditViewId());
-			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
-		}
-		logTrace("Crud one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
-		return c;
-	}
-	
-	public UICommandable crudOne(Class<? extends AbstractIdentifiable> aClass,Icon icon){
-		return crudOne(UIManager.getInstance().businessEntityInfos(aClass), icon);
-	}
-	/*
-	public UICommandable crudMany(BusinessEntityInfos businessEntityInfos,Icon icon){
-		UICommandable c = crud(businessEntityInfos, null, icon);
-		//c.setLabel(UIManager.getInstance().getLanguageBusiness().findText("list.of",
-		//		new Object[]{UIManager.getInstance().getLanguageBusiness().findText(businessEntityInfos.getUiLabelId())}));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getListViewId()))
-			c.setViewType(ViewType.DYNAMIC_CRUD_MANY);
-		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getListViewId());
-			c.setCommandRequestType(CommandRequestType.UI_VIEW);
-			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-		}
-		return c;
-	}
-	
-	public UICommandable crudMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
-		return crudMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
-	}
-	*/
-	/*
-	public UICommandable crudMenu(Class<? extends AbstractIdentifiable> aClass){
-		UICommandable commandable,p;
-		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
-		commandable = Builder.instanciateOne().setLabelFromId(businessEntityInfos.getUserInterface().getLabelId()).create();
-		commandable.getChildren().add(p=crudOne(aClass, Icon.ACTION_ADD));
-		p.setLabel(UIManager.getInstance().text("command.item.add"));
-		commandable.getChildren().add(p=crudMany(aClass, Icon.THING_LIST));
-		p.setLabel(UIManager.getInstance().text("command.list"));
-		
-		return commandable;
-	}
-	
-	public UICommandable createMany(BusinessEntityInfos businessEntityInfos,Icon icon){
-		UICommandable c = crud(businessEntityInfos,null, icon);
-		c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getCreateManyViewId()))
-			;
-		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getCreateManyViewId());
-			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-			c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
-		}
-		logTrace("Create many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
-		return c;
-	}
-	*/
-	/*
-	public UICommandable createSelectOne(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
-		return createSelectOne(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, icon);
-	}
-	
-	public UICommandable createSelectOne(BusinessEntityInfos businessEntityInfos,String actionIdentifier,Icon icon){
-		UICommandable c = crud(businessEntityInfos,null, icon);
-		c.setLabel(getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectOneViewId()))
-			;
-		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getSelectOneViewId());
-			c.setCommandRequestType(CommandRequestType.UI_VIEW);
-			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-			if(StringUtils.isNotBlank(actionIdentifier))
-				c.getParameters().add(new Parameter(UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier));
-		}
-		logTrace("select one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
-		return c;
-	}
-	
-	public UICommandable createSelectMany(Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
-		return createSelectMany(UIManager.getInstance().businessEntityInfos(aClass),actionIdentifier, icon);
-	}
-	public UICommandable createSelectMany(BusinessEntityInfos businessEntityInfos,String actionIdentifier,Icon icon){
-		UICommandable c = crud(businessEntityInfos,null, icon);
-		c.setLabel(getSelectCommandableLabel(businessEntityInfos, actionIdentifier));
-		if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getSelectManyViewId()))
-			;
-		else{
-			c.setViewId(businessEntityInfos.getUserInterface().getSelectManyViewId());
-			c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-			if(StringUtils.isNotBlank(actionIdentifier))
-				c.getParameters().add(new Parameter(UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier));
-		}
-		logTrace("select many view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
-		return c;
-	}
-	*/
-	/*
-	public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
-		return createMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
-	}
-	*/
 	public String getSelectCommandableLabel(BusinessEntityInfos businessEntityInfos,String actionIdentifier){
 		return RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.select"+businessEntityInfos.getVarName().toLowerCase()
 				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
@@ -457,7 +329,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return RootBusinessLayer.getInstance().getLanguageBusiness().findText(businessEntityInfos.getVarName().toLowerCase()
 				+ (StringUtils.isBlank(actionIdentifier)?Constant.EMPTY_STRING:(Constant.CHARACTER_DOT+actionIdentifier)));
 	}
-	
+	*/
 	/**/
 	
 	private static class BusinessEntityInfosMenuItemComparator implements Comparator<BusinessEntityInfos>{
@@ -468,5 +340,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 		}
 		
 	}
+	
+	/**/
+	
+	public static interface Listener<USER_SESSION extends AbstractUserSession<?, ?>> {
+
+		Boolean moduleGroupCreateable(USER_SESSION userSession,ModuleGroup group);
+		
+		void moduleGroupCreated(USER_SESSION userSession,ModuleGroup group,UICommandable commandable);
+		
+		//void systemMenu(UserSession userSession,SystemMenu systemMenu);
+
+		void businessModuleGroupCreated(USER_SESSION userSession,UICommandable commandableGroup);
+		
+		void applicationMenuCreated(USER_SESSION userSession,UIMenu menu);
+		
+		void referenceEntityMenuCreated(USER_SESSION userSession,UIMenu menu);
+
+		void referenceEntityGroupCreated(USER_SESSION userSession,UICommandable referenceEntityGroup);
+		
+		void calendarMenuCreated(USER_SESSION userSession,UIMenu menu);
+
+		void sessionContextualMenuCreated(USER_SESSION userSession,UIMenu menu);
+
+	}
+
 
 }
