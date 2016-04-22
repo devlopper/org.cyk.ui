@@ -22,6 +22,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.utility.common.AbstractBuilder;
+import org.cyk.utility.common.Constant;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -57,28 +58,6 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	public Boolean getIsNavigationCommand() {
 		return CommandRequestType.UI_VIEW.equals(commandRequestType);
 	}
-	
-	/*@Override
-	public UICommandable addChild(String labelId, IconType iconType,String viewId,Collection<Parameter> parameters) {
-		UICommandable child = UIProvider.getInstance().createCommandable(labelId, iconType);
-		child.setViewId(viewId);
-		child.setCommandRequestType(CommandRequestType.UI_VIEW);
-		if(parameters != null)
-			child.getParameters().addAll(parameters);
-		addChild(child);
-		return child;
-	}
-	
-	@Override
-	public UICommandable addChild(String labelId, IconType iconType,ViewType viewType,Collection<Parameter> parameters) {
-		UICommandable child = UIProvider.getInstance().createCommandable(labelId, iconType);
-		child.setViewType(viewType);
-		child.setCommandRequestType(CommandRequestType.UI_VIEW);
-		if(parameters != null)
-			child.getParameters().addAll(parameters);
-		addChild(child);
-		return child;
-	}*/
 	
 	@Override
 	public void addChild(UICommandable aCommandable) {
@@ -347,6 +326,28 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return createCreate(UIManager.getInstance().businessEntityInfos(identifiableClass), Icon.ACTION_ADD);
 		}
 		
+		public static UICommandable createUpdate(AbstractIdentifiable identifiable,Boolean addIdentifiableText){
+			UICommandable commandable = createCrud(Crud.UPDATE,identifiable, "command.edit", Icon.ACTION_EDIT);
+			commandable.setLabel(commandable.getLabel()
+					+(Boolean.TRUE.equals(addIdentifiableText) ?Constant.CHARACTER_SPACE+RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable) : Constant.EMPTY_STRING )
+					);
+			return commandable;
+		}
+		public static UICommandable createUpdate(AbstractIdentifiable identifiable){
+			return createUpdate(identifiable, Boolean.FALSE);
+		}
+		
+		public static UICommandable createDelete(AbstractIdentifiable identifiable,Boolean addIdentifiableText){
+			UICommandable commandable = createCrud(Crud.DELETE,identifiable, "command.delete", Icon.ACTION_DELETE);
+			commandable.setLabel(commandable.getLabel()
+					+(Boolean.TRUE.equals(addIdentifiableText) ?Constant.CHARACTER_SPACE+RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable) : Constant.EMPTY_STRING )
+					);
+			return commandable;
+		}
+		public static UICommandable createDelete(AbstractIdentifiable identifiable){
+			return createUpdate(identifiable, Boolean.FALSE);
+		}
+		
 		public static UICommandable createReport(AbstractIdentifiable identifiable,String reportIdentifier,String labelId,Icon icon,Boolean popup){
 			return instanciateOne().setLabelFromId(labelId).setIcon(icon)
 					.setView(ViewType.TOOLS_REPORT)
@@ -422,11 +423,15 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return commandable;
 		}
 		
-		public UICommandable createMany(BusinessEntityInfos businessEntityInfos,Icon icon){
-			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.CREATE).setOne(Boolean.FALSE)
+		public static UICommandable createMany(BusinessEntityInfos businessEntityInfos,Icon icon){
+			UICommandable commandable = instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.CREATE).setOne(Boolean.FALSE)
 					.setBusinessEntityInfos(businessEntityInfos)
 					.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()))
 					.create();	
+			
+			//System.out.println("ViewId : "+commandable.getViewId());
+			
+			return commandable;
 			/*
 			UICommandable c = crud(businessEntityInfos,null, icon);
 			c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
@@ -441,7 +446,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return c;
 			*/
 		}
-		public UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
+		public static UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
 			return createMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
 		}
 		
@@ -485,7 +490,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 				instance.setCommandRequestType(CommandRequestType.UI_VIEW);
 			
 			if(StringUtils.isBlank(instance.getLabel()))
-				setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(commonBusinessAction, identifiableClass));
+				if(StringUtils.isBlank(actionIdentifier))
+					setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(commonBusinessAction, identifiableClass));
+				else
+					setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findActionIdentifierText(actionIdentifier, instance.getBusinessEntityInfos(), Boolean.TRUE));
+			//setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(actionIdentifier, identifiableClass));
 			
 			if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null)
 				instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(labelParameters));

@@ -55,7 +55,7 @@ public interface IdentifierProvider{
 				}	
 			}else{
 				switch(commonBusinessAction){
-				case CREATE:identifier=null;break;
+				case CREATE:identifier=businessEntityInfos.getUserInterface().getCreateManyViewId();break;
 				case READ:identifier=null;break;
 				case UPDATE:identifier=null;break;
 				case DELETE:identifier=null;break;
