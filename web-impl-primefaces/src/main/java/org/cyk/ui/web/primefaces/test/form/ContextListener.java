@@ -28,6 +28,7 @@ import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
+import org.cyk.ui.web.primefaces.test.business.ActorSearchCriteria;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
@@ -68,13 +69,17 @@ public class ContextListener extends AbstractContextListener {
 		
 		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
 		
-		BusinessListener.LISTENERS.add(new BusinessListener.Adapter.Default(){
+		BusinessListener.COLLECTION.add(new BusinessListener.Adapter.Default(){
 			private static final long serialVersionUID = 4605368263736933413L;
 			@SuppressWarnings("unchecked")
 			@Override
 			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, DataReadConfiguration configuration) {
 				if(Actor.class.equals(dataClass)){
-					return (Collection<T>) actorBusiness.findAll();
+					ActorSearchCriteria criteria = new ActorSearchCriteria(configuration.getGlobalFilter());
+					criteria.getReadConfig().set(configuration);
+					System.out
+							.println("ContextListener.identifiableConfiguration(...).new Default() {...}.find() : "+actorBusiness.findByCriteria(criteria));
+					return (Collection<T>) actorBusiness.findByCriteria(criteria);
 				}
 				return super.find(dataClass, configuration);
 			}
@@ -82,7 +87,7 @@ public class ContextListener extends AbstractContextListener {
 			@Override
 			public <T extends AbstractIdentifiable> Long count(Class<T> dataClass, DataReadConfiguration configuration) {
 				if(Actor.class.equals(dataClass)){
-					return actorBusiness.countAll();
+					return actorBusiness.countByCriteria(new ActorSearchCriteria(configuration.getGlobalFilter()));
 				}
 				return super.count(dataClass, configuration);
 			}

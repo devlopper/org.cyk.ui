@@ -9,7 +9,7 @@ import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.ui.test.model.Actor;
 
 @Stateless
-public class ActorBusinessImpl extends AbstractActorBusinessImpl<Actor, ActorDao> implements ActorBusiness,Serializable {
+public class ActorBusinessImpl extends AbstractActorBusinessImpl<Actor, ActorDao,ActorSearchCriteria> implements ActorBusiness,Serializable {
 
 	private static final long serialVersionUID = -7830673760640348717L;
 

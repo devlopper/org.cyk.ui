@@ -103,7 +103,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		return null;
 	}
 	
-	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,AbstractActorBusiness<?> actorBusiness){
+	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,AbstractActorBusiness<?,?> actorBusiness){
 		return actorBusiness.findByPerson((Person) userSession.getUser())!=null;
 	}
 	

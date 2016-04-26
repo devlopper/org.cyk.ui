@@ -19,7 +19,7 @@
  	
  	<ui:insert name="command">
  		<ui:fragment rendered="#{form.showCommands}">
- 			<cyk:command value="#{form.submitCommandable}"/>
+ 			<cyk:command value="#{form.submitCommandable}" executeParameter="#{form.data}"/>
  		</ui:fragment>
  	</ui:insert>
 	

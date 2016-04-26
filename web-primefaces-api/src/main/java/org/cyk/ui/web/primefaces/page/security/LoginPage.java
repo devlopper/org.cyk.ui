@@ -25,6 +25,7 @@ import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.AbstractOpticalBarCodeReader;
@@ -54,6 +55,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		contentTitle = uiManager.getApplication().getName();
 		form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.login"));	
+		form.getSubmitCommandable().setIcon(Icon.ACTION_LOGIN);
 		form.setFieldsRequiredMessage(null);
 		
 		opticalBarCodeReader = new OpticalBarCodeReader("tabview:obcr",opticalDecoderBusiness);
@@ -69,12 +71,22 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 			}
 		});
 	}
+	
+	@Override
+	public String getTitle() {
+		return text("view.login.content.title");
+	}
+	
+	/*@Override
+	public String getContentTitle() {
+		return text("view.login.content.title");
+	}*/
 		
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			//connect(identifiable);
-			connect(/*(Credentials) parameter*/ identifiable );
+			connect(/*(Credentials) parameter*/ (Credentials)parameter );
 		}
 	}
 	
