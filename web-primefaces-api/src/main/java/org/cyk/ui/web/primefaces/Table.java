@@ -63,7 +63,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	protected TypedBusiness<?> business;
 	protected LazyDataModel<Row<DATA>> dataModel;
 	@Getter @Setter protected Boolean fetch = Boolean.TRUE;
-	@Getter protected Long resultsCount=0l;
+	@Getter protected Long resultsCount=0l,maximumResultCount=10l;
 	@Getter protected DataTable dataTable = new DataTable();
 	
 	@Override
@@ -201,7 +201,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 					String filter = (String)filters.get("globalFilter");
-					DataReadConfiguration configuration = new DataReadConfiguration((long)first,(long)pageSize, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
+					DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 					if(Boolean.TRUE.equals(fetch)){
 						Table.this.load(configuration);
 					}

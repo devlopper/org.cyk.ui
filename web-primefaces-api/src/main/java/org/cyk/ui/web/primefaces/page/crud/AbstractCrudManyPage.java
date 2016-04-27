@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -59,9 +60,9 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							records = (Collection<ENTITY>) RootBusinessLayer.getInstance().find(identifiableClass, configuration);
+							records = (Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
 						else
-							records = (Collection<ENTITY>) RootBusinessLayer.getInstance().find(identifiableClass, configuration);
+							records = (Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
 					}else
 						records = (Collection<ENTITY>) RootBusinessLayer.getInstance().getGenericBusiness().use(identifiableClass).find().all();
 					
@@ -87,9 +88,9 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							return RootBusinessLayer.getInstance().count(identifiableClass, configuration);
+							return BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
 						else
-							return RootBusinessLayer.getInstance().count(identifiableClass, configuration);
+							return BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
 					}else
 						return UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
 				}

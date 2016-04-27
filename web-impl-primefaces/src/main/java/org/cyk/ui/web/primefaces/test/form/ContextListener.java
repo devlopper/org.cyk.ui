@@ -8,7 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.BusinessListener;
+import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.UserAccount;
@@ -69,29 +69,21 @@ public class ContextListener extends AbstractContextListener {
 		
 		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
 		
-		BusinessListener.COLLECTION.add(new BusinessListener.Adapter.Default(){
-			private static final long serialVersionUID = 4605368263736933413L;
-			@SuppressWarnings("unchecked")
+		BusinessServiceProvider.Identifiable.COLLECTION.add(new BusinessServiceProvider.Identifiable.Adapter.Default<Actor>(Actor.class){
+			private static final long serialVersionUID = 1322416788278558869L;
 			@Override
-			public <T extends AbstractIdentifiable> Collection<T> find(Class<T> dataClass, DataReadConfiguration configuration) {
-				if(Actor.class.equals(dataClass)){
-					ActorSearchCriteria criteria = new ActorSearchCriteria(configuration.getGlobalFilter());
-					criteria.getReadConfig().set(configuration);
-					System.out
-							.println("ContextListener.identifiableConfiguration(...).new Default() {...}.find() : "+actorBusiness.findByCriteria(criteria));
-					return (Collection<T>) actorBusiness.findByCriteria(criteria);
-				}
-				return super.find(dataClass, configuration);
+			public Collection<Actor> find(DataReadConfiguration configuration) {
+				ActorSearchCriteria criteria = new ActorSearchCriteria(configuration.getGlobalFilter());
+				criteria.getReadConfig().set(configuration);
+				return actorBusiness.findByCriteria(criteria);
 			}
 			
 			@Override
-			public <T extends AbstractIdentifiable> Long count(Class<T> dataClass, DataReadConfiguration configuration) {
-				if(Actor.class.equals(dataClass)){
-					return actorBusiness.countByCriteria(new ActorSearchCriteria(configuration.getGlobalFilter()));
-				}
-				return super.count(dataClass, configuration);
+			public Long count(DataReadConfiguration configuration) {
+				return actorBusiness.countByCriteria(new ActorSearchCriteria(configuration.getGlobalFilter()));
 			}
-		});	
+        });
+		
 	}
 		
 	@Override
