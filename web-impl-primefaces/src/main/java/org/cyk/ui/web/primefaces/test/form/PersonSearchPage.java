@@ -17,7 +17,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonSearchCriteria;
+import org.cyk.system.root.model.party.person.Person.SearchCriteria;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
@@ -107,14 +107,14 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		return PersonResultFormModel.class;
 	}
 
-	private PersonSearchCriteria criteria(){
-		PersonSearchCriteria c = new PersonSearchCriteria(query.getName());
+	private SearchCriteria criteria(){
+		SearchCriteria c = new SearchCriteria(query.getName());
 		return c;
 	}
 	
 	@Override
 	protected Collection<Person> __query__() {
-		PersonSearchCriteria c = criteria();
+		SearchCriteria c = criteria();
 		//c.getReadConfig().setFirstResultIndex(queryFirst);
 		//c.getReadConfig().setMaximumResultCount(3l);
 		return personBusiness.findByCriteria(c);

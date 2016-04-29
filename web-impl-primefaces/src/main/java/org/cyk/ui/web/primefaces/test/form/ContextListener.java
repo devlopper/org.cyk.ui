@@ -1,14 +1,14 @@
 package org.cyk.ui.web.primefaces.test.form;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 
-import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
+import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
+import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.UserAccount;
@@ -18,6 +18,7 @@ import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.test.model.Actor;
+import org.cyk.ui.test.model.Actor.SearchCriteria;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
@@ -25,10 +26,8 @@ import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
-import org.cyk.ui.web.primefaces.test.business.ActorBusiness;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
-import org.cyk.ui.web.primefaces.test.business.ActorSearchCriteria;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
@@ -37,8 +36,6 @@ public class ContextListener extends AbstractContextListener {
 
 	private static final long serialVersionUID = -3211898049670089807L;
 
-	@Inject private ActorBusiness actorBusiness;
-	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
@@ -69,18 +66,12 @@ public class ContextListener extends AbstractContextListener {
 		
 		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
 		
-		BusinessServiceProvider.Identifiable.COLLECTION.add(new BusinessServiceProvider.Identifiable.Adapter.Default<Actor>(Actor.class){
+		BusinessServiceProvider.Identifiable.COLLECTION.add(new AbstractActorBusinessImpl.BusinessServiceProviderIdentifiable<Actor,Actor.SearchCriteria>(Actor.class){
 			private static final long serialVersionUID = 1322416788278558869L;
-			@Override
-			public Collection<Actor> find(DataReadConfiguration configuration) {
-				ActorSearchCriteria criteria = new ActorSearchCriteria(configuration.getGlobalFilter());
-				criteria.getReadConfig().set(configuration);
-				return actorBusiness.findByCriteria(criteria);
-			}
 			
 			@Override
-			public Long count(DataReadConfiguration configuration) {
-				return actorBusiness.countByCriteria(new ActorSearchCriteria(configuration.getGlobalFilter()));
+			protected SearchCriteria createSearchCriteria(Service service,DataReadConfiguration dataReadConfiguration) {
+				return new Actor.SearchCriteria(dataReadConfiguration.getGlobalFilter());
 			}
         });
 		
