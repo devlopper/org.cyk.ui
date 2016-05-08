@@ -357,7 +357,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getViewIdentifier(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getView(aClass, commonBusinessAction, one);
@@ -370,7 +370,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterClass() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterClass();
@@ -379,7 +379,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterFileExtension() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterFileExtension();
@@ -388,7 +388,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterIdentifiable() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterIdentifiable();
@@ -397,7 +397,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterViewIdentifier() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterViewIdentifier();
@@ -406,7 +406,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterPrint() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterPrint();
@@ -415,7 +415,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterReportIdentifier() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterReportIdentifier();
@@ -424,7 +424,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getParameterWindowMode() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getParameterWindowMode();
@@ -433,7 +433,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getViewIdentifierDynamicReport() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.GetValueMethodListener<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getViewDynamicReport();

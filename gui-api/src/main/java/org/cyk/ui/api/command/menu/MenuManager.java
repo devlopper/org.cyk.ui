@@ -38,7 +38,7 @@ import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.ListenerUtils;
-import org.cyk.utility.common.ListenerUtils.GetValueMethodListener;
+import org.cyk.utility.common.ListenerUtils.ResultMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -104,7 +104,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public UICommandable createModuleGroup(final AbstractUserSession<?,?> userSession,final ModuleGroup moduleGroup) {
-		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getValue(Boolean.class, menuListeners, new GetValueMethodListener<Listener, Boolean>() {
+		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getValue(Boolean.class, menuListeners, new ResultMethod<Listener, Boolean>() {
 			@Override
 			public Boolean execute(Listener listener) {
 				return listener.moduleGroupCreateable(userSession,moduleGroup);
