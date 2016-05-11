@@ -21,13 +21,13 @@ public interface IdentifierProvider{
 	
 	/* Parameter */
 	
-	String getParameterClass();
+	/*String getParameterClass();
 	String getParameterIdentifiable();
 	String getParameterFileExtension();
 	String getParameterWindowMode();
 	String getParameterReportIdentifier();
 	String getParameterViewIdentifier();
-	String getParameterPrint();
+	String getParameterPrint();*/
 	
 	/**/
 	
@@ -49,6 +49,7 @@ public interface IdentifierProvider{
 		public String getViewDynamicReport() {
 			return null;
 		}
+		/*
 		@Override
 		public String getParameterClass() {
 			return null;
@@ -82,7 +83,7 @@ public interface IdentifierProvider{
 		@Override
 		public String getParameterPrint() {
 			return null;
-		}
+		}*/
 		
 		public static class Default extends Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;

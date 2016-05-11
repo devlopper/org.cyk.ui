@@ -333,70 +333,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			}
 		});
 	}
-	
-	public String getParameterClass() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterClass();
-			}
-		});
-	}
-	
-	public String getParameterFileExtension() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterFileExtension();
-			}
-		});
-	}
-	
-	public String getParameterIdentifiable() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterIdentifiable();
-			}
-		});
-	}
-	
-	public String getParameterViewIdentifier() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterViewIdentifier();
-			}
-		});
-	}
-	
-	public String getParameterPrint() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterPrint();
-			}
-		});
-	}
-	
-	public String getParameterReportIdentifier() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterReportIdentifier();
-			}
-		});
-	}
-	
-	public String getParameterWindowMode() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getParameterWindowMode();
-			}
-		});
-	}
-	
+		
 	public String getViewIdentifierDynamicReport() {
 		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
 			@Override

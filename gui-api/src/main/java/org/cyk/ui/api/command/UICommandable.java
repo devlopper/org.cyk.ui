@@ -205,16 +205,16 @@ public interface UICommandable {
 		}
 	
 		public static void addReport(Collection<Parameter> parameters,AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print,String windowMode){
-			add(parameters,UIManager.getInstance().getParameterClass(),UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
-			add(parameters,UIManager.getInstance().getParameterIdentifiable(),anIdentifiable.getIdentifier());
-			add(parameters,UIManager.getInstance().getParameterFileExtension(),fileExtension);
+			add(parameters,UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
+			add(parameters,UniformResourceLocatorParameter.IDENTIFIABLE,anIdentifiable.getIdentifier());
+			add(parameters,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension);
 			if(StringUtils.isNotBlank(windowMode))
-				add(parameters,UIManager.getInstance().getParameterWindowMode(),windowMode);
-			add(parameters,UIManager.getInstance().getParameterReportIdentifier(),reportIdentifier);
-			add(parameters,UIManager.getInstance().getParameterViewIdentifier(),UIManager.getInstance().getViewIdentifierDynamicReport());
-			add(parameters,UIManager.getInstance().getParameterPrint(),Boolean.TRUE.equals(print));
-			System.out.println("UICommandable.Parameter.addReport() : "+parameters);
-			System.out.println(UIManager.getInstance().getParameterClass()+" : "+UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
+				add(parameters,UniformResourceLocatorParameter.WINDOW_MODE,windowMode);
+			add(parameters,UniformResourceLocatorParameter.REPORT_IDENTIFIER,reportIdentifier);
+			//add(parameters,UniformResourceLocatorParameter.VIEW_IDENTIFIER,UIManager.getInstance().getViewIdentifierDynamicReport());
+			add(parameters,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print));
+			//System.out.println("UICommandable.Parameter.addReport() : "+parameters);
+			//System.out.println(UIManager.getInstance().getParameterClass()+" : "+UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
 		}
 		
 		@Override
