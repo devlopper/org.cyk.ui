@@ -13,6 +13,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
@@ -98,11 +99,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	protected BusinessEntityInfos fetchBusinessEntityInfos(){
-		return uiManager.classFromKey(requestParameter(webManager.getRequestParameterClass()));
+		return uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.CLASS));
 	}
 	
 	protected String __formModelClassId__(){
-		return requestParameter(webManager.getRequestParameterFormModel());
+		return requestParameter(UniformResourceLocatorParameter.FORM_MODEL);
 	}
 	
 	protected Class<?> __formModelClass__(){

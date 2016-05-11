@@ -11,7 +11,7 @@ import org.cyk.system.root.business.impl.file.report.jasper.JasperReportBusiness
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.report.AbstractReport;
 import org.cyk.system.root.model.file.report.AbstractReportConfiguration;
-import org.cyk.ui.web.api.WebManager;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.api.servlet.AbstractFileServlet;
 import org.cyk.utility.common.FileExtension;
 
@@ -58,14 +58,14 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 
 	protected Boolean printRequestParameter(HttpServletRequest request){
 		try {
-			return Boolean.parseBoolean(request.getParameter(WebManager.getInstance().getRequestParameterPrint()));
+			return Boolean.parseBoolean(request.getParameter(UniformResourceLocatorParameter.PRINT));
 		} catch (Exception e) {
 			return Boolean.FALSE;
 		}
 	}
 	
 	protected String reportIdentifierRequestParameter(HttpServletRequest request){
-		return requestParameter(request, uiManager.getReportIdentifierParameter());
+		return requestParameter(request, UniformResourceLocatorParameter.REPORT_IDENTIFIER);
 	}
 
 

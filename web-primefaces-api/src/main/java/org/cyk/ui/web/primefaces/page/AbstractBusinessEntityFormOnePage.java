@@ -16,6 +16,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -55,7 +56,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 		
-		String outputDetailsKey = Faces.getRequestParameter(uiManager.getDetailsParameter());
+		String outputDetailsKey = Faces.getRequestParameter(UniformResourceLocatorParameter.DETAILS);
 		if(StringUtils.isNotBlank(outputDetailsKey)){
 			final OutputDetailsConfiguration configuration = uiManager.getOutputDetailsConfigurationFromKey(outputDetailsKey);
 			if(configuration.getEditFormConfiguration()==null){

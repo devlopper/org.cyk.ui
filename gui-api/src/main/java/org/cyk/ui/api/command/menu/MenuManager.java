@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
@@ -265,7 +266,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		if(!UIManager.getInstance().isMobileDevice(userDeviceType)){
 			if(userSession.getIsManager()){
 				p = menu.addCommandable(Builder.instanciateOne().setLabelFromId("event.create").setIcon(Icon.ACTION_ADD).setView(ViewType.EVENT_CRUD_ONE).create());
-				p.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+				p.getParameters().add(new Parameter(UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE));
 			}
 		}
 		return menu;

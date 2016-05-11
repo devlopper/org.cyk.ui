@@ -14,6 +14,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -26,7 +27,6 @@ import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
-import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
@@ -164,10 +164,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 								,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
 					
 						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUserInterface().getConsultViewId(), 
-								new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
-							,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier().toString(),
-							UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
-							?UIManager.getInstance().getCrudReadParameter():null});
+								new Object[]{UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(businessEntityInfos)
+							,UniformResourceLocatorParameter.IDENTIFIABLE,identifiable.getIdentifier().toString(),
+							UniformResourceLocatorParameter.CRUD,businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
+							?UniformResourceLocatorParameter.CRUD_READ:null});
 							
 					}
 				}

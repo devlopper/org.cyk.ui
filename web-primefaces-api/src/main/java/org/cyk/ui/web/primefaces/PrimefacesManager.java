@@ -19,6 +19,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.Identifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
@@ -136,7 +137,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		dialogParams.put("contentWidth", 800); 
 		dialogParams.put("contentHeight", 500); 
 		
-		urlParams.put(WebManager.getInstance().getRequestParameterWindowMode(),Arrays.asList(WebManager.getInstance().getRequestParameterWindowModeDialog()));
+		urlParams.put(UniformResourceLocatorParameter.WINDOW_MODE,Arrays.asList(UniformResourceLocatorParameter.WINDOW_MODE_DIALOG));
 		
 		RequestContext.getCurrentInstance().openDialog(outcome, dialogParams, urlParams); 
 	}

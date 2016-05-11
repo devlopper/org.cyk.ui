@@ -4,7 +4,8 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 	
 	<cc:interface>
 		<cc:attribute name="identifier" required="true" />
@@ -16,7 +17,9 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<img src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?#{uiManager.identifiableParameter}=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
+		<pe:importConstants className="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" />
+		
+		<img src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?#{urlParameter.IDENTIFIABLE}=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
 			class="#{cc.attrs.styleClass}"
 		/>
 	</cc:implementation>

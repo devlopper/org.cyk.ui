@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
@@ -68,7 +69,7 @@ public class CommandBuilder implements Serializable {
 					case HOME:menuItem.setOutcome(navigationManager.getOutcomePrivateIndex());break;
 					case DYNAMIC_CRUD_ONE:
 						menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudOne());
-						menuItem.setParam(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
+						menuItem.setParam(UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE);
 						break;
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(navigationManager.getOutcomeLogout());break;
@@ -95,7 +96,7 @@ public class CommandBuilder implements Serializable {
 					}
 					
 					if(aCommandable.getBusinessEntityInfos()!=null)
-						menuItem.setParam(WebManager.getInstance().getRequestParameterClass(), UIManager.getInstance().keyFromClass(aCommandable.getBusinessEntityInfos()));
+						menuItem.setParam(UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(aCommandable.getBusinessEntityInfos()));
 				}
 				//TODO navigation mode to be handled
 				for(Parameter parameter : aCommandable.getParameters()){

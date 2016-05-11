@@ -17,12 +17,17 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.language.LanguageEntry;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
@@ -37,9 +42,6 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
 import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Named @Getter @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebManager extends AbstractBean implements Serializable {
@@ -92,23 +94,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	private final String reportDataTableServletUrl = "/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/";
 	
 	@Setter private String decoratedTemplateInclude;
-	
-	private final String requestParameterFormModel = UIManager.getInstance().getFormModelParameter();
-	private final String requestParameterClass = UIManager.getInstance().getClassParameter();
-	private final String requestParameterIdentifiable = UIManager.getInstance().getIdentifiableParameter();
-	private final String requestParameterUserAccount = "useraccount";
-	private final String requestParameterWindowMode = "windowmode";
-	private final String requestParameterWindowModeDialog = "windowmodedialog";
-	private final String requestParameterWindowModeNormal = "windowmodenormal";
-	private final String requestParameterPreviousUrl = "previousurl";
-	private final String requestParameterPrint = "print";
-	private final String requestParameterTabId = "tabid";
-	private final String requestParameterTitle = "title";
-	private final String requestParameterAttachment = "attachment";
-	
-	private final String requestParameterUrl = "url";
-	private final String requestParameterOutcome = "outcome";
-	
+		
 	private final String sessionAttributeUserSession = "userSession";
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
@@ -260,7 +246,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		Collection<Long> identifiers = new ArrayList<>();
 		String identifiable = getRequestParameter(request, name);
 		//TODO many parameters can be encoded
-		String encodedParameter = getRequestParameter(request, UIManager.getInstance().getEncodedParameter());
+		String encodedParameter = getRequestParameter(request, UniformResourceLocatorParameter.ENCODED);
 		if(name.equals(encodedParameter)){
 			Collection<Long> r = decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
@@ -280,10 +266,10 @@ public class WebManager extends AbstractBean implements Serializable {
 		return decodeIdentifiersRequestParameter(name, Faces.getRequest());
 	}
 	public Collection<Long> decodeIdentifiersRequestParameter(HttpServletRequest request){
-		return decodeIdentifiersRequestParameter(UIManager.getInstance().getIdentifiableParameter(), request);
+		return decodeIdentifiersRequestParameter(UniformResourceLocatorParameter.IDENTIFIABLE, request);
 	}
 	public Collection<Long> decodeIdentifiersRequestParameter(){
-		return decodeIdentifiersRequestParameter(UIManager.getInstance().getIdentifiableParameter(), Faces.getRequest());
+		return decodeIdentifiersRequestParameter(UniformResourceLocatorParameter.IDENTIFIABLE, Faces.getRequest());
 	}
 	/**/
 	
@@ -347,7 +333,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
 		return getIdentifiableFromRequestParameter(request,aClass,Boolean.TRUE.equals(useBusinessEntityInfosIdentifier) 
 				? UIManager.getInstance().businessEntityInfos(aClass).getIdentifier() 
-				: WebManager.getInstance().getRequestParameterIdentifiable());
+				: UniformResourceLocatorParameter.IDENTIFIABLE);
 	}
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
 		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,useBusinessEntityInfosIdentifier);
@@ -362,7 +348,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	
 	public Crud getCrudFromRequestParameter(HttpServletRequest request){
-		return UIManager.getInstance().getCrudValue(getRequestParameter(request,UIManager.getInstance().getCrudParameter()));
+		return UniformResourceLocatorParameterBusinessImpl.getCrudAsObject(getRequestParameter(request,UniformResourceLocatorParameter.CRUD));
 	}
 	public Crud getCrudFromRequestParameter(){
 		return getCrudFromRequestParameter(Faces.getRequest());

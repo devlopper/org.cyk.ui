@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.ClassUserInterface;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
@@ -112,9 +114,9 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 				if(object==null)
 					;
 				else{
-					parameters = new Object[]{UIManager.getInstance().getClassParameter(),UIManager.getInstance().businessEntityInfos(object.getClass()).getIdentifier()
-							,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudParameterValue(crud)
-							,UIManager.getInstance().getIdentifiableParameter(), Crud.CREATE.equals(crud) ? null : object
+					parameters = new Object[]{UniformResourceLocatorParameter.CLASS,UIManager.getInstance().businessEntityInfos(object.getClass()).getIdentifier()
+							,UniformResourceLocatorParameter.CRUD,UniformResourceLocatorParameterBusinessImpl.getCrudAsString(crud)
+							,UniformResourceLocatorParameter.IDENTIFIABLE, Crud.CREATE.equals(crud) ? null : object
 									,UIManager.getInstance().businessEntityInfos(nodeObject.getClass()).getIdentifier()
 									,nodeObject instanceof AbstractIdentifiable ? ((AbstractIdentifiable)nodeObject).getIdentifier() : null};
 				}

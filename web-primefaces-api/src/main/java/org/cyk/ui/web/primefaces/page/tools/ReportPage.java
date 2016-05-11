@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.omnifaces.util.Faces;
 
@@ -29,7 +30,7 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 	
 	@Override
 	protected String buildContentTitle() {
-		return requestParameter(webManager.getRequestParameterTitle());
+		return requestParameter(UniformResourceLocatorParameter.TITLE);
 	}
 	
 	@Override
@@ -42,7 +43,7 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 			if(entry.getValue()!=null && entry.getValue().length>0)
 				parametersCollection.add(entry.getValue()[0]);
 		}
-		String outcome = requestParameter(webManager.getRequestParameterOutcome());
+		String outcome = requestParameter(UniformResourceLocatorParameter.OUTCOME);
 		Object[] parametersArray = parametersCollection.toArray();
 		
 		String url = null;

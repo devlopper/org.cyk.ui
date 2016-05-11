@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -125,7 +126,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			detailsMenu = null;
 		else if(detailsMenu!=null){
 			detailsMenu.setRenderType(UIMenu.RenderType.TAB);
-			detailsMenu.setRequestedCommandable(requestParameter(webManager.getRequestParameterTabId()));
+			detailsMenu.setRequestedCommandable(requestParameter(UniformResourceLocatorParameter.TAB_ID));
 		}
 		contextualMenuModel = CommandBuilder.getInstance().menuModel(contextualMenu, getClass(), "contextualMenuModel");
 		

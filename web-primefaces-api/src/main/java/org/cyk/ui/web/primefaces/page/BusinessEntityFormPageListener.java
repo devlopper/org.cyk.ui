@@ -10,9 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 
 public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener<ENTITY> {
@@ -71,10 +71,10 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 				logTrace("Redirecting to consult view from listener : {} , {} , {}"
 						,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
 				WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUserInterface().getConsultViewId(), 
-						new Object[]{WebManager.getInstance().getRequestParameterClass(),UIManager.getInstance().keyFromClass(businessEntityInfos)
-					,WebManager.getInstance().getRequestParameterIdentifiable(),identifiable.getIdentifier(),
-					UIManager.getInstance().getCrudParameter(),businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
-					?UIManager.getInstance().getCrudReadParameter():null});
+						new Object[]{UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(businessEntityInfos)
+					,UniformResourceLocatorParameter.IDENTIFIABLE,identifiable.getIdentifier(),
+					UniformResourceLocatorParameter.CRUD,businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
+					?UniformResourceLocatorParameter.CRUD_READ:null});
 			}
 		}
 

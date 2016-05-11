@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 
@@ -18,8 +19,8 @@ public abstract class AbstractReportPage<IDENTIFIABLE extends AbstractIdentifiab
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		fileExtension = requestParameter(uiManager.getFileExtensionParameter());
-		reportIdentifier = requestParameter(uiManager.getReportIdentifierParameter());
+		fileExtension = requestParameter(UniformResourceLocatorParameter.FILE_EXTENSION);
+		reportIdentifier = requestParameter(UniformResourceLocatorParameter.REPORT_IDENTIFIER);
 		exporter.setFileUrl(url());
 		exporter.setType("application/"+fileExtension());
 	}

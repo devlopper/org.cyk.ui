@@ -18,6 +18,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -114,16 +115,16 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		
 		exportToPdfCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.export.pdf").setIcon(Icon.ACTION_EXPORT_PDF)
 				.setIdentifier(COMMANDABLE_EXPORT_PDF_IDENTIFIER).create();
-		reportCommandable(exportToPdfCommandable, UIManager.getInstance().getPdfParameter());
+		reportCommandable(exportToPdfCommandable, UniformResourceLocatorParameter.PDF);
 		exportMenu.getCommandables().add(exportToPdfCommandable);
 		
 		exportToXlsCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.export.excel").setIcon(Icon.ACTION_EXPORT_EXCEL)
 				.create();
-		reportCommandable(exportToXlsCommandable, UIManager.getInstance().getXlsParameter());
+		reportCommandable(exportToXlsCommandable, UniformResourceLocatorParameter.XLS);
 		exportMenu.getCommandables().add(exportToXlsCommandable);
 		
 		printCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.print").setIcon(Icon.ACTION_PRINT)
-				.setRendered(Boolean.FALSE).addParameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE).create(); 
+				.setRendered(Boolean.FALSE).addParameter(UniformResourceLocatorParameter.PRINT,Boolean.TRUE).create(); 
 		//reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter()); //has been move on demand because of customization
 		//printCommandable.getParameters().add(new Parameter(UIManager.getInstance().getPrintParameter(),Boolean.TRUE));
 		//printCommandable.setRendered(Boolean.FALSE);
@@ -179,9 +180,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected void reportCommandable(UICommandable commandable,String fileExtension){
 		commandable.setViewType(ViewType.TOOLS_REPORT);
 		commandable.setCommandRequestType(CommandRequestType.UI_VIEW);
-		commandable.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(),UIManager.getInstance().keyFromClass(identifiableClass)));
-		commandable.getParameters().add(new Parameter(UIManager.getInstance().getFileExtensionParameter(),fileExtension));
-		commandable.getParameters().add(new Parameter(UIManager.getInstance().getReportIdentifierParameter(),reportIdentifier));
+		commandable.getParameters().add(new Parameter(UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(identifiableClass)));
+		commandable.getParameters().add(new Parameter(UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension));
+		commandable.getParameters().add(new Parameter(UniformResourceLocatorParameter.REPORT_IDENTIFIER,reportIdentifier));
 	}
 	
 	@Override
@@ -441,7 +442,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		}else if(command==exportToXlsCommandable.getCommand()){
 			exportDataTableToXlsPage();
 		}else if(command==printCommandable.getCommand()){
-			reportCommandable(printCommandable, UIManager.getInstance().getPdfParameter());
+			reportCommandable(printCommandable, UniformResourceLocatorParameter.PDF);
 			/*
 			for(Parameter p : printCommandable.getParameters())
 				if(p.getValue()==null)

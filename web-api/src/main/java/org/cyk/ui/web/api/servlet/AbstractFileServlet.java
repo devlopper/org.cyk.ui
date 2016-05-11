@@ -21,6 +21,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtension;
 
@@ -72,7 +73,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	}
 	
 	protected AttachmentType getAttachmentType(HttpServletRequest request,HttpServletResponse response){
-		String attachmentTypeString = requestParameter(request,webManager.getRequestParameterAttachment());
+		String attachmentTypeString = requestParameter(request,UniformResourceLocatorParameter.ATTACHMENT);
 		AttachmentType attachmentType = null;
 		if(StringUtils.isBlank(attachmentTypeString))
 			attachmentType = getAttachmentTypeWhenNotSpecified();
@@ -116,9 +117,9 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	protected Collection<File> getFiles(HttpServletRequest request, HttpServletResponse response){
 		Collection<File> collection = new ArrayList<>();
 		Collection<Long> identifiers = new ArrayList<>();
-		String identifiable = requestParameter(request, uiManager.getIdentifiableParameter());
-		String encodedParameter = requestParameter(request, uiManager.getEncodedParameter());
-		if(uiManager.getIdentifiableParameter().equals(encodedParameter)){
+		String identifiable = requestParameter(request, UniformResourceLocatorParameter.IDENTIFIABLE);
+		String encodedParameter = requestParameter(request, UniformResourceLocatorParameter.ENCODED);
+		if(UniformResourceLocatorParameter.IDENTIFIABLE.equals(encodedParameter)){
 			Collection<Long> r = webManager.decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
 				identifiers.addAll(r);
@@ -145,7 +146,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 	/**/
 	
 	protected String fileExtensionRequestParameter(HttpServletRequest request){
-		return requestParameter(request, uiManager.getFileExtensionParameter());
+		return requestParameter(request, UniformResourceLocatorParameter.FILE_EXTENSION);
 	}
 	
 	/**/

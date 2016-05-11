@@ -19,7 +19,6 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.CommonBusinessAction;
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventParticipationBusiness;
@@ -33,7 +32,6 @@ import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
@@ -107,58 +105,16 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private Locale locale = Locale.FRENCH;
 	
 	/* constants */
-	private final String actionIdentifierParameter = "actid";
-	private final String userAccountParameter = "ridp";
-	private final String reportIdentifierParameter = "ridp";
-	private final String formModelParameter = "formmodel";
-	private final String formModelActorParameter = "afm";
-	private final String classParameter = "clazz";
-	private final String identifiableParameter = "identifiable";
-	private final String windowParameter="windowParam";
-	private final String fileExtensionParameter="fileExtensionParam";
-	private final String printParameter="print";
-	private final String encodedParameter="encoded";
-	private final String pdfParameter="pdf";
-	private final String xlsParameter="xls";
-	private final String detailsParameter="details";
-	private final String crudParameter="crud";
-	private final String crudCreateParameter="create";
-	private final String crudReadParameter="read";
-	private final String crudUpdateParameter="update";
-	private final String crudDeleteParameter="delete";
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
 	
 	@Getter @Setter protected Icon.GetIdentifierListener<String> iconIdentifier;
 	
 	private String windowFooter;
 	
-	public String getCrudParameterValue(Crud crud){
-		crud=crud==null?Crud.READ:crud;
-		switch(crud){
-		case CREATE:return crudCreateParameter;
-		case READ:return crudReadParameter;
-		case UPDATE:return crudUpdateParameter;
-		case DELETE:return crudDeleteParameter;
-		default: return null;
-		}
-	}
-	
-	public Crud getCrudValue(String crudParameterValue){
-		switch(crudParameterValue){
-		case crudCreateParameter:return Crud.CREATE;
-		case crudReadParameter:return Crud.READ;
-		case crudUpdateParameter:return Crud.UPDATE;
-		case crudDeleteParameter:return Crud.DELETE;
-		default: return null;
-		}
-	}
-	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		INSTANCE = this;
-		UniformResourceLocatorBuilder.CLASS_PARAMETER_NAME=classParameter;
-		UniformResourceLocatorBuilder.IDENTIFIABLE_PARAMETER_NAME=identifiableParameter;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
 		//windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});

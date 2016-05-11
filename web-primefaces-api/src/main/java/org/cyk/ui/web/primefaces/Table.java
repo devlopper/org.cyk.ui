@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -23,7 +24,6 @@ import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
-import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
@@ -69,10 +69,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		exportToPdfCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(), 
+		exportToPdfCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME, 
 				WebNavigationManager.getInstance().getOutcomeReportTable()));
 		
-		exportToXlsCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(), 
+		exportToXlsCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME, 
 				WebNavigationManager.getInstance().getOutcomeReportTable()));
 	}
 	
@@ -170,7 +170,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	
 	@Override
 	protected void printDataPage() {
-		printCommandable.getParameters().add(new UICommandable.Parameter(WebManager.getInstance().getRequestParameterOutcome(),WebNavigationManager.getInstance().getOutcomeReportTable()));
+		printCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME,WebNavigationManager.getInstance().getOutcomeReportTable()));
 		WebNavigationManager.getInstance().redirectToPrintData(printCommandable.getParameters());
 	}
 	

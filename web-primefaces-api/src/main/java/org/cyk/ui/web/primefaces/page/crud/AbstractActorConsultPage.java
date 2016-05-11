@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -120,7 +121,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 		if(StringUtils.isEmpty(selectedTabId))
 			;
 		else
-			commandable.addParameter(webManager.getRequestParameterTabId(), selectedTabId);
+			commandable.addParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
 		contextualMenu.getChildren().add(commandable);
 		
 		return Arrays.asList(contextualMenu);

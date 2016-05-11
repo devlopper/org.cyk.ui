@@ -27,7 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
@@ -300,8 +302,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public String createOneUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic){
 		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudOne:businessEntityInfos.getUserInterface().getEditViewId(), new Object[]{
-				webManager.getRequestParameterClass(),uiManager.keyFromClass(businessEntityInfos)
-				,uiManager.getCrudParameter(),uiManager.getCrudCreateParameter()
+			 UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(businessEntityInfos)
+				,UniformResourceLocatorParameter.CRUD,UniformResourceLocatorParameter.CRUD_CREATE
 			});
 	}
 	
@@ -311,7 +313,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public String createManyUrl(BusinessEntityInfos businessEntityInfos,Boolean dynamic,Boolean actionOutcome,Boolean partial){
 		return url(Boolean.TRUE.equals(dynamic)?outcomeDynamicCrudMany:businessEntityInfos.getUserInterface().getListViewId(), new Object[]{
-				webManager.getRequestParameterClass(),uiManager.keyFromClass(businessEntityInfos)
+				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(businessEntityInfos)
 			},actionOutcome,partial);
 	}
 	
@@ -321,35 +323,35 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public String formUrl(Long identifier,String crud){
 		return url(outcomeDynamicCrudOne, new Object[]{
-				webManager.getRequestParameterIdentifiable(),identifier
-				,uiManager.getCrudParameter(),crud
+				UniformResourceLocatorParameter.IDENTIFIABLE,identifier
+				,UniformResourceLocatorParameter.CRUD,crud
 			});
 	}
 	
 	public String getConsultUrl(AbstractIdentifiable data){
 		return url(consultOneOutcome(data.getClass()),new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
-				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
-				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
-				//,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(data.getClass()),
+				UniformResourceLocatorParameter.IDENTIFIABLE, data.getIdentifier(),
+				UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameterBusinessImpl.getCrudAsString(Crud.READ)
+				//,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()//TODO must be parameterized
 		},Boolean.FALSE,Boolean.FALSE);
 	}
 	
 	public String exportDataTableFileUrl(Class<?> aClass,String fileExtension,Boolean print){
 		return url(outcomeExportDataTable, new Object[]{
-				webManager.getRequestParameterClass(),uiManager.keyFromClass(aClass)
-				,uiManager.getFileExtensionParameter(),fileExtension
-				,webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print),
-				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(aClass)
+				,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension
+				,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print),
+				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
 	public String reportFileUrl(Class<?> aClass,String servletUrl,String fileExtension,Boolean print){
 		return url(outcomeReport, new Object[]{
-				webManager.getRequestParameterClass(),uiManager.keyFromClass(aClass)
-				,uiManager.getFileExtensionParameter(),fileExtension
-				,webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print),
-				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(aClass)
+				,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension
+				,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print),
+				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
@@ -416,10 +418,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToDynamicConsultOne(AbstractIdentifiable data,Collection<Parameter> parameters){
 		Object[] parametersArray = new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
-				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
-				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(Crud.READ)
-				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(data.getClass()),
+				UniformResourceLocatorParameter.IDENTIFIABLE, data.getIdentifier(),
+				UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameterBusinessImpl.getCrudAsString(Crud.READ)
+				,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()//TODO must be parameterized
 		};
 		redirectTo(consultOneOutcome(data.getClass()),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
 	}
@@ -429,28 +431,28 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToDynamicCrudOne(AbstractIdentifiable data,Crud crud){
 		redirectTo(editOneOutcome(data.getClass()),new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(data.getClass()),
-				webManager.getRequestParameterIdentifiable(), data.getIdentifier(),
-				uiManager.getCrudParameter(), uiManager.getCrudParameterValue(crud)
-				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(data.getClass()),
+				UniformResourceLocatorParameter.IDENTIFIABLE, data.getIdentifier(),
+				UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameterBusinessImpl.getCrudAsString(crud)
+				,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()//TODO must be parameterized
 		});
 	}
 	
 	public void redirectToDynamicCreate(AbstractIdentifiable parent,Class<? extends AbstractIdentifiable> childClass,Collection<Parameter> parameters){
 		Object[] parametersArray = new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(childClass),
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(childClass),
 				uiManager.businessEntityInfos(parent.getClass()).getIdentifier(), parent.getIdentifier(),
-				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
-				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()//TODO must be parameterized
+				UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE
+				,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()//TODO must be parameterized
 		};
 		redirectTo(editOneOutcome(childClass),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
 	}
 	
 	public void redirectToDynamicCrudOne(Class<? extends AbstractIdentifiable> aClass,Collection<Parameter> parameters){
 		Object[] parametersArray = new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass),
-				uiManager.getCrudParameter(), uiManager.getCrudCreateParameter()
-				,webManager.getRequestParameterPreviousUrl(), getRequestUrl()}; //TODO must be parameterized
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(aClass),
+				UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE
+				,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()}; //TODO must be parameterized
 		//ArrayUtils.addAll(parametersArray, parametersToArray(parameters));
 		redirectTo(editOneOutcome(aClass),ArrayUtils.addAll(parametersArray, parametersToArray(parameters)));
 	}
@@ -460,54 +462,54 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public void redirectToDynamicCrudMany(Class<? extends AbstractIdentifiable> dataClass,AbstractIdentifiable data){
 		redirectTo(outcomeDynamicCrudMany,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
-				webManager.getRequestParameterIdentifiable(), data==null?null:((AbstractIdentifiable)data).getIdentifier()
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
+				UniformResourceLocatorParameter.IDENTIFIABLE, data==null?null:((AbstractIdentifiable)data).getIdentifier()
 		});
 	}
 	
 	public void redirectToExportDataTableToPdf(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToPdf,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
-				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
+				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
 		});
 	}
 	
 	public void redirectToExportDataTableToXls(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToXls,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
-				webManager.getRequestParameterUrl(), webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
+				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
 		});
 	}
 	
 	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
 		redirectTo(outcomeFileConsultMany,new Object[]{
-				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
+				UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
-				,uiManager.getFileExtensionParameter(), fileExtension.getValue()
-				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
+				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
+				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		});
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,String actionIdentifier){
 		redirectTo(outcomeProcessMany,new Object[]{
-				uiManager.getIdentifiableParameter(), identifiables==null || identifiables.isEmpty() ? null 
+				UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
-				,uiManager.getClassParameter(),uiManager.businessEntityInfos(identifiableClass).getIdentifier()
-				,uiManager.getActionIdentifierParameter(), actionIdentifier
-				,uiManager.getEncodedParameter(), uiManager.getIdentifiableParameter()
+				,UniformResourceLocatorParameter.CLASS,uiManager.businessEntityInfos(identifiableClass).getIdentifier()
+				,UniformResourceLocatorParameter.ACTION_IDENTIFIER, actionIdentifier
+				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		});
 	}
 	
 	public void redirectToPrintData(Collection<Parameter> parameters/*,String reportId*/){
 		/*redirectTo(outcomeToolsPrintDataTable,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass)
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass)
 		});*/
 		//System.out.println("WebNavigationManager.redirectToPrintData() : "+dataClass+" : "+uiManager.keyFromClass(dataClass));
 		/*redirectTo(outcomeToolsReport,new Object[]{
-				webManager.getRequestParameterClass(), uiManager.keyFromClass(dataClass),
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
 				UIManager.getInstance().getFileExtensionParameter(),uiManager.getPdfParameter(),
 				UIManager.getInstance().getReportIdentifierParameter(),reportId,
-				webManager.getRequestParameterPrint(),Boolean.TRUE,
+				UniformResourceLocatorParameter.PRINT,Boolean.TRUE,
 				webManager.getRequestParameterOutcome(), outcomeReportTable
 		});*/
 		
@@ -583,28 +585,28 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public Collection<Parameter> crudOneParameters(Class<? extends AbstractIdentifiable> aClass){
 		Collection<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(aClass)));
-		parameters.add(new Parameter(uiManager.getCrudParameter(),uiManager.getCrudCreateParameter()));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(aClass)));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.CRUD,UniformResourceLocatorParameter.CRUD_CREATE));
 		return parameters;
 	}
 	
 	public Collection<Parameter> crudManyParameters(AbstractIdentifiable anIdentifiable){
 		Collection<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(new Parameter(webManager.getRequestParameterClass(), uiManager.keyFromClass(anIdentifiable.getClass())));
-		parameters.add(new Parameter(webManager.getRequestParameterIdentifiable(), anIdentifiable==null?null:anIdentifiable.getIdentifier()));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(anIdentifiable.getClass())));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.IDENTIFIABLE, anIdentifiable==null?null:anIdentifiable.getIdentifier()));
 		return parameters;
 	}
 	
 	public Collection<Parameter> reportParameters(AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print,String windowMode){
 		Collection<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(new Parameter(webManager.getRequestParameterClass(),uiManager.keyFromClass(anIdentifiable.getClass())));
-		parameters.add(new Parameter(webManager.getRequestParameterIdentifiable(),anIdentifiable.getIdentifier()));
-		parameters.add(new Parameter(uiManager.getFileExtensionParameter(),fileExtension));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(anIdentifiable.getClass())));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.IDENTIFIABLE,anIdentifiable.getIdentifier()));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension));
 		if(StringUtils.isNotBlank(windowMode))
 			parameters.add(new Parameter(webManager.getRequestParameterWindowMode(),windowMode));
 		parameters.add(new Parameter(uiManager.getReportIdentifierParameter(),reportIdentifier));
 		parameters.add(new Parameter(webManager.getRequestParameterOutcome(),outcomeReport));
-		parameters.add(new Parameter(webManager.getRequestParameterPrint(),Boolean.TRUE.equals(print)));
+		parameters.add(new Parameter(UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print)));
 		return parameters;
 	}
 	

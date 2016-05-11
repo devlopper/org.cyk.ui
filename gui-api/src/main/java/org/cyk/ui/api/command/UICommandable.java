@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
@@ -172,16 +173,16 @@ public interface UICommandable {
 		}
 		
 		public static void addCrud(Collection<Parameter> parameters,Crud crud,AbstractIdentifiable identifiable, AbstractOutputDetails<?> details) {
-			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(identifiable.getClass()));
-			add(parameters,UIManager.getInstance().getCrudParameter(), Crud.CREATE.equals(crud) ? UIManager.getInstance().getCrudCreateParameter() :
-				Crud.READ.equals(crud) ? UIManager.getInstance().getCrudReadParameter() :
-				Crud.UPDATE.equals(crud) ? UIManager.getInstance().getCrudUpdateParameter() : 
-				Crud.DELETE.equals(crud) ? UIManager.getInstance().getCrudDeleteParameter() : null);
-			add(parameters,UIManager.getInstance().getIdentifiableParameter(), identifiable.getIdentifier());
+			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(identifiable.getClass()));
+			add(parameters,UniformResourceLocatorParameter.CRUD, Crud.CREATE.equals(crud) ? UniformResourceLocatorParameter.CRUD_CREATE :
+				Crud.READ.equals(crud) ? UniformResourceLocatorParameter.CRUD_CREATE :
+				Crud.UPDATE.equals(crud) ? UniformResourceLocatorParameter.CRUD_UPDATE : 
+				Crud.DELETE.equals(crud) ? UniformResourceLocatorParameter.CRUD_DELETE : null);
+			add(parameters,UniformResourceLocatorParameter.IDENTIFIABLE, identifiable.getIdentifier());
 			if(details!=null){
 				@SuppressWarnings("unchecked")
 				OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
-				add(parameters,UIManager.getInstance().getDetailsParameter(), configuration.getRuntimeIdentifier());
+				add(parameters,UniformResourceLocatorParameter.DETAILS, configuration.getRuntimeIdentifier());
 			}
 		}
 		
@@ -190,17 +191,17 @@ public interface UICommandable {
 		}
 		
 		public static void addCreate(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> identifiableClass) {
-			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
-			add(parameters,UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter());
+			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+			add(parameters,UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE);
 		}
 		
 		public static void addReadAllParameters(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> identifiableClass) {
-			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
 		}
 		
 		public static void addCreateOne(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> aClass){
-			add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(aClass));
-			add(parameters,UIManager.getInstance().getCrudParameter(),UIManager.getInstance().getCrudCreateParameter());
+			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(aClass));
+			add(parameters,UniformResourceLocatorParameter.CRUD,UniformResourceLocatorParameter.CRUD_CREATE);
 		}
 	
 		public static void addReport(Collection<Parameter> parameters,AbstractIdentifiable anIdentifiable,String reportIdentifier,String fileExtension,Boolean print,String windowMode){
@@ -212,6 +213,13 @@ public interface UICommandable {
 			add(parameters,UIManager.getInstance().getParameterReportIdentifier(),reportIdentifier);
 			add(parameters,UIManager.getInstance().getParameterViewIdentifier(),UIManager.getInstance().getViewIdentifierDynamicReport());
 			add(parameters,UIManager.getInstance().getParameterPrint(),Boolean.TRUE.equals(print));
+			System.out.println("UICommandable.Parameter.addReport() : "+parameters);
+			System.out.println(UIManager.getInstance().getParameterClass()+" : "+UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));
+		}
+		
+		@Override
+		public String toString() {
+			return name+"="+value;
 		}
 	}
 	

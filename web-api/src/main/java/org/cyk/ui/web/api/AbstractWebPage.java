@@ -15,7 +15,9 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -61,12 +63,12 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		//locale = getUserSession().getLocale();
 		//layout.setWest("/org.cyk.ui.web.primefaces/include/layout/default/north.xhtml");
 		footer=  UIManager.getInstance().getWindowFooter();
-		windowMode = requestParameter(webManager.getRequestParameterWindowMode());
+		windowMode = requestParameter(UniformResourceLocatorParameter.WINDOW_MODE);
 		if(StringUtils.isEmpty(windowMode))
-			windowMode = webManager.getRequestParameterWindowModeNormal();
+			windowMode = UniformResourceLocatorParameter.WINDOW_MODE_NORMAL;
 		url = navigationManager.getRequestUrl();
-		previousUrl = requestParameter(webManager.getRequestParameterPreviousUrl());
-		selectedTabId = requestParameter(webManager.getRequestParameterTabId());
+		previousUrl = requestParameter(UniformResourceLocatorParameter.PREVIOUS_URL);
+		selectedTabId = requestParameter(UniformResourceLocatorParameter.TAB_ID);
 		
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		
@@ -146,12 +148,12 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	
 	@Override
 	public Boolean getShowMainMenu() {
-		return webManager.getRequestParameterWindowModeNormal().equals(windowMode);
+		return UniformResourceLocatorParameter.WINDOW_MODE_NORMAL.equals(windowMode);
 	}
 	
 	@Override
 	public Boolean getRenderedAsDialog() {
-		return webManager.getRequestParameterWindowModeDialog().equals(windowMode);
+		return UniformResourceLocatorParameter.WINDOW_MODE_DIALOG.equals(windowMode);
 	}
 	
 	
@@ -217,11 +219,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	}
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass){
-		return identifiableFromRequestParameter(aClass, webManager.getRequestParameterIdentifiable());
+		return identifiableFromRequestParameter(aClass, UniformResourceLocatorParameter.IDENTIFIABLE);
 	}
 	
 	protected Crud crudFromRequestParameter(){
-		return getUiManager().getCrudValue(requestParameter(getUiManager().getCrudParameter()));
+		return UniformResourceLocatorParameterBusinessImpl.getCrudAsObject(requestParameter(UniformResourceLocatorParameter.CRUD));
 	}
 	
 	protected Boolean hasRequestParameter(String name){
@@ -299,7 +301,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		UICommandable commandable = detailsMenu.addCommandable(labelId, icon, outcome);
 		commandable.setIdentifier(identifier);
 		commandable.getParameters().addAll(NavigationHelper.getInstance().getParameters(url));
-		commandable.setParameter(webManager.getRequestParameterTabId(), commandable.getIdentifier());
+		commandable.setParameter(UniformResourceLocatorParameter.TAB_ID, commandable.getIdentifier());
 		
 		return commandable;
 	}

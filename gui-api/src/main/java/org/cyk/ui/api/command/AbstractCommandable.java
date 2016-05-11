@@ -16,6 +16,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.MessageManager;
 import org.cyk.ui.api.UIManager;
@@ -95,14 +96,14 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	
 	@Override
 	public UICommandable addCreateParameters(Class<? extends AbstractIdentifiable> identifiableClass) {
-		Parameter.add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+		Parameter.add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
 		setViewType(ViewType.DYNAMIC_CRUD_ONE);
 		return this;
 	}
 	
 	@Override
 	public UICommandable addReadAllParameters(Class<? extends AbstractIdentifiable> identifiableClass) {
-		Parameter.add(parameters,UIManager.getInstance().getClassParameter(), UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
+		Parameter.add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
 		setViewType(ViewType.DYNAMIC_CRUD_MANY);
 		return this;
 	}
@@ -377,8 +378,8 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 				c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 			else{
 				c.setViewId(businessEntityInfos.getUserInterface().getEditViewId());
-				c.getParameters().add(new Parameter(UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(businessEntityInfos)));
-				c.getParameters().add(new Parameter(UIManager.getInstance().getCrudParameter(), UIManager.getInstance().getCrudCreateParameter()));
+				c.getParameters().add(new Parameter(UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(businessEntityInfos)));
+				c.getParameters().add(new Parameter(UniformResourceLocatorParameter.CRUD, UniformResourceLocatorParameter.CRUD_CREATE));
 			}
 			logTrace("Crud one view ID of {} is {}", businessEntityInfos.getClazz().getSimpleName(),c.getViewType()==null?c.getViewId():c.getViewType());
 			return c;
@@ -509,14 +510,14 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 				addParameters(master);
 			
 			if(StringUtils.isNotBlank(actionIdentifier))
-				Parameter.add(instance.getParameters(),UIManager.getInstance().getActionIdentifierParameter(), actionIdentifier);
+				Parameter.add(instance.getParameters(),UniformResourceLocatorParameter.ACTION_IDENTIFIER, actionIdentifier);
 			
 			if(CommonBusinessAction.CREATE.equals(commonBusinessAction)){
 				addCreateOneParameters(identifiableClass);
 			}else if(CommonBusinessAction.SELECT.equals(commonBusinessAction)){
-				Parameter.add(instance.getParameters(),UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
+				Parameter.add(instance.getParameters(),UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
 			}else if(CommonBusinessAction.LIST.equals(commonBusinessAction)){
-				Parameter.add(instance.getParameters(),UIManager.getInstance().getClassParameter(), UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
+				Parameter.add(instance.getParameters(),UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
 			}
 			
 			return instance;

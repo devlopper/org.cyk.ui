@@ -46,6 +46,8 @@ public class NavigationHelper extends AbstractBean implements Serializable {
 	}
 	
 	public void addParameter(StringBuilder url,Object name,Object value){
+		//if(name==null)
+		//	return;
 		if(name instanceof Class<?>)
 			if(AbstractIdentifiable.class.isAssignableFrom((Class<?>) name))
 				name = UIManager.getInstance().businessEntityInfos((Class<?>) name).getIdentifier();

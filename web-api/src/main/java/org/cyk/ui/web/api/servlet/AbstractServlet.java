@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.WebManager;
@@ -28,11 +29,11 @@ public abstract class AbstractServlet extends HttpServlet implements Serializabl
 	
 	@SuppressWarnings("unchecked")
 	protected Class<AbstractIdentifiable> identifiableClassParameter(HttpServletRequest request){
-		return (Class<AbstractIdentifiable>) uiManager.classFromKey(request.getParameter(webManager.getRequestParameterClass())).getClazz();
+		return (Class<AbstractIdentifiable>) uiManager.classFromKey(request.getParameter(UniformResourceLocatorParameter.CLASS)).getClazz();
 	}
 	
 	protected AbstractIdentifiable identifiableParameter(HttpServletRequest request,Class<AbstractIdentifiable> aClass){
-		return genericBusiness.use(aClass).find(Long.parseLong(requestParameter(request,webManager.getRequestParameterIdentifiable())));
+		return genericBusiness.use(aClass).find(Long.parseLong(requestParameter(request,UniformResourceLocatorParameter.IDENTIFIABLE)));
 	}
 	
 	protected UserAccount userAccount(HttpServletRequest request){

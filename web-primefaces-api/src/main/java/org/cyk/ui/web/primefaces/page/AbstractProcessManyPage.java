@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.primefaces.Table;
@@ -34,7 +35,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.initialisationStarted(this);
 		Class<ENTITY> entityClass = (Class<ENTITY>) businessEntityInfos.getClazz();
-		actionIdentifier = requestParameter(uiManager.getActionIdentifierParameter());
+		actionIdentifier = requestParameter(UniformResourceLocatorParameter.ACTION_IDENTIFIER);
 		Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
 		elements = (Collection<ENTITY>) genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
 		

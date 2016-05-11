@@ -22,12 +22,12 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootRandomDataProvider;
-import org.cyk.system.root.business.impl.network.UniformResourceLocatorBuilder;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -69,7 +69,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	@Inject protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness;
-	protected UniformResourceLocatorBuilder uniformResourceLocatorBuilder = new UniformResourceLocatorBuilder();
+	protected UniformResourceLocator.Builder uniformResourceLocatorBuilder = new UniformResourceLocator.Builder();
 	
 	protected ServletContext servletContext;
 	
@@ -266,7 +266,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		return integerContextParameter(name, event, 0);
 	}
 	
-	protected void addUrl(String roleCode,UniformResourceLocatorBuilder builder){
+	protected void addUrl(String roleCode,UniformResourceLocator.Builder builder){
 		//Collection<UniformResourceLocator> uniformResourceLocators = ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(roleCode);
 		/*if(uniformResourceLocators==null)
 			ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.put(roleCode, uniformResourceLocators = new ArrayList<>());
@@ -276,8 +276,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	
 	//TODO this logic should be moved on root business
 	protected void addUrl(String roleCode,String relativeUrl,Object...parameters){
-		addUrl(roleCode, uniformResourceLocatorBuilder.newUniformResourceLocator()
-			.setAddress(servletContext.getContextPath()+relativeUrl).addParameters(parameters).build());
+		addUrl(roleCode, UniformResourceLocator.Builder.create(servletContext.getContextPath()+relativeUrl,parameters));
 	}
 	
 	protected void addUrl(String roleCode,UniformResourceLocator uniformResourceLocator){
@@ -294,25 +293,25 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		String classIdentifier = businessEntityInfos.getIdentifier();
 		if(Boolean.TRUE.equals(list)){
-			addUrl(roleCode,WebNavigationManager.PAGE_CRUD_MANY,uiManager.getClassParameter(),classIdentifier);
+			addUrl(roleCode,WebNavigationManager.PAGE_CRUD_MANY,UniformResourceLocatorParameter.CLASS,classIdentifier);
 		}
 		for(Crud crud : cruds){
-			switch(crud){
+			switch(crud){ 
 			case CREATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
-						,uiManager.getCrudCreateParameter());
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+						,UniformResourceLocatorParameter.CRUD_CREATE);
 				break;
 			case READ:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
-						,uiManager.getCrudReadParameter());
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+						,UniformResourceLocatorParameter.CRUD_READ);
 				break;
 			case UPDATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
-						,uiManager.getCrudUpdateParameter());
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+						,UniformResourceLocatorParameter.CRUD_UPDATE);
 				break;
 			case DELETE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,uiManager.getClassParameter(),aClass,uiManager.getCrudParameter()
-						,uiManager.getCrudDeleteParameter());
+				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+						,UniformResourceLocatorParameter.CRUD_DELETE);
 				break;
 			}
 		}
@@ -329,15 +328,15 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	}
 	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
-		addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
+		addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
 				//.addAnyInstanceOf(aClass)
 				.addClassParameter(aClass)
 				.addParameters(parameters));
 		if(Boolean.TRUE.equals(dynamic)){
-			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()
+			addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()
 					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}else{
-			addUrl(roleCode,uniformResourceLocatorBuilder.newUniformResourceLocator().setAddress(servletContext.getContextPath()
+			addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()
 					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
 		}
 		

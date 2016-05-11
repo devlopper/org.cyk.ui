@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.omnifaces.util.Faces;
@@ -36,7 +37,7 @@ public class FileConsultManyPage extends AbstractPrimefacesPage implements Seria
 		Object[] parametersArray = parametersCollection.toArray();
 		
 		exporter.setFileUrl(navigationManager.url("fileservlet", parametersArray,Boolean.FALSE,Boolean.FALSE));
-		exporter.setType(RootBusinessLayer.getInstance().getFileBusiness().findMime(requestParameter(uiManager.getFileExtensionParameter())));
+		exporter.setType(RootBusinessLayer.getInstance().getFileBusiness().findMime(requestParameter(UniformResourceLocatorParameter.FILE_EXTENSION)));
 	}
 	
 	@Override

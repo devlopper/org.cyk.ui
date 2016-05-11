@@ -2,9 +2,9 @@ package org.cyk.ui.web.api.command;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 
 public abstract class AbstractWebCommandable extends AbstractCommandable implements WebCommandable, Serializable {
@@ -14,7 +14,7 @@ public abstract class AbstractWebCommandable extends AbstractCommandable impleme
 	@Override
 	public UICommandable addPreviousViewParameter() {
 		UICommandable commandable = super.addDefaultParameters();
-		commandable.addParameter(WebManager.getInstance().getRequestParameterPreviousUrl(), WebNavigationManager.getInstance().getRequestUrl());
+		commandable.addParameter(UniformResourceLocatorParameter.PREVIOUS_URL, WebNavigationManager.getInstance().getRequestUrl());
 		return commandable;
 	}
 	
