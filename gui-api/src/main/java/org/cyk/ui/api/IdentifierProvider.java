@@ -38,40 +38,7 @@ public interface IdentifierProvider{
 		
 		@Override
 		public String getView(Class<?> aClass, CommonBusinessAction commonBusinessAction, Boolean one) {
-			if(commonBusinessAction==null)
-				return null;
-			BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
-			String identifier=null;
-			if(Boolean.TRUE.equals(one)){
-				switch(commonBusinessAction){
-				case CREATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
-				case READ:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
-				case UPDATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
-				case DELETE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
-				case CONSULT:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
-				case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
-				case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectOneViewId();break;
-				case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
-				}	
-			}else{
-				switch(commonBusinessAction){
-				case CREATE:identifier=businessEntityInfos.getUserInterface().getCreateManyViewId();break;
-				case READ:identifier=null;break;
-				case UPDATE:identifier=null;break;
-				case DELETE:identifier=null;break;
-				case CONSULT:identifier=null;break;
-				case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
-				case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectManyViewId();break;
-				case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
-				}	
-			}
-			
-			if(StringUtils.isEmpty(identifier))
-				identifier = getViewDynamic(commonBusinessAction, one);
-			
-			if(StringUtils.isEmpty(identifier))
-				logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
-			return identifier;
+			return null;
 		}
 		
 		@Override
@@ -119,6 +86,44 @@ public interface IdentifierProvider{
 		
 		public static class Default extends Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;
+			
+			@Override
+			public String getView(Class<?> aClass, CommonBusinessAction commonBusinessAction, Boolean one) {
+				if(commonBusinessAction==null)
+					return null;
+				BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(aClass);
+				String identifier=null;
+				if(Boolean.TRUE.equals(one)){
+					switch(commonBusinessAction){
+					case CREATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
+					case READ:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
+					case UPDATE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
+					case DELETE:identifier=businessEntityInfos.getUserInterface().getEditViewId();break;
+					case CONSULT:identifier=businessEntityInfos.getUserInterface().getConsultViewId();break;
+					case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectOneViewId();break;
+					case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					}	
+				}else{
+					switch(commonBusinessAction){
+					case CREATE:identifier=businessEntityInfos.getUserInterface().getCreateManyViewId();break;
+					case READ:identifier=null;break;
+					case UPDATE:identifier=null;break;
+					case DELETE:identifier=null;break;
+					case CONSULT:identifier=null;break;
+					case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectManyViewId();break;
+					case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					}	
+				}
+				
+				if(StringUtils.isEmpty(identifier))
+					identifier = getViewDynamic(commonBusinessAction, one);
+				
+				if(StringUtils.isEmpty(identifier))
+					logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
+				return identifier;
+			}
 			
 		}
 

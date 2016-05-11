@@ -96,7 +96,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		identifiableConfiguration(event);
 		
 		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
-			if(CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) || CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
+			if(/*CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) ||*/ CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
 				//uiManager.configBusinessIdentifiable(businessEntityInfos.getClazz(), null);
 				@SuppressWarnings("unchecked")
 				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());

@@ -483,9 +483,15 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			if(instance.getCommand().getMessageManager()==null)
 				instance.getCommand().setMessageManager(MessageManager.INSTANCE);
 			
-			if(instance.getViewId()==null && instance.getViewType()==null)
+			if(instance.getViewId()==null && instance.getViewType()==null){
 				setView(UIManager.getInstance().getViewIdentifier(identifiableClass, commonBusinessAction,one));
-			
+				if(instance.getViewId()==null)//No specific view has been defined so we'll use the dynamic one
+					if(Boolean.TRUE.equals(one))
+						setView(ViewType.DYNAMIC_CRUD_ONE);
+					else
+						setView(ViewType.DYNAMIC_CRUD_MANY);
+					//setView(UIManager.getInstance().getViewDynamic(commonBusinessAction,one));
+			}
 			if(instance.getViewId() != null || instance.getViewType()!=null)
 				instance.setCommandRequestType(CommandRequestType.UI_VIEW);
 			
