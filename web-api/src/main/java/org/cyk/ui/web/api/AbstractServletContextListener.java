@@ -96,30 +96,26 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		identifiableConfiguration(event);
 		
 		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){
-			if(CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
+			if(CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) || CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
 				//uiManager.configBusinessIdentifiable(businessEntityInfos.getClazz(), null);
 				@SuppressWarnings("unchecked")
 				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
-				if(configuration==null || configuration.getFormMap()==null){
-					
-				}else{
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
-						businessEntityInfos.getUserInterface().setEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
-					
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getConsultViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.READ)!=null)
-						businessEntityInfos.getUserInterface().setConsultViewId(webNavigationManager.getOutcomeDynamicCrudOne());
-					
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
-						businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
-					
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectOneViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
-						businessEntityInfos.getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
-					
-					if(StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectManyViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
-						businessEntityInfos.getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());	
-					
-				}
+				Boolean notConfigured = configuration==null || configuration.getFormMap()==null;
 				
+				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
+					businessEntityInfos.getUserInterface().setEditViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+				
+				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getConsultViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.READ)!=null)
+					businessEntityInfos.getUserInterface().setConsultViewId(webNavigationManager.getOutcomeDynamicCrudOne());
+				
+				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getListViewId()) && configuration.getFormMap().get(Boolean.FALSE, Crud.READ)!=null)
+					businessEntityInfos.getUserInterface().setListViewId(webNavigationManager.getOutcomeDynamicCrudMany());	
+				
+				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectOneViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
+					businessEntityInfos.getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
+				
+				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getSelectManyViewId()) /*&& configuration.getFormMap().getQuery()!=null*/)
+					businessEntityInfos.getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());	
 			}
 		}
 		
