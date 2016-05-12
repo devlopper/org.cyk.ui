@@ -69,10 +69,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		exportToPdfCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME, 
+		exportToPdfCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.VIEW_IDENTIFIER, 
 				WebNavigationManager.getInstance().getOutcomeReportTable()));
 		
-		exportToXlsCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME, 
+		exportToXlsCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.VIEW_IDENTIFIER, 
 				WebNavigationManager.getInstance().getOutcomeReportTable()));
 	}
 	
@@ -170,7 +170,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	
 	@Override
 	protected void printDataPage() {
-		printCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.OUTCOME,WebNavigationManager.getInstance().getOutcomeReportTable()));
+		printCommandable.getParameters().add(new UICommandable.Parameter(UniformResourceLocatorParameter.VIEW_IDENTIFIER,WebNavigationManager.getInstance().getOutcomeReportTable()));
 		WebNavigationManager.getInstance().redirectToPrintData(printCommandable.getParameters());
 	}
 	

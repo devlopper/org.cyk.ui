@@ -125,12 +125,15 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 				identifiers.addAll(r);
 		}else{
 			String[] identifiersAsString = StringUtils.split(identifiable,Constant.CHARACTER_COMA.charValue());
-			for(String identifier : identifiersAsString)
-				try {
-					identifiers.add(Long.parseLong(identifier));
-				} catch (NumberFormatException e) {
-					return null;
-				}
+			if(identifiersAsString==null)
+				;
+			else
+				for(String identifier : identifiersAsString)
+					try {
+						identifiers.add(Long.parseLong(identifier));
+					} catch (NumberFormatException e) {
+						return null;
+					}
 		}
 		
 		for(Long identifier : identifiers)

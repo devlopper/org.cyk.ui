@@ -333,13 +333,5 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			}
 		});
 	}
-		
-	public String getViewIdentifierDynamicReport() {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
-			@Override
-			public String execute(IdentifierProvider listener) {
-				return listener.getViewDynamicReport();
-			}
-		});
-	}
+	
 }

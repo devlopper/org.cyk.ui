@@ -18,17 +18,7 @@ public interface IdentifierProvider{
 	String getView(Class<?> aClass,CommonBusinessAction commonBusinessAction,Boolean one);
 	String getViewDynamic(CommonBusinessAction commonBusinessAction,Boolean one);
 	String getViewDynamicReport();
-	
-	/* Parameter */
-	
-	/*String getParameterClass();
-	String getParameterIdentifiable();
-	String getParameterFileExtension();
-	String getParameterWindowMode();
-	String getParameterReportIdentifier();
-	String getParameterViewIdentifier();
-	String getParameterPrint();*/
-	
+		
 	/**/
 	
 	public static class Adapter extends BeanAdapter implements IdentifierProvider,Serializable{
@@ -49,41 +39,6 @@ public interface IdentifierProvider{
 		public String getViewDynamicReport() {
 			return null;
 		}
-		/*
-		@Override
-		public String getParameterClass() {
-			return null;
-		}
-
-		@Override
-		public String getParameterIdentifiable() {
-			return null;
-		}
-
-		@Override
-		public String getParameterFileExtension() {
-			return null;
-		}
-
-		@Override
-		public String getParameterWindowMode() {
-			return null;
-		}
-
-		@Override
-		public String getParameterReportIdentifier() {
-			return null;
-		}
-
-		@Override
-		public String getParameterViewIdentifier() {
-			return null;
-		}
-
-		@Override
-		public String getParameterPrint() {
-			return null;
-		}*/
 		
 		public static class Default extends Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;

@@ -271,7 +271,7 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>reportservlet</from-outcome>
+			<from-outcome>report</from-outcome>
 			<to-view-id>/private/__tools__/export/_cyk_report_/_business_/_jasper_/</to-view-id>
 			<redirect />
 		</navigation-case>

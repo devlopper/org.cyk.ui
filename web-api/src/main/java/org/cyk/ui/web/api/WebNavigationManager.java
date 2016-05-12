@@ -142,7 +142,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
 	@Getter private String outcomeReportTable = "exportdatatableservlet";
-	@Getter private String outcomeReport = "reportservlet";
+	
 	@Getter private String outcomeFileConsultMany = "fileConsultManyView";
 	@Getter private String outcomeProcessMany = "dynamicProcessMany";
 	
@@ -347,7 +347,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public String reportFileUrl(Class<?> aClass,String servletUrl,String fileExtension,Boolean print){
-		return url(outcomeReport, new Object[]{
+		return url(UniformResourceLocatorParameter.VIEW_IDENTIFIER_REPORT, new Object[]{
 				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(aClass)
 				,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension
 				,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print),

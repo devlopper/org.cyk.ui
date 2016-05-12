@@ -211,7 +211,7 @@ public interface UICommandable {
 			if(StringUtils.isNotBlank(windowMode))
 				add(parameters,UniformResourceLocatorParameter.WINDOW_MODE,windowMode);
 			add(parameters,UniformResourceLocatorParameter.REPORT_IDENTIFIER,reportIdentifier);
-			//add(parameters,UniformResourceLocatorParameter.VIEW_IDENTIFIER,UIManager.getInstance().getViewIdentifierDynamicReport());
+			add(parameters,UniformResourceLocatorParameter.VIEW_IDENTIFIER,UniformResourceLocatorParameter.VIEW_IDENTIFIER_REPORT);
 			add(parameters,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print));
 			//System.out.println("UICommandable.Parameter.addReport() : "+parameters);
 			//System.out.println(UIManager.getInstance().getParameterClass()+" : "+UIManager.getInstance().keyFromClass(anIdentifiable.getClass()));

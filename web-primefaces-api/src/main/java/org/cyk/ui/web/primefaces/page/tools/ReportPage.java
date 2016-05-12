@@ -43,7 +43,7 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 			if(entry.getValue()!=null && entry.getValue().length>0)
 				parametersCollection.add(entry.getValue()[0]);
 		}
-		String outcome = requestParameter(UniformResourceLocatorParameter.OUTCOME);
+		String outcome = requestParameter(UniformResourceLocatorParameter.VIEW_IDENTIFIER);
 		Object[] parametersArray = parametersCollection.toArray();
 		
 		String url = null;
