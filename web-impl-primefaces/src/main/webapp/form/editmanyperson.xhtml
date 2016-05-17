@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{personEditManyPage}" />
+ 		<ui:define name="body">
+ 			<style>
+ 				.numberOfTimeAbsentClass {}
+ 				.numberOfTimeAbsentClass input{width: 50px;}
+ 			</style>
+ 			
+ 			<cyk:itemCollection value="#{personEditManyPage.elementCollection}" >
+ 				<p:column headerText="Nom" >
+ 					<p:inputText id="nom" value="#{item.name}" required="#{true}" />
+ 				</p:column>
+ 				<p:column headerText="Prénoms" >
+ 					<p:inputText id="prenom" value="#{item.lastName}" required="#{true}" />
+ 				</p:column>
+ 			</cyk:itemCollection>
+ 		</ui:define>
+ 		
+ 		<ui:define name="contentMenuBar">
+ 			<cyk:command value="#{personEditManyPage.form.submitCommandable}" executeParameter="#{personEditManyPage.form.data}" />
+ 		</ui:define>
+ 	</ui:decorate>
+ 
+</html>

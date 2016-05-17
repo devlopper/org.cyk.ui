@@ -13,7 +13,6 @@ import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -36,12 +35,12 @@ import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
-import org.cyk.ui.web.primefaces.page.ConsultPageListener;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.ui.web.primefaces.page.FileDetails;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
@@ -139,9 +138,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());
 		
-		registerBusinessEntityFormOnePageListener(actorClass,getActorCrudOnePageAdapter(actorClass));
-		registerBusinessEntityFormManyPageListener(actorClass,getActorCrudManyPageAdapter(actorClass));
-		registerConsultPageListener(actorClass, getActorConsultPageAdapter(actorClass));
+		AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.COLLECTION.add(getActorCrudOnePageAdapter(actorClass));
+		AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.COLLECTION.add(getActorCrudManyPageAdapter(actorClass));
+		AbstractConsultPage.ConsultPageListener.COLLECTION.add(getActorConsultPageAdapter(actorClass));
 		
 		logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
@@ -178,16 +177,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		if(AbstractActor.class.isAssignableFrom(clazz))
 			return AbstractActorQueryManyFormModel.Default.class;
 		return null;
-	}
-	
-	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormOnePageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormOnePageListener<?> listener){
-		primefacesManager.getBusinessEntityFormOnePageListeners().add(listener);
-	}
-	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormManyPageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormManyPageListener<?> listener){
-		primefacesManager.getBusinessEntityFormManyPageListeners().add(listener);
-	}
-	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerConsultPageListener(Class<IDENTIFIABLE> aClass,ConsultPageListener<?> listener){
-		primefacesManager.getConsultPageListeners().add(listener);
 	}
 	
 	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){

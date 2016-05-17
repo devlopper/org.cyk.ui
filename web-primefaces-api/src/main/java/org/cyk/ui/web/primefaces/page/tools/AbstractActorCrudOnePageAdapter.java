@@ -7,9 +7,9 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 
-public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends BusinessEntityFormOnePageListener.Adapter.Default<ACTOR> implements Serializable {
+public abstract class AbstractActorCrudOnePageAdapter<ACTOR extends AbstractActor> extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 

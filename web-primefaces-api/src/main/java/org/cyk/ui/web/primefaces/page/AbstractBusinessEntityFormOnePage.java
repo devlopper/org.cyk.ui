@@ -3,25 +3,30 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.data.collector.form.ControlSet;
+import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.AjaxBuilder;
@@ -32,7 +37,12 @@ import org.cyk.ui.web.primefaces.MetricValueCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.utility.common.cdi.AbstractBean;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -46,7 +56,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+		for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.Adapter.getBusinessEntityFormOnePageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		crud = crudFromRequestParameter();
 		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getOne(crud)):formModelClass);
@@ -82,7 +92,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			
 		}
 		
-		for(BusinessEntityFormOnePageListener<?> listener : getListeners()){
+		for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.Adapter.getBusinessEntityFormOnePageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 
 		}
 	}
@@ -90,12 +100,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+		for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.Adapter.getBusinessEntityFormOnePageListeners(businessEntityInfos))
 			listener.afterInitialisationStarted(this);
 		
 		// your code here
 		
-		for(BusinessEntityFormOnePageListener<?> listener : getListeners())
+		for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.Adapter.getBusinessEntityFormOnePageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
 	}
 	
@@ -150,10 +160,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
-	}
-	
-	private Collection<BusinessEntityFormOnePageListener<?>> getListeners(){
-		return primefacesManager.getBusinessEntityFormOnePageListeners(businessEntityInfos.getClazz());
 	}
 	
 	/**/
@@ -279,4 +285,87 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		return webManager.getChoice(form, fieldName, index);
 	}
 	
+	/**/
+	
+	public static interface BusinessEntityFormOnePageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityFormPageListener<ENTITY> {
+
+		public static Collection<BusinessEntityFormOnePageListener<?>> COLLECTION = new ArrayList<>();
+		
+		void onSucceed(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page);
+		
+		/**/
+		
+		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends BusinessEntityFormPageListener.Adapter<ENTITY_TYPE> implements BusinessEntityFormOnePageListener<ENTITY_TYPE>,Serializable {
+
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super(entityTypeClass);
+			}
+			
+			@Override
+			public void onSucceed(AbstractBusinessEntityFormOnePage<? extends AbstractIdentifiable> page) {
+				
+			}
+			
+			public static Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add(listener);
+				return results;
+			}
+			public static Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(BusinessEntityInfos businessEntityInfos){
+				return getBusinessEntityFormOnePageListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
+			}
+
+			/**/
+			
+			public static class Default<ENTITY extends AbstractIdentifiable> extends BusinessEntityFormOnePageListener.Adapter<ENTITY> implements Serializable {
+
+				private static final long serialVersionUID = -4255109770974601234L;
+
+				public Default(Class<ENTITY> entityTypeClass) {
+					super(entityTypeClass);
+				}
+				
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				@Override
+				public void initialisationEnded(AbstractBean bean) {
+					super.initialisationEnded(bean);
+					if(bean instanceof AbstractCrudOnePage<?>){
+						final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
+						//TODO should be checked before adding because POJO reuse is possible by container. Is it real idea ???
+						page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
+							
+							@Override
+							public Boolean build(Field field) {
+								FormConfiguration configuration = getFormConfiguration(page.getCrud(),page.getSelectedTabId());
+								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
+									return super.build(field);
+								else
+									return configuration.getFieldNames().contains(field.getName());
+							}
+							
+							@Override
+							public void input(ControlSet controlSet, Input input) {
+								super.input(controlSet, input);
+								if(Crud.CREATE.equals(page.getCrud())){
+									if(Boolean.FALSE.equals(input.getRequired())){
+										FormConfiguration configuration = getFormConfiguration(page.getCrud());
+										if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
+											input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
+									}	
+								}
+							}
+						});	
+					}
+				}
+					
+			}
+		}
+		
+	}
+
 }

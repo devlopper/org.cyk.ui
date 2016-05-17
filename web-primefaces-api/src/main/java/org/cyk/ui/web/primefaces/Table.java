@@ -1,13 +1,11 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +20,12 @@ import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.omnifaces.util.Ajax;
@@ -34,6 +35,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> implements Serializable {
 
@@ -264,4 +268,26 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		}
 	}
 	
+	/**/
+	
+	public static class ColumnAdapter extends org.cyk.ui.api.model.table.ColumnAdapter implements Serializable {
+
+		private static final long serialVersionUID = 5607226813206637755L;
+
+		@Override
+		public Boolean isColumn(Field field) {
+			Input input = field.getAnnotation(Input.class);
+			IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
+			return input != null || includeInputs!=null;
+		}
+		@Override
+		public void added(Column column) {
+			super.added(column);
+			column.getCascadeStyleSheet().addClass(
+					column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
+					"-"+column.getField().getName().toLowerCase());
+		}
+		
+	}
+
 }

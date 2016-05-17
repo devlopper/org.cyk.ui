@@ -1,22 +1,27 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.web.api.WebNavigationManager;
 
-public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener<ENTITY> {
+import lombok.Getter;
 
+public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener<ENTITY> {
+
+	Collection<BusinessEntityFormPageListener<?>> COLLECTION = new ArrayList<>();
+	
 	/**
 	 * Set of form configuration to create , read , update and delete an entity
 	 * @return
@@ -36,7 +41,7 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 	
 	/**/
 	
-	public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends BusinessEntityPrimefacesPageListener.Adapter<ENTITY_TYPE> implements BusinessEntityFormPageListener<ENTITY_TYPE>,Serializable {
+	public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener.Adapter<ENTITY_TYPE> implements BusinessEntityFormPageListener<ENTITY_TYPE>,Serializable {
 
 		private static final long serialVersionUID = -7944074776241690783L;
 
@@ -118,6 +123,14 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 			return null;
 		}
 
+		public static Collection<BusinessEntityFormPageListener<?>> getBusinessEntityFormPageListeners(Class<? extends Identifiable<?>> aClass){
+			Collection<BusinessEntityFormPageListener<?>> results = new ArrayList<>();
+			if(aClass!=null)
+				for(BusinessEntityFormPageListener<?> listener : BusinessEntityFormPageListener.COLLECTION)
+					if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+						results.add(listener);
+			return results;
+		}
 	}
 	
 }

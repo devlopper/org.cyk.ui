@@ -9,7 +9,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
@@ -21,11 +20,11 @@ import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.test.model.Actor.SearchCriteria;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
+import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
@@ -76,11 +75,11 @@ public class ContextListener extends AbstractContextListener {
         });
 		
 	}
-		
+	
 	@Override
-	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormOnePageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormOnePageListener<?> listener) {
-		super.registerBusinessEntityFormOnePageListener(aClass, listener);
-		if(aClass.equals(Actor.class)){
+	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass) {
+		AbstractActorCrudOnePageAdapter<ACTOR> listener = super.getActorCrudOnePageAdapter(actorClass);
+		if(listener.getEntityTypeClass().equals(Actor.class)){
 			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addFieldNames(DefaultPersonEditFormModel.FIELD_SURNAME
 					,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION
 					,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
@@ -89,15 +88,16 @@ public class ContextListener extends AbstractContextListener {
 			
 			
 		}
+		return listener;
 	}
 	
 	@Override
-	protected <IDENTIFIABLE extends AbstractIdentifiable> void registerBusinessEntityFormManyPageListener(Class<IDENTIFIABLE> aClass,BusinessEntityFormManyPageListener<?> listener) {
-		if(aClass.equals(Actor.class)){
+	protected <ACTOR extends AbstractActor> AbstractActorCrudManyPageAdapter<ACTOR> getActorCrudManyPageAdapter(Class<ACTOR> actorClass) {
+		AbstractActorCrudManyPageAdapter<ACTOR> listener = super.getActorCrudManyPageAdapter(actorClass);
+		if(listener.getEntityTypeClass().equals(Actor.class)){
 			listener.getFormConfigurationMap().get(Crud.READ).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(DefaultActorOutputDetails.FIELD_REGISTRATION_CODE);
 		}
-		
-		super.registerBusinessEntityFormManyPageListener(aClass, listener);
+		return listener;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -26,6 +26,10 @@
        			</f:facet>
        		</p:column>
        		
+       		<p:column headerText="#{cc.value.itemLabel}" rendered="#{cc.value.showItemLabel}">
+ 				<h:outputText value="#{item.label}"/>
+ 			</p:column>
+       		
        		<cc:insertChildren/>
        		
        		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.editable and cc.value.applicableValueQuestion.rendered}">

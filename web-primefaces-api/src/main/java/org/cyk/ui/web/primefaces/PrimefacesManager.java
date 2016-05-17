@@ -12,9 +12,6 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
@@ -39,12 +36,7 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
-import org.cyk.ui.web.primefaces.page.ConsultPageListener;
-import org.cyk.ui.web.primefaces.page.PrimefacesPageListener;
-import org.cyk.ui.web.primefaces.page.ReportPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -56,6 +48,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {
@@ -78,15 +73,10 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private static final String SCRIPT_START_FORMAT = "PF('%s').start();";
 	private static final String SCRIPT_CANCEL_FORMAT = "PF('%s').cancel();";
 	
-	private final Collection<PrimefacesPageListener> pageListeners = new ArrayList<>();
 	private final Collection<BusinessEntityFormPageListener<?>> businessEntityFormPageListeners = new ArrayList<>();
-	private final Collection<BusinessEntityFormOnePageListener<?>> businessEntityFormOnePageListeners = new ArrayList<>();
-	private final Collection<BusinessEntityFormManyPageListener<?>> businessEntityFormManyPageListeners = new ArrayList<>();
-	private final Collection<ConsultPageListener<?>> consultPageListeners = new ArrayList<>();
 	private final Collection<AbstractSelectOnePage.Listener<?,?>> selectOnePageListeners = new ArrayList<>();
 	private final Collection<AbstractSelectManyPage.Listener<?,?>> selectManyPageListeners = new ArrayList<>();
 	private final Collection<AbstractProcessManyPage.Listener<?,?>> processManyPageListeners = new ArrayList<>();
-	private final Collection<ReportPageListener<?>> reportPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;
@@ -220,42 +210,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		return String.format(SCRIPT_CANCEL_FORMAT, widgetVar);
 	}
 
-	public Collection<BusinessEntityFormPageListener<?>> getBusinessEntityFormPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<BusinessEntityFormPageListener<?>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(BusinessEntityFormPageListener<?> listener : businessEntityFormPageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add(listener);
-		return results;
-	}
-	
-	public Collection<BusinessEntityFormOnePageListener<?>> getBusinessEntityFormOnePageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<BusinessEntityFormOnePageListener<?>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(BusinessEntityFormOnePageListener<?> listener : businessEntityFormOnePageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add(listener);
-		return results;
-	}
-	
-	public Collection<BusinessEntityFormManyPageListener<?>> getBusinessEntityFormManyPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<BusinessEntityFormManyPageListener<?>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(BusinessEntityFormManyPageListener<?> listener : businessEntityFormManyPageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add(listener);
-		return results;
-	}
-	
-	public Collection<ConsultPageListener<?>> getConsultPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<ConsultPageListener<?>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(ConsultPageListener<?> listener : consultPageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add(listener);
-		return results;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public Collection<AbstractSelectOnePage.Listener<?,Object>> getSelectOnePageListeners(Class<? extends Identifiable<?>> aClass){
 		Collection<AbstractSelectOnePage.Listener<?,Object>> results = new ArrayList<>();

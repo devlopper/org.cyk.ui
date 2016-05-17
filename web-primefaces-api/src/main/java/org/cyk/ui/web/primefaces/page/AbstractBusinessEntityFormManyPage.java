@@ -6,21 +6,23 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.apache.commons.collections.CollectionUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.CellAdapter;
 import org.cyk.ui.api.model.table.Column;
@@ -30,9 +32,14 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
@@ -49,7 +56,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		/*
 		if(formModelClass==null)
@@ -130,14 +137,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				+ "after('<tr data-ri=\"2\" class=\"ui-widget-content ui-datatable-even\" role=\"row\" > <td>1</td> <td>zougou</td> <td>3</td> </tr>');";
 		*/
 		
-		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.initialisationEnded(this); 
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.afterInitialisationStarted(this); 
 		
 		if(Boolean.TRUE.equals(table.getLazyLoad())){
@@ -150,7 +157,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					AbstractIdentifiable identifiable = __identifiable__(data);
 					if(identifiable==null){
 						BusinessEntityFormManyPageListener<?> redirectListener = null;
-						for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+						for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 							if(Boolean.TRUE.equals(listener.canRedirectToConsultView(data)))
 								redirectListener = listener; 
 						if(redirectListener==null){
@@ -174,7 +181,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			});	
 		}
 		
-		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
 	}
 	
@@ -189,7 +196,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	
 	protected void redirectToCrudOne(Crud crud,Object data){
 		BusinessEntityFormManyPageListener<?> redirectListener = null;
-		for(BusinessEntityFormManyPageListener<?> listener : getListeners())
+		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			if(Boolean.TRUE.equals(listener.canRedirect(crud, data)))
 				redirectListener = listener; 
 		if(redirectListener==null){
@@ -263,9 +270,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			}
 	}
 	
-	private Collection<BusinessEntityFormManyPageListener<?>> getListeners(){
-		return primefacesManager.getBusinessEntityFormManyPageListeners(businessEntityInfos.getClazz());
-	}
+	
 	/*
 	protected void rowCreated(Row<Object> row){}
 	protected void rowAdded(Row<Object> row){}
@@ -330,5 +335,63 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	protected UICommandable createCommandable(String labelId,Icon icon){
 		return instanciateCommandableBuilder().setLabelFromId(labelId).setIcon(icon).create();
 	}*/
+	
+	/**/
+	
+	public static interface BusinessEntityFormManyPageListener<ENTITY extends AbstractIdentifiable> extends BusinessEntityFormPageListener<ENTITY> {
+
+		Collection<BusinessEntityFormManyPageListener<?>> COLLECTION = new ArrayList<>();
+		
+		/**/
+		
+		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends BusinessEntityFormPageListener.Adapter<ENTITY_TYPE> implements BusinessEntityFormManyPageListener<ENTITY_TYPE>,Serializable {
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super(entityTypeClass);
+			}
+			
+			public static Collection<BusinessEntityFormManyPageListener<?>> getBusinessEntityFormManyPageListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<BusinessEntityFormManyPageListener<?>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add(listener);
+				return results;
+			}
+			public static Collection<BusinessEntityFormManyPageListener<?>> getBusinessEntityFormManyPageListeners(BusinessEntityInfos businessEntityInfos){
+				return getBusinessEntityFormManyPageListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
+			}
+			
+			/**/
+			
+			public static class Default<ENTITY extends AbstractIdentifiable> extends BusinessEntityFormManyPageListener.Adapter<ENTITY> implements Serializable {
+				private static final long serialVersionUID = -4255109770974601234L;
+
+				public Default(Class<ENTITY> entityTypeClass) {
+					super(entityTypeClass);
+				}
+				
+				@SuppressWarnings({ "unchecked" })
+				@Override
+				public void initialisationEnded(AbstractBean bean) {
+					super.initialisationEnded(bean);
+					final AbstractCrudManyPage<AbstractActor> page = (AbstractCrudManyPage<AbstractActor>) bean;
+					page.getTable().getColumnListeners().add(new ColumnAdapter(){
+						
+						@Override
+						public Boolean isColumn(Field field) {
+							FormConfiguration configuration = getFormConfiguration(Crud.READ);
+							return configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())?super.isColumn(field):configuration.getFieldNames().contains(field.getName());
+						}
+						
+					});	
+				}		
+			}
+		}
+
+
+	}
+
 
 }
