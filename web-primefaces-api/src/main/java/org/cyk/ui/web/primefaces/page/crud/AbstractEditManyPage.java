@@ -6,6 +6,10 @@ import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -13,36 +17,27 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter @Setter
+@Getter @Setter //TODO create AbstractBusinessEntityFormPage to handle any page with a user form
 public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>> extends AbstractCrudOnePage<ENTITY> implements Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
 	protected ItemCollection<ITEM_COLLECTION_ITEM,ENTITY> elementCollection;
-	//protected FormOneData<Object> form;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
-		//form = (FormOneData<Object>) createFormOneData(new Object(),Crud.CREATE);
-		//form.setDynamic(Boolean.TRUE);
-		
 		for(AbstractEditManyPage.Listener<?,?> listener : Listener.COLLECTION)
 			listener.initialisationStarted(this);
 		Class<ENTITY> entityClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 		
-		Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
-		Collection<ENTITY> elements = (Collection<ENTITY>) genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
-		
-		elementCollection = createItemCollection(form,null,getItemCollectionItemClass(), entityClass,elements,getItemCollectionAdapter());
+		elementCollection = createItemCollection(getItemCollectionItemClass(), entityClass,getItemCollectionAdapter());
 		elementCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
 		elementCollection.getApplicableValueQuestion().setRendered(Boolean.FALSE);
 		elementCollection.getAddCommandable().setRendered(Boolean.FALSE);
@@ -68,7 +63,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 	}
 	
 	public ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY> getItemCollectionAdapter(){
-		return new ItemCollectionAdapter<>();
+		return new ItemCollectionAdapter<>(businessEntityInfos);
 	}
 	
 	@Override
@@ -78,6 +73,14 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 		for(ENTITY entity : elementCollection.getIdentifiables())
 			identifiables.add(entity);
 		genericBusiness.update(identifiables);
+	}
+	
+	@Override
+	public void transfer(UICommand command, Object parameter) throws Exception {
+		super.transfer(command, parameter);
+		if(form.getSubmitCommandable().getCommand() == command ){
+			elementCollection.write();
+		}
 	}
 	
 	protected abstract Class<ITEM_COLLECTION_ITEM> getItemCollectionItemClass();
@@ -99,6 +102,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 
 	@Override
 	public void serve(UICommand command, Object parameter) {
+		super.serve(command, parameter);
 		for(AbstractEditManyPage.Listener<?,?> listener : Listener.COLLECTION)
 			listener.serve(this,parameter);
 	}
@@ -111,6 +115,23 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 	
 	public static class ItemCollectionAdapter<ENTITY extends AbstractIdentifiable,ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY>  implements Serializable {
 		private static final long serialVersionUID = 7806030819027062650L;
+		protected BusinessEntityInfos businessEntityInfos;
+		
+		public ItemCollectionAdapter(BusinessEntityInfos businessEntityInfos) {
+			super();
+			this.businessEntityInfos = businessEntityInfos;
+		}
+		@Override
+		public Collection<ENTITY> create() {
+			Collection<Long> identifiers = WebManager.getInstance().decodeIdentifiersRequestParameter();
+			@SuppressWarnings("unchecked")
+			Collection<ENTITY> elements = (Collection<ENTITY>) RootBusinessLayer.getInstance().getGenericBusiness()
+					.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
+			return elements;
+		}
+		
+		
+		
 		@Override
 		public void instanciated(AbstractItemCollection<ITEM_COLLECTION_ITEM, ENTITY,SelectItem> itemCollection,ITEM_COLLECTION_ITEM item) {
 			super.instanciated(itemCollection, item);
