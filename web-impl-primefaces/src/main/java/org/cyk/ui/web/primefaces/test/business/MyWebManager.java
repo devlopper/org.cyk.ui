@@ -31,7 +31,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 
 	private static MyWebManager INSTANCE;
 	
-	private String editManyActors = "editmanyacts";
+	private String editManyPersons = "editmanypers";
 	
 	@Override
 	protected void initialisation() {
@@ -54,7 +54,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		systemMenu.getBusinesses().add(Builder.createList(Actor.class, null));
 		systemMenu.getBusinesses().add(Builder.createSelectOne(Actor.class,null, null));
 		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,"myactionid", Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,editManyActors, Icon.ACTION_EDIT));
+		systemMenu.getBusinesses().add(Builder.createSelectMany(Person.class,editManyPersons, Icon.ACTION_EDIT));
 		//systemMenu.getBusinesses().add(Builder.createList(MovementCollection.class, null));
 		//systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
 		//systemMenu.getBusinesses().add(Builder.createList(Sex.class, null));

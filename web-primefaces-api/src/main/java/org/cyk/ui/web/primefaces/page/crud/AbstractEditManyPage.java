@@ -21,7 +21,7 @@ import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter //TODO create AbstractBusinessEntityFormPage to handle any page with a user form
+@Getter @Setter
 public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>> extends AbstractCrudOnePage<ENTITY> implements Serializable {
 
 	private static final long serialVersionUID = -7392513843271510254L;
@@ -68,10 +68,10 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 	
 	@Override
 	protected void create() {
-		super.create();
 		Collection<AbstractIdentifiable> identifiables = new ArrayList<>();
-		for(ENTITY entity : elementCollection.getIdentifiables())
+		for(ENTITY entity : elementCollection.getIdentifiables()){
 			identifiables.add(entity);
+		}
 		genericBusiness.update(identifiables);
 	}
 	
@@ -83,11 +83,21 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 		}
 	}
 	
-	protected abstract Class<ITEM_COLLECTION_ITEM> getItemCollectionItemClass();
+	@SuppressWarnings("unchecked")
+	protected Class<ITEM_COLLECTION_ITEM> getItemCollectionItemClass(){
+		return (Class<ITEM_COLLECTION_ITEM>) formModelClass;
+	}
 	
 	@Override
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
 		return null;
+	}
+	
+	@Override
+	protected Class<?> __formModelClass__() {
+		Class<?> aClass = super.__formModelClass__();
+		aClass = aClass==null ? (identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getMany(Crud.UPDATE)):aClass;
+		return aClass;
 	}
 	
 	@Override
@@ -113,7 +123,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 	
 	/**/
 	
-	public static class ItemCollectionAdapter<ENTITY extends AbstractIdentifiable,ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY>  implements Serializable {
+	public static class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>,ENTITY extends AbstractIdentifiable> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY>  implements Serializable {
 		private static final long serialVersionUID = 7806030819027062650L;
 		protected BusinessEntityInfos businessEntityInfos;
 		

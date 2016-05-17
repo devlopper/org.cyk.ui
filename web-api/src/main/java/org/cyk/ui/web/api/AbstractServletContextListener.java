@@ -28,6 +28,7 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -118,6 +119,8 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 					businessEntityInfos.getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());	
 			}
 		}
+		
+		webNavigationManager.useDynamicSelectView(Person.class);
 		
 		applicationBusiness.configureShiro();
 		Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();

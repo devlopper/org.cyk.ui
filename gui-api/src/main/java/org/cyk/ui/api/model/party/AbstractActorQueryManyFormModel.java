@@ -1,8 +1,9 @@
-package org.cyk.ui.api.model;
+package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.model.AbstractQueryManyFormModel;
 
 import lombok.Getter;
 import lombok.Setter;

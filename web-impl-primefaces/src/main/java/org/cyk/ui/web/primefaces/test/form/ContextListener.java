@@ -50,6 +50,8 @@ public class ContextListener extends AbstractContextListener {
 		primefacesManager.getSelectManyPageListeners().add(new ActorSelectManyPageAdapter());
 		primefacesManager.getProcessManyPageListeners().add(new ActorProcessManyPageAdapter());
 		
+		primefacesManager.getSelectManyPageListeners().add(new PersonSelectManyPageAdapter());
+		
 		/*
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, AbstractActorQueryOneFormModel.Default.class
 				, ActorOutputDetails.class,null,AbstractActorQueryManyFormModel.Default.class));

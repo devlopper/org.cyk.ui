@@ -10,6 +10,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Clazz;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormMap;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 
 @Getter @Setter @NoArgsConstructor 
 public class IdentifiableConfiguration extends Clazz implements Serializable {
@@ -20,16 +21,16 @@ public class IdentifiableConfiguration extends Clazz implements Serializable {
 	
 	private Boolean oneEdit = Boolean.TRUE,globalFiltering=Boolean.TRUE,usableByChild=Boolean.TRUE;
 
-	public IdentifiableConfiguration(Class<? extends AbstractIdentifiable> identifiableClass,
-			Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,
-			Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass,Class<?> queryManyFormModelClass) {
+	public IdentifiableConfiguration(Class<? extends AbstractIdentifiable> identifiableClass
+			,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass
+			,Class<? extends AbstractItemCollectionItem<? extends AbstractIdentifiable>> editManyFormModelClass,Class<?> queryManyFormModelClass) {
 		super(identifiableClass);
-		setForms(editOneFormModelClass, readOneFormModelClass,queryOneFormModelClass,queryManyFormModelClass);
+		setForms(editOneFormModelClass, readOneFormModelClass,queryOneFormModelClass,editManyFormModelClass,queryManyFormModelClass);
 	}
 	
-	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass
-			,Class<?> queryOneFormModelClass,Class<?> queryManyFormModelClass){
-		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass,queryOneFormModelClass,queryManyFormModelClass);
+	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass
+			,Class<? extends AbstractItemCollectionItem<? extends AbstractIdentifiable>> editManyFormModelClass,Class<?> queryManyFormModelClass){
+		formMap = new FormMap(getClazz(),editOneFormModelClass,readOneFormModelClass,queryOneFormModelClass,editManyFormModelClass,queryManyFormModelClass);
 	}
 	
 	@SuppressWarnings("unchecked")

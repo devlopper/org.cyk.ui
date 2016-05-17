@@ -40,6 +40,8 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.party.DefaultPersonOutputDetails;
+import org.cyk.ui.api.model.party.PersonEditManyForm;
+import org.cyk.ui.api.model.party.PersonQueryManyFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
@@ -129,7 +131,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonOutputDetails.class,null,null);
+		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonOutputDetails.class,null,PersonEditManyForm.class,PersonQueryManyFormModel.class);
 		registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
