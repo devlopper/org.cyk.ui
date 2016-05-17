@@ -49,6 +49,8 @@ import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
+import org.cyk.utility.common.cdi.DefaultBeanAdapter;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -75,23 +77,23 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.initialisationStarted(this); 
 		
 		
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.initialisationEnded(this); 
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.afterInitialisationStarted(this);
 		
 		// your Code gere
 		
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.afterInitialisationEnded(this); 
 		
 		//debug(tables.iterator().next());
@@ -101,13 +103,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			onDocumentLoadJavaScript = tableFormatJavaScript((org.cyk.ui.web.primefaces.Table<?>) table, Boolean.TRUE);
 	}
 	
-	private Collection<PrimefacesPageListener> getListeners(){
-		return primefacesManager.getPageListeners();
-	}
-	
 	@Override
 	public void targetDependentInitialisation() {
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.targetDependentInitialisationStarted(this); 
 		
 		mainMenuModel = CommandBuilder.getInstance().menuModel(mainMenu, getClass(), "mainMenuModel");
@@ -116,7 +114,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			contextualMenu = null;
 		
 		if(contextualMenu!=null)
-			for(PrimefacesPageListener listener : getListeners())
+			for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 				listener.processContextualMenu(this,contextualMenu); 
 		
 		if(contextualMenu!=null && contextualMenu.getCommandables().isEmpty())
@@ -159,7 +157,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			}
 		}*/
 		
-		for(PrimefacesPageListener listener : getListeners())
+		for(PrimefacesPageListener listener : PrimefacesPageListener.COLLECTION)
 			listener.targetDependentInitialisationEnded(this); 
 	}
 	
@@ -292,7 +290,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		
 		configureDetailsTable(aClass,table, listener);
-		table.getColumnListeners().add(new DefaultColumnAdapter());
+		table.getColumnListeners().add(new Table.ColumnAdapter());
 		//buildTable(table);
 		table.setInplaceEdit(Boolean.FALSE);
 		table.setTitle(null);//TODO can be in listener as boolean method or computed base on others details
@@ -540,4 +538,24 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		
 	}
 
+	/**/
+	
+	public static interface PrimefacesPageListener extends BeanListener {
+
+		Collection<PrimefacesPageListener> COLLECTION = new ArrayList<>();
+		
+		void targetDependentInitialisationStarted(AbstractPrimefacesPage abstractPrimefacesPage);
+		void targetDependentInitialisationEnded(AbstractPrimefacesPage abstractPrimefacesPage);
+		void processContextualMenu(AbstractPrimefacesPage abstractPrimefacesPage,UIMenu contextualMenu);
+		
+		/**/
+		
+		public static class Adapter extends DefaultBeanAdapter implements PrimefacesPageListener,Serializable {
+			private static final long serialVersionUID = -7944074776241690783L;
+			@Override public void targetDependentInitialisationStarted(AbstractPrimefacesPage abstractPrimefacesPage) {}
+			@Override public void targetDependentInitialisationEnded(AbstractPrimefacesPage abstractPrimefacesPage) {}
+			@Override public void processContextualMenu(AbstractPrimefacesPage abstractPrimefacesPage, UIMenu contextualMenu) {}
+		}
+
+	}
 }

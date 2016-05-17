@@ -1,14 +1,13 @@
 package org.cyk.ui.web.primefaces.page.crud;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
@@ -18,8 +17,11 @@ import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
-import org.cyk.ui.web.primefaces.page.ConsultPageListener;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<IDENTIFIABLE> implements Serializable {
@@ -29,12 +31,12 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		for(ConsultPageListener<?> listener : getListeners())
+		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		
 		consultInitialisation();
 		
-		for(ConsultPageListener<?> listener : getListeners()){
+		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 
 		}
 	}
@@ -44,10 +46,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(ConsultPageListener<?> listener : getListeners())
+		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.afterInitialisationStarted(this);
 		
-		for(ConsultPageListener<?> listener : getListeners())
+		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
 	}
 	
@@ -56,10 +58,6 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
 		parameters.setActionIdentifier(CommonBusinessAction.CONSULT);
 		return parameters;
-	}
-	
-	private Collection<ConsultPageListener<?>> getListeners(){
-		return primefacesManager.getConsultPageListeners(businessEntityInfos.getClazz());
 	}
 	
 	protected Boolean showContextualHierarchyConsultCommandables(){
@@ -109,6 +107,55 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		processIdentifiableContextualCommandable(contextualMenu);
 		
 		return contextualMenu.getChildren().isEmpty() ? null : Arrays.asList(contextualMenu);
+	}
+	
+	/**/
+	
+	public static interface ConsultPageListener<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener<ENTITY> {
+
+		Collection<ConsultPageListener<?>> COLLECTION = new ArrayList<>();
+		
+		public <DETAILS> ControlSetAdapter<DETAILS> getControlSetAdapter(Class<DETAILS> detailsClass);
+		
+		/**/
+		
+		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener.Adapter<ENTITY_TYPE> implements ConsultPageListener<ENTITY_TYPE>,Serializable {
+
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super(entityTypeClass);
+			}
+			
+			public <DETAILS> ControlSetAdapter<DETAILS> getControlSetAdapter(Class<DETAILS> detailsClass){
+				return null;
+			}
+			
+			public static Collection<ConsultPageListener<?>> getConsultPageListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<ConsultPageListener<?>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(ConsultPageListener<?> listener : ConsultPageListener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add(listener);
+				return results;
+			}
+			public static Collection<ConsultPageListener<?>> getConsultPageListeners(BusinessEntityInfos businessEntityInfos){
+				return getConsultPageListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
+			}
+
+			/**/
+			
+			public static class Default<ENTITY extends AbstractIdentifiable> extends ConsultPageListener.Adapter<ENTITY> implements Serializable {
+
+				private static final long serialVersionUID = -4255109770974601234L;
+
+				public Default(Class<ENTITY> entityTypeClass) {
+					super(entityTypeClass);
+				}
+					
+			}
+		}
+		
 	}
 
 }

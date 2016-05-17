@@ -22,12 +22,16 @@ import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 
-@Singleton @Deployment(initialisationType=InitialisationType.EAGER,order=RootWebManager.DEPLOYMENT_ORDER+1)
+import lombok.Getter;
+
+@Singleton @Deployment(initialisationType=InitialisationType.EAGER,order=RootWebManager.DEPLOYMENT_ORDER+1) @Getter
 public class MyWebManager extends AbstractPrimefacesManager implements Serializable {
 
 	private static final long serialVersionUID = -769097240180562952L;
 
 	private static MyWebManager INSTANCE;
+	
+	private String editManyActors = "editmanyacts";
 	
 	@Override
 	protected void initialisation() {
@@ -47,12 +51,13 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		//UICommandable commandable;
 		//systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
 		systemMenu.getBusinesses().add(Builder.createList(Person.class, Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createList(Actor.class, Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createSelectOne(Actor.class,null, Icon.PERSON));
+		systemMenu.getBusinesses().add(Builder.createList(Actor.class, null));
+		systemMenu.getBusinesses().add(Builder.createSelectOne(Actor.class,null, null));
 		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,"myactionid", Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createList(MovementCollection.class, null));
-		systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
-		systemMenu.getBusinesses().add(Builder.createList(Sex.class, null));
+		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,editManyActors, Icon.ACTION_EDIT));
+		//systemMenu.getBusinesses().add(Builder.createList(MovementCollection.class, null));
+		//systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
+		//systemMenu.getBusinesses().add(Builder.createList(Sex.class, null));
 		//debug(Builder.createList(Sex.class, null));
 		//menu.getCommandables().add(commandable = MenuManager.commandable("command.search", IconType.ACTION_SEARCH));
 		//commandable.setViewId("personsearch");

@@ -10,10 +10,9 @@ import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormManyPageListener;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractActor> extends BusinessEntityFormManyPageListener.Adapter.Default<ACTOR> implements Serializable {
+public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractActor> extends AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.Adapter.Default<ACTOR> implements Serializable {
 
 	private static final long serialVersionUID = 4370361826462886031L;
 

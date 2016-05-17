@@ -1,10 +1,8 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +11,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -23,6 +22,9 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.Constant;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -120,9 +122,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	private Collection<BusinessEntityFormPageListener<?>> getListeners(){
-		//if(businessEntityInfos==null)
-		//	return new ArrayList<>();
-		return primefacesManager.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
+		return BusinessEntityFormPageListener.Adapter.getBusinessEntityFormPageListeners(businessEntityInfos==null?null:businessEntityInfos.getClazz());
 	}
 	
 	protected UICommandable addDetailsMenuCommandable(String identifier,String labelId,Icon icon){
@@ -173,5 +173,39 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		
 		return super.createDetailsTable(aClass, listener);
 	}
+	
+	/**/
+	
+	public interface BusinessEntityPrimefacesPageListener<ENTITY extends AbstractIdentifiable> extends AbstractPrimefacesPage.PrimefacesPageListener {
+
+		Collection<BusinessEntityPrimefacesPageListener<?>> COLLECTION = new ArrayList<>();
+		
+		Class<ENTITY> getEntityTypeClass();
+		
+		/**/
+		
+		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends AbstractPrimefacesPage.PrimefacesPageListener.Adapter implements BusinessEntityPrimefacesPageListener<ENTITY_TYPE>,Serializable {
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			@Getter protected Class<ENTITY_TYPE> entityTypeClass;
+			
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super();
+				this.entityTypeClass = entityTypeClass;
+			}
+			
+			public static Collection<BusinessEntityPrimefacesPageListener<?>> getBusinessEntityPrimefacesPageListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<BusinessEntityPrimefacesPageListener<?>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(BusinessEntityPrimefacesPageListener<?> listener : BusinessEntityPrimefacesPageListener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add(listener);
+				return results;
+			}
+		}
+
+		
+	}
+
 	
 }

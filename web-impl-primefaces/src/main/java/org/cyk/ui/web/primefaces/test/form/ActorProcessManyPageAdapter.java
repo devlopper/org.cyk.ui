@@ -2,9 +2,6 @@ package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
@@ -12,6 +9,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanCheck;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class ActorProcessManyPageAdapter extends AbstractProcessManyPage.Listener.Adapter.Default<Actor,String> implements Serializable {

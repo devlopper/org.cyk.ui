@@ -23,7 +23,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 
 	private static final long serialVersionUID = -3543754685060813767L;
 
-	protected String label;
+	protected String label,itemLabel;
 	protected Collection<IDENTIFIABLE> initialIdentifiables = new ArrayList<>();
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<TYPE> itemClass;
@@ -32,7 +32,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Boolean autoWrite=Boolean.TRUE,autoApplyMasterFormFieldValues=Boolean.TRUE;
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
-	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,editable=Boolean.TRUE;
+	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,showItemLabel=Boolean.FALSE,editable=Boolean.TRUE;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
 		//itemClass = (Class<TYPE>) parameterizedClass(Object.class, 0); //(Class<TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -40,6 +40,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		this.itemClass = itemClass;
 		this.identifiableClass = identifiableClass;
 		label = UIManager.getInstance().getLanguageBusiness().findClassLabelText(itemClass); //textOfClass(itemClass);
+		itemLabel = UIManager.getInstance().getLanguageBusiness().findClassLabelText(identifiableClass);
 		addCommandable = Builder.instanciateOne().setLabelFromId("command.add").setIcon(Icon.ACTION_ADD).create();
 		addCommandable.setShowLabel(Boolean.FALSE);
 		addCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){

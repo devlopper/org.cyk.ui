@@ -9,13 +9,15 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
+import org.omnifaces.util.Faces;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.ui.web.primefaces.page.ReportPageListener;
-import org.omnifaces.util.Faces;
 
 @Named @RequestScoped @Getter @Setter
 public class ReportPage extends AbstractReportPage<AbstractIdentifiable> implements Serializable {
@@ -47,12 +49,11 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 		Object[] parametersArray = parametersCollection.toArray();
 		
 		String url = null;
-		for(ReportPageListener<?> listener : primefacesManager.getReportPageListeners())
-			if(listener.getEntityTypeClass().equals(businessEntityInfos.getClazz())){
-				String u = listener.getUrl(outcome, parametersArray);
-				if(u!=null)
-					url = u;
-			}
+		for(ReportPageListener<?> listener : ReportPageListener.Adapter.getReportPageListeners(businessEntityInfos)){
+			String u = listener.getUrl(outcome, parametersArray);
+			if(u!=null)
+				url = u;
+		}
 		
 		if(url==null){
 			url = navigationManager.url(outcome, parametersArray,Boolean.FALSE,Boolean.FALSE);
@@ -68,5 +69,43 @@ public class ReportPage extends AbstractReportPage<AbstractIdentifiable> impleme
 		return Boolean.FALSE;
 	}
 	
+	/**/
 	
+	public static interface ReportPageListener<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener<ENTITY> {
+
+		Collection<ReportPageListener<?>> COLLECTION = new ArrayList<>();
+		
+		String getUrl(String outcome,Object[] parameters);
+
+		/**/
+		
+		public class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener.Adapter<ENTITY_TYPE> implements ReportPageListener<ENTITY_TYPE>,Serializable {
+
+			private static final long serialVersionUID = -7944074776241690783L;
+
+			public Adapter(Class<ENTITY_TYPE> entityTypeClass) {
+				super(entityTypeClass);
+			}
+
+			@Override
+			public String getUrl(String outcome, Object[] parameters) {
+				return null;
+			}
+			
+			public static Collection<ReportPageListener<?>> getReportPageListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<ReportPageListener<?>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(ReportPageListener<?> listener : ReportPageListener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add(listener);
+				return results;
+			}
+			public static Collection<ReportPageListener<?>> getReportPageListeners(BusinessEntityInfos businessEntityInfos){
+				return getReportPageListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
+			}
+
+
+		}
+		
+	}
 }
