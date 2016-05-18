@@ -140,8 +140,6 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 			return elements;
 		}
 		
-		
-		
 		@Override
 		public void instanciated(AbstractItemCollection<ITEM_COLLECTION_ITEM, ENTITY,SelectItem> itemCollection,ITEM_COLLECTION_ITEM item) {
 			super.instanciated(itemCollection, item);

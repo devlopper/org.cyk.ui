@@ -223,8 +223,17 @@ public class WebManager extends AbstractBean implements Serializable {
 	public String encodeIdentifiersAsRequestParameterValue(Collection<Long> identifiers){
 		Long highest = RootBusinessLayer.getInstance().getNumberBusiness().findHighest(identifiers);
 		String number = RootBusinessLayer.getInstance().getNumberBusiness().concatenate(identifiers, highest.toString().length());
+		Integer numberOfZero = 0;
+		for(int i = 0;i<number.length();i++)
+			if( number.charAt(i) == Constant.CHARACTER_ZERO )
+				numberOfZero++;
+			else
+				break;
 		number = RootBusinessLayer.getInstance().getNumberBusiness().encodeToBase62(number);
-		return highest.toString().length()+REQUEST_PARAMETER_TOKEN_SEPERATOR+number;
+		
+		String value = highest.toString().length()+REQUEST_PARAMETER_TOKEN_SEPERATOR+number+REQUEST_PARAMETER_TOKEN_SEPERATOR+numberOfZero;
+		logTrace("identifiers {} converted to request parameter value is {}",identifiers, value);
+		return value;
 	}
 	public String encodeIdentifiablesAsRequestParameterValue(Collection<? extends AbstractIdentifiable> identifiables){
 		return encodeIdentifiersAsRequestParameterValue(Utils.ids(identifiables));
@@ -236,9 +245,11 @@ public class WebManager extends AbstractBean implements Serializable {
 			identifiers = null;
 		else{
 			String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
-			String number = RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
+			String number = StringUtils.repeat(Constant.CHARACTER_ZERO,Integer.valueOf(tokens[2]))
+					+RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
 			identifiers = RootBusinessLayer.getInstance().getNumberBusiness().deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
 		}
+		logTrace("request parameter value {} converted to identifiers is {}", value,identifiers);
 		return identifiers;
 	}
 	
