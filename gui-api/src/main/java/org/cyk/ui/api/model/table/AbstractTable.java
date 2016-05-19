@@ -189,7 +189,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	public void build() {
 		if(Boolean.TRUE.equals(built) || Boolean.FALSE.equals(rendered))
 			return;
-		
 		lazyLoad = lazyLoad==null?businessEntityInfos!=null && !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()):lazyLoad;
 		//globalFilter = lazyLoad;
 		if(globalFilter==null)
