@@ -299,7 +299,9 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		}
 		
 		public static UICommandable createConsult(AbstractIdentifiable identifiable,Icon icon,String view){
-			return createCrud(Crud.READ, identifiable, RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable), icon, view);
+			UICommandable commandable = createCrud(Crud.READ, identifiable, RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable), icon, view);
+			commandable.setLabel(RootBusinessLayer.getInstance().getFormatterBusiness().format(identifiable));
+			return commandable;
 		}
 		public static UICommandable createConsult(AbstractIdentifiable identifiable,Icon icon){
 			return createConsult(identifiable, icon, null);
