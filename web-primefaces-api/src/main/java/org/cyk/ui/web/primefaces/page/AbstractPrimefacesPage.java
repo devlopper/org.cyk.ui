@@ -51,6 +51,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.cdi.DefaultBeanAdapter;
+import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -309,6 +310,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(listener.getColumnAdapter()!=null)
 			table.getColumnListeners().add(listener.getColumnAdapter());
 		
+		//if(listener.getRowAdapter()!=null)
+		//	table.getRowListeners().add(listener.getRowAdapter());
+		
+		table.getRowListeners().add(new RowAdapter<T>(){
+			@Override
+			public void added(Row<T> row) {
+				super.added(row);
+				if(row.getData() instanceof AbstractOutputDetails<?>)
+					row.setType(((AbstractOutputDetails<?>)row.getData()).getMaster() == null ? DimensionType.SUMMARY : DimensionType.DETAIL);
+			}
+		});
+		
 		table.setLazyLoad(Boolean.FALSE);
 		table.setEditable(Boolean.FALSE);
 		if(StringUtils.isBlank(listener.getTitleId()))
@@ -492,11 +505,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			Collection<IDENTIFIABLE> getIdentifiables();
 			Collection<ROW_DATA> getDatas();
 			ColumnAdapter getColumnAdapter();
+			RowAdapter<ROW_DATA> getRowAdapter();
 			/**/
 			@Getter @Setter
 			public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends AbstractDetailsConfigurationAdapter<IDENTIFIABLE,ROW_DATA> implements Table<IDENTIFIABLE,ROW_DATA>{
 				private static final long serialVersionUID = 6031762560954439308L;
 				private ColumnAdapter columnAdapter;
+				private RowAdapter<ROW_DATA> rowAdapter;
 				
 				public Adapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
 					super(identifiableClass,dataClass);

@@ -269,7 +269,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		return StringUtils.join(list,separator);
 	}
 	protected String formatUsingBusiness(Object[] objects){
-		return formatUsingBusiness(objects, Constant.CHARACTER_SLASH.toString());
+		return formatUsingBusiness(objects, Constant.CHARACTER_SPACE.toString()+Constant.CHARACTER_SLASH+Constant.CHARACTER_SPACE);
 	}
 	
 	protected String formatUsingBusiness(Collection<Object> objects,String separator){

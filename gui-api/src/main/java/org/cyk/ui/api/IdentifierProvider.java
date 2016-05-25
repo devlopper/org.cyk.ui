@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
 public interface IdentifierProvider{
@@ -76,7 +77,7 @@ public interface IdentifierProvider{
 				if(StringUtils.isEmpty(identifier))
 					identifier = getViewDynamic(commonBusinessAction, one);
 				
-				if(StringUtils.isEmpty(identifier))
+				if(StringUtils.isEmpty(identifier) && businessEntityInfos.getCrudStrategy().equals(CrudStrategy.BUSINESS))
 					logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
 				return identifier;
 			}

@@ -85,9 +85,14 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 			if(identifiable.getIdentifier()==null)
 				;
 			else
-				stringBuilder.append(" "+Constant.CHARACTER_VERTICAL_BAR+" "+formatUsingBusiness(identifiable));
+				stringBuilder.append(Constant.CHARACTER_SPACE.toString()+Constant.CHARACTER_VERTICAL_BAR+Constant.CHARACTER_SPACE+getContentTitleIdentifiableText());
 		}
 		return stringBuilder.toString();
+	}
+	
+	protected String getContentTitleIdentifiableText(){
+		return formatUsingBusiness(identifiable);
+		//return formatPathUsingBusiness(AbstractIdentifiable.class, identifiable);
 	}
 	
 	@SuppressWarnings("unchecked")

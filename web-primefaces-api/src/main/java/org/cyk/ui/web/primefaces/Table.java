@@ -61,7 +61,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	
 	@Getter private MenuModel menuModel;
 	@Getter private Commandable primefacesAddRowCommand,primefacesDeleteRowCommand,primefacesOpenRowCommand;
-	@Getter private String updateStyleClass;
+	@Getter @Setter private String updateStyleClass;
 	private JavaScriptHelper javaScriptHelper = JavaScriptHelper.getInstance();
 	
 	protected TypedBusiness<?> business;
@@ -83,7 +83,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
+		if(StringUtils.isBlank(updateStyleClass))
+			updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
 		Commandable commandable = (Commandable) addRowCommandable;
 		commandable.getButton().setUpdate("@(."+updateStyleClass+")");
 		//if(UsedFor.ENTITY_INPUT.equals(usedFor))
