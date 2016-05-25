@@ -315,10 +315,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		
 		table.getRowListeners().add(new RowAdapter<T>(){
 			@Override
-			public void added(Row<T> row) {
-				super.added(row);
-				if(row.getData() instanceof AbstractOutputDetails<?>)
+			public void created(Row<T> row) {
+				super.created(row);
+				if(row.getData() instanceof AbstractOutputDetails<?>){
 					row.setType(((AbstractOutputDetails<?>)row.getData()).getMaster() == null ? DimensionType.SUMMARY : DimensionType.DETAIL);
+					row.setCountable(row.getIsDetail());
+					row.setCascadeStyleSheet(Table.CASCADE_STYLE_SHEET_MAP.get(row.getType()));
+					//row.getCascadeStyleSheet().addInline(Table.CASCADE_STYLE_SHEET_MAP.get(row.getType()).getInline());
+				}
 			}
 		});
 		
