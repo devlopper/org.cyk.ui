@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.CascadeStyleSheet;
@@ -287,6 +288,30 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 			column.getCascadeStyleSheet().addClass(
 					column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
 					"-"+column.getField().getName().toLowerCase());
+		}
+		
+	}
+	
+	public static class RowAdapter<T> extends org.cyk.ui.api.model.table.RowAdapter<T> implements Serializable {
+
+		private static final long serialVersionUID = 5607226813206637755L;
+
+		@Override
+		public void created(Row<T> row) {
+			super.created(row);
+			if(row.getData() instanceof AbstractOutputDetails<?>){
+				row.setType(((AbstractOutputDetails<?>)row.getData()).getMaster() == null ? DimensionType.SUMMARY : DimensionType.DETAIL);
+			}
+			if(row.getCascadeStyleSheet()==null)
+				row.setCascadeStyleSheet(CASCADE_STYLE_SHEET_MAP.get(row.getType()));
+			else{
+				CascadeStyleSheet cascadeStyleSheet = CASCADE_STYLE_SHEET_MAP.get(row.getType());
+				if(cascadeStyleSheet!=null){
+					row.getCascadeStyleSheet().addClass(cascadeStyleSheet.getClazz());
+					row.getCascadeStyleSheet().addInline(cascadeStyleSheet.getInline());
+				}
+			}
+			row.setCountable(row.getIsDetail());
 		}
 		
 	}

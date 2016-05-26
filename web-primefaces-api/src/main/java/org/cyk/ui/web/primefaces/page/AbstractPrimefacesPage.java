@@ -7,9 +7,6 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -51,12 +48,14 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.cdi.DefaultBeanAdapter;
-import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,Commandable> implements Serializable {
 
@@ -313,18 +312,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//if(listener.getRowAdapter()!=null)
 		//	table.getRowListeners().add(listener.getRowAdapter());
 		
-		table.getRowListeners().add(new RowAdapter<T>(){
-			@Override
-			public void created(Row<T> row) {
-				super.created(row);
-				if(row.getData() instanceof AbstractOutputDetails<?>){
-					row.setType(((AbstractOutputDetails<?>)row.getData()).getMaster() == null ? DimensionType.SUMMARY : DimensionType.DETAIL);
-					row.setCountable(row.getIsDetail());
-					row.setCascadeStyleSheet(Table.CASCADE_STYLE_SHEET_MAP.get(row.getType()));
-					//row.getCascadeStyleSheet().addInline(Table.CASCADE_STYLE_SHEET_MAP.get(row.getType()).getInline());
-				}
-			}
-		});
+		table.getRowListeners().add(new Table.RowAdapter<T>());
 		
 		table.setLazyLoad(Boolean.FALSE);
 		table.setEditable(Boolean.FALSE);

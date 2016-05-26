@@ -63,8 +63,8 @@
 					<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
 					<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex" 
 						styleClass="#{column.cascadeStyleSheet.clazz}" style="#{column.cascadeStyleSheet.inline}">  
-			            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
-			            <f:facet name="footer"><h:outputText value="#{column.footer}" /></f:facet>  
+			            <f:facet name="header"><h:outputText value="#{column.title}" title="#{column.title}"/></f:facet>  
+			            <f:facet name="footer"><h:outputText value="#{column.footer}" title="#{column.footer}"/></f:facet>  
 			  			<ui:param name="templateFile" value="/org.cyk.ui.web.primefaces/template/control/messageAtTop.xhtml" />
 			  			<!--
 			  			<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
@@ -97,7 +97,7 @@
 			  						</ui:fragment>
 			  					</ui:fragment>
 			  					<ui:fragment rendered="#{not cc.value.cell(row,column).isFile}" >
-			  						<h:outputText value="#{cc.value.cell(row,column)}" escape="false"/>
+			  						<h:outputText value="#{cc.value.cell(row,column)}" title="#{cc.value.cell(row,column)}" escape="false"/>
 			  					</ui:fragment>
 			  					
 			  				</f:facet>
