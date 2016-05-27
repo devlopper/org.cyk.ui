@@ -39,6 +39,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	@Inject protected BusinessManager businessManager;
 	
 	@Getter @Setter protected String identifier;
+	@Getter @Setter protected Boolean autoAddToSystemMenu = Boolean.TRUE;
 	
 	public abstract SystemMenu systemMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession);
 	

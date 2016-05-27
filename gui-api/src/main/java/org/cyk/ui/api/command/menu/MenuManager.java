@@ -173,7 +173,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	private Collection<SystemMenu> systemMenus(AbstractUserSession<?,?> userSession){
 		Collection<SystemMenu> collection = new ArrayList<>();
 		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
-			collection.add(applicationUIManager.systemMenu(userSession));
+			if(Boolean.TRUE.equals(applicationUIManager.getAutoAddToSystemMenu()))
+				collection.add(applicationUIManager.systemMenu(userSession));
 		return collection;
 	}
 	
