@@ -19,7 +19,6 @@
         	<f:facet name="header"><h:outputText value="#{cc.value.label}" /> </f:facet>	
        		<p:column headerText="#" width="4%">
        			<h:outputText value="#{index+1}" />
-       			
        			<f:facet name="footer">
        				<!--p:commandButton title="#{uiManager.text('command.add')}" icon="fa-adjust" action="#{cc.value.add}" /-->
        				<cyk:command value="#{cc.value.addCommandable}"/>
@@ -39,7 +38,7 @@
 				</p:selectBooleanCheckbox>	
        		</p:column>
        		
-       		<p:column width="4%" rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}">
+       		<p:column width="4%" rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"> 
        			<!--p:commandButton title="#{uiManager.text('command.delete')}" icon="ui-icon-minus" action="#{cc.value.delete(item)}" /-->
        			<cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/>
        		</p:column>

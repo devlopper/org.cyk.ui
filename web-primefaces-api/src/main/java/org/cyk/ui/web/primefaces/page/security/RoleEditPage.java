@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
@@ -54,6 +55,14 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 				item.setName(item.getIdentifiable().getUniformResourceLocator().getName());
 		
 			}	
+			@Override
+			public Crud getCrud() {
+				return crud;
+			}
+			@Override
+			public Boolean isShowAddButton() {
+				return Boolean.TRUE;
+			}
 		});
 	}
 	

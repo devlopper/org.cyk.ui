@@ -8,9 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -23,6 +21,9 @@ import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformResourceLocator> implements Serializable {
@@ -54,8 +55,15 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 				item.getIdentifiable().setName(item.getName());
 				item.getIdentifiable().setValue(item.getValue());
 			}
+			@Override
+			public Crud getCrud() {
+				return crud;
+			}
+			@Override
+			public Boolean isShowAddButton() {
+				return Boolean.TRUE;
+			}
 		});
-		
 		((Commandable)uniformResourceLocatorParameterCollection.getAddCommandable()).getButton().setImmediate(Boolean.TRUE);
 	}
 	
