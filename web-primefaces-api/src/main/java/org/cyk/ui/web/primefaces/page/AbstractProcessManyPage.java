@@ -159,14 +159,24 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			public Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return Boolean.FALSE;
 			}
+			
+			@Override
+			public void initialisationEnded(AbstractBean bean) {
+				super.initialisationEnded(bean);
+				final AbstractProcessManyPage<?> processPage = (AbstractProcessManyPage<?>) bean;
+				initialiseProcessOnInitialisationEnded(processPage);
+			}
+			
+			protected void initialiseProcessOnInitialisationEnded(AbstractProcessManyPage<?> processPage){}
+			
 			@Override
 			public void afterInitialisationEnded(AbstractBean bean) {
 				super.afterInitialisationEnded(bean);
 				final AbstractProcessManyPage<?> processPage = (AbstractProcessManyPage<?>) bean;
-				initialiseProcess(processPage);
+				initialiseProcessOnAfterInitialisationEnded(processPage);
 			}
 			
-			protected void initialiseProcess(AbstractProcessManyPage<?> processPage){}
+			protected void initialiseProcessOnAfterInitialisationEnded(AbstractProcessManyPage<?> processPage){}
 						
 			@Override
 			public void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier) {}
