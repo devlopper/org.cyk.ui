@@ -17,9 +17,6 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -32,6 +29,7 @@ import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.control.InputOneChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;
@@ -42,6 +40,9 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.validation.Client;
 import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Getter @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebManager extends AbstractBean implements Serializable {
@@ -129,21 +130,27 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getSelectItem(object, UIManager.getInstance().findSelectItemBuildListener(object.getClass()));
 	}
 	
-	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection,SelectItemBuilderListener selectItemBuildListener){
+	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection,Boolean addNullIf,SelectItemBuilderListener selectItemBuildListener){
 		List<SelectItem> list = new ArrayList<>();
-		if(Boolean.TRUE.equals(selectItemBuildListener.getNullable()))
+		if(Boolean.TRUE.equals(addNullIf) && Boolean.TRUE.equals(selectItemBuildListener.getNullable()))
 			list.add(getNullSelectItem(aClass, selectItemBuildListener));
 		for(Object object : collection)
 			list.add(getSelectItem(object, selectItemBuildListener));
 		return list;
 	}
+	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection,SelectItemBuilderListener selectItemBuildListener){
+		return getSelectItems(aClass, collection, Boolean.TRUE, selectItemBuildListener);
+	}
 	
+	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection,Boolean addNullIf){
+		return getSelectItems(aClass,collection,addNullIf, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	}
 	public List<SelectItem> getSelectItems(Class<?> aClass,Collection<?> collection){
-		return getSelectItems(aClass,collection, UIManager.getInstance().findSelectItemBuildListener(aClass));
+		return getSelectItems(aClass, collection, Boolean.TRUE);
 	}
 	
 	public List<SelectItem> getSelectItems(Class<?> aClass,SelectItemBuilderListener selectItemBuildListener){
-		return getSelectItems(aClass,selectItemBuildListener.getCollection(aClass), selectItemBuildListener);
+		return getSelectItems(aClass,selectItemBuildListener.getCollection(aClass),Boolean.TRUE, selectItemBuildListener);
 	}
 	
 	public List<SelectItem> getSelectItems(Class<?> aClass){
@@ -158,7 +165,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		List<SelectItem> list = (List<SelectItem>) inputChoice.getList();
 		list.clear();
 		if(collection!=null)
-			list.addAll(getSelectItems(inputChoice.getField().getType(), collection));
+			list.addAll(getSelectItems(inputChoice.getField().getType(), collection,InputOneChoice.class.isAssignableFrom(inputChoice.getClass())));
 		
 		inputChoice.setValue(selected);
 	}
