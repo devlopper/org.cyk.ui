@@ -51,7 +51,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	}
 		
 	public <TYPE> void build(final Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected){
-		String rootLabel = ListenerUtils.getInstance().getValue(String.class, treeListeners, new ListenerUtils.ResultMethod<Listener<NODE,MODEL>,String>() {
+		String rootLabel = ListenerUtils.getInstance().getString(treeListeners, new ListenerUtils.StringMethod<Listener<NODE,MODEL>>() {
 			@Override
 			public String execute(Listener<NODE,MODEL> listener) {
 				return listener.getRootNodeLabel(aClass);
@@ -263,7 +263,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	}
 	
 	protected Boolean isRedirectable(final NODE node){
-		return ListenerUtils.getInstance().getValue(Boolean.class, treeListeners, new ListenerUtils.ResultMethod<Listener<NODE,MODEL>,Boolean>() {
+		return ListenerUtils.getInstance().getBoolean(treeListeners, new ListenerUtils.BooleanMethod<Listener<NODE,MODEL>>() {
 			@Override
 			public Boolean execute(Listener<NODE,MODEL> listener) {
 				return listener.isRedirectable(node);
@@ -277,6 +277,11 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			public Object execute(Listener<NODE,MODEL> listener) {
 				return listener.getRedirectionObject(node);
 			}
+
+			@Override
+			public Object getNullValue() {
+				return null;
+			}
 		});
 	}
 	
@@ -285,6 +290,11 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			@Override
 			public Crud execute(Listener<NODE,MODEL> listener) {
 				return listener.getRedirectionCrud(node);
+			}
+
+			@Override
+			public Crud getNullValue() {
+				return null;
 			}
 		});
 	}
@@ -309,7 +319,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	protected abstract void __redirectTo__(NODE node,String viewId,Object[] parameters);
 	
 	protected String getRedirectToViewId(final NODE node,final Crud crud,final Object object){
-		return ListenerUtils.getInstance().getValue(String.class, treeListeners, new ListenerUtils.ResultMethod<Listener<NODE,MODEL>,String>() {
+		return ListenerUtils.getInstance().getString(treeListeners, new ListenerUtils.StringMethod<Listener<NODE,MODEL>>() {
 			@Override
 			public String execute(Listener<NODE,MODEL> listener) {
 				return listener.getRedirectToViewId(node,crud,object);
@@ -322,6 +332,11 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			@Override
 			public Object[] execute(Listener<NODE,MODEL> listener) {
 				return listener.getRedirectToParameters(node,crud,object);
+			}
+
+			@Override
+			public Object[] getNullValue() {
+				return null;
 			}
 		});
 	}

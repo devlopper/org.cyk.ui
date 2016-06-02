@@ -23,7 +23,7 @@ public interface UICommandable {
 	void setCommand(UICommand aCommand);
 	
 	String getIdentifier();
-	void setIdentifier(String anIdentifier);
+	UICommandable setIdentifier(String anIdentifier);
 	
 	Integer getIndex();
 	void setIndex(Integer index);

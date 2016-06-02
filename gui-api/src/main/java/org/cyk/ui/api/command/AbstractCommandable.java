@@ -32,7 +32,8 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Setter protected UIMessageManager messageManager;
 	@Getter @Setter protected UICommand command;
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
-	@Getter @Setter protected String identifier,label,tooltip,onClick;
+	@Getter protected String identifier;
+	@Getter @Setter protected String label,tooltip,onClick;
 	@Getter @Setter protected Integer index;
 	@Getter @Setter protected Icon icon;
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
@@ -54,6 +55,12 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	};
 	
 	@Getter @Setter protected Collection<Parameter> parameters = new ArrayList<>();
+	
+	@Override
+	public UICommandable setIdentifier(String anIdentifier) {
+		this.identifier = anIdentifier;
+		return this;
+	}
 	
 	@Override
 	public Boolean getIsNavigationCommand() {

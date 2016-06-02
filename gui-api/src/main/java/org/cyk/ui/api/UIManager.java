@@ -315,7 +315,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getViewIdentifier(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getString(IdentifierProvider.COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getView(aClass, commonBusinessAction, one);
@@ -328,7 +328,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getViewDynamic(final CommonBusinessAction commonBusinessAction, final Boolean one) {
-		return ListenerUtils.getInstance().getValue(String.class, IdentifierProvider.COLLECTION, new ListenerUtils.ResultMethod<IdentifierProvider,String>() {
+		return ListenerUtils.getInstance().getString(IdentifierProvider.COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 			@Override
 			public String execute(IdentifierProvider listener) {
 				return listener.getViewDynamic(commonBusinessAction, one);

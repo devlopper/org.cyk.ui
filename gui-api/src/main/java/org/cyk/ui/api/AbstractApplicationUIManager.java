@@ -1,7 +1,9 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -13,12 +15,14 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.party.person.AbstractActorBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
+import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
@@ -40,6 +44,8 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	
 	@Getter @Setter protected String identifier;
 	@Getter @Setter protected Boolean autoAddToSystemMenu = Boolean.TRUE;
+	
+	@Getter @Setter protected Collection<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>> listeners = new ArrayList<>();
 	
 	public abstract SystemMenu systemMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession);
 	
@@ -110,16 +116,68 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	
 	/**/
 	
-	public static interface Listener {
+	protected void addBusinessMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,SystemMenu systemMenu,UICommandable commandable){
+		addCommandable(userSession,systemMenu.getBusinesses(),commandable); 
+	}
+	
+	protected void addChild(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,UICommandable parent,UICommandable child){
+		addCommandable(userSession,parent.getChildren(),child); 
+	}
+	
+	private void addCommandable(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,Collection<UICommandable> commandables,UICommandable commandable){
+		if(commandable==null)
+			;
+		else
+			if(Boolean.TRUE.equals(isCommandableVisible(userSession,commandable)))
+				commandables.add(commandable); 
+	}
+	
+	protected Boolean isCommandableVisible(final AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,final UICommandable commandable){
+		Collection<String> invisibleCommandableIdentifiers = getInvisibleCommandableIdentifiers(userSession);
+		Boolean visible = StringUtils.isNotBlank(commandable.getIdentifier()) &&  ( (invisibleCommandableIdentifiers!=null && invisibleCommandableIdentifiers.contains(commandable.getIdentifier())) 
+				|| listenerUtils.getBoolean(listeners, new ListenerUtils.BooleanMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
+			@Override
+			public Boolean execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
+				return listener.isCommandableVisible(userSession,commandable);
+			}
+			@Override
+			public Boolean getNullValue() {
+				return Boolean.TRUE;
+			}
+		}));
+		return visible==null || visible;
+	}
+	
+	protected Collection<String> getInvisibleCommandableIdentifiers(final AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession){
+		return listenerUtils.getCollection(listeners, new ListenerUtils.CollectionMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>,String>() {
+			@Override
+			public Collection<String> execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
+				return listener.getInvisibleCommandableIdentifiers(userSession);
+			}
+		});
+	}
+	
+	/**/
+	
+	public static interface AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> {
+		
+		Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession);
+		Boolean isCommandableVisible(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable commandable);
 		
 		/**/
 		
-		public static class Adapter extends BeanAdapter implements Listener,Serializable {
+		public static class Adapter<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> extends BeanAdapter implements AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL>{
 			private static final long serialVersionUID = 3034803382486669232L;
-			
-			/**/
-			
+
+			@Override
+			public Boolean isCommandableVisible(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable commandable) {
+				return null;
+			}
+
+			@Override
+			public Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession) {
+				return null;
+			}
 		}
-		
 	}
 }

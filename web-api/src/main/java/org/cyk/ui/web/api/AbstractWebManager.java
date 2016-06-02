@@ -6,8 +6,6 @@ import javax.inject.Inject;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractApplicationUIManager;
-import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.api.security.RoleManager;
 
@@ -30,11 +28,16 @@ public abstract class AbstractWebManager<TREE_NODE,TREE_NODE_MODEL extends WebHi
 		return null;
 	}
 	
-	protected void addBusinessMenu(SystemMenu systemMenu,UICommandable item){
-		if(item==null)
-			;
-		else
-			systemMenu.getBusinesses().add(item); 
+	/**/
+	
+	public static interface AbstractWebManagerListener<TREE_NODE,TREE_NODE_MODEL extends WebHierarchyNode> extends AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> {
+		
+		/**/
+		
+		public static class Adapter<TREE_NODE,TREE_NODE_MODEL extends WebHierarchyNode> extends AbstractApplicationUIManagerListener.Adapter<TREE_NODE,TREE_NODE_MODEL> implements AbstractWebManagerListener<TREE_NODE,TREE_NODE_MODEL>{
+			private static final long serialVersionUID = 3034803382486669232L;
+
+		}
 	}
 	
 }

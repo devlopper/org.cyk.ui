@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.AbstractWebManager;
 import org.primefaces.model.TreeNode;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeNode,HierarchyNode> implements Serializable {
 
@@ -60,6 +60,18 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeN
 		
 		public String getPath(){
 			return name+"."+extension;
+		}
+	}
+	
+	/**/
+	
+	public static interface AbstractPrimefacesManagerListener extends AbstractWebManagerListener<TreeNode,HierarchyNode> {
+		
+		/**/
+		
+		public static class Adapter extends AbstractWebManagerListener.Adapter<TreeNode,HierarchyNode> implements AbstractPrimefacesManagerListener{
+			private static final long serialVersionUID = 3034803382486669232L;
+
 		}
 	}
 }

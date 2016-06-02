@@ -16,9 +16,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -39,11 +36,13 @@ import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.ListenerUtils;
-import org.cyk.utility.common.ListenerUtils.ResultMethod;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Deployment(initialisationType=InitialisationType.EAGER) @SuppressWarnings("rawtypes")
 public class MenuManager extends AbstractBean implements Serializable {
@@ -105,7 +104,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public UICommandable createModuleGroup(final AbstractUserSession<?,?> userSession,final ModuleGroup moduleGroup) {
-		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getValue(Boolean.class, menuListeners, new ResultMethod<Listener, Boolean>() {
+		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getBoolean(menuListeners, new ListenerUtils.BooleanMethod<Listener>() {
 			@Override
 			public Boolean execute(Listener listener) {
 				return listener.moduleGroupCreateable(userSession,moduleGroup);
