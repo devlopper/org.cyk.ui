@@ -134,7 +134,26 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	
 	protected Boolean isCommandableVisible(final AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,final UICommandable commandable){
 		Collection<String> invisibleCommandableIdentifiers = getInvisibleCommandableIdentifiers(userSession);
-		Boolean visible = StringUtils.isNotBlank(commandable.getIdentifier()) &&  ( (invisibleCommandableIdentifiers!=null && invisibleCommandableIdentifiers.contains(commandable.getIdentifier())) 
+		System.out.println("COM : "+commandable);
+		if(commandable!=null)
+			System.out.println("ID : "+commandable.getIdentifier());
+		System.out.println("ARR : "+invisibleCommandableIdentifiers);
+		if(invisibleCommandableIdentifiers!=null)
+			System.out.println(invisibleCommandableIdentifiers.contains(commandable.getIdentifier()));
+		
+		Boolean v = listenerUtils.getBoolean(listeners, new ListenerUtils.BooleanMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
+			@Override
+			public Boolean execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
+				return listener.isCommandableVisible(userSession,commandable);
+			}
+			@Override
+			public Boolean getNullValue() {
+				return Boolean.TRUE;
+			}
+		});
+		System.out.println("Boolean : "+v);
+		
+		Boolean visible = commandable!=null && StringUtils.isNotBlank(commandable.getIdentifier()) &&  ( (invisibleCommandableIdentifiers!=null && invisibleCommandableIdentifiers.contains(commandable.getIdentifier())) 
 				|| listenerUtils.getBoolean(listeners, new ListenerUtils.BooleanMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
 			@Override
 			public Boolean execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
