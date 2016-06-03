@@ -120,6 +120,15 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		addCommandable(userSession,systemMenu.getBusinesses(),commandable); 
 	}
 	
+	protected void onBusinessMenuPopulateEnded(final AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,final UICommandable module){
+		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
+			@Override
+			public void execute(AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL> listener) {
+				listener.onBusinessMenuPopulateEnded(userSession, module);
+			}
+		});
+	}
+	
 	protected void addChild(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,UICommandable parent,UICommandable child){
 		addCommandable(userSession,parent.getChildren(),child); 
 	}
@@ -166,6 +175,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		
 		Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession);
 		Boolean isCommandableVisible(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable commandable);
+		void onBusinessMenuPopulateEnded(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,UICommandable module);
 		
 		/**/
 		
@@ -181,6 +191,9 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			public Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession) {
 				return null;
 			}
+
+			@Override
+			public void onBusinessMenuPopulateEnded(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable module) {}
 		}
 	}
 }
