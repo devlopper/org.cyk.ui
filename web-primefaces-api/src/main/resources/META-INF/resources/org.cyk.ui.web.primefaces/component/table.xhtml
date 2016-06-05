@@ -20,7 +20,8 @@
 		
 			<ui:fragment rendered="#{cc.value.renderType.ordinal()==0}" >
 				<p:dataTable id="dataTable" widgetVar="dataTableWidgetVar" var="row" value="#{cc.value.value}" editable="#{cc.value.editable}" 
-					styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index" 
+					styleClass="dataTableStyleClass #{updateDataTableStyleClass} #{cc.value.cascadeStyleSheet.clazz}" style="#{cc.value.cascadeStyleSheet.inline}" 
+					rowIndexVar="index" 
 					emptyMessage="#{uiManager.text('record.list.empty')}" lazy="#{cc.value.lazyLoad}"			
 					paginator="#{cc.value.lazyLoad}" rows="#{cc.value.rows.size()}" paginatorPosition="bottom" sortMode="single"
 					paginatorTemplate="#{cc.value.dataTable.paginatorTemplate}" currentPageReportTemplate="#{cc.value.dataTable.currentPageReportTemplate}"

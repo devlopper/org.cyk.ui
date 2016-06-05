@@ -47,6 +47,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	private static final String HIGHLIGHT_MATCH_FORMAT = "<span class=\"cyk-ui-table-search-match\">%s</span>";
 	
 	public static final Map<DimensionType, CascadeStyleSheet> CASCADE_STYLE_SHEET_MAP = new HashMap<>();
+	public static final String f = "";
 	
 	static{
 		CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
@@ -70,6 +71,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@Getter @Setter protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l,maximumResultCount=10l;
 	@Getter protected DataTable dataTable = new DataTable();
+	@Getter private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 	
 	@Override
 	protected void initialisation() {
@@ -115,6 +117,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		
 		setNumberOfNullUiIndex(null);
 		
+		if(Boolean.TRUE.equals(columns.size()>numberOfColumnsHorizontalHeader))
+			getCascadeStyleSheet().addClass(PrimefacesManager.CSS_CLASS_TABLE_VERTICAL_HEADER);
+			
 		dataTable.setEditable(getEditable());
 	}
 	

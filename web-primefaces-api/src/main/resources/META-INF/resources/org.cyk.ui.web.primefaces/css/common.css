@@ -412,3 +412,33 @@ border: none;
 .dashboard-graphics-table-column-barchart{
 	width: 50%;
 }
+
+/**/
+
+.tableVerticalHeaderStyleClass *{
+	font-size: 95%;
+}
+.tableVerticalHeaderStyleClass .ui-column-title{
+	
+}
+.tableVerticalHeaderStyleClass .ui-column-title {
+    margin:0 -100% ;
+    display:inline-block;
+}
+/*.ui-column-title :before{
+    content:'';
+    width:0;
+    padding-top:110%;/* takes width as reference, + 10% for faking some extra padding
+    display:inline-block;
+    vertical-align:middle;
+}*/
+			
+.tableVerticalHeaderStyleClass .ui-table-columntoggle th{
+	height: 120px;
+}
+
+.tableVerticalHeaderStyleClass span.ui-column-title {
+   -ms-transform: rotate(90deg); 
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+} 				

@@ -69,6 +69,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public static final String CSS_CLASS_DATATABLE_ROW_ODD = "ui-datatable-odd";
 	public static final String CSS_CLASS_DATATABLE_ROW_SUMMARY = "ui-datatable-summaryrow";
 	public static final String CSS_CLASS_WIDGET_HEADER = "ui-widget-header";
+	public static final String CSS_CLASS_TABLE_VERTICAL_HEADER = "tableVerticalHeaderStyleClass";
 	
 	private static final String SCRIPT_START_FORMAT = "PF('%s').start();";
 	private static final String SCRIPT_CANCEL_FORMAT = "PF('%s').cancel();";
