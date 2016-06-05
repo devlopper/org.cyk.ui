@@ -79,7 +79,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected RenderType renderType = RenderType.TABLE;
 	protected LanguageBusiness languageBusiness = UIManager.getInstance().getLanguageBusiness();
 	protected UIProvider uiProvider = UIProvider.getInstance();
-	protected Integer numberOfColumnsHorizontalHeader = 6;
+	protected Integer numberOfColumnsHorizontalHeader = 10;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
