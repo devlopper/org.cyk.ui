@@ -430,7 +430,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				}
 				deleteRowAt(row.getIndex().intValue());
 			}else{
-				//crudOnePage(row.getData(),Crud.DELETE);
+				//System.out.println("AbstractTable.serve() : DEL");
+				crudOnePage(row.getData(),Crud.DELETE);
 			}
 			
 		}else if(command==updateRowCommandable.getCommand()){

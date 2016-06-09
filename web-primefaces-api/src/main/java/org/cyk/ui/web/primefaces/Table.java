@@ -153,7 +153,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 
 	@Override
 	protected void crudOnePage(DATA data,Crud crud) {
-		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data:((AbstractFormModel<?>)data).getIdentifiable());
+		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data
+				:( data instanceof AbstractFormModel<?> ? ((AbstractFormModel<?>)data).getIdentifiable() : ((AbstractOutputDetails<?>)data).getMaster() ) );
 		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
 	}
 	
