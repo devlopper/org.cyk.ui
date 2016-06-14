@@ -32,10 +32,10 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Setter protected UIMessageManager messageManager;
 	@Getter @Setter protected UICommand command;
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
-	@Getter protected String identifier;
-	@Getter @Setter protected String label,tooltip,onClick;
+	@Getter protected String identifier,label;
+	@Getter @Setter protected String tooltip,onClick;
 	@Getter @Setter protected Integer index;
-	@Getter @Setter protected Icon icon;
+	@Getter protected Icon icon;
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
@@ -59,6 +59,18 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Override
 	public UICommandable setIdentifier(String anIdentifier) {
 		this.identifier = anIdentifier;
+		return this;
+	}
+	
+	@Override
+	public UICommandable setLabel(String aLabel) {
+		this.label = aLabel;
+		return this;
+	}
+	
+	@Override
+	public UICommandable setIcon(Icon anIcon) {
+		this.icon = anIcon;
 		return this;
 	}
 	
@@ -433,7 +445,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return commandable;
 		}
 		
-		public static UICommandable createMany(BusinessEntityInfos businessEntityInfos,Icon icon){
+		public static UICommandable createCreateMany(BusinessEntityInfos businessEntityInfos,Icon icon){
 			UICommandable commandable = instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.CREATE).setOne(Boolean.FALSE)
 					.setBusinessEntityInfos(businessEntityInfos)
 					.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()))
@@ -456,8 +468,8 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return c;
 			*/
 		}
-		public static UICommandable createMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
-			return createMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
+		public static UICommandable createCreateMany(Class<? extends AbstractIdentifiable> aClass,Icon icon){
+			return createCreateMany(UIManager.getInstance().businessEntityInfos(aClass), icon);
 		}
 		
 		

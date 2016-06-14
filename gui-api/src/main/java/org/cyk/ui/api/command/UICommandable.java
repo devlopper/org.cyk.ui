@@ -29,13 +29,13 @@ public interface UICommandable {
 	void setIndex(Integer index);
 	
 	String getLabel();
-	void setLabel(String label);
+	UICommandable setLabel(String label);
 	
 	Boolean getShowLabel();
 	void setShowLabel(Boolean show);
 	
 	Icon getIcon();
-	void setIcon(Icon anIcon);
+	UICommandable setIcon(Icon anIcon);
 	
 	String getTooltip();
 	void setTooltip(String label);
