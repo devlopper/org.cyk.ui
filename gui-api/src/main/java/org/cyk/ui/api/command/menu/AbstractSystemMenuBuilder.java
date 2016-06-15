@@ -115,6 +115,10 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	protected COMMANDABLE createCreateManyCommandable(Class<? extends AbstractIdentifiable> businessClass,Icon icon){
 		return (COMMANDABLE) AbstractCommandable.Builder.createCreateMany(UIManager.getInstance().businessEntityInfos(businessClass), icon);
 	}
+	@SuppressWarnings("unchecked")
+	protected COMMANDABLE createSelectManyCommandable(Class<? extends AbstractIdentifiable> businessClass,String actionIdentifier,Icon icon){
+		return (COMMANDABLE) AbstractCommandable.Builder.createSelectMany(businessClass,actionIdentifier, icon);
+	}
 	
 	/**/
 	
