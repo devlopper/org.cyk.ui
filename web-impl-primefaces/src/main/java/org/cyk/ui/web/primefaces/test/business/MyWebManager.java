@@ -6,12 +6,10 @@ import java.util.Collection;
 
 import javax.inject.Singleton;
 
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
+import lombok.Getter;
+
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
-import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.menu.SystemMenu;
@@ -19,10 +17,9 @@ import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.api.WebHierarchyNode;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.Tree;
+import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
-
-import lombok.Getter;
 
 @Singleton @Deployment(initialisationType=InitialisationType.EAGER,order=RootWebManager.DEPLOYMENT_ORDER+1) @Getter
 public class MyWebManager extends AbstractPrimefacesManager implements Serializable {
@@ -44,7 +41,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 	}
 	
 	@Override
-	public SystemMenu systemMenu(AbstractUserSession userSession) {
+	public SystemMenu systemMenu(UserSession userSession) {
 		SystemMenu systemMenu = new SystemMenu();
 		systemMenu.setName("MyApp");
 		

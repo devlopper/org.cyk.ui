@@ -4,16 +4,15 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-import org.cyk.ui.api.AbstractUserSession;
-import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.web.api.AbstractWebManager;
-import org.primefaces.model.TreeNode;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeNode,HierarchyNode> implements Serializable {
+import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.web.api.AbstractWebManager;
+import org.primefaces.model.TreeNode;
+
+public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeNode,HierarchyNode,UserSession> implements Serializable {
 
 	private static final long serialVersionUID = 5307129721480611811L;
 
@@ -47,7 +46,7 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeN
 	}
 	
 	@Override
-	protected AbstractTree<TreeNode, HierarchyNode> createNavigatorTree(AbstractUserSession<TreeNode, HierarchyNode> userSession) {
+	protected AbstractTree<TreeNode, HierarchyNode> createNavigatorTree(UserSession userSession) {
 		return new Tree();
 	}
 	
@@ -65,11 +64,11 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeN
 	
 	/**/
 	
-	public static interface AbstractPrimefacesManagerListener extends AbstractWebManagerListener<TreeNode,HierarchyNode> {
+	public static interface AbstractPrimefacesManagerListener extends AbstractWebManagerListener<TreeNode,HierarchyNode,UserSession> {
 		
 		/**/
 		
-		public static class Adapter extends AbstractWebManagerListener.Adapter<TreeNode,HierarchyNode> implements AbstractPrimefacesManagerListener{
+		public static class Adapter extends AbstractWebManagerListener.Adapter<TreeNode,HierarchyNode,UserSession> implements AbstractPrimefacesManagerListener{
 			private static final long serialVersionUID = 3034803382486669232L;
 
 		}

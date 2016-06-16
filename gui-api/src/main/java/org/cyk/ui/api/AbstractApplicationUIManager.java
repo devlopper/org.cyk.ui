@@ -29,7 +29,7 @@ import org.cyk.utility.common.cdi.BeanAdapter;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> extends AbstractBean implements Serializable {
+public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 406884223652214395L;
 
@@ -45,9 +45,11 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	@Getter @Setter protected String identifier;
 	@Getter @Setter protected Boolean autoAddToSystemMenu = Boolean.TRUE;
 	
-	@Getter @Setter protected Collection<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>> listeners = new ArrayList<>();
+	@Getter @Setter protected SystemMenu systemMenu;
 	
-	public abstract SystemMenu systemMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession);
+	@Getter @Setter protected Collection<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION>> listeners = new ArrayList<>();
+	
+	public abstract SystemMenu systemMenu(USER_SESSION userSession);
 	
 	protected BusinessEntityInfos businessEntityInfos(Class<? extends AbstractIdentifiable> aClass){
 		return uiManager.businessEntityInfos(aClass);
@@ -85,7 +87,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		businessClassConfig(aClass,formModelClass,null);
 	}
 	
-	protected <TYPE> AbstractTree<TREE_NODE,TREE_NODE_MODEL> getNavigator(Class<TREE_NODE> nodeClass,Class<TREE_NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
+	protected <TYPE> AbstractTree<TREE_NODE,TREE_NODE_MODEL> getNavigator(Class<TREE_NODE> nodeClass,Class<TREE_NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,USER_SESSION userSession){
 		AbstractTree<TREE_NODE,TREE_NODE_MODEL> navigator = createNavigatorTree(userSession);
 		Collection<TYPE> datas = getNavigatorTreeNodeDatas(dataClass,userSession);
 		/*if(datas!=null){
@@ -99,41 +101,41 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		return navigator;
 	}
 	
-	public void initialiseNavigatorTree(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
+	public void initialiseNavigatorTree(USER_SESSION userSession){
 		
 	}
 	
-	protected AbstractTree<TREE_NODE,TREE_NODE_MODEL> createNavigatorTree(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
+	protected AbstractTree<TREE_NODE,TREE_NODE_MODEL> createNavigatorTree(USER_SESSION userSession){
 		return null;
 	}
-	protected <TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession){
+	protected <TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,USER_SESSION userSession){
 		return null;
 	}
 	
-	protected Boolean isConnectedUserInstanceOfActor(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,AbstractActorBusiness<?,?> actorBusiness){
+	protected Boolean isConnectedUserInstanceOfActor(USER_SESSION userSession,AbstractActorBusiness<?,?> actorBusiness){
 		return actorBusiness.findByPerson((Person) userSession.getUser())!=null;
 	}
 	
 	/**/
 	
-	protected void addBusinessMenu(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,SystemMenu systemMenu,UICommandable commandable){
+	protected void addBusinessMenu(USER_SESSION userSession,SystemMenu systemMenu,UICommandable commandable){
 		addCommandable(userSession,systemMenu.getBusinesses(),commandable); 
 	}
 	
-	protected void onBusinessMenuPopulateEnded(final AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,final UICommandable module){
-		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
+	protected void onBusinessMenuPopulateEnded(final USER_SESSION userSession,final UICommandable module){
+		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION>>() {
 			@Override
-			public void execute(AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL> listener) {
+			public void execute(AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL,USER_SESSION> listener) {
 				listener.onBusinessMenuPopulateEnded(userSession, module);
 			}
 		});
 	}
 	
-	protected void addChild(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,UICommandable parent,UICommandable child){
+	protected void addChild(USER_SESSION userSession,UICommandable parent,UICommandable child){
 		addCommandable(userSession,parent.getChildren(),child); 
 	}
 	
-	private void addCommandable(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,Collection<UICommandable> commandables,UICommandable commandable){
+	private void addCommandable(USER_SESSION userSession,Collection<UICommandable> commandables,UICommandable commandable){
 		if(commandable==null)
 			;
 		else
@@ -141,15 +143,15 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 				commandables.add(commandable); 
 	}
 	
-	protected Boolean isCommandableVisible(final AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,final UICommandable commandable){
+	protected Boolean isCommandableVisible(final USER_SESSION userSession,final UICommandable commandable){
 		Collection<String> invisibleCommandableIdentifiers = getInvisibleCommandableIdentifiers(userSession);
 		Boolean visible = Boolean.TRUE; 
 		if(invisibleCommandableIdentifiers!=null && StringUtils.isNotBlank(commandable.getIdentifier()) && invisibleCommandableIdentifiers.contains(commandable.getIdentifier()))
 			visible = Boolean.FALSE;
 		if(visible)
-			visible = listenerUtils.getBoolean(listeners, new ListenerUtils.BooleanMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>>() {
+			visible = listenerUtils.getBoolean(listeners, new ListenerUtils.BooleanMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION>>() {
 			@Override
-			public Boolean execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
+			public Boolean execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION> listener) {
 				return listener.isCommandableVisible(userSession,commandable);
 			}
 			@Override
@@ -160,40 +162,60 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		return visible;
 	}
 	
-	protected Collection<String> getInvisibleCommandableIdentifiers(final AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession){
-		return listenerUtils.getCollection(listeners, new ListenerUtils.CollectionMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL>,String>() {
+	protected Collection<String> getInvisibleCommandableIdentifiers(final USER_SESSION userSession){
+		return listenerUtils.getCollection(listeners, new ListenerUtils.CollectionMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION>,String>() {
 			@Override
-			public Collection<String> execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL> listener) {
+			public Collection<String> execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION> listener) {
 				return listener.getInvisibleCommandableIdentifiers(userSession);
+			}
+		});
+	}
+	
+	public SystemMenu getSystemMenu(final USER_SESSION userSession){
+		return listenerUtils.getValue(SystemMenu.class,listeners, new ListenerUtils.ResultMethod<AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION>,SystemMenu>() {
+			@Override
+			public SystemMenu execute(AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL,USER_SESSION> listener) {
+				return listener.getSystemMenu(userSession);
+			}
+
+			@Override
+			public SystemMenu getNullValue() {
+				return null;
 			}
 		});
 	}
 	
 	/**/
 	
-	public static interface AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> {
+	public static interface AbstractApplicationUIManagerListener<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> {
 		
-		Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession);
-		Boolean isCommandableVisible(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable commandable);
-		void onBusinessMenuPopulateEnded(AbstractUserSession<TREE_NODE,TREE_NODE_MODEL> userSession,UICommandable module);
+		Set<String> getInvisibleCommandableIdentifiers(USER_SESSION userSession);
+		Boolean isCommandableVisible(USER_SESSION userSession,UICommandable commandable);
+		void onBusinessMenuPopulateEnded(USER_SESSION userSession,UICommandable module);
+		SystemMenu getSystemMenu(USER_SESSION userSession);
 		
 		/**/
 		
-		public static class Adapter<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode> extends BeanAdapter implements AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL>{
+		public static class Adapter<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> extends BeanAdapter implements AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL,USER_SESSION>{
 			private static final long serialVersionUID = 3034803382486669232L;
 
 			@Override
-			public Boolean isCommandableVisible(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable commandable) {
+			public Boolean isCommandableVisible(USER_SESSION userSession,UICommandable commandable) {
 				return null;
 			}
 
 			@Override
-			public Set<String> getInvisibleCommandableIdentifiers(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession) {
+			public Set<String> getInvisibleCommandableIdentifiers(USER_SESSION userSession) {
 				return null;
 			}
 
 			@Override
-			public void onBusinessMenuPopulateEnded(AbstractUserSession<TREE_NODE, TREE_NODE_MODEL> userSession,UICommandable module) {}
+			public void onBusinessMenuPopulateEnded(USER_SESSION userSession,UICommandable module) {}
+			
+			@Override
+			public SystemMenu getSystemMenu(USER_SESSION userSession) {
+				return null;
+			}
 		}
 	}
 }
