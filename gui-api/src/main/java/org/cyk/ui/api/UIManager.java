@@ -85,6 +85,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	private final String listViewSuffix="ListView";
 	private final String editViewSuffix="EditView";
 	private final String createManyViewSuffix="CreateManyView";
+	private String selectItemNullLabel;
 	
 	private final String pushNotificationChannel=PUSH_NOTIFICATION_CHANNEL;
 	
@@ -119,6 +120,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		INSTANCE = this;
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.message",getClass().getClassLoader());
 		languageBusiness.registerResourceBundle("org.cyk.ui.api.resources.field",getClass().getClassLoader());
+		
+		selectItemNullLabel = languageBusiness.findText("input.choice.select.message");
+		
 		//windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{getApplication()==null?"CYK":getApplication().getName()});
 		windowFooter = getLanguageBusiness().findText("window.layout.footer",new Object[]{"CYK Systems"});
 		BUSINESS_ENTITIES_INFOS_MAP.clear();
