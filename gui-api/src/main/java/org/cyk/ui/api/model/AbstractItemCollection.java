@@ -16,6 +16,7 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -32,7 +33,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Boolean autoWrite=Boolean.TRUE,autoApplyMasterFormFieldValues=Boolean.TRUE;
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
-	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,showItemLabel=Boolean.FALSE,editable=Boolean.TRUE;
+	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,showItemLabel=Boolean.FALSE,editable=Boolean.TRUE,showAddCommandableAtBottom=Boolean.TRUE;
 
 	public AbstractItemCollection(Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
 		//itemClass = (Class<TYPE>) parameterizedClass(Object.class, 0); //(Class<TYPE>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -65,6 +66,19 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 	}
 	
+	protected Boolean instanciatable(){
+		return listenerUtils.getBoolean(itemCollectionListeners, new ListenerUtils.BooleanMethod<Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>>() {
+			@Override
+			public Boolean execute(Listener<TYPE, IDENTIFIABLE, SELECT_ITEM> listener) {
+				return listener.instanciatable(AbstractItemCollection.this);
+			}
+			@Override
+			public Boolean getNullValue() {
+				return Boolean.TRUE;
+			}
+		});
+	}
+	
 	public void add(IDENTIFIABLE identifiable){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
@@ -83,11 +97,12 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		}
 		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.add(this,instance);
-		updateTable();
+		updateTable();		
 	}
 	
 	public void add(){
-		add(instanciate());
+		if(instanciatable())
+			add(instanciate());
 	}
 	
 	protected IDENTIFIABLE instanciate(){
@@ -150,6 +165,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		Crud getCrud();
 		
+		Boolean instanciatable(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
+		
 		IDENTIFIABLE instanciate(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
 		
 		void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
@@ -187,7 +204,10 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			public Collection<IDENTIFIABLE> load() {
 				return null;
 			}
-			
+			@Override
+			public Boolean instanciatable(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection) {
+				return null;
+			}
 			@Override
 			public IDENTIFIABLE instanciate(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection) {
 				return null;

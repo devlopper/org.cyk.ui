@@ -21,7 +21,7 @@
        			<h:outputText value="#{index+1}" />
        			<f:facet name="footer">
        				<!--p:commandButton title="#{uiManager.text('command.add')}" icon="fa-adjust" action="#{cc.value.add}" /-->
-       				<cyk:command value="#{cc.value.addCommandable}"/>
+       				<ui:fragment rendered="#{cc.value.showAddCommandableAtBottom}"><cyk:command value="#{cc.value.addCommandable}"/></ui:fragment>
        			</f:facet>
        		</p:column>
        		
