@@ -7,9 +7,9 @@ import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.mathematics.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
+import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;

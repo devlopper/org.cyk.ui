@@ -8,7 +8,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.impl.mathematics.FiniteStateMachineStateLogDetails;
+import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
