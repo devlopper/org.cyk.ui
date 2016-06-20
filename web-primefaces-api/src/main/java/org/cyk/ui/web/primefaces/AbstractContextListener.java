@@ -7,6 +7,7 @@ import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.mathematics.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
@@ -16,6 +17,7 @@ import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.License;
@@ -41,6 +43,7 @@ import org.cyk.ui.web.primefaces.page.FileDetails;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
@@ -111,6 +114,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(MovementCollection.class, null);
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(FiniteStateMachineStateLog.class, FiniteStateMachineStateLogEditPage.Form.class, FiniteStateMachineStateLogDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(FiniteStateMachineStateLog.class, null);
 	}
 	
 	@Override
