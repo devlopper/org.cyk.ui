@@ -119,7 +119,10 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	protected COMMANDABLE createSelectManyCommandable(Class<? extends AbstractIdentifiable> businessClass,String actionIdentifier,Icon icon){
 		return (COMMANDABLE) AbstractCommandable.Builder.createSelectMany(businessClass,actionIdentifier, icon);
 	}
-	
+	@SuppressWarnings("unchecked")
+	protected COMMANDABLE createSelectOneCommandable(Class<? extends AbstractIdentifiable> businessClass,String actionIdentifier,Icon icon){
+		return (COMMANDABLE) AbstractCommandable.Builder.createSelectOne(businessClass,actionIdentifier, icon);
+	}
 	/**/
 	
 	public static interface AbstractSystemMenuBuilderListener<COMMANDABLE extends AbstractCommandable,TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> {
