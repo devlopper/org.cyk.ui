@@ -120,7 +120,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		try{
 			if(identifiable==null){
 				identifiable = instanciateIdentifiable();
-				identifiable.setProcessedBy(userSession.getUser());
+				identifiable.setProcessingUser(userSession.getUser());
 			}
 			return identifiableFormData(aClass);
 		} catch (Exception e) {
