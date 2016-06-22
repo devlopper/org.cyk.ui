@@ -118,8 +118,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		
 	protected Object data(Class<?> aClass){
 		try{
-			if(identifiable==null)
+			if(identifiable==null){
 				identifiable = instanciateIdentifiable();
+				identifiable.setProcessedBy(userSession.getUser());
+			}
 			return identifiableFormData(aClass);
 		} catch (Exception e) {
 			e.printStackTrace();
