@@ -490,20 +490,37 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,String actionIdentifier){
-		redirectTo(outcome,new Object[]{
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
+			,String actionIdentifier,Object[] parameters){
+		Object[] __parameters__ = ArrayUtils.addAll(new Object[]{
 				UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,UniformResourceLocatorParameter.CLASS,uiManager.businessEntityInfos(identifiableClass).getIdentifier()
 				,UniformResourceLocatorParameter.ACTION_IDENTIFIER, actionIdentifier
 				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
-		});
+		}, parameters);
+		redirectTo(outcome,__parameters__);
 	}
-	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,String actionIdentifier){
-		redirectToDynamicProcessManyPage(outcomeProcessMany, identifiableClass, identifiables, actionIdentifier);
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
+			,String actionIdentifier){
+		redirectToDynamicProcessManyPage(outcome, identifiableClass, identifiables, actionIdentifier, null);
 	}
-	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToEditManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables){
-		redirectToDynamicProcessManyPage(outcome, identifiableClass, identifiables, null);
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
+			,String actionIdentifier,Object[] parameters){
+		redirectToDynamicProcessManyPage(outcomeProcessMany, identifiableClass, identifiables, actionIdentifier,parameters);
+	}
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
+			,String actionIdentifier){
+		redirectToDynamicProcessManyPage(identifiableClass, identifiables, actionIdentifier, null);
+	}
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToEditManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass
+			,Collection<IDENTIFIABLE> identifiables,Object[] parameters){
+		redirectToDynamicProcessManyPage(outcome, identifiableClass, identifiables, null,parameters);
+	}
+	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToEditManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass
+			,Collection<IDENTIFIABLE> identifiables){
+		redirectToEditManyPage(outcome, identifiableClass, identifiables, null);
 	}
 	
 	public void redirectToPrintData(Collection<Parameter> parameters/*,String reportId*/){

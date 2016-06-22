@@ -161,6 +161,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 		/**/
 		Collection<ENTITY> getIdentifiables(AbstractSelectManyPage<?> selectManyPage);
 		void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
+		Object[] getParameters(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		
 		@Getter @Setter
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
@@ -187,7 +188,10 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 			
 			@Override
 			public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {}
-			
+			@Override
+			public Object[] getParameters(AbstractSelectManyPage<?> selectManyPage, Object data,String actionIdentifier) {
+				return null;
+			}
 			/**/
 			
 			public static class Default<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends Listener.Adapter<ENTITY,IDENTIFIER_TYPE> implements Serializable {
@@ -205,7 +209,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 						logTrace("No action identifier found for {} to process many", selectManyPage.getBusinessEntityInfos().getClazz());
 					else
 						WebNavigationManager.getInstance().redirectToDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
-							,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier);
+							,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier,getParameters(selectManyPage, data, actionIdentifier));
 				}
 			}
 		}
