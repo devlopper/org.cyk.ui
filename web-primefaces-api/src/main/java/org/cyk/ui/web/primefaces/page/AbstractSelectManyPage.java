@@ -14,7 +14,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindClassLabelTextParameters;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
@@ -32,15 +31,13 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
-	private String actionIdentifier;
-	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
 		
 		for(AbstractSelectManyPage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.initialisationStarted(this);
-		actionIdentifier = requestParameter(UniformResourceLocatorParameter.ACTION_IDENTIFIER);
+		
 		//form.setShowCommands(Boolean.TRUE);
 		form.getSubmitCommandable().setLabel(text("command.select"));
 		

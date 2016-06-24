@@ -64,6 +64,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	
 	@Getter protected String title,contentTitle="Content";
 	@Getter @Setter protected String text;
+	@Getter @Setter protected String actionIdentifier;
 	
 	@Override
 	protected void initialisation() {

@@ -94,6 +94,8 @@ public interface UICommandable {
 	UICommandable addPreviousViewParameter();
 	UICommandable addDefaultParameters();
 	
+	UICommandable addActionParameter(String actionIdentifier);
+	
 	/* Events */
 	
 	String getOnClick();

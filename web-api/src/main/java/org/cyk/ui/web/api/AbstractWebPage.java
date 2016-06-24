@@ -60,6 +60,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		actionIdentifier = requestParameter(UniformResourceLocatorParameter.ACTION_IDENTIFIER);
 		//locale = getUserSession().getLocale();
 		//layout.setWest("/org.cyk.ui.web.primefaces/include/layout/default/north.xhtml");
 		footer=  UIManager.getInstance().getWindowFooter();

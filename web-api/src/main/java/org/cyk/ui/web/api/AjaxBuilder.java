@@ -77,6 +77,8 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	}
 	
 	public <TYPE> void build(){
+		if(input==null)
+			return;
 		input.setAjaxListener(new AjaxListener.Adapter.Default(event) {
 			private static final long serialVersionUID = 4750417275636910265L;
 			@Override
@@ -89,13 +91,19 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 		
 		processed.add(getClassSelector(input));
 		if(crossedFieldNames!=null)
-			for(String crossFieldName : crossedFieldNames)
-				processed.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
+			for(String crossFieldName : crossedFieldNames){
+				WebInput<?, ?, ?, ?> input = form.findInputByClassByFieldName(WebInput.class, crossFieldName);
+				if(input!=null)
+					processed.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, crossFieldName)));
+			}
 		input.getAjaxListener().setProcess(StringUtils.join(processed,","));
 		
 		if(updatedFieldNames!=null){
-			for(String updatedFieldName : updatedFieldNames)
-				updated.add(getClassSelector(form.findInputByClassByFieldName(WebInput.class, updatedFieldName)));
+			for(String updatedFieldName : updatedFieldNames){
+				WebInput<?, ?, ?, ?> input = form.findInputByClassByFieldName(WebInput.class, updatedFieldName);
+				if(input!=null)
+					updated.add(getClassSelector(input));
+			}
 		}
 		input.getAjaxListener().setUpdate(StringUtils.join(updated,","));
 	}

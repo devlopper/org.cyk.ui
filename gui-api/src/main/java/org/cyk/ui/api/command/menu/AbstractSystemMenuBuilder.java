@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
@@ -124,6 +125,10 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		return (COMMANDABLE) AbstractCommandable.Builder.createSelectOne(businessClass,actionIdentifier, icon);
 	}
 	/**/
+	
+	protected String getText(String code){
+		return RootBusinessLayer.getInstance().getLanguageBusiness().findText(code);
+	}
 	
 	public static interface AbstractSystemMenuBuilderListener<COMMANDABLE extends AbstractCommandable,TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> {
 		
