@@ -20,6 +20,9 @@ import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.test.model.Actor.SearchCriteria;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
+import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
+import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
@@ -46,11 +49,11 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		primefacesManager.getSelectOnePageListeners().add(new ActorSelectOnePageAdapter());
-		primefacesManager.getSelectManyPageListeners().add(new ActorSelectManyPageAdapter());
-		primefacesManager.getProcessManyPageListeners().add(new ActorProcessManyPageAdapter());
+		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
+		AbstractSelectManyPage.Listener.COLLECTION.add(new ActorSelectManyPageAdapter());
+		AbstractProcessManyPage.Listener.COLLECTION.add(new ActorProcessManyPageAdapter());
 		
-		primefacesManager.getSelectManyPageListeners().add(new PersonSelectManyPageAdapter());
+		AbstractSelectManyPage.Listener.COLLECTION.add(new PersonSelectManyPageAdapter());
 		
 		/*
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, AbstractActorQueryOneFormModel.Default.class

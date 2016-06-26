@@ -1,20 +1,23 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -124,13 +127,14 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 	}
 	
 	private Collection<AbstractProcessManyPage.Listener<?,Object>> getListeners(){
-		return primefacesManager.getProcessManyPageListeners(businessEntityInfos.getClazz());
+		return AbstractProcessManyPage.Listener.Adapter.getListeners(businessEntityInfos.getClazz());
 	}
 		
 	/**/
 	
 	public interface Listener<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener<ENTITY> {
 
+		Collection<Listener<?,?>> COLLECTION = new ArrayList<>();
 		/**/
 		Class<?> getFormDataClass(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		Object getFormData(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
@@ -178,6 +182,19 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 						
 			@Override
 			public void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier) {}
+			
+			@SuppressWarnings("unchecked")
+			public static Collection<Listener<?,Object>> getListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<Listener<?,Object>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(Listener<?,?> listener : Listener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add((Listener<?, Object>) listener);
+				return results;
+			}
+			public static Collection<Listener<?,Object>> getListeners(BusinessEntityInfos businessEntityInfos){
+				return getListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
+			}
 			
 			/**/
 			

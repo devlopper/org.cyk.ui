@@ -2,18 +2,18 @@ package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindClassLabelTextParameters;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
@@ -25,6 +25,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -135,7 +138,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 	}
 	
 	private Collection<AbstractSelectManyPage.Listener<?,Object>> getListeners(){
-		return primefacesManager.getSelectManyPageListeners(businessEntityInfos.getClazz());
+		return AbstractSelectManyPage.Listener.Adapter.getListeners(businessEntityInfos.getClazz());
 	}
 	
 	/**/
@@ -155,6 +158,8 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 	
 	public interface Listener<ENTITY extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener<ENTITY> {
 
+		Collection<Listener<?,?>> COLLECTION = new ArrayList<>();
+		
 		/**/
 		Collection<ENTITY> getIdentifiables(AbstractSelectManyPage<?> selectManyPage);
 		void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
@@ -188,6 +193,19 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 			@Override
 			public Object[] getParameters(AbstractSelectManyPage<?> selectManyPage, Object data,String actionIdentifier) {
 				return null;
+			}
+			
+			@SuppressWarnings("unchecked")
+			public static Collection<Listener<?,Object>> getListeners(Class<? extends Identifiable<?>> aClass){
+				Collection<Listener<?,Object>> results = new ArrayList<>();
+				if(aClass!=null)
+					for(Listener<?,?> listener : Listener.COLLECTION)
+						if(listener.getEntityTypeClass().isAssignableFrom(aClass))
+							results.add((Listener<?, Object>) listener);
+				return results;
+			}
+			public static Collection<Listener<?,Object>> getListeners(BusinessEntityInfos businessEntityInfos){
+				return getListeners(businessEntityInfos==null ? null : businessEntityInfos.getClazz());
 			}
 			/**/
 			

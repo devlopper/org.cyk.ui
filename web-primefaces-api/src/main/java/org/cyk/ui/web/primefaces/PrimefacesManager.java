@@ -15,7 +15,6 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
-import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.SelectItemBuilderListener;
@@ -33,10 +32,6 @@ import org.cyk.ui.web.api.data.collector.control.WebOutputText;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
-import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
-import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
-import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
-import org.cyk.ui.web.primefaces.page.BusinessEntityFormPageListener;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -73,11 +68,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	private static final String SCRIPT_START_FORMAT = "PF('%s').start();";
 	private static final String SCRIPT_CANCEL_FORMAT = "PF('%s').cancel();";
-	
-	private final Collection<BusinessEntityFormPageListener<?>> businessEntityFormPageListeners = new ArrayList<>();
-	private final Collection<AbstractSelectOnePage.Listener<?,?>> selectOnePageListeners = new ArrayList<>();
-	private final Collection<AbstractSelectManyPage.Listener<?,?>> selectManyPageListeners = new ArrayList<>();
-	private final Collection<AbstractProcessManyPage.Listener<?,?>> processManyPageListeners = new ArrayList<>();
 	
 	public static PrimefacesManager getInstance() {
 		return INSTANCE;
@@ -209,36 +199,6 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	public String getCancelScript(String widgetVar){
 		return String.format(SCRIPT_CANCEL_FORMAT, widgetVar);
-	}
-
-	@SuppressWarnings("unchecked")
-	public Collection<AbstractSelectOnePage.Listener<?,Object>> getSelectOnePageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<AbstractSelectOnePage.Listener<?,Object>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(AbstractSelectOnePage.Listener<?,?> listener : selectOnePageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add((AbstractSelectOnePage.Listener<?, Object>) listener);
-		return results;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<AbstractSelectManyPage.Listener<?,Object>> getSelectManyPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<AbstractSelectManyPage.Listener<?,Object>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(AbstractSelectManyPage.Listener<?,?> listener : selectManyPageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add((AbstractSelectManyPage.Listener<?, Object>) listener);
-		return results;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<AbstractProcessManyPage.Listener<?,Object>> getProcessManyPageListeners(Class<? extends Identifiable<?>> aClass){
-		Collection<AbstractProcessManyPage.Listener<?,Object>> results = new ArrayList<>();
-		if(aClass!=null)
-			for(AbstractProcessManyPage.Listener<?,?> listener : processManyPageListeners)
-				if(listener.getEntityTypeClass().isAssignableFrom(aClass))
-					results.add((AbstractProcessManyPage.Listener<?, Object>) listener);
-		return results;
 	}
 	
 	public void configureProgressBar(UICommandable commandable,final String progressBarWidgetVar){
