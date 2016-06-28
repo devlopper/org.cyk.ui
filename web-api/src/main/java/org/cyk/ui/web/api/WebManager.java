@@ -19,7 +19,9 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -289,6 +291,16 @@ public class WebManager extends AbstractBean implements Serializable {
 	public Collection<Long> decodeIdentifiersRequestParameter(){
 		return decodeIdentifiersRequestParameter(UniformResourceLocatorParameter.IDENTIFIABLE, Faces.getRequest());
 	}
+	
+	/**/
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass,String name,HttpServletRequest request){
+		Collection<Long> identifiers = decodeIdentifiersRequestParameter(name, request);
+		@SuppressWarnings("unchecked")
+		TypedBusiness<IDENTIFIABLE> business = (TypedBusiness<IDENTIFIABLE>) BusinessLocator.getInstance().locate(identifiableClass);
+		return business.findByIdentifiers(identifiers);
+	}
+	
 	/**/
 	
 	public void throwValidationException(String messageId,Object[] messageParams,String detailsId,Object[] detailsParams){
