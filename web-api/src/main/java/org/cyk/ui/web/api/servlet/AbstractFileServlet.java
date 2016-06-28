@@ -136,12 +136,16 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 					}
 		}
 		
+		/*
 		for(Long identifier : identifiers)
 			try {
 				collection.add(fileBusiness.find(identifier));
 			} catch (NumberFormatException e) {
 				return null;
 			}
+		*/
+		
+		collection.addAll(fileBusiness.findByIdentifiers(identifiers));
 		
 		return collection;
 	}
