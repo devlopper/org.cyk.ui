@@ -265,6 +265,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	public Collection<Long> decodeIdentifiersRequestParameter(String name,HttpServletRequest request){
 		Collection<Long> identifiers = new ArrayList<>();
 		String identifiable = getRequestParameter(request, name);
+		if(StringUtils.isBlank(identifiable))
+			return null;
 		//TODO many parameters can be encoded
 		String encodedParameter = getRequestParameter(request, UniformResourceLocatorParameter.ENCODED);
 		if(name.equals(encodedParameter)){
@@ -299,6 +301,15 @@ public class WebManager extends AbstractBean implements Serializable {
 		@SuppressWarnings("unchecked")
 		TypedBusiness<IDENTIFIABLE> business = (TypedBusiness<IDENTIFIABLE>) BusinessLocator.getInstance().locate(identifiableClass);
 		return business.findByIdentifiers(identifiers);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass,HttpServletRequest request){
+		String encodedParameter = getRequestParameter(request, UniformResourceLocatorParameter.ENCODED);
+		return decodeIdentifiablesRequestParameter(identifiableClass,UniformResourceLocatorParameter.IDENTIFIABLE.equals(encodedParameter) 
+				? UniformResourceLocatorParameter.IDENTIFIABLE : UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier(),request);
+	}
+	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass){
+		return decodeIdentifiablesRequestParameter(identifiableClass, Faces.getRequest());
 	}
 	
 	/**/
