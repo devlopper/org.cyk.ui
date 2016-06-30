@@ -47,8 +47,10 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		businessEntityInfos = fetchBusinessEntityInfos();
 		identifiableConfiguration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 		identifiable = identifiableFromRequestParameter((Class<ENTITY>)businessEntityInfos.getClazz());
-		if(identifiable!=null)
-			identifiable.setProcessingUser(userSession.getUser());
+		if(identifiable!=null){
+			identifiable.getProcessing().setParty(userSession.getUser());
+			identifiable.getProcessing().setIdentifier(actionIdentifier);
+		}
 		formModelClassId = __formModelClassId__();
 		formModelClass = __formModelClass__();
 		for(BusinessEntityFormPageListener<?> listener : getListeners()){

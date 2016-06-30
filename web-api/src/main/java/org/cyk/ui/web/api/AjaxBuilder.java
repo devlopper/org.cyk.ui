@@ -21,6 +21,7 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 
 	private FormOneData<?, ?, ?, ?, ?, ?> form;
 	private String fieldName,event,classSelectorSymbol="$",classSelectorFormat="%s(.%s)";
+	private Set<String> requiredFieldNamesForBuilding = new HashSet<>();
 	private Set<String> crossedFieldNames = new HashSet<>();
 	private Set<String> updatedFieldNames = new HashSet<>();
 	private Set<String> processed = new HashSet<>();
@@ -69,6 +70,13 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 		return this;
 	}
 	
+	public AjaxBuilder requiredFieldNamesForBuilding(String...names){
+		for(String v : names)
+			if(v!=null)
+				requiredFieldNamesForBuilding.add(v);
+		return this;
+	}
+	
 	public AjaxBuilder updatedFieldNames(String...names){
 		for(String v : names)
 			if(v!=null)
@@ -77,7 +85,17 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	}
 	
 	public <TYPE> void build(){
-		if(input==null)
+		Boolean buildable = null;
+		if(requiredFieldNamesForBuilding==null)
+			buildable = Boolean.TRUE;
+		else{
+			buildable = Boolean.FALSE;
+			for(String fieldName : requiredFieldNamesForBuilding){
+				WebInput<?, ?, ?, ?> input = form.findInputByClassByFieldName(WebInput.class, fieldName);
+				buildable = buildable || input != null;	
+			}
+		}
+		if(input==null /*|| !Boolean.TRUE.equals(buildable)*/)
 			return;
 		input.setAjaxListener(new AjaxListener.Adapter.Default(event) {
 			private static final long serialVersionUID = 4750417275636910265L;
