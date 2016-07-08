@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
@@ -15,9 +19,6 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -85,7 +86,12 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 	
 	@Override
 	public String getContentTitle() {
-		return languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.FALSE);
+		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
+			String v = processPageListener.getContentTitle(this,actionIdentifier);
+			if(v!=null)
+				contentTitle = v;
+		}
+		return contentTitle;
 	}
 	
 	@Override
@@ -140,6 +146,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		Object getFormData(AbstractProcessManyPage<?> processManyPage, String actionIdentifier);
 		Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier);
 		void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier);
+		String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier);
 		
 		@Getter @Setter
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
@@ -161,7 +168,10 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			public Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return Boolean.FALSE;
 			}
-			
+			@Override
+			public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
+				return null;
+			}
 			@Override
 			public void initialisationEnded(AbstractBean bean) {
 				super.initialisationEnded(bean);
@@ -205,7 +215,10 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
 				}
-					
+				@Override
+				public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
+					return RootBusinessLayer.getInstance().getLanguageBusiness().findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE);
+				}	
 			}
 		}
 		

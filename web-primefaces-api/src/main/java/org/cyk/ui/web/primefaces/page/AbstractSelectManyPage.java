@@ -7,6 +7,9 @@ import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -18,6 +21,7 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
+import org.cyk.ui.api.model.CodesFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -25,9 +29,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -45,6 +46,15 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 		form.getSubmitCommandable().setLabel(text("command.select"));
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			@Override
+			public Boolean build(Field field) {
+				if(field.getName().equals(AbstractQueryManyFormModel.FIELD_IDENTIFIABLES))
+					return ((AbstractQueryManyFormModel<?,?>)form.getData()).getShowIdentifiables();
+				if(field.getDeclaringClass().equals(CodesFormModel.class))
+					return ((AbstractQueryManyFormModel<?,?>)form.getData()).getShowCodes();
+				return super.build(field);
+			}
+			
 			@Override
 			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
 				if(AbstractQueryManyFormModel.FIELD_IDENTIFIABLES.equals(field.getName())){
@@ -123,6 +133,8 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 	@Override
 	public void serve(UICommand command, Object parameter) {
 		for(AbstractSelectManyPage.Listener<?,?> selectPageListener : getListeners())
+			selectPageListener.beforeServe(this,parameter,actionIdentifier);
+		for(AbstractSelectManyPage.Listener<?,?> selectPageListener : getListeners())
 			selectPageListener.serve(this,parameter,actionIdentifier);
 	}
 	
@@ -162,6 +174,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 		
 		/**/
 		Collection<ENTITY> getIdentifiables(AbstractSelectManyPage<?> selectManyPage);
+		void beforeServe(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		Object[] getParameters(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		
@@ -188,6 +201,8 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 				return null;
 			}
 			
+			@Override
+			public void beforeServe(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {}
 			@Override
 			public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {}
 			@Override

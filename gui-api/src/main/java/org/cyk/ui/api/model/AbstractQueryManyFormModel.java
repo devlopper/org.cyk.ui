@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputManyChoice;
@@ -19,8 +21,11 @@ import org.cyk.utility.common.cdi.AbstractBean;
 public abstract class AbstractQueryManyFormModel<IDENTIFIABLE extends AbstractIdentifiable,IDENTIFIER> extends AbstractBean implements Serializable{
 	private static final long serialVersionUID = -4741435164709063863L;
 	
-
 	@Input @InputChoice(load=false) @InputManyChoice @InputManyPickList @NotNull protected List<IDENTIFIABLE> identifiables;
+	
+	@IncludeInputs(layout=Layout.VERTICAL) protected CodesFormModel codes = new CodesFormModel();
+	
+	protected Boolean showIdentifiables = Boolean.TRUE,showCodes = Boolean.FALSE;
 	
 	public static final String FIELD_IDENTIFIABLES = "identifiables";
 	

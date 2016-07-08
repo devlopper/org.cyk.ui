@@ -62,7 +62,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
 	protected Collection<AbstractEventCalendar> eventCalendars = new ArrayList<>();
 	
-	@Getter protected String title,contentTitle="Content";
+	@Getter @Setter protected String title,contentTitle="Content";
 	@Getter @Setter protected String text;
 	@Getter @Setter protected String actionIdentifier;
 	
