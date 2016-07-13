@@ -9,9 +9,11 @@ import javax.inject.Singleton;
 import lombok.Getter;
 
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.web.api.WebHierarchyNode;
@@ -45,14 +47,18 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		SystemMenu systemMenu = new SystemMenu();
 		systemMenu.setName("MyApp");
 		
-		//UICommandable commandable;
-		//systemMenu.getBusinesses().add(menuManager.crudMany(Actor.class, IconType.PERSON));
-		systemMenu.getBusinesses().add(Builder.createList(Person.class, Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createList(Actor.class, null));
-		systemMenu.getBusinesses().add(Builder.createSelectOne(Actor.class,null, null));
-		systemMenu.getBusinesses().add(Builder.createSelectMany(Actor.class,"myactionid", Icon.PERSON));
-		systemMenu.getBusinesses().add(Builder.createSelectMany(Person.class,editManyPersons, Icon.ACTION_EDIT));
-		//systemMenu.getBusinesses().add(Builder.createList(MovementCollection.class, null));
+		UICommandable module = Builder.create(null, Icon.PERSON).setLabel("Personne");
+		module.addChild(Builder.createList(Person.class, Icon.PERSON));
+		module.addChild(Builder.createList(Actor.class, null));
+		module.addChild(Builder.createSelectOne(Actor.class,null, null));
+		module.addChild(Builder.createSelectMany(Actor.class,"myactionid", null));
+		module.addChild(Builder.createSelectMany(Person.class,editManyPersons, Icon.ACTION_EDIT));
+		systemMenu.getBusinesses().add(module);
+		
+		module = Builder.create(null, null).setLabel("Nested set");
+		module.addChild(Builder.createList(NestedSetNode.class, null));
+		systemMenu.getBusinesses().add(module);
+		
 		//systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
 		//systemMenu.getBusinesses().add(Builder.createList(Sex.class, null));
 		//debug(Builder.createList(Sex.class, null));

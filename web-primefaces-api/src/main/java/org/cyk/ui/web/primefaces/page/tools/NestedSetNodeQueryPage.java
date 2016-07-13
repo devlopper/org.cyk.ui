@@ -43,10 +43,17 @@ public class NestedSetNodeQueryPage extends AbstractBusinessQueryPage<NestedSetN
 			@Override
 			public void created(Row<Object> row) {
 				super.created(row);
-				if( ((NestedSetNodeEditFormModel)row.getData()).getParentIdentifier()==null )
+				if( ((NestedSetNodeEditFormModel)row.getData()).getParent()==null )
 					row.setCascadeStyleSheet(ROOT);
 			}
 		});
+		rowAdapter.setUpdatable(Boolean.TRUE);
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		table.setShowEditColumn(Boolean.TRUE);
 	}
 	
 	@Override
