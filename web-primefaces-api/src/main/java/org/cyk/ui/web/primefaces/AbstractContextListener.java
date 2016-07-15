@@ -7,6 +7,7 @@ import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
@@ -16,6 +17,7 @@ import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
@@ -43,18 +45,19 @@ import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.ui.web.primefaces.page.FileDetails;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
-import org.cyk.ui.web.primefaces.page.crud.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPageAdapter;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudManyPageAdapter;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
-import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
-import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudManyPageAdapter;
-import org.cyk.ui.web.primefaces.page.tools.AbstractActorCrudOnePageAdapter;
 import org.cyk.ui.web.primefaces.page.tools.DefaultReportBasedOnDynamicBuilderServletAdapter;
 import org.cyk.ui.web.primefaces.page.tools.NestedSetNodeEditPage;
 import org.primefaces.model.TreeNode;
@@ -123,6 +126,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(NestedSetNode.class, NestedSetNodeEditPage.Form.class, NestedSetNodeDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(NestedSetNode.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Comment.class, CommentEditPage.Form.class, CommentDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Comment.class, null);
 	}
 	
 	@Override

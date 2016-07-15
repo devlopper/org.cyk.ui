@@ -10,15 +10,13 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{defaultActorConsultPage}" />
+ 		<ui:param name="pageController" value="#{commentEditPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{defaultActorConsultPage.mainDetails}" />	
- 			<cyk:formOneData value="#{defaultActorConsultPage.contactDetails}" />
- 			<cyk:formOneData value="#{defaultActorConsultPage.jobDetails}" />
- 			<cyk:formOneData value="#{defaultActorConsultPage.signatureDetails}" />
- 			
- 			<cyk:table value="#{defaultActorConsultPage.commentTable}" />
- 			
+ 			<cyk:formOneData value="#{commentEditPage.form}"/>
+ 		</ui:define>
+ 		
+ 		<ui:define name="contentMenuBar">
+ 			<cyk:command value="#{commentEditPage.form.submitCommandable}" executeParameter="#{commentEditPage.form.data}" />
  		</ui:define>
  	</ui:decorate>
  

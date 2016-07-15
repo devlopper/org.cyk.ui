@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.crud;
+package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -11,7 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -19,10 +21,11 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.ContactDetailsAdapter;
-import org.cyk.ui.web.primefaces.page.tools.AbstractActorConsultPageAdapter;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
@@ -43,6 +46,8 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 	private FormOneData<RelationshipDetails> relationshipDetails;
 	private FormOneData<SignatureDetails> signatureDetails;
 	//private FormOneData<MainDetails> otherDetails;
+	
+	private Table<CommentDetails> commentTable;
 	
 	protected Boolean showMainDetails=Boolean.TRUE,showContactDetails=Boolean.FALSE,showRelationshipDetails=Boolean.FALSE,showJobDetails=Boolean.FALSE
 			,showMedicalDetails=Boolean.FALSE;
@@ -108,7 +113,17 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		});
 		
-		
+		commentTable = (Table<CommentDetails>) createDetailsTable(CommentDetails.class, new DetailsConfigurationListener.Table.Adapter<Comment,CommentDetails>(Comment.class, CommentDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<Comment> getIdentifiables() {
+				return RootBusinessLayer.getInstance().getCommentBusiness().findAll();
+			}
+			@Override
+			public Crud[] getCruds() {
+				return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
+			}
+		});
 	}
 	
 	@Override

@@ -36,6 +36,23 @@
 			<redirect />
 		</navigation-case>
 		
+		<!-- Information -->
+		<navigation-case>
+			<from-outcome>commentEditView</from-outcome>
+			<to-view-id>/private/information/comment/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>commentListView</from-outcome>
+			<to-view-id>/private/information/comment/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>commentConsultView</from-outcome>
+			<to-view-id>/private/information/comment/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<!-- movement -->
 		<navigation-case>
 			<from-outcome>movementEditView</from-outcome>

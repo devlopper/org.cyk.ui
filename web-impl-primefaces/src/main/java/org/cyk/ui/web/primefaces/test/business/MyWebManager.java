@@ -8,6 +8,8 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 
+import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.information.CommentType;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
@@ -57,6 +59,11 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		
 		module = Builder.create(null, null).setLabel("Nested set");
 		module.addChild(Builder.createList(NestedSetNode.class, null));
+		systemMenu.getBusinesses().add(module);
+		
+		module = Builder.create(null, null).setLabel("Commentaire");
+		module.addChild(Builder.createList(Comment.class, null));
+		module.addChild(Builder.createList(CommentType.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		//systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));

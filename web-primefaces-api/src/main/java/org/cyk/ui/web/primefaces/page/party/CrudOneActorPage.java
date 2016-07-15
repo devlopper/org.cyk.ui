@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.crud;
+package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 
 @Named @ViewScoped @Getter @Setter
 public class CrudOneActorPage extends AbstractCrudOnePage<AbstractIdentifiable> implements Serializable {
