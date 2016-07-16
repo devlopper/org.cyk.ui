@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page.information;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -9,9 +10,13 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.GlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.CommentType;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -29,6 +34,17 @@ public class CommentEditPage extends AbstractCrudOnePage<Comment> implements Ser
 	protected void initialisation() {
 		super.initialisation();
 		
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		String globalIdentifier = requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER);
+		BusinessEntityInfos globalIdentifierOwnerBusinessEntityInfos = uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS));
+		@SuppressWarnings("unchecked")
+		AbstractIdentifiable identifiable = BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
+				.findByGlobalIdentifierValue(globalIdentifier);
+		setChoicesAndGetAutoSelected(Form.FIELD_GLOBAL_IDENTIFIER, Arrays.asList( identifiable.getGlobalIdentifier() ));
 	}
 	
 	@Getter @Setter

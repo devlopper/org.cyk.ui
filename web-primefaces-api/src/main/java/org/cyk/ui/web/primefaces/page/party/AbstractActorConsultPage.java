@@ -117,13 +117,21 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<Comment> getIdentifiables() {
-				return RootBusinessLayer.getInstance().getCommentBusiness().findAll();
+				Comment.SearchCriteria searchCriteria = new Comment.SearchCriteria();
+				searchCriteria.addCommentTypes(RootBusinessLayer.getInstance().getCommentTypeBusiness().findAll());
+				searchCriteria.addGlobalIdentifier(identifiable.getGlobalIdentifier());
+				return RootBusinessLayer.getInstance().getCommentBusiness().findByCriteria(searchCriteria);
 			}
 			@Override
 			public Crud[] getCruds() {
 				return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
 			}
 		});
+		
+		commentTable.setShowHeader(Boolean.TRUE);
+		commentTable.setShowToolBar(Boolean.TRUE);
+		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
+		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
 	}
 	
 	@Override
