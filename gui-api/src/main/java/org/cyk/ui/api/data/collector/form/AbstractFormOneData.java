@@ -11,6 +11,7 @@ import java.util.Stack;
 import lombok.Getter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -25,6 +26,7 @@ import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.Input.RendererStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.SeperatorLocation;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
@@ -105,7 +107,13 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners)
 			listener.sort(fields);
 		for(Field field : fields){
-			objectFields.add(new ObjectField(data, field));
+			Input input = field.getAnnotation(Input.class);
+			if(input==null){
+				objectFields.add(new ObjectField(data, field));	
+			}else{
+				if( isInput(field, getUserSession()) )
+					objectFields.add(new ObjectField(data, field));	
+			}
 			
 			if(field.getAnnotation(IncludeInputs.class)!=null){
 				Object details = commonUtils.readField(data, field, Boolean.TRUE);
@@ -117,6 +125,18 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				__objectFields__(objectFields,annotations, details);
 			}
 		}
+	}
+	
+	public static Boolean isInput(Field field,AbstractUserSession<?, ?> userSession){
+		Input input = field.getAnnotation(Input.class);
+		if(input==null)
+			return Boolean.FALSE;
+		RendererStrategy rendererStrategy = input.rendererStrategy();
+		if(RendererStrategy.AUTO.equals(rendererStrategy))
+			rendererStrategy = RendererStrategy.ALWAYS;
+		return RendererStrategy.ALWAYS.equals(rendererStrategy)
+			|| (RendererStrategy.ADMINISTRATION.equals(rendererStrategy) && Boolean.TRUE.equals(userSession.getIsAdministrator()))
+			|| (RendererStrategy.MANAGEMENT.equals(rendererStrategy) && Boolean.TRUE.equals(userSession.getIsManager())) ;
 	}
 	
 	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){

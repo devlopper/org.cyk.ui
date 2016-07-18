@@ -153,7 +153,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	
 	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
 		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
-		
+		form.setUserSession(getUserSession());
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
 		form.setUserDeviceType(userDeviceType);
@@ -175,6 +175,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		System.out.println(configuration);
 		System.out.println(customFormModelClass);
 		*/
+		table.setUserSession(getUserSession());
 		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormMap().getManyRead()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
 		//table.setIdentifiableClass((Class<? extends AbstractIdentifiable>) (configuration==null?aDataClass:configuration.getIdentifiableClass()));

@@ -1,5 +1,6 @@
 package org.cyk.ui.api.data.collector.form;
 
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.View;
 import org.cyk.ui.api.command.UICommandable;
 
@@ -19,4 +20,6 @@ public interface Form<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View {
 	void setDynamic(Boolean value);
 	Boolean getDynamic();
 	
+	AbstractUserSession<?, ?> getUserSession();
+	void setUserSession(AbstractUserSession<?, ?> userSession);
 }

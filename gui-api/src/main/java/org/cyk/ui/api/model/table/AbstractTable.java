@@ -20,6 +20,7 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -34,6 +35,7 @@ import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.data.collector.form.AbstractFormOneData;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
@@ -80,6 +82,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected LanguageBusiness languageBusiness = UIManager.getInstance().getLanguageBusiness();
 	protected UIProvider uiProvider = UIProvider.getInstance();
 	protected Integer numberOfColumnsHorizontalHeader = 10;
+	protected AbstractUserSession<?, ?> userSession;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
@@ -503,7 +506,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		new FieldSorter(candidates,aClass).sort();
 		
 		for(Field field : candidates){
-			if(field.getAnnotation(Input.class)!=null){
+			if(field.getAnnotation(Input.class)!=null && AbstractFormOneData.isInput(field, getUserSession())){
 				fields.add(field);
 			} else if(field.getAnnotation(IncludeInputs.class)!=null){
 				__fields__(fields,field.getType(),annotations);

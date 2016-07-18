@@ -21,4 +21,5 @@ public interface View {
 	
 	UserDeviceType getUserDeviceType();
 	void setUserDeviceType(UserDeviceType aUserDeviceType);
+	
 }
