@@ -304,7 +304,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> void configureDetailsTable(Class<T> aClass,Table<T> table,final DetailsConfigurationListener.Table<?,?> listener){
+	protected <T> void configureDetailsTable(Class<T> aClass,final Table<T> table,final DetailsConfigurationListener.Table<?,?> listener){
 		if(Boolean.FALSE.equals(table.getRendered()))
 			return;
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
@@ -353,7 +353,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				@Override
 				public void serve(UICommand command, Object parameter) {
 					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
-						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE);
+						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE
+								,table.getUpdateRowCommandable().getParameters());
 					}
 				}
 			});
@@ -365,7 +366,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				@Override
 				public void serve(UICommand command, Object parameter) {
 					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
-						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.DELETE);
+						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.DELETE
+								,table.getRemoveRowCommandable().getParameters());
 					}
 				}
 			});

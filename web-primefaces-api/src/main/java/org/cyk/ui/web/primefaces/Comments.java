@@ -39,6 +39,12 @@ public class Comments implements CommandListener, Serializable {
 		table.setShowToolBar(Boolean.TRUE);
 		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
 		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
+		
+		table.getUpdateRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
+		table.getUpdateRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
+		
+		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
+		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
 		/*
 		if(!Comment.USER_DEFINED_COMMENTABLE_CLASSES.contains(identifiable.getClass()))
 			page.removeDetailsMenuCommandable(tableAdapter.getTabId());
@@ -107,7 +113,7 @@ public class Comments implements CommandListener, Serializable {
 		}
 		@Override
 		public Crud[] getCruds() {
-			return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
+			return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};
 		}
 		
 		

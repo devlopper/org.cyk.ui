@@ -434,7 +434,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				deleteRowAt(row.getIndex().intValue());
 			}else{
 				//System.out.println("AbstractTable.serve() : DEL");
-				crudOnePage(row.getData(),Crud.DELETE);
+				//crudOnePage(row.getData(),Crud.DELETE);//This has been done as update
 			}
 			
 		}else if(command==updateRowCommandable.getCommand()){
