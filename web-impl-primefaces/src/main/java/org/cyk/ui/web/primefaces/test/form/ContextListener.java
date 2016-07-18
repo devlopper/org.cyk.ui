@@ -9,6 +9,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
+import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
@@ -43,7 +44,7 @@ public class ContextListener extends AbstractContextListener {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
-		
+		Comment.USER_DEFINED_COMMENTABLE_CLASSES.add(Actor.class);
 	}
 	
 	@Override

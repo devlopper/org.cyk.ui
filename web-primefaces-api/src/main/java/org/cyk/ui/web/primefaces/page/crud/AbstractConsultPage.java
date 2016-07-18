@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
@@ -14,20 +17,23 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
+import org.cyk.system.root.model.information.Comment;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.web.primefaces.Comments;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<IDENTIFIABLE> implements Serializable {
 
 	private static final long serialVersionUID = 9040359120893077422L;
-
+	
+	//protected Table<CommentDetails> commentTable;
+	
+	protected Comments comments;
+	
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
@@ -36,12 +42,41 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		
 		consultInitialisation();
 		
+		comments = new Comments(this, identifiable);
+		
 		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 
 		}
 	}
 	
-	protected void consultInitialisation(){}
+	protected void consultInitialisation(){
+		
+		/*commentTable = (Table<CommentDetails>) createDetailsTable(CommentDetails.class, new DetailsConfigurationListener.Table.Adapter<Comment,CommentDetails>(Comment.class, CommentDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<Comment> getIdentifiables() {
+				Comment.SearchCriteria searchCriteria = new Comment.SearchCriteria();
+				searchCriteria.addCommentTypes(RootBusinessLayer.getInstance().getCommentTypeBusiness().findAll());
+				searchCriteria.addGlobalIdentifier(identifiable.getGlobalIdentifier());
+				return RootBusinessLayer.getInstance().getCommentBusiness().findByCriteria(searchCriteria);
+			}
+			@Override
+			public Crud[] getCruds() {
+				return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
+			}
+			@Override
+			public Boolean getRendered() {
+				return Comment.USER_DEFINED_COMMENTABLE_CLASSES.contains(identifiable.getClass());
+			}
+		});
+		
+		commentTable.setShowHeader(Boolean.TRUE);
+		commentTable.setShowToolBar(Boolean.TRUE);
+		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
+		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
+		*/
+		
+	}
 	
 	@Override
 	protected void afterInitialisation() {

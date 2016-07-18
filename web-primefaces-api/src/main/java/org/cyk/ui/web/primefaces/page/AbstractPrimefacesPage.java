@@ -274,7 +274,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return createDetailsBlock(master, details, editOutcome,new Commandable[]{});
 	}
 	
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsConfigurationListener.Table<?,T> listener){
+	public <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsConfigurationListener.Table<?,T> listener){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
 		table.setShowHeader(Boolean.FALSE);
@@ -283,12 +283,13 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(listener.getRendered()==null)
 			if(StringUtils.isBlank(listener.getTabId()))
 				table.setRendered(Boolean.TRUE);
-			else
-				setRenderedIfDetailsMenuCommandable(listener.getTabId(), table,listener.getEnabledInDefaultTab());
+			else{
+				table.setRendered(setRenderedIfDetailsMenuCommandable(listener.getTabId(), table,listener.getEnabledInDefaultTab()));
+			}
 		//TODO we can go out from here???
 		
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
-		
+		//table.setRendered(listener.getRendered());
 		table.getColumnListeners().add(new Table.ColumnAdapter());//internal should be first
 		configureDetailsTable(aClass,table, listener);
 		//table.getColumnListeners().add(new Table.ColumnAdapter());

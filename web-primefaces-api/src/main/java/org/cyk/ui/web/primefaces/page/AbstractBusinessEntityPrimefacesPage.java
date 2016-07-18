@@ -150,6 +150,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@Override
 	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsConfigurationListener.Table<?, ?> listener) {
 		super.configureDetailsTable(aClass, table, listener);
+		//if(Boolean.TRUE.equals(listener.getRendered()))
 		addDetailsMenuCommandable(listener);
 		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
 			if(Boolean.TRUE.equals(listener.getIsIdentifiableMaster()))
@@ -178,7 +179,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	@Override
-	protected <T> Table<T> createDetailsTable(Class<T> aClass,DetailsConfigurationListener.Table<?, T> listener) {
+	public <T> Table<T> createDetailsTable(Class<T> aClass,DetailsConfigurationListener.Table<?, T> listener) {
 		
 		return super.createDetailsTable(aClass, listener);
 	}
