@@ -25,10 +25,10 @@ import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudManyPageAdapter;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudOnePageAdapter;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPage.MainDetails;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
 import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
 import org.cyk.ui.web.primefaces.test.business.MyWebManager;
@@ -44,7 +44,7 @@ public class ContextListener extends AbstractContextListener {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
-		Comment.USER_DEFINED_COMMENTABLE_CLASSES.add(Actor.class);
+		Comment.define(Actor.class);
 	}
 	
 	@Override

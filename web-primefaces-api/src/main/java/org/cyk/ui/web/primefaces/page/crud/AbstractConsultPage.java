@@ -17,11 +17,11 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
-import org.cyk.system.root.model.information.Comment;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.web.primefaces.Comments;
+import org.cyk.ui.web.primefaces.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 
@@ -30,9 +30,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 
 	private static final long serialVersionUID = 9040359120893077422L;
 	
-	//protected Table<CommentDetails> commentTable;
-	
 	protected Comments comments;
+	protected FileIdentifiableGlobalIdentifiers fileIdentifiableGlobalIdentifiers;
 	
 	@Override
 	protected void initialisation() { 
@@ -43,6 +42,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		consultInitialisation();
 		
 		comments = new Comments(this, identifiable);
+		
+		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, identifiable);
 		
 		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 

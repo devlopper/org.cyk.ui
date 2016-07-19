@@ -9,9 +9,9 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.business.impl.information.CommentDetails;
+import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
@@ -20,20 +20,18 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener;
 
 @Getter @Setter
-public class Comments implements CommandListener, Serializable {
+public class FileIdentifiableGlobalIdentifiers implements CommandListener, Serializable {
 
 	private static final long serialVersionUID = 2876480260626169563L;
 
-	protected Collection<CommentsListener> commentsListeners = new ArrayList<>();
+	protected Collection<FileCollectionListener> commentsListeners = new ArrayList<>();
 	
-	protected Table<CommentDetails> table;
+	protected Table<FileIdentifiableGlobalIdentifierDetails> table;
 	protected TableAdapter tableAdapter;
 	
-	public Comments(AbstractPrimefacesPage page,final AbstractIdentifiable identifiable) {
-		if(!Comment.isUserDefinedObject(identifiable))
-			return;
+	public FileIdentifiableGlobalIdentifiers(AbstractPrimefacesPage page,final AbstractIdentifiable identifiable) {
 		tableAdapter = new TableAdapter(identifiable);
-		table = (Table<CommentDetails>) page.createDetailsTable(CommentDetails.class, tableAdapter);
+		table = (Table<FileIdentifiableGlobalIdentifierDetails>) page.createDetailsTable(FileIdentifiableGlobalIdentifierDetails.class, tableAdapter);
 		
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
@@ -86,36 +84,34 @@ public class Comments implements CommandListener, Serializable {
 
 	/**/
 	
-	public static interface CommentsListener {
+	public static interface FileCollectionListener {
 		
 	}
 	
 	/**/
 	
-	public static class TableAdapter extends DetailsConfigurationListener.Table.Adapter<Comment,CommentDetails> implements Serializable{
+	public static class TableAdapter extends DetailsConfigurationListener.Table.Adapter<FileIdentifiableGlobalIdentifier,FileIdentifiableGlobalIdentifierDetails> implements Serializable{
 
 		private static final long serialVersionUID = -4500309183317753415L;
 
 		protected AbstractIdentifiable identifiable;
 		
 		public TableAdapter(AbstractIdentifiable identifiable) {
-			super(Comment.class, CommentDetails.class);
+			super(FileIdentifiableGlobalIdentifier.class, FileIdentifiableGlobalIdentifierDetails.class);
 			this.identifiable = identifiable;
 			//rendered = Boolean.FALSE;
 		}
 		
 		@Override
-		public Collection<Comment> getIdentifiables() {
-			Comment.SearchCriteria searchCriteria = new Comment.SearchCriteria();
-			searchCriteria.addCommentTypes(RootBusinessLayer.getInstance().getCommentTypeBusiness().findAll());
+		public Collection<FileIdentifiableGlobalIdentifier> getIdentifiables() {
+			FileIdentifiableGlobalIdentifier.SearchCriteria searchCriteria = new FileIdentifiableGlobalIdentifier.SearchCriteria();
 			searchCriteria.addGlobalIdentifier(identifiable.getGlobalIdentifier());
-			return RootBusinessLayer.getInstance().getCommentBusiness().findByCriteria(searchCriteria);
+			return RootBusinessLayer.getInstance().getFileIdentifiableGlobalIdentifierBusiness().findByCriteria(searchCriteria);
 		}
 		@Override
 		public Crud[] getCruds() {
 			return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};
 		}
-		
 		
 	}
 }
