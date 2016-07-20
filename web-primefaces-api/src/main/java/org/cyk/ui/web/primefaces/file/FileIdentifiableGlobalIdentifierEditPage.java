@@ -21,6 +21,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Named @ViewScoped @Getter @Setter
 public class FileIdentifiableGlobalIdentifierEditPage extends AbstractJoinGlobalIdentifierEditPage<FileIdentifiableGlobalIdentifier> implements Serializable {
@@ -35,6 +36,22 @@ public class FileIdentifiableGlobalIdentifierEditPage extends AbstractJoinGlobal
 		
 		@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE))
 		protected File file;
+		
+		@Input @InputText protected String description;
+		
+		@Override
+		public void read() {
+			super.read();
+			if(file!=null)
+				description = file.getDescription();
+		}
+		
+		@Override
+		public void write() {
+			super.write();
+			if(file!=null)
+				file.setDescription(description);
+		}
 		
 		public static final String FIELD_GLOBAL_IDENTIFIER = "identifiableGlobalIdentifier";
 		public static final String FIELD_FILE = "file";
