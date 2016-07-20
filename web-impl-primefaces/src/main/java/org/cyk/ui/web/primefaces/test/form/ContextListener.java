@@ -9,6 +9,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
+import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.security.UserAccount;
@@ -45,6 +46,7 @@ public class ContextListener extends AbstractContextListener {
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
 		Comment.define(Actor.class);
+		FileIdentifiableGlobalIdentifier.define(Actor.class);
 	}
 	
 	@Override

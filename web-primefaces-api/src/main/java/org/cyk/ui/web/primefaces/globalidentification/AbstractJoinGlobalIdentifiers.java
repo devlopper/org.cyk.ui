@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces;
+package org.cyk.ui.web.primefaces.globalidentification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,30 +8,34 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.api.globalidentification.JoinGlobalIdentifierBusiness;
+import org.cyk.system.root.business.impl.globalidentification.AbstractJoinGlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener;
 
 @Getter @Setter
-public class FileIdentifiableGlobalIdentifiers implements CommandListener, Serializable {
+public abstract class AbstractJoinGlobalIdentifiers<IDENTIFIABLE extends AbstractJoinGlobalIdentifier,LISTENER extends AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener
+	,DETAILS extends AbstractJoinGlobalIdentifierDetails<IDENTIFIABLE>,SEARCH_CRITERIA extends AbstractJoinGlobalIdentifier.AbstractSearchCriteria> implements CommandListener, Serializable {
 
 	private static final long serialVersionUID = 2876480260626169563L;
 
-	protected Collection<FileCollectionListener> commentsListeners = new ArrayList<>();
+	protected Collection<LISTENER> commentsListeners = new ArrayList<>();
 	
-	protected Table<FileIdentifiableGlobalIdentifierDetails> table;
-	protected TableAdapter tableAdapter;
+	protected Table<DETAILS> table;
+	protected AbstractTableAdapter<IDENTIFIABLE,DETAILS,SEARCH_CRITERIA> tableAdapter;
 	
-	public FileIdentifiableGlobalIdentifiers(AbstractPrimefacesPage page,final AbstractIdentifiable identifiable) {
-		tableAdapter = new TableAdapter(identifiable);
-		table = (Table<FileIdentifiableGlobalIdentifierDetails>) page.createDetailsTable(FileIdentifiableGlobalIdentifierDetails.class, tableAdapter);
+	public AbstractJoinGlobalIdentifiers(AbstractPrimefacesPage page,Class<DETAILS> detailsClass,final AbstractIdentifiable identifiable) {
+		if(! Boolean.TRUE.equals(isUserDefinedObject(identifiable)) )
+			return;
+		tableAdapter = createTableAdapter(identifiable);
+		table = (Table<DETAILS>) page.createDetailsTable(detailsClass, tableAdapter);
 		
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
@@ -43,11 +47,12 @@ public class FileIdentifiableGlobalIdentifiers implements CommandListener, Seria
 		
 		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
 		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
-		/*
-		if(!Comment.USER_DEFINED_COMMENTABLE_CLASSES.contains(identifiable.getClass()))
-			page.removeDetailsMenuCommandable(tableAdapter.getTabId());
-		*/
+		
 	}
+	
+	protected abstract AbstractTableAdapter<IDENTIFIABLE,DETAILS,SEARCH_CRITERIA> createTableAdapter(AbstractIdentifiable identifiable);
+	
+	protected abstract Boolean isUserDefinedObject(AbstractIdentifiable identifiable);
 	
 	@Override
 	public void transfer(UICommand command, Object parameter) throws Exception {}
@@ -84,34 +89,39 @@ public class FileIdentifiableGlobalIdentifiers implements CommandListener, Seria
 
 	/**/
 	
-	public static interface FileCollectionListener {
+	public static interface AbstractJoinGlobalIdentifiersListener {
 		
 	}
 	
 	/**/
 	
-	public static class TableAdapter extends DetailsConfigurationListener.Table.Adapter<FileIdentifiableGlobalIdentifier,FileIdentifiableGlobalIdentifierDetails> implements Serializable{
+	public static abstract class AbstractTableAdapter<IDENTIFIABLE extends AbstractJoinGlobalIdentifier,DETAILS extends AbstractJoinGlobalIdentifierDetails<IDENTIFIABLE>
+		,SEARCH_CRITERIA extends AbstractJoinGlobalIdentifier.AbstractSearchCriteria> extends DetailsConfigurationListener.Table.Adapter<IDENTIFIABLE,DETAILS> implements Serializable{
 
 		private static final long serialVersionUID = -4500309183317753415L;
 
 		protected AbstractIdentifiable identifiable;
 		
-		public TableAdapter(AbstractIdentifiable identifiable) {
-			super(FileIdentifiableGlobalIdentifier.class, FileIdentifiableGlobalIdentifierDetails.class);
+		public AbstractTableAdapter(Class<IDENTIFIABLE> identifiableClass,Class<DETAILS> detailsClass,AbstractIdentifiable identifiable) {
+			super(identifiableClass, detailsClass);
 			this.identifiable = identifiable;
-			//rendered = Boolean.FALSE;
 		}
+		 
+		protected abstract SEARCH_CRITERIA createSearchCriteria();
+		
+		protected abstract JoinGlobalIdentifierBusiness<IDENTIFIABLE, SEARCH_CRITERIA> getBusiness();
 		
 		@Override
-		public Collection<FileIdentifiableGlobalIdentifier> getIdentifiables() {
-			FileIdentifiableGlobalIdentifier.SearchCriteria searchCriteria = new FileIdentifiableGlobalIdentifier.SearchCriteria();
+		public Collection<IDENTIFIABLE> getIdentifiables() {
+			SEARCH_CRITERIA searchCriteria = createSearchCriteria();
 			searchCriteria.addGlobalIdentifier(identifiable.getGlobalIdentifier());
-			return RootBusinessLayer.getInstance().getFileIdentifiableGlobalIdentifierBusiness().findByCriteria(searchCriteria);
+			return getBusiness().findByCriteria(searchCriteria);
 		}
 		@Override
 		public Crud[] getCruds() {
 			return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};
 		}
+		
 		
 	}
 }

@@ -15,15 +15,17 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.web.primefaces.Comments;
-import org.cyk.ui.web.primefaces.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.primefaces.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.information.Comments;
 
 @Getter @Setter
 public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<IDENTIFIABLE> implements Serializable {
@@ -41,9 +43,9 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		
 		consultInitialisation();
 		
-		comments = new Comments(this, identifiable);
+		comments = new Comments(this, CommentDetails.class,identifiable);
 		
-		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, identifiable);
+		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, FileIdentifiableGlobalIdentifierDetails.class,identifiable);
 		
 		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 

@@ -135,7 +135,7 @@
 			<redirect />
 		</navigation-case>
 		
-		<!-- Manager -->
+		<!-- File -->
 		<navigation-case>
 			<from-outcome>referenceentity</from-outcome>
 			<to-view-id>/private/__role__/__manager__/referenceentity.xhtml</to-view-id>
@@ -159,6 +159,22 @@
 		<navigation-case>
 			<from-outcome>fileConsultManyView</from-outcome>
 			<to-view-id>/private/file/consultmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierEditView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierListView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

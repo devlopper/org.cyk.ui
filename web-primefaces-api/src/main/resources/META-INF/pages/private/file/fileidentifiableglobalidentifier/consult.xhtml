@@ -10,16 +10,10 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{defaultActorConsultPage}" />
+ 		<ui:param name="pageController" value="#{fileIdentifiableGlobalIdentifierConsultPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{defaultActorConsultPage.mainDetails}" />	
- 			<cyk:formOneData value="#{defaultActorConsultPage.contactDetails}" />
- 			<cyk:formOneData value="#{defaultActorConsultPage.jobDetails}" />
- 			<cyk:formOneData value="#{defaultActorConsultPage.signatureDetails}" />
- 			
- 			<cyk:fileIdentifiableGlobalIdentifiers value="#{defaultActorConsultPage.fileIdentifiableGlobalIdentifiers}" />
- 			<cyk:comments value="#{defaultActorConsultPage.comments}" />
- 			
+ 			<cyk:formOneData value="#{fileIdentifiableGlobalIdentifierConsultPage.details}" />	
+ 					
  		</ui:define>
  	</ui:decorate>
  
