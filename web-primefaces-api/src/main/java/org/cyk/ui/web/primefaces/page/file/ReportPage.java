@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.tools;
+package org.cyk.ui.web.primefaces.page.file;
 
 import java.io.Serializable;
 import java.util.ArrayList;

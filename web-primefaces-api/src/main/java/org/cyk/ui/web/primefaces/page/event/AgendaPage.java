@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.tools;
+package org.cyk.ui.web.primefaces.page.event;
 
 import java.io.Serializable;
 

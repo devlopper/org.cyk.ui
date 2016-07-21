@@ -14,6 +14,7 @@ import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.CommentType;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.pattern.tree.DataTree;
+import org.cyk.system.root.model.pattern.tree.DataTreeIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
@@ -67,6 +68,7 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		module.addChild(Builder.createList(LocalityType.class, null));
 		module.addChild(Builder.createList(DataTree.class, null));
 		module.addChild(Builder.createList(DataTreeType.class, null));
+		module.addChild(Builder.createList(DataTreeIdentifiableGlobalIdentifier.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		module = Builder.create(null, null).setLabel("Commentaire");

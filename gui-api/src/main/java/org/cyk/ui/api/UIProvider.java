@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.CommandListener;
@@ -75,8 +76,11 @@ public class UIProvider extends AbstractBean implements Serializable {
 		return field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class)!=null;
 	}
 	
-	public Boolean isImage(Field field){
+	public Boolean isImage(Object data,Field field){
 		org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
+		Object value = commonUtils.readField(data, field, Boolean.FALSE);
+		if(value instanceof File)
+			return RootBusinessLayer.getInstance().getFileBusiness().isImage((File) value);
 		return annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]);
 	}
 		
@@ -125,7 +129,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}else if(control instanceof InputFile){
 				InputFile<?,?,?,?,?> inputFile = (InputFile<?,?,?,?,?>)control;
 				org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = inputFile.getField().getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);				
-				inputFile.setPreviewable(isImage(inputFile.getField()));
+				inputFile.setPreviewable(isImage(data,inputFile.getField()));
 				
 				if(annotation.extensions().values().length==0)
 					for(FileExtensionGroup group : annotation.extensions().groups())

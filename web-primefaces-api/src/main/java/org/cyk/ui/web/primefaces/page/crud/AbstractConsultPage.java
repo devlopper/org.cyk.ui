@@ -23,8 +23,8 @@ import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
-import org.cyk.ui.web.primefaces.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.information.Comments;
 
 @Getter @Setter

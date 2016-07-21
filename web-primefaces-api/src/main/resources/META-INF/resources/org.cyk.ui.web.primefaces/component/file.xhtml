@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<cc:interface>
+		<cc:attribute name="identifier" required="true" />
+		<cc:attribute name="type" />
+		<cc:attribute name="styleClass" />
+		<cc:attribute name="linkMessage" />
+		<cc:attribute name="clickToDownload" />
+		<cc:attribute name="height" />
+		<cc:attribute name="width" />
+	</cc:interface>
+
+	<cc:implementation>
+		<pe:importConstants className="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" />
+		
+		<ui:param name="fileUrl" value="#{request.contextPath}#{webNavigationManager.pathFileServlet}?#{urlParameter.IDENTIFIABLE}=#{cc.attrs.identifier}"/>
+        
+        <!--param value="transparent" name="wmode"/-->
+        <!--object type="#{cc.value.type}" data="#{fileUrl}" height="#{cc.attrs.height}" width="#{cc.attrs.width}"
+	    	style="background: red important;" standby="LOOOAAAADDDDIIIINNNNNNNNGGGGGGGGGGG">
+	    	<h:outputText value="#{cc.attrs.linkMessage} : " /><h:outputLink value="#{fileUrl}" ><h:outputText value="#{cc.attrs.clickToDownload}" /></h:outputLink>
+	    </object-->
+	    DDDD : #{fileUrl}
+	    <h:outputLink value="#{fileUrl}" ><h:outputText value="#{cc.attrs.clickToDownload}" /></h:outputLink>
+		
+	</cc:implementation>
+
+</ui:composition>

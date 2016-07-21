@@ -96,6 +96,9 @@
 			  						<ui:fragment rendered="#{cc.value.cell(row,column).isImage}">
 			  							<cyk:image identifier="#{cc.value.cell(row,column)}" />
 			  						</ui:fragment>
+			  						<ui:fragment rendered="#{not cc.value.cell(row,column).isImage}">
+			  							<cyk:file identifier="#{cc.value.cell(row,column)}" />
+			  						</ui:fragment>
 			  					</ui:fragment>
 			  					<ui:fragment rendered="#{not cc.value.cell(row,column).isFile}" >
 			  						<h:outputText value="#{cc.value.cell(row,column)}" title="#{cc.value.cell(row,column)}" escape="false"/>
