@@ -12,9 +12,10 @@
 		<cc:attribute name="type" />
 		<cc:attribute name="styleClass" />
 		<cc:attribute name="linkMessage" />
-		<cc:attribute name="clickToDownload" />
+		<cc:attribute name="downloadMessage" default="#{uiManager.text('download')}" />
 		<cc:attribute name="height" />
 		<cc:attribute name="width" />
+		<cc:attribute name="showLink" default="true" />
 	</cc:interface>
 
 	<cc:implementation>
@@ -27,8 +28,11 @@
 	    	style="background: red important;" standby="LOOOAAAADDDDIIIINNNNNNNNGGGGGGGGGGG">
 	    	<h:outputText value="#{cc.attrs.linkMessage} : " /><h:outputLink value="#{fileUrl}" ><h:outputText value="#{cc.attrs.clickToDownload}" /></h:outputLink>
 	    </object-->
-	    DDDD : #{fileUrl}
-	    <h:outputLink value="#{fileUrl}" ><h:outputText value="#{cc.attrs.clickToDownload}" /></h:outputLink>
+	    
+	    <ui:fragment rendered="#{cc.attrs.showLink}">
+	    	<h:outputLink value="#{fileUrl}" ><h:outputText value="#{cc.attrs.downloadMessage}" /></h:outputLink>
+	    </ui:fragment>
+	    
 		
 	</cc:implementation>
 
