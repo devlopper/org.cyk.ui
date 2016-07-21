@@ -8,9 +8,13 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 
+import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.CommentType;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.pattern.tree.DataTree;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.Icon;
@@ -59,6 +63,10 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		
 		module = Builder.create(null, null).setLabel("Nested set");
 		module.addChild(Builder.createList(NestedSetNode.class, null));
+		module.addChild(Builder.createList(Locality.class, null));
+		module.addChild(Builder.createList(LocalityType.class, null));
+		module.addChild(Builder.createList(DataTree.class, null));
+		module.addChild(Builder.createList(DataTreeType.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		module = Builder.create(null, null).setLabel("Commentaire");

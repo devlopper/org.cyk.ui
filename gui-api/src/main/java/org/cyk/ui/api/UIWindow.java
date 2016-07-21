@@ -3,7 +3,6 @@ package org.cyk.ui.api;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
@@ -17,7 +16,7 @@ public interface UIWindow<EDITOR,OUTPUTLABEL,INPUT,SELECTITEM> extends UIPart {
 	
 	GenericBusiness getGenericBusiness();
 	
-	DataTreeTypeBusiness getDataTreeTypeBusiness();
+	//DataTreeTypeBusiness getDataTreeTypeBusiness();
 	
 	LanguageBusiness getLanguageBusiness();
 	

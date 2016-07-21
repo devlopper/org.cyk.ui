@@ -17,7 +17,6 @@ import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
-import org.cyk.system.root.business.api.pattern.tree.DataTreeTypeBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -44,7 +43,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	@Inject @Getter transient protected ValidationPolicy validationPolicy;
 	
 	@Inject @Getter transient protected GenericBusiness genericBusiness;
-	@Inject @Getter transient protected DataTreeTypeBusiness dataTreeTypeBusiness;
+	//@Inject @Getter transient protected DataTreeTypeBusiness dataTreeTypeBusiness;
 	@Inject @Getter transient protected EventBusiness eventBusiness;
 	@Inject @Getter transient protected LanguageBusiness languageBusiness;
 	@Inject transient protected NumberBusiness numberBusiness;

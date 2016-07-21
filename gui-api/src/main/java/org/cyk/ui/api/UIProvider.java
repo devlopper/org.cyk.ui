@@ -52,8 +52,6 @@ import org.cyk.ui.api.data.collector.control.OutputText;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
-import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
-import org.cyk.utility.common.annotation.user.interfaces.FieldOverrides;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
@@ -323,27 +321,6 @@ public class UIProvider extends AbstractBean implements Serializable {
 		annotations.add(org.cyk.utility.common.annotation.user.interfaces.Input.class);
 		annotations.add(org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.class);
 		return annotations;
-	}
-	
-	public FieldOverride getFieldOverride(Class<?> aClass, String fieldName) {
-		FieldOverrides fieldOverrides = aClass.getAnnotation(FieldOverrides.class);
-		if(fieldOverrides==null)
-			return null;
-		else{
-			for(FieldOverride fieldOverride : fieldOverrides.value())
-				if( fieldName.equals(fieldOverride.name()) )
-					return fieldOverride;
-		}
-		return null;
-	}
-	
-	public Class<?> getFieldType(Class<?> aClass, Field field){
-		FieldOverride fieldOverride = UIProvider.getInstance().getFieldOverride(aClass, field.getName());
-		if(fieldOverride==null || !field.getName().equals(fieldOverride.name())){
-			return field.getType();
-		}else{
-			return fieldOverride.type();
-		}
 	}
 	
 	public Boolean isControl(Control<?, ?, ?, ?, ?> control,String interfaceName){

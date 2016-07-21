@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
-import org.cyk.utility.common.annotation.user.interfaces.FieldOverride;
-import org.cyk.utility.common.annotation.user.interfaces.FieldOverrides;
+import org.cyk.utility.common.annotation.FieldOverride;
+import org.cyk.utility.common.annotation.FieldOverrides;
 
 @Getter @Setter @FieldOverrides(value={@FieldOverride(name=AbstractQueryManyFormModel.FIELD_IDENTIFIABLES,type=Person.class)})
 public class PersonQueryManyFormModel extends AbstractQueryManyFormModel<Person,String> implements Serializable {

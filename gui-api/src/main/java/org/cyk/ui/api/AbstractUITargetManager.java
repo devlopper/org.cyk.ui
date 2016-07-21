@@ -51,7 +51,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Override
 	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
 		ChoiceSet choiceSet = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class).set();
-		Class<?> type = UIProvider.getInstance().getFieldType(data.getClass(), field);
+		Class<?> type = commonUtils.getFieldType(data.getClass(), field);
 		
 		if(List.class.equals(type))
 	        type = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
@@ -77,6 +77,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	
 	protected abstract Collection<SELECTITEM> getChoiceSetSelectItems(ChoiceSet choiceSet,Boolean nullable);
 	
+	@SuppressWarnings("unchecked")
 	protected Collection<AbstractIdentifiable> findAll(Class<? extends AbstractIdentifiable> aClass,InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field){
 		Collection<AbstractIdentifiable> collection = null;
 		/*if(field.getName().equals("nationality")){
@@ -89,8 +90,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getRoleAdministrator())))
 				collection.add(role);
 			return collection;
-		}else
-			return UIManager.getInstance().getGenericBusiness().use(aClass).find().all();
+		}else{
+			return UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) commonUtils.getFieldType(data.getClass(), field)).find().all();
+		}
 	}
 	
 	protected Boolean itemWrapper(InputChoice<?, ?, ?, ?, ?, ?> inputChoice){

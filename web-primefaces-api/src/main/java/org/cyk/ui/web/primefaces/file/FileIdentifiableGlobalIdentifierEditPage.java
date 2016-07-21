@@ -14,8 +14,6 @@ import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifierEditPage;
-import org.cyk.utility.common.FileExtensionGroup;
-import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
@@ -34,7 +32,7 @@ public class FileIdentifiableGlobalIdentifierEditPage extends AbstractJoinGlobal
 		
 		@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull private GlobalIdentifier identifiableGlobalIdentifier;
 		
-		@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE))
+		@Input @InputFile
 		protected File file;
 		
 		@Input @InputText protected String description;
