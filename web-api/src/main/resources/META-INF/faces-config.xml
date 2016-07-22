@@ -21,6 +21,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>globalIdentifierEditView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>globalIdentifierListView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>globalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>nestedSetNodeEditView</from-outcome>
 			<to-view-id>/private/nestedset/node/edit.xhtml</to-view-id>
 			<redirect />

@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
@@ -17,12 +18,15 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
+import org.cyk.system.root.business.impl.information.GlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.information.Comments;
@@ -34,58 +38,45 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	
 	protected Comments comments;
 	protected FileIdentifiableGlobalIdentifiers fileIdentifiableGlobalIdentifiers;
+	@SuppressWarnings("rawtypes")
+	protected FormOneData<GlobalIdentifierDetails> globalIdentifierDetails;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		if(!userSession.getIsAdministrator() && !RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(identifiable))
+			redirectToDeleteOne(identifiable);
 		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		
 		consultInitialisation();
 		
 		comments = new Comments(this, CommentDetails.class,identifiable);
-		
 		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, FileIdentifiableGlobalIdentifierDetails.class,identifiable);
+		
+		globalIdentifierDetails = createDetailsForm(GlobalIdentifierDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<IDENTIFIABLE,GlobalIdentifierDetails>((Class<IDENTIFIABLE>) identifiable.getClass(), GlobalIdentifierDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getTitleId() {
+				return "model.entity.globalIdentifier";
+			}
+		});
 		
 		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 
 		}
 	}
 	
-	protected void consultInitialisation(){
-		
-		/*commentTable = (Table<CommentDetails>) createDetailsTable(CommentDetails.class, new DetailsConfigurationListener.Table.Adapter<Comment,CommentDetails>(Comment.class, CommentDetails.class){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Collection<Comment> getIdentifiables() {
-				Comment.SearchCriteria searchCriteria = new Comment.SearchCriteria();
-				searchCriteria.addCommentTypes(RootBusinessLayer.getInstance().getCommentTypeBusiness().findAll());
-				searchCriteria.addGlobalIdentifier(identifiable.getGlobalIdentifier());
-				return RootBusinessLayer.getInstance().getCommentBusiness().findByCriteria(searchCriteria);
-			}
-			@Override
-			public Crud[] getCruds() {
-				return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
-			}
-			@Override
-			public Boolean getRendered() {
-				return Comment.USER_DEFINED_COMMENTABLE_CLASSES.contains(identifiable.getClass());
-			}
-		});
-		
-		commentTable.setShowHeader(Boolean.TRUE);
-		commentTable.setShowToolBar(Boolean.TRUE);
-		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
-		commentTable.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
-		*/
-		
-	}
+	protected void consultInitialisation(){}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.afterInitialisationStarted(this);
+		
+		
 		
 		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
@@ -131,7 +122,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		}
 		
 		if(Boolean.TRUE.equals(showContextualEditCommandable())){
-			contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, identifiable,"command.edit", Icon.ACTION_UPDATE));
+			if(Boolean.TRUE.equals(globalIdentifierDetails.getRendered())){
+				contextualMenu.getChildren().add(Builder.createUpdateGlobalIdentifier(identifiable));
+			}else
+				contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, identifiable,"command.edit", Icon.ACTION_UPDATE));
 		}
 		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
 			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE));
@@ -143,6 +137,12 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 						,RootBusinessLayer.getInstance().getApplicationBusiness().findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
 		
 		processIdentifiableContextualCommandable(contextualMenu);
+		
+		for(UICommandable commandable : contextualMenu.getChildren())
+			if(StringUtils.isEmpty(selectedTabId))
+				;
+			else
+				commandable.setParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
 		
 		return contextualMenu.getChildren().isEmpty() ? null : Arrays.asList(contextualMenu);
 	}

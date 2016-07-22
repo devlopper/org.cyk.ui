@@ -18,12 +18,14 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.MessageManager;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.utility.common.AbstractBuilder;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.ListenerUtils;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -159,7 +161,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 
 		private FindDoSomethingTextParameters labelParameters;
 		private CommonBusinessAction commonBusinessAction;
-		private String actionIdentifier;
+		private String actionIdentifier,selectedTabId;
 		private Class<? extends AbstractIdentifiable> identifiableClass;
 		private Boolean one;
 		private AbstractIdentifiable master;
@@ -180,6 +182,10 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		}
 		public Builder<COMMANDABLE> setLabelFromId(String labelId){
 			instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText(labelId));
+			return this;
+		}
+		public Builder<COMMANDABLE> setSelectedTabId(String selectedTabId){
+			this.selectedTabId = selectedTabId;
 			return this;
 		}
 		public Builder<COMMANDABLE> setIcon(Icon icon){
@@ -364,6 +370,17 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		public static UICommandable createUpdate(AbstractIdentifiable identifiable){
 			return createUpdate(identifiable, Boolean.FALSE);
 		}
+		public static UICommandable createUpdateGlobalIdentifier(AbstractIdentifiable identifiable){
+			UICommandable commandable = createCrud(Crud.UPDATE, identifiable, "command.edit", Icon.ACTION_EDIT, ListenerUtils.getInstance()
+					.getString(IdentifierProvider.COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
+						@Override
+						public String execute(IdentifierProvider identifierProvider) {
+							return identifierProvider.getViewGlobalIdentifierEdit();
+						}
+			}));
+			
+			return commandable;
+		}
 		
 		public static UICommandable createDelete(AbstractIdentifiable identifiable,Boolean addIdentifiableText){
 			UICommandable commandable = createCrud(Crud.DELETE,identifiable, "command.delete", Icon.ACTION_DELETE);
@@ -546,6 +563,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			}else if(CommonBusinessAction.LIST.equals(commonBusinessAction)){
 				Parameter.add(instance.getParameters(),UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(instance.getBusinessEntityInfos()));
 			}
+			
+			if(StringUtils.isEmpty(selectedTabId))
+				;
+			else
+				instance.addParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
 			
 			return instance;
 		}

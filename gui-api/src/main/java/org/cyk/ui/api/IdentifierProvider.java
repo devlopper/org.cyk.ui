@@ -19,6 +19,7 @@ public interface IdentifierProvider{
 	String getView(Class<?> aClass,CommonBusinessAction commonBusinessAction,Boolean one);
 	String getViewDynamic(CommonBusinessAction commonBusinessAction,Boolean one);
 	String getViewDynamicReport();
+	String getViewGlobalIdentifierEdit();
 		
 	/**/
 	
@@ -40,7 +41,10 @@ public interface IdentifierProvider{
 		public String getViewDynamicReport() {
 			return null;
 		}
-		
+		@Override
+		public String getViewGlobalIdentifierEdit() {
+			return null;
+		}
 		public static class Default extends Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;
 			

@@ -131,9 +131,10 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 								}
 							}
 						}
-						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount))
+						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount)){
+							//TODO which operation he is willing to do ? Create , Read , Update , Delete , ...
 							filterChain.doFilter(request, response);
-						else
+						}else
 							goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
 					}else{
 						goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.FORWARD);

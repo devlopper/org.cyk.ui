@@ -77,6 +77,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			public String getViewDynamicReport() {
 				return INSTANCE.outcomeToolsReport;
 			}
+			@Override
+			public String getViewGlobalIdentifierEdit() {
+				return INSTANCE.outcomeGlobalIdentifierEdit;
+			}
 		});
 	}
 	
@@ -139,6 +143,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeNotifications = "notifications";
 	
 	@Getter private String outcomeLicenseRead = "licenseRead";
+	@Getter private String outcomeGlobalIdentifierEdit = "globalIdentifierEditView";
 	
 	@Getter private String outcomeExportDataTable = "exportdatatableservlet";
 	@Getter private String outcomeReportTable = "exportdatatableservlet";

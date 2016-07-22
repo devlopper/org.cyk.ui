@@ -108,8 +108,9 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 			}
 		});
 		
+		
 	}
-	
+	/*
 	@Override
 	protected Collection<UICommandable> contextualCommandables() {
 		UICommandable contextualMenu = instanciateCommandableBuilder().setLabel(contentTitle).create(),commandable=null;
@@ -125,7 +126,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 		
 		return Arrays.asList(contextualMenu);
 	}
-		
+	*/	
 	@Getter @Setter
 	public static class MainDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
