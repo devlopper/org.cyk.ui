@@ -83,6 +83,11 @@ public class UIProvider extends AbstractBean implements Serializable {
 			return RootBusinessLayer.getInstance().getFileBusiness().isImage((File) value);
 		return annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]);
 	}
+	
+	public Boolean isShowFileLink(Object data,Field field){
+		org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
+		return annotation.showLink();
+	}
 		
 	public Control<?,?,?,?,?> createFieldControl(Object data,Field field){
 		Control<?,?,?,?,?> control = createControlInstance(controlClass(field));

@@ -165,8 +165,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			@Override
 			public void added(Row<DATA> row, Column column, Cell cell) {
 				cell.setIsFile(UIProvider.getInstance().isFile(column.getField()));
-				if(Boolean.TRUE.equals(cell.getIsFile()))
+				if(Boolean.TRUE.equals(cell.getIsFile())){
 					cell.setIsImage(UIProvider.getInstance().isImage(row.getData(),column.getField()));
+					cell.setShowFileLink(UIProvider.getInstance().isShowFileLink(row.getData(),column.getField()));
+				}
 				if(Boolean.TRUE.equals(lazyLoad)){
 					
 				}else{
