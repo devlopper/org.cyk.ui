@@ -45,8 +45,6 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
-		if(!userSession.getIsAdministrator() && !RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(identifiable))
-			redirectToDeleteOne(identifiable);
 		for(ConsultPageListener<?> listener : ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		

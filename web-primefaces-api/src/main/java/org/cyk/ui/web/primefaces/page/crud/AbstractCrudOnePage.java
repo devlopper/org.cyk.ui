@@ -54,6 +54,8 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	}
 	
 	protected void create(){
+		System.out.println("AbstractCrudOnePage.create()");
+		debug(identifiable);
 		getGenericBusiness().create(identifiable);
 	}
 	

@@ -15,13 +15,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.ListenerUtils;
 
 public class SecurityFilter extends AbstractFilter implements Filter,Serializable {
 
@@ -35,57 +39,9 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 	private static final String PATH_LICENSE_EXPIRED = "license/expired";
 	private static final String PATH_ACCESS_DENIED = "access/denied";
 	private static final String PATH_UNREGISTERED = "path/unregistered";
+	private static final String ACTION_DENIED = "action/denied";
 	
 	public static final Map<UniformResourceLocator,UniformResourceLocatorRuntimeConstraint> UNIFORM_RESOURCE_LOCATOR_CONSTRAINTS = new HashMap<>();
-	
-	/*
-	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		AbstractUserSession userSession = userSession(request);
-		UserAccount userAccount;
-		if(userSession==null){
-			userAccount= null;
-		}else{
-			userAccount = userSession.getUserAccount();
-		}
-		
-		Application application = getApplication();
-		if(userAccount==null || userSession.getIsAdministrator() || (application!=null && Boolean.FALSE.equals(application.getUniformResourceLocatorFilteringEnabled()))){
-			filterChain.doFilter(servletRequest, servletResponse);
-		}else{
-			Boolean doFilterChain = Boolean.FALSE;
-			if(!goTo(application==null, PATH_INSTALL, request, response)){
-				if(Boolean.TRUE.equals(application.getLicense().getExpirable())){
-					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
-							, PATH_LICENSE_EXPIRED, request, response))
-						doFilterChain = Boolean.TRUE;
-					else{
-						if(!Boolean.TRUE.equals(application.getLicense().getExpired())){
-							application.getLicense().setExpired(Boolean.TRUE);
-							licenseBusiness.update(application.getLicense());
-						}
-					}
-				}else
-					doFilterChain = Boolean.TRUE;
-			}
-				
-			if(Boolean.TRUE.equals(doFilterChain)){
-				if(userSession==null || userAccount==null || userAccountBusiness.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
-					filterChain.doFilter(servletRequest, servletResponse);
-				else if( uniformResourceLocatorBusiness.isAccessible(url(request)) ){
-					if( roleUniformResourceLocatorBusiness.isAccessibleByUserAccount(url(request),userAccount) )
-						filterChain.doFilter(servletRequest, servletResponse);
-					else
-						goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
-				}else{
-					goTo(Boolean.TRUE, PATH_UNREGISTERED, request, response,RedirectType.FORWARD);
-					//goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
-				}
-			}
-		}	
-	}*/
 	
 	@Override
 	protected void __filter__(Application application, AbstractUserSession<?,?> userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response
@@ -132,8 +88,12 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 							}
 						}
 						if(Boolean.TRUE.equals(isUrlAccessibleByUserAccount)){
-							//TODO which operation he is willing to do ? Create , Read , Update , Delete , ...
-							filterChain.doFilter(request, response);
+							Boolean isActionAllowedOnIdentifiableByUserAccount = isActionAllowedOnIdentifiableByUserAccount(url,userAccount,request);
+							//System.out.println("isActionAllowedOnIdentifiableByUserAccount : "+isActionAllowedOnIdentifiableByUserAccount);
+							if(Boolean.TRUE.equals(isActionAllowedOnIdentifiableByUserAccount))
+								filterChain.doFilter(request, response);
+							else
+								goTo(Boolean.TRUE, ACTION_DENIED, request, response,RedirectType.FORWARD);
 						}else
 							goTo(Boolean.TRUE, PATH_ACCESS_DENIED, request, response,RedirectType.FORWARD);
 					}else{
@@ -155,16 +115,54 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		return value;
 	}
 	
-	private Boolean isUrlAccessibleByUserAccount(URL url,UserAccount userAccount,HttpServletRequest request){
-		Boolean value = Boolean.TRUE;
-		for(Listener listener : Listener.COLLECTION){
-			Boolean v = listener.isUrlAccessibleByUserAccount(url,userAccount,request);
-			if(v!=null)
-				value = v;
-		}
-		return value;
+	private Boolean isUrlAccessibleByUserAccount(final URL url,final UserAccount userAccount,final HttpServletRequest request){
+		return listenerUtils.getBoolean(Listener.COLLECTION, new ListenerUtils.BooleanMethod<Listener>() {
+			@Override
+			public Boolean execute(Listener listener) {
+				return listener.isUrlAccessibleByUserAccount(url,userAccount,request);
+			}
+			@Override
+			public Boolean getNullValue() {
+				return Boolean.TRUE;
+			}
+		});
 	}
 	
+	/**which operation he is willing to do ? Create , Read , Update , Delete , ... And what is the object ? class , instance , ...
+	 * 
+	 * @param url
+	 * @param userAccount
+	 * @param request
+	 * @return
+	 */
+	private Boolean isActionAllowedOnIdentifiableByUserAccount(final URL url,final UserAccount userAccount,final HttpServletRequest request){
+		return listenerUtils.getBoolean(Listener.COLLECTION, new ListenerUtils.BooleanMethod<Listener>() {
+			@Override
+			public Boolean execute(Listener listener) {
+				CommonBusinessAction commonBusinessAction = listener.getCommonBusinessAction(url, request);
+				if(commonBusinessAction==null)
+					return Boolean.TRUE;
+				Class<? extends AbstractIdentifiable> clazz = listener.getIdentifiableClass(url, request);
+				if(clazz==null)
+					return Boolean.TRUE;
+				AbstractIdentifiable identifiable = listener.getIdentifiableInstance(url, request);
+				if(identifiable==null && CommonBusinessAction.CREATE.equals(commonBusinessAction))
+					return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isCreatable(clazz);
+				//System.out.println(commonBusinessAction+" , "+clazz.getSimpleName()+" , "+identifiable);
+				switch(commonBusinessAction){
+				case READ: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(identifiable);
+				case UPDATE: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isUpdatable(identifiable);
+				case DELETE: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isDeletable(identifiable);
+				default: return Boolean.TRUE;
+				}
+			}
+			@Override
+			public Boolean getNullValue() {
+				return Boolean.TRUE;
+			}
+		});
+	}
+			
 	public static interface Listener extends AbstractListener {
 		
 		Collection<Listener> COLLECTION = new ArrayList<>();
@@ -172,6 +170,10 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 		Boolean isUrlFiltered();
 		Boolean isUrlAccessible(URL url);
 		Boolean isUrlAccessibleByUserAccount(URL url,UserAccount userAccount,HttpServletRequest request);
+		
+		CommonBusinessAction getCommonBusinessAction(URL url,HttpServletRequest request);
+		Class<? extends AbstractIdentifiable> getIdentifiableClass(URL url,HttpServletRequest request);
+		AbstractIdentifiable getIdentifiableInstance(URL url,HttpServletRequest request);
 		
 		/**/
 		
@@ -191,6 +193,21 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 
 			@Override
 			public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount,HttpServletRequest request) {
+				return null;
+			}
+			
+			@Override
+			public CommonBusinessAction getCommonBusinessAction(URL url,HttpServletRequest request) {
+				return null;
+			}
+
+			@Override
+			public Class<? extends AbstractIdentifiable> getIdentifiableClass(URL url,HttpServletRequest request) {
+				return null;
+			}
+
+			@Override
+			public AbstractIdentifiable getIdentifiableInstance(URL url,HttpServletRequest request) {
 				return null;
 			}
 			
@@ -215,6 +232,20 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 					return RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().isAccessibleByUserAccount(url,userAccount);
 				}
 			
+				@Override
+				public CommonBusinessAction getCommonBusinessAction(URL url,HttpServletRequest request) {
+					return UniformResourceLocatorParameterBusinessImpl.getCommonBusinessAction(url, request.getParameterMap());
+				}
+				
+				@Override
+				public Class<? extends AbstractIdentifiable> getIdentifiableClass(URL url,HttpServletRequest request) {
+					return UniformResourceLocatorParameterBusinessImpl.getIdentifiableClass(url, request.getParameterMap());
+				}
+				
+				@Override
+				public AbstractIdentifiable getIdentifiableInstance(URL url,HttpServletRequest request) {
+					return UniformResourceLocatorParameterBusinessImpl.getIdentifiableInstance(url, request.getParameterMap());
+				}
 			}
 			
 		}

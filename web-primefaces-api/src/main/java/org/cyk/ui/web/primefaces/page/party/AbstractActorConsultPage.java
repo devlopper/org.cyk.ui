@@ -1,22 +1,13 @@
 package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.api.command.AbstractCommandable.Builder;
-import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
@@ -30,6 +21,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> extends AbstractConsultPage<ACTOR> implements Serializable {

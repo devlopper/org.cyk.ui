@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
@@ -35,5 +36,19 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE))
 	protected File image;
+	
+	@Override
+	public void read() {
+		super.read();
+		image = identifiable.getImage();
+	}
+	
+	@Override
+	public void write() {
+		super.write();
+		identifiable.setGlobalIdentifier(new GlobalIdentifier());
+		identifiable.setImage(image);
+		identifiable.setCode("azertyuiop");
+	}
 	
 }

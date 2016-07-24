@@ -62,17 +62,26 @@ public class GlobalIdentifierEditPage extends AbstractCrudOnePage<AbstractIdenti
 		@Override
 		public void read() {
 			super.read();
-			readable = identifiable.getGlobalIdentifier().getReadable();
-			updatable = identifiable.getGlobalIdentifier().getUpdatable();
-			deletable = identifiable.getGlobalIdentifier().getDeletable();
+			readable = identifiable.getGlobalIdentifier().getRud().getReadable();
+			if(readable==null)
+				readable = Boolean.TRUE;
+			updatable = identifiable.getGlobalIdentifier().getRud().getUpdatable();
+			if(updatable==null)
+				updatable = Boolean.TRUE;
+			deletable = identifiable.getGlobalIdentifier().getRud().getDeletable();
+			if(deletable==null)
+				deletable = Boolean.TRUE;
 		}
 		
 		@Override
 		public void write() {
 			super.write();
-			identifiable.getGlobalIdentifier().setReadable(readable);
-			identifiable.getGlobalIdentifier().setUpdatable(updatable);
-			identifiable.getGlobalIdentifier().setDeletable(deletable);
+			if(identifiable.getGlobalIdentifier().getRud().getReadable()!=null || !readable)
+				identifiable.getGlobalIdentifier().getRud().setReadable(readable);
+			if(identifiable.getGlobalIdentifier().getRud().getUpdatable()!=null || !updatable)
+				identifiable.getGlobalIdentifier().getRud().setUpdatable(updatable);
+			if(identifiable.getGlobalIdentifier().getRud().getDeletable()!=null || !deletable)
+				identifiable.getGlobalIdentifier().getRud().setDeletable(deletable);
 		}
 		
 		/**/
