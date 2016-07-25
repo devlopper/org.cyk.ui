@@ -20,7 +20,7 @@ public class ActorSelectOnePageAdapter extends AbstractSelectOnePage.Listener.Ad
 	
 	@Override
 	public Actor findByIdentifier(String identifier) {
-		return GuiBusinessLayer.getInstance().getActorBusiness().findByRegistrationCode(identifier);
+		return GuiBusinessLayer.getInstance().getActorBusiness().findByGlobalIdentifierCode(identifier);
 	}
 
 }

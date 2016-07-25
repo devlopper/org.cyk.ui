@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -38,6 +39,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.AbstractFormOneData;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -147,11 +149,13 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			}
 		});
 		rowListeners.add(new RowAdapter<DATA>(){
+						
 			@Override
 			public void added(Row<DATA> row) {
 				super.added(row);
 				if(Boolean.TRUE.equals(getShowHierarchy()))
 					row.setDeletable(Boolean.TRUE);
+				row.setData((DATA) new EnumerationForm((AbstractEnumeration) row.getData()));
 			}
 		});
 		
@@ -222,12 +226,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			MODEL hierarchyNode = createHierarchyNode();
 			hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));
 			createTree();
-			/*
-			tree.build(hierarchyNode);
-			for(DATA d : hierarchyData)
-				tree.populate(d);	
-			tree.expand(master, Boolean.TRUE);
-			*/
 			tree.build(rowDataClass, hierarchyData, (DATA)master);
 			
 			showOpenCommand = getShowHierarchy();
@@ -260,7 +258,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected abstract void open(DATA data);
 	
 	public Boolean isDataTreeType(){
-		return rowDataClass==null?Boolean.FALSE:AbstractDataTreeNode.class.isAssignableFrom(rowDataClass);//TODO should be businessEntityInfos.getClazz()
+		return rowDataClass==null?Boolean.FALSE:AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz());//TODO should be businessEntityInfos.getClazz()
 	}
 	/*
 	public String getTitle(){

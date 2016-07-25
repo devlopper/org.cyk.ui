@@ -4,21 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.computation.Function;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements Serializable {
@@ -112,5 +114,16 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			
 		}*/
 	}
+	
+	@Override
+	protected Class<?> __formModelClass__() {
+		if(AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()))
+			return EnumerationForm.class;
+		return super.__formModelClass__();
+	}
+	
+	/**/
+	
+	
 
 }

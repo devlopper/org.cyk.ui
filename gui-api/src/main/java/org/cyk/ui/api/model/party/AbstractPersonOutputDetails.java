@@ -31,7 +31,7 @@ public abstract class AbstractPersonOutputDetails<ENTITY extends AbstractIdentif
 	
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
 	@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File signatureSpecimen;
-	@Input @InputText @ReportColumn protected String title,surname,firstName,lastName,birthDate,birthLocation,sex/*,maritalStatus*/,nationality;
+	@Input @InputText @ReportColumn protected String title,surname,firstname,lastnames,birthDate,birthLocation,sex/*,maritalStatus*/,nationality;
 	
 	@OutputSeperator(label=@Text(value="field.contacts")) 
 	@IncludeInputs(layout=Layout.VERTICAL) 
@@ -44,8 +44,8 @@ public abstract class AbstractPersonOutputDetails<ENTITY extends AbstractIdentif
 		super(entity);
 		Person person = getPerson(entity);
 		//photo = person.getImage();
-		firstName = person.getName();
-		lastName = person.getLastName();
+		firstname = person.getName();
+		lastnames = person.getLastnames();
 		surname = person.getSurname();
 		
 		if(person.getSex()!=null)
@@ -97,8 +97,8 @@ public abstract class AbstractPersonOutputDetails<ENTITY extends AbstractIdentif
 	/**/
 	
 	public static final String FIELD_PHOTO = "photo";
-	public static final String FIELD_FIRST_NAME = "firstName";
-	public static final String FIELD_LAST_NAME = "lastName";
+	public static final String FIELD_FIRST_NAME = "firstname";
+	public static final String FIELD_LAST_NAME = "lastname";
 	public static final String FIELD_SUR_NAME = "surname";
 	public static final String FIELD_BIRTH_DATE = "birthDate";
 	public static final String FIELD_BIRTH_LOCATION = "birthLocation";

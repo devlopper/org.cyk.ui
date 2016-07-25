@@ -19,7 +19,7 @@ public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractAct
 	public AbstractActorCrudManyPageAdapter(Class<ACTOR> entityTypeClass) {
 		super(entityTypeClass);
 		FormConfiguration configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-		configuration.addRequiredFieldNames(DefaultActorOutputDetails.FIELD_REGISTRATION_CODE);
+		configuration.addRequiredFieldNames(DefaultActorOutputDetails.FIELD_CODE);
 		configuration.addRequiredFieldNames(DefaultActorOutputDetails.FIELD_FIRST_NAME);
 		configuration.addFieldNames(DefaultActorOutputDetails.FIELD_LAST_NAME);
 		//configuration.addFieldNames(ContactCollectionReadFormModel.FIELD_CONTACTS); // Because of lazy load

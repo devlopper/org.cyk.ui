@@ -18,13 +18,11 @@ public abstract class AbstractActorOutputDetails<ACTOR extends AbstractActor> ex
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	public static final String FIELD_REGISTRATION_CODE = "registrationCode";
-	
-	@Input @InputText @ReportColumn @Sequence(direction=Direction.BEFORE,field="firstName") private String registrationCode;
+	@Input @InputText @ReportColumn @Sequence(direction=Direction.BEFORE,field=AbstractPersonOutputDetails.FIELD_FIRST_NAME) private String registrationCode;
 
 	public AbstractActorOutputDetails(ACTOR actor) {
 		super(actor);
-		registrationCode = actor.getRegistration().getCode();
+		registrationCode = actor.getCode();
 	}
 	
 	@Override

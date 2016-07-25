@@ -46,9 +46,8 @@ public abstract class AbstractPartyFormModel<PARTY extends Party> extends Abstra
 	@Override
 	public void write() {
 		super.write();
-		identifiable.setGlobalIdentifier(new GlobalIdentifier());
-		identifiable.setImage(image);
-		identifiable.setCode("azertyuiop");
+		GlobalIdentifier globalIdentifier = identifiable.getGlobalIdentifierCreateIfNull();
+		globalIdentifier.setImage(image);
 	}
 	
 }

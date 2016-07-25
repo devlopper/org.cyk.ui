@@ -78,7 +78,7 @@ public interface WebEnvironmentListener {
 		public void ini(WebEnvironment environment, Ini anIni) {}
 		
 		protected static void role(Map<String,String> map,String path,String roleCode){
-			role(map,path,RoleManager.getInstance().getRoleBusiness().find(roleCode));
+			role(map,path,RoleManager.getInstance().getRoleBusiness().findByGlobalIdentifierCode(roleCode));
 		}
 		
 		protected static void role(Map<String,String> map,String path,Role role){

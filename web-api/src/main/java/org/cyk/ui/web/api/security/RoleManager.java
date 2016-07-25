@@ -50,7 +50,7 @@ public class RoleManager extends AbstractRoleManager<HttpServletRequest> impleme
 		
 		if(request==null)
 			request = Faces.getRequest();
-		return request.isUserInRole(roleBusiness.find(roleCode).getIdentifier().toString());
+		return request.isUserInRole(roleBusiness.findByGlobalIdentifierCode(roleCode).getIdentifier().toString());
 	}
 	
 	public <ROLE extends Role> Boolean hasRole(String roleCode){

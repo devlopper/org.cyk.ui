@@ -48,7 +48,7 @@ public class PersonEditManyPage extends AbstractEditManyPage<Person,PersonEditMa
 			public void instanciated(AbstractItemCollection<PersonEditManyForm, Person, SelectItem> itemCollection,PersonEditManyForm item) {
 				super.instanciated(itemCollection, item);
 				item.setName(item.getIdentifiable().getName());
-				item.setLastname(item.getIdentifiable().getLastName());
+				item.setLastname(item.getIdentifiable().getLastnames());
 				item.setSurname(item.getIdentifiable().getSurname());
 			}
 			
@@ -56,7 +56,7 @@ public class PersonEditManyPage extends AbstractEditManyPage<Person,PersonEditMa
 			public void write(PersonEditManyForm item) {
 				super.write(item);
 				item.getIdentifiable().setName(item.getName());
-				item.getIdentifiable().setLastName(item.getLastname());
+				item.getIdentifiable().setLastnames(item.getLastname());
 				item.getIdentifiable().setSurname(item.getSurname());
 			}
 		};

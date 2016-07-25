@@ -15,6 +15,7 @@ import org.cyk.system.root.model.userinterface.ClassUserInterface;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
@@ -84,11 +85,14 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 			
 			@Override
 			public Object getRedirectionObject(TreeNode node) {
-				return selectedAs(AbstractIdentifiable.class);
+				EnumerationForm enumerationForm = selectedAs(EnumerationForm.class);
+				return enumerationForm == null ? null : enumerationForm.getIdentifiable();
 			}
 			
 			@Override
 			public String getRedirectToViewId(TreeNode node,Crud crud,Object object) {
+				if(object instanceof EnumerationForm)
+					object = ((EnumerationForm)object).getIdentifiable();
 				Boolean edit = Crud.isCreateOrUpdate(crud);
 				HierarchyNode model = nodeModel(selected);
 				String v_outcome = model == null ? (edit ? editViewId : consultViewId) : (edit ? model.getEditViewId() : model.getConsultViewId());
@@ -108,6 +112,8 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 			
 			@Override
 			public Object[] getRedirectToParameters(TreeNode node,Crud crud,Object object) {
+				if(object instanceof EnumerationForm)
+					object = ((EnumerationForm)object).getIdentifiable();
 				//Object data = getRedirectionObject(node);
 				Object nodeObject = ((HierarchyNode)node.getData()).getData();
 				Object[] parameters = null;

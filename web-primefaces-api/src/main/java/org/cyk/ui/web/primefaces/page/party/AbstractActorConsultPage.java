@@ -125,16 +125,15 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 	public static class MainDetails extends AbstractOutputDetails<AbstractActor> implements Serializable {
 		private static final long serialVersionUID = -1498269103849317057L;
 		@Input @InputFile (extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) private File photo;
-		@Input @InputText private String registrationCode,registrationDate,title,firstName,lastNames,surname,birthDate,birthLocation,sex/*,maritalStatus,nationality*/;
+		@Input @InputText private String registrationCode,title,firstName,lastNames,surname,birthDate,birthLocation,sex/*,maritalStatus,nationality*/;
 		public MainDetails(AbstractActor actor) {
 			super(actor);
 			Person person = actor.getPerson();
-			registrationCode = actor.getRegistration().getCode();
-			registrationDate = timeBusiness.formatDate(actor.getRegistration().getDate());
+			registrationCode = actor.getCode();
 			photo = person.getImage();
 			
 			firstName = person.getName();
-			lastNames = person.getLastName();
+			lastNames = person.getLastnames();
 			surname = person.getSurname();
 			if(person.getSex()!=null)
 				sex = person.getSex().getName();

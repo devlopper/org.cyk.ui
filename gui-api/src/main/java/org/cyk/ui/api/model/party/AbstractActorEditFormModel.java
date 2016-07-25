@@ -1,7 +1,6 @@
 package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,6 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Getter @Setter
@@ -21,7 +19,6 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 	private static final long serialVersionUID = -3897201743383535836L;
 
 	@Input @InputText protected String registrationCode;
-	@Input @InputCalendar protected Date registrationDate;
 	
 	@IncludeInputs(layout=Layout.VERTICAL) 
 	private DefaultPersonEditFormModel personFormModel = new DefaultPersonEditFormModel();
@@ -37,15 +34,13 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 	@Override
 	public void write() {
 		super.write();
-		identifiable.getRegistration().setCode(registrationCode);
-		identifiable.getRegistration().setDate(registrationDate);
+		identifiable.setCode(registrationCode);
 	}
 	
 	@Override
 	public void read() {
 		super.read();
-		registrationCode = identifiable.getRegistration().getCode();
-		registrationDate = identifiable.getRegistration().getDate();
+		registrationCode = identifiable.getCode();
 	}
 	
 	/**/
@@ -61,6 +56,5 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractActor> ex
 	/**/
 	
 	public static final String FIELD_REGISTRATION_CODE = "registrationCode";
-	public static final String FIELD_REGISTRATION_DATE = "registrationDate";
 	
 }
