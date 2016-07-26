@@ -126,7 +126,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void open(DATA data) {
-		WebNavigationManager.getInstance().redirectToDynamicCrudMany((Class<AbstractIdentifiable>) rowDataClass,(AbstractIdentifiable) data);
+		WebNavigationManager.getInstance().redirectToDynamicCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
 	}
 	
 	@Override

@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -25,7 +28,8 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	@Getter @Setter protected NODE selected,lastExpanded,lastCollapsed;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
 	@Getter @Setter protected String consultViewId,editViewId;
-	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE;
+	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE,useSpecificRedirectOnNodeSelected=Boolean.TRUE;
+	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
 	
 	@Getter protected Collection<Listener<NODE,MODEL>> treeListeners = new ArrayList<>();
 	
@@ -309,7 +313,8 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			}else{
 				Object[] parameters = getRedirectToParameters(node,crud,object);
 				logTrace("Tree Redirecting to {} with parameters {}", viewId,StringUtils.join(parameters,Constant.CHARACTER_COMA.toString()));
-				__redirectTo__(node, viewId, parameters);	
+				if(Boolean.TRUE.equals(useSpecificRedirectOnNodeSelected))
+					__redirectTo__(node, viewId, parameters);	
 			}
 		}else{
 			
@@ -323,6 +328,10 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 			@Override
 			public String execute(Listener<NODE,MODEL> listener) {
 				return listener.getRedirectToViewId(node,crud,object);
+			}
+			@Override
+			public String getNullValue() {
+				return UIManager.getInstance().getViewDynamic(CommonBusinessAction.READ, Boolean.FALSE);
 			}
 		});
 	}

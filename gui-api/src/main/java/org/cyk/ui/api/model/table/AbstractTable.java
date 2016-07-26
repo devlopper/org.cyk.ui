@@ -17,7 +17,6 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -39,7 +38,6 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.AbstractFormOneData;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
-import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -155,7 +153,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				super.added(row);
 				if(Boolean.TRUE.equals(getShowHierarchy()))
 					row.setDeletable(Boolean.TRUE);
-				row.setData((DATA) new EnumerationForm((AbstractEnumeration) row.getData()));
+				if(Boolean.TRUE.equals(inplaceEdit) && AbstractFormModel.class.isAssignableFrom(rowDataClass) && 
+						row.getData() instanceof AbstractIdentifiable){
+					row.setData((DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) row.getData()));
+				}
 			}
 		});
 		
@@ -195,6 +196,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		commandable.getParameters().add(new Parameter(UniformResourceLocatorParameter.REPORT_IDENTIFIER,reportIdentifier));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void build() {
 		if(Boolean.TRUE.equals(built) || Boolean.FALSE.equals(rendered))
@@ -224,9 +226,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		}
 		if(Boolean.TRUE.equals(getShowHierarchy())){
 			MODEL hierarchyNode = createHierarchyNode();
-			hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(rowDataClass));
+			hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(businessEntityInfos.getClazz()));
 			createTree();
-			tree.build(rowDataClass, hierarchyData, (DATA)master);
+			tree.build((Class<DATA>)businessEntityInfos.getClazz(), hierarchyData, (DATA)master);
 			
 			showOpenCommand = getShowHierarchy();
 		}
@@ -242,6 +244,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected void createTree(){
 		__createTree__();	
 		if(tree!=null){
+			tree.setBusinessEntityInfos(businessEntityInfos);
+			tree.setUseSpecificRedirectOnNodeSelected(Boolean.FALSE);
 			tree.getTreeListeners().add(new AbstractTree.Listener.Adapter.Default<NODE,MODEL>(){
 				private static final long serialVersionUID = 6817293162423539828L;
 				@SuppressWarnings("unchecked")
@@ -368,21 +372,13 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		lastExecutedCommand = command;
 		if(command==addRowCommandable.getCommand()){
 			if(Boolean.TRUE.equals(inplaceEdit)){
-				DATA d;
-				if(AbstractFormModel.class.isAssignableFrom(rowDataClass)){
-					d = (DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz()));
-				}else{
-					d = newInstance(rowDataClass);
-					if(isDataTreeType())
-						if(master==null)
-							;
-						else{
-							((AbstractDataTreeNode)d).setParent((AbstractDataTreeNode)master);
-							//setNode(new NestedSetNode( ((AbstractDataTreeNode)master).getNode().getSet(), 
-								//((AbstractDataTreeNode)master).getNode()));// debug(master);
-							//debug(((AbstractDataTreeNode)d));
-						}
-				}
+				DATA d = (DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz()));	
+				if(isDataTreeType())
+					if(master==null)
+						;
+					else{
+						((AbstractDataTreeNode)((AbstractFormModel<?>)d).getIdentifiable()).setParent((AbstractDataTreeNode)master);
+					}
 				editing.add(d);
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;
