@@ -21,6 +21,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>applicationEditView</from-outcome>
+			<to-view-id>/private/application/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>applicationListView</from-outcome>
+			<to-view-id>/private/application/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>applicationConsultView</from-outcome>
+			<to-view-id>/private/application/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>globalIdentifierEditView</from-outcome>
 			<to-view-id>/private/globalidentification/globalidentifier/edit.xhtml</to-view-id>
 			<redirect />
@@ -137,17 +153,17 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>licenseListView</from-outcome>
-			<to-view-id>/private/__role__/__administrator__/license/list.xhtml</to-view-id>
+			<to-view-id>/private/license/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>licenseEditView</from-outcome>
-			<to-view-id>/private/__role__/__administrator__/license/edit.xhtml</to-view-id>
+			<to-view-id>/private/license/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>licenseConsultView</from-outcome>
-			<to-view-id>/private/__role__/__administrator__/license/consult.xhtml</to-view-id>
+			<to-view-id>/private/license/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
