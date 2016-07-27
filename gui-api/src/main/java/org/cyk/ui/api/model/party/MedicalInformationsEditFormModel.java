@@ -1,4 +1,4 @@
-package org.cyk.ui.api.model.geography;
+package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
 

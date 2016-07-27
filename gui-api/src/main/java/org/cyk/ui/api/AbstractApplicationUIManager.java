@@ -56,7 +56,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 	}
 	
 	protected IdentifiableConfiguration identifiableConfiguration(Class<? extends AbstractIdentifiable> aClass){
-		IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass);
+		IdentifiableConfiguration identifiableConfiguration = uiManager.findConfiguration(aClass,Boolean.FALSE);
 		if(identifiableConfiguration==null){
 			identifiableConfiguration = new IdentifiableConfiguration();
 			identifiableConfiguration.setClazz(aClass);

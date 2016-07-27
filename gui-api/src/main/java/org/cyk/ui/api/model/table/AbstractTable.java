@@ -372,13 +372,14 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		lastExecutedCommand = command;
 		if(command==addRowCommandable.getCommand()){
 			if(Boolean.TRUE.equals(inplaceEdit)){
-				DATA d = (DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz()));	
+				AbstractIdentifiable identifiable = (AbstractIdentifiable) newInstance(businessEntityInfos.getClazz());
 				if(isDataTreeType())
 					if(master==null)
 						;
 					else{
-						((AbstractDataTreeNode)((AbstractFormModel<?>)d).getIdentifiable()).setParent((AbstractDataTreeNode)master);
+						((AbstractDataTreeNode)identifiable).setParent((AbstractDataTreeNode)master);
 					}
+				DATA d = (DATA) AbstractFormModel.instance(rowDataClass, identifiable);	
 				editing.add(d);
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;

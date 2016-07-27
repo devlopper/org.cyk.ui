@@ -19,7 +19,7 @@ public class IdentifiableConfiguration extends Clazz implements Serializable {
 
 	private FormMap formMap;
 	
-	private Boolean oneEdit = Boolean.TRUE,globalFiltering=Boolean.TRUE,usableByChild=Boolean.TRUE;
+	private Boolean oneEdit = Boolean.TRUE,globalFiltering=Boolean.TRUE,usableByChild=Boolean.FALSE;
 
 	public IdentifiableConfiguration(Class<? extends AbstractIdentifiable> identifiableClass
 			,Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass

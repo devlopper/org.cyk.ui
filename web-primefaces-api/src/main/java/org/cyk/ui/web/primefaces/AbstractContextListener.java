@@ -18,14 +18,19 @@ import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
@@ -34,13 +39,18 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
+import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
 import org.cyk.ui.api.model.geography.ContactDetails;
+import org.cyk.ui.api.model.geography.LocalityForm;
+import org.cyk.ui.api.model.geography.LocalityTypeForm;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryManyFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryOneFormModel;
 import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
+import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
+import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -105,6 +115,20 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
 		*/
 	
+		IdentifiableConfiguration identifiableConfiguration;
+		
+		uiManager.registerConfiguration(identifiableConfiguration = new IdentifiableConfiguration(AbstractDataTree.class, AbstractDataTreeForm.Default.class, AbstractDataTreeForm.Default.class,null,null,null));
+		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
+		
+		uiManager.registerConfiguration(identifiableConfiguration = new IdentifiableConfiguration(AbstractDataTreeType.class, AbstractDataTreeTypeForm.Default.class, AbstractDataTreeTypeForm.Default.class,null,null,null));
+		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
+		
+		uiManager.registerConfiguration(identifiableConfiguration = new IdentifiableConfiguration(AbstractEnumeration.class, EnumerationForm.class, EnumerationForm.class,null,null,null));
+		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeForm.class, LocalityTypeForm.class,null,null,null));
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Locality.class, LocalityForm.class, LocalityForm.class,null,null,null));
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(License.class, LicenseEditPage.Form.class, LicenseDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(License.class, null);
 		

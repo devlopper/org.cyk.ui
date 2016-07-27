@@ -263,8 +263,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public void registerConfiguration(IdentifiableConfiguration configuration){
 		IDENTIFIABLE_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
 	}
-	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass){
+	public IdentifiableConfiguration findConfiguration(Class<? extends AbstractIdentifiable> aClass,Boolean extendToSuperClassIfNull){
 		IdentifiableConfiguration config = IDENTIFIABLE_CONFIGURATION_MAP.get(aClass);
+		if(config == null && Boolean.TRUE.equals(extendToSuperClassIfNull))
+			for(Entry<Class<? extends AbstractIdentifiable>, IdentifiableConfiguration> entry : IDENTIFIABLE_CONFIGURATION_MAP.entrySet())
+				if(entry.getKey().isAssignableFrom(aClass) && Boolean.TRUE.equals(entry.getValue().getUsableByChild())){
+					config = entry.getValue();
+					break;
+				}
 		return config;
 	}
 	

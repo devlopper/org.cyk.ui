@@ -100,7 +100,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 			if(/*CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()) ||*/ CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy())){
 				//uiManager.configBusinessIdentifiable(businessEntityInfos.getClazz(), null);
 				@SuppressWarnings("unchecked")
-				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+				IdentifiableConfiguration configuration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz(),Boolean.FALSE);
 				Boolean notConfigured = configuration==null || configuration.getFormMap()==null;
 				
 				if(notConfigured || StringUtils.isBlank(businessEntityInfos.getUserInterface().getEditViewId()) && configuration.getFormMap().get(Boolean.TRUE, Crud.CREATE)!=null)
