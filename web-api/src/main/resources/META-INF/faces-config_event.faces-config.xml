@@ -8,28 +8,26 @@
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
 			<from-outcome>eventlist</from-outcome>
-			<to-view-id>/private/__tools__/event/list.xhtml</to-view-id>
+			<to-view-id>/private/event/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>eventCrudOne</from-outcome>
-			<to-view-id>/private/__tools__/event/crudOne.jsf</to-view-id>
+			<to-view-id>/private/event/crudOne.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>toolscalendar</from-outcome>
-			<to-view-id>/private/__tools__/event/agenda.xhtml</to-view-id>
+			<to-view-id>/private/event/agenda.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>notifications</from-outcome>
-			<to-view-id>/private/__tools__/event/notifications.jsf</to-view-id>
+			<to-view-id>/private/event/notifications.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
-		
-		
 		
 	</navigation-rule>
 
