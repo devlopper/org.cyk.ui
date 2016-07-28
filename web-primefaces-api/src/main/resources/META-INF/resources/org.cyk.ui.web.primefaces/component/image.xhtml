@@ -17,11 +17,11 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<!--p:importConstants type="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" /-->
-		
-		<pe:importConstants className="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" />
-		
-		<img src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?#{urlParameter.IDENTIFIABLE}=#{cc.attrs.identifier}" alt="image" width="#{cc.attrs.width}" height="#{cc.attrs.height}" 
+		<img 
+			src="#{request.contextPath}#{webNavigationManager.pathImageServlet}?#{webNavigationManager.identifierParameterName}=#{cc.attrs.identifier}" 
+			alt="image" 
+			width="#{cc.attrs.width}" 
+			height="#{cc.attrs.height}" 
 			class="#{cc.attrs.styleClass}"
 		/>
 	</cc:implementation>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>movementEditView</from-outcome>
+			<to-view-id>/private/mathematics/movement/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementListView</from-outcome>
+			<to-view-id>/private/mathematics/movement/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementConsultView</from-outcome>
+			<to-view-id>/private/mathematics/movement/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionEditView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionListView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementCollectionConsultView</from-outcome>
+			<to-view-id>/private/mathematics/movementcollection/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>finiteStateMachineStateLogEditView</from-outcome>
+			<to-view-id>/private/mathematics/finitestatemachinestatelog/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>finiteStateMachineStateLogListView</from-outcome>
+			<to-view-id>/private/mathematics/finitestatemachinestatelog/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>finiteStateMachineStateLogConsultView</from-outcome>
+			<to-view-id>/private/mathematics/finitestatemachinestatelog/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		
+		
+	</navigation-rule>
+
+</faces-config>

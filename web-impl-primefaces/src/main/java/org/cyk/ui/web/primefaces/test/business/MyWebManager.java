@@ -12,13 +12,11 @@ import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.CommentType;
-import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.pattern.tree.DataTree;
 import org.cyk.system.root.model.pattern.tree.DataTreeIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
-import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -62,8 +60,6 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		module.addChild(Builder.createSelectOne(Actor.class,null, null));
 		module.addChild(Builder.createSelectMany(Actor.class,"myactionid", null));
 		module.addChild(Builder.createSelectMany(Person.class,editManyPersons, Icon.ACTION_EDIT));
-		module.addChild(Builder.createList(Application.class, null));
-		module.addChild(Builder.createList(License.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		module = Builder.create(null, null).setLabel("Nested set");

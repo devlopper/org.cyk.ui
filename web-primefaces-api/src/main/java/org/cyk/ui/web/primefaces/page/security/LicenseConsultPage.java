@@ -21,8 +21,8 @@ public class LicenseConsultPage extends AbstractConsultPage<License> implements 
 	private FormOneData<LicenseDetails> details;
 	
 	@Override
-	protected void initialisation() {
-		super.initialisation();
+	protected void consultInitialisation() {
+		super.consultInitialisation();
 		
 		details = createDetailsForm(LicenseDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<License,LicenseDetails>(License.class, LicenseDetails.class){
 			private static final long serialVersionUID = 1L;

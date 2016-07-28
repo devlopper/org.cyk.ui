@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>fileListView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileEditView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileConsultView</from-outcome>
+			<to-view-id>/private/__role__/__manager__/file/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileConsultManyView</from-outcome>
+			<to-view-id>/private/file/consultmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierEditView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierListView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileIdentifiableGlobalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/file/fileidentifiableglobalidentifier/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsreport</from-outcome>
+			<to-view-id>/private/__tools__/export/report.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>exportdatatableservlet</from-outcome>
+			<to-view-id>/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>report</from-outcome>
+			<to-view-id>/private/__tools__/export/_cyk_report_/_business_/_jasper_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fileservlet</from-outcome>
+			<to-view-id>/_cyk_servlet_file_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>imageservlet</from-outcome>
+			<to-view-id>/_cyk_servlet_file_image_/</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+	</navigation-rule>
+
+</faces-config>

@@ -21,6 +21,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
@@ -51,7 +52,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public static final String COMMANDABLE_NOTIFICATIONS_IDENTIFIER = "notifications";
 	public static final String COMMANDABLE_EVENT_CALENDAR_IDENTIFIER = "eventcalendar";
 	public static final String COMMANDABLE_USER_ACCOUNT_IDENTIFIER = "useraccount";
-	public static enum ModuleGroup{HOME,TOOLS,CONTROL_PANEL,REPORT,USER_ACCOUNT,HELP}
+	public static enum ModuleGroup{HOME,TOOLS,CONTROL_PANEL,REPORT,USER_ACCOUNT,HELP,ADMINISTRATION}
 	
 	private static MenuManager INSTANCE;
 	public static MenuManager getInstance() {
@@ -155,6 +156,15 @@ public class MenuManager extends AbstractBean implements Serializable {
 					commandableGroup.addChild(reportCommandable);
 			}
 			break;
+		case ADMINISTRATION:
+			commandableGroup = Builder.instanciateOne().setLabelFromId("command.administration").setIcon(Icon.ACTION_ADMINISTRATE).create();
+			commandableGroup.addChild(Builder.createList(Application.class, null));
+			commandableGroup.addChild(Builder.createList(License.class, null));
+			for(SystemMenu systemMenu : systemMenus(userSession)){
+				for(UICommandable commandable : systemMenu.getAdministrations())
+					commandableGroup.addChild(commandable);
+			}
+			break;
 		}
 		for(Listener listener : menuListeners)
 			listener.moduleGroupCreated(userSession,moduleGroup, commandableGroup);
@@ -201,6 +211,10 @@ public class MenuManager extends AbstractBean implements Serializable {
 		}
 		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
+		
+		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
+			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.ADMINISTRATION));
+		}
 		return menu;
 	}
 	

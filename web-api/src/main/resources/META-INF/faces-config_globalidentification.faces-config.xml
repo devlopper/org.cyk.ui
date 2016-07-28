@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>globalIdentifierEditView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>globalIdentifierListView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>globalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/globalidentification/globalidentifier/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		
+		
+	</navigation-rule>
+
+</faces-config>

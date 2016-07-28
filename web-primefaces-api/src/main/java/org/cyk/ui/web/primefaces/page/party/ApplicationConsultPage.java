@@ -21,8 +21,8 @@ public class ApplicationConsultPage extends AbstractConsultPage<Application> imp
 	private FormOneData<ApplicationDetails> details;
 	
 	@Override
-	protected void initialisation() {
-		super.initialisation();
+	protected void consultInitialisation() {
+		super.consultInitialisation();
 		details = createDetailsForm(ApplicationDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<Application,ApplicationDetails>(Application.class, ApplicationDetails.class){
 			private static final long serialVersionUID = 1L;
 			@Override

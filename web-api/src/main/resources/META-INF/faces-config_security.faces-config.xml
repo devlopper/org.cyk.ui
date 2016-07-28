@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		
+		<navigation-case>
+			<from-outcome>security</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/index.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>licenseListView</from-outcome>
+			<to-view-id>/private/security/license/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>licenseEditView</from-outcome>
+			<to-view-id>/private/security/license/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>licenseConsultView</from-outcome>
+			<to-view-id>/private/security/license/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>roleListView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleEditView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleConsultView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/role/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userAccountListView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountEditView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userAccountConsultView</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/useraccount/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>useraccounts</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/listuseraccount.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>useraccountcrudone</from-outcome>
+			<to-view-id>/private/__role__/__securitymanager__/createuseraccount.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>useraccountconsult</from-outcome>
+			<to-view-id>/private/__role__/__user__/useraccount/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>useraccountchangepassword</from-outcome>
+			<to-view-id>/private/__role__/__user__/useraccount/changepassword.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!-- Setting Manager -->
+		<navigation-case>
+			<from-outcome>licenseRead</from-outcome>
+			<to-view-id>/private/__role__/__settingmanager__/readlicense.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>useraccountlogout</from-outcome>
+			<to-view-id>/public/__security__/logout.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

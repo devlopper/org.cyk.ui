@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleUniformResourceLocator;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractEnumerationForm;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
@@ -26,7 +25,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
-import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Named @ViewScoped @Getter @Setter
 public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializable {
@@ -65,15 +63,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 			}
 		});
 	}
-	
-	/*@Override
-	public void transfer(UICommand command, Object object) throws Exception {
-		super.transfer(command, object);
-		if(roleUniformResourceLocatorCollection.getAddCommandable().getCommand() == command ){
-			form.getSelectedFormData().applyValuesToFields();
-		}
-	}*/
-	
+		
 	@Override
 	protected void create() {
 		RootBusinessLayer.getInstance().getRoleBusiness().save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
@@ -85,14 +75,10 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 	}
 	
 	@Getter @Setter
-	public static class Form extends AbstractFormModel<Role> implements Serializable{
+	public static class Form extends AbstractEnumerationForm<Role> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
-		@Input @InputText @NotNull private String code;
-		@Input @InputText @NotNull private String name;
-		@Input @InputChoice @InputOneChoice @InputOneCombo private UniformResourceLocator uniformResourceLocator;
 		
-		public static final String FIELD_CODE = "code";
-		public static final String FIELD_NAME = "name";
+		@Input @InputChoice @InputOneChoice @InputOneCombo private UniformResourceLocator uniformResourceLocator;
 		
 	}
 	

@@ -262,7 +262,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected abstract void open(DATA data);
 	
 	public Boolean isDataTreeType(){
-		return rowDataClass==null?Boolean.FALSE:AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz());//TODO should be businessEntityInfos.getClazz()
+		return rowDataClass==null?Boolean.FALSE:businessEntityInfos == null ? Boolean.FALSE : AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz());//TODO should be businessEntityInfos.getClazz()
 	}
 	/*
 	public String getTitle(){

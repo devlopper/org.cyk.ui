@@ -17,7 +17,7 @@ public class FontAwesomeIconSet extends org.cyk.ui.api.Icon.GetIdentifierListene
 		case ACTION_CANCEL:return "fa fa-close";
 		case ACTION_OPEN:return "fa fa-folder-open";
 		case ACTION_REMOVE:return "fa fa-trash";
-		case ACTION_ADMINISTRATE:return "fa-gears";
+		case ACTION_ADMINISTRATE:return "fa fa-gears";
 		case ACTION_HELP:return "fa fa-question";
 		case ACTION_APPLY:return  "fa fa-save" /*"fa fa-check" /*"ui-icon-check"*/;
 		case ACTION_EDIT:return "fa fa-pencil";

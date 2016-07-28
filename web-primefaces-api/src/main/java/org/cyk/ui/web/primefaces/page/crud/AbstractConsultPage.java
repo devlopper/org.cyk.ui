@@ -53,13 +53,15 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		comments = new Comments(this, CommentDetails.class,identifiable);
 		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, FileIdentifiableGlobalIdentifierDetails.class,identifiable);
 		
-		globalIdentifierDetails = createDetailsForm(GlobalIdentifierDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<IDENTIFIABLE,GlobalIdentifierDetails>((Class<IDENTIFIABLE>) identifiable.getClass(), GlobalIdentifierDetails.class){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public String getTitleId() {
-				return "model.entity.globalIdentifier";
-			}
-		});
+		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
+			globalIdentifierDetails = createDetailsForm(GlobalIdentifierDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<IDENTIFIABLE,GlobalIdentifierDetails>((Class<IDENTIFIABLE>) identifiable.getClass(), GlobalIdentifierDetails.class){
+				private static final long serialVersionUID = 1L;
+				@Override
+				public String getTitleId() {
+					return "model.entity.globalIdentifier";
+				}
+			});
+		}
 		
 		for(ConsultPageListener<?> listener :ConsultPageListener.Adapter.getConsultPageListeners(businessEntityInfos)){
 			listener.initialisationEnded(this); 

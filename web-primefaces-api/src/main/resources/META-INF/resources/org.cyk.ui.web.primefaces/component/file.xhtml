@@ -19,10 +19,8 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<!--p:importConstants type="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" /-->
-		<pe:importConstants className="org.cyk.system.root.model.network.UniformResourceLocatorParameter" var="urlParameter" />
 		
-		<ui:param name="fileUrl" value="#{request.contextPath}#{webNavigationManager.pathFileServlet}?#{urlParameter.IDENTIFIABLE}=#{cc.attrs.identifier}"/>
+		<ui:param name="fileUrl" value="#{request.contextPath}#{webNavigationManager.pathFileServlet}?#{webNavigationManager.identifierParameterName}=#{cc.attrs.identifier}"/>
         
         <!--param value="transparent" name="wmode"/-->
         <!--object type="#{cc.value.type}" data="#{fileUrl}" height="#{cc.attrs.height}" width="#{cc.attrs.width}"

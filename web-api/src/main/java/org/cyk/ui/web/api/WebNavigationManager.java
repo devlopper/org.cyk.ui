@@ -680,6 +680,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		businessEntityInfos.getUserInterface().setSelectManyViewId(outcomeDynamicSelectMany);
 	}
 	
+	public String getIdentifierParameterName(){
+		return UniformResourceLocatorParameter.IDENTIFIABLE;
+	}
+	
 	/**/
 	
 	public interface Listener<USER_SESSION extends AbstractWebUserSession<?,?>> {

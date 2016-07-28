@@ -298,8 +298,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass,String name,HttpServletRequest request){
 		Collection<Long> identifiers = decodeIdentifiersRequestParameter(name, request);
-		@SuppressWarnings("unchecked")
-		TypedBusiness<IDENTIFIABLE> business = (TypedBusiness<IDENTIFIABLE>) BusinessLocator.getInstance().locate(identifiableClass);
+		TypedBusiness<IDENTIFIABLE> business = BusinessLocator.getInstance().locate(identifiableClass);
 		return business.findByIdentifiers(identifiers);
 	}
 	
@@ -393,6 +392,12 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	public Crud getCrudFromRequestParameter(){
 		return getCrudFromRequestParameter(Faces.getRequest());
+	}
+	
+	/**/
+	
+	public String getIdentifierParameterName(){
+		return UniformResourceLocatorParameter.IDENTIFIABLE;
 	}
 	
 }
