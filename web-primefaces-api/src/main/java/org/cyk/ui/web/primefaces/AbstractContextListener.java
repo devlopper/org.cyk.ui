@@ -87,7 +87,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	@Inject protected DefaultDesktopLayoutManager layoutManager;
 	@Inject protected PrimefacesManager primefacesManager;
  
-	@Override
+	@Override 
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		layoutManager.setLogoPath(stringContextParameter(ContextParam.LOGO_PATH, event,layoutManager.getLogoPath()));
