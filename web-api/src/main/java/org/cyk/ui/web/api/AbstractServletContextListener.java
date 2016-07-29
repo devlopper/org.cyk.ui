@@ -139,7 +139,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	}
 	
 	protected void mobileViewMapping(){
-		webNavigationManager.mapMobileView("/private/__tools__/event/list", "/private/__tools__/event/agenda");
+		webNavigationManager.mapMobileView("/private/__dynamic__/event/list", "/private/__dynamic__/event/agenda");
 	}
 		
 	protected void identifiableConfiguration(ServletContextEvent event){}
@@ -296,24 +296,24 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		BusinessEntityInfos businessEntityInfos = uiManager.businessEntityInfos(aClass);
 		String classIdentifier = businessEntityInfos.getIdentifier();
 		if(Boolean.TRUE.equals(list)){
-			addUrl(roleCode,WebNavigationManager.PAGE_CRUD_MANY,UniformResourceLocatorParameter.CLASS,classIdentifier);
+			addUrl(roleCode,UniformResourceLocator.DYNAMIC_CRUD_MANY,UniformResourceLocatorParameter.CLASS,classIdentifier);
 		}
 		for(Crud crud : cruds){
 			switch(crud){ 
 			case CREATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+				addUrl(roleCode,UniformResourceLocator.DYNAMIC_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
 						,UniformResourceLocatorParameter.CRUD_CREATE);
 				break;
 			case READ:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+				addUrl(roleCode,UniformResourceLocator.DYNAMIC_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
 						,UniformResourceLocatorParameter.CRUD_READ);
 				break;
 			case UPDATE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+				addUrl(roleCode,UniformResourceLocator.DYNAMIC_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
 						,UniformResourceLocatorParameter.CRUD_UPDATE);
 				break;
 			case DELETE:
-				addUrl(roleCode,WebNavigationManager.PAGE_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
+				addUrl(roleCode,UniformResourceLocator.DYNAMIC_CRUD_ONE,UniformResourceLocatorParameter.CLASS,aClass,UniformResourceLocatorParameter.CRUD
 						,UniformResourceLocatorParameter.CRUD_DELETE);
 				break;
 			}
@@ -331,16 +331,16 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	}
 	
 	protected void addReportUrl(String roleCode,Class<? extends AbstractIdentifiable> aClass,Boolean dynamic,Object...parameters){
-		addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()+"/private/__tools__/export/report.jsf")
+		addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()+UniformResourceLocator.EXPORT_FILE)
 				//.addAnyInstanceOf(aClass)
 				.addClassParameter(aClass)
 				.addParameters(parameters));
 		if(Boolean.TRUE.equals(dynamic)){
 			addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()
-					+"/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
+					+UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER).addClassParameter(aClass).addParameters(parameters));	
 		}else{
 			addUrl(roleCode,UniformResourceLocator.Builder.instanciateOne().setAddress(servletContext.getContextPath()
-					+"/private/__tools__/export/_cyk_report_/_business_/_jasper_/").addClassParameter(aClass).addParameters(parameters));	
+					+UniformResourceLocator.EXPORT_FILE_JASPER).addClassParameter(aClass).addParameters(parameters));	
 		}
 		
 		
@@ -350,30 +350,4 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		addReportUrl(roleCode, aClass, Boolean.TRUE, parameters);
 	}
 	
-	//TODO to be moved to business
-	/*
-	public static Collection<UniformResourceLocator> getUrls(UserAccount userAccount){
-		if(userAccount.getRoles().contains(RootBusinessLayer.getInstance().getManagerRole()))
-			return null;
-		Collection<UniformResourceLocator> uniformResourceLocators = USER_ACCOUNT_UNIFORM_RESOURCE_LOCATOR_MAP.get(userAccount.getIdentifier());
-		if(uniformResourceLocators==null){
-			uniformResourceLocators=new ArrayList<>();
-			for(Role role : userAccount.getRoles()){
-				for(Entry<String, Collection<UniformResourceLocator>> entry : ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.entrySet()){
-					if(entry.getKey().equals(role.getCode()) && entry.getValue()!=null){
-						uniformResourceLocators.addAll(entry.getValue());
-					}
-				}
-			}
-		}else{
-			
-		}
-		return uniformResourceLocators;
-	}
-	
-	public static Collection<UniformResourceLocator> getUrls(){
-		return ROLE_UNIFORM_RESOURCE_LOCATOR_MAP.get(RootBusinessLayer.getInstance().getUserRole().getCode());
-	}
-	*/
-
 }

@@ -29,6 +29,7 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
@@ -89,9 +90,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public static final String MOBILE_PAGE_OUTCOME_FORMAT = "pm:%s?transition=%s&reverse=%s";
 	public static final String MOBILE_PAGE_TRANSITION="flip";
 	public static final Boolean MOBILE_PAGE_REVERSE=Boolean.TRUE;
-	public static final String PAGE_CRUD_MANY = "/private/__tools__/crud/crudmany.jsf";
-	public static final String PAGE_CRUD_ONE = "/private/__tools__/crud/crudone.jsf";
-	public static final String PAGE_SELECT = "/private/__tools__/select.jsf";
 	
 	/**
 	 * 
@@ -134,9 +132,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	@Getter private String outcomeReferenceEntity = "referenceentity";
 	@Getter private String outcomeSecurity = "security";
-	@Getter private String outcomeUserAccounts = "useraccounts";
-	@Getter private String outcomeUserAccountCrudOne = "useraccountcrudone";
-	@Getter private String outcomeUserAccountConsult = "useraccountconsult";
 	@Getter private String outcomeUserAccountChangePassword = "useraccountchangepassword";
 	@Getter private String outcomeEventCrudOne = "eventCrudOne";
 	@Getter private String outcomeEventList = "eventlist";
@@ -155,7 +150,6 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String pathImageServlet = ImageServlet.PATH;
 	
 	@Inject private NavigationHelper navigationHelper;
-	@Inject private WebManager webManager;
 	@Inject private UIManager uiManager;
 	@Inject private RoleManager roleManager;
 	
@@ -347,7 +341,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(aClass)
 				,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension
 				,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print),
-				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.URL, UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
@@ -356,7 +350,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				UniformResourceLocatorParameter.CLASS,uiManager.keyFromClass(aClass)
 				,UniformResourceLocatorParameter.FILE_EXTENSION,fileExtension
 				,UniformResourceLocatorParameter.PRINT,Boolean.TRUE.equals(print),
-				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.URL, UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER
 			},Boolean.FALSE,Boolean.FALSE);
 	}
 	
@@ -478,14 +472,14 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public void redirectToExportDataTableToPdf(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToPdf,new Object[]{
 				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
-				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.URL, UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER
 		});
 	}
 	
 	public void redirectToExportDataTableToXls(Class<? extends AbstractIdentifiable> dataClass){
 		redirectTo(outcomeToolsExportDataTableToXls,new Object[]{
 				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
-				UniformResourceLocatorParameter.URL, webManager.getReportDataTableServletUrl()
+				UniformResourceLocatorParameter.URL, UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER
 		});
 	}
 	
@@ -682,6 +676,13 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	public String getIdentifierParameterName(){
 		return UniformResourceLocatorParameter.IDENTIFIABLE;
+	}
+	
+	public String getDynamicExportFileJasper(){
+		return UniformResourceLocator.DYNAMIC_EXPORT_FILE_JASPER;
+	}
+	public String getExportFileJasper(){
+		return UniformResourceLocator.EXPORT_FILE_JASPER;
 	}
 	
 	/**/

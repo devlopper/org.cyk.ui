@@ -22,7 +22,7 @@
 		
 		<navigation-case>
 			<from-outcome>administratorindex</from-outcome>
-			<to-view-id>/private/__role__/__administrator__/index.xhtml</to-view-id>
+			<to-view-id>/private/administrator.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
@@ -34,27 +34,27 @@
 		
 		<navigation-case>
 			<from-outcome>dynamicCrudOne</from-outcome>
-			<to-view-id>/private/__tools__/crud/crudone.xhtml</to-view-id>
+			<to-view-id>/private/__dynamic__/crud/crudone.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>dynamicCrudMany</from-outcome>
-			<to-view-id>/private/__tools__/crud/crudmany.xhtml</to-view-id>
+			<to-view-id>/private/__dynamic__/crud/crudmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>dynamicSelectOne</from-outcome>
-			<to-view-id>/private/__tools__/selectone.xhtml</to-view-id>
+			<to-view-id>/private/__dynamic__/select/selectone.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>dynamicSelectMany</from-outcome>
-			<to-view-id>/private/__tools__/selectmany.xhtml</to-view-id>
+			<to-view-id>/private/__dynamic__/select/selectmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>dynamicProcessMany</from-outcome>
-			<to-view-id>/private/__tools__/processmany.xhtml</to-view-id>
+			<to-view-id>/private/__dynamic__/process/processmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

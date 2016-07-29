@@ -8,14 +8,19 @@
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
 			<from-outcome>personEditView</from-outcome>
-			<to-view-id>/private/party/person/editperson.jsf</to-view-id>
+			<to-view-id>/private/party/person/edit.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
-		<!--navigation-case>
+		<navigation-case>
 			<from-outcome>personListView</from-outcome>
-			<to-view-id>/private/party/person/listperson.jsf</to-view-id>
+			<to-view-id>/private/party/person/list.jsf</to-view-id>
 			<redirect />
-		</navigation-case-->
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personConsultView</from-outcome>
+			<to-view-id>/private/party/person/consult.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>editMedicalInformations</from-outcome>

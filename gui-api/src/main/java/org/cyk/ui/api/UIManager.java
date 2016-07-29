@@ -35,13 +35,8 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
-import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
-import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
-import org.cyk.ui.api.model.party.DefaultPersonOutputDetails;
-import org.cyk.ui.api.model.party.PersonEditManyForm;
-import org.cyk.ui.api.model.party.PersonQueryManyFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
@@ -135,8 +130,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			registerClassKey(entry.getValue());
 		}
 		
-		IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonOutputDetails.class,null,PersonEditManyForm.class,PersonQueryManyFormModel.class);
-		registerConfiguration(configuration);
+		//IdentifiableConfiguration configuration = new IdentifiableConfiguration(Person.class,DefaultPersonEditFormModel.class,DefaultPersonOutputDetails.class,null,PersonEditManyForm.class,PersonQueryManyFormModel.class);
+		//registerConfiguration(configuration);
 		
 		collectionLoadMethod = new CollectionLoadMethod() {
 			private static final long serialVersionUID = -4679710339375267115L;

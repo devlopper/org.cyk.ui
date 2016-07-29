@@ -9,10 +9,8 @@ public class Test {
 	public static void main(String[] args) {
 		List<String> list = new ArrayList<>();
 		list.add("/login=user");
-		list.add("/private/__role__/__administrator__/**=user");
 		list.add("/private/__role__/__manager__/**=user");
 		list.add("/private/__role__/__businessactor__/**=user");
-		list.add("/private/__role__/__settingmanager__/**=user");
 		list.add("/private/__role__/__securitymanager__/**=user");
 		list.add("/private/**=user");
 		list.add("/private/__role__/__salemanager__/**=user");

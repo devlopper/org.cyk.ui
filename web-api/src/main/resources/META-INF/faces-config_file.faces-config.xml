@@ -50,12 +50,12 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>exportdatatableservlet</from-outcome>
-			<to-view-id>/private/__tools__/export/_cyk_report_/_dynamicbuilder_/_jasper_/</to-view-id>
+			<to-view-id>#{webNavigationManager.dynamicExportFileJasper}</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>report</from-outcome>
-			<to-view-id>/private/__tools__/export/_cyk_report_/_business_/_jasper_/</to-view-id>
+			<to-view-id>#{webNavigationManager.exportFileJasper}</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

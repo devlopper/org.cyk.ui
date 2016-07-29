@@ -9,7 +9,7 @@
 		
 		<navigation-case>
 			<from-outcome>security</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/index.jsf</to-view-id>
+			<to-view-id>/private/security/index.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		
@@ -31,68 +31,45 @@
 		
 		<navigation-case>
 			<from-outcome>roleListView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/role/list.xhtml</to-view-id>
+			<to-view-id>/private/security/role/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>roleEditView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/role/edit.xhtml</to-view-id>
+			<to-view-id>/private/security/role/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>roleConsultView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/role/consult.xhtml</to-view-id>
+			<to-view-id>/private/security/role/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>userAccountListView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/useraccount/list.xhtml</to-view-id>
+			<to-view-id>/private/security/useraccount/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>userAccountEditView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/useraccount/edit.xhtml</to-view-id>
+			<to-view-id>/private/security/useraccount/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>userAccountConsultView</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/useraccount/consult.xhtml</to-view-id>
+			<to-view-id>/private/security/useraccount/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>useraccounts</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/listuseraccount.jsf</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>useraccountcrudone</from-outcome>
-			<to-view-id>/private/__role__/__securitymanager__/createuseraccount.jsf</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>useraccountconsult</from-outcome>
-			<to-view-id>/private/__role__/__user__/useraccount/consult.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
 		<navigation-case>
 			<from-outcome>useraccountchangepassword</from-outcome>
-			<to-view-id>/private/__role__/__user__/useraccount/changepassword.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<!-- Setting Manager -->
-		<navigation-case>
-			<from-outcome>licenseRead</from-outcome>
-			<to-view-id>/private/__role__/__settingmanager__/readlicense.jsf</to-view-id>
+			<to-view-id>/private/security/useraccount/changepassword.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>useraccountlogout</from-outcome>
-			<to-view-id>/public/__security__/logout.xhtml</to-view-id>
+			<to-view-id>/public/security/logout.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

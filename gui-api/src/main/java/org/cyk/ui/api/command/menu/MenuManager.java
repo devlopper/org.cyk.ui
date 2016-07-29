@@ -147,7 +147,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			break;
 		case HELP:
 			commandableGroup = Builder.instanciateOne().setLabelFromId("command.help").setIcon(Icon.THING_HELP).create();
-			commandableGroup.addChild(Builder.instanciateOne().setLabelFromId("license").setIcon(Icon.THING_LIST).setView(ViewType.LICENCE_READ).create());
+			//commandableGroup.addChild(Builder.instanciateOne().setLabelFromId("license").setIcon(Icon.THING_LIST).setView(ViewType.LICENCE_READ).create());
 			break;
 		case REPORT:
 			commandableGroup = Builder.instanciateOne().setLabelFromId("command.report").setIcon(Icon.THING_REPORT).create();

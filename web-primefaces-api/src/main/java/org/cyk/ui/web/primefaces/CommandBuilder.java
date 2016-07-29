@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
@@ -73,20 +74,13 @@ public class CommandBuilder implements Serializable {
 						break;
 					case DYNAMIC_CRUD_MANY:menuItem.setOutcome(navigationManager.getOutcomeDynamicCrudMany());break;
 					case USERACCOUNT_LOGOUT:menuItem.setOutcome(navigationManager.getOutcomeLogout());break;
-					case LICENCE_READ:menuItem.setOutcome(navigationManager.getOutcomeLicenseRead());break;
 					case TOOLS_AGENDA:menuItem.setOutcome(navigationManager.getOutcomeToolsCalendar());break;
-					//case TOOLS_EXPORT_DATA_TABLE_TO_PDF:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToPdf());break;
-					//case TOOLS_EXPORT_DATA_TABLE_TO_XLS:menuItem.setOutcome(navigationManager.getOutcomeToolsExportDataTableToXls());break;
 					case TOOLS_REPORT:menuItem.setOutcome(navigationManager.getOutcomeToolsReport());break;
 					case TOOLS_PRINT_DATA_TABLE:menuItem.setOutcome(navigationManager.getOutcomeToolsPrintDataTable());break;
 					
 					case MODULE_REFERENCE_ENTITY:menuItem.setOutcome(navigationManager.getOutcomeReferenceEntity());break;
 					case MODULE_SECURITY:menuItem.setOutcome(navigationManager.getOutcomeSecurity());break;
-					case USER_ACCOUNTS:menuItem.setOutcome(navigationManager.getOutcomeUserAccounts());break;
-					case USER_ACCOUNT_CRUD_ONE:menuItem.setOutcome(navigationManager.getOutcomeUserAccountCrudOne());break;
-					case USER_ACCOUNT_CONSULT:
-						menuItem.setOutcome(navigationManager.getOutcomeUserAccountConsult());
-						break;
+					case USER_ACCOUNT_LIST:menuItem.setOutcome(UIManager.getInstance().businessEntityInfos(UserAccount.class).getUserInterface().getListViewId());break;
 					case USER_ACCOUNT_CHANGE_PASSWORD:
 						menuItem.setOutcome(navigationManager.getOutcomeUserAccountChangePassword());
 						break;

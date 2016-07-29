@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page.crud;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,11 +11,13 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
@@ -36,6 +39,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 
 	private static final long serialVersionUID = 9040359120893077422L;
 	
+	protected FormOneData<? extends AbstractOutputDetails<IDENTIFIABLE>> details;
 	protected Comments comments;
 	protected FileIdentifiableGlobalIdentifiers fileIdentifiableGlobalIdentifiers;
 	@SuppressWarnings("rawtypes")
@@ -50,6 +54,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		
 		consultInitialisation();
 		
+		
+	
 		comments = new Comments(this, CommentDetails.class,identifiable);
 		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, FileIdentifiableGlobalIdentifierDetails.class,identifiable);
 		
@@ -68,7 +74,33 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		}
 	}
 	
-	protected void consultInitialisation(){}
+	@SuppressWarnings("unchecked")
+	protected void consultInitialisation(){
+		details = createDetailsForm(getDetailsClass(), identifiable, new DetailsConfigurationListener.Form.Adapter<IDENTIFIABLE,AbstractOutputDetails<IDENTIFIABLE>>(
+				(Class<IDENTIFIABLE>) identifiable.getClass(),getDetailsClass()){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Boolean getEnabledInDefaultTab() {
+				return Boolean.TRUE;
+			}
+			
+		});
+		if(details!=null){
+			ControlSetAdapter<AbstractOutputDetails<IDENTIFIABLE>> adapter = getDetailsControlSetAdapter();
+			if(adapter!=null)
+				details.getControlSetListeners().add(adapter);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Class<AbstractOutputDetails<IDENTIFIABLE>> getDetailsClass(){
+		return (Class<AbstractOutputDetails<IDENTIFIABLE>>) businessEntityInfos.getUserInterface().getDetailsClass();
+	}
+	
+	protected DetailsControlSetAdapter<IDENTIFIABLE> getDetailsControlSetAdapter(){
+		return new DetailsControlSetAdapter<>();
+	}
 	
 	@Override
 	protected void afterInitialisation() {
@@ -149,6 +181,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	
 	/**/
 	
+	
 	public static interface ConsultPageListener<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener<ENTITY> {
 
 		Collection<ConsultPageListener<?>> COLLECTION = new ArrayList<>();
@@ -193,7 +226,16 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 					
 			}
 		}
-		
 	}
 
+	public static class DetailsControlSetAdapter<IDENTIFIABLE extends AbstractIdentifiable> extends ControlSetAdapter<AbstractOutputDetails<IDENTIFIABLE>> {
+		
+		@Override
+		public Boolean build(Field field) {
+			if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE}, field.getName()))
+				return Boolean.FALSE;
+			return super.build(field);
+		}
+		
+	}
 }

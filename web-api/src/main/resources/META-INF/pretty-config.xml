@@ -20,21 +20,21 @@
 	
 	<url-mapping id="expireLicense">
 		<pattern value="/license/expired" />
-		<view-id value="/public/__security__/license/expired.jsf" />
+		<view-id value="/public/security/license/expired.jsf" />
 	</url-mapping> 
 	
 	<url-mapping id="expandLicense">
 		<pattern value="/license/expand" />
-		<view-id value="/__administration__/__security__/license/expand.jsf" />
+		<view-id value="/__administration__/security/license/expand.jsf" />
 	</url-mapping> 
 
 	<url-mapping id="login">
 		<pattern value="/login" />
-		<view-id value="/public/__security__/login.jsf" />
+		<view-id value="/public/security/login.jsf" />
 	</url-mapping>    
 	<url-mapping id="logout">
 		<pattern value="/logout" />
-		<view-id value="/public/__security__/logout.jsf" />
+		<view-id value="/public/security/logout.jsf" />
 	</url-mapping>    
 	
 	<url-mapping id="accessDenied">
@@ -90,16 +90,5 @@
 		<pattern value="/crudonewithfilesupport/#{clazz}/#{crud}" />
 		<view-id value="/private/__dynamic__/crudonewithfilesupport.jsf" />
 	</url-mapping--> 
-	
-	<url-mapping id="exportdata">
-		<pattern value="/export/#{clazz}" />
-		<view-id value="/private/__tools__/exportdata.jsf" />
-	</url-mapping> 
-	
-	<url-mapping id="printdata">
-		<pattern value="/print/#{clazz}" />
-		<view-id value="/private/__tools__/printdata.jsf" />
-	</url-mapping> 
-	
 
 </pretty-config>

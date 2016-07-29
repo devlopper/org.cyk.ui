@@ -73,7 +73,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	}
 	
 	@Override
-	public String getTitle() {
+	protected String buildContentTitle() {
 		return text("view.login.content.title");
 	}
 	

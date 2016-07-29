@@ -34,15 +34,5 @@ public class UserSession extends AbstractWebUserSession<TreeNode,HierarchyNode> 
 		super.__notificationFired__(notification, facesMessage);
 		PrimefacesManager.getInstance().getEventBus().publish(notificationChannel, facesMessage);
 	}
-	 
-	@Override
-	public void showNotifications() {
-		super.showNotifications();
-		
-		//if(StringUtils.endsWith(navigationManager.getRequestUrl(), "/private/__tools__/event/notifications.jsf")){
-			//navigationManager.redirectTo(navigationManager.getOutcomeNotifications());
-			//RequestContext.getCurrentInstance().execute("updateNotifications();");
-		//}
-	}
 
 }
