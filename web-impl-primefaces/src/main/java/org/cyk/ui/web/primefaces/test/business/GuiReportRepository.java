@@ -14,7 +14,6 @@ import org.cyk.system.root.model.file.report.ReportBasedOnDynamicBuilder;
 import org.cyk.system.root.model.file.report.ReportBasedOnDynamicBuilderIdentifiableConfiguration;
 import org.cyk.system.root.model.file.report.ReportBasedOnDynamicBuilderParameters;
 import org.cyk.system.root.model.party.person.AbstractActor;
-import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -41,7 +40,7 @@ public class GuiReportRepository extends AbstractReportRepository implements Ser
         	}
         });
 		
-		addConfiguration(new ReportBasedOnDynamicBuilderIdentifiableConfiguration<AbstractIdentifiable, Object>(
+		/*addConfiguration(new ReportBasedOnDynamicBuilderIdentifiableConfiguration<AbstractIdentifiable, Object>(
 	    		RootBusinessLayer.getInstance().getParameterGenericReportBasedOnDynamicBuilder(),Actor.class,DefaultActorOutputDetails.class) {
 			private static final long serialVersionUID = -1966207854828857772L;
 			@Override
@@ -56,7 +55,7 @@ public class GuiReportRepository extends AbstractReportRepository implements Ser
 			public Collection<? extends AbstractIdentifiable> identifiables(ReportBasedOnDynamicBuilderParameters<Object> parameters) {
 				return actorBusiness.findAll();
 			}
-		});
+		});*/
 	}
 	
 	private static GuiReportRepository INSTANCE;

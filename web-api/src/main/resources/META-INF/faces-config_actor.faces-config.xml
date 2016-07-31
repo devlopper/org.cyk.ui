@@ -7,11 +7,20 @@
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
-			<from-outcome>actorConsultView</from-outcome>
-			<to-view-id>/private/party/person/actor/consult.jsf</to-view-id>
+			<from-outcome>anyActorTypeListView</from-outcome>
+			<to-view-id>/private/party/person/actor/anytype/list.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
-		
+		<navigation-case>
+			<from-outcome>anyActorTypeConsultView</from-outcome>
+			<to-view-id>/private/party/person/actor/anytype/consult.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>anyActorTypeEditView</from-outcome>
+			<to-view-id>/private/party/person/actor/anytype/edit.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 	
 	</navigation-rule>
 

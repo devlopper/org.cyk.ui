@@ -79,8 +79,9 @@ public class UIProvider extends AbstractBean implements Serializable {
 	public Boolean isImage(Object data,Field field){
 		org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
 		Object value = commonUtils.readField(data, field, Boolean.FALSE);
-		if(value instanceof File)
+		if(value instanceof File){
 			return RootBusinessLayer.getInstance().getFileBusiness().isImage((File) value);
+		}
 		return annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]);
 	}
 	

@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
@@ -14,6 +13,8 @@ import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.business.impl.party.ApplicationDetails;
+import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
+import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
@@ -39,28 +40,20 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.EnumerationForm;
-import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
-import org.cyk.ui.api.model.geography.ContactDetails;
 import org.cyk.ui.api.model.geography.LocalityForm;
 import org.cyk.ui.api.model.geography.LocalityTypeForm;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryManyFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryOneFormModel;
-import org.cyk.ui.api.model.party.DefaultActorOutputDetails;
-import org.cyk.ui.api.model.party.DefaultPersonEditFormModel;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
-import org.cyk.ui.web.api.WebNavigationManager;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.FileEditPage;
-import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.file.DefaultReportBasedOnDynamicBuilderServletAdapter;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifierEditPage;
@@ -69,11 +62,14 @@ import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEdit
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPage;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudManyPageAdapter;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudOnePageAdapter;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorListPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractPersonEditPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractPersonListPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
+import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
@@ -99,27 +95,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(File.class, null);
 		
-		//OutputDetailsConfiguration outputDetailsConfiguration;
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Person.class, PersonEditPage.Form.class, PersonDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Person.class, null);
 		
-		registerOutputDetailsConfiguration(AbstractActorConsultPage.MainDetails.class,DefaultPersonEditFormModel.FIELD_TITLE,DefaultPersonEditFormModel.FIELD_NAME
-				,DefaultPersonEditFormModel.FIELD_LAST_NAME,DefaultPersonEditFormModel.FIELD_IMAGE,DefaultPersonEditFormModel.FIELD_BIRTH_DATE
-				,DefaultPersonEditFormModel.FIELD_BIRTH_LOCATION,DefaultPersonEditFormModel.FIELD_SEX,DefaultPersonEditFormModel.FIELD_NATIONALITY);
-		
-		registerOutputDetailsConfiguration(ContactDetails.class, ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER
-				,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL
-				,ContactCollectionEditFormModel.FIELD_HOME_LOCATION,ContactCollectionEditFormModel.FIELD_POSTALBOX);
-		
-		/*
-		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.MedicalDetails.class);
-		outputDetailsConfiguration.setUiEditViewId(webNavigationManager.getOutcomeEditActorMedicalInformations());
-		
-		outputDetailsConfiguration = registerOutputDetailsConfiguration(ConsultActorPage.RelationshipDetails.class);
-		outputDetailsConfiguration.setUiEditViewId(webNavigationManager.getOutcomeEditActorRelationship());
-		
-		registerOutputDetailsConfiguration(ConsultActorPage.JobDetails.class,DefaultPersonEditFormModel.FIELD_COMPANY,DefaultPersonEditFormModel.FIELD_JOB_TITLE
-				,DefaultPersonEditFormModel.FIELD_JOB_FUNCTION,DefaultPersonEditFormModel.FIELD_JOB_CONTACTS);
-		*/
-	
 		IdentifiableConfiguration identifiableConfiguration;
 		
 		uiManager.registerConfiguration(identifiableConfiguration = new IdentifiableConfiguration(AbstractDataTree.class, AbstractDataTreeForm.Default.class, AbstractDataTreeForm.Default.class,null,null,null));
@@ -169,6 +147,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(FileIdentifiableGlobalIdentifier.class, null);
 		
 		ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<Person>(Person.class));
+		BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractPersonListPage.AbstractPersonListPageAdapter.Default());
+		BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractActorListPage.AbstractActorListPageAdapter.Default());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractPersonEditPage.AbstractPageAdapter.Default<Person>(Person.class));
 	}
 	
 	@Override
@@ -192,19 +173,23 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		IdentifiableConfiguration configuration = new IdentifiableConfiguration(actorClass,getEditFormModelClass(actorClass),getReadFormModelClass(actorClass)
 				,getQueryOneFormModelClass(actorClass),null,getQueryManyFormModelClass(actorClass));
 		uiManager.registerConfiguration(configuration);
-		uiManager.businessEntityInfos(actorClass).getUserInterface().setConsultViewId("actorConsultView");
+		
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setConsultViewId(webNavigationManager.getOutcomeAnyActorTypeConsult());
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setListViewId(webNavigationManager.getOutcomeAnyActorTypeList());
+		uiManager.businessEntityInfos(actorClass).getUserInterface().setEditViewId(webNavigationManager.getOutcomeAnyActorTypeEdit());
+		
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());
 		
-		AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.COLLECTION.add(getActorCrudOnePageAdapter(actorClass));
-		AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.COLLECTION.add(getActorCrudManyPageAdapter(actorClass));
-		AbstractConsultPage.ConsultPageListener.COLLECTION.add(getActorConsultPageAdapter(actorClass));
+		//AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.COLLECTION.add(getActorCrudOnePageAdapter(actorClass));
+		//AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.COLLECTION.add(getActorCrudManyPageAdapter(actorClass));
+		//AbstractConsultPage.ConsultPageListener.COLLECTION.add(getActorConsultPageAdapter(actorClass));
 		
-		logInfo("Actor {} forms registered", actorClass.getSimpleName());
+		//logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
 	
-	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
-		return new AbstractActorCrudOnePageAdapter.Default<ACTOR>(actorClass);
+	protected <ACTOR extends AbstractActor> AbstractActorEditPage.AbstractPageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
+		return new AbstractActorEditPage.AbstractPageAdapter.Default<ACTOR>(actorClass);
 	}
 	protected <ACTOR extends AbstractActor> AbstractActorCrudManyPageAdapter<ACTOR> getActorCrudManyPageAdapter(Class<ACTOR> actorClass){
 		return new AbstractActorCrudManyPageAdapter.Default<ACTOR>(actorClass);
@@ -215,13 +200,13 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return AbstractActorEditFormModel.Default.class;
+			return (Class<? extends AbstractFormModel<?>>) AbstractActorEditFormModel.AbstractDefault.Default.class;
 		return null;
 	}
 	
 	protected Class<?> getReadFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return DefaultActorOutputDetails.class;
+			return AbstractActorDetails.AbstractDefault.Default.class;
 		return null;
 	}
 	
@@ -236,17 +221,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 			return AbstractActorQueryManyFormModel.Default.class;
 		return null;
 	}
-	
-	protected OutputDetailsConfiguration registerOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> outputDetailsClass,String...fieldNames){
-		OutputDetailsConfiguration detailsConfiguration = new OutputDetailsConfiguration(outputDetailsClass);
-		//detailsConfiguration.setName(languageBusiness.findText("baseinformations"));
-		detailsConfiguration.setEditFormConfiguration(new FormConfiguration(FormConfiguration.TYPE_INPUT_SET_DEFAULT));
-		detailsConfiguration.getEditFormConfiguration().addFieldNames(fieldNames);
-		detailsConfiguration.setUiEditViewId(WebNavigationManager.getInstance().getOutcomeDynamicCrudOne());
-		uiManager.registerOutputDetailsConfiguration(detailsConfiguration);
-		return detailsConfiguration;
-	}
-
 	
 	protected void businessAdapters(ServletContextEvent event) {
 		

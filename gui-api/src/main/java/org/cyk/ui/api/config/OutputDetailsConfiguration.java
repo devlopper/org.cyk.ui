@@ -9,7 +9,7 @@ import org.cyk.system.root.model.Clazz;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 
-@Getter @Setter
+@Getter @Setter @Deprecated
 public class OutputDetailsConfiguration extends Clazz implements Serializable {
 
 	private static final long serialVersionUID = 524804677149804204L;

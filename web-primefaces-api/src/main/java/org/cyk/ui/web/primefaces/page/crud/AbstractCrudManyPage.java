@@ -98,6 +98,13 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			}
 		});	
 		
+		rowAdapter.setOpenable(Boolean.TRUE);
+		rowAdapter.setUpdatable(Boolean.TRUE);
+		rowAdapter.setDeletable(Boolean.TRUE);
+		table.setShowHeader(Boolean.TRUE);
+		table.setShowToolBar(Boolean.TRUE);
+		table.setShowOpenCommand(Boolean.TRUE);
+		
 		//onDocumentLoadJavaScript = "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();"
 		//		+ "$('.dataTableStyleClass > .ui-datatable-header').hide();";
 	}

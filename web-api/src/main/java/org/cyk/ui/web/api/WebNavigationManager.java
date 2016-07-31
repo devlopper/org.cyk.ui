@@ -121,6 +121,9 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeDynamicSelectOne = "dynamicSelectOne";
 	@Getter private String outcomeDynamicSelectMany = "dynamicSelectMany";
 	@Getter private String outcomeLogout = "useraccountlogout";
+	@Getter private String outcomeAnyActorTypeList = "anyActorTypeListView";
+	@Getter private String outcomeAnyActorTypeConsult = "anyActorTypeConsultView";
+	@Getter private String outcomeAnyActorTypeEdit = "anyActorTypeEditView";
 	@Getter private String outcomeEditActorRelationship = "editActorRelationship";
 	@Getter private String outcomeEditActorMedicalInformations = "editMedicalInformations";
 	

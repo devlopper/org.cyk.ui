@@ -291,6 +291,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		//table.setRendered(listener.getRendered());
 		table.getColumnListeners().add(new Table.ColumnAdapter());//internal should be first
+		table.getColumnListeners().add(PrimefacesManager.getDetailsConfiguration(aClass).getTableColumnAdapter(aClass));
+		
 		configureDetailsTable(aClass,table, listener);
 		//table.getColumnListeners().add(new Table.ColumnAdapter());
 		//buildTable(table);
@@ -422,6 +424,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 
 	public String mobilePageOutcome(String pageId){
 		return navigationManager.mobilePageOutcome(pageId,mobilePageTransition,mobilePageReverse);
+	}
+	
+	protected DetailsConfiguration getDetailsConfiguration(Class<?> detailsClass){
+		return PrimefacesManager.getInstance().getDetailsConfiguration(detailsClass);
 	}
 		
 	/**/

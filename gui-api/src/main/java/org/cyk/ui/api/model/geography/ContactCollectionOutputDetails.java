@@ -11,6 +11,7 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
+@Deprecated
 @Getter @Setter //TODO base class should change
 public class ContactCollectionOutputDetails extends AbstractContactCollectionFormModel implements Serializable {
 

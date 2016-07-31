@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
-public class DefaultActorConsultPage extends AbstractActorConsultPage<AbstractActor> implements Serializable {
+public class AnyActorTypeListPage extends AbstractActorListPage<AbstractActor> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

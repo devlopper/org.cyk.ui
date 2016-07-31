@@ -21,6 +21,16 @@
 			<to-view-id>/private/party/person/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>personSelectOneView</from-outcome>
+			<to-view-id>/private/party/person/selectone.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personSelectManyView</from-outcome>
+			<to-view-id>/private/party/person/selectmany.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>editMedicalInformations</from-outcome>

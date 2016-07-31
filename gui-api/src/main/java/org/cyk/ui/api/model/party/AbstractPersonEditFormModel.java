@@ -3,14 +3,12 @@ package org.cyk.ui.api.model.party;
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
+import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.BloodGroup;
 import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobInformations;
@@ -34,17 +32,22 @@ import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter @Setter @NoArgsConstructor
-public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Person>  implements Serializable {
+public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentifiable> extends AbstractPartyEditFormModel<PERSON>  implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@Input @InputChoice @InputOneChoice @InputOneCombo private PersonTitle title;
-	@Input @InputText private String lastName;
+	@Input @InputText private String lastnames;
 	@Input @InputText private String surname;
+	@Input @InputChoice @InputOneChoice @InputOneCombo private Sex sex;
+	@Input @InputChoice @InputOneChoice @InputOneCombo private PersonTitle title;
 	@Input @InputCalendar private Date birthDate;
 	@Input @InputText private String birthLocation;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private Sex sex;
+	
 	@Input @InputChoice @InputOneChoice @InputOneCombo private MaritalStatus maritalStatus;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private Country nationality;
 	
@@ -58,10 +61,16 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	
+	protected abstract Person getPerson();
+	
+	protected Party getParty(){
+		return getPerson();
+	}
+	
 	@Override
 	public void write() {
 		super.write();
-		//identifiable.setSurname(surname);
+		getPerson().setSurname(surname);
 		//identifiable.setBirthDate(birthDate);
 		if(title!=null)
 			getExtendedInformations(Boolean.TRUE).setTitle(title);
@@ -99,35 +108,35 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	}
 	
 	private PersonExtendedInformations getExtendedInformations(Boolean createIfNull){
-		PersonExtendedInformations personExtendedInformations = identifiable.getExtendedInformations();
+		PersonExtendedInformations personExtendedInformations = getPerson().getExtendedInformations();
 		if(personExtendedInformations==null)
 			if(Boolean.TRUE.equals(createIfNull))
-				personExtendedInformations = new PersonExtendedInformations(identifiable);
-		identifiable.setExtendedInformations(personExtendedInformations);
+				personExtendedInformations = new PersonExtendedInformations(getPerson());
+		getPerson().setExtendedInformations(personExtendedInformations);
 		return personExtendedInformations;
 	}
 	
 	private JobInformations getJobInformations(Boolean createIfNull){
-		JobInformations jobInformations = identifiable.getJobInformations();
+		JobInformations jobInformations = getPerson().getJobInformations();
 		if(jobInformations==null)
 			if(Boolean.TRUE.equals(createIfNull))
-				jobInformations = new JobInformations(identifiable);
-		identifiable.setJobInformations(jobInformations);
+				jobInformations = new JobInformations(getPerson());
+		getPerson().setJobInformations(jobInformations);
 		return jobInformations;
 	}
 	
 	@Override
 	public void read() {
 		super.read();
-		if(identifiable.getExtendedInformations()!=null){
-			if(identifiable.getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = identifiable.getExtendedInformations().getBirthLocation().getComment();
-			title = identifiable.getExtendedInformations().getTitle();
-			signatureSpecimen = identifiable.getExtendedInformations().getSignatureSpecimen();
+		if(getPerson().getExtendedInformations()!=null){
+			if(getPerson().getExtendedInformations().getBirthLocation()!=null)
+				birthLocation = getPerson().getExtendedInformations().getBirthLocation().getComment();
+			title = getPerson().getExtendedInformations().getTitle();
+			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
 		}
-		if(identifiable.getJobInformations()!=null){
-			jobFunction = identifiable.getJobInformations().getFunction();
-			jobTitle = identifiable.getJobInformations().getTitle();
+		if(getPerson().getJobInformations()!=null){
+			jobFunction = getPerson().getJobInformations().getFunction();
+			jobTitle = getPerson().getJobInformations().getTitle();
 		}
 	}
 	
@@ -139,13 +148,35 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	}
 	
 	@Override @Sequence(direction=Direction.AFTER,field=FIELD_IMAGE)
-	public ContactCollectionEditFormModel getContactCollectionFormModel() {
-		return super.getContactCollectionFormModel();
+	public ContactCollectionEditFormModel getContactCollection() {
+		return super.getContactCollection();
 	}
 	
 	/**/
 	
-	public static final String FIELD_LAST_NAME = "lastName";
+	@Getter @Setter
+	public static abstract class AbstractDefault<PERSON extends Person> extends AbstractPersonEditFormModel<PERSON>  implements Serializable {
+
+		private static final long serialVersionUID = -3897201743383535836L;
+	
+		@Override
+		protected Person getPerson() {
+			return identifiable;
+		}
+		
+		/**/
+		
+		@Getter @Setter
+		public static class Default<PERSON extends Person> extends AbstractDefault<PERSON>  implements Serializable {
+
+			private static final long serialVersionUID = -3897201743383535836L;
+				
+		}
+	}
+	
+	/**/
+	
+	public static final String FIELD_LAST_NAMES = "lastnames";
 	public static final String FIELD_BIRTH_DATE = "birthDate";
 	public static final String FIELD_BIRTH_LOCATION = "birthLocation";
 	public static final String FIELD_SURNAME = "surname";
@@ -168,9 +199,5 @@ public class DefaultPersonEditFormModel extends AbstractPartyEditFormModel<Perso
 	public static final String FIELD_JOB_CONTACTS = "jobContacts";
 	
 	/**/
-	
-	public static final String TAB_PERSON_ID = "person";
-	public static final String TAB_SIGNATURE_ID = "signature";
-	public static final String TAB_JOB_ID = "job";
 	
 }

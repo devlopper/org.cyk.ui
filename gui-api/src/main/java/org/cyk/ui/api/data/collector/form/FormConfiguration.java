@@ -2,6 +2,7 @@ package org.cyk.ui.api.data.collector.form;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,8 +28,12 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	public FormConfiguration addFieldNames(String...names){
 		if(fieldNames==null)
 			fieldNames = new LinkedHashSet<>();
-		if(names!=null)
-			fieldNames.addAll(Arrays.asList(names));
+		if(names!=null){
+			Collection<String> collection = Arrays.asList(names);
+			fieldNames.addAll(collection);
+			if(excludedFieldNames!=null)
+				excludedFieldNames.removeAll(collection);
+		}
 		return this;
 	}
 	

@@ -23,6 +23,7 @@ import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -46,6 +47,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	public AbstractFormOneData() {
 		submitCommandable = Builder.instanciateOne().setLabelFromId("command.save").setCommandListener(this).setIcon(Icon.ACTION_SAVE)
 				.setEventListener(EventListener.NONE).setProcessGroup(ProcessGroup.FORM).create();
+	}
+	
+	public void addControlSetListener(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener){
+		if(listener!=null)
+			controlSetListeners.add(listener);
 	}
 	
 	@Override
@@ -107,22 +113,34 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners)
 			listener.sort(fields);
 		for(Field field : fields){
-			Input input = field.getAnnotation(Input.class);
-			if(input==null){
-				objectFields.add(new ObjectField(data, field));	
-			}else{
-				if( isInput(field, getUserSession()) )
-					objectFields.add(new ObjectField(data, field));	
-			}
-			
-			if(field.getAnnotation(IncludeInputs.class)!=null){
-				Object details = commonUtils.readField(data, field, Boolean.TRUE);
-				try {
-					FieldUtils.writeField(field, data, details, Boolean.TRUE);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+			final Field f = field;
+			if(Boolean.TRUE.equals(listenerUtils.getBoolean(controlSetListeners, new ListenerUtils.BooleanMethod<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>>() {
+				@Override
+				public Boolean execute(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener) {
+					return listener.build(f);
 				}
-				__objectFields__(objectFields,annotations, details);
+				@Override
+				public Boolean getNullValue() {
+					return Boolean.TRUE;
+				}
+			}))){
+				Input input = field.getAnnotation(Input.class);
+				if(input==null){
+					objectFields.add(new ObjectField(data, field));	
+				}else{
+					if( isInput(field, getUserSession()) )
+						objectFields.add(new ObjectField(data, field));	
+				}
+				
+				if(field.getAnnotation(IncludeInputs.class)!=null){
+					Object details = commonUtils.readField(data, field, Boolean.TRUE);
+					try {
+						FieldUtils.writeField(field, data, details, Boolean.TRUE);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+					__objectFields__(objectFields,annotations, details);
+				}
 			}
 		}
 	}

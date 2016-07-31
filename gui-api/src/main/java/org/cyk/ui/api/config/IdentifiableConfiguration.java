@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Clazz;
 import org.cyk.ui.api.UIManager;
@@ -27,7 +28,11 @@ public class IdentifiableConfiguration extends Clazz implements Serializable {
 			,Class<? extends AbstractItemCollectionItem<? extends AbstractIdentifiable>> editManyFormModelClass,Class<?> queryManyFormModelClass) {
 		super(identifiableClass);
 		setForms(editOneFormModelClass, readOneFormModelClass,queryOneFormModelClass,editManyFormModelClass,queryManyFormModelClass);
-		UIManager.getInstance().businessEntityInfos(identifiableClass).getUserInterface().setDetailsClass(readOneFormModelClass);
+		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiableClass);
+		if(businessEntityInfos==null)
+			;
+		else
+			businessEntityInfos.getUserInterface().setDetailsClass(readOneFormModelClass);
 	}
 	
 	public void setForms(Class<? extends AbstractFormModel<? extends AbstractIdentifiable>> editOneFormModelClass,Class<?> readOneFormModelClass,Class<?> queryOneFormModelClass

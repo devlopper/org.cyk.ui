@@ -5,14 +5,20 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
+import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -29,9 +35,11 @@ import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
+import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -53,6 +61,38 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	private static final long serialVersionUID = -3546850417728323300L;
 
 	private static PrimefacesManager INSTANCE;
+	
+	private static final Map<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> DETAILS_CONFIGURATION_MAP = new HashMap<>();
+	private static final DetailsConfiguration DETAILS_CONFIGURATION = new DetailsConfiguration();
+	
+	static {
+		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
+					}
+				};
+			}
+		});
+		registerDetailsConfiguration(AbstractActorDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
+					}
+				};
+			}
+		});
+	}
 	
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
@@ -225,4 +265,19 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		configureProgressBar(commandable, WebManager.getInstance().getProgressBarWidgetId());
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static void registerDetailsConfiguration(Class<?> detailsClass,DetailsConfiguration detailsConfiguration){
+		DETAILS_CONFIGURATION_MAP.put((Class<? extends AbstractOutputDetails<?>>) detailsClass, detailsConfiguration);
+	}
+	
+	public static DetailsConfiguration getDetailsConfiguration(Class<?> detailsClass){
+		// Exact match
+		if(PrimefacesManager.DETAILS_CONFIGURATION_MAP.containsKey(detailsClass))
+			return PrimefacesManager.DETAILS_CONFIGURATION_MAP.get(detailsClass);
+		//Super class match
+		for(Entry<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> entry : DETAILS_CONFIGURATION_MAP.entrySet())
+			if(entry.getKey().isAssignableFrom(detailsClass))
+				return entry.getValue();
+		return DETAILS_CONFIGURATION;
+	}
 }

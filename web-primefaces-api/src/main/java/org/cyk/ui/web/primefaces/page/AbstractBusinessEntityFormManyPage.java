@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
@@ -32,7 +33,6 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -86,14 +86,15 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					row.getCascadeStyleSheet().addClass(css.getClazz());
 					row.getCascadeStyleSheet().addInline(css.getInline());
 				}
-				//AbstractBusinessEntityFormManyPage.this.rowAdded(row);//TODO to be removed. implements listener instead
 			}
 		});
 		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
+				if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE}, field.getName()))
+					return Boolean.FALSE;
 				Input input = field.getAnnotation(Input.class);
-				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);//TODO to be removed. implements listener instead
+				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
 				return input != null || includeInputs!=null;
 			}
 			@Override
@@ -102,14 +103,13 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				column.getCascadeStyleSheet().addClass(
 						column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
 						"-"+column.getField().getName().toLowerCase());
-				//AbstractBusinessEntityFormManyPage.this.columnAdded(column);//TODO to be removed. implements listener instead
 			}
 		});
 		table.getCellListeners().add(cellAdapter = new CellAdapter<Object>(){
 			@Override
 			public void added(Row<Object> row, Column column, Cell cell) {
 				super.added(row, column, cell);
-				//AbstractBusinessEntityFormManyPage.this.cellAdded(row,column,cell);//TODO to be removed. implements listener instead
+				
 			}
 		});
 		
@@ -370,19 +370,32 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
+					FormConfiguration configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
+					configuration.addExcludedFieldNames(AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE);
+				}
+				
+				@Override
+				public Boolean canRedirect(Crud crud, Object data) {
+					return Boolean.TRUE;
+				}
+				
+				@Override
+				public Boolean canRedirectToConsultView(Object data) {
+					return Boolean.TRUE;
 				}
 				
 				@SuppressWarnings({ "unchecked" })
 				@Override
 				public void initialisationEnded(AbstractBean bean) {
 					super.initialisationEnded(bean);
-					final AbstractCrudManyPage<AbstractActor> page = (AbstractCrudManyPage<AbstractActor>) bean;
+					final AbstractBusinessEntityFormManyPage<AbstractActor> page = (AbstractBusinessEntityFormManyPage<AbstractActor>) bean;
 					page.getTable().getColumnListeners().add(new ColumnAdapter(){
-						
 						@Override
 						public Boolean isColumn(Field field) {
 							FormConfiguration configuration = getFormConfiguration(Crud.READ);
-							return configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())?super.isColumn(field):configuration.getFieldNames().contains(field.getName());
+							if(configuration==null || configuration.getFieldNames()==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
+								return super.isColumn(field);
+							return configuration.getFieldNames().contains(field.getName());
 						}
 						
 					});	
