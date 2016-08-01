@@ -9,6 +9,9 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -17,11 +20,9 @@ import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethin
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
-import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -39,10 +40,6 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.omnifaces.util.Faces;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -65,22 +62,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
-		
-		String outputDetailsKey = Faces.getRequestParameter(UniformResourceLocatorParameter.DETAILS);
-		if(StringUtils.isNotBlank(outputDetailsKey)){
-			final OutputDetailsConfiguration configuration = uiManager.getOutputDetailsConfigurationFromKey(outputDetailsKey);
-			if(configuration.getEditFormConfiguration()==null){
-				logTrace("No form edit configuration found for {}", outputDetailsKey);
-			}else{
-				logTrace("Form edit configuration found for {}", outputDetailsKey);
-				form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
-					@Override
-					public Boolean build(Field field) {
-						return configuration.getEditFormConfiguration().getFieldNames().contains(field.getName());
-					}
-				});
-			}
-		}	
 		
 		if(uiManager.isMobileDevice(userDeviceType)){
 			((Commandable)form.getSubmitCommandable()).setUpdate("");
@@ -345,10 +326,13 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 							@Override
 							public Boolean build(Field field) {
 								FormConfiguration configuration = getFormConfiguration(page.getCrud(),page.getSelectedTabId());
-								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames()))
+								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())){
 									return super.build(field);
-								else
+								}else{
+									//System.out.println(configuration.getFieldNames());
 									return configuration.getFieldNames().contains(field.getName());
+								}
+								
 							}
 							
 							@Override

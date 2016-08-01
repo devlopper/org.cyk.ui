@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -15,8 +18,6 @@ import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.web.api.WebNavigationManager;
-
-import lombok.Getter;
 
 public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage.BusinessEntityPrimefacesPageListener<ENTITY> {
 
@@ -107,7 +108,7 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 			FormConfiguration formConfiguration = new FormConfiguration(type);
 			Map<String,FormConfiguration> formMap = formConfigurationMap.get(crud);
 			if(formMap==null)
-				formMap = new HashMap<>();
+				formMap = new LinkedHashMap<>();
 			formMap.put(type==null?FormConfiguration.TYPE_INPUT_SET_DEFAULT:type, formConfiguration);
 			formConfigurationMap.put(crud, formMap);
 			return formConfiguration;

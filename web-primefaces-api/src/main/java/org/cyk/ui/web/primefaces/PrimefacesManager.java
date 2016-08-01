@@ -74,7 +74,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
 					@Override
 					public Boolean build(Field field) {
-						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
+						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_SURNAME,PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
 					}
 				};
 			}

@@ -41,23 +41,22 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@Input @InputText private String lastnames;
-	@Input @InputText private String surname;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private Sex sex;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private PersonTitle title;
-	@Input @InputCalendar private Date birthDate;
-	@Input @InputText private String birthLocation;
+	@Input @InputText protected String lastnames;
+	@Input @InputText protected String surname;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected Sex sex;
+	@Input @InputCalendar protected Date birthDate;
+	@Input @InputText protected String birthLocation;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected MaritalStatus maritalStatus;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected PersonTitle title;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected Country nationality;
 	
-	@Input @InputChoice @InputOneChoice @InputOneCombo private MaritalStatus maritalStatus;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private Country nationality;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected BloodGroup bloodGroup;
+	//@Input @InputText protected String allergicReactionResponse,allergicReactionType;
+	@Input @InputEditor protected String otherMedicalInformations;
 	
-	@Input @InputChoice @InputOneChoice @InputOneCombo private BloodGroup bloodGroup;
-	//@Input @InputText private String allergicReactionResponse,allergicReactionType;
-	@Input @InputEditor private String otherMedicalInformations;
-	
-	@Input @InputText private String company;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private JobTitle jobTitle;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private JobFunction jobFunction;
+	@Input @InputText protected String company;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected JobTitle jobTitle;
+	@Input @InputChoice @InputOneChoice @InputOneCombo protected JobFunction jobFunction;
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	

@@ -21,6 +21,12 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifia
 	
 	protected abstract AbstractActor getActor();
 	
+	@Override
+	public void write() {
+		super.write();
+		getActor().setCode(getPerson().getCode());
+	}
+	
 	/**/
 	
 	@Getter @Setter
