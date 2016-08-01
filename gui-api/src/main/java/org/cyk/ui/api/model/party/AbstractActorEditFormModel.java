@@ -22,9 +22,18 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifia
 	protected abstract AbstractActor getActor();
 	
 	@Override
+	public void setIdentifiable(ACTOR identifiable) {
+		if(identifiable instanceof AbstractActor && ((AbstractActor)identifiable).getPerson()==null)
+			((AbstractActor)identifiable).setPerson(new Person());
+		super.setIdentifiable(identifiable);
+	}
+	
+	@Override
 	public void write() {
 		super.write();
-		getActor().setCode(getPerson().getCode());
+		identifiable.setCode(code);
+		identifiable.setName(name);
+		identifiable.setImage(image);
 	}
 	
 	/**/

@@ -2,11 +2,10 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.party.person.AbstractActor;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.system.root.model.AbstractIdentifiable;
 
 @Getter @Setter
 public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> extends AbstractPersonListPage<ACTOR> implements Serializable {
@@ -25,14 +24,25 @@ public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> 
 		
 		/**/
 		
-		public static class Default extends AbstractActorListPageAdapter<AbstractActor> implements Serializable{
+		public static class AbstractDefault<ACTOR extends AbstractIdentifiable> extends AbstractActorListPageAdapter<ACTOR> implements Serializable{
 
 			private static final long serialVersionUID = -2256223077759190879L;
 
-			public Default() {
-				super(AbstractActor.class);
+			public AbstractDefault(Class<ACTOR> entityTypeClass) {
+				super(entityTypeClass);
 			}
 			
+			/**/
+			
+			public static class Default<ACTOR extends AbstractIdentifiable> extends AbstractDefault<ACTOR> implements Serializable{
+
+				private static final long serialVersionUID = -2256223077759190879L;
+
+				public Default(Class<ACTOR> entityTypeClass) {
+					super(entityTypeClass);
+				}
+				
+			}
 		}
 		
 	}

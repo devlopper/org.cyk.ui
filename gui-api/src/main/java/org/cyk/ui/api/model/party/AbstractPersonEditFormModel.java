@@ -69,7 +69,13 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Override
 	public void write() {
 		super.write();
+		getPerson().setCode(code);
+		getPerson().setName(name);
+		getPerson().setImage(image);
+		getPerson().setLastnames(lastnames);
 		getPerson().setSurname(surname);
+		getPerson().setSex(sex);
+		getPerson().setNationality(nationality);
 		//identifiable.setBirthDate(birthDate);
 		if(title!=null)
 			getExtendedInformations(Boolean.TRUE).setTitle(title);
@@ -104,6 +110,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 				identifiable.getExtendedInformations().setBirthLocation(new Location());
 			identifiable.getExtendedInformations().getBirthLocation().setComment(birthLocation);
 		}*/
+
 	}
 	
 	private PersonExtendedInformations getExtendedInformations(Boolean createIfNull){

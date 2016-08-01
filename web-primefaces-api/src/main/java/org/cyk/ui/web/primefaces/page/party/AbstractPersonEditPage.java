@@ -2,21 +2,18 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
-import org.cyk.ui.api.model.party.AbstractPartyEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable> extends AbstractPartyEditPage<PERSON> implements Serializable {
@@ -43,7 +40,7 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 					,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_TITLE
 					);
 			
-			configuration = getFormConfiguration(Crud.UPDATE, UIManager.getInstance().businessEntityInfos(Person.class).getUserInterface().getLabelId());
+			configuration = getFormConfiguration(Crud.UPDATE, UIManager.getInstance().businessEntityInfos(entityTypeClass).getUserInterface().getLabelId());
 			configuration.addFieldNames(AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_BIRTH_DATE
 					,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_TITLE
 					);

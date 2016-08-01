@@ -34,7 +34,7 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 			super(entityTypeClass);
 			FormConfiguration configuration = createFormConfiguration(Crud.CREATE, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
 			configuration.addRequiredFieldNames(AbstractPartyEditFormModel.FIELD_CODE,AbstractPartyEditFormModel.FIELD_NAME);
-			configuration.addFieldNames(AbstractPartyEditFormModel.FIELD_IMAGE,AbstractPartyEditFormModel.FIELD_CONTACT_COLLECTION);
+			configuration.addFieldNames(AbstractPartyEditFormModel.FIELD_IMAGE);
 			
 			configuration = createFormConfiguration(Crud.UPDATE, UIManager.getInstance().businessEntityInfos(entityTypeClass).getUserInterface().getLabelId());
 			configuration.addRequiredFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME);

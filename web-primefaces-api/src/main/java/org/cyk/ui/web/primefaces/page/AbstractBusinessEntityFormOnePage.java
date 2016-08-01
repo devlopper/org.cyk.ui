@@ -113,7 +113,15 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	
 	@SuppressWarnings("unchecked")
 	protected ENTITY instanciateIdentifiable(){
-		return (ENTITY) newInstance(businessEntityInfos.getClazz());
+		ENTITY entity = null;
+		/*if(businessEntityInfos!=null){
+			TypedBusiness<ENTITY> business = BusinessLocator.getInstance().locate((Class<ENTITY>)businessEntityInfos.getClazz());
+			if(business!=null)
+				entity = business.instanciateOne();	
+		}*/
+		if(entity==null)
+			entity = (ENTITY) newInstance(businessEntityInfos.getClazz());
+		return entity;
 	}
 	
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{

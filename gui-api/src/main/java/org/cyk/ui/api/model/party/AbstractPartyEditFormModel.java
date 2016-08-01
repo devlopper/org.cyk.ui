@@ -50,9 +50,16 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 	@Override
 	public void setIdentifiable(PARTY identifiable) {
 		super.setIdentifiable(identifiable);
-		if(getParty().getContactCollection()==null)
-			getParty().setContactCollection(new ContactCollection());
-		contactCollection.setIdentifiable(getParty().getContactCollection());
+		setContactCollection();
+	}
+	
+	private void setContactCollection(){
+		if(contactCollection.getIdentifiable()==null){
+			if(getParty().getContactCollection()==null)
+				getParty().setContactCollection(new ContactCollection());
+			contactCollection.setIdentifiable(getParty().getContactCollection());	
+		}
+		
 	}
 	
 	protected abstract Party getParty();
@@ -63,6 +70,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 		code = identifiable.getCode();
 		image = identifiable.getImage();
 		name = identifiable.getName();
+		setContactCollection();
 	}
 	
 	@Override
@@ -72,7 +80,6 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 		globalIdentifier.setCode(code);
 		globalIdentifier.setName(name);
 		globalIdentifier.setImage(image);
-		
 	}
 	
 	/**/
