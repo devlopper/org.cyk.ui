@@ -51,6 +51,8 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 			configuration = createFormConfiguration(Crud.UPDATE, JobDetails.LABEL_IDENTIFIER);
 			configuration.addFieldNames(AbstractPersonEditFormModel.FIELD_JOB_TITLE);
 			
+			configuration = getFormConfiguration(Crud.DELETE);
+			configuration.addFieldNames(AbstractPersonEditFormModel.FIELD_LAST_NAMES);
 		}
 		
 		/**/

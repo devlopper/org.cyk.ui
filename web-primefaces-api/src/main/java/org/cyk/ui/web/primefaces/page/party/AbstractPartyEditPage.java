@@ -44,6 +44,10 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 			configuration.addFieldNames(AbstractPartyEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionEditFormModel.FIELD_MOBILE_PHONE_NUMBER
 					,ContactCollectionEditFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionEditFormModel.FIELD_ELECTRONICMAIL,ContactCollectionEditFormModel.FIELD_POSTALBOX
 					,ContactCollectionEditFormModel.FIELD_HOME_LOCATION);
+			
+			configuration = createFormConfiguration(Crud.DELETE);
+			configuration.addRequiredFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME);
+			configuration.addFieldNames(AbstractPartyEditFormModel.FIELD_IMAGE);
 		}
 		
 	}

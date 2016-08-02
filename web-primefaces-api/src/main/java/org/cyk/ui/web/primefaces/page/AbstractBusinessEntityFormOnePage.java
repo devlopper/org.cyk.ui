@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
@@ -57,7 +58,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			listener.initialisationStarted(this); 
 		crud = crudFromRequestParameter();
 		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getOne(crud)):formModelClass);
-
+		
 		form = (FormOneData<Object>) createFormOneData(data,crud);
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
@@ -127,9 +128,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
 		if(AbstractFormModel.class.isAssignableFrom(dataClass))
 			return AbstractFormModel.instance(dataClass,identifiable);
-		else{
+		else if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
+			return newInstance(dataClass, new Class<?>[]{businessEntityInfos.getClazz()},new Object[]{identifiable});
+		else
 			return identifiable;
-		}
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(

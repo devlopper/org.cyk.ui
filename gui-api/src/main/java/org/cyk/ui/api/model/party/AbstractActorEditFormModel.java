@@ -2,12 +2,12 @@ package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifiable> extends AbstractPersonEditFormModel<ACTOR>  implements Serializable {
@@ -31,9 +31,8 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifia
 	@Override
 	public void write() {
 		super.write();
-		identifiable.setCode(code);
-		identifiable.setName(name);
-		identifiable.setImage(image);
+		//if(Crud.CREATE.equals(crud))
+		//	setBusinessValues(getPerson());
 	}
 	
 	/**/

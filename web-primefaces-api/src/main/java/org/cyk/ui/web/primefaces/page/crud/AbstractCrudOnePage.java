@@ -35,6 +35,8 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 		executionProgress = form.getSubmitCommandable().getCommand().getExecutionProgress();
 		if(executionProgress!=null)
 			primefacesManager.configureProgressBar(form.getSubmitCommandable());
+		
+		
 	}
 	
 	protected ExecutionProgress createExecutionProgress(){

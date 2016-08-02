@@ -37,6 +37,7 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
@@ -340,5 +341,12 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			}
 		});
 	}
-	
+
+	public AbstractIdentifiable getIdentifiable(Object data){
+		if(data==null)
+			return null;
+		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data
+				:( data instanceof AbstractFormModel<?> ? ((AbstractFormModel<?>)data).getIdentifiable() : ((AbstractOutputDetails<?>)data).getMaster() ) );
+		return identifiable;
+	}
 }

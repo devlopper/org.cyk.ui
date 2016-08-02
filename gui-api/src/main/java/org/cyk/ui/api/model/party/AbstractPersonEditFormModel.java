@@ -69,9 +69,6 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Override
 	public void write() {
 		super.write();
-		getPerson().setCode(code);
-		getPerson().setName(name);
-		getPerson().setImage(image);
 		getPerson().setLastnames(lastnames);
 		getPerson().setSurname(surname);
 		getPerson().setSex(sex);

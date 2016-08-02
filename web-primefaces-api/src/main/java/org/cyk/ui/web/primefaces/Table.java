@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -18,7 +20,6 @@ import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
@@ -36,9 +37,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> implements Serializable {
 
@@ -151,15 +149,15 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		cancelRowEditCommandable.getCommand().execute(rowEditEvent.getObject());
 	}
 
-	@Override
-	protected void crudOnePage(DATA data,Crud crud) {
+	/*@Override
+	public void crudOnePage(DATA data,Crud crud) {
 		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data
 				:( data instanceof AbstractFormModel<?> ? ((AbstractFormModel<?>)data).getIdentifiable() : ((AbstractOutputDetails<?>)data).getMaster() ) );
 		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
-	}
+	}*/
 	
 	@Override
-	protected void crudOnePage(Collection<Parameter> parameters) {
+	public void crudOnePage(Collection<Parameter> parameters) {
 		if(addRowCommandable.getViewId()==null){
 			WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiableClass,parameters);
 		}else{

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -26,6 +27,7 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 
 	private static final long serialVersionUID = 9013238823027923151L;
 	
+	@Getter @Setter protected Crud crud;
 	@Getter protected ENTITY identifiable;
 	@Getter protected Collection<Field> inputFields , includeFields , identifiableFields;
 	

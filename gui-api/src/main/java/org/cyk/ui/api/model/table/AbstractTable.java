@@ -384,7 +384,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;
 			}else{
-				crudOnePage(addRowCommandable.getParameters());
+				crudOnePage(addRowCommandable.getParameters());//TODO to be done as update
 			}
 				
 		}else if(command==initRowEditCommandable.getCommand()){
@@ -456,10 +456,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		}
 		
 	}
-	
-	protected abstract void crudOnePage(DATA data,Crud crud);
 
-	protected abstract void crudOnePage(Collection<Parameter> parameters);
+	public abstract void crudOnePage(Collection<Parameter> parameters);
 	protected abstract void exportDataTableToPdfPage();
 	protected abstract void exportDataTableToXlsPage();
 	protected abstract void printDataPage();

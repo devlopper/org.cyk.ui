@@ -7,6 +7,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessLocator;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
@@ -14,8 +15,11 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.computation.Function;
@@ -98,12 +102,31 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			}
 		});	
 		
+		table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+			private static final long serialVersionUID = -462143346533749392L;
+			@SuppressWarnings("unchecked")
+			@Override
+			public void serve(UICommand command, Object parameter) {
+				WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.UPDATE);
+			}
+		});
+		
+		table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+			private static final long serialVersionUID = -462143346533749392L;
+			@SuppressWarnings("unchecked")
+			@Override
+			public void serve(UICommand command, Object parameter) {
+				WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.DELETE);
+			}
+		});
+		
 		rowAdapter.setOpenable(Boolean.TRUE);
 		rowAdapter.setUpdatable(Boolean.TRUE);
 		rowAdapter.setDeletable(Boolean.TRUE);
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
 		table.setShowOpenCommand(Boolean.TRUE);
+		table.setShowFooter(Boolean.FALSE);
 		
 		//onDocumentLoadJavaScript = "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();"
 		//		+ "$('.dataTableStyleClass > .ui-datatable-header').hide();";
