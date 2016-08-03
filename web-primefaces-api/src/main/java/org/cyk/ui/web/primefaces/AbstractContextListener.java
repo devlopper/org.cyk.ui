@@ -202,9 +202,18 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		return new AbstractActorConsultPageAdapter.Default<ACTOR>(actorClass);
 	}
 	
+	public static Class<? extends AbstractFormModel<?>>  ACTOR_EDIT_FORM_MODEL_CLASS;
+	
+	@SuppressWarnings("unchecked")
 	protected Class<? extends AbstractFormModel<?>> getEditFormModelClass(Class<?> clazz){
 		if(AbstractActor.class.isAssignableFrom(clazz))
-			return (Class<? extends AbstractFormModel<?>>) AbstractActorEditFormModel.AbstractDefault.Default.class;
+			try {
+				return ACTOR_EDIT_FORM_MODEL_CLASS == null 
+				? ACTOR_EDIT_FORM_MODEL_CLASS = (Class<? extends AbstractFormModel<?>>) Class.forName(AbstractActorEditFormModel.AbstractDefault.Default.class.getName()) 
+				: ACTOR_EDIT_FORM_MODEL_CLASS;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		return null;
 	}
 	
