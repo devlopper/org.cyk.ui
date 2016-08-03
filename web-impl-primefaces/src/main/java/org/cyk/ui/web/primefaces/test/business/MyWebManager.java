@@ -12,7 +12,10 @@ import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.CommentType;
+import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonTitle;
+import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.system.root.model.pattern.tree.DataTree;
 import org.cyk.system.root.model.pattern.tree.DataTreeIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
@@ -53,22 +56,29 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 	public SystemMenu systemMenu(UserSession userSession) {
 		SystemMenu systemMenu = new SystemMenu();
 		systemMenu.setName("MyApp");
+		UICommandable module;
 		
-		UICommandable module = Builder.create(null, Icon.PERSON).setLabel("Personne");
+		module = Builder.create(null, null).setLabel("Ensemble");
+		module.addChild(Builder.createList(NestedSetNode.class, null));
+		module.addChild(Builder.createList(LocalityType.class, null));
+		module.addChild(Builder.createList(Locality.class, null));
+		module.addChild(Builder.createList(DataTree.class, null));
+		module.addChild(Builder.createList(DataTreeType.class, null));
+		module.addChild(Builder.createList(DataTreeIdentifiableGlobalIdentifier.class, null));
+		systemMenu.getBusinesses().add(module);
+		
+		module = Builder.create(null, null).setLabel("Enumeration");
+		module.addChild(Builder.createList(Sex.class, null));
+		module.addChild(Builder.createList(PersonTitle.class, null));
+		module.addChild(Builder.createList(JobTitle.class, null));
+		systemMenu.getBusinesses().add(module);
+		
+		module = Builder.create(null, Icon.PERSON).setLabel("Partie");
 		module.addChild(Builder.createList(Person.class, Icon.PERSON));
 		module.addChild(Builder.createList(Actor.class, null));
 		module.addChild(Builder.createSelectOne(Actor.class,null, null));
 		module.addChild(Builder.createSelectMany(Actor.class,"myactionid", null));
 		module.addChild(Builder.createSelectMany(Person.class,editManyPersons, Icon.ACTION_EDIT));
-		systemMenu.getBusinesses().add(module);
-		
-		module = Builder.create(null, null).setLabel("Nested set");
-		module.addChild(Builder.createList(NestedSetNode.class, null));
-		module.addChild(Builder.createList(Locality.class, null));
-		module.addChild(Builder.createList(LocalityType.class, null));
-		module.addChild(Builder.createList(DataTree.class, null));
-		module.addChild(Builder.createList(DataTreeType.class, null));
-		module.addChild(Builder.createList(DataTreeIdentifiableGlobalIdentifier.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		module = Builder.create(null, null).setLabel("Commentaire");

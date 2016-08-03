@@ -101,25 +101,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				return super.count(configuration);
 			}
 		});	
-		
-		table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
-			private static final long serialVersionUID = -462143346533749392L;
-			@SuppressWarnings("unchecked")
-			@Override
-			public void serve(UICommand command, Object parameter) {
-				WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.UPDATE);
-			}
-		});
-		
-		table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
-			private static final long serialVersionUID = -462143346533749392L;
-			@SuppressWarnings("unchecked")
-			@Override
-			public void serve(UICommand command, Object parameter) {
-				WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.DELETE);
-			}
-		});
-		
+				
 		rowAdapter.setOpenable(Boolean.TRUE);
 		rowAdapter.setUpdatable(Boolean.TRUE);
 		rowAdapter.setDeletable(Boolean.TRUE);
@@ -130,6 +112,31 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 		
 		//onDocumentLoadJavaScript = "$('.dataTableStyleClass > .ui-datatable-tablewrapper > table > tfoot').hide();"
 		//		+ "$('.dataTableStyleClass > .ui-datatable-header').hide();";
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		if(Boolean.FALSE.equals(table.getInplaceEdit())){
+			table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = -462143346533749392L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.UPDATE);
+				}
+			});	
+			
+			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = -462143346533749392L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.DELETE);
+				}
+			});
+		}
+			
 	}
 	
 	@Override

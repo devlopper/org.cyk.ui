@@ -100,6 +100,7 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 		Throwable cause = CommonUtils.getInstance().getThrowableInstanceOf(throwable, AbstractBusinessException.class);
 		Set<String> messages = new LinkedHashSet<>();
 		if(cause==null){
+			logThrowable(throwable);
 			messages.add(ExceptionUtils.getInstance().getMessage(throwable));
 			//messages.add(UIManager.getInstance().text("command.serve.failure.summary"));
 		}else{
