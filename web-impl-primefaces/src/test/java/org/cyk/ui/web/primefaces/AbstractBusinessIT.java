@@ -17,21 +17,18 @@ import org.cyk.system.root.persistence.impl.GenericDaoImpl;
 import org.cyk.system.root.persistence.impl.PersistenceIntegrationTestHelper;
 import org.cyk.utility.test.ArchiveBuilder;
 import org.cyk.utility.test.integration.AbstractIntegrationTestJpaBased;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 
 public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased {
 
-    /*
-	public static ArchiveBuilder deployment(Class<?>[] classes){
-		ArchiveBuilder builder = new ArchiveBuilder();
-		builder.create().addClasses(BusinessIntegrationTestHelper.BASE_CLASSES).business(classes);
-		return builder;
-	}*/
-	 
-	/**
-	 *  
-	 */
 	private static final long serialVersionUID = 7531234257367131255L;
+	
+	@Deployment
+    public static Archive<?> createDeployment() {
+        return createRootDeployment();
+    }
+	
 	@Inject protected ExceptionUtils exceptionUtils;
 	@Inject protected DefaultValidator defaultValidator;
 	@Inject private GenericDaoImpl g;

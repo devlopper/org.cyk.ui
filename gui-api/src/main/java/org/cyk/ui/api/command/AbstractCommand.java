@@ -9,7 +9,6 @@ import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.AbstractBusinessException;
@@ -22,7 +21,7 @@ import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
 
-@Log
+//@Log
 public abstract class AbstractCommand extends AbstractBean implements UICommand , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
@@ -101,9 +100,6 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 		Throwable cause = CommonUtils.getInstance().getThrowableInstanceOf(throwable, AbstractBusinessException.class);
 		Set<String> messages = new LinkedHashSet<>();
 		if(cause==null){
-			/*if(throwable!=null){
-				log.log(Level.SEVERE, throwable.getMessage(),throwable);
-			}*/
 			messages.add(ExceptionUtils.getInstance().getMessage(throwable));
 			//messages.add(UIManager.getInstance().text("command.serve.failure.summary"));
 		}else{

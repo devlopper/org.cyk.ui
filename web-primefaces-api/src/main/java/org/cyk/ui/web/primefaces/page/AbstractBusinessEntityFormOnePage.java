@@ -128,9 +128,9 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
 		if(AbstractFormModel.class.isAssignableFrom(dataClass))
 			return AbstractFormModel.instance(dataClass,identifiable);
-		else if(AbstractOutputDetails.class.isAssignableFrom(dataClass))
-			return newInstance(dataClass, new Class<?>[]{businessEntityInfos.getClazz()},new Object[]{identifiable});
-		else
+		else if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
+			return commonUtils.instanciate(dataClass,new Class<?>[]{businessEntityInfos.getClazz()},new Object[]{identifiable});
+		}else
 			return identifiable;
 	}
 	
