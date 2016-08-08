@@ -33,7 +33,8 @@
 		      			<p:toolbar id="toolbar" rendered="#{cc.value.showToolBar}">
 			      			<f:facet name="left">
 			      				<cyk:command value="#{cc.value.addRowCommandable}" />
-			      				<ui:fragment rendered="#{cc.value.addRowCommandable.button.rendered}" ><span class="ui-separator">
+			      				<cyk:command value="#{cc.value.importCommandable}" />
+			      				<ui:fragment rendered="#{(cc.value.addRowCommandable.button.rendered or cc.value.importCommandable.button.rendered) and (cc.value.exportCommandable.button.rendered or cc.value.printCommandable.button.rendered)}" ><span class="ui-separator">
 						        	<span class="ui-icon ui-icon-grip-dotted-vertical" />
 						        </span></ui:fragment>
 			      				<cyk:command value="#{cc.value.exportCommandable}" />

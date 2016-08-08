@@ -17,6 +17,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>fileEditContentView</from-outcome>
+			<to-view-id>/private/file/editcontent.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>fileConsultView</from-outcome>
 			<to-view-id>/private/file/consult.xhtml</to-view-id>
 			<redirect />
@@ -24,6 +29,38 @@
 		<navigation-case>
 			<from-outcome>fileConsultManyView</from-outcome>
 			<to-view-id>/private/file/consultmany.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>scriptListView</from-outcome>
+			<to-view-id>/private/file/script/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scriptEditView</from-outcome>
+			<to-view-id>/private/file/script/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scriptConsultView</from-outcome>
+			<to-view-id>/private/file/script/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>scriptVariableListView</from-outcome>
+			<to-view-id>/private/file/scriptvariable/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scriptVariableEditView</from-outcome>
+			<to-view-id>/private/file/scriptvariable/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scriptVariableConsultView</from-outcome>
+			<to-view-id>/private/file/scriptvariable/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

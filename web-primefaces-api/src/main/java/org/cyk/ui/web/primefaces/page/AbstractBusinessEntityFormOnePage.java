@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -41,6 +38,9 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -127,7 +127,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	
 	protected Object identifiableFormData(Class<?> dataClass) throws InstantiationException, IllegalAccessException{
 		if(AbstractFormModel.class.isAssignableFrom(dataClass))
-			return AbstractFormModel.instance(dataClass,identifiable);
+			return AbstractFormModel.instance(this,dataClass,identifiable);
 		else if(AbstractOutputDetails.class.isAssignableFrom(dataClass)){
 			return commonUtils.instanciate(dataClass,new Class<?>[]{businessEntityInfos.getClazz()},new Object[]{identifiable});
 		}else
@@ -339,7 +339,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())){
 									return super.build(field);
 								}else{
-									//System.out.println(configuration.getFieldNames());
+									/*System.out.println(field);
+									debug(configuration);*/
 									return configuration.getFieldNames().contains(field.getName());
 								}
 								
@@ -351,7 +352,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 								if(Crud.CREATE.equals(page.getCrud())){
 									if(Boolean.FALSE.equals(input.getRequired())){
 										FormConfiguration configuration = getFormConfiguration(page.getCrud());
-										if(configuration!=null && !configuration.getRequiredFieldNames().isEmpty())
+										if(configuration!=null && configuration.getRequiredFieldNames()!=null && !configuration.getRequiredFieldNames().isEmpty())
 											input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
 									}	
 								}

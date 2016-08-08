@@ -12,16 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
-import org.cyk.system.root.business.api.event.EventParticipationBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -39,11 +35,15 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -54,6 +54,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	static{
 		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default());
 	}
+	public static final String CHARACTER_ENCODING = Constant.ENCODING_UTF8;
 	
 	private static final Map<Class<?>,BusinessEntityInfos> BUSINESS_ENTITIES_INFOS_MAP = new HashMap<>();
 	private static final Map<Class<?>,SelectItemBuilderListener> SELECTITEM_BUILD_LISTENER_MAP = new HashMap<>();
@@ -96,7 +97,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private FileBusiness fileBusiness;
 	@Inject private TimeBusiness timeBusiness;
 	@Inject private NumberBusiness numberBusiness;
-	@Inject private EventParticipationBusiness eventParticipationBusiness;
 	@Inject private PersonBusiness personBusiness;
 	@Inject private RoleSecuredViewBusiness roleSecuredViewBusiness;
 	@Inject private ClazzBusiness clazzBusiness;

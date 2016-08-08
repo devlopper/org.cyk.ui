@@ -25,7 +25,7 @@ import org.cyk.utility.common.computation.DataReadConfiguration;
 public class ContextListener extends AbstractContextListener {
 
 	private static final long serialVersionUID = -3211898049670089807L;
-
+	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
@@ -39,6 +39,9 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
+		
+		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.erp.PrimefacesManagerAdapter());
+		
 		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
 		AbstractSelectManyPage.Listener.COLLECTION.add(new ActorSelectManyPageAdapter());
 		AbstractProcessManyPage.Listener.COLLECTION.add(new ActorProcessManyPageAdapter());
@@ -63,22 +66,7 @@ public class ContextListener extends AbstractContextListener {
         });
 		
 	}
-	/*
-	@Override
-	protected <ACTOR extends AbstractActor> AbstractActorCrudOnePageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass) {
-		AbstractActorCrudOnePageAdapter<ACTOR> listener = super.getActorCrudOnePageAdapter(actorClass);
-		if(listener.getEntityTypeClass().equals(Actor.class)){
-			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addFieldNames(PersonEditFormModel.FIELD_SURNAME
-					,PersonEditFormModel.FIELD_TITLE,PersonEditFormModel.FIELD_BIRTH_DATE,PersonEditFormModel.FIELD_BIRTH_LOCATION
-					,PersonEditFormModel.FIELD_SEX,PersonEditFormModel.FIELD_IMAGE,PersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
-			listener.getFormConfigurationMap().get(Crud.CREATE).get(FormConfiguration.TYPE_INPUT_SET_SMALLEST).addRequiredFieldNames(
-					AbstractActorEditFormModel.FIELD_REGISTRATION_CODE);
-			
-			
-		}
-		return listener;
-	}*/
-	
+
 	@Override
 	protected Class<?> getQueryOneFormModelClass(Class<?> clazz) {
 		if(Actor.class.equals(clazz))

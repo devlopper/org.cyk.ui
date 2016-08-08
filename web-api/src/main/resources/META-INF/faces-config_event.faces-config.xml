@@ -7,6 +7,54 @@
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
+			<from-outcome>eventListView</from-outcome>
+			<to-view-id>/private/event/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventEditView</from-outcome>
+			<to-view-id>/private/event/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventConsultView</from-outcome>
+			<to-view-id>/private/event/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>eventPartyListView</from-outcome>
+			<to-view-id>/private/event/eventparty/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventPartyEditView</from-outcome>
+			<to-view-id>/private/event/eventparty/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventPartyConsultView</from-outcome>
+			<to-view-id>/private/event/eventparty/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>eventMissedListView</from-outcome>
+			<to-view-id>/private/event/eventmissed/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventMissedEditView</from-outcome>
+			<to-view-id>/private/event/eventmissed/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>eventMissedConsultView</from-outcome>
+			<to-view-id>/private/event/eventmissed/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>eventlist</from-outcome>
 			<to-view-id>/private/event/list.xhtml</to-view-id>
 			<redirect />

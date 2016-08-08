@@ -19,12 +19,16 @@ import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
+import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -72,6 +76,10 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 				list.add(item(value));
 		}else if(Boolean.class.equals(type) || boolean.class.equals(type)){
 			list.addAll(getChoiceSetSelectItems(choiceSet,field.getAnnotation(NotNull.class)==null));		
+		}else if(GlobalIdentifier.class.equals(type)){
+			for(GlobalIdentifier globalIdentifier : RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().findAll()){
+				list.add(Boolean.TRUE.equals(itemWrapper)?item(globalIdentifier):globalIdentifier);
+			}		
 		}
 	}
 	
@@ -99,7 +107,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		return Boolean.TRUE;
 	}
 	
-	protected abstract SELECTITEM item(AbstractIdentifiable identifiable);
+	protected abstract SELECTITEM item(AbstractModelElement identifiable);
 
 	protected abstract SELECTITEM item(Enum<?> anEnum);
 	
@@ -118,7 +126,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		Object value = null;
 		value = CommonUtils.getInstance().readField(object,field,Boolean.FALSE);
 		if(value==null)
-			value = "";
+			value = Constant.EMPTY_STRING;
 		return formatValue(field, value);
 	}
 	
@@ -135,9 +143,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return UIManager.getInstance().getTimeBusiness().format(field, (Date)value);
 		else if(value instanceof Boolean)
 			if(Boolean.TRUE.equals(value))
-				return UIManager.getInstance().text("yes");
+				return UIManager.getInstance().text(LanguageEntry.YES);
 			else if(Boolean.FALSE.equals(value))
-				return UIManager.getInstance().text("no");
+				return UIManager.getInstance().text(LanguageEntry.NO);
 			else
 				return UIManager.getInstance().text("notspecified");
 		else if(value instanceof Collection<?>){
@@ -145,11 +153,15 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			Collection<String> strings = new ArrayList<>();
 			int i = 0;
 			for(Object object : collection)
-				strings.add( (collection.size()>1?++i+" - ":"")+formatValue(field,object));
+				strings.add( (collection.size()>1?++i+" - ":Constant.EMPTY_STRING)+formatValue(field,object));
 			return StringUtils.join(strings,contentType().getNewLineMarker());
 		}else if(value instanceof BigDecimal)
 			return UIManager.getInstance().getNumberBusiness().format((Number) value);
+		else if(value instanceof String){
+			value = StringUtils.replace((String)value, ContentType.TEXT.getNewLineMarker(), UIManager.CONTENT_TYPE.getNewLineMarker());	
 			
+		}
+
 		return value.toString();
 	}
 

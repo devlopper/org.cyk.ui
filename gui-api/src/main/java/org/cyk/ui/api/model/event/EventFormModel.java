@@ -2,20 +2,12 @@ package org.cyk.ui.api.model.event;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.event.Event;
-import org.cyk.system.root.model.event.EventParticipation;
 import org.cyk.system.root.model.event.EventReminder;
-import org.cyk.system.root.model.event.EventType;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.api.UIManager;
@@ -32,14 +24,15 @@ import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.joda.time.DateTimeConstants;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter @Setter
 public class EventFormModel extends AbstractFormModel<Event> implements Serializable {
  
 	private static final long serialVersionUID = -392868128587378419L;
 
-	@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull
-	private EventType type;
-	
 	@Input @InputText
 	private String object;
 	
@@ -61,7 +54,7 @@ public class EventFormModel extends AbstractFormModel<Event> implements Serializ
 	
 	private EventReminder eventReminder;
 	
-	@Override
+	/*@Override
 	public void read() {
 		super.read();
 		period = identifiable.getPeriod();
@@ -82,7 +75,7 @@ public class EventFormModel extends AbstractFormModel<Event> implements Serializ
 			eventReminder.getPeriod().setFromDate(new Date(identifiable.getPeriod().getFromDate().getTime()-reminder.getMillisecond()));
 			eventReminder.getPeriod().setToDate(identifiable.getPeriod().getFromDate());
 		}
-	}
+	}*/
 	
 	/**/
 	

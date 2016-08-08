@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
-import org.cyk.system.root.model.event.EventParticipation;
+import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
@@ -20,6 +18,9 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class EventCalendar extends AbstractEventCalendar implements Serializable {
 
@@ -39,17 +40,17 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 			@Override
 			public void loadEvents(Date start, Date end) {
 				for(Event event : EventCalendar.this.events(start,end)){
-					String object = event.getType().getName();
-					if(StringUtils.isBlank(object))
+					String object = null;//event.getType().getName();
+					/*if(StringUtils.isBlank(object))
 						object = event.getObject();
 					else
-						object += " - "+ event.getObject();
-					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(object,event.getPeriod().getFromDate(),event.getPeriod().getToDate(),event);
+						object += " - "+ event.getObject();*/
+					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(object,event.getExistencePeriod().getFromDate(),event.getExistencePeriod().getToDate(),event);
 					
 					/*
-					if(event.getAlarm().getPeriod().getFromDate()!=null)
-						scheduleEvent.setDescription("Alarm : "+UIManager.getInstance().formatDate(event.getAlarm().getPeriod().getFromDate(), Boolean.TRUE)+
-							" - "+UIManager.getInstance().formatDate(event.getAlarm().getPeriod().getToDate(), Boolean.TRUE));
+					if(event.getAlarm().getExistencePeriod().getFromDate()!=null)
+						scheduleEvent.setDescription("Alarm : "+UIManager.getInstance().formatDate(event.getAlarm().getExistencePeriod().getFromDate(), Boolean.TRUE)+
+							" - "+UIManager.getInstance().formatDate(event.getAlarm().getExistencePeriod().getToDate(), Boolean.TRUE));
 					*/
 					
 					scheduleEvent.setEditable(false);
@@ -67,8 +68,8 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 	
 	public String selectedEventDetails(){
 		return UIManager.getInstance().getLanguageBusiness().findText("calendar.event.details",new Object[]{
-				selectedEvent.getType().getName(),UIManager.getInstance().getTimeBusiness().formatDate(selectedEvent.getPeriod().getFromDate()),
-				UIManager.getInstance().getTimeBusiness().formatTime(selectedEvent.getPeriod().getFromDate())
+				//selectedEvent.getType().getName(),UIManager.getInstance().getTimeBusiness().formatDate(selectedEvent.getExistencePeriod().getFromDate()),
+				UIManager.getInstance().getTimeBusiness().formatTime(selectedEvent.getExistencePeriod().getFromDate())
 		});
 	}
 	
@@ -101,11 +102,11 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 		
 		public EventInfos(Event event) {
 			this.event = event;
-			object = event.getObject();
-			comments = event.getComments(); 
-			date = UIManager.getInstance().getTimeBusiness().formatPeriodFromTo(event.getPeriod());
+			//object = event.getObject();
+			//comments = event.getComments(); 
+			date = UIManager.getInstance().getTimeBusiness().formatPeriodFromTo(event.getExistencePeriod());
 			List<String> partiyList = new ArrayList<>();
-			for(EventParticipation eventParticipation : UIManager.getInstance().getEventParticipationBusiness().findByEvent(event)){
+			for(EventParty eventParticipation : RootBusinessLayer.getInstance().getEventPartyBusiness().findByEvent(event)){
 				StringBuilder builder = new StringBuilder();
 				if(eventParticipation.getParty() instanceof Person){
 					Person person = (Person)eventParticipation.getParty();

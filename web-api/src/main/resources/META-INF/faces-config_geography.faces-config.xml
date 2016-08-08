@@ -4,7 +4,23 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
 	<navigation-rule>
-		
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>countryListView</from-outcome>
+			<to-view-id>/private/geography/country/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>countryEditView</from-outcome>
+			<to-view-id>/private/geography/country/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>countryConsultView</from-outcome>
+			<to-view-id>/private/geography/country/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		
 		

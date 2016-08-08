@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Stack;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
@@ -38,6 +40,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 
 	private static final long serialVersionUID = -1043478880255116994L;
 
+	@Getter @Setter protected UIWindow<MODEL, LABEL, CONTROL, SELECTITEM> window;
 	@Getter protected final Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
 	@Getter protected final Collection<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>> controlSetListeners = new ArrayList<>();
 	@Getter protected final Collection<AbstractItemCollection<?,?,?>> itemCollections = new ArrayList<>() ;

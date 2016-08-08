@@ -126,6 +126,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeAnyActorTypeEdit = "anyActorTypeEditView";
 	@Getter private String outcomeEditActorRelationship = "editActorRelationship";
 	@Getter private String outcomeEditActorMedicalInformations = "editMedicalInformations";
+	@Getter private String outcomeEditFileContent = "fileEditContentView";
 	
 	@Getter private String outcomeToolsCalendar = "toolscalendar";
 	@Getter private String outcomeToolsReport = "toolsreport";

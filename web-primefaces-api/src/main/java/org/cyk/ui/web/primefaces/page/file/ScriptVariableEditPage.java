@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page;
+package org.cyk.ui.web.primefaces.page.file;
 
 import java.io.Serializable;
 
@@ -9,38 +9,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
+import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 
 @Named @ViewScoped @Getter @Setter
-public class FileEditPage extends AbstractCrudOnePage<File> implements Serializable {
+public class ScriptVariableEditPage extends AbstractCrudOnePage<ScriptVariable> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	@Override
-	protected void initialisation() {
-		super.initialisation();
-		contentTitle = identifiable.getExtension();
-	}
-	
-	@Override
-	protected void update() {
-		//File file = ((Form)form.getData()).file;
-		//System.out.println("FileEditPage.update()");
-		//debug(form.findInputByFieldName("file").getValue());
-		//RootBusinessLayer.getInstance().getFileBusiness().process(identifiable, arg1, arg2);
-		//RootBusinessLayer.getInstance().getFileBusiness().update(identifiable, arg1, arg2);
-	}
-	
-	public static class Form extends AbstractFormModel<File> implements Serializable{
+	public static class Form extends AbstractFormModel<ScriptVariable> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE))
-		protected File file;
+		@Input @InputTextarea private String code;
+		
+		@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.TEXT))
+		private File file;
 		
 		@Override
 		public void read() {

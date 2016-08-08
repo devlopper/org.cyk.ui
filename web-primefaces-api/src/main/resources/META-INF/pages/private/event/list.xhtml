@@ -4,28 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
- 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{eventListPage}" />
  		<ui:define name="body">
- 			
- 			<p:tabView>
- 				<p:tab title="#{uiManager.text('past')}" >
- 					<cyk:table value="#{eventListPage.pastEventTable}"/>
- 				</p:tab>
- 				<p:tab title="#{uiManager.text('current')}" >
- 					<cyk:table value="#{eventListPage.currentEventTable}"/>
- 				</p:tab>
- 				<p:tab title="#{uiManager.text('oncoming')}" >
- 					<cyk:table value="#{eventListPage.onComingEventTable}"/>
- 				</p:tab>
- 			</p:tabView>
- 			
+ 			<cyk:table value="#{eventListPage.table}" />
  		</ui:define>
  	</ui:decorate>
- 	
+ 
 </html>

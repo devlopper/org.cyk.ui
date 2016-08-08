@@ -18,7 +18,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
-import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -84,13 +84,14 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			if(location==null)
 				;
 			else
-				location.setComment(null);
+				location.setOtherDetails(null);
 		}else{
 			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
-			if(location==null)
-				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,null,birthLocation));
-			else
-				location.setComment(birthLocation);
+			if(location==null){
+				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,null));
+				getExtendedInformations(Boolean.TRUE).getBirthLocation().setOtherDetails(birthLocation);
+			}else
+				location.setOtherDetails(birthLocation);
 		}
 		
 		if(signatureSpecimen!=null)
@@ -133,7 +134,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		super.read();
 		if(getPerson().getExtendedInformations()!=null){
 			if(getPerson().getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = getPerson().getExtendedInformations().getBirthLocation().getComment();
+				birthLocation = getPerson().getExtendedInformations().getBirthLocation().getOtherDetails();
 			title = getPerson().getExtendedInformations().getTitle();
 			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
 		}
@@ -151,7 +152,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	}
 	
 	@Override @Sequence(direction=Direction.AFTER,field=FIELD_IMAGE)
-	public ContactCollectionEditFormModel getContactCollection() {
+	public ContactCollectionFormModel getContactCollection() {
 		return super.getContactCollection();
 	}
 	

@@ -6,15 +6,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -39,6 +38,9 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
@@ -90,8 +92,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
-				//if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE}, field.getName()))
-				//	return Boolean.FALSE;
+				if(!AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()) && ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
+						,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
+					return Boolean.FALSE;
 				Input input = field.getAnnotation(Input.class);
 				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
 				return input != null || includeInputs!=null;
@@ -255,7 +258,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
 			return entity;
 		else if(AbstractFormModel.class.isAssignableFrom(table.getRowDataClass()))
-			return AbstractFormModel.instance(table.getRowDataClass(), entity);
+			return AbstractFormModel.instance(null,table.getRowDataClass(), entity);
 		else
 			try {
 				Constructor<?> constructor = commonUtils.getConstructor(table.getRowDataClass(),new Class<?>[]{entity.getClass()});

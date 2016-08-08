@@ -17,9 +17,15 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.event.EventDetails;
+import org.cyk.system.root.business.impl.file.FileDetails;
+import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
+import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractUITargetManager;
@@ -87,7 +93,60 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
 					@Override
 					public Boolean build(Field field) {
-						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
+						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_SURNAME,PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
+					}
+				};
+			}
+		});
+		registerDetailsConfiguration(FileDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return !ArrayUtils.contains(new String[]{FileDetails.FIELD_ABBREVIATION,FileDetails.FIELD_IMAGE}, field.getName());
+					}
+				};
+			}
+		});
+		registerDetailsConfiguration(FileIdentifiableGlobalIdentifierDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return ArrayUtils.contains(new String[]{FileIdentifiableGlobalIdentifierDetails.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER,FileIdentifiableGlobalIdentifierDetails.FIELD_FILE}, field.getName());
+					}
+				};
+			}
+		});
+		registerDetailsConfiguration(EventDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return ArrayUtils.contains(new String[]{EventDetails.FIELD_NAME,EventDetails.FIELD_PERIOD,PeriodDetails.FIELD_FROM_DATE
+								,PeriodDetails.FIELD_TO_DATE}, field.getName());
+					}
+				};
+			}
+		});
+		registerDetailsConfiguration(CountryDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
+					@Override
+					public Boolean build(Field field) {
+						return ArrayUtils.contains(new String[]{CountryDetails.FIELD_NAME,CountryDetails.FIELD_PHONE_NUMBER_CODE}, field.getName());
 					}
 				};
 			}
@@ -198,8 +257,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 
 	@Override
-	protected SelectItem item(AbstractIdentifiable identifiable) {
-		return WebManager.getInstance().getSelectItem(identifiable); 
+	protected SelectItem item(AbstractModelElement modelElement) {
+		return WebManager.getInstance().getSelectItem(modelElement); 
 	}
 	
 	@Override

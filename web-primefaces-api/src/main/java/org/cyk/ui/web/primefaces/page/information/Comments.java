@@ -54,7 +54,6 @@ public class Comments extends AbstractJoinGlobalIdentifiers<Comment,Comments.Com
 		@Override
 		protected SearchCriteria createSearchCriteria() {
 			SearchCriteria searchCriteria = new SearchCriteria();
-			searchCriteria.addCommentTypes(RootBusinessLayer.getInstance().getCommentTypeBusiness().findAll());
 			return searchCriteria;
 		}
 

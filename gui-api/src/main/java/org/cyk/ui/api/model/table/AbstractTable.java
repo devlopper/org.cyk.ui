@@ -68,7 +68,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow,rendered=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
-	protected UICommandable addRowCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
+	protected UICommandable addRowCommandable,importCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		updateRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
 	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE,built=Boolean.FALSE;
@@ -155,7 +155,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 					row.setDeletable(Boolean.TRUE);
 				if(Boolean.TRUE.equals(inplaceEdit) && AbstractFormModel.class.isAssignableFrom(rowDataClass) && 
 						row.getData() instanceof AbstractIdentifiable){
-					row.setData((DATA) AbstractFormModel.instance(rowDataClass, (AbstractIdentifiable) row.getData()));
+					row.setData((DATA) AbstractFormModel.instance(null,rowDataClass, (AbstractIdentifiable) row.getData()));
 				}
 			}
 		});
@@ -379,7 +379,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 					else{
 						((AbstractDataTreeNode)identifiable).setParent((AbstractDataTreeNode)master);
 					}
-				DATA d = (DATA) AbstractFormModel.instance(rowDataClass, identifiable);	
+				DATA d = (DATA) AbstractFormModel.instance(null,rowDataClass, identifiable);	
 				editing.add(d);
 				addRow(d);
 				__justAdded__ =  Boolean.TRUE;

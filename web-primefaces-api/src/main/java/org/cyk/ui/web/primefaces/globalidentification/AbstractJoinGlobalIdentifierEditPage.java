@@ -37,7 +37,8 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 		super.initialisation();
 		String globalIdentifier = requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER);
 		BusinessEntityInfos globalIdentifierOwnerBusinessEntityInfos = uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS));
-		joinedIdentifiable = BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
+		if(globalIdentifierOwnerBusinessEntityInfos!=null)
+			joinedIdentifiable = BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
 				.findByGlobalIdentifierValue(globalIdentifier);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
@@ -54,11 +55,14 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		setChoicesAndGetAutoSelected(AbstractForm.FIELD_GLOBAL_IDENTIFIER, Arrays.asList( joinedIdentifiable.getGlobalIdentifier() ));
+		if(joinedIdentifiable!=null)
+			setChoicesAndGetAutoSelected(AbstractForm.FIELD_GLOBAL_IDENTIFIER, Arrays.asList( joinedIdentifiable.getGlobalIdentifier() ));
 	}
 	
 	@Override
 	protected String buildContentTitle() {
+		if(joinedIdentifiable==null)
+			return super.buildContentTitle();
 		return super.buildContentTitle()+Constant.CHARACTER_SLASH+formatUsingBusiness(joinedIdentifiable);
 	}
 	
@@ -73,7 +77,7 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 	public static class AbstractForm<IDENTIFIABLE extends AbstractJoinGlobalIdentifier> extends AbstractFormModel<IDENTIFIABLE> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull private GlobalIdentifier identifiableGlobalIdentifier;
+		@Input @InputChoice(load=true) @InputOneChoice @InputOneCombo @NotNull protected GlobalIdentifier identifiableGlobalIdentifier;
 				
 		public static final String FIELD_GLOBAL_IDENTIFIER = "identifiableGlobalIdentifier";
 		

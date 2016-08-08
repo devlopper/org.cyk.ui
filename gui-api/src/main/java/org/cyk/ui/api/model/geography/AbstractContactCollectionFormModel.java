@@ -79,14 +79,14 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 			if(!StringUtils.isBlank(comments)){
 				location = new Location();
 				location.setType(type);
-				location.setComment(comments);
+				location.setOtherDetails(comments);
 				identifiable.getLocations().add(location);
 			}
 		}else{
 			if(StringUtils.isBlank(comments))
 				deleteLocation(type);
 			else
-				location.setComment(comments);
+				location.setOtherDetails(comments);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 			identifiable.setLocations(new ArrayList<Location>());
 		for(Location p : identifiable.getLocations())
 			if(p.getType()!=null && p.getType().equals(type))
-				return p.getComment();
+				return p.getOtherDetails();
 		return null;
 	}
 	

@@ -5,9 +5,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
@@ -15,6 +12,7 @@ import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIWindow;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.Binding;
@@ -22,11 +20,15 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 //TODO can be renamed with Edit in the name : AbstractEditFormModel
 public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean implements Serializable,FormModelListener<ENTITY> {
 
 	private static final long serialVersionUID = 9013238823027923151L;
 	
+	@Getter @Setter protected UIWindow<?, ?, ?, ?> window;
 	@Getter @Setter protected Crud crud;
 	@Getter protected ENTITY identifiable;
 	@Getter protected Collection<Field> inputFields , includeFields , identifiableFields;
@@ -124,10 +126,11 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 	public void write(AbstractFormModel<ENTITY> form) {}
 
 	@SuppressWarnings("unchecked")
-	public static AbstractFormModel<AbstractIdentifiable> instance(Class<?> aClass,AbstractIdentifiable identifiable){
+	public static AbstractFormModel<AbstractIdentifiable> instance(UIWindow<?, ?, ?, ?> window,Class<?> aClass,AbstractIdentifiable identifiable){
 		AbstractFormModel<AbstractIdentifiable> data = null;
 		try {
 			data = (AbstractFormModel<AbstractIdentifiable>) aClass.newInstance();
+			data.setWindow(window);
 			data.setIdentifiable(identifiable);
 			data.read();
 		} catch (Exception e) {

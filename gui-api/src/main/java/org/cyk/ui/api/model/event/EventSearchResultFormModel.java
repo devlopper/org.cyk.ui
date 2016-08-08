@@ -20,10 +20,10 @@ public class EventSearchResultFormModel extends AbstractFormModel<Event> impleme
 	@Override
 	public void read() {
 		super.read();
-		type = identifiable.getType().getName();
-		object = identifiable.getObject();
-		comments = identifiable.getComments();
-		date = UIManager.getInstance().getTimeBusiness().formatDateTime(identifiable.getPeriod().getFromDate());
+		//type = identifiable.getType().getName();
+		//object = identifiable.getObject();
+		//comments = identifiable.getComments();
+		//date = UIManager.getInstance().getTimeBusiness().formatDateTime(identifiable.getPeriod().getFromDate());
 		//contacts = identifiable.getType().getName();
 		
 	}

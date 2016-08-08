@@ -10,7 +10,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
-import org.cyk.ui.api.model.geography.ContactCollectionEditFormModel;
+import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
@@ -23,7 +23,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 	
 	@OutputSeperator(label=@Text(value="field.contacts"))
 	@IncludeInputs(layout=Layout.VERTICAL)
-	protected ContactCollectionEditFormModel contactCollection = new ContactCollectionEditFormModel();
+	protected ContactCollectionFormModel contactCollection = new ContactCollectionFormModel();
 	
 	@Override
 	public void setIdentifiable(PARTY identifiable) {
