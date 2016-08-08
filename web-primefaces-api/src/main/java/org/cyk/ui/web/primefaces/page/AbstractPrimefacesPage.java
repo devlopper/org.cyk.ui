@@ -21,7 +21,6 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -233,20 +232,21 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		DetailsBlock<MenuModel> detailsBlock = new DetailsBlock<MenuModel>(null,createFormOneData(details, Crud.READ));
 		configureDetailsForm((org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?>) detailsBlock.getFormOneData(),null);
 		Collection<UICommandable> commandables = new ArrayList<>();
-		@SuppressWarnings("unchecked")
+		/*@SuppressWarnings("unchecked")
 		OutputDetailsConfiguration configuration = uiManager.findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
 		if(detailsBlock.getTitle()==null)
 			if(configuration!=null)
 				detailsBlock.setTitle(configuration.getUiLabel());
+		*/
 		if(links!=null){
 			for(UICommandable commandable : links)
 				commandables.add(commandable);
 		}
-		
+		/*
 		if(StringUtils.isBlank(editOutcome))
 			if(configuration!=null)
 				editOutcome = configuration.getUiEditViewId();
-			
+		*/	
 		if(StringUtils.isNotBlank(editOutcome)){
 			UICommandable commandable = instanciateCommandableBuilder().setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).setView(editOutcome)
 					.addCrudParameters(Crud.UPDATE, master/*,details*/).create();
@@ -427,7 +427,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	}
 	
 	protected DetailsConfiguration getDetailsConfiguration(Class<?> detailsClass){
-		return PrimefacesManager.getInstance().getDetailsConfiguration(detailsClass);
+		return PrimefacesManager.getDetailsConfiguration(detailsClass);
 	}
 		
 	/**/

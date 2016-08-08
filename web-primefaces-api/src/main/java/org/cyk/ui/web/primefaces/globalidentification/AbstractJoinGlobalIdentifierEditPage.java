@@ -32,8 +32,8 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 	protected AbstractIdentifiable joinedIdentifiable;
 	
 	@SuppressWarnings("unchecked")
-	@Override
-	protected void initialisation() {
+	@Override   
+	protected void initialisation() { 
 		super.initialisation();
 		String globalIdentifier = requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER);
 		BusinessEntityInfos globalIdentifierOwnerBusinessEntityInfos = uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS));

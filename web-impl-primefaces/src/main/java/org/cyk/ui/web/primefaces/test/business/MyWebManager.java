@@ -63,7 +63,6 @@ public class MyWebManager extends AbstractPrimefacesManager implements Serializa
 		
 		module = Builder.create(null, null).setLabel("Commentaire");
 		module.addChild(Builder.createList(Comment.class, null));
-		module.addChild(Builder.createList(CommentType.class, null));
 		systemMenu.getBusinesses().add(module);
 		
 		//systemMenu.getBusinesses().add(Builder.createList(Movement.class, null));
