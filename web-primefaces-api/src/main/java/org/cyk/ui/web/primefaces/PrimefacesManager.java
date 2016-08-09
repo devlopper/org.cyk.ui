@@ -14,6 +14,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
@@ -57,9 +60,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {
@@ -151,6 +151,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 				};
 			}
 		});
+		
 	}
 	
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";

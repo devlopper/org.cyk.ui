@@ -7,6 +7,9 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -52,9 +55,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,Commandable> implements Serializable {
 
@@ -277,7 +277,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public <T> Table<T> createDetailsTable(Class<T> aClass,final DetailsConfigurationListener.Table<?,T> listener){
 		@SuppressWarnings("unchecked")
 		Table<T> table = (Table<T>) createTable(listener.getDataClass(), null, null);
-		table.setShowHeader(Boolean.FALSE);
+		//table.setShowHeader(Boolean.FALSE);
 		//System.out.println("Show header : "+table.getShowHeader());
 		//tableFormatJavaScript(table, Boolean.TRUE);
 		if(listener.getRendered()==null)
@@ -325,7 +325,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		else
 			table.setTitle(text(listener.getTitleId()));
 		
-		table.setShowToolBar(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE)));
+		table.setShowToolBar(Boolean.TRUE);
 		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
 		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)));
 		table.setShowAddRemoveColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
@@ -338,7 +338,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(uiManager.isMobileDevice(userDeviceType))
 			table.setRenderType(RenderType.LIST);
 		
-		if(Boolean.TRUE.equals(table.getShowOpenCommand())){
+		/*List<Crud> crudCollection = new ArrayList<>();
+		if(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isCreatable(identifiableClass))
+			crudCollection.add(Crud.CREATE);
+		if(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(arg0))
+			crudCollection.add(Crud.CREATE);
+		*/
+		
+		//if(Boolean.TRUE.equals(table.getShowOpenCommand())){
 			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
@@ -348,8 +355,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 					}
 				}
 			});
-		}
-		if(Boolean.TRUE.equals(table.getShowEditColumn())){
+		//}
+		//if(Boolean.TRUE.equals(table.getShowEditColumn())){
 			table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
@@ -360,9 +367,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 					}
 				}
 			});
-		}
+		//}
 		
-		if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
+		//if(Boolean.TRUE.equals(table.getShowAddRemoveColumn())){
 			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
@@ -373,9 +380,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 					}
 				}
 			});
-		}
+		//}
 		
-		((Table<Object>)table).getRowListeners().add(new RowAdapter<Object>(){
+		/*((Table<Object>)table).getRowListeners().add(new RowAdapter<Object>(){
 			@Override
 			public void added(Row<Object> row) {
 				super.added(row);
@@ -383,7 +390,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				row.setUpdatable(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)));
 				row.setDeletable(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
 			}
-		});
+		});*/
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> instanciateItemCollection
@@ -456,7 +463,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			protected Boolean rendered=null;
 			protected String tabId,titleId;
 			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
-			protected Crud[] cruds;
+			protected Crud[] cruds = new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};//TODO should be removed ??? because value is taken from database
 			protected Boolean isIdentifiableMaster=Boolean.TRUE;
 			protected Collection<? extends AbstractIdentifiable> masters;
 			

@@ -7,6 +7,22 @@
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
+			<from-outcome>contactCollectionListView</from-outcome>
+			<to-view-id>/private/geography/contactcollection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactCollectionEditView</from-outcome>
+			<to-view-id>/private/geography/contactcollection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactCollectionConsultView</from-outcome>
+			<to-view-id>/private/geography/contactcollection/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>countryListView</from-outcome>
 			<to-view-id>/private/geography/country/list.xhtml</to-view-id>
 			<redirect />
@@ -22,6 +38,37 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>electronicMailListView</from-outcome>
+			<to-view-id>/private/geography/electronicmail/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>electronicMailEditView</from-outcome>
+			<to-view-id>/private/geography/electronicmail/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>electronicMailConsultView</from-outcome>
+			<to-view-id>/private/geography/electronicmail/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>phoneNumberListView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>phoneNumberEditView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>phoneNumberConsultView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 		
 	</navigation-rule>

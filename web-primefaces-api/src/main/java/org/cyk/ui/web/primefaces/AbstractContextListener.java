@@ -13,7 +13,10 @@ import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
+import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
+import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
@@ -34,9 +37,12 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
+import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
+import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
+import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -78,8 +84,14 @@ import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifierEditP
 import org.cyk.ui.web.primefaces.page.file.FileListPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ContactCollectionListPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryListPage;
+import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ElectronicMailListPage;
+import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
+import org.cyk.ui.web.primefaces.page.geography.PhoneNumberListPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
@@ -191,6 +203,21 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(Country.class, null);
 		BusinessEntityFormManyPageListener.COLLECTION.add(new CountryListPage.Adapter());
 		BusinessEntityFormOnePageListener.COLLECTION.add(new CountryEditPage.Adapter());
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(ContactCollection.class, null);
+		BusinessEntityFormManyPageListener.COLLECTION.add(new ContactCollectionListPage.Adapter());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new ContactCollectionEditPage.Adapter());
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMail.class, ElectronicMailEditPage.Form.class, ElectronicMailDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(ElectronicMail.class, null);
+		BusinessEntityFormManyPageListener.COLLECTION.add(new ElectronicMailListPage.Adapter());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new ElectronicMailEditPage.Adapter());
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(PhoneNumber.class, PhoneNumberEditPage.Form.class, PhoneNumberDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(PhoneNumber.class, null);
+		BusinessEntityFormManyPageListener.COLLECTION.add(new PhoneNumberListPage.Adapter());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new PhoneNumberEditPage.Adapter());
 	}
 	
 	protected void initializeNetworkModule(){

@@ -10,6 +10,7 @@ import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.geography.Contact;
+import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
@@ -75,13 +76,14 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(LocalityType.class, null));
 		module.addChild(createListCommandable(Locality.class, null));
 		module.addChild(createListCommandable(Country.class, null));
-		/*module.addChild(createListCommandable(ElectronicMail.class, null));
+		module.addChild(createListCommandable(ContactCollection.class, null));
+		module.addChild(createListCommandable(ElectronicMail.class, null));
 		module.addChild(createListCommandable(LocationType.class, null));
-		module.addChild(createListCommandable(Location.class, null));
+		//module.addChild(createListCommandable(Location.class, null));
 		module.addChild(createListCommandable(PhoneNumberType.class, null));
 		module.addChild(createListCommandable(PhoneNumber.class, null));
-		module.addChild(createListCommandable(PostalBox.class, null));
-		module.addChild(createListCommandable(Website.class, null));*/
+		//module.addChild(createListCommandable(PostalBox.class, null));
+		//module.addChild(createListCommandable(Website.class, null));
 		return module;
 	}
 	
