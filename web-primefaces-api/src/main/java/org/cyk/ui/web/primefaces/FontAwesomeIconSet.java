@@ -59,6 +59,7 @@ public class FontAwesomeIconSet extends org.cyk.ui.api.Icon.GetIdentifierListene
 		case THING_MONEY: return "fa fa-money";
 		case THING_AGENDA:return "fa fa-calendar-o";
 		case THING_FILE:return "fa fa-file";
+		case THING_LOCATION_ARROW:return "fa fa-location-arrow";
 		
 		case PERSON:return "fa fa-user";
 		default:return getDefault();

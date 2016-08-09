@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.adapter.erp;
+package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -71,7 +71,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	}
 	
 	public Commandable getGeographyCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
-		Commandable module = createModuleCommandable(Contact.class, Icon.THING_FILE);
+		Commandable module = createModuleCommandable(Contact.class, Icon.THING_LOCATION_ARROW);
 		module.addChild(createListCommandable(LocalityType.class, null));
 		module.addChild(createListCommandable(Locality.class, null));
 		module.addChild(createListCommandable(Country.class, null));

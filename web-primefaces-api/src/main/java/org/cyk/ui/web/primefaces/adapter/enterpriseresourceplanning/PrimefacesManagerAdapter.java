@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.adapter.erp;
+package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 
 import java.io.Serializable;
 

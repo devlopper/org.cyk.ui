@@ -30,7 +30,7 @@ public class ContextListener extends AbstractContextListener {
 	protected void initialisation() {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
-		uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
+		//uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
 		Comment.define(Actor.class);
 		FileIdentifiableGlobalIdentifier.define(Actor.class);
 		
@@ -40,7 +40,7 @@ public class ContextListener extends AbstractContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
-		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.erp.PrimefacesManagerAdapter());
+		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManagerAdapter());
 		
 		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
 		AbstractSelectManyPage.Listener.COLLECTION.add(new ActorSelectManyPageAdapter());
