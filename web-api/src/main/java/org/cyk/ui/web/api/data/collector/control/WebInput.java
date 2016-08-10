@@ -34,7 +34,7 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 	
 	/**/
 	
-	public interface Listener{
+	public static interface Listener{
 		
 		Collection<Listener> COLLECTION = new ArrayList<>();
 		

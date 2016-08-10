@@ -9,7 +9,6 @@ import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.system.root.ui.web.primefaces.api.RootWebManager;
 import org.cyk.ui.test.model.Actor;
 import org.cyk.ui.test.model.Actor.SearchCriteria;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
@@ -30,7 +29,6 @@ public class ContextListener extends AbstractContextListener {
 	protected void initialisation() {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
-		//uiManager.registerApplicationUImanager(RootWebManager.getInstance());	
 		Comment.define(Actor.class);
 		FileIdentifiableGlobalIdentifier.define(Actor.class);
 		

@@ -35,10 +35,10 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	}
 	
 	public String formatInstruction(String instruction){
+		instruction=StringUtils.replace(instruction, "  ", " ");
 		StringBuilder builder= new StringBuilder(instruction==null?Constant.EMPTY_STRING:instruction);
-		if(!StringUtils.endsWith(builder, INSTRUCTION_SEPARATOR))
+		if(StringUtils.isNotBlank(instruction) && !StringUtils.endsWith(builder, INSTRUCTION_SEPARATOR))
 			builder.append(INSTRUCTION_SEPARATOR);
-		
 		return builder.toString();
 	}
 	

@@ -99,7 +99,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//System.out.println("Tables : "+tables.iterator().next());
 		
 		for(AbstractTable<?, ?, ?> table : tables)
-			onDocumentLoadJavaScript = tableFormatJavaScript((org.cyk.ui.web.primefaces.Table<?>) table, Boolean.TRUE);
+			//onDocumentLoadJavaScript = 
+			tableFormatJavaScript((org.cyk.ui.web.primefaces.Table<?>) table, Boolean.TRUE);
 	}
 	
 	@Override
@@ -162,13 +163,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	protected void buildTable(AbstractTable<?, ?, ?> atable){
 		super.buildTable(atable);
-		tableFormatJavaScript((Table<?>) atable,Boolean.TRUE);
+		//tableFormatJavaScript((Table<?>) atable,Boolean.TRUE);
 	}
 	
 	protected String tableFormatJavaScript(Table<?> table,Boolean onDocumentLoad) {
 		String script = table.getFormatJavaScript();
-		if(Boolean.TRUE.equals(table.getShowHeader()))
+		if(Boolean.TRUE.equals(onDocumentLoad)){
 			onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, script);
+		}
 		return script;
 	}
 	
@@ -329,6 +331,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		table.setShowOpenCommand(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.READ)));
 		table.setShowEditColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.UPDATE)));
 		table.setShowAddRemoveColumn(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.DELETE)));
+		
+		//table.setShowFooter(Boolean.FALSE);
+		//tableFormatJavaScript(table, Boolean.TRUE);
 		
 		table.setIdentifiableClass(listener.getIdentifiableClass());
 		
