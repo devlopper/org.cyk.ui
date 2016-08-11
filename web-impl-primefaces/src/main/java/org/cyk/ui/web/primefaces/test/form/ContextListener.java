@@ -38,7 +38,7 @@ public class ContextListener extends AbstractContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
-		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManagerAdapter());
+		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManager());
 		
 		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
 		AbstractSelectManyPage.Listener.COLLECTION.add(new ActorSelectManyPageAdapter());

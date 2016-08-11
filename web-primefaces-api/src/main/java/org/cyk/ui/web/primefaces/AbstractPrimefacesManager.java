@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.AbstractWebManager;
+import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -71,6 +73,11 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeN
 		public static class Adapter extends AbstractWebManagerListener.Adapter<TreeNode,HierarchyNode,UserSession> implements AbstractPrimefacesManagerListener{
 			private static final long serialVersionUID = 3034803382486669232L;
 
+			@SuppressWarnings("unchecked")
+			protected void registerDetailsConfiguration(Class<?> detailsClass,DetailsConfiguration detailsConfiguration){
+				PrimefacesManager.registerDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) detailsClass, detailsConfiguration);
+			}
+			
 		}
 	}
 }

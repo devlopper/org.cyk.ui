@@ -24,6 +24,7 @@ import org.cyk.system.root.business.impl.event.EventDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
@@ -39,6 +40,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
@@ -70,90 +72,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	private static final Map<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final DetailsConfiguration DETAILS_CONFIGURATION = new DetailsConfiguration();
-	
-	static {
-		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_SURNAME,PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
-					}
-				};
-			}
-		});
-		registerDetailsConfiguration(AbstractActorDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return !ArrayUtils.contains(new String[]{PersonDetails.FIELD_SURNAME,PersonDetails.FIELD_CONTACT_COLLECTION}, field.getName());
-					}
-				};
-			}
-		});
-		registerDetailsConfiguration(FileDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return !ArrayUtils.contains(new String[]{FileDetails.FIELD_ABBREVIATION,FileDetails.FIELD_IMAGE}, field.getName());
-					}
-				};
-			}
-		});
-		registerDetailsConfiguration(FileIdentifiableGlobalIdentifierDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return ArrayUtils.contains(new String[]{FileIdentifiableGlobalIdentifierDetails.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER,FileIdentifiableGlobalIdentifierDetails.FIELD_FILE}, field.getName());
-					}
-				};
-			}
-		});
-		registerDetailsConfiguration(EventDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return ArrayUtils.contains(new String[]{EventDetails.FIELD_NAME,EventDetails.FIELD_PERIOD,PeriodDetails.FIELD_FROM_DATE
-								,PeriodDetails.FIELD_TO_DATE}, field.getName());
-					}
-				};
-			}
-		});
-		registerDetailsConfiguration(CountryDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>(){
-					@Override
-					public Boolean build(Field field) {
-						return ArrayUtils.contains(new String[]{CountryDetails.FIELD_NAME,CountryDetails.FIELD_PHONE_NUMBER_CODE}, field.getName());
-					}
-				};
-			}
-		});
 		
-	}
-	
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
 	private static final String SELECTOR_FORMAT = "@(%s)";

@@ -1,10 +1,12 @@
 package org.cyk.ui.web.primefaces.data.collector.control;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
@@ -15,7 +17,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> {
+public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem>,Serializable {
+	
+	private static final long serialVersionUID = -4469671146996017509L;
 
 	@Override
 	public DynaFormModel createModel(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet) {
@@ -84,6 +88,14 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 	@Override
 	public Boolean showFieldLabel(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
 		return null;
+	}
+	
+	protected Boolean isFieldNameIn(Field field,String...names){
+		return ArrayUtils.contains(names, field.getName());
+	}
+	
+	protected Boolean isFieldNameNotIn(Field field,String...names){
+		return Boolean.FALSE.equals(isFieldNameIn(field, names));
 	}
 
 }
