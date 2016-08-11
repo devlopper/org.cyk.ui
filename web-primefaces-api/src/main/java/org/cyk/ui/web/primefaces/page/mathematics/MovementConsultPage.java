@@ -16,5 +16,4 @@ public class MovementConsultPage extends AbstractConsultPage<Movement> implement
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-
 }

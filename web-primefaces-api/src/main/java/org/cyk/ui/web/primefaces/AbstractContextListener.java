@@ -95,7 +95,9 @@ import org.cyk.ui.web.primefaces.page.geography.PhoneNumberListPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionListPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MovementListPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPageAdapter;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudManyPageAdapter;
@@ -250,8 +252,14 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementCollection.class, MovementCollectionEditPage.Form.class, MovementCollectionDetails.class
 				,null,null,null));
 		uiManager.configBusinessIdentifiable(MovementCollection.class, null);
+		BusinessEntityFormManyPageListener.COLLECTION.add(new MovementCollectionListPage.Adapter());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new MovementCollectionEditPage.Adapter());
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
+		BusinessEntityFormManyPageListener.COLLECTION.add(new MovementListPage.Adapter());
+		BusinessEntityFormOnePageListener.COLLECTION.add(new MovementEditPage.Adapter());
+		
 	}
 	
 	protected void initializeFiniteStateMachineModule(){

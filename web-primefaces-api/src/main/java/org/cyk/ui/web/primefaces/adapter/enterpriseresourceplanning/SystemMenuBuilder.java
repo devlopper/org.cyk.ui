@@ -15,12 +15,11 @@ import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
-import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
-import org.cyk.system.root.model.geography.PostalBox;
-import org.cyk.system.root.model.geography.Website;
+import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
@@ -47,6 +46,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addBusinessMenu(userSession,systemMenu,getFileCommandable(userSession, null));
 		addBusinessMenu(userSession,systemMenu,getGeographyCommandable(userSession, null));
 		addBusinessMenu(userSession,systemMenu,getPersonCommandable(userSession, null));
+		addBusinessMenu(userSession,systemMenu,getMathematicsCommandable(userSession, null));
 		return systemMenu;
 	}
 	
@@ -95,6 +95,13 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(MaritalStatus.class, null));
 		module.addChild(createListCommandable(PersonTitle.class, null));
 		module.addChild(createListCommandable(Sex.class, null));
+		return module;
+	}
+	
+	public Commandable getMathematicsCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("mathematiques", Icon.PERSON);
+		module.addChild(createListCommandable(MovementCollection.class, null));
+		module.addChild(createListCommandable(Movement.class, null));
 		return module;
 	}
 	

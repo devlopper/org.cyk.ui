@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
@@ -19,9 +22,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Binding;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 //TODO can be renamed with Edit in the name : AbstractEditFormModel
 public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean implements Serializable,FormModelListener<ENTITY> {
@@ -138,5 +138,7 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 		}
 		return data;
 	}
+	
+	/**/
 	
 }

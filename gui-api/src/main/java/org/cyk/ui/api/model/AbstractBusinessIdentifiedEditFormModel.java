@@ -5,8 +5,11 @@ import java.io.Serializable;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -31,6 +34,8 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	@Input @InputText protected String abbreviation;
 	
 	@Input @InputText protected String description;
+	
+	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel period = new PeriodFormModel();
 	
 	@Override
 	public void read() {

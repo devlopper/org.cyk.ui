@@ -72,6 +72,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
+		/*
 		if(Boolean.TRUE.equals(showCollectionField()))
 			createAjaxBuilder(AbstractMovementForm.FIELD_COLLECTION).updatedFieldNames(AbstractMovementForm.FIELD_CURRENT_TOTAL,AbstractMovementForm.FIELD_ACTION
 					,AbstractMovementForm.FIELD_VALUE,AbstractMovementForm.FIELD_NEXT_TOTAL)
@@ -98,10 +99,12 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 			}
 		}).build();
 		selectMovementCollection(getMovement().getCollection());
+		*/
 		
 		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputOneChoice.class, Form.FIELD_ACTION).setValue(getCashRegisterMovement().getMovement().getAction());
-		form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_CURRENT_TOTAL).setMinimumToInfinite();
-		form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_NEXT_TOTAL).setMinimumToInfinite();
+		
+		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_CURRENT_TOTAL).setMinimumToInfinite();
+		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_NEXT_TOTAL).setMinimumToInfinite();
 	}
 	
 	protected void selectMovementCollection(MovementCollection movementCollection){
@@ -131,7 +134,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;
 		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal currentTotal;
-		@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull protected MovementAction action;
+		/*@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull*/ protected MovementAction action;
 		@Input @InputNumber @NotNull protected BigDecimal value;
 		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal nextTotal;
 		
@@ -152,7 +155,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 			getMovement().setCollection(collection);
 			getMovement().setAction(action);
 			getMovement().setValue(value);
-			if(getMovement().getCollection().getDecrementAction().equals(getMovement().getAction()))
+			if(getMovement().getCollection().getDecrementAction()!=null && getMovement().getCollection().getDecrementAction().equals(getMovement().getAction()))
 				getMovement().setValue(value.negate());
 		}
 		
