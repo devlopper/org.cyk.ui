@@ -64,6 +64,31 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 		
+		final FormConfiguration formConfiguration = getFormConfiguration();
+		
+		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 2227224319108375650L;
+			@Override
+			public Boolean build(Field field) {
+				if(formConfiguration==null || formConfiguration.getFieldNames()==null || CollectionUtils.isEmpty(formConfiguration.getFieldNames())){
+					return super.build(field);
+				}else{
+					return formConfiguration.getFieldNames().contains(field.getName());
+				}
+			}
+			
+			@Override
+			public void input(ControlSet controlSet, Input input) {
+				super.input(controlSet, input);
+				if(Crud.CREATE.equals(crud)){
+					if(Boolean.FALSE.equals(input.getRequired())){
+						if(formConfiguration!=null && formConfiguration.getRequiredFieldNames()!=null && !formConfiguration.getRequiredFieldNames().isEmpty())
+							input.setRequired(formConfiguration.getRequiredFieldNames().contains(input.getField().getName()));
+					}	
+				}
+			}
+		});	
+		
 		if(uiManager.isMobileDevice(userDeviceType)){
 			((Commandable)form.getSubmitCommandable()).setUpdate("");
 		}
@@ -154,6 +179,14 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@Override
 	public Boolean getShowContentMenu() {
 		return crud!=null && !Crud.READ.equals(crud);
+	}
+	
+	protected FormConfiguration getFormConfiguration(String type){
+		return getFormConfiguration(crud, type);
+	}
+	
+	protected FormConfiguration getFormConfiguration(){
+		return getFormConfiguration(selectedTabId);
 	}
 	
 	/**/
@@ -331,7 +364,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 					if(bean instanceof AbstractCrudOnePage<?>){
 						final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
 						//TODO should be checked before adding because POJO reuse is possible by container. Is it real idea ???
-						page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
+						/*page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
 							
 							@Override
 							public Boolean build(Field field) {
@@ -339,8 +372,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())){
 									return super.build(field);
 								}else{
-									/*System.out.println(field);
-									debug(configuration);*/
 									return configuration.getFieldNames().contains(field.getName());
 								}
 								
@@ -357,7 +388,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 									}	
 								}
 							}
-						});	
+						});*/	
 					}
 				}
 					

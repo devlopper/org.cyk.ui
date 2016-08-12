@@ -14,7 +14,7 @@ public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> 
 
 	/**/
 	
-	public static abstract class AbstractActorListPageAdapter<ACTOR extends AbstractIdentifiable> extends AbstractPersonListPageAdapter<ACTOR> implements Serializable {
+	/*public static abstract class AbstractActorListPageAdapter<ACTOR extends AbstractIdentifiable> extends AbstractPersonListPageAdapter<ACTOR> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -22,7 +22,6 @@ public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> 
 			super(entityTypeClass);
 		}
 		
-		/**/
 		
 		public static class AbstractDefault<ACTOR extends AbstractIdentifiable> extends AbstractActorListPageAdapter<ACTOR> implements Serializable{
 
@@ -32,7 +31,6 @@ public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> 
 				super(entityTypeClass);
 			}
 			
-			/**/
 			
 			public static class Default<ACTOR extends AbstractIdentifiable> extends AbstractDefault<ACTOR> implements Serializable{
 
@@ -45,5 +43,5 @@ public abstract class AbstractActorListPage<ACTOR extends AbstractIdentifiable> 
 			}
 		}
 		
-	}
+	}*/
 }

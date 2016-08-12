@@ -3,27 +3,33 @@ package org.cyk.ui.api.data.collector.form;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter @EqualsAndHashCode(of="type",callSuper=false)
+@Getter @Setter 
 public class FormConfiguration extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 218887156564236022L;
-
-	private String type;
-	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
 	
-	public FormConfiguration(String type) {
-		super();
-		this.type = type;
-	}
+	private static final Map<Key,FormConfiguration> MAP = new HashMap<>();
+	
+	/* Key */
+	private Key key;
+	
+	/* Value */
+	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
 	
 	public FormConfiguration addFieldNames(String...names){
 		if(fieldNames==null)
@@ -67,6 +73,32 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 				excludedFieldNames.remove(name);
 		}
 		return this;
+	}
+	
+	/**/
+	
+	public static FormConfiguration get(Class<?> clazz,Crud crud,String type,Boolean createIfNull){
+		Key key = new Key(clazz, CommonBusinessAction.valueOf(crud.name()), StringUtils.isBlank(type) ? TYPE_INPUT_SET_DEFAULT : type);
+		FormConfiguration formConfiguration = MAP.get(key);
+		if(formConfiguration==null)
+			MAP.put(key, formConfiguration = new FormConfiguration());
+		return formConfiguration;
+	}
+	
+	public static FormConfiguration get(Class<?> clazz,Crud crud,Boolean createIfNull){
+		return get(clazz,crud, null,createIfNull);
+	}
+	
+	/**/
+	
+	@Getter @Setter @AllArgsConstructor @EqualsAndHashCode(of={"clazz","commonBusinessAction","type"})
+	public static class Key implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		private Class<?> clazz;
+		private CommonBusinessAction commonBusinessAction;
+		private String type;
+		
 	}
 
 	/**/

@@ -29,7 +29,7 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 	
 	/**/
 	
-	public static abstract class AbstractPageAdapter<PERSON extends AbstractIdentifiable> extends AbstractPartyEditPage.AbstractPageAdapter<PERSON> implements Serializable {
+	/*public static abstract class AbstractPageAdapter<PERSON extends AbstractIdentifiable> extends AbstractPartyEditPage.AbstractPageAdapter<PERSON> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -55,7 +55,6 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 			configuration.addFieldNames(AbstractPersonEditFormModel.FIELD_LAST_NAMES);
 		}
 		
-		/**/
 		
 		public static class Default<PERSON extends Person> extends AbstractPageAdapter<PERSON> implements Serializable {
 
@@ -67,6 +66,6 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 			
 		}
 		
-	}
+	}*/
 	
 }

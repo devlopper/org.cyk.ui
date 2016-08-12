@@ -141,6 +141,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
 		
 		initializeEventModule();
+		/*
 		initializeFileModule();
 		initializeFiniteStateMachineModule();
 		initializeGeographyModule();
@@ -150,7 +151,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeNetworkModule();
 		initializePartyModule();
 		initializeSecurityModule();
-		
+		*/
 		
 		
 	}
@@ -161,8 +162,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Person.class, PersonEditPage.Form.class, PersonDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Person.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractPersonListPage.AbstractPersonListPageAdapter.AbstractDefault.Default<Person>(Person.class));
-		BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractPersonEditPage.AbstractPageAdapter.Default<Person>(Person.class));
+		//BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractPersonListPage.AbstractPersonListPageAdapter.AbstractDefault.Default<Person>(Person.class));
+		//BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractPersonEditPage.AbstractPageAdapter.Default<Person>(Person.class));
 		ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<Person>(Person.class));
 	}
 	
@@ -183,18 +184,18 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected void initializeEventModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Event.class, EventEditPage.Form.class, EventDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Event.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new EventListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new EventEditPage.Adapter());
+		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventListPage.Adapter());
+		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(EventParty.class, EventPartyEditPage.Form.class, EventPartyDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(EventParty.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new EventPartyListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new EventPartyEditPage.Adapter());
+		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventPartyListPage.Adapter());
+		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventPartyEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(EventMissed.class, EventMissedEditPage.Form.class, EventMissedDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(EventMissed.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new EventMissedListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new EventMissedEditPage.Adapter());
+		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventMissedListPage.Adapter());
+		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventMissedEditPage.Adapter());
 	}
 	
 	protected void initializeGeographyModule(){
@@ -296,8 +297,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectOneViewId(webNavigationManager.getOutcomeDynamicSelectOne());
 		uiManager.businessEntityInfos(actorClass).getUserInterface().setSelectManyViewId(webNavigationManager.getOutcomeDynamicSelectMany());
 		
-		BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractActorListPage.AbstractActorListPageAdapter.AbstractDefault.Default<ACTOR>(actorClass));
-		BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractActorEditPage.AbstractPageAdapter.Default<ACTOR>(actorClass));
+		//BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractActorListPage.AbstractActorListPageAdapter.AbstractDefault.Default<ACTOR>(actorClass));
+		//BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractActorEditPage.AbstractPageAdapter.Default<ACTOR>(actorClass));
 		ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<ACTOR>(actorClass));
 		
 		//AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.COLLECTION.add(getActorCrudOnePageAdapter(actorClass));
@@ -306,7 +307,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		//logInfo("Actor {} forms registered", actorClass.getSimpleName());
 	}
-	
+	/*
 	protected <ACTOR extends AbstractActor> AbstractActorEditPage.AbstractPageAdapter<ACTOR> getActorCrudOnePageAdapter(Class<ACTOR> actorClass){
 		return new AbstractActorEditPage.AbstractPageAdapter.Default<ACTOR>(actorClass);
 	}
@@ -315,7 +316,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	protected <ACTOR extends AbstractActor> AbstractActorConsultPageAdapter<ACTOR> getActorConsultPageAdapter(Class<ACTOR> actorClass){
 		return new AbstractActorConsultPageAdapter.Default<ACTOR>(actorClass);
-	}
+	}*/
 	
 	public static Class<? extends AbstractFormModel<?>>  ACTOR_EDIT_FORM_MODEL_CLASS;
 	

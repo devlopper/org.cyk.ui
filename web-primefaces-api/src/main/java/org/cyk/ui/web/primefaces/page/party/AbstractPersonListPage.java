@@ -17,7 +17,7 @@ public abstract class AbstractPersonListPage<PERSON extends AbstractIdentifiable
 	
 	/**/
 	
-	public static abstract class AbstractPersonListPageAdapter<PERSON extends AbstractIdentifiable> extends AbstractPartyListPageAdapter<PERSON> implements Serializable {
+	/*public static abstract class AbstractPersonListPageAdapter<PERSON extends AbstractIdentifiable> extends AbstractPartyListPageAdapter<PERSON> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -27,7 +27,6 @@ public abstract class AbstractPersonListPage<PERSON extends AbstractIdentifiable
 			configuration.addFieldNames(AbstractPersonDetails.FIELD_LASTNAMES);	
 		}
 		
-		/**/
 		
 		public static abstract class AbstractDefault<PERSON extends AbstractIdentifiable> extends AbstractPersonListPageAdapter<PERSON> implements Serializable{
 
@@ -37,7 +36,6 @@ public abstract class AbstractPersonListPage<PERSON extends AbstractIdentifiable
 				super(entityTypeClass);
 			}
 			
-			/**/
 			
 			public static class Default<PERSON extends AbstractIdentifiable> extends AbstractDefault<PERSON> implements Serializable{
 
@@ -52,5 +50,5 @@ public abstract class AbstractPersonListPage<PERSON extends AbstractIdentifiable
 		
 		
 		
-	}
+	}*/
 }

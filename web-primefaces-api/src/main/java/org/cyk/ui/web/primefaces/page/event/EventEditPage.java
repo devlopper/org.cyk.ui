@@ -75,7 +75,7 @@ public class EventEditPage extends AbstractCrudOnePage<Event> implements Seriali
 		public static final String FIELD_CONTACT_COLLECTION = "contactCollection";
 	}
 	
-	public static class Adapter extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<Event> implements Serializable {
+	/*public static class Adapter extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<Event> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -100,6 +100,6 @@ public class EventEditPage extends AbstractCrudOnePage<Event> implements Seriali
 			
 		}
 		
-	}
+	}*/
 	
 }

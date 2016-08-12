@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lombok.Getter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -23,11 +21,7 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 
 	Collection<BusinessEntityFormPageListener<?>> COLLECTION = new ArrayList<>();
 	
-	/**
-	 * Set of form configuration to create , read , update and delete an entity
-	 * @return
-	 */
-	Map<Crud,Map<String,FormConfiguration>> getFormConfigurationMap();
+	FormConfiguration getFormConfiguration(Object data,Crud crud);
 	
 	Boolean canRedirect(Crud crud,Object data);
 	
@@ -52,6 +46,11 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 			super(entityTypeClass);
 		}
 
+		@Override
+		public FormConfiguration getFormConfiguration(Object data, Crud crud) {
+			return null;
+		}
+		
 		@Override
 		public Boolean canRedirect(Crud crud, Object data) {
 			return null;
@@ -90,34 +89,6 @@ public interface BusinessEntityFormPageListener<ENTITY extends AbstractIdentifia
 		}
 		
 		/**/
-		
-		protected FormConfiguration getFormConfiguration(Crud crud,String type){
-			if(formConfigurationMap.isEmpty())
-				return null;
-			Map<String,FormConfiguration> formMap = formConfigurationMap.get(crud);
-			if(formMap==null || formMap.isEmpty())
-				return null;
-			return StringUtils.isBlank(type)?formMap.entrySet().iterator().next().getValue():formMap.get(type);
-		}
-		
-		protected FormConfiguration getFormConfiguration(Crud crud){
-			return getFormConfiguration(crud, null);
-		}
-		
-		protected FormConfiguration createFormConfiguration(Crud crud,String type){
-			FormConfiguration formConfiguration = new FormConfiguration(type);
-			Map<String,FormConfiguration> formMap = formConfigurationMap.get(crud);
-			if(formMap==null)
-				formMap = new LinkedHashMap<>();
-			formMap.put(type==null?FormConfiguration.TYPE_INPUT_SET_DEFAULT:type, formConfiguration);
-			formConfigurationMap.put(crud, formMap);
-			return formConfiguration;
-		}
-		
-		protected FormConfiguration createFormConfiguration(Crud crud){
-			return createFormConfiguration(crud, null);
-		}
-
 		
 		@Override
 		public Class<?> getFormModelClass() {

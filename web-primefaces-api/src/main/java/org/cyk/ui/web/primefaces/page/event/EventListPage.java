@@ -24,7 +24,7 @@ public class EventListPage extends AbstractCrudManyPage<Event> implements Serial
 	
 	/**/
 	
-	public static class Adapter extends AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.Adapter.Default<Event> implements Serializable {
+	/*public static class Adapter extends AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.Adapter.Default<Event> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -35,5 +35,5 @@ public class EventListPage extends AbstractCrudManyPage<Event> implements Serial
 					,PeriodDetails.FIELD_TO_DATE);
 		}
 		
-	}
+	}*/
 }

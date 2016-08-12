@@ -17,6 +17,7 @@ import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.DetailsBlock;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
@@ -182,6 +183,14 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	public <T> Table<T> createDetailsTable(Class<T> aClass,DetailsConfigurationListener.Table<?, T> listener) {
 		
 		return super.createDetailsTable(aClass, listener);
+	}
+	
+	protected FormConfiguration getFormConfiguration(Crud crud, String type){
+		return FormConfiguration.get(businessEntityInfos.getClazz(), crud, type, Boolean.TRUE);
+	}
+	
+	protected FormConfiguration getFormConfiguration(Crud crud){
+		return getFormConfiguration(crud, selectedTabId);
 	}
 	
 	/**/

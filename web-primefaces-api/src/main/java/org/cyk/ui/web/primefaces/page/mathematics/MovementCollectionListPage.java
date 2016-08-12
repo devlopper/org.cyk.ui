@@ -29,8 +29,7 @@ public class MovementCollectionListPage extends AbstractCrudManyPage<MovementCol
 		public Adapter() {
 			super(MovementCollection.class);
 			FormConfiguration configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-			configuration.addFieldNames(MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME,MovementCollectionDetails.FIELD_INCREMENT
-					,MovementCollectionDetails.FIELD_DECREMENT,MovementCollectionDetails.FIELD_VALUE);
+			configuration.addFieldNames(MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME);
 		}
 		
 	}

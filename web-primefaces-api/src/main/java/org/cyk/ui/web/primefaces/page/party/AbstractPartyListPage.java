@@ -19,7 +19,7 @@ public abstract class AbstractPartyListPage<PARTY extends AbstractIdentifiable> 
 	
 	/**/
 	
-	public static abstract class AbstractPartyListPageAdapter<PARTY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.Adapter.Default<PARTY> implements Serializable {
+	/*public static abstract class AbstractPartyListPageAdapter<PARTY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener.Adapter.Default<PARTY> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -29,5 +29,5 @@ public abstract class AbstractPartyListPage<PARTY extends AbstractIdentifiable> 
 			configuration.addFieldNames(AbstractPartyDetails.FIELD_CODE,AbstractPartyDetails.FIELD_NAME);
 		}
 		
-	}
+	}*/
 }

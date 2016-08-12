@@ -97,5 +97,18 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 	protected Boolean isFieldNameNotIn(Field field,String...names){
 		return Boolean.FALSE.equals(isFieldNameIn(field, names));
 	}
+	
+	protected Boolean isBusinessIdentificationField(Field field){
+		return isFieldNameIn(field, CODE,NAME);
+	}
+	
 
+	/**/
+	
+	public static final String IMAGE = "image";
+	public static final String CODE = "code";
+	public static final String NAME = "name";
+	public static final String ABBREVIATION = "abbreviation";
+	public static final String DESCRIPTION = "description";
+	public static final String EXISTENCE_PERIOD = "existencePeriod";
 }

@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -17,7 +20,6 @@ import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -39,9 +41,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
 	implements CommandListener, Serializable {
@@ -59,16 +58,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		super.initialisation();
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
-		/*
-		if(formModelClass==null)
-			if(identifiableConfiguration!=null)
-				formModelClass = identifiableConfiguration.getFormMap().get(Boolean.FALSE, Crud.READ);
-		*/
-		/*Class<?> aFormClass = __formModelClass__();
-		if(aFormClass==null){
-			// TODO Form can be provided by URL parameter registered in Form Map
-			aFormClass = UIManager.FORM_MODEL_MAP.get(webManager.getRequestParameterFormModel());
-		}*/
+		
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass);
 		
 		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
@@ -92,12 +82,16 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
-				if(!AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()) && ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
-						,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
-					return Boolean.FALSE;
-				Input input = field.getAnnotation(Input.class);
-				IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
-				return input != null || includeInputs!=null;
+				FormConfiguration formConfiguration = getFormConfiguration(Crud.READ,selectedTabId);
+				if(formConfiguration==null || formConfiguration.getFieldNames()==null || CollectionUtils.isEmpty(formConfiguration.getFieldNames())){
+					if(!AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()) && ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
+							,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
+						return Boolean.FALSE;
+					Input input = field.getAnnotation(Input.class);
+					IncludeInputs includeInputs = field.getAnnotation(IncludeInputs.class);
+					return input != null || includeInputs!=null;
+				}else
+					return formConfiguration.getFieldNames().contains(field.getName());
 			}
 			@Override
 			public void added(Column column) {
@@ -372,8 +366,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
-					FormConfiguration configuration = createFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-					configuration.addExcludedFieldNames(AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE);
+					//FormConfiguration configuration = getFormConfiguration(Crud.READ, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
+					//configuration.addExcludedFieldNames(AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE);
 				}
 				
 				@Override
@@ -386,11 +380,11 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					return Boolean.TRUE;
 				}
 				
-				@SuppressWarnings({ "unchecked" })
+				@SuppressWarnings({ })
 				@Override
 				public void initialisationEnded(AbstractBean bean) {
 					super.initialisationEnded(bean);
-					final AbstractBusinessEntityFormManyPage<AbstractActor> page = (AbstractBusinessEntityFormManyPage<AbstractActor>) bean;
+					/*final AbstractBusinessEntityFormManyPage<AbstractActor> page = (AbstractBusinessEntityFormManyPage<AbstractActor>) bean;
 					page.getTable().getColumnListeners().add(new ColumnAdapter(){
 						@Override
 						public Boolean isColumn(Field field) {
@@ -400,7 +394,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 							return configuration.getFieldNames().contains(field.getName());
 						}
 						
-					});	
+					});
+					*/
 				}		
 			}
 		}

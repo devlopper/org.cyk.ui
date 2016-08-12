@@ -119,19 +119,18 @@ public class DetailsConfiguration implements Serializable {
 		
 	}
 	
-	public static class DefaultControlSetAdapter extends ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> {
+	public static class DefaultControlSetAdapter extends ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> implements Serializable {
+		private static final long serialVersionUID = -4644620620046718336L;
+
 		@Override
 		public Boolean build(Field field) {
-			if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
-					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
-				return Boolean.FALSE;
-			return super.build(field);
+			return isFieldNameNotIn(field, AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
+					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION);
 		}
 		
 	}
 	
-	public static class DefaultColumnAdapter extends ColumnAdapter {
-
+	public static class DefaultColumnAdapter extends ColumnAdapter implements Serializable {
 		private static final long serialVersionUID = -6823895736787162731L;
 		
 		@Override
@@ -141,7 +140,6 @@ public class DetailsConfiguration implements Serializable {
 				return Boolean.FALSE;
 			return super.isColumn(field);
 		}
-		
 	}
 	
 }

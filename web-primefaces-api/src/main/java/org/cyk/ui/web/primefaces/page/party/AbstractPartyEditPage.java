@@ -26,7 +26,7 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 	
 	/**/
 	
-	public static abstract class AbstractPageAdapter<PARTY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<PARTY> implements Serializable {
+	/*public static abstract class AbstractPageAdapter<PARTY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<PARTY> implements Serializable {
 
 		private static final long serialVersionUID = 4370361826462886031L;
 
@@ -50,5 +50,5 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 			configuration.addFieldNames(AbstractPartyEditFormModel.FIELD_IMAGE);
 		}
 		
-	}
+	}*/
 }
