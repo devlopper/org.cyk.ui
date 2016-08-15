@@ -5,15 +5,11 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
@@ -67,25 +63,6 @@ public class CountryEditPage extends AbstractCrudOnePage<Country> implements Ser
 		public void write() {
 			super.write();
 			identifiable.setContinent(continent);
-		}
-		
-	}
-	
-	public static class Adapter extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<Country> implements Serializable {
-
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public Adapter() {
-			super(Country.class);
-			FormConfiguration configuration = createFormConfiguration(Crud.CREATE, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-			configuration.addRequiredFieldNames(Form.FIELD_CONTINENT,Form.FIELD_CODE,Form.FIELD_NAME,Form.FIELD_PHONE_NUMBER_CODE);
-			
-			configuration = createFormConfiguration(Crud.UPDATE, UIManager.getInstance().businessEntityInfos(entityTypeClass).getUserInterface().getLabelId());
-			configuration.addRequiredFieldNames(Form.FIELD_CODE,Form.FIELD_NAME,Form.FIELD_PHONE_NUMBER_CODE);
-			
-			configuration = createFormConfiguration(Crud.DELETE);
-			configuration.addFieldNames(Form.FIELD_CODE,Form.FIELD_NAME,Form.FIELD_PHONE_NUMBER_CODE);
-			
 		}
 		
 	}

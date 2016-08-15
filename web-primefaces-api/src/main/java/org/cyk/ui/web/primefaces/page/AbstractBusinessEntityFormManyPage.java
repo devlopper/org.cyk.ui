@@ -6,9 +6,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -40,6 +37,9 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
@@ -79,11 +79,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				}
 			}
 		});
+		formConfiguration = getFormConfiguration(Crud.READ,selectedTabId);
+		if(formConfiguration==null || formConfiguration.getFieldNames()==null || formConfiguration.getFieldNames().isEmpty())
+			formConfiguration = getFormConfiguration(Crud.CREATE);
+		
 		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
 			@Override
 			public Boolean isColumn(Field field) {
-				FormConfiguration formConfiguration = getFormConfiguration(Crud.READ,selectedTabId);
-				if(formConfiguration==null || formConfiguration.getFieldNames()==null || CollectionUtils.isEmpty(formConfiguration.getFieldNames())){
+				if(FormConfiguration.hasNoFieldNames(formConfiguration)){
 					if(!AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()) && ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
 							,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
 						return Boolean.FALSE;
@@ -113,14 +116,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table.getApplyRowEditCommandable().getCommand().getCommandListeners().add(this);
 		
 		table.setMaster(identifiable);
-		table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+		/*table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = 2679004450545381808L;
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				Object data = ((Row<Object>)parameter).getData();
 				redirectToCrudOne(Crud.UPDATE,data);
 			}
-		});
+		});*/
 		
 		contentTitle = text("page.crud.many")+" "+contentTitle;
 		title = contentTitle;
@@ -175,6 +178,26 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					}
 				}
 			});	
+		}
+		
+		if(Boolean.FALSE.equals(table.getInplaceEdit())){
+			table.getUpdateRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = -462143346533749392L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.UPDATE);
+				}
+			});	
+			
+			table.getRemoveRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = -462143346533749392L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					WebNavigationManager.getInstance().redirectToDynamicCrudOne(((Row<Object>) parameter).getIdentifiable(),Crud.DELETE);
+				}
+			});
 		}
 		
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))

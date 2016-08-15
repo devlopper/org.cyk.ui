@@ -8,13 +8,13 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.internal.constraintvalidators.EmailValidator;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class ElectronicMailEditPage extends AbstractContactEditPage<ElectronicMail> implements Serializable {
@@ -49,15 +49,5 @@ public class ElectronicMailEditPage extends AbstractContactEditPage<ElectronicMa
 		}
 	}
 	
-	public static class Adapter extends AbstractAdapter<ElectronicMail> implements Serializable {
-
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public Adapter() {
-			super(ElectronicMail.class);
-			
-		}
-		
-	}
 	
 }

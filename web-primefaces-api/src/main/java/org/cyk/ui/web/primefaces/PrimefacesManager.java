@@ -14,21 +14,8 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.event.EventDetails;
-import org.cyk.system.root.business.impl.file.FileDetails;
-import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
-import org.cyk.system.root.business.impl.geography.CountryDetails;
-import org.cyk.system.root.business.impl.mathematics.MovementDetails;
-import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
-import org.cyk.system.root.business.impl.party.person.PersonDetails;
-import org.cyk.system.root.business.impl.time.PeriodDetails;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -40,13 +27,11 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
-import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
-import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
@@ -62,6 +47,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {

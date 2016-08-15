@@ -64,27 +64,30 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 		
-		final FormConfiguration formConfiguration = getFormConfiguration();
+		formConfiguration = getFormConfiguration(selectedTabId);
+		
+		if(formConfiguration==null && !Crud.CREATE.equals(crud))
+			formConfiguration = getFormConfiguration(Crud.CREATE);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 2227224319108375650L;
 			@Override
 			public Boolean build(Field field) {
-				if(formConfiguration==null || formConfiguration.getFieldNames()==null || CollectionUtils.isEmpty(formConfiguration.getFieldNames())){
+				if(FormConfiguration.hasExcludedFieldName(formConfiguration, field.getName()))
+					return Boolean.FALSE;
+				else if(FormConfiguration.hasNoFieldNames(formConfiguration))
 					return super.build(field);
-				}else{
-					return formConfiguration.getFieldNames().contains(field.getName());
-				}
+				else
+					return FormConfiguration.hasFieldName(formConfiguration, field.getName());
 			}
 			
 			@Override
 			public void input(ControlSet controlSet, Input input) {
 				super.input(controlSet, input);
-				if(Crud.CREATE.equals(crud)){
-					if(Boolean.FALSE.equals(input.getRequired())){
-						if(formConfiguration!=null && formConfiguration.getRequiredFieldNames()!=null && !formConfiguration.getRequiredFieldNames().isEmpty())
-							input.setRequired(formConfiguration.getRequiredFieldNames().contains(input.getField().getName()));
-					}	
+				if(Crud.isCreateOrUpdate(crud)){
+					//if(Boolean.FALSE.equals(input.getRequired())){
+						input.setRequired(FormConfiguration.hasRequiredFieldName(formConfiguration, input.getField().getName()));
+					//}	
 				}
 			}
 		});	
@@ -184,10 +187,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected FormConfiguration getFormConfiguration(String type){
 		return getFormConfiguration(crud, type);
 	}
-	
+	/*
 	protected FormConfiguration getFormConfiguration(){
 		return getFormConfiguration(selectedTabId);
-	}
+	}*/
 	
 	/**/
 	

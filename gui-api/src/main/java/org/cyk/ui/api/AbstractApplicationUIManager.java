@@ -199,6 +199,22 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		public static class Adapter<TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> extends BeanAdapter implements AbstractApplicationUIManagerListener<TREE_NODE, TREE_NODE_MODEL,USER_SESSION>{
 			private static final long serialVersionUID = 3034803382486669232L;
 
+			public Adapter() {
+				configureEventModule();
+				configureFileModule();
+				configureGeographyModule();
+				configureGlobalIdentificationModule();
+				configureInformationModule();
+				configureLanguageModule();
+				configureMathematicsModule();
+				configureMessageModule();
+				configurePartyModule();
+				configureSecurityModule();
+				configureTimeModule();
+				configureTreeModule();
+				configureUserInterfaceModule();
+			}
+			
 			@Override
 			public Boolean isCommandableVisible(USER_SESSION userSession,UICommandable commandable) {
 				return null;
@@ -216,6 +232,20 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			public SystemMenu getSystemMenu(USER_SESSION userSession) {
 				return null;
 			}
+			
+			protected void configureEventModule(){}
+			protected void configureFileModule(){}
+			protected void configureGeographyModule(){}
+			protected void configureGlobalIdentificationModule(){}
+			protected void configureInformationModule(){}
+			protected void configureLanguageModule(){}
+			protected void configureMathematicsModule(){}
+			protected void configureMessageModule(){}
+			protected void configurePartyModule(){}
+			protected void configureTreeModule(){}
+			protected void configureSecurityModule(){}
+			protected void configureTimeModule(){}
+			protected void configureUserInterfaceModule(){}
 		}
 	}
 }

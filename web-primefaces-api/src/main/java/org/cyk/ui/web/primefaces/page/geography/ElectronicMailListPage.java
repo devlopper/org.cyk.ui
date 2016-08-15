@@ -5,10 +5,10 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.system.root.model.geography.ElectronicMail;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.cyk.system.root.model.geography.ElectronicMail;
 
 @Named @ViewScoped @Getter @Setter
 public class ElectronicMailListPage extends AbstractContactListPage<ElectronicMail> implements Serializable {
@@ -17,13 +17,5 @@ public class ElectronicMailListPage extends AbstractContactListPage<ElectronicMa
 	
 	/**/
 	
-	public static class Adapter extends AbstractAdapter<ElectronicMail> implements Serializable {
 
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public Adapter() {
-			super(ElectronicMail.class);
-		}
-		
-	}
 }

@@ -5,15 +5,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileContentDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.Constant;
@@ -106,28 +102,5 @@ public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> ex
 	}
 	
 	/**/
-	
-	public static class AbstractPageAdapter<FILE extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener.Adapter.Default<FILE> implements Serializable {
-
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public AbstractPageAdapter(Class<FILE> entityTypeClass) {
-			super(entityTypeClass);
-			FormConfiguration configuration = createFormConfiguration(Crud.CREATE, FormConfiguration.TYPE_INPUT_SET_SMALLEST);
-			configuration.addFieldNames(AbstractForm.FIELD_CODE,AbstractForm.FIELD_NAME);
-			configuration.addRequiredFieldNames(AbstractForm.FIELD_FILE);
-			
-			configuration = createFormConfiguration(Crud.UPDATE, UIManager.getInstance().businessEntityInfos(entityTypeClass).getUserInterface().getLabelId());
-			configuration.addFieldNames(AbstractForm.FIELD_CODE,AbstractForm.FIELD_NAME,AbstractForm.FIELD_DESCRIPTION,AbstractForm.FIELD_EXTENSION,AbstractForm.FIELD_UNIFORM_RESOURCE_LOCATOR,AbstractForm.FIELD_MIME);
-			configuration.addRequiredFieldNames(AbstractForm.FIELD_FILE);
-			
-			configuration = createFormConfiguration(Crud.UPDATE, FileContentDetails.LABEL_IDENTIFIER);
-			configuration.addRequiredFieldNames(AbstractForm.FIELD_CONTENT);
-			
-			configuration = createFormConfiguration(Crud.DELETE);
-			configuration.addFieldNames(AbstractForm.FIELD_CODE,AbstractForm.FIELD_NAME);
-		}
-		
-	}
 
 }

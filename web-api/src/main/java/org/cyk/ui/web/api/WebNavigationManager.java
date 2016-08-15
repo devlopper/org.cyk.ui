@@ -1,6 +1,5 @@
 package org.cyk.ui.web.api;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,10 +16,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +40,10 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
 
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
@@ -294,9 +293,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public void redirectToUrl(String url){
 		logTrace("Redirect to {} , Committed = {}", url,Faces.isResponseCommitted());
 		try {
+			//throw new RuntimeException();
 			Faces.redirect(url);
 			//Faces.responseComplete();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.log(Level.SEVERE,e.toString(),e);
 		}
 	}

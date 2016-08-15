@@ -69,42 +69,24 @@ import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage.BusinessEntityFormManyPageListener;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage.BusinessEntityFormOnePageListener;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
-import org.cyk.ui.web.primefaces.page.event.EventListPage;
 import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
-import org.cyk.ui.web.primefaces.page.event.EventMissedListPage;
 import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
-import org.cyk.ui.web.primefaces.page.event.EventPartyListPage;
 import org.cyk.ui.web.primefaces.page.file.DefaultReportBasedOnDynamicBuilderServletAdapter;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifierEditPage;
-import org.cyk.ui.web.primefaces.page.file.FileListPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ContactCollectionListPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
-import org.cyk.ui.web.primefaces.page.geography.CountryListPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ElectronicMailListPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
-import org.cyk.ui.web.primefaces.page.geography.PhoneNumberListPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
-import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionListPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
-import org.cyk.ui.web.primefaces.page.mathematics.MovementListPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorConsultPageAdapter;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorCrudManyPageAdapter;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorListPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractPersonEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractPersonListPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
@@ -141,7 +123,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
 		
 		initializeEventModule();
-		/*
 		initializeFileModule();
 		initializeFiniteStateMachineModule();
 		initializeGeographyModule();
@@ -151,9 +132,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeNetworkModule();
 		initializePartyModule();
 		initializeSecurityModule();
-		*/
-		
-		
+	
 	}
 	
 	protected void initializePartyModule(){
@@ -164,14 +143,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(Person.class, null);
 		//BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractPersonListPage.AbstractPersonListPageAdapter.AbstractDefault.Default<Person>(Person.class));
 		//BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractPersonEditPage.AbstractPageAdapter.Default<Person>(Person.class));
-		ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<Person>(Person.class));
+		//ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<Person>(Person.class));
 	}
 	
 	protected void initializeFileModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(File.class, null);
-		BusinessEntityFormOnePageListener.COLLECTION.add(new FileEditPage.Adapter());
-		BusinessEntityFormManyPageListener.COLLECTION.add(new FileListPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(FileIdentifiableGlobalIdentifier.class, FileIdentifiableGlobalIdentifierEditPage.Form.class, FileIdentifiableGlobalIdentifierDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(FileIdentifiableGlobalIdentifier.class, null);
@@ -184,18 +161,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected void initializeEventModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Event.class, EventEditPage.Form.class, EventDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Event.class, null);
-		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventListPage.Adapter());
-		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(EventParty.class, EventPartyEditPage.Form.class, EventPartyDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(EventParty.class, null);
-		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventPartyListPage.Adapter());
-		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventPartyEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(EventMissed.class, EventMissedEditPage.Form.class, EventMissedDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(EventMissed.class, null);
-		//BusinessEntityFormManyPageListener.COLLECTION.add(new EventMissedListPage.Adapter());
-		//BusinessEntityFormOnePageListener.COLLECTION.add(new EventMissedEditPage.Adapter());
 	}
 	
 	protected void initializeGeographyModule(){
@@ -204,23 +175,15 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Country.class, CountryEditPage.Form.class, CountryDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Country.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new CountryListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new CountryEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ContactCollection.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new ContactCollectionListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new ContactCollectionEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMail.class, ElectronicMailEditPage.Form.class, ElectronicMailDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ElectronicMail.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new ElectronicMailListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new ElectronicMailEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PhoneNumber.class, PhoneNumberEditPage.Form.class, PhoneNumberDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(PhoneNumber.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new PhoneNumberListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new PhoneNumberEditPage.Adapter());
 	}
 	
 	protected void initializeNetworkModule(){
@@ -253,14 +216,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementCollection.class, MovementCollectionEditPage.Form.class, MovementCollectionDetails.class
 				,null,null,null));
 		uiManager.configBusinessIdentifiable(MovementCollection.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new MovementCollectionListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new MovementCollectionEditPage.Adapter());
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
-		BusinessEntityFormManyPageListener.COLLECTION.add(new MovementListPage.Adapter());
-		BusinessEntityFormOnePageListener.COLLECTION.add(new MovementEditPage.Adapter());
-		
 	}
 	
 	protected void initializeFiniteStateMachineModule(){

@@ -28,17 +28,5 @@ public class FileEditPage extends AbstractFileEditPage<File> implements Serializ
 			return identifiable;
 		}
 	}
-	
-	/**/
-	
-	public static class Adapter extends AbstractFileEditPage.AbstractPageAdapter<File> implements Serializable {
-
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public Adapter() {
-			super(File.class);
-			
-		}
-	}
 
 }

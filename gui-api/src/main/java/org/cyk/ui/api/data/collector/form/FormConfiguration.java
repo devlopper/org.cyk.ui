@@ -31,26 +31,80 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	/* Value */
 	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
 	
+	private Boolean hasName(Collection<String> collection,String name){ 
+		return hasNoNames(collection) || collection.contains(name);
+	}
+	private Boolean hasNoNames(Collection<String> collection){ 
+		return collection==null || collection.isEmpty();
+	}
+	
+	public Boolean hasNoFieldNames(){ 
+		return hasNoNames(fieldNames);
+	}
+	public Boolean hasFieldName(String fieldName){ 
+		return hasName(fieldNames, fieldName);
+	}
+	
+	public Boolean hasNoRequiredFieldNames(){ 
+		return hasNoNames(requiredFieldNames);
+	}
+	public Boolean hasRequiredFieldName(String fieldName){ 
+		return hasName(requiredFieldNames, fieldName);
+	}
+	
+	public Boolean hasNoExcludedFieldNames(){ 
+		return hasNoNames(excludedFieldNames);
+	}
+	public Boolean hasExcludedFieldName(String fieldName){ 
+		return excludedFieldNames!=null && excludedFieldNames.contains(fieldName);
+	}
+	
 	public FormConfiguration addFieldNames(String...names){
 		if(fieldNames==null)
 			fieldNames = new LinkedHashSet<>();
 		if(names!=null){
-			Collection<String> collection = Arrays.asList(names);
-			fieldNames.addAll(collection);
+			addFieldNames(Arrays.asList(names));
+		}
+		return this;
+	}
+	public FormConfiguration addFieldNames(Collection<String> names){
+		if(fieldNames==null)
+			fieldNames = new LinkedHashSet<>();
+		if(names!=null){
+			fieldNames.addAll(names);
 			if(excludedFieldNames!=null)
-				excludedFieldNames.removeAll(collection);
+				excludedFieldNames.removeAll(names);
+		}
+		return this;
+	}
+	
+	public FormConfiguration addRequiredFieldNames(Boolean autoAddToFieldNames,Collection<String> names){
+		if(requiredFieldNames==null)
+			requiredFieldNames = new LinkedHashSet<>();
+		if(names!=null){
+			requiredFieldNames.addAll(names);
+			if(Boolean.TRUE.equals(autoAddToFieldNames))
+				addFieldNames(names);
+		}
+		return this;
+	}
+	public FormConfiguration addRequiredFieldNames(Boolean autoAddToFieldNames,String...names){
+		if(requiredFieldNames==null)
+			requiredFieldNames = new LinkedHashSet<>();
+		if(names!=null){
+			requiredFieldNames.addAll(Arrays.asList(names));
+			if(Boolean.TRUE.equals(autoAddToFieldNames))
+				addFieldNames(names);
 		}
 		return this;
 	}
 	
 	public FormConfiguration addRequiredFieldNames(String...names){
-		if(requiredFieldNames==null)
-			requiredFieldNames = new LinkedHashSet<>();
-		if(names!=null){
-			requiredFieldNames.addAll(Arrays.asList(names));
-			addFieldNames(names);
-		}
-		return this;
+		return addRequiredFieldNames(Boolean.TRUE, names);
+	}
+	
+	public FormConfiguration addRequiredFieldNames(Boolean autoAddToFieldNames,FormConfiguration formConfiguration){
+		return addRequiredFieldNames(autoAddToFieldNames, formConfiguration.getRequiredFieldNames());
 	}
 	
 	public FormConfiguration addExcludedFieldNames(String...names){
@@ -80,13 +134,33 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	public static FormConfiguration get(Class<?> clazz,Crud crud,String type,Boolean createIfNull){
 		Key key = new Key(clazz, CommonBusinessAction.valueOf(crud.name()), StringUtils.isBlank(type) ? TYPE_INPUT_SET_DEFAULT : type);
 		FormConfiguration formConfiguration = MAP.get(key);
-		if(formConfiguration==null)
+		if(formConfiguration==null && Boolean.TRUE.equals(createIfNull))
 			MAP.put(key, formConfiguration = new FormConfiguration());
 		return formConfiguration;
 	}
 	
 	public static FormConfiguration get(Class<?> clazz,Crud crud,Boolean createIfNull){
 		return get(clazz,crud, null,createIfNull);
+	}
+	
+	public static Boolean hasFieldName(FormConfiguration formConfiguration,String fieldName){ 
+		return formConfiguration==null || formConfiguration.hasFieldName(fieldName);
+	}
+	public static Boolean hasRequiredFieldName(FormConfiguration formConfiguration,String fieldName){ 
+		return formConfiguration==null || formConfiguration.hasRequiredFieldName(fieldName);
+	}
+	public static Boolean hasExcludedFieldName(FormConfiguration formConfiguration,String fieldName){ 
+		return formConfiguration!=null && formConfiguration.hasExcludedFieldName(fieldName);
+	}
+	
+	public static Boolean hasNoFieldNames(FormConfiguration formConfiguration){ 
+		return formConfiguration==null || formConfiguration.hasNoFieldNames();
+	}
+	public static Boolean hasNoRequiredFieldNames(FormConfiguration formConfiguration){ 
+		return formConfiguration==null || formConfiguration.hasNoRequiredFieldNames();
+	}
+	public static Boolean hasNoExcludedFieldNames(FormConfiguration formConfiguration){ 
+		return formConfiguration==null || formConfiguration.hasNoExcludedFieldNames();
 	}
 	
 	/**/

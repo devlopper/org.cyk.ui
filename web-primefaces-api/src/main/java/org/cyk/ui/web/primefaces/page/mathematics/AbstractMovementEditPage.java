@@ -13,7 +13,6 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -51,6 +50,8 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		super.initialisation();
 		movementAction  = webManager.getIdentifiableFromRequestParameter(MovementAction.class, Boolean.TRUE);
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 448634403892908003L;
+
 			@Override
 			public Boolean build(Field field) {
 				if(field.getName().equals(AbstractMovementForm.FIELD_COLLECTION))

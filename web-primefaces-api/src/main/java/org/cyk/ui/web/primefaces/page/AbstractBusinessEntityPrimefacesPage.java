@@ -38,6 +38,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	protected ENTITY identifiable;//TODO is it the right place ???
 	protected String formModelClassId;
 	protected Class<?> formModelClass;
+	protected FormConfiguration formConfiguration;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -186,7 +187,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	}
 	
 	protected FormConfiguration getFormConfiguration(Crud crud, String type){
-		return FormConfiguration.get(businessEntityInfos.getClazz(), crud, type, Boolean.TRUE);
+		return FormConfiguration.get(businessEntityInfos.getClazz(), crud, type, Boolean.FALSE);
 	}
 	
 	protected FormConfiguration getFormConfiguration(Crud crud){
