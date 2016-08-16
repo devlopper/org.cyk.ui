@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.geography.LocalityBusiness;
+import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -77,7 +78,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		}else if(Boolean.class.equals(type) || boolean.class.equals(type)){
 			list.addAll(getChoiceSetSelectItems(choiceSet,field.getAnnotation(NotNull.class)==null));		
 		}else if(GlobalIdentifier.class.equals(type)){
-			for(GlobalIdentifier globalIdentifier : RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().findAll()){
+			for(GlobalIdentifier globalIdentifier : inject(GlobalIdentifierBusiness.class).findAll()){
 				list.add(Boolean.TRUE.equals(itemWrapper)?item(globalIdentifier):globalIdentifier);
 			}		
 		}

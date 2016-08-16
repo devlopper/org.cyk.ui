@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.event.EventBusiness;
@@ -287,7 +288,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	}
 	
 	protected String formatPathUsingBusiness(Class<?> rootClass,Object object){
-		return formatUsingBusiness(RootBusinessLayer.getInstance().getClazzBusiness().findPathOf(rootClass, object));
+		return formatUsingBusiness(inject(ClazzBusiness.class).findPathOf(rootClass, object));
 	}
 
 	/**/

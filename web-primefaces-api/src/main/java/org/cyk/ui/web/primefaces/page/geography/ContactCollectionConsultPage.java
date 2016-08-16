@@ -6,10 +6,7 @@ import java.util.Collection;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.geography.ContactBusiness;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -17,6 +14,9 @@ import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class ContactCollectionConsultPage extends AbstractConsultPage<ContactCollection> implements Serializable {
@@ -33,14 +33,14 @@ public class ContactCollectionConsultPage extends AbstractConsultPage<ContactCol
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<PhoneNumber> getIdentifiables() {
-				return RootBusinessLayer.getInstance().getContactBusiness().findByCollectionByClass(identifiable, PhoneNumber.class);
+				return inject(ContactBusiness.class).findByCollectionByClass(identifiable, PhoneNumber.class);
 			}
 		});
 		electronicMailTable = (Table<ElectronicMailDetails>) createDetailsTable(ElectronicMailDetails.class, new DetailsConfigurationListener.Table.Adapter<ElectronicMail,ElectronicMailDetails>(ElectronicMail.class, ElectronicMailDetails.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<ElectronicMail> getIdentifiables() {
-				return RootBusinessLayer.getInstance().getContactBusiness().findByCollectionByClass(identifiable, ElectronicMail.class);
+				return inject(ContactBusiness.class).findByCollectionByClass(identifiable, ElectronicMail.class);
 			}
 		});
 		

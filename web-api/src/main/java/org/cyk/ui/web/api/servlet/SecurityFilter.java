@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
@@ -152,12 +153,12 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 					return Boolean.TRUE;
 				AbstractIdentifiable identifiable = listener.getIdentifiableInstance(url, request);
 				if(identifiable==null && CommonBusinessAction.CREATE.equals(commonBusinessAction))
-					return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isCreatable(clazz);
+					return inject(GlobalIdentifierBusiness.class).isCreatable(clazz);
 				//System.out.println(commonBusinessAction+" , "+clazz.getSimpleName()+" , "+identifiable);
 				switch(commonBusinessAction){
-				case READ: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(identifiable);
-				case UPDATE: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isUpdatable(identifiable);
-				case DELETE: return RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isDeletable(identifiable);
+				case READ: return inject(GlobalIdentifierBusiness.class).isReadable(identifiable);
+				case UPDATE: return inject(GlobalIdentifierBusiness.class).isUpdatable(identifiable);
+				case DELETE: return inject(GlobalIdentifierBusiness.class).isDeletable(identifiable);
 				default: return Boolean.TRUE;
 				}
 			}

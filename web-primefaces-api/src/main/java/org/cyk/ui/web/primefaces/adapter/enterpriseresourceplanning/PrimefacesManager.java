@@ -25,7 +25,6 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.UserSession;
@@ -38,7 +37,6 @@ import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage.Form;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
@@ -58,7 +56,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configureEventModule() {
 		super.configureEventModule();
 		getFormConfiguration(Event.class, Crud.CREATE)
-			.addRequiredFieldNames(EventEditPage.Form.FIELD_NAME,EventEditPage.Form.FIELD_PERIOD,PeriodFormModel.FIELD_FROM_DATE,PeriodFormModel.FIELD_TO_DATE);
+			.addRequiredFieldNames(EventEditPage.Form.FIELD_NAME,EventEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE,PeriodFormModel.FIELD_TO_DATE);
 		
 		registerDetailsConfiguration(EventDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;

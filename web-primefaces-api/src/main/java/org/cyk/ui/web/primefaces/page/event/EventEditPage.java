@@ -8,7 +8,6 @@ import javax.inject.Named;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
-import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 
@@ -46,27 +45,15 @@ public class EventEditPage extends AbstractCrudOnePage<Event> implements Seriali
 	public static class Form extends AbstractBusinessIdentifiedEditFormModel<Event> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@IncludeInputs(layout=IncludeInputs.Layout.VERTICAL) PeriodFormModel period = new PeriodFormModel();
 		@IncludeInputs(layout=IncludeInputs.Layout.VERTICAL) ContactCollectionFormModel contactCollection = new ContactCollectionFormModel();
 		
 		@Override
 		public void read() {
 			super.read();
-			period.setFromDate(identifiable.getGlobalIdentifierCreateIfNull().getExistencePeriod().getFromDate());
-			period.setToDate(identifiable.getExistencePeriod().getToDate());
 			contactCollection.setIdentifiable(identifiable.getContactCollection());
 			contactCollection.read();
 		}
 		
-		@Override
-		public void write() {
-			super.write();
-			identifiable.getExistencePeriod().setFromDate(period.getFromDate());
-			identifiable.getExistencePeriod().setToDate(period.getToDate());
-			contactCollection.write();
-		}
-		
-		public static final String FIELD_PERIOD = "period";
 		public static final String FIELD_CONTACT_COLLECTION = "contactCollection";
 	}
 	

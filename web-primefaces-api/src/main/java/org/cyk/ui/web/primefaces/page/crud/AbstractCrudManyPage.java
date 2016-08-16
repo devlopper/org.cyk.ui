@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -38,7 +38,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
 					table.setShowHierarchy(Boolean.TRUE);
 					@SuppressWarnings({ "rawtypes" })
-					AbstractDataTreeNodeBusiness business = (AbstractDataTreeNodeBusiness) BusinessLocator.getInstance().locate((Class<AbstractIdentifiable>)businessEntityInfos.getClazz());
+					AbstractDataTreeNodeBusiness business = (AbstractDataTreeNodeBusiness) BusinessInterfaceLocator.getInstance()
+						.injectTyped((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
 					for(Object node : business.findHierarchies())
 						table.getHierarchyData().add(node);
 					

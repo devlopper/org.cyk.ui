@@ -344,9 +344,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			table.setRenderType(RenderType.LIST);
 		
 		/*List<Crud> crudCollection = new ArrayList<>();
-		if(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isCreatable(identifiableClass))
+		if(inject(GlobalIdentifierBusiness.class).isCreatable(identifiableClass))
 			crudCollection.add(Crud.CREATE);
-		if(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(arg0))
+		if(inject(GlobalIdentifierBusiness.class).isReadable(arg0))
 			crudCollection.add(Crud.CREATE);
 		*/
 		

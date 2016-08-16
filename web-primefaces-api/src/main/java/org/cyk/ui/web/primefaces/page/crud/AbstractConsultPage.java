@@ -9,12 +9,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.information.GlobalIdentifierDetails;
@@ -130,7 +130,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		UICommandable contextualMenu = instanciateCommandableBuilder().setLabel(formatUsingBusiness(identifiable)).create(); 
 		
 		if(Boolean.TRUE.equals(showContextualHierarchyConsultCommandables())){
-			List<Object> parents = RootBusinessLayer.getInstance().getClazzBusiness().findParentsOf(businessEntityInfos.getUserInterface().getHierarchyHighestAncestorClass(),identifiable);
+			List<Object> parents = inject(ClazzBusiness.class).findParentsOf(businessEntityInfos.getUserInterface().getHierarchyHighestAncestorClass(),identifiable);
 			Collections.reverse(parents);
 			for(Object ancestor : parents)
 				contextualMenu.getChildren().add(Builder.createConsult((AbstractIdentifiable) ancestor, null));

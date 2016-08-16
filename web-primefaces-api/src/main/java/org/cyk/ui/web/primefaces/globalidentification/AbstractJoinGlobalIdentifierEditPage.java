@@ -6,11 +6,8 @@ import java.util.Arrays;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
@@ -23,6 +20,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends AbstractJoinGlobalIdentifier> extends AbstractCrudOnePage<IDENTIFIABLE> implements Serializable {
@@ -38,10 +38,14 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 		String globalIdentifier = requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER);
 		BusinessEntityInfos globalIdentifierOwnerBusinessEntityInfos = uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS));
 		if(globalIdentifierOwnerBusinessEntityInfos!=null)
-			joinedIdentifiable = BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
+			joinedIdentifiable = (AbstractIdentifiable) BusinessInterfaceLocator.getInstance()
+				.injectTyped((Class<AbstractIdentifiable>)globalIdentifierOwnerBusinessEntityInfos.getClazz()) 
+			//BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
 				.findByGlobalIdentifierValue(globalIdentifier);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Boolean build(Field field) {
 				if(AbstractForm.FIELD_GLOBAL_IDENTIFIER.equals(field.getName())){

@@ -1,12 +1,12 @@
 package org.cyk.ui.api.model.pattern.tree;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.model.AbstractEnumerationForm;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataTreeNode> extends AbstractEnumerationForm<ENUMERATION> {
@@ -22,7 +22,7 @@ public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataT
 	}
 	
 	protected AbstractDataTreeNodeBusiness<ENUMERATION> getBusiness(){
-		return (AbstractDataTreeNodeBusiness<ENUMERATION>) BusinessLocator.getInstance().locate(identifiable);
+		return (AbstractDataTreeNodeBusiness<ENUMERATION>) BusinessInterfaceLocator.getInstance().injectTypedByObject(identifiable);
 	}
 	
 	@Override

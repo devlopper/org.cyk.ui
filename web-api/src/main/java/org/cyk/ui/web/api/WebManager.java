@@ -21,7 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.business.impl.BusinessLocator;
+import org.cyk.system.root.business.api.mathematics.NumberBusiness;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -229,15 +230,15 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	public String encodeIdentifiersAsRequestParameterValue(Collection<Long> identifiers){
-		Long highest = RootBusinessLayer.getInstance().getNumberBusiness().findHighest(identifiers);
-		String number = RootBusinessLayer.getInstance().getNumberBusiness().concatenate(identifiers, highest.toString().length());
+		Long highest = inject(NumberBusiness.class).findHighest(identifiers);
+		String number = inject(NumberBusiness.class).concatenate(identifiers, highest.toString().length());
 		Integer numberOfZero = 0;
 		for(int i = 0;i<number.length();i++)
 			if( number.charAt(i) == Constant.CHARACTER_ZERO )
 				numberOfZero++;
 			else
 				break;
-		number = RootBusinessLayer.getInstance().getNumberBusiness().encodeToBase62(number);
+		number = inject(NumberBusiness.class).encodeToBase62(number);
 		
 		String value = highest.toString().length()+REQUEST_PARAMETER_TOKEN_SEPERATOR+number+REQUEST_PARAMETER_TOKEN_SEPERATOR+numberOfZero;
 		logTrace("identifiers {} converted to request parameter value is {}",identifiers, value);
@@ -254,8 +255,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		else{
 			String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
 			String number = StringUtils.repeat(Constant.CHARACTER_ZERO,Integer.valueOf(tokens[2]))
-					+RootBusinessLayer.getInstance().getNumberBusiness().decodeBase62(tokens[1]);
-			identifiers = RootBusinessLayer.getInstance().getNumberBusiness().deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
+					+inject(NumberBusiness.class).decodeBase62(tokens[1]);
+			identifiers = inject(NumberBusiness.class).deconcatenate(Long.class, number, Integer.valueOf(tokens[0]));
 		}
 		logTrace("request parameter value {} converted to identifiers is {}", value,identifiers);
 		return identifiers;
@@ -297,7 +298,9 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass,String name,HttpServletRequest request){
 		Collection<Long> identifiers = decodeIdentifiersRequestParameter(name, request);
-		TypedBusiness<IDENTIFIABLE> business = BusinessLocator.getInstance().locate(identifiableClass);
+		@SuppressWarnings("unchecked")
+		TypedBusiness<IDENTIFIABLE> business = (TypedBusiness<IDENTIFIABLE>) BusinessInterfaceLocator.getInstance().injectLocated(identifiableClass);
+		//BusinessLocator.getInstance().locate(identifiableClass);
 		return business.findByIdentifiers(identifiers);
 	}
 	

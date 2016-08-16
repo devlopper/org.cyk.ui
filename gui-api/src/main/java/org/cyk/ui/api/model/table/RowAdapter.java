@@ -1,9 +1,10 @@
 package org.cyk.ui.api.model.table;
 
+import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.utility.common.CommonUtils;
 
 public class RowAdapter<DATA> extends org.cyk.utility.common.model.table.RowListener.Adapter<Row<DATA>, DATA, Cell, String> {
 
@@ -17,9 +18,9 @@ public class RowAdapter<DATA> extends org.cyk.utility.common.model.table.RowList
 			identifiable = ((AbstractFormModel<?>)row.getData()).getIdentifiable();
 		
 		if(identifiable!=null){
-			row.setOpenable(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isReadable(identifiable));
-			row.setUpdatable(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isUpdatable(identifiable));
-			row.setDeletable(RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().isDeletable(identifiable));
+			row.setOpenable(CommonUtils.getInstance().inject(GlobalIdentifierBusiness.class).isReadable(identifiable));
+			row.setUpdatable(CommonUtils.getInstance().inject(GlobalIdentifierBusiness.class).isUpdatable(identifiable));
+			row.setDeletable(CommonUtils.getInstance().inject(GlobalIdentifierBusiness.class).isDeletable(identifiable));
 		}
 	}
 	

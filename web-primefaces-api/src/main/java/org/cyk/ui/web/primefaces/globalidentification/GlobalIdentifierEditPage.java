@@ -6,15 +6,15 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter @Named @ViewScoped
 public class GlobalIdentifierEditPage extends AbstractCrudOnePage<AbstractIdentifiable> implements Serializable {
@@ -35,7 +35,7 @@ public class GlobalIdentifierEditPage extends AbstractCrudOnePage<AbstractIdenti
 	
 	@Override
 	protected void update() {
-		RootBusinessLayer.getInstance().getGlobalIdentifierBusiness().update(identifiable.getGlobalIdentifier());
+		inject(GlobalIdentifierBusiness.class).update(identifiable.getGlobalIdentifier());
 	}
 	
 	@Override
