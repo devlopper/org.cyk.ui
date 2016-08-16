@@ -5,15 +5,14 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.file.FileIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.globalidentification.JoinGlobalIdentifierBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier.SearchCriteria;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers;
-import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 
@@ -38,7 +37,7 @@ public class FileIdentifiableGlobalIdentifiers extends AbstractJoinGlobalIdentif
 	
 	/**/
 	
-	public static interface FileIdentifiableGlobalIdentifiersListener extends AbstractJoinGlobalIdentifiersListener {
+	public static interface FileIdentifiableGlobalIdentifiersListener extends org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener {
 		
 	}
 	
@@ -60,7 +59,7 @@ public class FileIdentifiableGlobalIdentifiers extends AbstractJoinGlobalIdentif
 
 		@Override
 		protected JoinGlobalIdentifierBusiness<FileIdentifiableGlobalIdentifier, SearchCriteria> getBusiness() {
-			return RootBusinessLayer.getInstance().getFileIdentifiableGlobalIdentifierBusiness();
+			return inject(FileIdentifiableGlobalIdentifierBusiness.class);
 		}
 		
 	}

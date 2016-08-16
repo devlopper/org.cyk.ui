@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
@@ -148,7 +149,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		if(Boolean.TRUE.equals(showContextualCreateCommandables()))
 			for(Class<?> clazz : getManyToOneClasses())
 				contextualMenu.getChildren().add(Builder.createCreate(identifiable,(Class<? extends AbstractIdentifiable>)clazz
-						,RootBusinessLayer.getInstance().getApplicationBusiness().findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
+						,inject(ApplicationBusiness.class).findBusinessEntityInfos((Class<? extends AbstractIdentifiable>) clazz).getUserInterface().getLabelId() ,null));
 		
 		processIdentifiableContextualCommandable(contextualMenu);
 		

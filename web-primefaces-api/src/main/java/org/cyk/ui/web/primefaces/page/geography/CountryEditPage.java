@@ -5,7 +5,8 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.geography.LocalityBusiness;
+import org.cyk.system.root.business.api.geography.LocalityTypeBusiness;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
@@ -30,8 +31,8 @@ public class CountryEditPage extends AbstractCrudOnePage<Country> implements Ser
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		setChoices(Form.FIELD_CONTINENT, RootBusinessLayer.getInstance().getLocalityBusiness().findByType(
-				RootBusinessLayer.getInstance().getLocalityTypeBusiness().find(LocalityType.CONTINENT)));
+		setChoices(Form.FIELD_CONTINENT, inject(LocalityBusiness.class).findByType(
+				inject(LocalityTypeBusiness.class).find(LocalityType.CONTINENT)));
 	}
 	
 	public static class Form extends AbstractBusinessIdentifiedEditFormModel<Country> implements Serializable{

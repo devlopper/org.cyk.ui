@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
+import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.Interval;
@@ -41,11 +44,11 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 		isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
 		showNumberColumn = isNumber;
 		showStringColumn = !isNumber;
-		if(showCombobox = RootBusinessLayer.getInstance().getIntervalCollectionBusiness().isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
-			choices.add(new SelectItem(null, RootBusinessLayer.getInstance().getLanguageBusiness().findText(SelectItemBuilderListener.NULL_LABEL_ID)));
-			for(Interval interval : RootBusinessLayer.getInstance().getIntervalBusiness().findByCollection(metricCollection.getValueIntervalCollection())){
+		if(showCombobox = inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
+			choices.add(new SelectItem(null, inject(LanguageBusiness.class).findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+			for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
 				choices.add(new SelectItem(MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : interval.getLow().getValue()
-						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? RootBusinessLayer.getInstance().getIntervalBusiness().findRelativeCode(interval) : RootBusinessLayer.getInstance().getNumberBusiness().format(interval.getLow().getValue())));
+						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? inject(IntervalBusiness.class).findRelativeCode(interval) : RootBusinessLayer.getInstance().getNumberBusiness().format(interval.getLow().getValue())));
 			}
 		}
 	}

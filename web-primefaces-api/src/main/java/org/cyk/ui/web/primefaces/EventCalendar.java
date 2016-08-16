@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.event.EventPartyBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventParty;
@@ -18,9 +21,6 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class EventCalendar extends AbstractEventCalendar implements Serializable {
 
@@ -106,7 +106,7 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 			//comments = event.getComments(); 
 			date = UIManager.getInstance().getTimeBusiness().formatPeriodFromTo(event.getExistencePeriod());
 			List<String> partiyList = new ArrayList<>();
-			for(EventParty eventParticipation : RootBusinessLayer.getInstance().getEventPartyBusiness().findByEvent(event)){
+			for(EventParty eventParticipation : inject(EventPartyBusiness.class).findByEvent(event)){
 				StringBuilder builder = new StringBuilder();
 				if(eventParticipation.getParty() instanceof Person){
 					Person person = (Person)eventParticipation.getParty();

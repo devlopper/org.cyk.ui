@@ -25,7 +25,7 @@ public abstract class AbstractJoinGlobalIdentifiers<IDENTIFIABLE extends Abstrac
 	,DETAILS extends AbstractJoinGlobalIdentifierDetails<IDENTIFIABLE>,SEARCH_CRITERIA extends AbstractJoinGlobalIdentifier.AbstractSearchCriteria> implements CommandListener, Serializable {
 
 	private static final long serialVersionUID = 2876480260626169563L;
-
+ 
 	protected Collection<LISTENER> commentsListeners = new ArrayList<>();
 	
 	protected Table<DETAILS> table;
@@ -36,7 +36,7 @@ public abstract class AbstractJoinGlobalIdentifiers<IDENTIFIABLE extends Abstrac
 			return;
 		tableAdapter = createTableAdapter(identifiable);
 		table = (Table<DETAILS>) page.createDetailsTable(detailsClass, tableAdapter);
-		
+		 
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
 		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());

@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.pattern.tree.NestedSet;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
+import org.cyk.system.root.persistence.api.pattern.tree.NestedSetNodeDao;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.model.pattern.tree.NestedSetNodeEditFormModel;
 import org.cyk.ui.api.model.table.Row;
@@ -79,15 +80,15 @@ public class NestedSetNodeQueryPage extends AbstractBusinessQueryPage<NestedSetN
 	@Override
 	protected Collection<NestedSetNode> __query__() {
 		if(form.getData().getSet()==null)
-			return rootBusinessLayer.getNestedSetNodeDao().readAll();
-		return rootBusinessLayer.getNestedSetNodeDao().readBySet(form.getData().getSet());
+			return inject(NestedSetNodeDao.class).readAll();
+		return inject(NestedSetNodeDao.class).readBySet(form.getData().getSet());
 	}
 
 	@Override
 	protected Long __count__() {
 		if(form.getData().getSet()==null)
-			return rootBusinessLayer.getNestedSetNodeDao().countAll();
-		return rootBusinessLayer.getNestedSetNodeDao().countBySet(form.getData().getSet());
+			return inject(NestedSetNodeDao.class).countAll();
+		return inject(NestedSetNodeDao.class).countBySet(form.getData().getSet());
 	}	
 	
 	@Getter @Setter

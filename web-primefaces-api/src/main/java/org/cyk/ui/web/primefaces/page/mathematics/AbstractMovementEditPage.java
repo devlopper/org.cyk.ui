@@ -7,7 +7,10 @@ import java.util.Arrays;
 
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import lombok.Getter;
+import lombok.Setter;
+
+import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
@@ -20,9 +23,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCrudOnePage<MOVEMENT> implements Serializable {
@@ -41,7 +41,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	}
 	
 	protected BigDecimal computeNextTotal(BigDecimal increment){
-		return RootBusinessLayer.getInstance().getMovementCollectionBusiness()
+		return inject(MovementCollectionBusiness.class)
 				.computeValue(getMovement().getCollection(), (MovementAction) form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
 	}
 	

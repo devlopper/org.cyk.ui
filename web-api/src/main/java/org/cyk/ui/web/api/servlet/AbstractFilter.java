@@ -114,10 +114,10 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 
 			protected WebManager webManager = WebManager.getInstance();
 			
-			protected UserAccountBusiness userAccountBusiness = RootBusinessLayer.getInstance().getUserAccountBusiness();
-			protected LicenseBusiness licenseBusiness = RootBusinessLayer.getInstance().getLicenseBusiness();
-			protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness();
-			protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness = RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness();
+			protected UserAccountBusiness userAccountBusiness = inject(UserAccountBusiness.class);
+			protected LicenseBusiness licenseBusiness = inject(LicenseBusiness.class);
+			protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness = inject(UniformResourceLocatorBusiness.class);
+			protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness = inject(RoleUniformResourceLocatorBusiness.class);
 			
 			@Override
 			public void filter(Application application, AbstractUserSession<?,?> userSession, UserAccount userAccount,URL url,HttpServletRequest request, HttpServletResponse response

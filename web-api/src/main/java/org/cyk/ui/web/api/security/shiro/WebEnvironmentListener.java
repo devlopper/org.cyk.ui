@@ -12,6 +12,7 @@ import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.datasource.DataSource;
+import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -88,7 +89,7 @@ public interface WebEnvironmentListener {
 		}
 		
 		protected String convertToPath(UniformResourceLocator uniformResourceLocator){
-			String path = RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness().findPath(uniformResourceLocator);
+			String path = inject(UniformResourceLocatorBusiness.class).findPath(uniformResourceLocator);
 			if(StringUtils.endsWith(path, Constant.CHARACTER_SLASH.toString()))
 				path = path + "**";
 			return path;

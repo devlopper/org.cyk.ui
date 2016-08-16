@@ -1,8 +1,9 @@
 package org.cyk.ui.web.primefaces;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
 import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
 import org.cyk.system.root.model.security.Installation;
+import org.cyk.utility.common.CommonUtils;
 
 public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
 
@@ -21,7 +22,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     		}
     	});
     	installApplication();
-    	create(RootBusinessLayer.getInstance().getMovementCollectionBusiness().instanciateOne("MyMovCol", "ComeIn", "ComeOut"));
+    	//create(CommonUtils.getInstance().inject(MovementCollectionBusiness.class).instanciateOne("MyMovCol", "ComeIn", "ComeOut"));
     	System.exit(0);
     }
     

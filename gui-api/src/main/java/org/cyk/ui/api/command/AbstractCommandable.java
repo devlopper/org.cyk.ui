@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -181,7 +182,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		public Builder<COMMANDABLE> setLabelFromId(String labelId){
-			instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText(labelId));
+			instance.setLabel(inject(LanguageBusiness.class).findText(labelId));
 			return this;
 		}
 		public Builder<COMMANDABLE> setSelectedTabId(String selectedTabId){
@@ -417,7 +418,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			parameters.setActionIdentifier(CommonBusinessAction.CREATE);
 			parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 			parameters.setVerb(Boolean.TRUE);
-			c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(parameters));
+			c.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters));
 			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 				c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 			else{
@@ -471,7 +472,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		public static UICommandable createCreateMany(BusinessEntityInfos businessEntityInfos,Icon icon){
 			UICommandable commandable = instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.CREATE).setOne(Boolean.FALSE)
 					.setBusinessEntityInfos(businessEntityInfos)
-					.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()))
+					.setLabel(inject(LanguageBusiness.class).findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()))
 					.create();	
 			
 			//System.out.println("ViewId : "+commandable.getViewId());
@@ -479,7 +480,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return commandable;
 			/*
 			UICommandable c = crud(businessEntityInfos,null, icon);
-			c.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
+			c.setLabel(inject(LanguageBusiness.class).findText("command.createmany"+businessEntityInfos.getVarName().toLowerCase()));
 			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getCreateManyViewId()))
 				;
 			else{
@@ -544,11 +545,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 				if(StringUtils.isBlank(actionIdentifier))
 					setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(commonBusinessAction, identifiableClass));
 				else
-					setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findActionIdentifierText(actionIdentifier, instance.getBusinessEntityInfos(), Boolean.TRUE));
+					setLabel(inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, instance.getBusinessEntityInfos(), Boolean.TRUE));
 			//setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(actionIdentifier, identifiableClass));
 			
 			if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null)
-				instance.setLabel(RootBusinessLayer.getInstance().getLanguageBusiness().findDoSomethingText(labelParameters));
+				instance.setLabel(inject(LanguageBusiness.class).findDoSomethingText(labelParameters));
 			
 			if(master!=null)
 				addParameters(master);

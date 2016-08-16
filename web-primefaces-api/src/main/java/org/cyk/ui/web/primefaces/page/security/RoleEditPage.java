@@ -11,7 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleUniformResourceLocator;
@@ -41,7 +42,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public Collection<RoleUniformResourceLocator> load() {
-				return rootBusinessLayer.getRoleUniformResourceLocatorBusiness().findByRole(identifiable);
+				return inject(RoleUniformResourceLocatorBusiness.class).findByRole(identifiable);
 			}
 			@Override
 			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
@@ -66,12 +67,12 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 		
 	@Override
 	protected void create() {
-		RootBusinessLayer.getInstance().getRoleBusiness().save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
+		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
 	}
 	
 	@Override
 	protected void update() {
-		RootBusinessLayer.getInstance().getRoleBusiness().save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
+		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
 	}
 	
 	@Getter @Setter

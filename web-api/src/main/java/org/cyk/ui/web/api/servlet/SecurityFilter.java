@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
+import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
+import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -65,7 +69,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 					else{
 						if(!Boolean.TRUE.equals(application.getLicense().getExpired())){
 							application.getLicense().setExpired(Boolean.TRUE); 
-							RootBusinessLayer.getInstance().getLicenseBusiness().update(application.getLicense());
+							inject(LicenseBusiness.class).update(application.getLicense());
 						}
 					}
 				}else
@@ -73,7 +77,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			}
 				
 			if(Boolean.TRUE.equals(doFilterChain)){
-				if(userSession==null || userAccount==null || RootBusinessLayer.getInstance().getUserAccountBusiness()
+				if(userSession==null || userAccount==null || inject(UserAccountBusiness.class)
 						.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
 					filterChain.doFilter(request, response);
 				else {
@@ -225,12 +229,12 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				
 				@Override
 				public Boolean isUrlAccessible(URL url) {
-					return RootBusinessLayer.getInstance().getUniformResourceLocatorBusiness().isAccessible(url);
+					return inject(UniformResourceLocatorBusiness.class).isAccessible(url);
 				}
 				
 				@Override
 				public Boolean isUrlAccessibleByUserAccount(URL url, UserAccount userAccount,HttpServletRequest request) {
-					return RootBusinessLayer.getInstance().getRoleUniformResourceLocatorBusiness().isAccessibleByUserAccount(url,userAccount);
+					return inject(RoleUniformResourceLocatorBusiness.class).isAccessibleByUserAccount(url,userAccount);
 				}
 			
 				@Override

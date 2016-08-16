@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.globalidentification.JoinGlobalIdentifierBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.information.CommentBusiness;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.information.Comment.SearchCriteria;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers;
-import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Getter @Setter
@@ -37,7 +36,7 @@ public class Comments extends AbstractJoinGlobalIdentifiers<Comment,Comments.Com
 	
 	/**/
 	
-	public static interface CommentsListener extends AbstractJoinGlobalIdentifiersListener {
+	public static interface CommentsListener extends org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener {
 		
 	}
 	
@@ -59,7 +58,7 @@ public class Comments extends AbstractJoinGlobalIdentifiers<Comment,Comments.Com
 
 		@Override
 		protected JoinGlobalIdentifierBusiness<Comment, SearchCriteria> getBusiness() {
-			return RootBusinessLayer.getInstance().getCommentBusiness();
+			return inject(CommentBusiness.class);
 		}
 		
 	}

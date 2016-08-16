@@ -6,6 +6,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
@@ -31,7 +32,7 @@ public class PersonSelectManyPageAdapter extends AbstractSelectManyPage.Listener
 	
 	@Override
 	public Collection<Person> getIdentifiables(AbstractSelectManyPage<?> selectManyPage) {
-		return RootBusinessLayer.getInstance().getPersonBusiness().findAll();
+		return inject(PersonBusiness.class).findAll();
 	}
 
 }

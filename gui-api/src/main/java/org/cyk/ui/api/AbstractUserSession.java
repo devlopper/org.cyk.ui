@@ -75,8 +75,8 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 	
 	public void init(UserAccount userAccount){
 		logoutCalled = Boolean.FALSE;
-		isAdministrator = RootBusinessLayer.getInstance().getUserAccountBusiness().hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator());
-		isManager = RootBusinessLayer.getInstance().getUserAccountBusiness().hasRole(userAccount, RootBusinessLayer.getInstance().getRoleManager());
+		isAdministrator = inject(UserAccountBusiness.class).hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator());
+		isManager = inject(UserAccountBusiness.class).hasRole(userAccount, RootBusinessLayer.getInstance().getRoleManager());
 		
 		setUserAccount(userAccount);
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));

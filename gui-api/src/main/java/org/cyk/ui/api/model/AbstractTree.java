@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
@@ -510,7 +511,7 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 				
 				@Override
 				public String getRootNodeLabel(Class<?> dataClass) {
-					return RootBusinessLayer.getInstance().getLanguageBusiness().findClassLabelText(dataClass);
+					return inject(LanguageBusiness.class).findClassLabelText(dataClass);
 				}
 				@Override
 				public String label(Object data) {

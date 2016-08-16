@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.globalidentification.JoinGlobalIdentifierBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.pattern.tree.DataTreeIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.DataTreeIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.pattern.tree.DataTreeIdentifiableGlobalIdentifier.SearchCriteria;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers;
-import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 
@@ -38,7 +37,7 @@ public class DataTreeIdentifiableGlobalIdentifiers extends AbstractJoinGlobalIde
 	
 	/**/
 	
-	public static interface DataTreeIdentifiableGlobalIdentifiersListener extends AbstractJoinGlobalIdentifiersListener {
+	public static interface DataTreeIdentifiableGlobalIdentifiersListener extends org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifiers.AbstractJoinGlobalIdentifiersListener {
 		
 	}
 	
@@ -60,7 +59,7 @@ public class DataTreeIdentifiableGlobalIdentifiers extends AbstractJoinGlobalIde
 
 		@Override
 		protected JoinGlobalIdentifierBusiness<DataTreeIdentifiableGlobalIdentifier, SearchCriteria> getBusiness() {
-			return RootBusinessLayer.getInstance().getDataTreeIdentifiableGlobalIdentifierBusiness();
+			return inject(DataTreeIdentifiableGlobalIdentifierBusiness.class);
 		}
 		
 	}

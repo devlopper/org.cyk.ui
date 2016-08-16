@@ -5,12 +5,13 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.system.root.business.api.mathematics.MovementBusiness;
+import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
+import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementCollection;
 
 @Named @ViewScoped @Getter @Setter
 public class MovementEditPage extends AbstractMovementEditPage<Movement> implements Serializable {
@@ -27,7 +28,7 @@ public class MovementEditPage extends AbstractMovementEditPage<Movement> impleme
 		Long collectionIdentifier = requestParameterLong(MovementCollection.class);
 		if(collectionIdentifier==null)
 			return super.instanciateIdentifiable();
-		return RootBusinessLayer.getInstance().getMovementBusiness().instanciateOne(RootBusinessLayer.getInstance().getMovementCollectionBusiness().find(collectionIdentifier), Boolean.TRUE);
+		return inject(MovementBusiness.class).instanciateOne(inject(MovementCollectionBusiness.class).find(collectionIdentifier), Boolean.TRUE);
 	}
 	
 	@Getter @Setter

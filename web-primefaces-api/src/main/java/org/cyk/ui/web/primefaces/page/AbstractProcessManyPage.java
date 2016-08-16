@@ -9,8 +9,8 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
@@ -217,7 +217,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				}
 				@Override
 				public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
-					return RootBusinessLayer.getInstance().getLanguageBusiness().findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE);
+					return inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE);
 				}	
 			}
 		}

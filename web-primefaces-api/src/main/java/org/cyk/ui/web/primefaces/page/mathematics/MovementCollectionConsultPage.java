@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -32,7 +32,7 @@ public class MovementCollectionConsultPage extends AbstractConsultPage<MovementC
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<Movement> getIdentifiables() {
-				return RootBusinessLayer.getInstance().getMovementBusiness().findByCollection(identifiable);
+				return inject(MovementBusiness.class).findByCollection(identifiable);
 			}
 			@Override
 			public Crud[] getCruds() {
