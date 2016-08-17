@@ -165,6 +165,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		Crud getCrud();
 		
+		void setCrud(Crud crud);
+		
 		Boolean instanciatable(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
 		
 		IDENTIFIABLE instanciate(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection);
@@ -189,16 +191,15 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		/**/
 		
+		@Getter @Setter
 		public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>{
 			private static final long serialVersionUID = 5920340778121618178L;
 
+			private Crud crud;
+			
 			@Override
 			public Collection<IDENTIFIABLE> create() {
 				return new ArrayList<>();
-			}
-			@Override
-			public Crud getCrud() {
-				return null;
 			}
 			@Override
 			public Collection<IDENTIFIABLE> load() {

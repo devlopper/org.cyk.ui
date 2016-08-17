@@ -136,7 +136,7 @@ public class DetailsConfiguration implements Serializable {
 		@Override
 		public Boolean isColumn(Field field) {
 			if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
-					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION}, field.getName()))
+					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION,AbstractOutputDetails.FIELD_EXISTENCE_PERIOD}, field.getName()))
 				return Boolean.FALSE;
 			return super.isColumn(field);
 		}

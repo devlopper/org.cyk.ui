@@ -15,16 +15,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.event.Notification;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.UIMenu;
-import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
+import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -75,8 +75,8 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 	
 	public void init(UserAccount userAccount){
 		logoutCalled = Boolean.FALSE;
-		isAdministrator = inject(UserAccountBusiness.class).hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator());
-		isManager = inject(UserAccountBusiness.class).hasRole(userAccount, RootBusinessLayer.getInstance().getRoleManager());
+		isAdministrator = inject(UserAccountBusiness.class).hasRole(userAccount, inject(RoleBusiness.class).find(Role.ADMINISTRATOR));
+		isManager = inject(UserAccountBusiness.class).hasRole(userAccount, inject(RoleBusiness.class).find(Role.MANAGER));
 		
 		setUserAccount(userAccount);
 		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));

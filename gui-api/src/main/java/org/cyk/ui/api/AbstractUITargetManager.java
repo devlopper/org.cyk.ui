@@ -57,7 +57,6 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
 		ChoiceSet choiceSet = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class).set();
 		Class<?> type = commonUtils.getFieldType(data.getClass(), field);
-		
 		if(List.class.equals(type))
 	        type = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
 		
@@ -96,7 +95,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return collection;
 		}else */if(field.getName().equals("roles")){
 			collection = new ArrayList<>();
-			for(Role role : roleBusiness.findAllExclude(Arrays.asList(RootBusinessLayer.getInstance().getRoleAdministrator())))
+			for(Role role : roleBusiness.findAllExclude(Arrays.asList(inject(RoleBusiness.class).find(Role.ADMINISTRATOR))))
 				collection.add(role);
 			return collection;
 		}else{

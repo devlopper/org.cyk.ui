@@ -19,6 +19,7 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -26,6 +27,7 @@ import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameter
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
+import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.utility.common.CommonUtils;
@@ -79,7 +81,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				
 			if(Boolean.TRUE.equals(doFilterChain)){
 				if(userSession==null || userAccount==null || inject(UserAccountBusiness.class)
-						.hasRole(userAccount, RootBusinessLayer.getInstance().getRoleAdministrator()) )
+						.hasRole(userAccount, inject(RoleBusiness.class).find(Role.ADMINISTRATOR)) )
 					filterChain.doFilter(request, response);
 				else {
 					if(Boolean.TRUE.equals(isUrlAccessible(url))){

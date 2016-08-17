@@ -5,7 +5,10 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.geography.LocationTypeBusiness;
+import org.cyk.system.root.business.api.geography.PhoneNumberTypeBusiness;
+import org.cyk.system.root.model.geography.LocationType;
+import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.hibernate.validator.constraints.Email;
@@ -31,20 +34,20 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 	
 	@Override
 	public void write() {
-		updatePhoneNumber(rootBusinessLayer.getLandPhoneNumberType(),landPhoneNumber);
-		updatePhoneNumber(rootBusinessLayer.getMobilePhoneNumberType() ,mobilePhoneNumber);
+		updatePhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.LAND),landPhoneNumber);
+		updatePhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.MOBILE) ,mobilePhoneNumber);
 		updateElectronicMail(electronicMail);
-		updateLocation(rootBusinessLayer.getHomeLocationType(), homeLocation);
+		updateLocation(inject(LocationTypeBusiness.class).find(LocationType.HOME), homeLocation);
 		updatePostalBox(postalBox);
 		super.write();
 	}
 	
 	@Override
 	public void read() {
-		landPhoneNumber = readPhoneNumber(RootBusinessLayer.getInstance().getLandPhoneNumberType());
-		mobilePhoneNumber = readPhoneNumber(RootBusinessLayer.getInstance().getMobilePhoneNumberType());
+		landPhoneNumber = readPhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.LAND));
+		mobilePhoneNumber = readPhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.MOBILE));
 		electronicMail = readElectronicMail();
-		homeLocation = readLocation(rootBusinessLayer.getHomeLocationType());
+		homeLocation = readLocation(inject(LocationTypeBusiness.class).find(LocationType.HOME));
 		postalBox = readPostalBox();
 		super.read();
 	}

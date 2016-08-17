@@ -23,6 +23,8 @@ public class PeriodFormModel implements Serializable {
 	private Date toDate;
 	
 	public void set(Period period){
+		if(period==null)
+			return;
 		fromDate = period.getFromDate();
 		toDate = period.getToDate();
 	}

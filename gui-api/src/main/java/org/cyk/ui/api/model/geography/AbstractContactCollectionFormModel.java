@@ -7,8 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.geography.CountryBusiness;
 import org.cyk.system.root.model.geography.ContactCollection;
+import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
@@ -36,7 +37,7 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 				phoneNumber = new PhoneNumber();
 				phoneNumber.setType(type);
 				phoneNumber.setNumber(number);
-				phoneNumber.setCountry(RootBusinessLayer.getInstance().getCountryCoteDivoire());
+				phoneNumber.setCountry(inject(CountryBusiness.class).find(Country.COTE_DIVOIRE));
 				identifiable.getPhoneNumbers().add(phoneNumber);
 			}
 		}else{

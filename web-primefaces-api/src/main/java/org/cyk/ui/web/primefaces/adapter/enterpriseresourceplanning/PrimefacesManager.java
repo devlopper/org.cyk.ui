@@ -122,7 +122,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configureGeographyModule() {
 		super.configureGeographyModule();
-		getFormConfiguration(PhoneNumber.class,Crud.CREATE).addRequiredFieldNames(PhoneNumberEditPage.Form.FIELD_COLLECTION,PhoneNumberEditPage.Form.FIELD_VALUE)
+		getFormConfiguration(PhoneNumber.class,Crud.CREATE).addRequiredFieldNames(PhoneNumberEditPage.Form.FIELD_COLLECTION,PhoneNumberEditPage.Form.FIELD_VALUE
+				,PhoneNumberEditPage.Form.FIELD_COUNTRY,PhoneNumberEditPage.Form.FIELD_TYPE)
 			.addFieldNames(PhoneNumberEditPage.Form.FIELD_ORDER_NUMBER);
 		
 		getFormConfiguration(ContactCollection.class,Crud.CREATE).addRequiredFieldNames(ContactCollectionEditPage.Form.FIELD_CODE,ContactCollectionEditPage.Form.FIELD_NAME);
@@ -144,14 +145,14 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
+		
 	}
 	
 	@Override
 	protected void configureMathematicsModule() {
 		super.configureMathematicsModule();
 		getFormConfiguration(MovementCollection.class,Crud.CREATE)
-			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME
-					,MovementCollectionEditPage.Form.FIELD_ITEM_CODE_SEPARATOR,MovementCollectionEditPage.Form.FIELD_VALUE);
+			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME);
 		
 		getFormConfiguration(Movement.class,Crud.CREATE)
 			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,/*Form.FIELD_ACTION,*/MovementEditPage.Form.FIELD_VALUE);

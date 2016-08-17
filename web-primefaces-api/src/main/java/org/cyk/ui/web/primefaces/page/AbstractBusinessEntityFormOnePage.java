@@ -9,7 +9,9 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.collections.CollectionUtils;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -18,7 +20,6 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
-import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -36,11 +37,10 @@ import org.cyk.ui.web.primefaces.MetricValueCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
-import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 @Getter
 @Setter
@@ -80,9 +80,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 				else
 					return FormConfiguration.hasFieldName(formConfiguration, field.getName());
 			}
-			
 			@Override
-			public void input(ControlSet controlSet, Input input) {
+			public void input(
+					ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+					Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
 				super.input(controlSet, input);
 				if(Crud.isCreateOrUpdate(crud)){
 					//if(Boolean.FALSE.equals(input.getRequired())){
@@ -167,6 +168,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? listener.create() : listener.load();
 		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
+		
 		return collection;
 	}
 	
@@ -358,41 +360,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
-				}
-				
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				@Override
-				public void initialisationEnded(AbstractBean bean) {
-					super.initialisationEnded(bean);
-					if(bean instanceof AbstractCrudOnePage<?>){
-						final AbstractCrudOnePage<AbstractActor> page = (AbstractCrudOnePage<AbstractActor>) bean;
-						//TODO should be checked before adding because POJO reuse is possible by container. Is it real idea ???
-						/*page.getForm().getControlSetListeners().add(new ControlSetAdapter(){
-							
-							@Override
-							public Boolean build(Field field) {
-								FormConfiguration configuration = getFormConfiguration(page.getCrud(),page.getSelectedTabId());
-								if(configuration==null || CollectionUtils.isEmpty(configuration.getFieldNames())){
-									return super.build(field);
-								}else{
-									return configuration.getFieldNames().contains(field.getName());
-								}
-								
-							}
-							
-							@Override
-							public void input(ControlSet controlSet, Input input) {
-								super.input(controlSet, input);
-								if(Crud.CREATE.equals(page.getCrud())){
-									if(Boolean.FALSE.equals(input.getRequired())){
-										FormConfiguration configuration = getFormConfiguration(page.getCrud());
-										if(configuration!=null && configuration.getRequiredFieldNames()!=null && !configuration.getRequiredFieldNames().isEmpty())
-											input.setRequired(configuration.getRequiredFieldNames().contains(input.getField().getName()));
-									}	
-								}
-							}
-						});*/	
-					}
 				}
 					
 			}
