@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.page.mathematics;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -16,8 +15,9 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
-import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
@@ -49,7 +49,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	protected void initialisation() {
 		super.initialisation();
 		movementAction  = webManager.getIdentifiableFromRequestParameter(MovementAction.class, Boolean.TRUE);
-		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+		/*form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 448634403892908003L;
 
 			@Override
@@ -60,7 +60,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 					return Boolean.TRUE.equals(showActionField());
 				return super.build(field);
 			}
-		});
+		});*/
 	}
 	
 	protected Boolean showCollectionField(){
@@ -104,6 +104,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		
 		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputOneChoice.class, Form.FIELD_ACTION).setValue(getCashRegisterMovement().getMovement().getAction());
 		
+		if(movementAction==null){
+			org.cyk.ui.api.data.collector.control.InputNumber<?,?,?,?,?> inputNumber = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_VALUE);
+			if(inputNumber!=null)
+				inputNumber.setMinimumToInfinite();
+		}
 		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_CURRENT_TOTAL).setMinimumToInfinite();
 		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_NEXT_TOTAL).setMinimumToInfinite();
 	}
@@ -134,10 +139,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;
-		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal currentTotal;
+		@Input(readOnly=true,disabled=true) @InputNumber @NotNull protected BigDecimal currentTotal;
 		/*@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull*/ protected MovementAction action;
 		@Input @InputNumber @NotNull protected BigDecimal value;
-		@Input(readOnly=true,disabled=true) @InputNumber @NotNull private BigDecimal nextTotal;
+		@Input(readOnly=true,disabled=true) @InputNumber @NotNull protected BigDecimal nextTotal;
+		@IncludeInputs(layout=IncludeInputs.Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
 		
 		protected abstract Movement getMovement();
 		
@@ -148,6 +154,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 			action = getMovement().getAction();
 			if(getMovement().getValue()!=null)
 				value = getMovement().getValue().abs();
+			existencePeriod.set(getMovement().getExistencePeriod());
 		}
 		
 		@Override
@@ -156,6 +163,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 			getMovement().setCollection(collection);
 			getMovement().setAction(action);
 			getMovement().setValue(value);
+			getMovement().setBirthDate(existencePeriod.getFromDate());
 			if(getMovement().getCollection().getDecrementAction()!=null && getMovement().getCollection().getDecrementAction().equals(getMovement().getAction()))
 				getMovement().setValue(value.negate());
 		}
@@ -167,6 +175,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		public static final String FIELD_CURRENT_TOTAL = "currentTotal";
 		public static final String FIELD_VALUE = "value";
 		public static final String FIELD_NEXT_TOTAL = "nextTotal";
+		public static final String FIELD_EXISTENCE_PERIOD = "existencePeriod";
 	}
 
 }

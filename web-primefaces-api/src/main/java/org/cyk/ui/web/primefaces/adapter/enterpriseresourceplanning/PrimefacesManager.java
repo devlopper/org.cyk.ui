@@ -28,6 +28,7 @@ import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
@@ -152,11 +153,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configureMathematicsModule() {
 		super.configureMathematicsModule();
 		getFormConfiguration(MovementCollection.class,Crud.CREATE)
-			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME);
-		
-		getFormConfiguration(Movement.class,Crud.CREATE)
-			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,/*Form.FIELD_ACTION,*/MovementEditPage.Form.FIELD_VALUE);
-		//configuration.addFieldNames(Form.FIELD_CURRENT_TOTAL,Form.FIELD_NEXT_TOTAL);
+			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME,MovementCollectionEditPage.Form.FIELD_VALUE);
 		
 		registerDetailsConfiguration(MovementCollectionDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -165,11 +162,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Field field) {
-						return isFieldNameIn(field,MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME);
+						return isFieldNameIn(field,MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME,MovementCollectionDetails.FIELD_VALUE);
 					}
 				};
 			}
 		});
+		
+		getFormConfiguration(Movement.class,Crud.CREATE)
+			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,/*Form.FIELD_ACTION,*/MovementEditPage.Form.FIELD_VALUE
+					,MovementEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE);
+		//configuration.addFieldNames(Form.FIELD_CURRENT_TOTAL,Form.FIELD_NEXT_TOTAL);
 		
 		registerDetailsConfiguration(MovementDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -180,6 +182,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean build(Field field) {
 						return isFieldNameIn(field,MovementDetails.FIELD_COLLECTION,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD
 								,PeriodDetails.FIELD_FROM_DATE);
+					}
+				};
+			}
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD,PeriodDetails.FIELD_FROM_DATE);
 					}
 				};
 			}

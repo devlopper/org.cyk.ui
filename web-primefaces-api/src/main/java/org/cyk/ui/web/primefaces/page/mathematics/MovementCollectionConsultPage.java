@@ -9,7 +9,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.model.mathematics.Movement;
@@ -25,20 +24,15 @@ public class MovementCollectionConsultPage extends AbstractConsultPage<MovementC
 	private Table<MovementDetails> movementTable;
 	
 	@Override
-	protected void initialisation() {
-		super.initialisation();
-		
+	protected void consultInitialisation() {
+		super.consultInitialisation();
 		movementTable = (Table<MovementDetails>) createDetailsTable(MovementDetails.class, new DetailsConfigurationListener.Table.Adapter<Movement,MovementDetails>(Movement.class, MovementDetails.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<Movement> getIdentifiables() {
 				return inject(MovementBusiness.class).findByCollection(identifiable);
 			}
-			@Override
-			public Crud[] getCruds() {
-				return new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE};
-			}
 		});
 	}
-
+	
 }

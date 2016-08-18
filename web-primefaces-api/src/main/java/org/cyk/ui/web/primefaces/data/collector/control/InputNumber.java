@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 
 import org.apache.commons.lang3.ClassUtils;
+import org.cyk.utility.common.Constant;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -25,6 +26,8 @@ org.cyk.ui.api.data.collector.control.InputNumber<DynaFormModel,DynaFormRow,Dyna
 	private static final long serialVersionUID = 1390099136018097004L;
 	
 	private Number minimum,maximum;
+	private Integer decimalPlaces=0;
+	private String decimalSeparator=Constant.CHARACTER_COMA.toString(),symbol,symbolPosition;
 	
 	@Override
 	public Converter getConverter() {
