@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.cyk.system.root.business.api.security.BusinessServiceBusiness;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventMissedReason;
@@ -26,6 +27,7 @@ import org.cyk.system.root.model.party.person.MaritalStatus;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
+import org.cyk.system.root.model.security.BusinessServiceCollection;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.SystemMenu;
@@ -52,6 +54,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getEventCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Event.class, Icon.THING_CALENDAR);
+		module.setLabel(inject(BusinessServiceBusiness.class).find(BusinessServiceCollection.EVENT).getName());
 		module.addChild(createListCommandable(EventMissedReason.class, null));
 		module.addChild(createListCommandable(Event.class, null));
 		module.addChild(createListCommandable(EventParty.class, null));
@@ -64,6 +67,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getFileCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(File.class, Icon.THING_FILE);
+		module.setLabel(inject(BusinessServiceBusiness.class).find(BusinessServiceCollection.FILE).getName());
 		module.addChild(createListCommandable(File.class, null));
 		module.addChild(createListCommandable(FileIdentifiableGlobalIdentifier.class, null));
 		/*module.addChild(createListCommandable(Script.class, null));
@@ -73,6 +77,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getGeographyCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Contact.class, Icon.THING_LOCATION_ARROW);
+		module.setLabel(inject(BusinessServiceBusiness.class).find(BusinessServiceCollection.GEOGRAPHY).getName());
 		module.addChild(createListCommandable(LocalityType.class, null));
 		module.addChild(createListCommandable(Locality.class, null));
 		module.addChild(createListCommandable(Country.class, null));
@@ -89,6 +94,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getPersonCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Person.class, Icon.PERSON);
+		module.setLabel(inject(BusinessServiceBusiness.class).find(BusinessServiceCollection.PARTY).getName());
 		module.addChild(createListCommandable(Person.class, null));
 		module.addChild(createListCommandable(JobFunction.class, null));
 		module.addChild(createListCommandable(JobTitle.class, null));
@@ -100,6 +106,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getMathematicsCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("mathematiques", Icon.PERSON);
+		module.setLabel(inject(BusinessServiceBusiness.class).find(BusinessServiceCollection.MATHEMATICS).getName());
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(Movement.class, null));
 		return module;
