@@ -22,26 +22,5 @@ public abstract class AbstractActorEditPage<ACTOR extends AbstractIdentifiable> 
 	}
 	
 
-	/**/
 	
-	/*public static abstract class AbstractPageAdapter<ACTOR extends AbstractIdentifiable> extends AbstractPersonEditPage.AbstractPageAdapter<ACTOR> implements Serializable {
-
-		private static final long serialVersionUID = 4370361826462886031L;
-
-		public AbstractPageAdapter(Class<ACTOR> entityTypeClass) {
-			super(entityTypeClass);	
-		}
-	
-		
-		
-		public static class Default<ACTOR extends AbstractActor> extends AbstractPageAdapter<ACTOR> implements Serializable {
-
-			private static final long serialVersionUID = 4370361826462886031L;
-
-			public Default(Class<ACTOR> entityTypeClass) {
-				super(entityTypeClass);	
-			}
-			
-		}
-	}*/
 }

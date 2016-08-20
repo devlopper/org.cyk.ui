@@ -3,7 +3,9 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
@@ -23,12 +25,14 @@ import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
+import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
-import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
+import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
@@ -200,6 +204,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	
 	@Override
 	protected void configurePartyModule() {
+		super.configurePartyModule();
 		getFormConfiguration(Person.class, Crud.CREATE)
 			.addRequiredFieldNames(PersonEditPage.Form.FIELD_NAME)
 			.addFieldNames(PersonEditPage.Form.FIELD_LAST_NAMES);
@@ -211,13 +216,20 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			.addRequiredFieldNames(Boolean.FALSE,getFormConfiguration(Person.class, Crud.CREATE))
 			.addExcludedFieldNames(PersonEditPage.Form.FIELD_CONTACT_COLLECTION);
 		
-		super.configurePartyModule();
 		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
 			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
 				return new PersonDetailsControlSetAdapter();
 			}
 		});
+		
+		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
+			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz())){
+				getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditFormModel.FIELD_NAME)
+					.addFieldNames(AbstractActorEditFormModel.FIELD_LAST_NAMES);
+			}
+		}
+		
 		registerDetailsConfiguration(AbstractActorDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
