@@ -9,21 +9,19 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.test.model.actor.MyEntity.MyEnum;
+import org.cyk.system.test.model.actor.MyIdentifiable;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.data.collector.control.Input;
-import org.cyk.ui.test.model.MyEntity.MyEnum;
-import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
-import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.Constant;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped

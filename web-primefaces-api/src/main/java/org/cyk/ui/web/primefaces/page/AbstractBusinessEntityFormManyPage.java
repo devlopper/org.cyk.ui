@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
@@ -62,6 +61,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass);
 		
 		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
+			private static final long serialVersionUID = 3882333007489853654L;
 			@Override
 			public void created(Row<Object> row) {
 				row.setType(getRowType(row));
@@ -84,6 +84,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			formConfiguration = getFormConfiguration(Crud.CREATE);
 		
 		table.getColumnListeners().add(columnAdapter = new ColumnAdapter(){
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Boolean isColumn(Field field) {
 				if(FormConfiguration.hasNoFieldNames(formConfiguration)){

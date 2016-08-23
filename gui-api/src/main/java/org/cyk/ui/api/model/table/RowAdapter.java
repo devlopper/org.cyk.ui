@@ -8,6 +8,8 @@ import org.cyk.utility.common.CommonUtils;
 
 public class RowAdapter<DATA> extends org.cyk.utility.common.model.table.RowListener.Adapter<Row<DATA>, DATA, Cell, String> {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void added(Row<DATA> row) {
 		super.added(row);

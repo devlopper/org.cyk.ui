@@ -6,7 +6,23 @@
 
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
-
+	
+		<navigation-case>
+			<from-outcome>actorEditView</from-outcome>
+			<to-view-id>/private/actor/edit.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>actorConsultView</from-outcome>
+			<to-view-id>/private/actor/consult.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>actorListView</from-outcome>
+			<to-view-id>/private/actor/list.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+	
 		<navigation-case>
 			<from-outcome>crudperson</from-outcome>
 			<to-view-id>/crud/person.xhtml</to-view-id>

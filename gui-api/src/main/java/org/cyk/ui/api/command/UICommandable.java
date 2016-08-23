@@ -3,10 +3,6 @@ package org.cyk.ui.api.command;
 import java.io.Serializable;
 import java.util.Collection;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -15,7 +11,10 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 public interface UICommandable {
 	 
@@ -176,9 +175,9 @@ public interface UICommandable {
 				Crud.DELETE.equals(crud) ? UniformResourceLocatorParameter.CRUD_DELETE : null);
 			add(parameters,UniformResourceLocatorParameter.IDENTIFIABLE, identifiable.getIdentifier());
 			if(details!=null){
-				@SuppressWarnings("unchecked")
-				OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
-				add(parameters,UniformResourceLocatorParameter.DETAILS, configuration.getRuntimeIdentifier());
+				//@SuppressWarnings("unchecked")
+				//OutputDetailsConfiguration configuration = UIManager.getInstance().findOutputDetailsConfiguration((Class<? extends AbstractOutputDetails<?>>) details.getClass());
+				//add(parameters,UniformResourceLocatorParameter.DETAILS, configuration.getRuntimeIdentifier());
 			}
 		}
 		

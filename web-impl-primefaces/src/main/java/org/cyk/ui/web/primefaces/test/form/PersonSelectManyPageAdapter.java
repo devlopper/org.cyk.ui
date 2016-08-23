@@ -3,16 +3,15 @@ package org.cyk.ui.web.primefaces.test.form;
 import java.io.Serializable;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.test.business.MyWebManager;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
-import org.cyk.ui.web.primefaces.test.business.MyWebManager;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class PersonSelectManyPageAdapter extends AbstractSelectManyPage.Listener.Adapter.Default<Person,String> implements Serializable {
@@ -23,6 +22,7 @@ public class PersonSelectManyPageAdapter extends AbstractSelectManyPage.Listener
 		super(Person.class);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void serve(AbstractSelectManyPage<?> selectManyPage, Object data, String actionIdentifier) {
 		if(MyWebManager.getInstance().getEditManyPersons().equals(actionIdentifier))

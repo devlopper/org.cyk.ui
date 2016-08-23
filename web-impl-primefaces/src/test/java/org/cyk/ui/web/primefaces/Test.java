@@ -8,7 +8,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.ui.test.model.Details;
+import org.cyk.system.test.model.actor.Details;
 import org.cyk.utility.common.CommonUtils;
 
 @Getter @Setter

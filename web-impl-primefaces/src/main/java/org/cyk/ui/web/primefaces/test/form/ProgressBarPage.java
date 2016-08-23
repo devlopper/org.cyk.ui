@@ -15,10 +15,10 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.RootBusinessServiceSimulatorBusiness;
+import org.cyk.system.test.model.actor.MyIdentifiable;
+import org.cyk.system.test.model.actor.MyEntity.MyEnum;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.test.model.MyEntity.MyEnum;
-import org.cyk.ui.test.model.MyIdentifiable;
 import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;

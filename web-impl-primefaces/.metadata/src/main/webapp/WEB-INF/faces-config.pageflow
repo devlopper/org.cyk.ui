@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14404264499100" configfile="/web-primefaces-api-test/src/main/webapp/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf14633167867080" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14633167867081 pf14633167867082 pf14633167867083 pf14633167867084" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf14633167867080" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14633167867081 pf14633167867082 pf14633167867083 pf14633167867084 pf14718001181570 pf14718001181571 pf14718001181572" path="*"/>
   <nodes xsi:type="pageflow:PFPage" name="crud/person.xhtml" x="338" y="178" id="pf14633167867085" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14633167867081" path="/crud/person.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="search/person.xhtml" x="338" y="562" id="pf14633167867086" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf14633167867082" path="/search/person.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="test.xhtml" x="338" y="946" id="pf14633167867087" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf14633167867083" path="/test.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="search/person.xhtml" x="338" y="562" id="pf14633167867086" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf14633167867082" path="/search/person.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="test.xhtml" x="338" y="946" id="pf14633167867087" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf14633167867083" path="/test.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="form/editmanyperson.xhtml" id="pf14633167867088" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf14633167867084" path="/form/editmanyperson.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="private/actor/edit.jsf" id="pf14718001181573" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14718001181570" path="/private/actor/edit.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="private/actor/consult.jsf" id="pf14718001181574" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf14718001181571" path="/private/actor/consult.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="private/actor/list.jsf" id="pf14718001181575" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf14718001181572" path="/private/actor/list.jsf"/>
   <links id="pf14633167867081" target="pf14633167867085" source="pf14633167867080" outcome="crudperson" redirect="true"/>
   <links id="pf14633167867082" target="pf14633167867086" source="pf14633167867080" outcome="personsearch" redirect="true"/>
   <links id="pf14633167867083" target="pf14633167867087" source="pf14633167867080" outcome="test" redirect="true"/>
   <links id="pf14633167867084" target="pf14633167867088" source="pf14633167867080" outcome="editmanyperson" redirect="true"/>
+  <links id="pf14718001181570" target="pf14718001181573" source="pf14633167867080" outcome="actorEditView" redirect="true"/>
+  <links id="pf14718001181571" target="pf14718001181574" source="pf14633167867080" outcome="actorConsultView" redirect="true"/>
+  <links id="pf14718001181572" target="pf14718001181575" source="pf14633167867080" outcome="actorListView" redirect="true"/>
 </pageflow:Pageflow>

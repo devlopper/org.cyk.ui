@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
@@ -35,6 +32,9 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.Seperat
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -110,8 +110,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		super.__build__();
 	}
 
-	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,Object data){
+	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,final Object data){
 		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
+		
 		new FieldSorter(fields,data.getClass()).sort();
 		for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners)
 			listener.sort(fields);
@@ -120,7 +121,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			if(Boolean.TRUE.equals(listenerUtils.getBoolean(controlSetListeners, new ListenerUtils.BooleanMethod<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>>() {
 				@Override
 				public Boolean execute(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener) {
-					return listener.build(f);
+					return listener.build(data,f);
 				}
 				@Override
 				public Boolean getNullValue() {
@@ -170,7 +171,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		for(ObjectField objectField : objectFields){
 			Boolean build = Boolean.TRUE;
 			for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners){
-				Boolean v = listener.build(objectField.getField());
+				Boolean v = listener.build(objectField.getObject(),objectField.getField());
 				if(v!=null)
 					build = Boolean.TRUE.equals(v);
 			}

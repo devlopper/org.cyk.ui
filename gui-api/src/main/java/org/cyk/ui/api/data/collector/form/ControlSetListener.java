@@ -11,7 +11,7 @@ import org.cyk.ui.api.data.collector.control.OutputLabel;
 public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 
 	void sort(List<Field> fields);
-	Boolean build(Field field);
+	Boolean build(Object data,Field field);
 	String fiedLabel(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Field field);
 	void labelBuilt(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Field field,LABEL label);
 	void input(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM> input);

@@ -60,7 +60,7 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 	}
 
 	@Override
-	public Boolean build(Field field) {
+	public Boolean build(Object data,Field field) {
 		return null;
 	}
 

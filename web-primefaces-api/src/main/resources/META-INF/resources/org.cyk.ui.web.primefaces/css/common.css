@@ -226,7 +226,11 @@ border: none;
 }
 .ui-selectonemenu-filter-container input{
 	width: 260px !important;
-}	
+}
+
+.ui-multiselectlistbox{
+ 	width: 600px !important;
+ }	
 
 /*---------------------------------------------------------- Tree  ------------------------------------------------------------------*/
 .cyk-ui-tree-node-selected{

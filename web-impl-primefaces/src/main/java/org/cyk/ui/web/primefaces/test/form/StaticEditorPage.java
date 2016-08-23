@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.ui.test.model.MyIdentifiable;
+import org.cyk.system.test.model.actor.MyIdentifiable;
 import org.cyk.ui.web.primefaces.page.crud.CrudOnePage;
 
 @Named

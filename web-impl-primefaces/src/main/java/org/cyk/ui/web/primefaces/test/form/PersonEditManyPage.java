@@ -4,18 +4,16 @@ import java.io.Serializable;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.party.PersonEditManyForm;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
 import org.cyk.ui.web.primefaces.page.crud.AbstractEditManyPage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped

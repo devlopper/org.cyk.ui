@@ -72,11 +72,11 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 2227224319108375650L;
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				if(FormConfiguration.hasExcludedFieldName(formConfiguration, field.getName()))
 					return Boolean.FALSE;
 				else if(FormConfiguration.hasNoFieldNames(formConfiguration))
-					return super.build(field);
+					return super.build(data,field);
 				else
 					return FormConfiguration.hasFieldName(formConfiguration, field.getName());
 			}

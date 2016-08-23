@@ -47,11 +47,11 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				if(AbstractForm.FIELD_GLOBAL_IDENTIFIER.equals(field.getName())){
 					return joinedIdentifiable == null;
 				}
-				return super.build(field);
+				return super.build(data,field);
 			}
 		});
 	}

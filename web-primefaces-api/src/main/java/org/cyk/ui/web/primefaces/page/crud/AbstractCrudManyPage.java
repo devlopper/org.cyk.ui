@@ -30,6 +30,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 		super.initialisation();
 		table.setEditable(Boolean.TRUE);
 		table.getRowListeners().add(new RowAdapter<Object>(){
+			private static final long serialVersionUID = 1L;
+
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<Object> load(DataReadConfiguration configuration) {

@@ -2,20 +2,12 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.Party;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.geography.ContactCollection;
-import org.cyk.system.root.model.party.Party;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
-import org.cyk.ui.api.model.party.AbstractPartyEditFormModel;
-import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 
 @Getter @Setter
 public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> extends AbstractCrudOnePage<PARTY> implements Serializable {

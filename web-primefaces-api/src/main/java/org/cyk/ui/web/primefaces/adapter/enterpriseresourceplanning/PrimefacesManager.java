@@ -28,7 +28,7 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
-import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
+import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
@@ -44,6 +44,7 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 
 public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefacesManagerListener.Adapter implements Serializable {
@@ -71,7 +72,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,EventDetails.FIELD_NAME,EventDetails.FIELD_PERIOD,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE);
 					}
 				};
@@ -102,7 +103,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,AbstractOutputDetails.getFieldNames(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE));
 					}
 				};
@@ -116,7 +117,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,FileIdentifiableGlobalIdentifierDetails.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER,FileIdentifiableGlobalIdentifierDetails.FIELD_FILE);
 					}
 				};
@@ -144,7 +145,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,CountryDetails.FIELD_NAME,CountryDetails.FIELD_PHONE_NUMBER_CODE);
 					}
 				};
@@ -165,7 +166,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME,MovementCollectionDetails.FIELD_VALUE);
 					}
 				};
@@ -183,7 +184,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Boolean build(Field field) {
+					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,MovementDetails.FIELD_COLLECTION,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD
 								,PeriodDetails.FIELD_FROM_DATE);
 					}
@@ -205,9 +206,10 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configurePartyModule() {
 		super.configurePartyModule();
-		getFormConfiguration(Person.class, Crud.CREATE)
-			.addRequiredFieldNames(PersonEditPage.Form.FIELD_NAME)
-			.addFieldNames(PersonEditPage.Form.FIELD_LAST_NAMES);
+		getFormConfiguration(Person.class, Crud.CREATE).addRequiredFieldNames(PersonEditPage.Form.FIELD_CODE)
+		.addFieldNames(PersonEditPage.Form.FIELD_IMAGE,PersonEditPage.Form.FIELD_NAME,PersonEditPage.Form.FIELD_LAST_NAMES
+				,PersonEditPage.Form.FIELD_BIRTH_DATE,PersonEditPage.Form.FIELD_BIRTH_LOCATION,PersonEditPage.Form.FIELD_NATIONALITY,PersonEditPage.Form.FIELD_SEX
+				,PersonEditPage.Form.FIELD_BLOOD_GROUP,PersonEditPage.Form.FIELD_LANGUAGE_COLLECTION,LanguageCollectionFormModel.FIELD_LANGUAGE_1);
 		/*
 		getFormConfiguration(Person.class, Crud.READ)
 			.addFieldNames(PersonEditPage.Form.FIELD_NAME,PersonEditPage.Form.FIELD_LAST_NAMES);
@@ -224,9 +226,15 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
-			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz())){
-				getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditFormModel.FIELD_NAME)
-					.addFieldNames(AbstractActorEditFormModel.FIELD_LAST_NAMES);
+			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz()) && Boolean.TRUE.equals(isAutoConfigureClass(businessEntityInfos.getClazz()))){
+				//getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditFormModel.FIELD_NAME)
+				//	.addFieldNames(AbstractActorEditFormModel.FIELD_LAST_NAMES);
+				
+				getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditPage.Form.FIELD_CODE)
+				.addFieldNames(AbstractActorEditPage.Form.FIELD_IMAGE,AbstractActorEditPage.Form.FIELD_NAME,AbstractActorEditPage.Form.FIELD_LAST_NAMES
+						,AbstractActorEditPage.Form.FIELD_BIRTH_DATE,AbstractActorEditPage.Form.FIELD_BIRTH_LOCATION,AbstractActorEditPage.Form.FIELD_NATIONALITY,AbstractActorEditPage.Form.FIELD_SEX
+						,AbstractActorEditPage.Form.FIELD_BLOOD_GROUP,AbstractActorEditPage.Form.FIELD_LANGUAGE_COLLECTION,LanguageCollectionFormModel.FIELD_LANGUAGE_1
+						,AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
 			}
 		}
 		
@@ -240,12 +248,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 	}
 	
+	protected Boolean isAutoConfigureClass(Class<?> actorClass){
+		return Boolean.TRUE;
+	}
+	
 	/**/
 	
 	public static class PersonDetailsControlSetAdapter extends DetailsConfiguration.DefaultControlSetAdapter implements Serializable{
 		private static final long serialVersionUID = 1L;
 		@Override
-		public Boolean build(Field field) {
+		public Boolean build(Object data,Field field) {
 			return isFieldNameNotIn(field,PersonDetails.FIELD_CONTACT_COLLECTION);
 		}
 	}

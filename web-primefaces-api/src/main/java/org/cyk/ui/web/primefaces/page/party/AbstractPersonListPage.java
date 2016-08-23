@@ -2,13 +2,10 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 
 @Getter @Setter
 public abstract class AbstractPersonListPage<PERSON extends AbstractIdentifiable> extends AbstractPartyListPage<PERSON> implements Serializable {

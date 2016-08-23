@@ -10,7 +10,8 @@ import javax.faces.bean.ManagedBean;
 @ApplicationScoped
 public class ChatUsers implements Serializable {
      
-    private List<String> users;
+	private static final long serialVersionUID = 1L;
+	private List<String> users;
      
     @PostConstruct
     public void init() {

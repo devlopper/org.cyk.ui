@@ -1,18 +1,12 @@
 package org.cyk.ui.web.primefaces.test.push;
-import lombok.Getter;
-
 import org.cyk.ui.api.UIManager;
-import org.cyk.ui.web.primefaces.push.AbstractNotificationPushEndPoint;
 import org.primefaces.push.annotation.PathParam;
-import org.primefaces.push.annotation.PushEndpoint;
-import org.primefaces.push.annotation.Singleton;
+
+import lombok.Getter;
  
 //@PushEndpoint("/{"+UIManager.PUSH_CHANNEL_VAR+"}/{"+UIManager.PUSH_RECEIVER_VAR+"}") @Singleton
 public class ChatResource2  {
  
-	private static final long serialVersionUID = 2396790392001601309L;
-    
-
 	@Getter @PathParam(UIManager.PUSH_CHANNEL_VAR) protected String channel;
 	@Getter @PathParam(UIManager.PUSH_RECEIVER_VAR) protected String receiver;
     

@@ -2,13 +2,12 @@ package org.cyk.ui.api.model.event;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.event.Event;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class EventSearchResultFormModel extends AbstractFormModel<Event> implements Serializable {

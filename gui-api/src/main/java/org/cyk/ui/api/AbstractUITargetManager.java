@@ -28,6 +28,7 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.control.InputOneCascadeList;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -66,10 +67,13 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			if(AbstractIdentifiable.class.equals(type)){
 				logError("Cannot find data from entity {}", type);
 			}else{
-				for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
-					AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
-					list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
-				}
+				if(inputChoice instanceof InputOneCascadeList){
+					
+				}else
+					for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
+						AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
+						list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+					}
 			}
 		}else if(type.isEnum()){
 			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())

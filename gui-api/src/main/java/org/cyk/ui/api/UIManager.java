@@ -32,7 +32,6 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
-import org.cyk.ui.api.config.OutputDetailsConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.Constant;
@@ -237,10 +236,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		return (Class<? extends AbstractOutputDetails<?>>) clazzBusiness.find(key).getClazz();
 	}
 	
-	public OutputDetailsConfiguration getOutputDetailsConfigurationFromKey(String key){
-		return (OutputDetailsConfiguration) clazzBusiness.find(key);
-	}
-	
 	public String keyFromClass(BusinessEntityInfos aBusinessEntityInfos){
 		for(Entry<String, BusinessEntityInfos> entry : entitiesRequestParameterIdMap.entrySet())
 			if(entry.getValue().equals(aBusinessEntityInfos))
@@ -276,16 +271,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	public SelectItemBuilderListener findSelectItemBuildListener(Class<?> aClass){
 		SelectItemBuilderListener listener = SELECTITEM_BUILD_LISTENER_MAP.get(aClass);
 		return listener==null?SelectItemBuilderListener.DEFAULT:listener;
-	}
-	
-	public OutputDetailsConfiguration findOutputDetailsConfiguration(Class<? extends AbstractOutputDetails<?>> aClass){
-		//OutputDetailsConfiguration config = OUTPUT_DETAILS_CONFIGURATION_MAP.get(aClass);
-		//return config;
-		return (OutputDetailsConfiguration) clazzBusiness.find(aClass);
-	}
-	public void registerOutputDetailsConfiguration(OutputDetailsConfiguration configuration){
-		//OUTPUT_DETAILS_CONFIGURATION_MAP.put(configuration.getClazz(), configuration);
-		clazzBusiness.register(configuration);
 	}
 	
 	/**/

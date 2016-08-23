@@ -15,10 +15,14 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
@@ -27,12 +31,16 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.control.InputManyAutoComplete;
+import org.cyk.ui.api.data.collector.control.InputOneAutoComplete;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.api.data.collector.control.WebOutputSeparator;
 import org.cyk.ui.web.api.data.collector.control.WebOutputText;
+import org.cyk.ui.web.primefaces.data.collector.control.InputAutoCompleteCommon;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
+import org.cyk.ui.web.primefaces.data.collector.control.InputOneCascadeList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
@@ -139,10 +147,11 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void choices(InputChoice<?, ?, ?, ?, ?, ?> inputChoice, Object data,Field field, List<Object> list) {
 		super.choices(inputChoice, data, field, list);
+		Class<?> fieldType = commonUtils.getFieldType(data.getClass(), field);
 		if(inputChoice instanceof InputManyPickList){
 			InputManyPickList<Object> pickList = (InputManyPickList<Object>) inputChoice;
 			pickList.getDualListModel().setSource(list);
@@ -156,6 +165,22 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		}else if(inputChoice instanceof InputOneCombo){
 			if( !list.isEmpty() && ((SelectItem)list.get(0)).getValue()!=null )
 				list.add(0, WebManager.getInstance().getNullSelectItem(field.getType(), SelectItemBuilderListener.DEFAULT));
+		}else if(inputChoice instanceof InputOneAutoComplete || inputChoice instanceof InputManyAutoComplete) {
+			org.cyk.ui.api.data.collector.control.InputAutoCompleteCommon<?> inputAutoCompleteCommon = null;
+			if(inputChoice instanceof InputOneAutoComplete)
+				inputAutoCompleteCommon = ((InputOneAutoComplete<?, ?, ?, ?, ?, ?, ?>)inputChoice).getCommon();
+			else if(inputChoice instanceof InputManyAutoComplete)
+				inputAutoCompleteCommon = ((InputManyAutoComplete<?, ?, ?, ?, ?, ?,?>)inputChoice).getCommon();
+			if(inputAutoCompleteCommon!=null){
+				((InputAutoCompleteCommon<?>)inputAutoCompleteCommon).getAutoCompleteListeners().add(new InputAutoCompleteCommon.Listener.Adapter.Default(fieldType));
+			}
+		}else if(inputChoice instanceof InputOneCascadeList){
+			if(AbstractDataTreeNode.class.isAssignableFrom(fieldType)){
+				AbstractDataTreeNodeBusiness<?> business = (AbstractDataTreeNodeBusiness<?>) inject(BusinessInterfaceLocator.class)
+						.injectTyped((Class<AbstractIdentifiable>)fieldType);
+				list.addAll(WebManager.getInstance().getSelectItemsFromNodes((List<? extends AbstractDataTreeNode>) business.findHierarchies()));	
+			}
+			
 		}
 	}
 	

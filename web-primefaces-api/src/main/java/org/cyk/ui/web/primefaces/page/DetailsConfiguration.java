@@ -123,7 +123,7 @@ public class DetailsConfiguration implements Serializable {
 		private static final long serialVersionUID = -4644620620046718336L;
 
 		@Override
-		public Boolean build(Field field) {
+		public Boolean build(Object data,Field field) {
 			return isFieldNameNotIn(field, AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
 					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION);
 		}

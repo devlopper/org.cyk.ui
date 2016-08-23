@@ -134,6 +134,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		//printCommandable.setRendered(Boolean.FALSE);
 		
 		columnListeners.add(new ColumnAdapter(){
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void populateFromDataClass(Class<?> aClass, List<Field> fields) {
 				List<Field> f = new ArrayList<>();
@@ -147,7 +148,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			}
 		});
 		rowListeners.add(new RowAdapter<DATA>(){
-						
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void added(Row<DATA> row) {
 				super.added(row);

@@ -17,6 +17,26 @@ public class PersonEditPage extends AbstractPersonEditPage<Person> implements Se
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		/*
+		InputOneCascadeList<Locality> inputOneCascadeList = (InputOneCascadeList<Locality>) form.findInputByFieldName(LocationFormModel.FIELD_LOCALITY);
+
+		inputOneCascadeList.setHeader("Continent");
+		List<SelectItem> categories = inputOneCascadeList.getList();
+		categories.addAll(webManager.getSelectItemsFromNodes((List<? extends AbstractDataTreeNode>) inject(LocalityBusiness.class).findHierarchies()));
+		
+		*/
+		/*
+		InputOneAutoComplete<Locality> localityInputOneAutoComplete = (InputOneAutoComplete<Locality>) form.findInputByFieldName(LocationFormModel.FIELD_LOCALITY);
+		localityInputOneAutoComplete.getCommon().getAutoCompleteListeners().add(new InputAutoCompleteCommon.Listener.Adapter.Default(Locality.class));
+		/*
+		InputOneAutoComplete<Country> countryInputOneAutoComplete = (InputOneAutoComplete<Country>) form.findInputByFieldName(AbstractPersonEditFormModel.FIELD_NATIONALITY);
+		countryInputOneAutoComplete.getCommon().getAutoCompleteListeners().add(new InputAutoCompleteCommon.Listener.Adapter.Default(Country.class));
+		*/
+	}
+	
+	@Override
 	protected Person getPerson() {
 		return identifiable;
 	}

@@ -18,4 +18,7 @@ org.cyk.ui.api.data.collector.control.InputOneCascadeList<VALUE_TYPE,DynaFormMod
 
 	private static final long serialVersionUID = 1490472924426610838L;
 
+	private String header;
+	private Boolean showHeaders=Boolean.TRUE;
+	
 }

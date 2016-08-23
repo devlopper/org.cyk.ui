@@ -8,6 +8,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
+import org.cyk.system.root.model.language.LanguageCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.BloodGroup;
 import org.cyk.system.root.model.party.person.JobFunction;
@@ -19,13 +20,19 @@ import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
+import org.cyk.ui.api.model.geography.LocationFormModel;
+import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputEditor;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
@@ -45,10 +52,12 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputText protected String surname;
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected Sex sex;
 	@Input @InputCalendar protected Date birthDate;
-	@Input @InputText protected String birthLocation;
+	
+	@IncludeInputs(layout=Layout.VERTICAL) protected LocationFormModel birthLocation = new LocationFormModel();
+	
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected MaritalStatus maritalStatus;
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected PersonTitle title;
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected Country nationality;
+	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected Country nationality;
 	
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected BloodGroup bloodGroup;
 	//@Input @InputText protected String allergicReactionResponse,allergicReactionType;
@@ -59,6 +68,9 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected JobFunction jobFunction;
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
+	
+	@IncludeInputs(layout=Layout.VERTICAL)
+	protected LanguageCollectionFormModel languageCollection = new LanguageCollectionFormModel();
 	
 	protected abstract Person getPerson();
 	
@@ -73,26 +85,25 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		getPerson().setSurname(surname);
 		getPerson().setSex(sex);
 		getPerson().setNationality(nationality);
-		//identifiable.setBirthDate(birthDate);
+		getPerson().setBirthDate(birthDate);
 		if(title!=null)
 			getExtendedInformations(Boolean.TRUE).setTitle(title);
+		if(languageCollection!=null){
+			if(languageCollection.getLanguage1()!=null && languageCollection.getIdentifiable()==null){
+				getExtendedInformations(Boolean.TRUE).setLanguageCollection(new LanguageCollection());
+				languageCollection.setIdentifiable(getExtendedInformations(Boolean.TRUE).getLanguageCollection());
+			}
+			languageCollection.write();
+		}
 		
 		if(maritalStatus!=null)
-			;//getExtendedInformations(Boolean.TRUE).setMaritalStatus(maritalStatus);
-		if(StringUtils.isBlank(birthLocation)){
-			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
-			if(location==null)
-				;
-			else
-				location.setOtherDetails(null);
-		}else{
-			Location location = getExtendedInformations(Boolean.TRUE).getBirthLocation();
-			if(location==null){
-				getExtendedInformations(Boolean.TRUE).setBirthLocation(new Location(null,null));
-				getExtendedInformations(Boolean.TRUE).getBirthLocation().setOtherDetails(birthLocation);
-			}else
-				location.setOtherDetails(birthLocation);
+			getExtendedInformations(Boolean.TRUE).setMaritalStatus(maritalStatus);
+		
+		if(getPerson().getExtendedInformations().getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
+			getPerson().getExtendedInformations().setBirthLocation(new Location());
+			birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
 		}
+		birthLocation.read();
 		
 		if(signatureSpecimen!=null)
 			getExtendedInformations(Boolean.TRUE).setSignatureSpecimen(signatureSpecimen);
@@ -132,9 +143,15 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Override
 	public void read() {
 		super.read();
+		birthDate = getPerson().getBirthDate();
+		lastnames = getPerson().getLastnames();
 		if(getPerson().getExtendedInformations()!=null){
-			if(getPerson().getExtendedInformations().getBirthLocation()!=null)
-				birthLocation = getPerson().getExtendedInformations().getBirthLocation().getOtherDetails();
+			languageCollection.setIdentifiable(getPerson().getExtendedInformations().getLanguageCollection());
+			languageCollection.read();
+			if(getPerson().getExtendedInformations().getBirthLocation()!=null){
+				birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
+				birthLocation.read();
+			}
 			title = getPerson().getExtendedInformations().getTitle();
 			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
 		}
@@ -142,6 +159,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			jobFunction = getPerson().getJobInformations().getFunction();
 			jobTitle = getPerson().getJobInformations().getTitle();
 		}
+		
+		
 	}
 	
 	/**/
@@ -189,6 +208,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	public static final String FIELD_NATIONALITY = "nationality";
 	public static final String FIELD_TITLE = "title";
 	public static final String FIELD_SIGNATURE_SPECIMEN = "signatureSpecimen";
+	public static final String FIELD_LANGUAGE_COLLECTION = "languageCollection";
 	
 	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";

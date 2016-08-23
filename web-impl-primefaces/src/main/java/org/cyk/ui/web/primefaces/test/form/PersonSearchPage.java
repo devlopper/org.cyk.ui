@@ -52,8 +52,10 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		super.initialisation();
 		form.getControlSetListeners().add(new ControlSetAdapter<PersonQueryFormModel>(){
 			
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				return !field.getName().equals("identifier");
 			}
 			

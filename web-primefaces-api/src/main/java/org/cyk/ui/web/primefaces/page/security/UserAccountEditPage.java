@@ -46,6 +46,8 @@ public class UserAccountEditPage extends AbstractCrudOnePage<UserAccount> implem
 	protected void initialisation() {
 		super.initialisation();
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void input(
 					ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,

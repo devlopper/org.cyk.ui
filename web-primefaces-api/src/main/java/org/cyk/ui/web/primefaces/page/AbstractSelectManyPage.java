@@ -46,13 +46,15 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 		form.getSubmitCommandable().setLabel(text("command.select"));
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				if(field.getName().equals(AbstractQueryManyFormModel.FIELD_IDENTIFIABLES))
 					return ((AbstractQueryManyFormModel<?,?>)form.getData()).getShowIdentifiables();
 				if(field.getDeclaringClass().equals(CodesFormModel.class))
 					return ((AbstractQueryManyFormModel<?,?>)form.getData()).getShowCodes();
-				return super.build(field);
+				return super.build(data,field);
 			}
 			
 			@Override

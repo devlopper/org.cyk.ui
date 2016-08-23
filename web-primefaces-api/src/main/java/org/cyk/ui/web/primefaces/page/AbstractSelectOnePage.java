@@ -54,10 +54,14 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 				type = v;
 		}
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				if(type==null){
-					return super.build(field);
+					return super.build(data,field);
 				}else
 					switch(type){
 					case IDENTIFIER:
@@ -65,9 +69,9 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 					case IDENTIFIABLE:
 						return !AbstractQueryOneFormModel.FIELD_IDENTIFIER.equals(field.getName())/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
 					case CUSTOM:
-						return super.build(field);
+						return super.build(data,field);
 					default:
-						return super.build(field);
+						return super.build(data,field);
 					}
 			}
 			@Override

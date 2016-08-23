@@ -27,16 +27,19 @@ public class GeographyBusinessIT extends AbstractBusinessIT {
 	
 	@Inject private LocalityDao localityDao;  
 	
+	@SuppressWarnings("unused")
 	private LocalityType continent,country,state,region,department,city;
 	private Locality africa,america;
-	private Locality coteDivoire,burkinaFaso,ghana,benin;
-	private Locality coteDivoireNorthState,coteDivoireSouthState,coteDivoireEastState,coteDivoireWestState
+	@SuppressWarnings("unused")
+	private Locality coteDivoire,burkinaFaso/*,ghana,benin*/;
+	@SuppressWarnings("unused")
+	private Locality coteDivoireNorthState,coteDivoireSouthState;/*,coteDivoireEastState,coteDivoireWestState
 		,burkinanFasoNorthState,burkinanFasoSouthState,burkinanFasoEastState,burkinanFasoWestState
 		,ghanaNorthState,ghanaSouthState,ghanaEastState,ghanaWestState
 		,beninNorthState,beninSouthState,beninEastState,beninWestState;
 	private Locality coteDivoireSouthStateLaguneRegion,coteDivoireSouthStateSassandraRegion;
 	private Locality coteDivoireSouthStateLaguneRegionDepartment1,coteDivoireSouthStateLaguneRegionDepartment2,coteDivoireSouthStateLaguneRegionDepartment3;
-	private Locality abidjan,bonoua,sassandra,sanpedro;
+	private Locality abidjan,bonoua,sassandra,sanpedro;*/
 	
 	protected void createAll() {
 		Integer level = 0;

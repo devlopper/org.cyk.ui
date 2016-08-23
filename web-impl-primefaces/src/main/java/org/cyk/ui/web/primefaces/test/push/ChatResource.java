@@ -2,8 +2,6 @@ package org.cyk.ui.web.primefaces.test.push;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
-import lombok.Getter;
-
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.primefaces.push.AbstractPushEndPoint;
 import org.primefaces.push.EventBus;
@@ -12,8 +10,8 @@ import org.primefaces.push.annotation.OnClose;
 import org.primefaces.push.annotation.OnMessage;
 import org.primefaces.push.annotation.OnOpen;
 import org.primefaces.push.annotation.PathParam;
-import org.primefaces.push.annotation.PushEndpoint;
-import org.primefaces.push.annotation.Singleton;
+
+import lombok.Getter;
  
 //@PushEndpoint("/{"+UIManager.PUSH_CHANNEL_VAR+"}/{"+UIManager.PUSH_RECEIVER_VAR+"}") @Singleton
 public class ChatResource extends AbstractPushEndPoint<Message> {

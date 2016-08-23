@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.model.party.person.AbstractActor;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
@@ -46,6 +45,9 @@ public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractAct
 		AbstractBusinessEntityFormManyPage<?> page = (AbstractBusinessEntityFormManyPage<?>) bean;
 		page.getTable().setShowOpenCommand(Boolean.TRUE);
 		page.getTable().getRowListeners().add(new RowAdapter<Object>(){
+
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void added(Row<Object> row) {
 				super.added(row);

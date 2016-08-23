@@ -2,11 +2,7 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.impl.party.AbstractPartyDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.data.collector.form.FormConfiguration;
-import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 
 import lombok.Getter;

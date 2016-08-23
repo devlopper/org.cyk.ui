@@ -1,9 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
-import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
 import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
 import org.cyk.system.root.model.security.Installation;
-import org.cyk.utility.common.CommonUtils;
 
 public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
 

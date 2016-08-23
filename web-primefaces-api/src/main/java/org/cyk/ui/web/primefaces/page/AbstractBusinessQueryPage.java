@@ -87,6 +87,9 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":"+WebManager.getInstance().getFormId()+":"+componentId()+":resultsOutputPanel");
 		
 		table.getRowListeners().add(new RowAdapter<Object>(){
+
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Collection<Object> load(DataReadConfiguration configuration) {
 				table.setNumberOfNullUiIndex(null);
@@ -262,7 +265,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	}
 	
 	@Override
-	public Boolean build(Field field) {
+	public Boolean build(Object data,Field field) {
 		return Boolean.TRUE;
 	}
 	

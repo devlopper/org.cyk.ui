@@ -12,9 +12,6 @@ import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
@@ -32,12 +29,14 @@ import org.cyk.ui.api.data.collector.control.InputCalendar;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputEditor;
 import org.cyk.ui.api.data.collector.control.InputFile;
+import org.cyk.ui.api.data.collector.control.InputManyAutoComplete;
 import org.cyk.ui.api.data.collector.control.InputManyButton;
 import org.cyk.ui.api.data.collector.control.InputManyCheck;
 import org.cyk.ui.api.data.collector.control.InputManyCheckCombo;
 import org.cyk.ui.api.data.collector.control.InputManyCombo;
 import org.cyk.ui.api.data.collector.control.InputManyPickList;
 import org.cyk.ui.api.data.collector.control.InputNumber;
+import org.cyk.ui.api.data.collector.control.InputOneAutoComplete;
 import org.cyk.ui.api.data.collector.control.InputOneButton;
 import org.cyk.ui.api.data.collector.control.InputOneCascadeList;
 import org.cyk.ui.api.data.collector.control.InputOneCombo;
@@ -54,6 +53,9 @@ import org.cyk.utility.common.FileExtensionGroup;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
 public class UIProvider extends AbstractBean implements Serializable {
@@ -124,11 +126,23 @@ public class UIProvider extends AbstractBean implements Serializable {
 			}else if(control instanceof InputChoice<?,?,?,?,?,?>){
 				@SuppressWarnings("unchecked")
 				InputChoice<?,?,?,?,?,Object> inputChoice = (InputChoice<?,?,?,?,?,Object>)control;
-				org.cyk.utility.common.annotation.user.interfaces.InputChoice annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class);
-				Boolean loadChoices = annotation!= null && annotation.load();
+				org.cyk.utility.common.annotation.user.interfaces.InputChoice choiceAnnotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class);
+				org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete autoCompleteAnnotation =  field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete.class);
+				Boolean loadChoices = choiceAnnotation!= null && choiceAnnotation.load()/* && autoCompleteAnnotation==null*/;
+				
 				if(Boolean.TRUE.equals(loadChoices)){
 					for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
 						listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
+				}else if(autoCompleteAnnotation!=null) {
+					org.cyk.ui.api.data.collector.control.InputAutoCompleteCommon<?> inputAutoCompleteCommon = null;
+					if(inputChoice instanceof InputOneAutoComplete)
+						inputAutoCompleteCommon = ((InputOneAutoComplete<?, ?, ?, ?, ?, ?, ?>)inputChoice).getCommon();
+					else if(inputChoice instanceof InputManyAutoComplete)
+						inputAutoCompleteCommon = ((InputManyAutoComplete<?, ?, ?, ?, ?, ?,?>)inputChoice).getCommon();
+					if(inputAutoCompleteCommon!=null){
+						
+					}
+					
 				}
 				inputChoice.setFiltered(Boolean.TRUE);
 				
@@ -275,6 +289,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 			controlInterface = InputOneList.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputOneCombo.class)!=null){
 			controlInterface = InputOneCombo.class;
+		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete.class)!=null){
+			controlInterface = InputOneAutoComplete.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputOneButton.class)!=null){
 			controlInterface = InputOneButton.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputOneCascadeList.class)!=null){
@@ -283,6 +299,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 			controlInterface = InputOneRadio.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputManyCombo.class)!=null){
 			controlInterface = InputManyCombo.class;
+		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputManyAutoComplete.class)!=null){
+			controlInterface = InputManyAutoComplete.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputManyPickList.class)!=null){
 			controlInterface = InputManyPickList.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputManyCheckCombo.class)!=null){

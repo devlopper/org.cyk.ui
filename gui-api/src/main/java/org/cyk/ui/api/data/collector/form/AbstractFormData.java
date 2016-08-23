@@ -71,7 +71,7 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public Boolean build(Field field) {
+	public Boolean build(Object data,Field field) {
 		return null;
 	}
 	

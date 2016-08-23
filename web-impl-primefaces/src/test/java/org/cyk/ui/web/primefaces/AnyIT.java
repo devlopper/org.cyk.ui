@@ -1,7 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
-import org.cyk.ui.test.model.Actor;
+import org.cyk.system.test.model.actor.Actor;
 import org.cyk.utility.common.CommonUtils;
 
 public class AnyIT extends AbstractBusinessIT {

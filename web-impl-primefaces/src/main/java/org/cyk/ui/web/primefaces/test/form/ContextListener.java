@@ -9,15 +9,21 @@ import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.ui.test.model.Actor;
-import org.cyk.ui.test.model.Actor.SearchCriteria;
+import org.cyk.system.test.business.MyWebManager;
+import org.cyk.system.test.model.actor.Actor;
+import org.cyk.system.test.model.actor.Actor.SearchCriteria;
+import org.cyk.system.test.model.actor.ActorDetails;
+import org.cyk.system.test.model.actor.ActorEditPage;
+import org.cyk.system.test.model.actor.ActorProcessManyPageAdapter;
+import org.cyk.system.test.model.actor.ActorQueryManyFormModel;
+import org.cyk.system.test.model.actor.ActorQueryOneFormModel;
+import org.cyk.system.test.model.actor.ActorSelectManyPageAdapter;
+import org.cyk.system.test.model.actor.ActorSelectOnePageAdapter;
+import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
-import org.cyk.ui.web.primefaces.test.business.ActorQueryManyFormModel;
-import org.cyk.ui.web.primefaces.test.business.ActorQueryOneFormModel;
-import org.cyk.ui.web.primefaces.test.business.MyWebManager;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
@@ -38,14 +44,14 @@ public class ContextListener extends AbstractContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
-		MyWebManager.getInstance().getListeners().add(new org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManager());
+		MyWebManager.getInstance().getListeners().add(new org.cyk.system.test.business.PrimefacesManager());
 		
 		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
 		AbstractSelectManyPage.Listener.COLLECTION.add(new ActorSelectManyPageAdapter());
 		AbstractProcessManyPage.Listener.COLLECTION.add(new ActorProcessManyPageAdapter());
 		
 		AbstractSelectManyPage.Listener.COLLECTION.add(new PersonSelectManyPageAdapter());
-		
+
 	}
 	
 	@Override
@@ -53,6 +59,9 @@ public class ContextListener extends AbstractContextListener {
 		super.identifiableConfiguration(event);
 		
 		uiManager.businessEntityInfos(UserAccount.class).getUserInterface().setEditViewId("useraccountcrudone");
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorEditPage.Form.class, ActorDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Actor.class, null);
 		
 		BusinessServiceProvider.Identifiable.COLLECTION.add(new AbstractActorBusinessImpl.BusinessServiceProviderIdentifiable<Actor,Actor.SearchCriteria>(Actor.class){
 			private static final long serialVersionUID = 1322416788278558869L;

@@ -39,8 +39,10 @@ public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractAct
 		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,null,null);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
+			private static final long serialVersionUID = 1L;
+
 			@Override
-			public Boolean build(Field field) {
+			public Boolean build(Object data,Field field) {
 				return Boolean.TRUE;
 			}
 		});

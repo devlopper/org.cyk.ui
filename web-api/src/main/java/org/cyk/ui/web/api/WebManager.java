@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,6 +29,7 @@ import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameter
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
@@ -157,6 +159,29 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public List<SelectItem> getSelectItems(Class<?> aClass){
 		return getSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	}
+	
+	public List<SelectItem> getSelectItemsFromNodes(List<? extends AbstractDataTreeNode> nodes){
+		List<SelectItem> selectItems = new ArrayList<>();
+		for(AbstractDataTreeNode node : nodes){
+			selectItems.add(getSelectItemFromNode(node));
+		}
+		return selectItems;
+	}
+	
+	public SelectItem getSelectItemFromNode(AbstractDataTreeNode node){
+		SelectItem item;
+		if(node.getChildren()==null || node.getChildren().isEmpty())
+			item = new SelectItem(node, node.getName());
+		else{
+			item = new SelectItemGroup(node.getName());
+			List<SelectItem> nodeItems = new ArrayList<>();
+			for(AbstractDataTreeNode child : node.getChildren()){
+				nodeItems.add(getSelectItemFromNode(child));
+			}
+			((SelectItemGroup)item).setSelectItems(nodeItems.toArray(new SelectItem[]{}));
+		}
+		return item;
 	}
 	
 	@SuppressWarnings("unchecked")
