@@ -303,6 +303,14 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		
+		public Builder<COMMANDABLE> addPreviousViewParameter(String previousView){
+			Parameter.addPreviousViewParameter(instance.parameters,previousView);
+			return this;
+		}
+		public Builder<COMMANDABLE> addPreviousViewParameter(){
+			return addPreviousViewParameter(UIManager.getInstance().getCurrentViewUrl());
+		}
+		
 		public Builder<COMMANDABLE> addCreateOneParameters(Class<? extends AbstractIdentifiable> identifiableClass){
 			Parameter.addCreateOne(instance.parameters, identifiableClass);
 			return this;
@@ -324,6 +332,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return instanciateOne().setLabelFromId(labelId).setIcon(icon)
 					.setView(StringUtils.isBlank(view)?UIManager.getInstance().getViewIdentifier(identifiable, CommonBusinessAction.valueOf(crud.name())):view)
 					.addCrudParameters(crud, identifiable)
+					.addPreviousViewParameter()
 					.create();
 		}
 		public static UICommandable createCrud(Crud crud,AbstractIdentifiable identifiable,String labelId,Icon icon){

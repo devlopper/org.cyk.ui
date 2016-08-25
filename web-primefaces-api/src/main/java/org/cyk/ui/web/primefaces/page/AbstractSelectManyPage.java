@@ -58,7 +58,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 			}
 			
 			@Override
-			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 				if(AbstractQueryManyFormModel.FIELD_IDENTIFIABLES.equals(field.getName())){
 					Class<?> aClass = null;
 					for(AbstractSelectManyPage.Listener<?,?> selectPageListener : getListeners())
@@ -70,7 +70,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 						return languageBusiness.findClassLabelText(parameters);
 					}
 				}
-				return super.fiedLabel(controlSet, field);
+				return super.fiedLabel(controlSet, data,field);
 			}
 		});
 		

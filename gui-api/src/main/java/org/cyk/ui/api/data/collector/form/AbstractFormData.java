@@ -83,9 +83,7 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public String fiedLabel(
-			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,
-			Field field) {
+	public String fiedLabel(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data,Field field) {
 		return null;
 	}
 	

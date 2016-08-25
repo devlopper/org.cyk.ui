@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -42,6 +39,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
 public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> implements CommandListener, Serializable {
@@ -65,9 +65,18 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 		
 		formConfiguration = getFormConfiguration(selectedTabId);
-		
-		if(formConfiguration==null && !Crud.CREATE.equals(crud))
-			formConfiguration = getFormConfiguration(Crud.CREATE);
+		if(formConfiguration==null)
+			if(Crud.CREATE.equals(crud))
+				;
+			else if(Crud.READ.equals(crud))
+				formConfiguration = getFormConfiguration(Crud.CREATE,null);
+			else if(Crud.UPDATE.equals(crud))
+				formConfiguration = getFormConfiguration(Crud.CREATE,null);
+			else if(Crud.DELETE.equals(crud)){
+				formConfiguration = getFormConfiguration(Crud.READ,null);
+				if(formConfiguration==null)
+					formConfiguration = getFormConfiguration(Crud.CREATE,null);
+			}
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 2227224319108375650L;
@@ -92,6 +101,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 				}
 			}
 		});	
+		FormConfiguration.addControlSetListeners(formConfiguration, form.getControlSetListeners());
 		
 		if(uiManager.isMobileDevice(userDeviceType)){
 			((Commandable)form.getSubmitCommandable()).setUpdate("");
@@ -203,7 +213,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 				if(parameter!=null){
 					if(AbstractFormModel.class.isAssignableFrom(parameter.getClass())){
 						AbstractFormModel<?> formModel = (AbstractFormModel<?>) parameter;
-						formModel.write();
+						if(formModel.getIdentifiable()==null)
+							;
+						else
+							formModel.write();
 						for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
 							if(Boolean.TRUE.equals(itemCollection.getAutoWrite())){
 								itemCollection.write();

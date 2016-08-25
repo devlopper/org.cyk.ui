@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
@@ -15,6 +16,7 @@ import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobInformations;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
@@ -35,6 +37,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
@@ -50,7 +53,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 
 	@Input @InputText protected String lastnames;
 	@Input @InputText protected String surname;
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected Sex sex;
+	@Input @InputChoice @InputOneChoice @InputOneRadio protected Sex sex;
 	@Input @InputCalendar protected Date birthDate;
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected LocationFormModel birthLocation = new LocationFormModel();
@@ -59,7 +62,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputChoice @InputOneChoice @InputOneCombo protected PersonTitle title;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected Country nationality;
 	
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected BloodGroup bloodGroup;
+	@Input @InputChoice @InputOneChoice @InputOneRadio protected BloodGroup bloodGroup;
 	//@Input @InputText protected String allergicReactionResponse,allergicReactionType;
 	@Input @InputEditor protected String otherMedicalInformations;
 	
@@ -99,11 +102,11 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		if(maritalStatus!=null)
 			getExtendedInformations(Boolean.TRUE).setMaritalStatus(maritalStatus);
 		
-		if(getPerson().getExtendedInformations().getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
+		if(getExtendedInformations(Boolean.TRUE).getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
 			getPerson().getExtendedInformations().setBirthLocation(new Location());
 			birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
 		}
-		birthLocation.read();
+		birthLocation.write();
 		
 		if(signatureSpecimen!=null)
 			getExtendedInformations(Boolean.TRUE).setSignatureSpecimen(signatureSpecimen);
@@ -113,6 +116,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		if(jobTitle!=null)
 			getJobInformations(Boolean.TRUE).setTitle(jobTitle);
 		
+		if(bloodGroup!=null)
+			getMedicalInformations(Boolean.TRUE).setBloodGroup(bloodGroup);
 		/*if(identifiable.getExtendedInformations()!=null){
 			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
 			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
@@ -140,12 +145,25 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		return jobInformations;
 	}
 	
+	private MedicalInformations getMedicalInformations(Boolean createIfNull){
+		MedicalInformations informations = getPerson().getMedicalInformations();
+		if(informations==null)
+			if(Boolean.TRUE.equals(createIfNull))
+				informations = new MedicalInformations(getPerson());
+		getPerson().setMedicalInformations(informations);
+		return informations;
+	}
+	
 	@Override
 	public void read() {
 		super.read();
 		birthDate = getPerson().getBirthDate();
 		lastnames = getPerson().getLastnames();
+		sex = getPerson().getSex();
+		nationality = getPerson().getNationality();
 		if(getPerson().getExtendedInformations()!=null){
+			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class).findByCollection(getPerson()
+					.getExtendedInformations().getLanguageCollection()));
 			languageCollection.setIdentifiable(getPerson().getExtendedInformations().getLanguageCollection());
 			languageCollection.read();
 			if(getPerson().getExtendedInformations().getBirthLocation()!=null){
@@ -160,6 +178,9 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			jobTitle = getPerson().getJobInformations().getTitle();
 		}
 		
+		if(getPerson().getMedicalInformations()!=null){
+			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
+		}
 		
 	}
 	

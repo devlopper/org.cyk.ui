@@ -3,17 +3,23 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import javax.faces.model.SelectItem;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.language.LanguageCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
+import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.event.Event;
@@ -28,7 +34,10 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
+import org.cyk.ui.api.data.collector.form.ControlSet;
+import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
+import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
@@ -45,7 +54,14 @@ import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
-import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefacesManagerListener.Adapter implements Serializable {
 
@@ -206,22 +222,13 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configurePartyModule() {
 		super.configurePartyModule();
-		getFormConfiguration(Person.class, Crud.CREATE).addRequiredFieldNames(PersonEditPage.Form.FIELD_CODE)
-		.addFieldNames(PersonEditPage.Form.FIELD_IMAGE,PersonEditPage.Form.FIELD_NAME,PersonEditPage.Form.FIELD_LAST_NAMES
-				,PersonEditPage.Form.FIELD_BIRTH_DATE,PersonEditPage.Form.FIELD_BIRTH_LOCATION,PersonEditPage.Form.FIELD_NATIONALITY,PersonEditPage.Form.FIELD_SEX
-				,PersonEditPage.Form.FIELD_BLOOD_GROUP,PersonEditPage.Form.FIELD_LANGUAGE_COLLECTION,LanguageCollectionFormModel.FIELD_LANGUAGE_1);
-		/*
-		getFormConfiguration(Person.class, Crud.READ)
-			.addFieldNames(PersonEditPage.Form.FIELD_NAME,PersonEditPage.Form.FIELD_LAST_NAMES);
-		*/
-		getFormConfiguration(Person.class, Crud.UPDATE)
-			.addRequiredFieldNames(Boolean.FALSE,getFormConfiguration(Person.class, Crud.CREATE))
-			.addExcludedFieldNames(PersonEditPage.Form.FIELD_CONTACT_COLLECTION);
-		
+		configurePersonFormConfiguration(Person.class,null,null);
 		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
 			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new PersonDetailsControlSetAdapter();
+				return new PersonDetailsControlSetAdapter(null);
 			}
 		});
 		
@@ -252,13 +259,57 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		return Boolean.TRUE;
 	}
 	
-	/**/
+	protected void configurePersonFormConfiguration(Class<?> entityClass,String[] requiredFieldNames,String[] fieldNames){
+		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(requiredFieldNames,AbstractPersonEditFormModel.FIELD_CODE
+				,AbstractPersonEditFormModel.FIELD_NAME))
+		.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_IMAGE,AbstractPersonEditFormModel.FIELD_LAST_NAMES
+				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
+				,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
+				,LanguageCollectionFormModel.FIELD_LANGUAGE_1))
+		.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
+		
+		getFormConfiguration(entityClass, Crud.READ).addFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME
+				,AbstractPersonEditFormModel.FIELD_LAST_NAMES);
+		/*
+		getFormConfiguration(entityClass, Crud.UPDATE).addRequiredFieldNames(Boolean.FALSE,getFormConfiguration(entityClass, Crud.CREATE).getRequiredFieldNames())
+			.addFieldNames(getFormConfiguration(entityClass, Crud.CREATE).getFieldNames()).addControlSetListeners(getFormConfiguration(entityClass, Crud.CREATE)
+					.getControlSetListeners());
+		*/
+		
+		//getFormConfiguration(entityClass, Crud.DELETE).addFieldNames(getFormConfiguration(entityClass, Crud.READ).getFieldNames());
+	}
 	
-	public static class PersonDetailsControlSetAdapter extends DetailsConfiguration.DefaultControlSetAdapter implements Serializable{
+	/**/
+	@Getter @Setter @NoArgsConstructor
+	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter<Object> implements Serializable{
 		private static final long serialVersionUID = 1L;
 		@Override
+		public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
+			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data )
+				return inject(LanguageBusiness.class).findText("field.birth.location");
+			return super.fiedLabel(controlSet, data,field);
+		}
+	}
+	
+	@Getter @Setter @NoArgsConstructor
+	public static class PersonDetailsControlSetAdapter extends DetailsConfiguration.DefaultControlSetAdapter implements Serializable{
+		private static final long serialVersionUID = 1L;
+		
+		private String[] fieldNames;
+		
+		public PersonDetailsControlSetAdapter(String[] fieldNames) {
+			super();
+			this.fieldNames = fieldNames;
+		}
+
+		@Override
 		public Boolean build(Object data,Field field) {
-			return isFieldNameNotIn(field,PersonDetails.FIELD_CONTACT_COLLECTION);
+			return (data instanceof AbstractPersonDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames
+					,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
+					,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX
+					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION))
+					||
+					(data instanceof LanguageCollectionDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames,LanguageCollectionDetails.FIELD_LANGUAGES));
 		}
 	}
 }

@@ -26,6 +26,8 @@ public interface InputAutoCompleteCommon<VALUE_TYPE> {
 	
 	List<VALUE_TYPE> complete(String query);
 	
+	String getLabel(VALUE_TYPE item);
+	
 	void onItemSelected(VALUE_TYPE item);
 	
 	void onItemUnSelected(VALUE_TYPE item);

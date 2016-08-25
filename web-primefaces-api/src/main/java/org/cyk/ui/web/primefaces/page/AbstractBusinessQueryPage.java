@@ -270,22 +270,17 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	}
 	
 	@Override
-	public void labelBuilt(
-			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
-			Field field, DynaFormLabel label) {
+	public void labelBuilt(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field, DynaFormLabel label) {
 		
 	}
 	
 	@Override
-	public String fiedLabel(
-			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
-			Field field) {
+	public String fiedLabel(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 		return null;
 	}
 	
 	@Override
-	public void input(
-			ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
+	public void input(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
 			Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
 		
 	}

@@ -40,6 +40,7 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
+import org.cyk.utility.common.cdi.BeanAdapter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -101,7 +102,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private ClazzBusiness clazzBusiness;
 	
 	private Locale locale = Locale.FRENCH;
-	
+	private final Collection<Listener> uiManagerListeners = new ArrayList<>();
 	/* constants */
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
 	
@@ -333,5 +334,28 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		AbstractIdentifiable identifiable = (AbstractIdentifiable) (data instanceof AbstractIdentifiable ? data
 				:( data instanceof AbstractFormModel<?> ? ((AbstractFormModel<?>)data).getIdentifiable() : ((AbstractOutputDetails<?>)data).getMaster() ) );
 		return identifiable;
+	}
+	
+	public String getCurrentViewUrl(){
+		return listenerUtils.getString(uiManagerListeners, new ListenerUtils.StringMethod<Listener>() {
+			@Override
+			public String execute(Listener listener) {
+				return listener.getCurrentViewUrl();
+			}
+		});
+	}
+	
+	/**/
+	
+	public static interface Listener {
+		String getCurrentViewUrl();
+		public static class Adapter extends BeanAdapter implements Listener,Serializable {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getCurrentViewUrl() {
+				return null;
+			}
+			
+		}
 	}
 }

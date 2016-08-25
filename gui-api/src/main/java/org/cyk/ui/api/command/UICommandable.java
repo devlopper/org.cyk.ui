@@ -194,6 +194,13 @@ public interface UICommandable {
 			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier());
 		}
 		
+		public static void addPreviousViewParameter(Collection<Parameter> parameters,String previousView) {
+			add(parameters,UniformResourceLocatorParameter.PREVIOUS_URL, previousView);
+		}
+		public static void addPreviousViewParameter(Collection<Parameter> parameters) {
+			addPreviousViewParameter(parameters, UIManager.getInstance().getCurrentViewUrl());
+		}
+		
 		public static void addCreateOne(Collection<Parameter> parameters,Class<? extends AbstractIdentifiable> aClass){
 			add(parameters,UniformResourceLocatorParameter.CLASS, UIManager.getInstance().keyFromClass(aClass));
 			add(parameters,UniformResourceLocatorParameter.CRUD,UniformResourceLocatorParameter.CRUD_CREATE);

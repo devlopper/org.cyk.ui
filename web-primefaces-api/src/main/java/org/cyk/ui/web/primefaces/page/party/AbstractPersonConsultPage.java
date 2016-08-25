@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.RelationshipDetails;
@@ -31,6 +32,9 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void consultInitialisation() {
+		if(getPerson().getExtendedInformations()!=null && getPerson().getExtendedInformations().getLanguageCollection()!=null)
+			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class)
+				.findByCollection(getPerson().getExtendedInformations().getLanguageCollection()));
 		super.consultInitialisation();
 		@SuppressWarnings("rawtypes")
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(JobDetails.class).getFormConfigurationAdapter(Person.class, JobDetails.class);

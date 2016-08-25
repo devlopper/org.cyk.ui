@@ -65,23 +65,17 @@ public class ControlSetAdapter<DATA> implements ControlSetListener<DATA, DynaFor
 	}
 
 	@Override
-	public void labelBuilt(
-			ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
-			Field field, DynaFormLabel label) {
+	public void labelBuilt(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field, DynaFormLabel label) {
 		
 	}
 	
 	@Override
-	public String fiedLabel(
-			ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
-			Field field) {
+	public String fiedLabel(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 		return null;
 	}
 
 	@Override
-	public void input(
-			ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,
-			Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
+	public void input(ControlSet<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Input<?, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> input) {
 		
 	}
 

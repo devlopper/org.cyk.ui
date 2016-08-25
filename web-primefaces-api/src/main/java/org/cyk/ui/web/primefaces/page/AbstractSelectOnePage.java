@@ -75,7 +75,7 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 					}
 			}
 			@Override
-			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 				if(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE.equals(field.getName())){
 					Class<?> aClass = null;
 					for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
@@ -84,7 +84,7 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 					if(aClass!=null)
 						return languageBusiness.findClassLabelText(aClass);
 				}
-				return super.fiedLabel(controlSet, field);
+				return super.fiedLabel(controlSet, data,field);
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package org.cyk.ui.api.data.collector.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,17 +9,17 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Getter @Setter 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter// @Setter 
 public class FormConfiguration extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 218887156564236022L;
@@ -30,6 +31,8 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	
 	/* Value */
 	private Set<String> fieldNames,requiredFieldNames,excludedFieldNames;
+	
+	private Collection<ControlSetListener<?, ?, ?, ?, ?, ?>> controlSetListeners;
 	
 	private Boolean hasName(Collection<String> collection,String name){ 
 		return hasNoNames(collection) || collection.contains(name);
@@ -74,6 +77,24 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 			fieldNames.addAll(names);
 			if(excludedFieldNames!=null)
 				excludedFieldNames.removeAll(names);
+		}
+		return this;
+	}
+	
+	public FormConfiguration deleteFieldNames(Collection<String> names){
+		if(fieldNames==null)
+			;
+		else 
+			if(names!=null){
+				fieldNames.removeAll(names);
+				if(requiredFieldNames!=null)
+					requiredFieldNames.removeAll(names);
+			}
+		return this;
+	}
+	public FormConfiguration deleteFieldNames(String...names){
+		if(names!=null){
+			deleteFieldNames(Arrays.asList(names));
 		}
 		return this;
 	}
@@ -129,6 +150,18 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 		return this;
 	}
 	
+	public FormConfiguration addControlSetListener(ControlSetListener<?, ?, ?, ?, ?, ?> controlSetListener) {
+		if(this.controlSetListeners == null)
+			this.controlSetListeners = new ArrayList<>();
+		this.controlSetListeners.add(controlSetListener);
+		return this;
+	}
+	public FormConfiguration addControlSetListeners(Collection<ControlSetListener<?, ?, ?, ?, ?, ?>> controlSetListeners) {
+		for(ControlSetListener<?, ?, ?, ?, ?, ?> controlSetListener : controlSetListeners)
+			addControlSetListener(controlSetListener);
+		return this;
+	}
+	
 	/**/
 	
 	public static FormConfiguration get(Class<?> clazz,Crud crud,String type,Boolean createIfNull){
@@ -163,6 +196,13 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 		return formConfiguration==null || formConfiguration.hasNoExcludedFieldNames();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static void addControlSetListeners(FormConfiguration formConfiguration,@SuppressWarnings("rawtypes") Collection controlSetListeners){
+		if(controlSetListeners!=null && formConfiguration!=null && formConfiguration.getControlSetListeners()!=null)
+			for(ControlSetListener<?, ?, ?, ?, ?, ?> controlSetListener : formConfiguration.getControlSetListeners())
+				controlSetListeners.add((ControlSetListener<?, ?, ?, ?, ?, ?>) controlSetListener);
+	}
+	
 	/**/
 	
 	@Getter @Setter @AllArgsConstructor @EqualsAndHashCode(of={"clazz","commonBusinessAction","type"})
@@ -180,5 +220,7 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	public static final String TYPE_INPUT_SET_SMALLEST = "TYPE_INPUT_SET_SMALLEST";
 	public static final String TYPE_INPUT_SET_BIGGEST = "TYPE_INPUT_SET_BIGGEST";
 	public static final String TYPE_INPUT_SET_DEFAULT = "TYPE_INPUT_SET_DEFAULT";
+
+	
 	
 }

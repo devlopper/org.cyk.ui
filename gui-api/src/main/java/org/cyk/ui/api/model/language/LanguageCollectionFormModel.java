@@ -11,8 +11,9 @@ import org.cyk.system.root.model.language.LanguageCollectionItem;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +23,8 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 
 	private static final long serialVersionUID = -3897201743383535836L;
 
-	@Input @InputChoice @InputOneChoice @InputOneCombo private Language language1;
-	@Input @InputChoice @InputOneChoice @InputOneCombo private Language language2;
+	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Language language1;
+	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Language language2;
 	
 	@Override
 	public void write() {
@@ -36,7 +37,7 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 	public void read() {
 		super.read();
 		language1 = readLanguageAtIndex(0);
-		language1 = readLanguageAtIndex(1);
+		language2 = readLanguageAtIndex(1);
 	}
 	
 	protected Language readLanguageAtIndex(Integer index){
@@ -46,8 +47,9 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 			identifiable.setCollection(new ArrayList<LanguageCollectionItem>());
 		if(identifiable.getCollection().isEmpty())
 			return null;
-		if(identifiable.getCollection() instanceof List)
+		if(identifiable.getCollection() instanceof List && index < identifiable.getCollection().size()){
 			return ((List<LanguageCollectionItem>)identifiable.getCollection()).get(index.intValue()).getLanguage();
+		}
 		Iterator<LanguageCollectionItem> iterator = identifiable.getCollection().iterator();
 		Integer count = -1;
 		Language languageIndex = null;

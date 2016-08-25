@@ -21,6 +21,7 @@ public class NestedSetNodeEditFormModel extends AbstractFormModel<NestedSetNode>
 	private static final long serialVersionUID = -3897201743383535836L;
 
 	@Input(disabled=true,readOnly=true) @InputText private String identifier;
+	@Input(disabled=true,readOnly=true) @InputText private String name;
 	
 	@Input @InputChoice @InputOneChoice @InputOneCombo private NestedSet set;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private NestedSetNode parent;
@@ -45,6 +46,7 @@ public class NestedSetNodeEditFormModel extends AbstractFormModel<NestedSetNode>
 			;
 		else
 			identifier = identifiable.getIdentifier().toString();
+		name = identifiable.getName();
 		//setIdentifier = identifiable.getSet().getIdentifier();
 		//parentIdentifier = identifiable.getParent().getIdentifier();
 	}

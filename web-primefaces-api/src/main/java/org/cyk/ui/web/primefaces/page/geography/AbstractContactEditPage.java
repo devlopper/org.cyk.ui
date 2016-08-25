@@ -39,10 +39,10 @@ public abstract class AbstractContactEditPage<IDENTIFIABLE extends Contact> exte
 			private static final long serialVersionUID = -5418861976364850098L;
 
 			@Override
-			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field) {
+			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 				if(AbstractForm.FIELD_VALUE.equals(field.getName()))
 					return text(getValueLabelId());
-				return super.fiedLabel(controlSet, field);
+				return super.fiedLabel(controlSet, data,field);
 			}
 		});
 	}

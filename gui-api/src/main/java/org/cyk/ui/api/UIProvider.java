@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.file.File;
@@ -100,7 +101,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 		if(control instanceof Input<?,?,?,?,?,?>){
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setObject(data);
-			input.setLabel(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field));
+			if(StringUtils.isBlank(input.getLabel()))
+				input.setLabel(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field));
 			input.setField(field);
 			Size size = field.getAnnotation(Size.class);
 			try {
