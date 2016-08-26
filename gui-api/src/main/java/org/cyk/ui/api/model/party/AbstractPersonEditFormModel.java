@@ -67,8 +67,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputEditor protected String otherMedicalInformations;
 	
 	@Input @InputText protected String company;
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected JobTitle jobTitle;
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected JobFunction jobFunction;
+	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobTitle jobTitle;
+	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobFunction jobFunction;
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	

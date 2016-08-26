@@ -53,7 +53,6 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -234,14 +233,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz()) && Boolean.TRUE.equals(isAutoConfigureClass(businessEntityInfos.getClazz()))){
-				//getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditFormModel.FIELD_NAME)
-				//	.addFieldNames(AbstractActorEditFormModel.FIELD_LAST_NAMES);
-				
-				getFormConfiguration(businessEntityInfos.getClazz(), Crud.CREATE).addRequiredFieldNames(AbstractActorEditPage.Form.FIELD_CODE)
-				.addFieldNames(AbstractActorEditPage.Form.FIELD_IMAGE,AbstractActorEditPage.Form.FIELD_NAME,AbstractActorEditPage.Form.FIELD_LAST_NAMES
-						,AbstractActorEditPage.Form.FIELD_BIRTH_DATE,AbstractActorEditPage.Form.FIELD_BIRTH_LOCATION,AbstractActorEditPage.Form.FIELD_NATIONALITY,AbstractActorEditPage.Form.FIELD_SEX
-						,AbstractActorEditPage.Form.FIELD_BLOOD_GROUP,AbstractActorEditPage.Form.FIELD_LANGUAGE_COLLECTION,LanguageCollectionFormModel.FIELD_LANGUAGE_1
-						,AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
+				configurePersonFormConfiguration(businessEntityInfos.getClazz(), null, null);
 			}
 		}
 		
@@ -255,7 +247,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 	}
 	
-	protected Boolean isAutoConfigureClass(Class<?> actorClass){
+	protected Boolean isAutoConfigureClass(Class<?> aClass){
 		return Boolean.TRUE;
 	}
 	

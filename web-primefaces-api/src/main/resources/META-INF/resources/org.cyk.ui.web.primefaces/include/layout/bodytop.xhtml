@@ -11,13 +11,13 @@
       
 	<h:outputScript library="org.cyk.ui.web.primefaces" name="js/primefaces.js" />
 		
-	<h:form>
+	<!--h:form>
 		<p:growl id="notificationChannelGrowlId" widgetVar="#{primefacesManager.notificationChannelGrowlWidgetVar}" 
 			showDetail="true" sticky="true" escape="false" globalOnly="true"  />
 		<p:remoteCommand id="notificationRemoteCommand" name="updateNotifications" actionListener="#{userSession.showNotifications}" update="notificationChannelGrowlId" />
-	</h:form>
+	</h:form-->
 	
-	<p:socket widgetVar="#{primefacesManager.notificationChannelSocketWidgetVar}" autoConnect="true" 
-		channel="/#{uiManager.pushNotificationChannel}/#{userSession.userAccount.identifier}" onMessage="handleNotificationMessage" />
+	<!--p:socket widgetVar="#{primefacesManager.notificationChannelSocketWidgetVar}" autoConnect="true" 
+		channel="/#{uiManager.pushNotificationChannel}/#{userSession.userAccount.identifier}" onMessage="handleNotificationMessage" /-->
  
 </ui:composition>

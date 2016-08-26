@@ -54,7 +54,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -110,14 +109,14 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	}
 	
 	public EventBus getEventBus(){
-		if(eventBus==null){
+		/*if(eventBus==null){
 			if(EventBusFactory.getDefault()==null)
 				logInfo("Atmosphere Event Bus cannot be initialized because Default Factory is null");
 			else{
 				eventBus = EventBusFactory.getDefault().eventBus();
 				logInfo("Atmosphere Event Bus has been initialized");
 			}
-		}
+		}*/
 		return eventBus;
 	}
 	

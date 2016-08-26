@@ -111,6 +111,7 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 					return results;
 				}
 				
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
 				public String getLabel(VALUE_TYPE item) {
 					if(item==null)
