@@ -21,7 +21,6 @@ import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
-import org.cyk.system.root.business.impl.RootRandomDataProvider;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
@@ -67,7 +66,6 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	@Inject protected BusinessManager businessManager;
 	@Inject protected RoleManager roleManager;
 	protected RootBusinessLayer rootBusinessLayer;
-	@Inject protected RootRandomDataProvider rootRandomDataProvider;
 	@Inject protected UniformResourceLocatorBusiness uniformResourceLocatorBusiness;
 	@Inject protected RoleUniformResourceLocatorBusiness roleUniformResourceLocatorBusiness;
 	protected UniformResourceLocator.Builder uniformResourceLocatorBuilder = new UniformResourceLocator.Builder();
