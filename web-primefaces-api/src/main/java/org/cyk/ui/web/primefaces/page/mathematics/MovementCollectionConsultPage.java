@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.page.mathematics;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -9,30 +8,19 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
-import org.cyk.ui.web.primefaces.Table;
-import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+import org.cyk.ui.web.primefaces.page.AbstractCollectionConsultPage;
 
 @Named @ViewScoped @Getter @Setter
-public class MovementCollectionConsultPage extends AbstractConsultPage<MovementCollection> implements Serializable {
-
+public class MovementCollectionConsultPage extends AbstractCollectionConsultPage<MovementCollection,MovementCollection,Movement,MovementDetails> implements Serializable {
+	
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	private Table<MovementDetails> movementTable;
-	
 	@Override
-	protected void consultInitialisation() {
-		super.consultInitialisation();
-		movementTable = (Table<MovementDetails>) createDetailsTable(MovementDetails.class, new DetailsConfigurationListener.Table.Adapter<Movement,MovementDetails>(Movement.class, MovementDetails.class){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Collection<Movement> getIdentifiables() {
-				return inject(MovementBusiness.class).findByCollection(identifiable);
-			}
-		});
+	protected MovementCollection getCollection() {
+		return identifiable;
 	}
 	
 }

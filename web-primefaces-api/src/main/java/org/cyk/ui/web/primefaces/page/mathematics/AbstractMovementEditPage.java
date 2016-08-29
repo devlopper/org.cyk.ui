@@ -10,22 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
+import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.ui.web.primefaces.page.AbstractCollectionItemEditPage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
 @Getter @Setter
-public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCrudOnePage<MOVEMENT> implements Serializable {
+public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<MOVEMENT> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -35,6 +32,11 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	protected MovementAction movementAction;
 	
 	protected abstract Movement getMovement();
+	
+	@Override
+	protected AbstractCollectionItem<?> getItem() {
+		return getMovement();
+	}
 	
 	protected BigDecimal getCurrentTotal(){
 		return getMovement().getCollection().getValue();
@@ -135,10 +137,10 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	}
 	
 	@Getter @Setter
-	protected static abstract class AbstractMovementForm<MOVEMENT extends AbstractIdentifiable> extends AbstractFormModel<MOVEMENT> implements Serializable{
+	protected static abstract class AbstractMovementForm<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage.AbstractForm<MovementCollection,MOVEMENT> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;
+		//@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;
 		@Input(readOnly=true,disabled=true) @InputNumber @NotNull protected BigDecimal currentTotal;
 		/*@Input @InputChoice(load=false) @InputOneChoice @InputOneCombo @NotNull*/ protected MovementAction action;
 		@Input @InputNumber @NotNull protected BigDecimal value;
@@ -150,7 +152,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		@Override
 		public void read() {
 			super.read();
-			collection = getMovement().getCollection();
+			//collection = getMovement().getCollection();
 			action = getMovement().getAction();
 			if(getMovement().getValue()!=null)
 				value = getMovement().getValue().abs();
@@ -160,7 +162,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		@Override
 		public void write() {
 			super.write();
-			getMovement().setCollection(collection);
+			//getMovement().setCollection(collection);
 			getMovement().setAction(action);
 			getMovement().setValue(value);
 			getMovement().setBirthDate(existencePeriod.getFromDate());
@@ -170,7 +172,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		
 		/**/
 		
-		public static final String FIELD_COLLECTION = "collection";
+		//public static final String FIELD_COLLECTION = "collection";
 		public static final String FIELD_ACTION = "action";
 		public static final String FIELD_CURRENT_TOTAL = "currentTotal";
 		public static final String FIELD_VALUE = "value";

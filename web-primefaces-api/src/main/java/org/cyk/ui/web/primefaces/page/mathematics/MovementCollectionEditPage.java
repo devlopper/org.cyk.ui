@@ -42,8 +42,7 @@ public class MovementCollectionEditPage extends AbstractMovementCollectionEditPa
 		@Input @InputChoice @InputOneChoice @InputOneCombo private MovementAction decrementAction;
 		
 		@Input @InputBooleanButton private Boolean supportDocumentIdentifier = Boolean.FALSE;
-		
-		
+				
 		public static final String FIELD_VALUE = "value";
 		public static final String FIELD_INTERVAL = "interval";
 		public static final String FIELD_INCREMENT_ACTION = "incrementAction";
