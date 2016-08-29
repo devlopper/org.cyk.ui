@@ -22,7 +22,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 
 @Getter @Setter
-public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<MOVEMENT> implements Serializable {
+public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<MOVEMENT,MovementCollection,Movement> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

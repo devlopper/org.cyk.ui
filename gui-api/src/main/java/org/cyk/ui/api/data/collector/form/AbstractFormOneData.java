@@ -233,7 +233,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			}else if(objectField.getField().getAnnotation(IncludeInputs.class)!=null){
 				Layout layout = objectField.getField().getAnnotation(IncludeInputs.class).layout();
 				if(Layout.AUTO.equals(layout))
-					layout = Layout.HORIZONTAL;
+					layout = Layout.VERTICAL;
 				
 				if(Layout.HORIZONTAL.equals(layout)){
 					addRow = addRow == null;
