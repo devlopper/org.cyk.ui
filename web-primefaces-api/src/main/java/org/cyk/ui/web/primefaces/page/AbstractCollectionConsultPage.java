@@ -13,6 +13,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
@@ -31,7 +32,7 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 		super.consultInitialisation();
 		 
 		final Class<ITEM> itemClass = getItemClass();
-		Class<ITEM_DETAILS> itemDetailsClass = getItemDetailsClass();
+		final Class<ITEM_DETAILS> itemDetailsClass = getItemDetailsClass();
 		
 		itemTable = (Table<ITEM_DETAILS>) createDetailsTable(itemDetailsClass, new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(itemClass, itemDetailsClass){
 			private static final long serialVersionUID = 1L;
@@ -39,7 +40,20 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 			public Collection<ITEM> getIdentifiables() {
 				return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(itemClass)).findByCollection(identifiable);
 			}
+			@Override
+			public ColumnAdapter getColumnAdapter() {
+				return getDetailsConfiguration(itemDetailsClass).getTableColumnAdapter(null);
+			}
+			
 		});
+		
+		/*itemTable = (Table<ITEM_DETAILS>) createDetailsTable(itemDetailsClass, new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(itemClass, itemDetailsClass){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<ITEM> getIdentifiables() {
+				return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(itemClass)).findByCollection(identifiable);
+			}
+		});*/
 	}
 	
 	@SuppressWarnings("unchecked")
