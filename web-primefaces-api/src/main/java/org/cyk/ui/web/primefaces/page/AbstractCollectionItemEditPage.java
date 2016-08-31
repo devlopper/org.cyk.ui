@@ -84,6 +84,12 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 		
 		public static final String FIELD_COLLECTION = "collection";
 		
+		@Override
+		public void read() {
+			super.read();
+			identifiable.setCascadeOperationToMaster(Boolean.TRUE);
+		}
+		
 		/**/
 		
 		public static abstract class AbstractDefault<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractForm<COLLECTION,ITEM> implements Serializable  {
