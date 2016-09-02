@@ -12,7 +12,6 @@ import lombok.Setter;
 public abstract class AbstractActorQueryOneFormModel<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractQueryOneFormModel<IDENTIFIABLE,String> implements Serializable{
 	private static final long serialVersionUID = -4741435164709063863L;
 	
-	
 	/**/
 	
 	@Getter @Setter
