@@ -12,8 +12,10 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
@@ -154,11 +156,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@SuppressWarnings("unchecked")
 	protected ENTITY instanciateIdentifiable(){
 		ENTITY entity = null;
-		/*if(businessEntityInfos!=null){
-			TypedBusiness<ENTITY> business = BusinessLocator.getInstance().locate((Class<ENTITY>)businessEntityInfos.getClazz());
+		if(businessEntityInfos!=null){
+			TypedBusiness<ENTITY> business = (TypedBusiness<ENTITY>) inject(BusinessInterfaceLocator.class).injectTyped((Class<ENTITY>)businessEntityInfos.getClazz());
 			if(business!=null)
-				entity = business.instanciateOne();	
-		}*/
+				entity = business.instanciateOne(userSession.getUserAccount());	
+		}
+		
 		if(entity==null)
 			entity = (ENTITY) newInstance(businessEntityInfos.getClazz());
 		return entity;
