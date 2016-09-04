@@ -82,6 +82,36 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	}
 	
 	@Override
+	public void read() {
+		super.read();
+		birthDate = getPerson().getBirthDate();
+		lastnames = getPerson().getLastnames();
+		sex = getPerson().getSex();
+		nationality = getPerson().getNationality();
+		if(getPerson().getExtendedInformations()!=null){
+			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class).findByCollection(getPerson()
+					.getExtendedInformations().getLanguageCollection()));
+			languageCollection.setIdentifiable(getPerson().getExtendedInformations().getLanguageCollection());
+			languageCollection.read();
+			if(getPerson().getExtendedInformations().getBirthLocation()!=null){
+				birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
+				birthLocation.read();
+			}
+			title = getPerson().getExtendedInformations().getTitle();
+			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
+		}
+		if(getPerson().getJobInformations()!=null){
+			jobFunction = getPerson().getJobInformations().getFunction();
+			jobTitle = getPerson().getJobInformations().getTitle();
+		}
+		
+		if(getPerson().getMedicalInformations()!=null){
+			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
+		}
+		
+	}
+	
+	@Override
 	public void write() {
 		super.write();
 		getPerson().setLastnames(lastnames);
@@ -152,36 +182,6 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 				informations = new MedicalInformations(getPerson());
 		getPerson().setMedicalInformations(informations);
 		return informations;
-	}
-	
-	@Override
-	public void read() {
-		super.read();
-		birthDate = getPerson().getBirthDate();
-		lastnames = getPerson().getLastnames();
-		sex = getPerson().getSex();
-		nationality = getPerson().getNationality();
-		if(getPerson().getExtendedInformations()!=null){
-			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class).findByCollection(getPerson()
-					.getExtendedInformations().getLanguageCollection()));
-			languageCollection.setIdentifiable(getPerson().getExtendedInformations().getLanguageCollection());
-			languageCollection.read();
-			if(getPerson().getExtendedInformations().getBirthLocation()!=null){
-				birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
-				birthLocation.read();
-			}
-			title = getPerson().getExtendedInformations().getTitle();
-			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
-		}
-		if(getPerson().getJobInformations()!=null){
-			jobFunction = getPerson().getJobInformations().getFunction();
-			jobTitle = getPerson().getJobInformations().getTitle();
-		}
-		
-		if(getPerson().getMedicalInformations()!=null){
-			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
-		}
-		
 	}
 	
 	/**/
