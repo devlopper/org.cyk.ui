@@ -143,7 +143,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 				contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, identifiable,"command.edit", Icon.ACTION_UPDATE));
 		}
 		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
-			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE));
+			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE)
+					.setParameter(UniformResourceLocatorParameter.PREVIOUS_URL, webManager.getRequestParameter(UniformResourceLocatorParameter.PREVIOUS_URL)));
 		}
 		
 		if(Boolean.TRUE.equals(showContextualCreateCommandables()))
