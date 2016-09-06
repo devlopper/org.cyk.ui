@@ -1,30 +1,31 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 
 public class GoogleSearchIT extends AbstractIntegrationWebTest {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
+	/*@Override
 	protected WebDriver getWebDriver() {
     	WebDriver webDriver;
         String n = "C:\\Users\\SIB01\\AppData\\Local\\Mozilla Firefox\\firefox.exe";
-        //n = "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe";
+        //n = "C:\\Users\\SIB01\\Downloads\\FirefoxPortable\\FirefoxPortable.exe";
+        
+        System.setProperty("webdriver.gecko.driver", "D:\\selenium\\firefox\\geckodriver.exe");
+        n = "C:\\Users\\SIB01\\Downloads\\FirefoxPortable\\App\\Firefox\\firefox.exe";
         FirefoxBinary binary = new FirefoxBinary(new File(n));
         FirefoxProfile profile = new FirefoxProfile();
-        webDriver = new FirefoxDriver(binary,profile);
-        System.out.println("F.EXE = "+System.getProperty("firefox_exe"));
-		return webDriver;
-	}
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability("marionette", true);
+        webDriver = new FirefoxDriver(binary,profile,capabilities);
+        
+        return webDriver;
+	}*/
 
 	
     @Override
@@ -41,6 +42,5 @@ public class GoogleSearchIT extends AbstractIntegrationWebTest {
     	webDriver.findElement(By.id("mw-content-text")).click();
     	webDriver.findElement(By.linkText("5 References")).click();
 	}
-    
 
 }
