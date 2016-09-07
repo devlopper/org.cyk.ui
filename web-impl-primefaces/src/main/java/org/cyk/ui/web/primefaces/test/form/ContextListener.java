@@ -3,11 +3,14 @@ package org.cyk.ui.web.primefaces.test.form;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
+import org.cyk.system.root.business.api.language.LanguageCollectionBusiness;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
+import org.cyk.system.root.business.impl.party.person.PersonBusinessImpl;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.model.actor.Actor;
@@ -38,6 +41,14 @@ public class ContextListener extends AbstractContextListener {
 		Comment.define(Actor.class);
 		FileIdentifiableGlobalIdentifier.define(Actor.class);
 		
+		PersonBusinessImpl.Listener.COLLECTION.add(new PersonBusinessImpl.Listener.Adapter(){
+			private static final long serialVersionUID = 4605368263736933413L;
+			@Override
+			public void afterInstanciateOne(UserAccount userAccount,Person person) {
+				person.getExtendedInformations().setLanguageCollection(inject(LanguageCollectionBusiness.class).instanciateOne(userAccount));
+				super.afterInstanciateOne(userAccount, person);
+			}
+		});
 	}
 	
 	@Override

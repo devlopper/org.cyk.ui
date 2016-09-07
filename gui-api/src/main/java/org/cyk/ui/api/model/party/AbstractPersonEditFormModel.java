@@ -3,8 +3,11 @@ package org.cyk.ui.api.model.party;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Country;
@@ -41,10 +44,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentifiable> extends AbstractPartyEditFormModel<PERSON>  implements Serializable {
@@ -89,8 +88,6 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		sex = getPerson().getSex();
 		nationality = getPerson().getNationality();
 		if(getPerson().getExtendedInformations()!=null){
-			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class).findByCollection(getPerson()
-					.getExtendedInformations().getLanguageCollection()));
 			languageCollection.setIdentifiable(getPerson().getExtendedInformations().getLanguageCollection());
 			languageCollection.read();
 			if(getPerson().getExtendedInformations().getBirthLocation()!=null){

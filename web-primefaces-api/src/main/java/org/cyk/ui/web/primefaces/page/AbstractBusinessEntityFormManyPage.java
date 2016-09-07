@@ -174,7 +174,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 								new Object[]{UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(businessEntityInfos)
 							,UniformResourceLocatorParameter.IDENTIFIABLE,identifiable.getIdentifier().toString(),
 							UniformResourceLocatorParameter.CRUD,businessEntityInfos.getUserInterface().getEditViewId().equals(businessEntityInfos.getUserInterface().getConsultViewId())
-							?UniformResourceLocatorParameter.CRUD_READ:null});
+							?UniformResourceLocatorParameter.CRUD_READ:null,UniformResourceLocatorParameter.PREVIOUS_URL,url});
 							
 					}
 				}

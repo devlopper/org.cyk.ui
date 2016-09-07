@@ -1,0 +1,263 @@
+{
+  "type": "script",
+  "seleniumVersion": "2",
+  "formatVersion": 2,
+  "steps": [
+    {
+      "type": "get",
+      "url": "http://localhost:8080/gui-primefaces/private/administrator.jsf"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:contentp"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Lister personne"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:dataTable:j_idt76:j_idt76Button"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:contentPanel"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:contentPanel"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:contentPanel"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r11c2reg:inputText"
+      },
+      "text": "pers001"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r12c2reg:inputText"
+      },
+      "text": "yao"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r13c2reg:inputText"
+      },
+      "text": "evelyne"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//table[@id='form:j_idt72:j_idt79:j_idt81:j_idt418:r14c2reg:inputOneRadio']/tbody/tr/td[3]/div/div[2]/span"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r14c2reg:inputOneRadio:1"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r15c2reg:inputCalendar_input"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "5"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r16c2reg:inputOneAutoComplete_input"
+      },
+      "text": "ab"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@id='form:j_idt72:j_idt79:j_idt81:j_idt418:r16c2reg:inputOneAutoComplete_panel']//span[.='Ab']"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r17c2reg:inputOneAutoComplete_input"
+      },
+      "text": "cot"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@id='form:j_idt72:j_idt79:j_idt81:j_idt418:r17c2reg:inputOneAutoComplete_panel']/ul/li"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//table[@id='form:j_idt72:j_idt79:j_idt81:j_idt418:r19c2reg:inputOneRadio']/tbody/tr/td[3]/div/div[2]/span"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r19c2reg:inputOneRadio:1"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r20c2reg:inputOneAutoComplete_input"
+      },
+      "text": "fr"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@id='form:j_idt72:j_idt79:j_idt81:j_idt418:r20c2reg:inputOneAutoComplete_panel']//li[.='French']"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:j_idt79:j_idt81:j_idt418:r18c2reg:inputFile"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt764:j_idt764Button"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:messageDialogIdOkButton"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:dataTable:1:j_idt169:j_idt169Button"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Supprimer"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Lister personne"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt72:dataTable:1:j_idt165:j_idt165Button"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt764:j_idt764ButtonWithConfirm"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt764:j_idt199"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "form:messageDialogIdOkButton"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Se deconnecter"
+      }
+    },
+    {
+      "type": "sendKeysToElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt77:j_idt84:j_idt86:j_idt423:r3c2reg:inputText"
+      },
+      "text": "\\undefined"
+    },
+    {
+      "type": "sendKeysToElement",
+      "locator": {
+        "type": "id",
+        "value": "form:j_idt77:j_idt84:j_idt86:j_idt423:r4c2reg:inputPassword"
+      },
+      "text": "\\undefined"
+    }
+  ],
+  "data": {
+    "configs": {},
+    "source": "none"
+  },
+  "inputs": [],
+  "timeoutSeconds": 60
+}

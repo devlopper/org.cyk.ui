@@ -21,7 +21,6 @@ public class SystemMenuBuilder extends org.cyk.ui.web.primefaces.adapter.enterpr
 			
 			@Override
 			public Boolean isCommandableVisible(UserSession userSession,Commandable commandable) {
-				System.out.println(commandable+" / "+commandable.getIdentifier());
 				return super.isCommandableVisible(userSession, commandable);
 			}
 			
