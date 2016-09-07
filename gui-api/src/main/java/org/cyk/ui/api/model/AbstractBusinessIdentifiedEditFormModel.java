@@ -45,13 +45,17 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		name = identifiable.getName();
 		abbreviation = identifiable.getAbbreviation();
 		description = identifiable.getDescription();
-		
+		debug(image);
 		existencePeriod.set(identifiable.getExistencePeriod());
 	}
 	
 	protected void setBusinessValues(AbstractIdentifiable identifiable){
 		identifiable.getGlobalIdentifierCreateIfNull().setCode(code);
 		identifiable.setName(name);
+		debug(image);
+		if(image!=null && identifiable.getImage()!=null && !identifiable.getImage().equals(image.getIdentifier())){
+			//image.set //TODO a copy business service
+		}
 		identifiable.setImage(image);
 		identifiable.setAbbreviation(abbreviation);
 		identifiable.setDescription(description);
