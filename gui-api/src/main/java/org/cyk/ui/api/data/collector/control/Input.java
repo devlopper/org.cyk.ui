@@ -30,6 +30,9 @@ public interface Input<VALUE_TYPE,MODEL, ROW, LABEL, CONTROL, CHOICE_ITEM> exten
 	VALUE_TYPE getValue();
 	void setValue(VALUE_TYPE aValue);
 	
+	VALUE_TYPE getInitializedValue();
+	void setInitializedValue(VALUE_TYPE aValue);
+	
 	MessageLocation getMessageLocation();
 	void setMessageLocation(MessageLocation aMessageLocation);
 	

@@ -11,6 +11,11 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
@@ -22,11 +27,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implements Input<VALUE_TYPE,DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem>,
 	WebInput<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl>, Serializable {
@@ -37,7 +37,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected String label,readOnlyValue,description,requiredMessage;
 	protected CascadeStyleSheet readOnlyValueCss = new CascadeStyleSheet(); 
 	protected Field field;
-	protected VALUE_TYPE value;
+	protected VALUE_TYPE value,initializedValue;
 	protected Boolean required,readOnly,disabled,keepShowingInputOnReadOnly;
 	protected MessageLocation messageLocation = MessageLocation.TOP;
 	protected AjaxListener ajaxListener;

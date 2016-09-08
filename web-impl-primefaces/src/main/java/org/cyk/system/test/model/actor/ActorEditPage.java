@@ -17,12 +17,6 @@ public class ActorEditPage extends AbstractCrudOnePage<Actor> implements Seriali
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	@Override
-	protected void update() {
-		// TODO Auto-generated method stub
-		//super.update();
-	}
-	
 	public static class Form extends AbstractActorEditFormModel.AbstractDefault.Default<Actor> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		

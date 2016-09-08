@@ -18,14 +18,11 @@ public abstract class AbstractWebControl<MODEL,ROW,LABEL,CONTROL> extends Abstra
 	private static final long serialVersionUID = 5671513590779656492L;
 
 	protected CascadeStyleSheet css = new CascadeStyleSheet();
+	protected String uniqueCssClass;
 	
-	{
+	public void setUniqueCssClass(String uniqueCssClass){
+		this.uniqueCssClass = uniqueCssClass;
 		css.addClass(getUniqueCssClass());
-		
 	}
 	
-	@Override
-	public String getUniqueCssClass() {
-		return getId();
-	}
 } 

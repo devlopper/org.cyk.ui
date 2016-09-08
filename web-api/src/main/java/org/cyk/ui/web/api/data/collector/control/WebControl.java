@@ -11,6 +11,7 @@ public interface WebControl<MODEL, ROW, LABEL, CONTROL> extends Control<MODEL, R
 	void setCss(CascadeStyleSheet aCascadeStyleSheet);
 	
 	String getUniqueCssClass();
+	void setUniqueCssClass(String value);
 	
 	String getOnClick();
 	void setOnClick(String script);

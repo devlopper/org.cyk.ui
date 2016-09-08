@@ -10,11 +10,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.geography.LocalityBusiness;
 import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
@@ -35,14 +33,10 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM,ICON_IDENTIFIER> extends AbstractBean implements 
-	UIProviderListener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> , Serializable {
+	UIProvider.Listener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> , Serializable {
 
 	private static final long serialVersionUID = -2692873330809223761L;
 
-	@Inject protected UIProvider uiProvider;
-	@Inject protected LocalityBusiness localityBusiness;
-	@Inject protected RoleBusiness roleBusiness;
-	
 	@Override
 	public Class<? extends Control<?, ?, ?, ?, ?>> controlClassSelected(Class<? extends Control<?, ?, ?, ?, ?>> aClass) {
 		return null;
@@ -51,6 +45,11 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@Override
 	public void controlInstanceCreated(Control<?, ?, ?, ?, ?> control) {
 		
+	}
+	
+	@Override
+	public void controlCreated(Control<?, ?, ?, ?, ?> control) {
+			
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,7 +98,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return collection;
 		}else */if(field.getName().equals("roles")){
 			collection = new ArrayList<>();
-			for(Role role : roleBusiness.findAllExclude(Arrays.asList(inject(RoleBusiness.class).find(Role.ADMINISTRATOR))))
+			for(Role role : inject(RoleBusiness.class).findAllExclude(Arrays.asList(inject(RoleBusiness.class).find(Role.ADMINISTRATOR))))
 				collection.add(role);
 			return collection;
 		}else{

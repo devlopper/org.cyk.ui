@@ -12,9 +12,13 @@ import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.CommandListener;
@@ -51,12 +55,10 @@ import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.api.data.collector.control.OutputSeparator;
 import org.cyk.ui.api.data.collector.control.OutputText;
 import org.cyk.utility.common.FileExtensionGroup;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
 public class UIProvider extends AbstractBean implements Serializable {
@@ -67,7 +69,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	private Package controlBasePackage = getClass().getPackage();
 	private Class<? extends UICommandable> commandableClass;
-	private Collection<UIProviderListener<?,?,?,?,?>> uiProviderListeners = new ArrayList<>();
+	private Collection<Listener<?,?,?,?,?>> uiProviderListeners = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
@@ -94,15 +96,16 @@ public class UIProvider extends AbstractBean implements Serializable {
 	}
 		
 	public Control<?,?,?,?,?> createFieldControl(Object data,Field field){
-		Control<?,?,?,?,?> control = createControlInstance(controlClass(field));
+		final Control<?,?,?,?,?> control = createControlInstance(controlClass(field));
 		/*
 
 		*/
 		if(control instanceof Input<?,?,?,?,?,?>){
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setObject(data);
-			if(StringUtils.isBlank(input.getLabel()))
+			if(StringUtils.isBlank(input.getLabel())){
 				input.setLabel(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field));
+			}
 			input.setField(field);
 			Size size = field.getAnnotation(Size.class);
 			try {
@@ -133,7 +136,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 				Boolean loadChoices = choiceAnnotation!= null && choiceAnnotation.load()/* && autoCompleteAnnotation==null*/;
 				
 				if(Boolean.TRUE.equals(loadChoices)){
-					for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+					for(Listener<?,?,?,?,?> listener : uiProviderListeners)
 						listener.choices(inputChoice,data,field, (List<Object>) inputChoice.getList());
 				}else if(autoCompleteAnnotation!=null) {
 					org.cyk.ui.api.data.collector.control.InputAutoCompleteCommon<?> inputAutoCompleteCommon = null;
@@ -158,7 +161,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 						inputFile.getExtensions().addAll(group.getExtensions());
 				inputFile.setMinimumSize(annotation.size().from().integer());
 				inputFile.setMaximumSize(annotation.size().to().integer());
-				
+				inputFile.setInitializedValue(inputFile.getValue());
 			}else if(control instanceof InputNumber){
 				InputNumber<?, ?, ?, ?, ?> number = (InputNumber<?, ?, ?, ?, ?>) input;
 				if(size==null){
@@ -169,7 +172,12 @@ public class UIProvider extends AbstractBean implements Serializable {
 				}
 			}
 		}
-		
+		listenerUtils.execute(uiProviderListeners, new ListenerUtils.VoidMethod<Listener<?,?,?,?,?>>() {
+			@Override
+			public void execute(Listener<?, ?, ?, ?, ?> listener) {
+				listener.controlCreated(control);
+			}
+		});
 		return control;
 	}
 	 
@@ -199,7 +207,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	
 	public UICommandable createCommandable(AbstractCommandable.Builder<? extends AbstractCommandable> builder){
 		UICommandable commandable = builder.build();
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners)
 			listener.commandableInstanceCreated(commandable);
 		return commandable;
 	}
@@ -207,7 +215,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	@Deprecated
 	public UICommandable createCommandable(CommandListener commandListener,String labelId,Icon icon,EventListener anExecutionPhase,ProcessGroup aProcessGroup){
 		Class<? extends UICommandable> commandableClass = this.commandableClass;
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends UICommandable> c = listener.commandableClassSelected(commandableClass);
 			if(c!=null)
 				commandableClass = c; 
@@ -221,7 +229,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		commandable.setProcessGroup(aProcessGroup);
 		if(commandListener!=null)
 			commandable.getCommand().getCommandListeners().add(commandListener);
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners)
 			listener.commandableInstanceCreated(commandable);
 
 		return commandable;
@@ -248,7 +256,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 	/* */
 	
 	public Control<?,?,?,?,?> createControlInstance(Class<? extends Control<?,?,?,?,?>> controlClass){
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners){
 			Class<? extends Control<?,?,?,?,?>> c = listener.controlClassSelected(controlClass);
 			if(c!=null)
 				controlClass = c; 
@@ -257,7 +265,8 @@ public class UIProvider extends AbstractBean implements Serializable {
 		Control<?,?,?,?,?> control;
 		try {
 			control = (Control<?,?,?,?,?>) controlClass.newInstance();
-			for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners)
+			
+			for(Listener<?,?,?,?,?> listener : uiProviderListeners)
 				listener.controlInstanceCreated(control);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -326,7 +335,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		if(object==null)
 			return null;
 		String value = null;
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners){
 			String v = listener.readOnlyValue(field, object);
 			if(v!=null)
 				value = v; 
@@ -338,7 +347,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		if(object==null)
 			return null;
 		String value = null;
-		for(UIProviderListener<?,?,?,?,?> listener : uiProviderListeners){
+		for(Listener<?,?,?,?,?> listener : uiProviderListeners){
 			String v = listener.formatValue(field, object);
 			if(v!=null)
 				value = v; 
@@ -360,5 +369,74 @@ public class UIProvider extends AbstractBean implements Serializable {
 	public static UIProvider getInstance() {
 		return INSTANCE;
 	}
+	
+	/**/
+	
+	public static interface Listener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
+
+		Class<? extends Control<?,?,?,?,?>> controlClassSelected(Class<? extends Control<?,?,?,?,?>> aClass);
+		
+		void controlInstanceCreated(Control<?,?,?,?,?> control);
+		
+		void controlCreated(Control<?,?,?,?,?> control);
+		
+		void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data,Field field,List<Object> list);
+		
+		Class<? extends UICommandable> commandableClassSelected(Class<? extends UICommandable> aClass);
+		
+		void commandableInstanceCreated(UICommandable aCommandable);
+		
+		String readOnlyValue(Field field,Object object);
+		
+		String formatValue(Field field,Object value);
+		
+		ContentType contentType();
+		
+		/**/
+		
+		public static class Adapter<MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements Listener<MODEL, ROW, LABEL, CONTROL, SELECTITEM>,Serializable {
+
+			private static final long serialVersionUID = -1238691206716866866L;
+
+			@Override
+			public Class<? extends Control<?, ?, ?, ?, ?>> controlClassSelected(Class<? extends Control<?, ?, ?, ?, ?>> aClass) {
+				return null;
+			}
+
+			@Override
+			public void controlInstanceCreated(Control<?, ?, ?, ?, ?> control) {}
+
+			@Override
+			public void controlCreated(Control<?, ?, ?, ?, ?> control) {}
+			
+			@Override
+			public void choices(InputChoice<?, ?, ?, ?, ?, ?> inputChoice,Object data, Field field, List<Object> list) {}
+
+			@Override
+			public Class<? extends UICommandable> commandableClassSelected(Class<? extends UICommandable> aClass) {
+				return null;
+			}
+
+			@Override
+			public void commandableInstanceCreated(UICommandable aCommandable) {}
+
+			@Override
+			public String readOnlyValue(Field field, Object object) {
+				return null;
+			}
+
+			@Override
+			public String formatValue(Field field, Object value) {
+				return null;
+			}
+
+			@Override
+			public ContentType contentType() {
+				return null;
+			}
+		}
+
+	}
+
 	
 }

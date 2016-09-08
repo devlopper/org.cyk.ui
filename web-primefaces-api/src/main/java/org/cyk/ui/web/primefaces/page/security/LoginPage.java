@@ -8,6 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,12 +29,16 @@ import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractOpticalBarCodeReader;
 import org.cyk.ui.api.model.OpticalBarCodeReaderAdapter;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.Timer;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputPassword;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.omnifaces.util.Faces;
 
 @Named @ViewScoped
@@ -51,6 +56,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	
 	@Override
 	protected void initialisation() {
+		formModelClass = Form.class;
 		super.initialisation();
 		contentTitle = uiManager.getApplication().getName();
 		form.setShowCommands(Boolean.TRUE);
@@ -86,7 +92,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	public void serve(UICommand command, Object parameter) {
 		if(form.getSubmitCommandable().getCommand()==command){
 			//connect(identifiable);
-			connect(/*(Credentials) parameter*/ (Credentials)parameter );
+			connect(/*(Credentials) parameter*/ ((Form)parameter).getIdentifiable() );
 		}
 	}
 	
@@ -158,6 +164,21 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		return Boolean.FALSE;
 	}
 	
+	/*@Override
+	public Class<?> getFormModelClass() {
+		return Form.class;
+	}*/
+	
 	/**/
+	
+	public static class Form extends AbstractFormModel<Credentials> implements Serializable{
+		private static final long serialVersionUID = -4741435164709063863L;
+		
+		@Input @InputText @NotNull private String username;
+		@Input @InputPassword @NotNull private String password;
+		
+		public static final String FIELD_USERNAME = "username";
+		public static final String FIELD_PASSWORD = "password";
+	}
 
 }

@@ -14,6 +14,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
@@ -26,10 +27,12 @@ import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUITargetManager;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputManyAutoComplete;
 import org.cyk.ui.api.data.collector.control.InputOneAutoComplete;
@@ -44,6 +47,7 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputOneCascadeList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -101,11 +105,13 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();	
+		UIProvider uiProvider = inject(UIProvider.class);
 		uiProvider.setControlBasePackage(InputText.class.getPackage());
 		uiProvider.setCommandableClass(Commandable.class);
 		uiProvider.getUiProviderListeners().add(this);
 		
 		UIManager.getInstance().setIconIdentifier(FontAwesomeIconSet.INSTANCE);
+		ContentType.DEFAULT = ContentType.HTML;
 	}
 	
 	public EventBus getEventBus(){
@@ -143,6 +149,20 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		if(control instanceof WebOutputText<?, ?, ?, ?>){
 			if(!(control instanceof WebOutputSeparator<?, ?,?,?>))
 				((WebOutputText<?, ?, ?, ?>)control).getCss().addClass("cyk-ui-form-block-header-title ui-state-highlight");
+		}else if(control instanceof WebInput){
+			
+		}
+	}
+	
+	@Override
+	public void controlCreated(Control<?, ?, ?, ?, ?> control) {
+		super.controlCreated(control);
+		if(control instanceof WebInput){
+			Input<?, ?, ?, ?, ?, ?> input = (Input<?, ?, ?, ?, ?, ?>) control;
+			WebInput<?, ?, ?, ?> webInput = (WebInput<?, ?, ?, ?>) control;
+			String idPrefix = StringUtils.replaceChars(StringUtils.replace(input.getLabel(),StringUtils.repeat(Constant.CHARACTER_SPACE.toString(), 2)
+					,Constant.CHARACTER_SPACE.toString()),"' ","__"); 
+			webInput.setUniqueCssClass(input.getType()+Constant.CHARACTER_UNDESCORE+StringUtils.lowerCase(StringUtils.replaceChars(idPrefix, "&é#'-è`çà()[]{}| ", null))+Constant.CHARACTER_UNDESCORE+input.getId());
 		}
 	}
 	

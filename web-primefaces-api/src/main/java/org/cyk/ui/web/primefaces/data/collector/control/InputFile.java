@@ -95,7 +95,12 @@ org.cyk.ui.api.data.collector.control.InputFile<DynaFormModel,DynaFormRow,DynaFo
 		if(StringUtils.isNotBlank(file.getFileName()))
 			try {
 				if(file.getInputstream()!=null){
-					value = UIManager.getInstance().getFileBusiness().process(IOUtils.toByteArray(file.getInputstream()), file.getFileName());
+					if(getInitializedValue()==null)//no previous file exist
+						value = UIManager.getInstance().getFileBusiness().process(IOUtils.toByteArray(file.getInputstream()), file.getFileName());
+					else{
+						value = getInitializedValue();//better to reuse the same instance and reset only the required attributes
+						UIManager.getInstance().getFileBusiness().process(value,IOUtils.toByteArray(file.getInputstream()), file.getFileName(),Boolean.TRUE);
+					}
 					FieldUtils.writeField(field, getObject(), value, Boolean.TRUE);
 				}
 			} catch (IOException e) {

@@ -8,6 +8,7 @@ import org.cyk.utility.common.generator.RandomDataProvider.RandomFile;
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,10 +17,16 @@ public abstract class AbstractPersonWebIT extends AbstractIntegrationWebTest {
 
 	private static final long serialVersionUID = 1L;
 
+	protected WebElement getElementByClassContains(WebDriver webDriver,String value){
+		return webDriver.findElement(By.cssSelector("[class*='"+value+"']"));
+	}
+	
 	protected void login(WebDriver webDriver,String username,String password){
-		webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/table[3]/tbody/tr[3]/td[2]/table/tbody/tr/td[1]/input")).sendKeys(username);
-        webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/table[3]/tbody/tr[4]/td[2]/table/tbody/tr/td[1]/input")).sendKeys(password);
-        webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/button")).click();
+		//webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/table[3]/tbody/tr[3]/td[2]/table/tbody/tr/td[1]/input")).sendKeys(username);
+        //webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/table[3]/tbody/tr[4]/td[2]/table/tbody/tr/td[1]/input")).sendKeys(password);
+		getElementByClassContains(webDriver, "InputText_nom_d_utilisateur_").sendKeys(username);
+		getElementByClassContains(webDriver, "InputPassword_mot_de_passe_").sendKeys(password);
+		webDriver.findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/button")).click();
 	}
 	
 	protected void logout(WebDriver webDriver,String username){
