@@ -160,9 +160,15 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		if(control instanceof WebInput){
 			Input<?, ?, ?, ?, ?, ?> input = (Input<?, ?, ?, ?, ?, ?>) control;
 			WebInput<?, ?, ?, ?> webInput = (WebInput<?, ?, ?, ?>) control;
-			String idPrefix = StringUtils.replaceChars(StringUtils.replace(input.getLabel(),StringUtils.repeat(Constant.CHARACTER_SPACE.toString(), 2)
-					,Constant.CHARACTER_SPACE.toString()),"' ","__"); 
-			webInput.setUniqueCssClass(input.getType()+Constant.CHARACTER_UNDESCORE+StringUtils.lowerCase(StringUtils.replaceChars(idPrefix, "&é#'-è`çà()[]{}| ", null))+Constant.CHARACTER_UNDESCORE+input.getId());
+			String idPrefix = input.getLabel();
+			idPrefix = StringUtils.replaceChars(idPrefix, "àéèôùç", "aeeouc");
+			String separators = "-`' &#()[]{}|";
+			idPrefix = StringUtils.replaceChars(idPrefix, separators, StringUtils.repeat(Constant.CHARACTER_UNDESCORE.toString(), separators.length()));
+			/*StringUtils.replaceChars(StringUtils.replace(input.getLabel(),StringUtils.repeat(Constant.CHARACTER_SPACE.toString(), 2)
+					,Constant.CHARACTER_SPACE.toString()));
+			*/
+			String charactersToDeleted = "";
+			webInput.setUniqueCssClass(input.getType().toLowerCase()+Constant.CHARACTER_UNDESCORE+StringUtils.lowerCase(StringUtils.replaceChars(idPrefix, charactersToDeleted, null))+Constant.CHARACTER_UNDESCORE+input.getId());
 		}
 	}
 	

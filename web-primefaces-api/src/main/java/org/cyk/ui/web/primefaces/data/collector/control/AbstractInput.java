@@ -43,11 +43,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	protected AjaxListener ajaxListener;
 	protected String onChange;
 	protected Collection<WebInput.Listener> webInputListeners = new ArrayList<>();
-	
-	{
-		readOnlyValueCss.addClass(getUniqueCssClass());
-	}
-	
+		
 	@Override
 	public void applyValueToField() throws IllegalAccessException{
 		FieldUtils.writeField(field, object, getValueToApply(), Boolean.TRUE);
@@ -67,6 +63,12 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 	@Override
 	public Converter getConverter() {
 		return null;
+	}
+	
+	@Override
+	public void setUniqueCssClass(String uniqueCssClass) {
+		super.setUniqueCssClass(uniqueCssClass);
+		readOnlyValueCss.addClass(getUniqueCssClass());
 	}
 	
 	public void setReadOnly(Boolean value){
