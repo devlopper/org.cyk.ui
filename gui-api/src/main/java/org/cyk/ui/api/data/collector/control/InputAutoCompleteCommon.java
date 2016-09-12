@@ -2,6 +2,8 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.util.List;
 
+import org.cyk.ui.api.CascadeStyleSheet;
+
 public interface InputAutoCompleteCommon<VALUE_TYPE> {
 
 	Integer getNumberOfCharacterBeforeQuery();
@@ -21,6 +23,12 @@ public interface InputAutoCompleteCommon<VALUE_TYPE> {
 	
 	String getNoResultMessage();
 	void setNoResultMessage(String message);
+	
+	CascadeStyleSheet getResultsContainerCascadeStyleSheet();
+	void setResultsContainerCascadeStyleSheet(CascadeStyleSheet cascadeStyleSheet);
+	
+	String getAppendTo();//TODO should be moved on subclass web
+	void setAppendTo(String value);
 	
 	/**/
 	

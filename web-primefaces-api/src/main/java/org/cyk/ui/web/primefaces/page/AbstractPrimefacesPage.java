@@ -177,8 +177,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	protected void tables(){}
 	
 	@Override
-	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__() {
-		final FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>();
+	protected <DATA> FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> __createFormOneData__(String submitCommandableLabelId) {
+		final FormOneData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> form = 
+				new org.cyk.ui.web.primefaces.data.collector.form.FormOneData<>(submitCommandableLabelId);
 		
 		return form;
 	}

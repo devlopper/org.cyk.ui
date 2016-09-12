@@ -2,7 +2,7 @@ package org.cyk.ui.web.primefaces.api.integration;
 
 import java.util.concurrent.TimeUnit;
 
-import org.cyk.ui.web.api.test.automation.SeleniumHelper;
+import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -88,33 +88,7 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 	protected void __execute__() {
         getDriver().manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         
-        /*helper.login("admin", "123");
         
-        helper.clickOnMenuItem("PARTY","Lister personne");
-        
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/div[2]/div[1]/div/div[1]/button")).click();
-        
-        RandomFile randomFile1 = RandomDataProvider.getInstance().getMale().photo();
-        File file1 = randomFile1.createTemporaryFile();
-        fillForm(Boolean.FALSE,"pers0011","yao","evelyne",file1.getPath());        
-        submitForm();
-        showReadFormFromTable(2);
-        pause(3 * 1000l);
-        
-        clickEditContextMenu();
-        RandomFile randomFile2 = RandomDataProvider.getInstance().getMale().photo();
-        File file2 = randomFile2.createTemporaryFile();
-        fillForm(Boolean.TRUE,"PA021","Zouzou","Ange",file2.getPath());
-        submitForm();
-        pause(3 * 1000l);
-        
-        clickDeleteContextMenu();
-        clickFormSubmitButton();
-        clickFormOperationConfirmYesButton();
-        clickFormOperationResultOkButton(Boolean.FALSE);
-        
-        helper.logout("admin");
-     	*/
 	}
     
     protected void clickFormSubmitButton(){

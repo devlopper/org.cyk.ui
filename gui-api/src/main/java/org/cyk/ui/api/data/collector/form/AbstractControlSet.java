@@ -93,7 +93,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	}
 	
 	protected String getFieldLabel(Object data,Field field){
-		String fieldLabel = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field);
+		String fieldLabel = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field).getValue();
 		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
 			String c = listener.fiedLabel(this, data,field);
 			if(StringUtils.isNotBlank(c))

@@ -47,9 +47,12 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	
 	/**/
 	
-	public AbstractFormOneData() {
-		submitCommandable = Builder.instanciateOne().setLabelFromId("command.save").setCommandListener(this).setIcon(Icon.ACTION_SAVE)
+	public AbstractFormOneData(String submitCommandableLabelId) {
+		submitCommandable = Builder.instanciateOne().setLabelFromId(submitCommandableLabelId).setCommandListener(this).setIcon(Icon.ACTION_SAVE)
 				.setEventListener(EventListener.NONE).setProcessGroup(ProcessGroup.FORM).create();
+	}
+	public AbstractFormOneData() {
+		this("command.execute");
 	}
 	
 	public void addControlSetListener(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener){
@@ -187,7 +190,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				if(ValueType.VALUE.equals(outputSeperator.label().type()))
 					separatorLabel = outputSeperator.label().value();
 				else
-					separatorLabel = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputSeperator.label());
+					separatorLabel = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputSeperator.label()).getValue();
 				if(OutputSeperator.SeperatorLocation.AUTO.equals(outputSeperator.location()))
 					seperatorLocation = OutputSeperator.SeperatorLocation.BEFORE;
 				if(OutputSeperator.SeperatorLocation.BEFORE.equals(seperatorLocation))
@@ -205,7 +208,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				if(ValueType.VALUE.equals(outputText.label().type()))
 					text = outputText.label().value();
 				else
-					text = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputText.label());
+					text = UIManager.getInstance().getLanguageBusiness().findAnnotationText(objectField.getField(),outputText.label()).getValue();
 				if(OutputText.OutputTextLocation.AUTO.equals(outputText.location()))
 					outputTextLocation = OutputText.OutputTextLocation.BEFORE;
 				if(OutputText.OutputTextLocation.BEFORE.equals(outputTextLocation))

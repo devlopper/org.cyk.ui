@@ -9,6 +9,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 
@@ -35,6 +36,9 @@ public interface UICommandable {
 	
 	Icon getIcon();
 	UICommandable setIcon(Icon anIcon);
+	
+	CascadeStyleSheet getCascadeStyleSheet();
+	UICommandable setCascadeStyleSheet(CascadeStyleSheet cascadeStyleSheet);
 	
 	String getTooltip();
 	void setTooltip(String label);

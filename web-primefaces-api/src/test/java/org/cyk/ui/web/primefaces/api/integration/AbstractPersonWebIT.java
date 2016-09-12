@@ -1,14 +1,19 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.cyk.ui.web.api.test.automation.SeleniumHelper;
+import org.cyk.ui.api.model.geography.LocationFormModel;
+import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
+import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
+import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.cyk.utility.common.generator.RandomDataProvider;
 import org.cyk.utility.common.generator.RandomDataProvider.RandomFile;
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,16 +26,16 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
        super.__execute__();
        
         helper.clickOnMenuItem("PARTY","Lister personne");
-        
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/div[2]/div[1]/div/div[1]/button")).click();
+        helper.clickCommand("add");
         
         RandomFile randomFile1 = RandomDataProvider.getInstance().getMale().photo();
         File file1 = randomFile1.createTemporaryFile();
-        fillForm(Boolean.FALSE,"pers0011","yao","evelyne",file1.getPath());        
-        submitForm();
+        fillForm("pers0011","yao","evelyne",0,"01/02/1993",new Object[]{"ab", 1},file1.getPath());        
+        /*submitForm();
         showReadFormFromTable(2);
         
         pause(3 * 1000l);
+        */
         /*
         clickEditContextMenu();
         RandomFile randomFile2 = RandomDataProvider.getInstance().getMale().photo();
@@ -46,30 +51,17 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
         */
 	}
     
-    protected void fillForm(Boolean hasImage,String code,String firstname,String lastnames,String imagePath){
-        helper.sendKeys("inputtext_code_", code);
-        helper.sendKeys("inputtext_nom_", firstname);
-        helper.sendKeys("inputtext_prenoms", lastnames);
-        /*
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[14]/td[2]/table/tbody/tr/td[1]/table/tbody/tr/td[1]/div/div[2]/span")).click();
-        
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[15]/td[2]/table/tbody/tr/td[1]/span/input")).click();
-        getDriver().findElement(By.linkText("5")).click();
-        
-        sendAutocompleteKeys("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[16]/td[2]/table/tbody/tr/td[1]/span/input[1]", "ab"
-        		,"/html/body/div[10]/ul/li[2]");
-       
-        sendAutocompleteKeys("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[17]/td[2]/table/tbody/tr/td[1]/span/input[1]", "cot"
-        		,"/html/body/div[11]/ul/li");
-        
-        helper.sendKeys("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[18]/td[2]/table/tbody/tr[2]/td[1]/table/tbody/tr[1]/td/input"
-        		, imagePath);
-        
-        getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[19]/td[2]/table/tbody/tr/td[1]/table/tbody/tr/td[5]/div/div[2]/span")).click();
-        
-        sendAutocompleteKeys("/html/body/div[3]/div[2]/form/div[1]/div/table[2]/tbody/tr[20]/td[2]/table/tbody/tr/td[1]/span/input[1]", "fr"
-        		,"/html/body/div["+(Boolean.TRUE.equals(hasImage) ? 14 : 12)+"]/ul/li[1]");
-        */
+    protected void fillForm(String code,String firstname,String lastnames,Integer sex,String birthDate,Object[] localities,String imagePath){
+        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_CODE, code);
+        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_NAME, firstname);
+        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_LAST_NAMES, lastnames);
+        helper.clickOnRadioInput(PersonEditPage.Form.FIELD_SEX, sex);
+        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_BIRTH_DATE, birthDate);
+        helper.sendKeysOnAutocompleteInput(LocationFormModel.FIELD_LOCALITY, (String)localities[0],(Integer)localities[1]);
+        helper.sendKeysOnAutocompleteInput(PersonEditPage.Form.FIELD_NATIONALITY, "cot", 0);
+        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_IMAGE, imagePath);
+        helper.clickOnRadioInput(PersonEditPage.Form.FIELD_BLOOD_GROUP, 2);
+        helper.sendKeysOnAutocompleteInput(LanguageCollectionFormModel.FIELD_LANGUAGE_1, "fr", 0);
     }
-    
+       
 }

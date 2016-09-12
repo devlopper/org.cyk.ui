@@ -149,10 +149,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		return detailsMenu!=null && detailsMenu.getCommandables().size()>1;
 	}
 	
-	protected abstract <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> __createFormOneData__();
+	protected abstract <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> __createFormOneData__(String submitCommandableLabelId);
 	
-	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
-		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__();
+	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud,String submitCommandableLabelId){
+		FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> form = __createFormOneData__(submitCommandableLabelId);
 		form.setWindow(this);
 		form.setUserSession(getUserSession());
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
@@ -163,6 +163,9 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		}
 		formOneDatas.add(form);
 		return form;
+	}
+	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
+		return createFormOneData(data, crud,"command.execute");
 	}
 	
 	protected abstract AbstractTable<Object,?,?> __createTable__();

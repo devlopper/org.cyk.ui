@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -18,6 +15,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.MessageManager;
@@ -27,6 +25,9 @@ import org.cyk.ui.api.UIProvider;
 import org.cyk.utility.common.AbstractBuilder;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractCommandable implements UICommandable , Serializable {
 
@@ -39,6 +40,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected String tooltip,onClick;
 	@Getter @Setter protected Integer index;
 	@Getter protected Icon icon;
+	@Getter protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
@@ -74,6 +76,12 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Override
 	public UICommandable setIcon(Icon anIcon) {
 		this.icon = anIcon;
+		return this;
+	}
+	
+	@Override
+	public UICommandable setCascadeStyleSheet(CascadeStyleSheet cascadeStyleSheet) {
+		this.cascadeStyleSheet = cascadeStyleSheet;
 		return this;
 	}
 	
@@ -182,7 +190,9 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		public Builder<COMMANDABLE> setLabelFromId(String labelId){
-			instance.setLabel(inject(LanguageBusiness.class).findText(labelId));
+			setLabel(inject(LanguageBusiness.class).findText(labelId));
+			if(instance.cascadeStyleSheet!=null && StringUtils.isNotBlank(instance.label))
+				instance.cascadeStyleSheet.addClass(CascadeStyleSheet.generateUniqueClassFrom("commandable",labelId)); //TODO many call of setLabel will add too more classes where previous are useless
 			return this;
 		}
 		public Builder<COMMANDABLE> setSelectedTabId(String selectedTabId){

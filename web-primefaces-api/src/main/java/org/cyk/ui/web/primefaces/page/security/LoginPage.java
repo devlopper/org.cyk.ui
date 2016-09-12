@@ -83,6 +83,11 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		return text("view.login.content.title");
 	}
 	
+	@Override
+	protected String getSubmitCommandableLabelId() {
+		return "command.connect";
+	}
+	
 	/*@Override
 	public String getContentTitle() {
 		return text("view.login.content.title");
@@ -179,6 +184,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		
 		public static final String FIELD_USERNAME = "username";
 		public static final String FIELD_PASSWORD = "password";
+		
 	}
 
 }

@@ -17,6 +17,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
@@ -104,7 +105,9 @@ public class UIProvider extends AbstractBean implements Serializable {
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setObject(data);
 			if(StringUtils.isBlank(input.getLabel())){
-				input.setLabel(UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field));
+				FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field);
+				input.setLabel(findTextResult.getValue());
+				input.setUniqueCssClass(CascadeStyleSheet.generateUniqueClassFrom(input.getType(), findTextResult));
 			}
 			input.setField(field);
 			Size size = field.getAnnotation(Size.class);

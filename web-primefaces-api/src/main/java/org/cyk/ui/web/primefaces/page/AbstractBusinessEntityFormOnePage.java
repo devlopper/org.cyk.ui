@@ -61,7 +61,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		crud = crudFromRequestParameter();
 		Object data = data(formModelClass==null?(identifiableConfiguration==null?businessEntityInfos.getClazz():identifiableConfiguration.getFormMap().getOne(crud)):formModelClass);
 		
-		form = (FormOneData<Object>) createFormOneData(data,crud);
+		form = (FormOneData<Object>) createFormOneData(data,crud,getSubmitCommandableLabelId());
 		form.setShowCommands(Boolean.FALSE);
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
@@ -130,6 +130,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		
 		for(BusinessEntityFormOnePageListener<?> listener : BusinessEntityFormOnePageListener.Adapter.getBusinessEntityFormOnePageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
+	}
+	
+	protected String getSubmitCommandableLabelId(){
+		return "command.execute";
 	}
 	
 	@Override

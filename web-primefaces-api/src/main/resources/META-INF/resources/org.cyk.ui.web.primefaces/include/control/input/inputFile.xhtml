@@ -24,7 +24,8 @@
  				<!-- input button -->
  				<tr><td class="cyk-ui-input-file-input">
 					<p:fileUpload id="inputFile" value="#{control.file}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" 
-						title="#{control.label}" requiredMessage="#{control.requiredMessage}" mode="#{control.mode}" styleClass="fileUploadStyleClass#{control.id}"
+						title="#{control.label}" requiredMessage="#{control.requiredMessage}" mode="#{control.mode}" 
+						styleClass="#{control.css.clazz} fileUploadStyleClass#{control.id}" style="#{control.css.inline}"
 						allowTypes="#{control.allowTypes}" sizeLimit="#{control.maximumSize}" label="#{control.label}">
 						<f:attribute name="fieldId" value="#{control.id}" /> <!--  rendered="#{control.value == null}"  -->
 						<f:validateBean validationGroups="#{webConstants.clientValidationGroupClass}"/>

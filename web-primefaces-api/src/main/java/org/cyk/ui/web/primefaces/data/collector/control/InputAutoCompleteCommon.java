@@ -15,6 +15,7 @@ import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInputAutoCompleteCommon;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
@@ -30,8 +31,9 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 	private static final long serialVersionUID = 770592182009797467L;
 
 	private Integer numberOfCharacterBeforeQuery=1,numberOfMillisecondBetweenQueries=300,numberOfMillisecondQueryResultsCacheTimeOut=1000 * 300;
-	private String noResultMessage=inject(LanguageBusiness.class).findText(LanguageEntry.NO_RESULT_FOUND);
+	private String noResultMessage=inject(LanguageBusiness.class).findText(LanguageEntry.NO_RESULT_FOUND),appendTo;
 	private Boolean forceSelectionEnabled=Boolean.TRUE,queryResultsCacheEnabled=Boolean.TRUE;
+	private CascadeStyleSheet resultsContainerCascadeStyleSheet = new CascadeStyleSheet();
 
 	private Collection<Listener<VALUE_TYPE>> autoCompleteListeners = new ArrayList<>();
 	

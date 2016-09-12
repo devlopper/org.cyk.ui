@@ -15,6 +15,7 @@ import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -22,7 +23,7 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 
-public class CommandBuilder implements Serializable {
+public class CommandBuilder extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6706193290921067166L;
 	private static final CommandBuilder INSTANCE = new CommandBuilder();
@@ -49,6 +50,10 @@ public class CommandBuilder implements Serializable {
 		if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 			commandButton.setProcess("@this");		
 		commandButton.setOnclick(aCommandable.getOnClick());
+		if(aCommandable.getCascadeStyleSheet()!=null){
+			commandButton.setStyleClass(aCommandable.getCascadeStyleSheet().getClazz());
+			commandButton.setStyle(aCommandable.getCascadeStyleSheet().getInline());
+		}
 		return commandButton;
 	}
 	
@@ -59,6 +64,10 @@ public class CommandBuilder implements Serializable {
 			menuItem.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIcon()!=null)
 				menuItem.setIcon(FontAwesomeIconSet.INSTANCE.get(aCommandable.getIcon()));
+			if(aCommandable.getCascadeStyleSheet()!=null){
+				menuItem.setStyleClass(aCommandable.getCascadeStyleSheet().getClazz());
+				menuItem.setStyle(aCommandable.getCascadeStyleSheet().getInline());
+			}
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
 					if(aCommandable.getViewId()!=null){

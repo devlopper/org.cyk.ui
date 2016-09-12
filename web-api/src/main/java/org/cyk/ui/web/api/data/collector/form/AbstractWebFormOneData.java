@@ -11,4 +11,8 @@ public abstract class AbstractWebFormOneData<DATA, MODEL, ROW, LABEL, CONTROL> e
 
 	private static final long serialVersionUID = 3363282642650783137L;
 
+	public AbstractWebFormOneData(String submitCommandableLabelId) {
+		super(submitCommandableLabelId);
+	}
+	
 }

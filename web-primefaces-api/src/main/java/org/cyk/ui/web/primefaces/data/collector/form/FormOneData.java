@@ -22,6 +22,10 @@ public class FormOneData<DATA> extends AbstractWebFormOneData<DATA, DynaFormMode
 	
 	private String progressBarWidgetVar = "progressBar";
 	
+	public FormOneData(String submitCommandableLabelId) {
+		super(submitCommandableLabelId);
+	}
+	
 	@Override
 	public FormData<DATA> createFormData() {
 		FormData<DATA> formData = new FormData<>();

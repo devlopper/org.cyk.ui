@@ -14,7 +14,6 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
@@ -32,7 +31,6 @@ import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
-import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputManyAutoComplete;
 import org.cyk.ui.api.data.collector.control.InputOneAutoComplete;
@@ -47,7 +45,6 @@ import org.cyk.ui.web.primefaces.data.collector.control.InputOneCascadeList;
 import org.cyk.ui.web.primefaces.data.collector.control.InputOneCombo;
 import org.cyk.ui.web.primefaces.data.collector.control.InputText;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
-import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -158,17 +155,11 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public void controlCreated(Control<?, ?, ?, ?, ?> control) {
 		super.controlCreated(control);
 		if(control instanceof WebInput){
-			Input<?, ?, ?, ?, ?, ?> input = (Input<?, ?, ?, ?, ?, ?>) control;
-			WebInput<?, ?, ?, ?> webInput = (WebInput<?, ?, ?, ?>) control;
-			String idPrefix = input.getLabel();
-			idPrefix = StringUtils.replaceChars(idPrefix, "àéèôùç", "aeeouc");
-			String separators = "-`' &#()[]{}|";
-			idPrefix = StringUtils.replaceChars(idPrefix, separators, StringUtils.repeat(Constant.CHARACTER_UNDESCORE.toString(), separators.length()));
-			/*StringUtils.replaceChars(StringUtils.replace(input.getLabel(),StringUtils.repeat(Constant.CHARACTER_SPACE.toString(), 2)
-					,Constant.CHARACTER_SPACE.toString()));
-			*/
-			String charactersToDeleted = "";
-			webInput.setUniqueCssClass(input.getType().toLowerCase()+Constant.CHARACTER_UNDESCORE+StringUtils.lowerCase(StringUtils.replaceChars(idPrefix, charactersToDeleted, null))+Constant.CHARACTER_UNDESCORE+input.getId());
+			if(control instanceof org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>){
+				org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?> autoComplete = 
+						(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>) control;
+				autoComplete.getCommon().getResultsContainerCascadeStyleSheet().addClass("results_container_"+autoComplete.getUniqueCssClass());
+			}
 		}
 	}
 	
