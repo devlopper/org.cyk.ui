@@ -71,6 +71,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		setUserDeviceType();
 		super.initialisation();
 		mainMenu = UIManager.getInstance().isMobileDevice(userDeviceType)?getUserSession().getMobileApplicationMenu():getUserSession().getApplicationMenu();
+		if(mainMenu!=null)
+			mainMenu.getCascadeStyleSheet().addClass(CascadeStyleSheet.GLOBAL_MENU_CLASS);
 	}
 	
 	protected void setUserDeviceType() {
@@ -86,14 +88,17 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		if(contextualCommandables!=null){
 			if(contextualMenu==null)
 				contextualMenu = new DefaultMenu();
+			contextualMenu.getCascadeStyleSheet().addClass(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS);
 			for(UICommandable subMenu : contextualCommandables){
 				contextualMenu.addCommandable(subMenu);
 				
 			}
 		}
 		
-		if(contextualMenu!=null && UIManager.getInstance().isMobileDevice(userDeviceType))
+		if(contextualMenu!=null && UIManager.getInstance().isMobileDevice(userDeviceType)){
 			contextualMenu.setRenderType(UIMenu.RenderType.TAB);
+			
+		}
 	
 		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
 			form.build();

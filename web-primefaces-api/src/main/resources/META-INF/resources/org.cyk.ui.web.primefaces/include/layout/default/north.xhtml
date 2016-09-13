@@ -9,6 +9,7 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
       
-	<p:menubar id="menubar" model="#{pageController.mainMenuModel}" /> 
+	<p:menubar id="menubar" model="#{pageController.mainMenuModel}" styleClass="#{pageController.mainMenu.cascadeStyleSheet.clazz}" 
+		style="#{pageController.mainMenu.cascadeStyleSheet.inline}"/> 
 	
 </html>

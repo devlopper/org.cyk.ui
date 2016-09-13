@@ -5,9 +5,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
       
-	<p:menu model="#{model}" rendered="#{menu.renderType.ordinal()==0}" />
-	<p:slideMenu model="#{model}" rendered="#{menu.renderType.ordinal()==1}" />
-	<p:panelMenu model="#{model}" rendered="#{menu.renderType.ordinal()==2}" />
- 	<p:tabMenu model="#{model}" rendered="#{menu.renderType.ordinal()==3}" activeIndex="#{menu.requestedCommandable.index}" />
- 	<p:breadCrumb model="#{model}" rendered="#{menu.renderType.ordinal()==4}" />				
+	<p:menu model="#{model}" rendered="#{menu.renderType.ordinal()==0}" styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
+	<p:slideMenu model="#{model}" rendered="#{menu.renderType.ordinal()==1}" styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
+	<p:panelMenu model="#{model}" rendered="#{menu.renderType.ordinal()==2}" styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
+ 	<p:tabMenu model="#{model}" rendered="#{menu.renderType.ordinal()==3}" activeIndex="#{menu.requestedCommandable.index}" 
+ 		styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
+ 	<p:breadCrumb model="#{model}" rendered="#{menu.renderType.ordinal()==4}" styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>				
 </ui:composition>

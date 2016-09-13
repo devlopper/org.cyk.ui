@@ -2,6 +2,7 @@ package org.cyk.ui.api.command.menu;
 
 import java.util.Collection;
 
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.UICommandable;
 
@@ -24,5 +25,8 @@ public interface UIMenu {
 	UICommandable getRequestedCommandable();
 	void setRequestedCommandable(UICommandable commandable);
 	void setRequestedCommandable(String identifier);
+	
+	CascadeStyleSheet getCascadeStyleSheet();
+	void setCascadeStyleSheet(CascadeStyleSheet cascadeStyleSheet);
 	
 }

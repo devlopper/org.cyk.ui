@@ -2,7 +2,11 @@ package org.cyk.ui.web.primefaces.api.integration;
 
 import java.util.concurrent.TimeUnit;
 
+import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.web.primefaces.test.automation.ContextMenu;
+import org.cyk.ui.web.primefaces.test.automation.GlobalMenu;
 import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
+import org.cyk.ui.web.primefaces.test.automation.Table;
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -73,30 +77,22 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 	}
     
     /**/
-    
-    protected void clickContextMenu(Integer actionIndex){
-    	pause(1000 * 1l);
-    	getDriver().findElement(By.xpath("/html/body/div[2]/form/div[1]/ul/li["+(actionIndex+1)+"]/a")).click();
-    }
-    protected void clickEditContextMenu(){
-    	clickContextMenu(1);
-    }
-    protected void clickDeleteContextMenu(){
-    	clickContextMenu(2);
+    protected void clickGlobalMenu(String...labels){
+    	new GlobalMenu().click(labels);
     }
     
-    /**/
+    protected void clickContextualMenuEdit(){
+    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickEdit();
+    }
+    protected void clickContextualMenuDelete(){
+    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickDelete();
+    }
     
-    protected void actOnTableRow(Integer rowIndex,Integer actionIndex){
-    	getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/div[2]/div[2]/table/tbody/tr["+rowIndex+"]/td[5]/table/tbody/tr/td["+actionIndex+"]/button")).click();
+    protected void clickTableCreate(){
+    	new Table("dataTableStyleClass").clickCreate();
     }
-    protected void showReadFormFromTable(Integer index){
-    	actOnTableRow(index, 1);
-    }
-    protected void showUpdateFormFromTable(Integer index){
-    	actOnTableRow(index, 2);
-    }
-    protected void showDeleteFormFromTable(Integer index){
-    	actOnTableRow(index, 3);
+    
+    protected void clickTableRead(Integer index){
+    	new Table("dataTableStyleClass").clickRead(index);
     }
 }

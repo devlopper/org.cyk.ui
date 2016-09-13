@@ -15,7 +15,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 public class SeleniumHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -52,7 +51,7 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	}
 	
 	public void logout(String username){
-		clickOnMenuItem(username,"Se deconnecter");
+		clickGlobalMenu(username,"Se deconnecter");
 	}
 	
 	/* Pages */
@@ -83,13 +82,8 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 		 driver.get(String.format(URL, scheme,host,port,context,relativeUrl));
 	}
 	
-	public void clickOnMenuItem(String...labels){
-		if(labels==null || labels.length==0)
-			return;
-		if(labels.length>1)
-			for(int i=0;i<labels.length-1;i++)
-				new Actions(driver).moveToElement(driver.findElement(By.linkText(labels[i]))).build().perform();
-		driver.findElement(By.linkText(labels[labels.length-1])).click();
+	public void clickGlobalMenu(String...labels){
+		new GlobalMenu().click(labels);
 	}
 	
 	/* Core methods */

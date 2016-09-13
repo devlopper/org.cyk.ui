@@ -4,6 +4,7 @@ import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.test.automation.Form;
+import org.cyk.ui.web.primefaces.test.automation.Table;
 
 public abstract class AbstractPersonWebIT extends AbstractWebIT {
 
@@ -12,9 +13,9 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
     @Override
 	protected void __execute__() {
        super.__execute__();
-       
-        helper.clickOnMenuItem("PARTY","Lister personne");
-        helper.clickCommand("add");
+        clickGlobalMenu("PARTY","Lister personne");
+        
+        clickTableCreate();
         
         Form form = new Form();
         form.addInputText(PersonEditPage.Form.FIELD_CODE, "pers0011")
@@ -31,9 +32,9 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
         form.sendKeys();
         form.submit();
         
-        showReadFormFromTable(2);
+        clickTableRead(2);
         
-        clickEditContextMenu();
+        clickContextualMenuEdit();
         
         form = new Form();
         form.addInputText(PersonEditPage.Form.FIELD_CODE, "PA021")
@@ -44,7 +45,8 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
         form.sendKeys();
         form.submit();
         
-        clickDeleteContextMenu();
+        clickContextualMenuDelete();
+        
         form = new Form();
         form.getSubmitCommandable().setConfirmed(Boolean.TRUE);
         form.sendKeys();

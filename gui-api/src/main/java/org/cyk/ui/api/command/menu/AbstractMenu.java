@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
@@ -22,6 +23,7 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 
 	protected RenderType renderType = RenderType.PLAIN;
 	protected UICommandable requestedCommandable;
+	protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 	
 	protected Collection<UICommandable> commandables = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
