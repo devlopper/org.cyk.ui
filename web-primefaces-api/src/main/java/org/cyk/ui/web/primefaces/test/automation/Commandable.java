@@ -31,7 +31,7 @@ public class Commandable extends AbstractElement implements Serializable {
 			SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.CONFIRMATION_DIALOG_YES_COMMANDABLE_CLASS).click();
 		}
 		if(Boolean.TRUE.equals(notified)){
-			pause(1000 * 1l);
+			pause(1000 * 2l);
 			SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS).click();
 		}
 		return this;

@@ -45,8 +45,9 @@ public class Form extends AbstractBean implements Serializable {
 	
 	/**/
 	
-	public void sendKeys(){
+	public Form sendKeys(){
 		SeleniumHelper.getInstance().sendKeys(inputs);
+		return this;
 	}
 	
 	/* Inputs */
@@ -84,6 +85,11 @@ public class Form extends AbstractBean implements Serializable {
 	
 	/* Commands */
     
+	public Form setSubmitCommandableConfirmed(Boolean confirmed){
+		submitCommandable.setConfirmed(confirmed);
+		return this;
+	}
+	
 	public Commandable getMessageDialogOkCommandable(){
 		return new Commandable(CascadeStyleSheet.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS){
 			private static final long serialVersionUID = 1L;
