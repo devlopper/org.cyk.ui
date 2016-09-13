@@ -59,7 +59,7 @@ public class CascadeStyleSheet implements Serializable {
 		return StringUtils.join(new String[]{generateClassFrom(prefix, label),String.valueOf(System.currentTimeMillis()),RandomStringUtils.randomAlphabetic(2)},Constant.CHARACTER_UNDESCORE.toString());
 	}
 	public static String generateUniqueClassFrom(UICommandable commandable,FindTextResult findTextResult){
-		return generateUniqueClassFrom("commandable", findTextResult.getIdentifier());
+		return generateUniqueClassFrom(COMMANDABLE_CLASS_PREFIX, findTextResult.getIdentifier());
 	}
 	public static String generateUniqueClassFrom(Input<?, ?, ?, ?, ?, ?> input,FindTextResult findTextResult){
 		return generateUniqueClassFrom(input.getType(), findTextResult.getIdentifier());
@@ -78,4 +78,11 @@ public class CascadeStyleSheet implements Serializable {
 		value = StringUtils.lowerCase(StringUtils.replaceChars(value, charactersToDeleted, null));
 		return value;
 	}
+	
+	/**/
+	
+	public static final String COMMANDABLE_CLASS_PREFIX = "commandable";
+	public static final String RESULTS_CONTAINER_CLASS_PREFIX = "results_container_";
+	public static final String NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS = "messageDialogStyleClassOkButton";
+	public static final String CONFIRMATION_DIALOG_YES_COMMANDABLE_CLASS = "ui-confirmdialog-yes";
 }

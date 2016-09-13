@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class InputFile extends AbstractInput<String> implements Serializable {
+public class InputFile extends AbstractInputText implements Serializable {
 
 	private static final long serialVersionUID = -3394592929247102811L;
 

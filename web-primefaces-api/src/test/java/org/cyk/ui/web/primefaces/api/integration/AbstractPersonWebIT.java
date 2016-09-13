@@ -1,21 +1,9 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
-import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
-import org.cyk.utility.common.generator.RandomDataProvider;
-import org.cyk.utility.common.generator.RandomDataProvider.RandomFile;
-import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.cyk.ui.web.primefaces.test.automation.Form;
 
 public abstract class AbstractPersonWebIT extends AbstractWebIT {
 
@@ -28,40 +16,40 @@ public abstract class AbstractPersonWebIT extends AbstractWebIT {
         helper.clickOnMenuItem("PARTY","Lister personne");
         helper.clickCommand("add");
         
-        RandomFile randomFile1 = RandomDataProvider.getInstance().getMale().photo();
-        File file1 = randomFile1.createTemporaryFile();
-        fillForm("pers0011","yao","evelyne",0,"01/02/1993",new Object[]{"ab", 1},file1.getPath());        
-        /*submitForm();
+        Form form = new Form();
+        form.addInputText(PersonEditPage.Form.FIELD_CODE, "pers0011")
+        	.addInputText(PersonEditPage.Form.FIELD_NAME,"yao")
+        	.addInputText(PersonEditPage.Form.FIELD_LAST_NAMES, "evelyne")
+        	.addInputOneRadio(PersonEditPage.Form.FIELD_SEX, 0)
+        	.addInputCalendar(PersonEditPage.Form.FIELD_BIRTH_DATE, "01/02/1993")
+        	.addInputOneAutoComplete(LocationFormModel.FIELD_LOCALITY, "ab", 1)
+        	.addInputOneAutoComplete(PersonEditPage.Form.FIELD_NATIONALITY, "cot", 0)
+        	.addInputPersonImage(PersonEditPage.Form.FIELD_IMAGE, Boolean.TRUE)
+        	.addInputOneRadio(PersonEditPage.Form.FIELD_BLOOD_GROUP, 1)
+        	.addInputOneAutoComplete(LanguageCollectionFormModel.FIELD_LANGUAGE_1, "fr", 0)
+        	;
+        form.sendKeys();
+        form.submit();
+        
         showReadFormFromTable(2);
         
-        pause(3 * 1000l);
-        */
-        /*
         clickEditContextMenu();
-        RandomFile randomFile2 = RandomDataProvider.getInstance().getMale().photo();
-        File file2 = randomFile2.createTemporaryFile();
-        fillForm(Boolean.TRUE,"PA021","Zouzou","Ange",file2.getPath());
-        submitForm();
-        pause(3 * 1000l);
+        
+        form = new Form();
+        form.addInputText(PersonEditPage.Form.FIELD_CODE, "PA021")
+        	.addInputText(PersonEditPage.Form.FIELD_NAME,"ZOUZOU")
+        	.addInputText(PersonEditPage.Form.FIELD_LAST_NAMES, "Ange")
+        	.addInputPersonImage(PersonEditPage.Form.FIELD_IMAGE, Boolean.FALSE)
+        	;
+        form.sendKeys();
+        form.submit();
         
         clickDeleteContextMenu();
-        clickFormSubmitButton();
-        clickFormOperationConfirmYesButton();
-        clickFormOperationResultOkButton(Boolean.FALSE);
-        */
+        form = new Form();
+        form.getSubmitCommandable().setConfirmed(Boolean.TRUE);
+        form.sendKeys();
+        form.submit();
+        
 	}
-    
-    protected void fillForm(String code,String firstname,String lastnames,Integer sex,String birthDate,Object[] localities,String imagePath){
-        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_CODE, code);
-        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_NAME, firstname);
-        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_LAST_NAMES, lastnames);
-        helper.clickOnRadioInput(PersonEditPage.Form.FIELD_SEX, sex);
-        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_BIRTH_DATE, birthDate);
-        helper.sendKeysOnAutocompleteInput(LocationFormModel.FIELD_LOCALITY, (String)localities[0],(Integer)localities[1]);
-        helper.sendKeysOnAutocompleteInput(PersonEditPage.Form.FIELD_NATIONALITY, "cot", 0);
-        helper.sendKeysOnInput(PersonEditPage.Form.FIELD_IMAGE, imagePath);
-        helper.clickOnRadioInput(PersonEditPage.Form.FIELD_BLOOD_GROUP, 2);
-        helper.sendKeysOnAutocompleteInput(LanguageCollectionFormModel.FIELD_LANGUAGE_1, "fr", 0);
-    }
        
 }

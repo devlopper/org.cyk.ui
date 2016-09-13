@@ -13,9 +13,20 @@ public class InputOneRadio extends AbstractInputChoice implements Serializable {
 	public InputOneRadio(String fieldName, Integer index) {
 		super(fieldName,null, index);
 	}
-
-	public void select(){
-		List<WebElement> webElements = webElement.findElements(By.cssSelector(".ui-radiobutton-icon"));
-        webElements.get(value).click();
+	
+	@Override
+	public Boolean getClearBeforeSendKeys() {
+		return Boolean.FALSE;
 	}
+	
+	@Override
+	public Boolean getSendTabKeyAfterSendKeys() {
+		return Boolean.FALSE;
+	}
+	
+	@Override
+	protected List<WebElement> getChoices() {
+		return getWebElement().findElements(By.cssSelector(".ui-radiobutton-icon"));
+	}
+	
 }

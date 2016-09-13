@@ -16,7 +16,11 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 	protected SeleniumHelper helper;
 
 	{
-		helper = new SeleniumHelper();
+		helper = SeleniumHelper.getInstance();
+		helper.setScheme(scheme);
+		helper.setContext(context);
+		helper.setHost(host);
+		helper.setPort(port);
 		authenticationEnabled = Boolean.TRUE;
 		users = new String[][]{ {"admin","123"} };
 		helper.setContext("gui-primefaces");
@@ -43,20 +47,6 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 		helper.goToLoginPage(); 
 	}
 	
-	/*protected WebElement getElementByClassContains(String value){
-		return getDriver().findElement(By.cssSelector("[class*='"+value+"']"));
-	}
-	
-	protected void login(String username,String password){
-		getElementByClassContains("inputtext_nom_d_utilisateur_").sendKeys(username);
-		getElementByClassContains("inputpassword_mot_de_passe_").sendKeys(password);
-		getDriver().findElement(By.xpath("/html/body/div[1]/div[2]/form/div[1]/div/table/tbody/tr/td/div/div/button")).click();
-	}
-	
-	protected void logout(String username){
-		clickOnMenuItem(username,"Se deconnecter");
-	}*/
-	
 	protected void pause(Long numberOfMillisecond){
 		try {
 			Thread.sleep(numberOfMillisecond);
@@ -70,15 +60,6 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
 	}
 	
-	/*protected void clickOnMenuItem(String...labels){
-		if(labels==null || labels.length==0)
-			return;
-		if(labels.length>1)
-			for(int i=0;i<labels.length-1;i++)
-				new Actions(getDriver()).moveToElement(getDriver().findElement(By.linkText(labels[i]))).build().perform();
-        getDriver().findElement(By.linkText(labels[labels.length-1])).click();
-	}*/
-	
 	protected void sendAutocompleteKeys(String elementClassPart,String value,String selectedXpath){
 		helper.sendKeys(elementClassPart, value);
         getDriver().findElement(By.xpath(selectedXpath)).click();
@@ -91,31 +72,10 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
         
 	}
     
-    protected void clickFormSubmitButton(){
-    	getDriver().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[2]/div/button")).click();
-    }
-    
-    protected void submitForm(){
-    	clickFormSubmitButton();
-        //
-        clickFormOperationResultOkButton(Boolean.TRUE);
-    }
-    
-    protected void clickFormOperationResultOkButton(Boolean isMessageDialog){
-    	if(Boolean.TRUE.equals(isMessageDialog))
-    		getDriver().findElement(By.xpath("//*[@id=\"form:messageDialogIdOkButton\"]/span[1]")).click();
-    	else
-    		getDriver().findElement(By.xpath("/html/body/div[11]/div[2]/table/tbody/tr[2]/td/div/button")).click();
-    	
-    }
-    
-    protected void clickFormOperationConfirmYesButton(){
-    	getDriver().findElement(By.xpath("/html/body/div[11]/div[3]/button[1]")).click();
-    }
-    
     /**/
     
     protected void clickContextMenu(Integer actionIndex){
+    	pause(1000 * 1l);
     	getDriver().findElement(By.xpath("/html/body/div[2]/form/div[1]/ul/li["+(actionIndex+1)+"]/a")).click();
     }
     protected void clickEditContextMenu(){

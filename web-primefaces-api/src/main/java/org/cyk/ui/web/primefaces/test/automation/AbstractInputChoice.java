@@ -1,9 +1,12 @@
 package org.cyk.ui.web.primefaces.test.automation;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import org.openqa.selenium.WebElement;
 
 @Getter @Setter
 public abstract class AbstractInputChoice extends AbstractInput<Integer> implements Serializable {
@@ -17,19 +20,19 @@ public abstract class AbstractInputChoice extends AbstractInput<Integer> impleme
 		this.filter = filter;
 	}
 	
-	public void select(){
-		
+	@Override
+	protected String getKeysToSend() {
+		return filter;
 	}
 	
-	/**/
-	
-	public static class Default extends AbstractInputChoice implements Serializable {
-
-		private static final long serialVersionUID = 5519338294670669750L;
-
-		public Default(String fieldName, String filter,Integer value) {
-			super(fieldName, filter,value);
-		}
-		
+	@Override
+	public AbstractInputChoice sendKeys() {
+		super.sendKeys();
+		List<WebElement> choices = getChoices();
+		choices.get(value).click();
+		return this;
 	}
+	
+	protected abstract List<WebElement> getChoices();
+	
 }

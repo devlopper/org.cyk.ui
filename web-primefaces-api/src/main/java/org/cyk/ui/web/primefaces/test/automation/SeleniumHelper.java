@@ -1,11 +1,12 @@
 package org.cyk.ui.web.primefaces.test.automation;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
-import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
-import org.cyk.ui.api.CascadeStyleSheet;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.ui.web.primefaces.page.security.LoginPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -15,9 +16,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class SeleniumHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,14 +35,20 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	private static final String COMMAND_UNIQUE_CLASS_PART = "command_%s_";
 	
 	@Getter @Setter private WebDriver driver;
-	@Getter @Setter private String context,scheme="http",host="localhost",port="8080";
+	@Getter @Setter private String context,scheme,host,port;
+	
+	private SeleniumHelper() {}
 	
 	/* Functionalities */
 	
 	public void login(String username,String password){
-		sendKeysOnInput(LoginPage.Form.FIELD_USERNAME,username);
-		sendKeysOnInput(LoginPage.Form.FIELD_PASSWORD,password);
-		clickCommand("connect");
+		Form form = new Form("connect");
+        form.addInputText(LoginPage.Form.FIELD_USERNAME, username)
+        	.addInputText(LoginPage.Form.FIELD_PASSWORD,password)
+        	;
+        form.sendKeys();
+        form.getSubmitCommandable().setNotified(Boolean.FALSE);
+        form.submit();
 	}
 	
 	public void logout(String username){
@@ -61,23 +65,11 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	
 	public void sendKeys(Collection<? extends AbstractInput<?>> inputs){
 		for(AbstractInput<?> input : inputs)
-			input.sendKeys(value);
+			input.sendKeys();
 	}
-	
-	public WebElement sendKeysOnInput(String labelIdPart,String value){
-		return sendKeys(getInput(labelIdPart),value);
+	public void sendKeys(AbstractInput<?>...inputs){
+		sendKeys(Arrays.asList(inputs));
 	}
-	public void clickOnRadioInput(String labelIdPart,Integer index){
-		List<WebElement> webElements = getInput(labelIdPart).findElements(By.cssSelector(".ui-radiobutton-icon"));
-        webElements.get(index).click();
-	}
-	public void sendKeysOnAutocompleteInput(String labelIdPart,String value,Integer selectedIndex){
-		sendKeysOnInput(labelIdPart, value);
-		WebElement div = getElementByClassContains("results_container_inputoneautocomplete_field_"+labelIdPart);
-		List<WebElement> choices = div.findElements(By.cssSelector("ul > li"));
-		choices.get(selectedIndex).click();
-	}
-	
 	
 	/* Commands */
 	
@@ -111,15 +103,7 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	public WebElement getElementByClassContains(String value){
 		return driver.findElement(By.cssSelector(String.format(ATTRIBUTE_CONTAINS, ATTRIBUTE_NAME_CLASS,value)));
 	}
-	public WebElement getInput(String labelIdPart){
-		String classNamePart = CascadeStyleSheet.generateClassFrom(null, LanguageBusinessImpl.buildIdentifierFromFieldName(labelIdPart,LanguageBusinessImpl.FIELD_MARKER_START));
-		WebElement webElement =  getElementByClassContains(classNamePart);
-		if(webElement.getAttribute("class").contains("ui-calendar"))
-			webElement = webElement.findElement(By.tagName("input"));
-		else if(webElement.getAttribute("class").contains("ui-autocomplete"))
-			webElement = webElement.findElement(By.tagName("input"));
-		return webElement;
-	}
+	
 	public WebElement getCommandable(String labelIdPart){
 		return getElementByClassContains(String.format(COMMAND_UNIQUE_CLASS_PART, labelIdPart));
 	}

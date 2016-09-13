@@ -24,6 +24,7 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUITargetManager;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -158,7 +159,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			if(control instanceof org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>){
 				org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?> autoComplete = 
 						(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>) control;
-				autoComplete.getCommon().getResultsContainerCascadeStyleSheet().addClass("results_container_"+autoComplete.getUniqueCssClass());
+				autoComplete.getCommon().getResultsContainerCascadeStyleSheet().addClass(CascadeStyleSheet.RESULTS_CONTAINER_CLASS_PREFIX+autoComplete.getUniqueCssClass());
 			}
 		}
 	}

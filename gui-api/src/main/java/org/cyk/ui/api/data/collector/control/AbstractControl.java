@@ -14,6 +14,7 @@ import org.cyk.ui.api.data.collector.form.AbstractControlSet;
 import org.cyk.ui.api.data.collector.layout.Position;
 import org.cyk.utility.common.cdi.AbstractBean;
 
+@SuppressWarnings("unchecked")
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> extends AbstractBean implements Control<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM>,Serializable {
 
@@ -28,7 +29,7 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	
 	{
 		id = System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(2);
-		type = getClass().getSimpleName();
+		type = getType((Class<AbstractControl<?, ?, ?, ?, ?>>) getClass());
 	}
 	
 	protected static String text(String code) {
@@ -44,5 +45,9 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 		css.removeClass(this.uniqueCssClass);
 		this.uniqueCssClass = uniqueCssClass;
 		css.addClass(getUniqueCssClass());
+	}
+	
+	public static String getType(Class<? extends AbstractControl<?, ?, ?, ?, ?>> aClass){
+		return aClass.getSimpleName();
 	}
 } 
