@@ -40,15 +40,17 @@ public abstract class AbstractInput<TYPE> extends AbstractBean implements Serial
 		webElement.clear();
 		return this;
 	}
+	protected abstract AbstractInput<TYPE> __sendKeys__();
+	
 	public AbstractInput<TYPE> sendTabKey(){
 		webElement.sendKeys(Keys.TAB);
 		return this;
 	}
 	
-	public AbstractInput<TYPE> sendKeys(String value){
+	public AbstractInput<TYPE> sendKeys(){
 		if(Boolean.TRUE.equals(clearBeforeSendKeys))
 			clear();
-		webElement.sendKeys(value);
+		__sendKeys__();
 		if(Boolean.TRUE.equals(sendTabKeyAfterSendKeys))
 			sendTabKey();
 		return this;

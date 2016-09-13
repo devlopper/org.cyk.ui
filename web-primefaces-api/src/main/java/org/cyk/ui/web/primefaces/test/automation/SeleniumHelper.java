@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.test.automation;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
@@ -57,6 +58,11 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	}
 	
 	/* Inputs */
+	
+	public void sendKeys(Collection<? extends AbstractInput<?>> inputs){
+		for(AbstractInput<?> input : inputs)
+			input.sendKeys(value);
+	}
 	
 	public WebElement sendKeysOnInput(String labelIdPart,String value){
 		return sendKeys(getInput(labelIdPart),value);
