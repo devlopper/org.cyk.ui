@@ -29,7 +29,7 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	
 	{
 		id = System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(2);
-		type = getType((Class<AbstractControl<?, ?, ?, ?, ?>>) getClass());
+		type = getControlType((Class<AbstractControl<?, ?, ?, ?, ?>>) getClass());
 	}
 	
 	protected static String text(String code) {
@@ -47,7 +47,7 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 		css.addClass(getUniqueCssClass());
 	}
 	
-	public static String getType(Class<? extends AbstractControl<?, ?, ?, ?, ?>> aClass){
+	public static String getControlType(Class<?> aClass){
 		return aClass.getSimpleName();
 	}
 } 

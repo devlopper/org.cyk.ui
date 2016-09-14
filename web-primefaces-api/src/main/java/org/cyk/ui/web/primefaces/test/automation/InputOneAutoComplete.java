@@ -17,7 +17,7 @@ public class InputOneAutoComplete extends AbstractInputChoice implements Seriali
 	public InputOneAutoComplete(String fieldName, String filter,Integer value) {
 		super(fieldName, filter,value);
 		resultsContainerWebElement = SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.RESULTS_CONTAINER_CLASS_PREFIX
-				+AbstractControl.getType(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete.class).toLowerCase()+className);
+				+AbstractControl.getControlType(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete.class).toLowerCase()+className);
 	}
 	
 	@Override
