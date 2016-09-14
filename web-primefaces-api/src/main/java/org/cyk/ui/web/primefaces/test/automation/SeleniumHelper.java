@@ -102,14 +102,17 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	public WebElement getElementByClassContains(WebElement parent,String value){
 		return (parent == null ? driver : parent).findElement(By.cssSelector(String.format(ATTRIBUTE_CONTAINS, ATTRIBUTE_NAME_CLASS,value)));
 	}
-	public WebElement getElementByClassContains(String...values){
+	public WebElement getElementByClassContains(WebElement parent,String...values){
 		WebElement element = null;
 		for(int i = 0 ; i < values.length ; i++)
-			if( i == 0)
-				element = getElementByClassContains(null, values[i]);
+			if( i == 0 )
+				element = getElementByClassContains(parent, values[i]);
 			else
 				element = getElementByClassContains(element, values[i]);
 		return element;
+	}
+	public WebElement getElementByClassContains(String...values){
+		return getElementByClassContains(null, values);
 	}
 	
 	/*public WebElement getCommandable(String labelIdPart){

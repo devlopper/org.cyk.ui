@@ -1,7 +1,5 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
-import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
-import org.openqa.selenium.By;
 
 public class SeleniumApiIT extends AbstractWebIT {
 

@@ -32,13 +32,6 @@ public class Table extends AbstractElement implements Serializable {
 		return super.findWebElement().findElement(By.cssSelector(".ui-datatable-tablewrapper")).findElement(By.tagName("table"));
 	}
 	
-	public Table click(Integer rowIndex,Integer actionIndex){
-		//"/html/body/div[3]/div[2]/form/div[1]/div/div[2]/div[2]/table/tbody/tr["+rowIndex+"]/td[5]/table/tbody/tr/td["+actionIndex+"]/button")).click();
-		getWebElement().findElement(By.xpath("/html/body/div[3]/div[2]/form/div[1]/div/div[2]/div[2]/table/tbody/tr["+rowIndex+"]/td[5]/table/tbody/tr/td["+actionIndex+"]/button")).click();
-		//getWebElement().findElement(By.xpath("/tbody/tr["+rowIndex+"]/td[5]/table/tbody/tr/td["+actionIndex+"]/button")).click();
-    	return this;
-	}
-	
 	public Table clickCreate(){
 		getHelper().getElementByClassContains(className,"add").click();
 		return this;

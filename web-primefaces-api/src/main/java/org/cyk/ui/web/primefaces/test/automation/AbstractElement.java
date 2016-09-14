@@ -48,6 +48,11 @@ public abstract class AbstractElement extends AbstractBean implements Serializab
     	return this;
     }
 	
+	public AbstractElement getElementByClassContains(String...values){
+		getHelper().getElementByClassContains(getWebElement(),values).click();
+		return this;
+    }
+	
 	public SeleniumHelper getHelper(){
 		return SeleniumHelper.getInstance();
 	}

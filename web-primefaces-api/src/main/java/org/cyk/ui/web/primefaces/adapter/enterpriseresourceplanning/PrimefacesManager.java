@@ -77,7 +77,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configureEventModule() {
 		super.configureEventModule();
 		getFormConfiguration(Event.class, Crud.CREATE)
-			.addRequiredFieldNames(EventEditPage.Form.FIELD_NAME,EventEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE,PeriodFormModel.FIELD_TO_DATE);
+			.addRequiredFieldNames(EventEditPage.Form.FIELD_CODE,EventEditPage.Form.FIELD_NAME,EventEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE,PeriodFormModel.FIELD_TO_DATE);
 		
 		registerDetailsConfiguration(EventDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
@@ -88,7 +88,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,EventDetails.FIELD_NAME,EventDetails.FIELD_PERIOD,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE);
+						return isFieldNameIn(field,EventDetails.FIELD_CODE,EventDetails.FIELD_NAME,EventDetails.FIELD_PERIOD,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE);
 					}
 				};
 			}
