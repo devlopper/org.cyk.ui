@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.utility.common.Constant;
 import org.openqa.selenium.Keys;
 
 @Getter @Setter
@@ -24,7 +25,7 @@ public abstract class AbstractInput<TYPE> extends AbstractElement implements Ser
 	
 	@Override
 	protected String buildClassName(String fieldName) {
-		return CascadeStyleSheet.generateClassFrom(null, LanguageBusinessImpl.buildIdentifierFromFieldName(fieldName,LanguageBusinessImpl.FIELD_MARKER_START));
+		return CascadeStyleSheet.generateClassFrom(Constant.EMPTY_STRING, LanguageBusinessImpl.buildIdentifierFromFieldName(fieldName,LanguageBusinessImpl.FIELD_MARKER_START));
 	}
 	
 	public AbstractInput<TYPE> clear(){

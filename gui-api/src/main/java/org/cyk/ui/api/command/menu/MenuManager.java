@@ -28,6 +28,7 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserDeviceType;
@@ -104,7 +105,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public UICommandable createModuleGroup(final AbstractUserSession<?,?> userSession,final ModuleGroup moduleGroup) {
+	public UICommandable createModuleGroup(final AbstractUserSession<?,?> userSession,final Collection<SystemMenu> systemMenus,final ModuleGroup moduleGroup) {
 		Boolean moduleGroupCreateable = ListenerUtils.getInstance().getBoolean(menuListeners, new ListenerUtils.BooleanMethod<Listener>() {
 			@Override
 			public Boolean execute(Listener listener) {
@@ -137,6 +138,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 			break;
 		case USER_ACCOUNT:
 			commandableGroup = Builder.instanciateOne().setLabel(userSession.getUserAccount().getCredentials().getUsername()).create();
+			commandableGroup.getCascadeStyleSheet().addClass(CascadeStyleSheet.generateUniqueClassFrom(CascadeStyleSheet.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX
+					, commandableGroup.getLabel()));
 			commandableGroup.addChild(notificationsCommandable());
 			commandableGroup.addChild(c=Builder.instanciateOne().setLabelFromId("command.useraccount").setIcon(Icon.THING_USERACCOUNT).setView(ViewType.USER_ACCOUNT_CONSULT).create());
 			//c.addDefaultParameters();
@@ -151,7 +154,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			break;
 		case REPORT:
 			commandableGroup = Builder.instanciateOne().setLabelFromId("command.report").setIcon(Icon.THING_REPORT).create();
-			for(SystemMenu systemMenu : systemMenus(userSession)){
+			for(SystemMenu systemMenu : systemMenus){
 				for(UICommandable reportCommandable : systemMenu.getReports())
 					commandableGroup.addChild(reportCommandable);
 			}
@@ -160,7 +163,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			commandableGroup = Builder.instanciateOne().setLabelFromId("command.administration").setIcon(Icon.ACTION_ADMINISTRATE).create();
 			commandableGroup.addChild(Builder.createList(Application.class, null));
 			commandableGroup.addChild(Builder.createList(License.class, null));
-			for(SystemMenu systemMenu : systemMenus(userSession)){
+			for(SystemMenu systemMenu : systemMenus){
 				for(UICommandable commandable : systemMenu.getAdministrations())
 					commandableGroup.addChild(commandable);
 			}
@@ -179,7 +182,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private Collection<SystemMenu> systemMenus(AbstractUserSession<?,?> userSession){
+	public Collection<SystemMenu> systemMenus(AbstractUserSession<?,?> userSession){
 		Collection<SystemMenu> collection = new ArrayList<>();
 		for(AbstractApplicationUIManager applicationUIManager : UIManager.getInstance().getApplicationUImanagers())
 			if(Boolean.TRUE.equals(applicationUIManager.getAutoAddToSystemMenu())){
@@ -198,30 +201,30 @@ public class MenuManager extends AbstractBean implements Serializable {
 		return collection;
 	}
 	
-	public UIMenu applicationMenu(AbstractUserSession<?,?> userSession){
+	public UIMenu applicationMenu(AbstractUserSession<?,?> userSession,Collection<SystemMenu> systemMenus){
 		logDebug("Build application menu for user {}", userSession.getUser().getCode());
 		UIMenu menu = new DefaultMenu();
-		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HOME));
-		business(userSession,menu);
+		menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.HOME));
+		business(userSession,menu,systemMenus);
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.REPORT));
 		
 		if(Boolean.TRUE.equals(userSession.getIsManager())){
-			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.TOOLS));
-			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.CONTROL_PANEL));
+			menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.TOOLS));
+			menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.CONTROL_PANEL));
 		}
-		menu.addCommandable(createModuleGroup(userSession, ModuleGroup.USER_ACCOUNT));
+		menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.USER_ACCOUNT));
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
 		
 		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
-			menu.addCommandable(createModuleGroup(userSession, ModuleGroup.ADMINISTRATION));
+			menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.ADMINISTRATION));
 		}
 		return menu;
 	}
 	
-	public UIMenu mobileApplicationMenu(AbstractUserSession<?,?> userSession){
+	public UIMenu mobileApplicationMenu(AbstractUserSession<?,?> userSession,Collection<SystemMenu> systemMenus){
 		UIMenu menu = new DefaultMenu();
 		menu.addCommandable(homeCommandable());
-		mobileBusiness(userSession,menu);
+		mobileBusiness(userSession,menu,systemMenus);
 		menu.addCommandable(agendaCommandable());
 		menu.addCommandable(notificationsCommandable());
 		menu.addCommandable(logoutCommandable());
@@ -229,7 +232,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public UIMenu referenceEntityMenu(AbstractUserSession<?,?> userSession){
+	public UIMenu referenceEntityMenu(AbstractUserSession<?,?> userSession,Collection<SystemMenu> systemMenus){
 		UIMenu menu = new DefaultMenu();
 		if(Boolean.TRUE.equals(autoGenerateReferenceEntityMenu)){
 			UICommandable p;
@@ -263,7 +266,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 				}
 			}
 		}else{
-			for(SystemMenu systemMenu : systemMenus(userSession)){
+			for(SystemMenu systemMenu : systemMenus){
 				for(UICommandable referenceEntityGroup : systemMenu.getReferenceEntities()){
 					menu.addCommandable(referenceEntityGroup);
 					for(Listener listener : menuListeners)
@@ -321,8 +324,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	/**/
 	
 	@SuppressWarnings("unchecked")
-	private void business(AbstractUserSession<?,?> userSession,UIMenu menu){
-		for(SystemMenu systemMenu : systemMenus(userSession)){
+	private void business(AbstractUserSession<?,?> userSession,UIMenu menu,Collection<SystemMenu> systemMenus){
+		for(SystemMenu systemMenu : systemMenus){
 			for(UICommandable businessModuleGroup : systemMenu.getBusinesses()){
 				menu.addCommandable(businessModuleGroup);
 				for(Listener listener : menuListeners)
@@ -332,8 +335,8 @@ public class MenuManager extends AbstractBean implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void mobileBusiness(AbstractUserSession<?,?> userSession,UIMenu menu){
-		for(SystemMenu systemMenu : systemMenus(userSession)){
+	private void mobileBusiness(AbstractUserSession<?,?> userSession,UIMenu menu,Collection<SystemMenu> systemMenus){
+		for(SystemMenu systemMenu : systemMenus){
 			for(UICommandable businessModuleGroup : systemMenu.getMobileBusinesses()){
 				menu.addCommandable(businessModuleGroup);
 				for(Listener listener : menuListeners)

@@ -48,6 +48,9 @@ public abstract class AbstractElement extends AbstractBean implements Serializab
     	return this;
     }
 	
+	public SeleniumHelper getHelper(){
+		return SeleniumHelper.getInstance();
+	}
 	public WebDriver getDriver(){
 		return SeleniumHelper.getInstance().getDriver();
 	}

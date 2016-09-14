@@ -55,7 +55,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	public Commandable getEventCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Event.class, Icon.THING_CALENDAR);
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.EVENT).getName());
-		module.addChild(createListCommandable(EventMissedReason.class, null));
+		addChild(userSession,module,createListCommandable(EventMissedReason.class, null));
 		module.addChild(createListCommandable(Event.class, null));
 		module.addChild(createListCommandable(EventParty.class, null));
 		module.addChild(createListCommandable(EventMissed.class, null));

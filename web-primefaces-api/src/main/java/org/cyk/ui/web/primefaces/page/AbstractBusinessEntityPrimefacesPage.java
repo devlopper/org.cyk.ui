@@ -84,7 +84,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	
 	@Override
 	protected String buildContentTitle() {
-		StringBuilder stringBuilder = new StringBuilder(languageBusiness.findDoSomethingText(getContentTitleDoSomethingTextParameters()));
+		StringBuilder stringBuilder = new StringBuilder(languageBusiness.findDoSomethingText(getContentTitleDoSomethingTextParameters()).getIdentifier());
 		if(identifiable==null){
 			
 		}else{

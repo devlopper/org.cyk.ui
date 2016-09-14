@@ -9,17 +9,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 @Getter @Setter
-public class ContextMenu extends AbstractElement implements Serializable {
+public class ContextMenu extends AbstractMenu implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public ContextMenu(String className) {
 		super(className);
-	}
-	
-	@Override
-	protected String buildClassName(String className) {
-		return className;
 	}
 	
 	@Override

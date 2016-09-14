@@ -5,6 +5,8 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -13,8 +15,11 @@ public class Table extends AbstractElement implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Table(String className) {
+	private Class<? extends AbstractIdentifiable> identifiableClass;
+	
+	public Table(Class<? extends AbstractIdentifiable> identifiableClass,String className) {
 		super(className);
+		this.identifiableClass = identifiableClass;
 	}
 	
 	@Override
@@ -35,18 +40,20 @@ public class Table extends AbstractElement implements Serializable {
 	}
 	
 	public Table clickCreate(){
-		SeleniumHelper.getInstance().clickCommand("add");
-		//SeleniumHelper.getInstance().getElementByClassContains(className).findElement(By.className(className))
+		getHelper().getElementByClassContains(className,"add").click();
 		return this;
     }
-	public Table clickRead(Integer index){
-		return click(index, 1);
+	public Table clickRead(String identifier){
+		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"open").click();
+		return this;
     }
-	public Table clickUpdate(Integer index){
-		return click(index, 2);
+	public Table clickUpdate(String identifier){
+		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"edit").click();
+		return this;
     }
-	public Table clickDelete(Integer index){
-		return click(index, 3);
+	public Table clickDelete(String identifier){
+		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"remove").click();
+		return this;
     }
 	
 }

@@ -217,7 +217,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				}
 				@Override
 				public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
-					return inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE);
+					return inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE).getValue();
 				}	
 			}
 		}

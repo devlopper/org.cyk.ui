@@ -11,6 +11,7 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -174,6 +175,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		private Class<? extends AbstractIdentifiable> identifiableClass;
 		private Boolean one;
 		private AbstractIdentifiable master;
+		private FindTextResult findTextResult;
 		
 		public Builder(Class<COMMANDABLE> commandableClass) {
 			super(commandableClass);
@@ -190,10 +192,12 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return this;
 		}
 		public Builder<COMMANDABLE> setLabelFromId(String labelId){
-			setLabel(inject(LanguageBusiness.class).findText(labelId));
+			findTextResult = new FindTextResult(labelId, inject(LanguageBusiness.class).findText(labelId));
+			setLabel(findTextResult.getValue());
+			/*instance.setIdentifier(findTextResult.getIdentifier());
 			if(instance.cascadeStyleSheet!=null && StringUtils.isNotBlank(instance.label))
-				instance.cascadeStyleSheet.addClass(CascadeStyleSheet.generateUniqueClassFrom("commandable",labelId)); //TODO many call of setLabel will add too more classes where previous are useless
-			return this;
+				instance.cascadeStyleSheet.addClass(CascadeStyleSheet.generateUniqueClassFrom(instance,findTextResult)); //TODO many call of setLabel will add too more classes where previous are useless
+			*/return this;
 		}
 		public Builder<COMMANDABLE> setSelectedTabId(String selectedTabId){
 			this.selectedTabId = selectedTabId;
@@ -437,7 +441,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			parameters.setActionIdentifier(CommonBusinessAction.CREATE);
 			parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 			parameters.setVerb(Boolean.TRUE);
-			c.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters));
+			c.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters).getValue());
 			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))
 				c.setViewType(ViewType.DYNAMIC_CRUD_ONE);
 			else{
@@ -454,7 +458,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		}
 		
 		public static UICommandable createList(BusinessEntityInfos businessEntityInfos,Icon icon){
-			return instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.LIST)
+			UICommandable commandable = instanciateOne().setIcon(icon).setCommonBusinessAction(CommonBusinessAction.LIST)
 					.setBusinessEntityInfos(businessEntityInfos)
 					.create();	
 			/*
@@ -470,6 +474,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			}
 			return c;
 			*/
+			return commandable;
 		}
 		
 		public static UICommandable createList(Class<? extends AbstractIdentifiable> aClass,Icon icon){
@@ -563,12 +568,16 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			if(StringUtils.isBlank(instance.getLabel()))
 				if(StringUtils.isBlank(actionIdentifier))
 					setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(commonBusinessAction, identifiableClass));
-				else
-					setLabel(inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, instance.getBusinessEntityInfos(), Boolean.TRUE));
+				else{
+					findTextResult = inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, instance.getBusinessEntityInfos(), Boolean.TRUE);					
+					setLabel(findTextResult.getValue());
+				}
 			//setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(actionIdentifier, identifiableClass));
 			
-			if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null)
-				instance.setLabel(inject(LanguageBusiness.class).findDoSomethingText(labelParameters));
+			if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null){
+				findTextResult = inject(LanguageBusiness.class).findDoSomethingText(labelParameters);
+				instance.setLabel(findTextResult.getValue());
+			}
 			
 			if(master!=null)
 				addParameters(master);
@@ -589,6 +598,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			else
 				instance.addParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
 			
+			if(findTextResult!=null){
+				instance.setIdentifier(findTextResult.getIdentifier());
+				if(instance.cascadeStyleSheet!=null && StringUtils.isNotBlank(instance.label))
+					instance.cascadeStyleSheet.addClass(CascadeStyleSheet.generateUniqueClassFrom(instance,findTextResult)); //TODO many call of setLabel will add too more classes where previous are useless
+			}
 			return instance;
 		}
 		

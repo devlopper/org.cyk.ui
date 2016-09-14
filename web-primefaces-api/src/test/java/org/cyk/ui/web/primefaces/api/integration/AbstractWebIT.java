@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces.api.integration;
 
 import java.util.concurrent.TimeUnit;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.web.primefaces.test.automation.ContextMenu;
 import org.cyk.ui.web.primefaces.test.automation.GlobalMenu;
@@ -71,10 +72,12 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 	
     @Override
 	protected void __execute__() {
-        getDriver().manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-        
-        
+        getDriver().manage().timeouts().implicitlyWait(getImplicitlyWaitNumberOfSecond(), TimeUnit.SECONDS);
 	}
+    
+    protected Integer getImplicitlyWaitNumberOfSecond(){
+    	return 60;
+    }
     
     /**/
     protected void clickGlobalMenu(String...labels){
@@ -88,11 +91,11 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
     	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickDelete();
     }
     
-    protected void clickTableCreate(){
-    	new Table("dataTableStyleClass").clickCreate();
+    protected void clickTableCreate(Class<? extends AbstractIdentifiable> identifiableClass){
+    	new Table(identifiableClass,"dataTableStyleClass").clickCreate();
     }
     
-    protected void clickTableRead(Integer index){
-    	new Table("dataTableStyleClass").clickRead(index);
+    protected void clickTableRead(Class<? extends AbstractIdentifiable> identifiableClass,String identifier){
+    	new Table(identifiableClass,"dataTableStyleClass").clickRead(identifier);
     }
 }

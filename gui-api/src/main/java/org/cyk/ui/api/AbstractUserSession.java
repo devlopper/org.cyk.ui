@@ -22,6 +22,7 @@ import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.MenuManager;
+import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
@@ -79,9 +80,10 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 		isManager = inject(UserAccountBusiness.class).hasRole(userAccount, inject(RoleBusiness.class).find(Role.MANAGER));
 		
 		setUserAccount(userAccount);
-		setApplicationMenu(MenuManager.getInstance().applicationMenu(this));
-		setMobileApplicationMenu(MenuManager.getInstance().mobileApplicationMenu(this));
-		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this));
+		Collection<SystemMenu> systemMenus = MenuManager.getInstance().systemMenus(this);
+		setApplicationMenu(MenuManager.getInstance().applicationMenu(this,systemMenus));
+		setMobileApplicationMenu(MenuManager.getInstance().mobileApplicationMenu(this,systemMenus));
+		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this,systemMenus));
 		setSecurityMenu(MenuManager.getInstance().securityMenu(this));
 		setUserAccountMenu(MenuManager.getInstance().userAccountMenu(this));
 		setContextualMenu(MenuManager.getInstance().sessionContextualMenu(this));

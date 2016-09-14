@@ -7,6 +7,8 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.web.primefaces.page.security.LoginPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -30,8 +32,8 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	public static final String ATTRIBUTE_CONTAINS = getAttributeValueMatchsFormat(Constant.CHARACTER_STAR.toString());
 	public static final String ATTRIBUTE_ENDS_WITH = getAttributeValueMatchsFormat(Constant.CHARACTER_DOLLAR.toString());
 	
-	private static final String URL = "%s://%s:%s/%s/private/%s.jsf";
-	private static final String COMMAND_UNIQUE_CLASS_PART = "command_%s_";
+	private static final String URL = "%s://%s:%s/%s/private/%s.jsf%s";
+	//private static final String COMMAND_UNIQUE_CLASS_PART = "command_%s_";
 	
 	@Getter @Setter private WebDriver driver;
 	@Getter @Setter private String context,scheme,host,port;
@@ -51,7 +53,7 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	}
 	
 	public void logout(String username){
-		clickGlobalMenu(username,"Se deconnecter");
+		clickGlobalMenu(CascadeStyleSheet.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX,"commandable_command_useraccount_logout_");
 	}
 	
 	/* Pages */
@@ -72,14 +74,17 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	
 	/* Commands */
 	
-	public void clickCommand(String labelIdPart){
+	/*public void clickCommand(String labelIdPart){
 		getCommandable(labelIdPart).click();
-	}
+	}*/
 	
 	/*UI action*/
 	
+	public void goToPage(String relativeUrl,String query) {
+		 driver.get(String.format(URL, scheme,host,port,context,relativeUrl,StringUtils.isBlank(query) ? Constant.EMPTY_STRING : (Constant.CHARACTER_QUESTION_MARK+query)));
+	}
 	public void goToPage(String relativeUrl) {
-		 driver.get(String.format(URL, scheme,host,port,context,relativeUrl));
+		goToPage(relativeUrl, null);
 	}
 	
 	public void clickGlobalMenu(String...labels){
@@ -94,13 +99,22 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	public WebElement getElementByAttributeContains(String attribute,String value){
 		return driver.findElement(By.cssSelector(String.format(ATTRIBUTE_CONTAINS, attribute,value)));
 	}
-	public WebElement getElementByClassContains(String value){
-		return driver.findElement(By.cssSelector(String.format(ATTRIBUTE_CONTAINS, ATTRIBUTE_NAME_CLASS,value)));
+	public WebElement getElementByClassContains(WebElement parent,String value){
+		return (parent == null ? driver : parent).findElement(By.cssSelector(String.format(ATTRIBUTE_CONTAINS, ATTRIBUTE_NAME_CLASS,value)));
+	}
+	public WebElement getElementByClassContains(String...values){
+		WebElement element = null;
+		for(int i = 0 ; i < values.length ; i++)
+			if( i == 0)
+				element = getElementByClassContains(null, values[i]);
+			else
+				element = getElementByClassContains(element, values[i]);
+		return element;
 	}
 	
-	public WebElement getCommandable(String labelIdPart){
+	/*public WebElement getCommandable(String labelIdPart){
 		return getElementByClassContains(String.format(COMMAND_UNIQUE_CLASS_PART, labelIdPart));
-	}
+	}*/
 	
 	public WebElement sendKeys(WebElement element,String value,Boolean autoClear){
 		if(Boolean.TRUE.equals(autoClear))

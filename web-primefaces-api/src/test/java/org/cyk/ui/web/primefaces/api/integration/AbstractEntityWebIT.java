@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.test.automation.Form;
 
 public abstract class AbstractEntityWebIT extends AbstractWebIT {
@@ -13,13 +14,13 @@ public abstract class AbstractEntityWebIT extends AbstractWebIT {
 	protected abstract String[] getListMenuItemPath();
 	
 	protected void create(){
-		clickTableCreate();    
+		clickTableCreate(getIdentifiableClass());    
         getForm(Crud.CREATE).sendKeys().submit();
 	}
 	protected abstract Form getForm(Crud crud);
 	
 	protected void read(){
-		clickTableRead(getRecordIndex());
+		clickTableRead(getIdentifiableClass(),getIdentifier(Crud.READ));
 	}
 	
 	protected void update(){
@@ -42,6 +43,7 @@ public abstract class AbstractEntityWebIT extends AbstractWebIT {
        delete();
 	}
     
-    protected abstract Integer getRecordIndex();
+    protected abstract Class<? extends AbstractIdentifiable> getIdentifiableClass();
+    protected abstract String getIdentifier(Crud crud);
        
 }

@@ -109,7 +109,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
 		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
 		parameters.setActionIdentifier("choice");
-		parameters.setForWhat(languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.TRUE));
+		parameters.setForWhat(languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.TRUE).getValue());
 		return parameters;
 	}
 		

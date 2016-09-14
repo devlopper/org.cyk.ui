@@ -56,8 +56,9 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		if(commandable==null)
 			;
 		else
-			if(Boolean.TRUE.equals(isCommandableVisible(userSession,commandable)))
-				commandables.add(commandable); 
+			if(Boolean.TRUE.equals(isCommandableVisible(userSession,commandable))){
+				commandables.add(commandable);
+			}
 	}
 	
 	protected Boolean isCommandableVisible(final USER_SESSION userSession,final COMMANDABLE commandable){
@@ -97,7 +98,6 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	protected COMMANDABLE createModuleCommandable(String labelId,Icon icon){
 		@SuppressWarnings("unchecked")
 		COMMANDABLE module = (COMMANDABLE) AbstractCommandable.Builder.create(labelId, icon);
-		
 		return module;
 	}
 	protected COMMANDABLE createModuleCommandable(Class<? extends AbstractIdentifiable> businessClass,Icon icon){

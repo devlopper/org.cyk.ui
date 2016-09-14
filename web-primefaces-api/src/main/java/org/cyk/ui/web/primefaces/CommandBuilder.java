@@ -67,7 +67,9 @@ public class CommandBuilder extends AbstractBean implements Serializable {
 			if(aCommandable.getCascadeStyleSheet()!=null){
 				menuItem.setStyleClass(aCommandable.getCascadeStyleSheet().getClazz());
 				menuItem.setStyle(aCommandable.getCascadeStyleSheet().getInline());
+				
 			}
+			
 			if(aCommandable.getIsNavigationCommand()){
 				if(aCommandable.getViewType()==null){
 					if(aCommandable.getViewId()!=null){
@@ -142,6 +144,10 @@ public class CommandBuilder extends AbstractBean implements Serializable {
 			subMenu.setRendered(Boolean.TRUE.equals(aCommandable.getRendered()));
 			if(aCommandable.getIcon()!=null)
 				subMenu.setIcon(FontAwesomeIconSet.INSTANCE.get(aCommandable.getIcon()));
+			if(aCommandable.getCascadeStyleSheet()!=null){
+				subMenu.setStyleClass(aCommandable.getCascadeStyleSheet().getClazz());
+				subMenu.setStyle(aCommandable.getCascadeStyleSheet().getInline());
+			}
 			for(UICommandable commandable : aCommandable.getChildren())
 				menuItem(commandable, subMenu, managedBeanName, fields);
 			return subMenu;
