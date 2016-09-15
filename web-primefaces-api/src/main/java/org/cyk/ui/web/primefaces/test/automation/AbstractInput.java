@@ -46,6 +46,7 @@ public abstract class AbstractInput<TYPE> extends AbstractElement implements Ser
 	
 	public AbstractInput<TYPE> sendTabKey(){
 		webElement.sendKeys(Keys.TAB);
+		pause(500);
 		return this;
 	}
 	
