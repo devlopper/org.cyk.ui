@@ -1,24 +1,20 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CascadeStyleSheet;
-import org.cyk.ui.web.primefaces.test.automation.ContextMenu;
-import org.cyk.ui.web.primefaces.test.automation.GlobalMenu;
 import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
-import org.cyk.ui.web.primefaces.test.automation.Table;
+import org.cyk.utility.common.test.Runnable;
 import org.cyk.utility.test.integration.ui.web.AbstractIntegrationWebTest;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 
 	private static final long serialVersionUID = 1L;
 
 	protected SeleniumHelper helper;
+	protected Collection<Runnable<?>> runnables = new ArrayList<>();
 
 	{
 		helper = SeleniumHelper.getInstance();
@@ -51,51 +47,14 @@ public abstract class AbstractWebIT extends AbstractIntegrationWebTest {
 	protected void goToLoginPage() {
 		helper.goToLoginPage(); 
 	}
-	
-	protected void pause(Long numberOfMillisecond){
-		try {
-			Thread.sleep(numberOfMillisecond);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	protected void waitForClickOn(String xpath,Long timeOutInSecond){
-		WebDriverWait wait = new WebDriverWait(getDriver(),timeOutInSecond);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
-	}
-	
-	protected void sendAutocompleteKeys(String elementClassPart,String value,String selectedXpath){
-		helper.sendKeys(elementClassPart, value);
-        getDriver().findElement(By.xpath(selectedXpath)).click();
-	}
-	
+			
     @Override
 	protected void __execute__() {
-        getDriver().manage().timeouts().implicitlyWait(getImplicitlyWaitNumberOfSecond(), TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(helper.getImplicitlyWaitNumberOfMillisecond(), TimeUnit.MILLISECONDS);
+        for(Runnable<?> runnable : runnables)
+        	runnable.run();
 	}
     
-    protected Integer getImplicitlyWaitNumberOfSecond(){
-    	return 60;
-    }
-    
     /**/
-    protected void clickGlobalMenu(String...labels){
-    	new GlobalMenu().click(labels);
-    }
-    
-    protected void clickContextualMenuEdit(){
-    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickEdit();
-    }
-    protected void clickContextualMenuDelete(){
-    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickDelete();
-    }
-    
-    protected void clickTableCreate(Class<? extends AbstractIdentifiable> identifiableClass){
-    	new Table(identifiableClass,"dataTableStyleClass").clickCreate();
-    }
-    
-    protected void clickTableRead(Class<? extends AbstractIdentifiable> identifiableClass,String identifier){
-    	new Table(identifiableClass,"dataTableStyleClass").clickRead(identifier);
-    }
+
 }

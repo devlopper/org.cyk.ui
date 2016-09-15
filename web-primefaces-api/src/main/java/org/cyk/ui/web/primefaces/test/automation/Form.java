@@ -19,25 +19,12 @@ public class Form extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final List<AbstractInput<?>> inputs = new ArrayList<>();
-	private Commandable submitCommandable/*,messageDialogOkCommandable*/;
+	private Commandable submitCommandable;
 	
 	public Form(String submitCommandableLabelIdentifier) {
 		submitCommandableLabelIdentifier = "command."+submitCommandableLabelIdentifier;
 		submitCommandable = new Commandable(submitCommandableLabelIdentifier);
 		submitCommandable.setNotified(Boolean.TRUE);
-		/*
-		messageDialogOkCommandable = new Commandable(CascadeStyleSheet.MESSAGE_DIALOG_OK_COMMANDABLE_CLASS){
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected String buildClassName(String labelIdentifier) {
-				return labelIdentifier;
-			}
-			@Override
-			public Boolean getIsStatic() {
-				return Boolean.FALSE;
-			}
-		};
-		*/
 	}
 	public Form() {
 		this("execute");
