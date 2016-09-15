@@ -1,6 +1,6 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
-import org.cyk.ui.web.primefaces.test.automation.event.PersonWebITRunner;
+import org.cyk.ui.web.primefaces.test.automation.party.PersonWebITRunner;
 
 public class PersonWebIT extends AbstractWebIT {
 

@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test.automation.event;
+package org.cyk.ui.web.primefaces.test.automation.party;
 
 import java.io.Serializable;
 
