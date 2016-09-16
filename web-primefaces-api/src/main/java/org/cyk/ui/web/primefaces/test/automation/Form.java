@@ -9,6 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.web.primefaces.test.automation.control.Commandable;
+import org.cyk.ui.web.primefaces.test.automation.control.input.AbstractInput;
+import org.cyk.ui.web.primefaces.test.automation.control.input.InputCalendar;
+import org.cyk.ui.web.primefaces.test.automation.control.input.InputFile;
+import org.cyk.ui.web.primefaces.test.automation.control.input.InputOneAutoComplete;
+import org.cyk.ui.web.primefaces.test.automation.control.input.InputOneRadio;
+import org.cyk.ui.web.primefaces.test.automation.control.input.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.generator.RandomDataProvider;
 import org.cyk.utility.common.generator.RandomDataProvider.RandomFile;

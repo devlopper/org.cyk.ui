@@ -1,10 +1,13 @@
 package org.cyk.ui.web.primefaces.test.automation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.utility.common.annotation.user.interfaces.Event;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,6 +20,7 @@ public abstract class AbstractElement extends AbstractBean implements Serializab
 	protected String className;
 	protected WebElement webElement;
 	protected Boolean isStatic = Boolean.TRUE;
+	protected Collection<Event.Listener> listeners = new ArrayList<>();
 	
 	public AbstractElement(String identifier) {
 		super();
@@ -44,7 +48,12 @@ public abstract class AbstractElement extends AbstractBean implements Serializab
 	}
 	
 	public AbstractElement click(){
-    	getWebElement().click();
+		Event.Listener.Adapter.listen(listeners, Event.CLICK, new Runnable() {
+			@Override
+			public void run() {
+				getWebElement().click();
+			}
+		});
     	return this;
     }
 	
@@ -59,4 +68,7 @@ public abstract class AbstractElement extends AbstractBean implements Serializab
 	public WebDriver getDriver(){
 		return SeleniumHelper.getInstance().getDriver();
 	}
+	
+	/**/
+	
 }

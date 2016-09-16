@@ -1,10 +1,12 @@
-package org.cyk.ui.web.primefaces.test.automation;
+package org.cyk.ui.web.primefaces.test.automation.control.menu;
 
 import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.ui.web.primefaces.test.automation.AbstractElement;
+import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.openqa.selenium.interactions.Actions;
 
 @Getter @Setter

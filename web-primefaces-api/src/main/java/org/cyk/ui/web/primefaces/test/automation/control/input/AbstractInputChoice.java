@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test.automation;
+package org.cyk.ui.web.primefaces.test.automation.control.input;
 
 import java.io.Serializable;
 import java.util.List;

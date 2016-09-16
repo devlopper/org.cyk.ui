@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.test.automation;
+package org.cyk.ui.web.primefaces.test.automation.control.input;
 
 import java.io.Serializable;
 
@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.web.primefaces.test.automation.AbstractElement;
 import org.cyk.utility.common.Constant;
 import org.openqa.selenium.Keys;
 

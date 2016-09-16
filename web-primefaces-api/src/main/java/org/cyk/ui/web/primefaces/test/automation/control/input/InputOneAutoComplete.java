@@ -1,10 +1,11 @@
-package org.cyk.ui.web.primefaces.test.automation;
+package org.cyk.ui.web.primefaces.test.automation.control.input;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.data.collector.control.AbstractControl;
+import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
