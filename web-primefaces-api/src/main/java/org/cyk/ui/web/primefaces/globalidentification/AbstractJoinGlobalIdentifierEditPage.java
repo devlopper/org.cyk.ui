@@ -43,6 +43,7 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 			//BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
 				.findByGlobalIdentifierValue(globalIdentifier);
 		
+		((AbstractForm<IDENTIFIABLE>)form.getData()).setJoinedIdentifiable(joinedIdentifiable);
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 1L;
 
@@ -80,6 +81,8 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 	@Getter @Setter
 	public static class AbstractForm<IDENTIFIABLE extends AbstractJoinGlobalIdentifier> extends AbstractFormModel<IDENTIFIABLE> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
+		
+		protected AbstractIdentifiable joinedIdentifiable;
 		
 		@Input @InputChoice(load=true) @InputOneChoice @InputOneCombo @NotNull protected GlobalIdentifier identifiableGlobalIdentifier;
 				

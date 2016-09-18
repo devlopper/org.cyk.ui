@@ -22,10 +22,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.persistence.api.file.FileIdentifiableGlobalIdentifierDao;
+import org.cyk.system.root.persistence.api.file.FileRepresentationTypeDao;
+import org.cyk.system.root.persistence.impl.Utils;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
@@ -148,6 +153,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	
 	@Getter private String outcomeFileConsultMany = "fileConsultManyView";
 	@Getter private String outcomeProcessMany = "dynamicProcessMany";
+	
+	@Getter private String outcomeReportFileGenerate = "reportFileGenerateView";
 	
 	@Getter private String pathFileServlet = FileServlet.PATH;
 	@Getter private String pathImageServlet = ImageServlet.PATH;
@@ -494,6 +501,27 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
 				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		});
+	}
+	
+	public void redirectToReportFileGeneratePage(AbstractIdentifiable identifiable,String reportTemplateCode,FileExtension fileExtension){
+		redirectTo(outcomeReportFileGenerate,new Object[]{
+				UniformResourceLocatorParameter.IDENTIFIABLE, identifiable
+				,UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier()
+				,UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, inject(ApplicationBusiness.class).findBusinessEntityInfos(identifiable.getClass()).getIdentifier()
+				,UniformResourceLocatorParameter.REPORT_IDENTIFIER, reportTemplateCode
+				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
+		});
+	}
+	
+	public void redirectToReportFileConsultPageOrReportFileGeneratePageIfNotExist(AbstractIdentifiable identifiable,String reportTemplateCode){
+		FileIdentifiableGlobalIdentifier.SearchCriteria searchCriteria = new FileIdentifiableGlobalIdentifier.SearchCriteria();
+    	searchCriteria.addIdentifiableGlobalIdentifier(identifiable);
+    	searchCriteria.addRepresentationType(inject(FileRepresentationTypeDao.class).read(reportTemplateCode));
+    	Collection<FileIdentifiableGlobalIdentifier> fileIdentifiableGlobalIdentifiers = inject(FileIdentifiableGlobalIdentifierDao.class).readByCriteria(searchCriteria);
+		if(fileIdentifiableGlobalIdentifiers.isEmpty())
+			WebNavigationManager.getInstance().redirectToReportFileGeneratePage(identifiable,reportTemplateCode, FileExtension.PDF);
+		else
+			WebNavigationManager.getInstance().redirectToFileConsultManyPage(Utils.getFiles(fileIdentifiableGlobalIdentifiers), FileExtension.PDF);
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables

@@ -31,7 +31,12 @@
 			<to-view-id>/private/file/consultmany.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		
+		<navigation-case>
+			<from-outcome>reportFileGenerateView</from-outcome>
+			<to-view-id>/private/file/report/generate.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+				
 		<navigation-case>
 			<from-outcome>scriptListView</from-outcome>
 			<to-view-id>/private/file/script/list.xhtml</to-view-id>
