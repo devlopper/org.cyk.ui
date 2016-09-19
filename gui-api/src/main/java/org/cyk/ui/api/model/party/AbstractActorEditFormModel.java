@@ -42,6 +42,7 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifia
 	@Override
 	public void write() {
 		super.write();
+		//getPerson().setName(name);
 		getIdentifiable().setBirthDate(registrationDate);
 	}
 	
