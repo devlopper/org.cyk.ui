@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
@@ -42,8 +43,8 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 				.injectTyped((Class<AbstractIdentifiable>)globalIdentifierOwnerBusinessEntityInfos.getClazz()) 
 			//BusinessLocator.getInstance().locate((Class<? extends AbstractIdentifiable>) globalIdentifierOwnerBusinessEntityInfos.getClazz())
 				.findByGlobalIdentifierValue(globalIdentifier);
-		
-		((AbstractForm<IDENTIFIABLE>)form.getData()).setJoinedIdentifiable(joinedIdentifiable);
+		if(Crud.isCreateOrUpdate(crud))
+			((AbstractForm<IDENTIFIABLE>)form.getData()).setJoinedIdentifiable(joinedIdentifiable);
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 1L;
 

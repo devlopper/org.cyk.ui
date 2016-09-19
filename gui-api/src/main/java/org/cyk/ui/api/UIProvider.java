@@ -17,8 +17,8 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.AbstractCommandable;
@@ -86,7 +86,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 		org.cyk.utility.common.annotation.user.interfaces.InputFile annotation = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputFile.class);
 		Object value = commonUtils.readField(data, field, Boolean.FALSE);
 		if(value instanceof File){
-			return RootBusinessLayer.getInstance().getFileBusiness().isImage((File) value);
+			return inject(FileBusiness.class).isImage((File) value);
 		}
 		return annotation.extensions().groups().length==1 && FileExtensionGroup.IMAGE.equals(annotation.extensions().groups()[0]);
 	}

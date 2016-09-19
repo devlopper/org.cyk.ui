@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import lombok.Getter;
 
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
@@ -23,7 +23,7 @@ public class FileConsultManyPage extends AbstractPrimefacesPage implements Seria
 	protected void initialisation() {
 		super.initialisation();
 		exporter.setFileUrl(navigationManager.url(navigationManager.getOutcomeFileServlet(), webManager.getRequestParameterMapAsArray(),Boolean.FALSE,Boolean.FALSE));
-		exporter.setType(RootBusinessLayer.getInstance().getFileBusiness().findMime(requestParameter(UniformResourceLocatorParameter.FILE_EXTENSION)));
+		exporter.setType(inject(FileBusiness.class).findMime(requestParameter(UniformResourceLocatorParameter.FILE_EXTENSION)));
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package org.cyk.ui.web.primefaces.api.integration;
 
-import org.cyk.utility.common.CommonUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

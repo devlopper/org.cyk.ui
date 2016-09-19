@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.impl.file.FileContentDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
@@ -17,9 +20,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> extends AbstractCrudOnePage<FILE> implements Serializable {
@@ -50,7 +50,7 @@ public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> ex
 			uniformResourceLocator = getFile().getUri() == null ? Constant.EMPTY_STRING : getFile().getUri().toString();
 			mime = getFile().getMime();
 			if( FileContentDetails.LABEL_IDENTIFIER.equals( ((AbstractPrimefacesPage)window).getSelectedTabId() )){
-				if(RootBusinessLayer.getInstance().getFileBusiness().isText(getFile()))
+				if(inject(FileBusiness.class).isText(getFile()))
 					try {
 						content = new String(getFile().getBytes(),Constant.ENCODING_UTF8);
 					} catch (UnsupportedEncodingException e) {
