@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page.file;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -16,8 +17,12 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.persistence.impl.Utils;
+import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.WebManager;
+import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifierEditPage;
+import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
@@ -31,6 +36,15 @@ public class ReportFileGeneratePage extends AbstractJoinGlobalIdentifierEditPage
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
+	private ReportTemplate reportTemplate;
+	
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+		reportTemplate = inject(ReportTemplateBusiness.class).find(WebManager.getInstance()
+				.getRequestParameterAsLong(UniformResourceLocatorParameter.REPORT_IDENTIFIER));
+	}
+	
 	@Override
 	protected void create() {
 		@SuppressWarnings("unchecked")
@@ -38,6 +52,12 @@ public class ReportFileGeneratePage extends AbstractJoinGlobalIdentifierEditPage
 		TypedBusiness<AbstractIdentifiable> business = inject(BusinessInterfaceLocator.class).injectTyped(clazz);
 		CreateReportFileArguments<AbstractIdentifiable> arguments = new CreateReportFileArguments<AbstractIdentifiable>(((Form)form.getData()).reportTemplate.getCode(),joinedIdentifiable);
 		business.createReportFile(joinedIdentifiable, arguments);	
+	}
+	
+	@Override
+	public Object succeed(UICommand command, Object parameter) {
+		WebNavigationManager.getInstance().redirectToFileConsultManyPage(Utils.getFiles(Arrays.asList(identifiable)), FileExtension.PDF);
+		return super.succeed(command, parameter);
 	}
 	
 	@Override
@@ -54,7 +74,8 @@ public class ReportFileGeneratePage extends AbstractJoinGlobalIdentifierEditPage
 		@Override
 		public void read() {
 			super.read();
-			reportTemplate = inject(ReportTemplateBusiness.class).find(WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.REPORT_IDENTIFIER));
+			reportTemplate = inject(ReportTemplateBusiness.class).find(WebManager.getInstance()
+					.getRequestParameterAsLong(UniformResourceLocatorParameter.REPORT_IDENTIFIER));
 		}
 				
 		public static final String FIELD_REPORT_TEMPLATE = "reportTemplate";

@@ -32,6 +32,13 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>fileComputeContentView</from-outcome>
+			<to-view-id>/private/file/computecontent.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		
+		<navigation-case>
 			<from-outcome>reportFileGenerateView</from-outcome>
 			<to-view-id>/private/file/report/generate.xhtml</to-view-id>
 			<redirect />

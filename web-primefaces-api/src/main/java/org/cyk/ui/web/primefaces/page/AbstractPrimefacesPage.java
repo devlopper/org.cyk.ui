@@ -357,7 +357,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				@Override
 				public void serve(UICommand command, Object parameter) {
 					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
-						navigationManager.redirectToDynamicConsultOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster());
+						navigationManager.redirectToDynamicConsultOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),
+								table.getOpenRowCommandable().getParameters());
 					}
 				}
 			});

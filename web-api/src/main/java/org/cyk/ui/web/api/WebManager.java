@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
@@ -420,6 +421,17 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass);
 	}
 	
+	
+	public Object[] getRequestParameterMapAsArray(){
+		Collection<Object> parametersCollection = new ArrayList<Object>();
+		HttpServletRequest request = Faces.getRequest();
+		for(Entry<String, String[]> entry : request.getParameterMap().entrySet()){
+			parametersCollection.add(entry.getKey());
+			if(entry.getValue()!=null && entry.getValue().length>0)
+				parametersCollection.add(entry.getValue()[0]);
+		}
+		return parametersCollection.toArray();
+	}
 	
 	public Crud getCrudFromRequestParameter(HttpServletRequest request){
 		return UniformResourceLocatorParameterBusinessImpl.getCrudAsObject(getRequestParameter(request,UniformResourceLocatorParameter.CRUD));

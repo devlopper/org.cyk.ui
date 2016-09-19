@@ -7,6 +7,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.globalidentification.JoinGlobalIdentifierBusiness;
 import org.cyk.system.root.business.impl.globalidentification.AbstractJoinGlobalIdentifierDetails;
@@ -39,15 +40,21 @@ public abstract class AbstractJoinGlobalIdentifiers<IDENTIFIABLE extends Abstrac
 		 
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
+		
+		BusinessEntityInfos businessEntityInfos = UIManager.getInstance().businessEntityInfos(identifiable.getClass());
+		
+		table.getOpenRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
+		table.getOpenRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
+		
 		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
-		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
+		table.getAddRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
 		
 		table.getUpdateRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
-		table.getUpdateRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
+		table.getUpdateRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
 		
 		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier());
-		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, UIManager.getInstance().businessEntityInfos(identifiable.getClass()).getIdentifier());
-		
+		table.getRemoveRowCommandable().addParameter(UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, businessEntityInfos.getIdentifier());
+	
 	}
 	
 	protected abstract AbstractTableAdapter<IDENTIFIABLE,DETAILS,SEARCH_CRITERIA> createTableAdapter(AbstractIdentifiable identifiable);

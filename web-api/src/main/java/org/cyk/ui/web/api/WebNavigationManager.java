@@ -17,11 +17,16 @@ import javax.inject.Singleton;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -45,10 +50,6 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
 
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
@@ -152,10 +153,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	@Getter private String outcomeReportTable = "exportdatatableservlet";
 	
 	@Getter private String outcomeFileConsultMany = "fileConsultManyView";
+	@Getter private String outcomeFileComputeContent = "fileComputeContentView";
 	@Getter private String outcomeProcessMany = "dynamicProcessMany";
 	
 	@Getter private String outcomeReportFileGenerate = "reportFileGenerateView";
 	
+	@Getter private String outcomeFileServlet = "fileservlet";
 	@Getter private String pathFileServlet = FileServlet.PATH;
 	@Getter private String pathImageServlet = ImageServlet.PATH;
 	
@@ -508,7 +511,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				UniformResourceLocatorParameter.IDENTIFIABLE, identifiable
 				,UniformResourceLocatorParameter.GLOBAL_IDENTIFIER, identifiable.getGlobalIdentifier().getIdentifier()
 				,UniformResourceLocatorParameter.GLOBAL_IDENTIFIER_OWNER_CLASS, inject(ApplicationBusiness.class).findBusinessEntityInfos(identifiable.getClass()).getIdentifier()
-				,UniformResourceLocatorParameter.REPORT_IDENTIFIER, reportTemplateCode
+				,UniformResourceLocatorParameter.REPORT_IDENTIFIER, inject(ReportTemplateBusiness.class).find(reportTemplateCode).getIdentifier()
 				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
 		});
 	}
