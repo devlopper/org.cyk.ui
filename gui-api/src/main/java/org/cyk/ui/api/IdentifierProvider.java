@@ -64,9 +64,10 @@ public interface IdentifierProvider{
 					case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
 					case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectOneViewId();break;
 					case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					case PRINT:identifier=businessEntityInfos.getUserInterface().getPrintViewId();break;
 					}	
 				}else{
-					switch(commonBusinessAction){
+					switch(commonBusinessAction){ 
 					case CREATE:identifier=businessEntityInfos.getUserInterface().getCreateManyViewId();break;
 					case READ:identifier=null;break;
 					case UPDATE:identifier=null;break;
@@ -75,6 +76,7 @@ public interface IdentifierProvider{
 					case LIST:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
 					case SELECT:identifier=businessEntityInfos.getUserInterface().getSelectManyViewId();break;
 					case SEARCH:identifier=businessEntityInfos.getUserInterface().getListViewId();break;
+					case PRINT:identifier=businessEntityInfos.getUserInterface().getPrintViewId();break;
 					}	
 				}
 				

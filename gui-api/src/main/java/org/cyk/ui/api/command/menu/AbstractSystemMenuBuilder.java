@@ -3,6 +3,7 @@ package org.cyk.ui.api.command.menu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.impl.AbstractIdentifiableBusinessServiceImpl;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
@@ -153,6 +155,24 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	
 	protected String getText(String code){
 		return inject(LanguageBusiness.class).findText(code);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<UICommandable> getReportCommandables(Class<IDENTIFIABLE> identifiableClass,Collection<? extends AbstractIdentifiableBusinessServiceImpl.Listener<IDENTIFIABLE>> listeners){
+		Collection<UICommandable> commandables = new ArrayList<>();
+		Set<String> reportTemplateCodes = new LinkedHashSet<>();
+		for(AbstractIdentifiableBusinessServiceImpl.Listener<?> listener : listeners)
+			if(listener.getCascadeToReportTemplateCodes()!=null)
+				for(String reportTemplateCode : listener.getCascadeToReportTemplateCodes())
+					reportTemplateCodes.add(reportTemplateCode);
+		
+		for(String reportTemplateCode : reportTemplateCodes)
+			commandables.add(createPrintOneCommandable(identifiableClass, reportTemplateCode, null));
+		
+		return commandables;
+	}
+	public <IDENTIFIABLE extends AbstractIdentifiable> void addReportCommandables(Class<IDENTIFIABLE> identifiableClass,UICommandable commandable,Collection<? extends AbstractIdentifiableBusinessServiceImpl.Listener<IDENTIFIABLE>> listeners){
+		for(UICommandable reportCommandable : getReportCommandables(identifiableClass,listeners))
+			commandable.addChild(reportCommandable);
 	}
 	
 	public static interface AbstractSystemMenuBuilderListener<COMMANDABLE extends AbstractCommandable,TREE_NODE,TREE_NODE_MODEL extends AbstractHierarchyNode,USER_SESSION extends AbstractUserSession<TREE_NODE,TREE_NODE_MODEL>> {
