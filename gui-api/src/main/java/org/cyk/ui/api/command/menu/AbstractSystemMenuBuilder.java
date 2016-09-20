@@ -10,8 +10,13 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -123,6 +128,20 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	@SuppressWarnings("unchecked")
 	protected COMMANDABLE createSelectOneCommandable(Class<? extends AbstractIdentifiable> businessClass,String actionIdentifier,Icon icon){
 		return (COMMANDABLE) AbstractCommandable.Builder.createSelectOne(businessClass,actionIdentifier, icon);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected COMMANDABLE createPrintOneCommandable(Class<? extends AbstractIdentifiable> businessClass,String reportTemplateCode,Icon icon){
+		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+		ReportTemplate reportTemplate = inject(ReportTemplateBusiness.class).find(reportTemplateCode);
+		parameters.getSubjectClassLabelTextParameters().getResult().setValue(reportTemplate.getName());
+		parameters.setActionIdentifier(CommonBusinessAction.PRINT);
+		parameters.setOne(Boolean.TRUE);
+		parameters.setGlobal(Boolean.FALSE);
+		parameters.setVerb(Boolean.TRUE);
+		return (COMMANDABLE) createSelectOneCommandable(businessClass, inject(RootBusinessLayer.class).getActionPrint(), icon)
+				.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters).getValue());
+		//return (COMMANDABLE) AbstractCommandable.Builder.createSelectOne(businessClass,actionIdentifier, icon);
 	}
 	/**/
 	

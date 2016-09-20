@@ -439,7 +439,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			UICommandable c = crud(businessEntityInfos,null, icon);
 			FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
 			parameters.setActionIdentifier(CommonBusinessAction.CREATE);
-			parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
+			parameters.getSubjectClassLabelTextParameters().setClazz((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz());
 			parameters.setVerb(Boolean.TRUE);
 			c.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters).getValue());
 			if(StringUtils.isEmpty(businessEntityInfos.getUserInterface().getEditViewId()))

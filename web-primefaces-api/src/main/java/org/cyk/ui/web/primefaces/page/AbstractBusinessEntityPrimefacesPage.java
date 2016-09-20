@@ -104,7 +104,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@SuppressWarnings("unchecked")
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
 		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
-		parameters.setSubjectClass((Class<? extends AbstractIdentifiable>) /*identifiable.getClass()*/businessEntityInfos.getClazz());
+		parameters.getSubjectClassLabelTextParameters().setClazz((Class<? extends AbstractIdentifiable>) /*identifiable.getClass()*/businessEntityInfos.getClazz());
 		parameters.setOne(Boolean.TRUE);
 		parameters.setGlobal(Boolean.FALSE);
 		parameters.setVerb(Boolean.FALSE);
