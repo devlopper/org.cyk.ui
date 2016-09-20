@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -23,9 +26,6 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.Constant;
 import org.primefaces.model.menu.MenuModel;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -103,11 +103,12 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	
 	@SuppressWarnings("unchecked")
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
-		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+		final FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
 		parameters.getSubjectClassLabelTextParameters().setClazz((Class<? extends AbstractIdentifiable>) /*identifiable.getClass()*/businessEntityInfos.getClazz());
 		parameters.setOne(Boolean.TRUE);
 		parameters.setGlobal(Boolean.FALSE);
 		parameters.setVerb(Boolean.FALSE);
+		
 		return parameters;
 	}
 	
@@ -202,6 +203,8 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		
 		Class<ENTITY> getEntityTypeClass();
 		
+		void processContentTitleDoSomethingTextParameters(FindDoSomethingTextParameters findDoSomethingTextParameters,String actionIdentifier);
+		
 		/**/
 		
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable> extends AbstractPrimefacesPage.PrimefacesPageListener.Adapter implements BusinessEntityPrimefacesPageListener<ENTITY_TYPE>,Serializable {
@@ -213,6 +216,9 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 				super();
 				this.entityTypeClass = entityTypeClass;
 			}
+			
+			@Override
+			public void processContentTitleDoSomethingTextParameters(FindDoSomethingTextParameters findDoSomethingTextParameters,String actionIdentifier) {}
 			
 			public static Collection<BusinessEntityPrimefacesPageListener<?>> getBusinessEntityPrimefacesPageListeners(Class<? extends Identifiable<?>> aClass){
 				Collection<BusinessEntityPrimefacesPageListener<?>> results = new ArrayList<>();

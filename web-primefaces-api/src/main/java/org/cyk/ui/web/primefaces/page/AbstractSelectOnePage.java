@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.faces.component.UIComponent;
@@ -10,27 +11,35 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
+import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
+import org.cyk.system.root.model.file.report.ReportTemplate;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryOneFormModel;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.utility.common.FileExtension;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -128,9 +137,16 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 	
 	@Override
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {
-		FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
+		final FindDoSomethingTextParameters parameters = super.getContentTitleDoSomethingTextParameters();
 		parameters.setActionIdentifier("choice");
-		parameters.setForWhat(languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.TRUE).getValue());
+		if(StringUtils.isBlank(parameters.getForWhat()))
+			parameters.setForWhat(languageBusiness.findActionIdentifierText(actionIdentifier, businessEntityInfos, Boolean.TRUE).getValue());
+		listenerUtils.execute(AbstractSelectOnePage.Listener.COLLECTION, new ListenerUtils.VoidMethod<AbstractSelectOnePage.Listener<?,?>>() {
+			@Override
+			public void execute(AbstractSelectOnePage.Listener<?,?> listener) {
+				listener.processContentTitleDoSomethingTextParameters(parameters,getActionIdentifier());
+			}
+		});
 		return parameters;
 	}
 		
@@ -255,7 +271,30 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 				public Default(Class<ENTITY> entityTypeClass) {
 					super(entityTypeClass);
 				}
+				
+				protected ReportTemplate getReportTemplate(){
+					return WebManager.getInstance().getIdentifiableFromRequestParameter(ReportTemplate.class,UniformResourceLocatorParameter.REPORT_IDENTIFIER);
+				}
+				
+				@Override
+				public void processContentTitleDoSomethingTextParameters(FindDoSomethingTextParameters findDoSomethingTextParameters,String actionIdentifier) {
+					super.processContentTitleDoSomethingTextParameters(findDoSomethingTextParameters,actionIdentifier);
+					if(RootBusinessLayer.getInstance().getActionPrint().equals(actionIdentifier)){
+						findDoSomethingTextParameters.setForWhat(inject(LanguageBusiness.class).findDoPrintReportText(getReportTemplate()).getValue());	
+					}	
+				}
+				
+				@SuppressWarnings("unchecked")
+				@Override
+				public void serve(Object data, String actionIdentifier) {
+					ENTITY identifiable = ((AbstractQueryOneFormModel<ENTITY,?>)data).getIdentifiable();
+					if(RootBusinessLayer.getInstance().getActionPrint().equals(actionIdentifier)){
+						WebNavigationManager.getInstance().redirectToFileConsultManyPage(Arrays.asList(inject(BusinessInterfaceLocator.class).injectTypedByObject(identifiable)
+								.findReportFile(identifiable, getReportTemplate(),Boolean.TRUE)), FileExtension.PDF);
+					}
 					
+				}
+				
 			}
 		}
 		

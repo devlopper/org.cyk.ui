@@ -10,13 +10,12 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -132,15 +131,22 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	
 	@SuppressWarnings("unchecked")
 	protected COMMANDABLE createPrintOneCommandable(Class<? extends AbstractIdentifiable> businessClass,String reportTemplateCode,Icon icon){
-		FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
 		ReportTemplate reportTemplate = inject(ReportTemplateBusiness.class).find(reportTemplateCode);
+		/*FindDoSomethingTextParameters parameters = new FindDoSomethingTextParameters();
+		
+		parameters.getSubjectClassLabelTextParameters().setClazz(File.class);
 		parameters.getSubjectClassLabelTextParameters().getResult().setValue(reportTemplate.getName());
+		parameters.getSubjectClassLabelTextParameters().setGenderType(reportTemplate.getGlobalIdentifier().getMale() == null ? GenderType.UNSET : 
+			Boolean.TRUE.equals(reportTemplate.getGlobalIdentifier().getMale()) ? GenderType.MALE : GenderType.FEMALE);
 		parameters.setActionIdentifier(CommonBusinessAction.PRINT);
 		parameters.setOne(Boolean.TRUE);
 		parameters.setGlobal(Boolean.FALSE);
 		parameters.setVerb(Boolean.TRUE);
+		*/
+		
 		return (COMMANDABLE) createSelectOneCommandable(businessClass, inject(RootBusinessLayer.class).getActionPrint(), icon)
-				.setLabel(inject(LanguageBusiness.class).findDoSomethingText(parameters).getValue());
+				.setLabel(inject(LanguageBusiness.class).findDoPrintReportText(reportTemplate).getValue())
+				.addParameter(UniformResourceLocatorParameter.REPORT_IDENTIFIER, reportTemplate.getIdentifier());
 		//return (COMMANDABLE) AbstractCommandable.Builder.createSelectOne(businessClass,actionIdentifier, icon);
 	}
 	/**/

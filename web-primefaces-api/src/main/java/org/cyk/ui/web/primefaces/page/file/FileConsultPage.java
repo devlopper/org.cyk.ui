@@ -6,6 +6,9 @@ import java.util.Collection;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.report.ReportFileBusiness;
 import org.cyk.system.root.model.file.File;
@@ -13,9 +16,6 @@ import org.cyk.system.root.model.file.report.ReportFile;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.UICommandable;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class FileConsultPage extends AbstractFileConsultPage<File> implements Serializable {
