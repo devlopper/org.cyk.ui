@@ -109,24 +109,23 @@
 			  			</p:cellEditor>
 			        </p:columns> 
 			        
-			        <p:column rendered="#{cc.value.inplaceEdit and cc.value.showEditColumn}" width="35">
+			        <p:column rendered="#{cc.value.inplaceEdit and cc.value.showEditColumn}" width="35" >
 			        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" /> 
-			        	<!--cyk:command value="#{cc.value.updateRowCommandable}" executeParameter="#{row}" rendered="#{row.updatable and not cc.value.inplaceEdit}"/-->
 			        </p:column>
 			        
 			        <p:column  width="130">
 			        
 			        <!-- #{cc.value.showAddRemoveColumn} or #{cc.value.showOpenCommand} -->
 			        	<table><tr>
-			        		<ui:fragment rendered="#{row.openable and cc.value.showOpenCommand}" ><td style="border: none;">
+			        		<ui:fragment rendered="#{row.openable and cc.value.showOpenCommand and cc.value.openRowCommandable.rendered}" ><td style="border: none;">
 			        			<cyk:command value="#{cc.value.openRowCommandable}" executeParameter="#{row}" />
 			        		</td></ui:fragment>
 			        		
-			        		<ui:fragment rendered="#{row.updatable and cc.value.showAddRemoveColumn}" ><td style="border: none;">
+			        		<ui:fragment rendered="#{row.updatable and cc.value.showAddRemoveColumn and cc.value.updateRowCommandable.rendered}" ><td style="border: none;">
 			        			<cyk:command value="#{cc.value.updateRowCommandable}" executeParameter="#{row}" />
 			        		</td></ui:fragment>
 			        		
-			        		<ui:fragment rendered="#{row.deletable and cc.value.showAddRemoveColumn}" ><td style="border: none;">
+			        		<ui:fragment rendered="#{row.deletable and cc.value.showAddRemoveColumn and cc.value.removeRowCommandable.rendered}" ><td style="border: none;">
 			        			<cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" />
 			        		</td></ui:fragment>
 			        		

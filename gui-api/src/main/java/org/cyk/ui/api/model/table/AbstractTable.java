@@ -216,6 +216,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		if(editable==null)
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
+		if(openRowCommandable!=null)
+			openRowCommandable.setRendered(lazyLoad);
+		
+		if(updateRowCommandable!=null)
+			updateRowCommandable.setRendered(lazyLoad);
+		
 		if(removeRowCommandable!=null)
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
