@@ -21,6 +21,7 @@ import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
@@ -109,6 +110,13 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.MATHEMATICS).getName());
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(Movement.class, null));
+		return module;
+	}
+	
+	public Commandable getMessageCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("command.notification.management", null);
+		module.addChild(createListCommandable(SmtpProperties.class, null));
+		
 		return module;
 	}
 	
