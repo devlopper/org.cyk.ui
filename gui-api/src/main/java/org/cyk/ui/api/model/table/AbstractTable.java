@@ -217,10 +217,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
 		if(openRowCommandable!=null)
-			openRowCommandable.setRendered(lazyLoad);
+			openRowCommandable.setRendered(businessEntityInfos==null || !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()));
 		
 		if(updateRowCommandable!=null)
-			updateRowCommandable.setRendered(lazyLoad);
+			updateRowCommandable.setRendered(businessEntityInfos==null || !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()));
 		
 		if(removeRowCommandable!=null)
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);

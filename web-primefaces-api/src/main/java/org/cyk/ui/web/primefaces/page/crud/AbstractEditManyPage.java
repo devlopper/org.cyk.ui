@@ -43,8 +43,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 		elementCollection.getAddCommandable().setRendered(Boolean.FALSE);
 		elementCollection.setShowItemLabel(Boolean.TRUE);
 		elementCollection.setShowHeader(Boolean.FALSE);
-	
-		
+			
 		for(AbstractEditManyPage.Listener<?,?> listener : Listener.COLLECTION)
 			listener.initialisationEnded(this);
 	}
