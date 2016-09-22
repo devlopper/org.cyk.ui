@@ -103,6 +103,8 @@ public abstract class AbstractMenu extends AbstractBean implements UIMenu,Serial
 	public UICommandable addCommandable(UICommandable commandable) {
 		if(commandable==null)
 			return null;
+		if(commandable.getIndex()==null)
+			commandable.setIndex(commandables.size());
 		/*if( (commandable.getViewId()==null || commandable.getViewType()==null) && commandable.getChildren().isEmpty() )
 			;
 		else*/

@@ -323,8 +323,10 @@ public class UIProvider extends AbstractBean implements Serializable {
 			controlInterface = InputManyCheck.class;
 		}else if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputManyButton.class)!=null){
 			controlInterface = InputManyButton.class;
-		}else
+		}else{
+			System.out.println("UIProvider.controlClass() : "+field);
 			return null;
+		}
 		return controlClass((Class<? extends Control<?,?,?,?,?>>)controlInterface);
 	}
 	
