@@ -3,16 +3,15 @@ package org.cyk.ui.web.primefaces.page;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-import org.apache.commons.lang3.ArrayUtils;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener;
 import org.cyk.utility.common.AbstractMethod;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public class DetailsConfiguration implements Serializable {
@@ -135,8 +134,9 @@ public class DetailsConfiguration implements Serializable {
 		
 		@Override
 		public Boolean isColumn(Field field) {
-			if(ArrayUtils.contains(new String[]{AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
-					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION,AbstractOutputDetails.FIELD_EXISTENCE_PERIOD}, field.getName()))
+			if(isFieldNameIn(field,AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
+					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION,AbstractOutputDetails.FIELD_EXISTENCE_PERIOD
+					,AbstractOutputDetails.FIELD_ORDER_NUMBER,AbstractOutputDetails.FIELD_WEIGHT))
 				return Boolean.FALSE;
 			return super.isColumn(field);
 		}

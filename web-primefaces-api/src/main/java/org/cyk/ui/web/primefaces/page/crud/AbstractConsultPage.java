@@ -104,6 +104,11 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		return parameters;
 	}
 	
+	@Override
+	protected String getContentTitleIdentifiableText() {
+		return formatPathUsingBusiness(AbstractIdentifiable.class, identifiable);
+	}
+	
 	protected Boolean showContextualHierarchyConsultCommandables(){
 		return Boolean.TRUE;
 	}

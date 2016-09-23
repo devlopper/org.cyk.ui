@@ -39,6 +39,11 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 		
 	}
 	
+	@Override
+	protected String getContentTitleIdentifiableText() {
+		return formatPathUsingBusiness(AbstractIdentifiable.class, identifiable);
+	}
+	
 	protected ExecutionProgress createExecutionProgress(){
 		return null;
 	}
