@@ -11,9 +11,5 @@
  	<p:tabMenu model="#{model}" rendered="#{menu.renderType.ordinal()==3}" activeIndex="#{menu.requestedCommandable.index}" 
  		styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
  	<p:breadCrumb model="#{model}" rendered="#{menu.renderType.ordinal()==4}" styleClass="#{menu.cascadeStyleSheet.clazz}" style="#{menu.cascadeStyleSheet.inline}"/>
- 	
- 	<ui:fragment rendered="#{menu.renderType.ordinal()==3}">
- 		AI : #{menu.requestedCommandable.index}
- 	</ui:fragment>
  					
 </ui:composition>
