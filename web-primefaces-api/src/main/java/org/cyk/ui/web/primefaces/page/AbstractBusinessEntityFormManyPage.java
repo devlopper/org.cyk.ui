@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
@@ -37,9 +40,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
 	implements CommandListener, Serializable {
@@ -58,7 +58,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
 		
-		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass);
+		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass,getTableListener());
 		
 		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
 			private static final long serialVersionUID = 3882333007489853654L;
@@ -141,6 +141,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			listener.initialisationEnded(this); 
 	}
 	
+	protected Table.Listener<Object> getTableListener() {
+		return null;
+	}
+
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
@@ -204,6 +208,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.afterInitialisationEnded(this); 
 	}
+	
+	
 	
 	@Override
 	protected FindDoSomethingTextParameters getContentTitleDoSomethingTextParameters() {

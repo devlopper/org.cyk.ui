@@ -176,7 +176,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	protected abstract AbstractTable<Object,?,?> __createTable__();
 	
 	@SuppressWarnings("unchecked")
-	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,Crud crud) {
+	public AbstractTable<Object,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration configuration,Class<?> customFormModelClass,Crud crud,@SuppressWarnings("rawtypes") AbstractTable.Listener listener) {
 		AbstractTable<Object,?,?> table = __createTable__();
 		/*
 		System.out.println("AbstractWindow.createTable() : "+customFormModelClass);
@@ -184,6 +184,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		System.out.println(configuration);
 		System.out.println(customFormModelClass);
 		*/
+		if(listener!=null)
+			table.getListeners().add(listener);
 		table.setUserSession(getUserSession());
 		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormMap().getManyRead()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
@@ -196,8 +198,11 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		return table;
 	}
 	
+	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<?> customFormModelClass,@SuppressWarnings("rawtypes") AbstractTable.Listener listener) {
+		return createTable(aDataClass, crudConfig,customFormModelClass, Crud.READ,listener);
+	}
 	public <DATA> AbstractTable<?,?,?> createTable(Class<?> aDataClass,IdentifiableConfiguration crudConfig,Class<?> customFormModelClass) {
-		return createTable(aDataClass, crudConfig,customFormModelClass, Crud.READ);
+		return createTable(aDataClass, crudConfig,customFormModelClass, Crud.READ,null);
 	}
 	
 	@Override

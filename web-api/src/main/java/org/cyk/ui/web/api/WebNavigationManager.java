@@ -297,7 +297,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	}
 	
 	public void redirectTo(UICommandable commandable){
-		redirectTo((String) commandable.getViewId());
+		redirectTo((String) commandable.getViewId(),parametersToArray(commandable.getParameters()));
 	}
 		
 	public void redirectToUrl(String url){

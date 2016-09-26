@@ -17,6 +17,8 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.Parameter;
@@ -26,6 +28,7 @@ import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.computation.DataReadConfiguration;
@@ -85,7 +88,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		if(StringUtils.isBlank(updateStyleClass))
-			updateStyleClass = RandomStringUtils.randomAlphabetic(2)+""+System.currentTimeMillis();
+			updateStyleClass = RandomStringUtils.randomAlphabetic(2)+Constant.EMPTY_STRING+System.currentTimeMillis();
 		Commandable commandable = (Commandable) addRowCommandable;
 		commandable.getButton().setUpdate("@(."+updateStyleClass+")");
 		//if(UsedFor.ENTITY_INPUT.equals(usedFor))
@@ -155,6 +158,15 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 				:( data instanceof AbstractFormModel<?> ? ((AbstractFormModel<?>)data).getIdentifiable() : ((AbstractOutputDetails<?>)data).getMaster() ) );
 		WebNavigationManager.getInstance().redirectToDynamicCrudOne(identifiable,crud);
 	}*/
+	
+	public UICommandable redirectToSelectBeforeAdd(Boolean one,Class<? extends AbstractIdentifiable> aClass,String actionIdentifier,Icon icon){
+		UICommandable commandable = null;
+		if(Boolean.TRUE.equals(one))
+			commandable = Builder.createSelectOne(aClass,actionIdentifier ,icon).setLabel(addRowCommandable.getLabel());
+		else if(Boolean.FALSE.equals(one))
+			commandable = Builder.createSelectMany(aClass,actionIdentifier ,icon).setLabel(addRowCommandable.getLabel());
+		return commandable;
+	}
 	
 	@Override
 	public void crudOnePage(Collection<Parameter> parameters) {
@@ -318,6 +330,25 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 			row.setCountable(row.getIsDetail());
 		}
 		
+	}
+	
+	/**/
+	
+	public static interface Listener<DATA> extends AbstractTable.Listener<DATA, TreeNode, HierarchyNode> {
+		
+		public static class Adapter<DATA> extends AbstractTable.Listener.Adapter<DATA, TreeNode, HierarchyNode> implements Listener<DATA>,Serializable {
+
+			private static final long serialVersionUID = 1L;
+
+			/**/
+			
+			public static class Default<DATA> extends Listener.Adapter<DATA> implements Serializable {
+				private static final long serialVersionUID = 1L;
+				
+				/**/
+				
+			}
+		}
 	}
 
 }

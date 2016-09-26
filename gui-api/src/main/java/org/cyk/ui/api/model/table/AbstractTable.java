@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
+import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
@@ -38,10 +39,13 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.AbstractFormOneData;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
+import org.cyk.ui.api.model.table.AbstractTable.Listener.Commandable;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Table;
 
@@ -83,11 +87,21 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected UIProvider uiProvider = UIProvider.getInstance();
 	protected Integer numberOfColumnsHorizontalHeader = 10;
 	protected AbstractUserSession<?, ?> userSession;
+	protected Collection<Listener<DATA,NODE,MODEL>> listeners = new ArrayList<>();
 	
 	@SuppressWarnings("unchecked")
 	public AbstractTable() {
 		super(null/*(Class<? extends Row<DATA>>) Row.class*/, null, Column.class, Cell.class);	
 		rowClass = (Class<Row<DATA>>) commonUtils.classFormName(Row.class.getName());
+		listeners.add(new Listener.Adapter.Default<DATA,NODE,MODEL>(){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public AbstractTable<DATA,NODE,MODEL> getTable() {
+				return AbstractTable.this;
+			}
+			
+		});
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,9 +110,17 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
 		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?(businessEntityInfos==null?rowDataClass:businessEntityInfos.getClazz()):identifiableConfiguration.getClazz());
-		addRowCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
-				.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
-		
+		addRowCommandable = listenerUtils.getValue(UICommandable.class, listeners, new ListenerUtils.ResultMethod<Listener<DATA,NODE,MODEL>, UICommandable>() {
+			@Override
+			public UICommandable execute(Listener<DATA,NODE,MODEL> listener) {
+				return listener.createCommandable(Commandable.ADD);
+			}
+			@Override
+			public UICommandable getNullValue() {
+				return null;
+			}
+		});
+
 		initRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).create();
 		cancelRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.cancel").setIcon(Icon.ACTION_CANCEL).create();
 		applyRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.apply").setIcon(Icon.ACTION_APPLY).create();
@@ -521,6 +543,90 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		if(initialData==null)
 			initialData = new ArrayList<>();
 		return initialData;
+	}
+	
+	/**/
+	
+	public static interface Listener<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> {
+		
+		public static enum Commandable{ADD}
+		UICommandable createCommandable(Commandable commandable);
+		CreateCommandableArguments getCreateCommandableArguments(Commandable commandable);
+		AbstractTable<DATA, NODE, NODE_MODEL> getTable();
+		
+		/**/
+		@Getter @Setter
+		public static class CreateCommandableArguments implements Serializable {
+			private static final long serialVersionUID = 1L;
+			
+			private CommonBusinessAction commonBusinessAction;
+			private Class<? extends AbstractIdentifiable> identifiableSelectClass;
+			private Boolean identifiableSelectOne;
+			private Icon icon;
+			private String actionIdentifier,labelIdentifier;
+			
+			@SuppressWarnings("unchecked")
+			public CreateCommandableArguments select(@SuppressWarnings("rawtypes") Class identifiableSelectClass,String actionIdentifier,Boolean identifiableSelectOne){
+				this.identifiableSelectClass = identifiableSelectClass;
+				this.identifiableSelectOne = identifiableSelectOne;
+				this.actionIdentifier = actionIdentifier;
+				return this;
+			}
+		}
+		/**/
+		
+		public static class Adapter<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends BeanAdapter implements Listener<DATA, NODE, NODE_MODEL>, Serializable {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public UICommandable createCommandable(Commandable commandable) {
+				return null;
+			}
+			@Override
+			public AbstractTable<DATA, NODE, NODE_MODEL> getTable() {
+				return null;
+			}
+			@Override
+			public CreateCommandableArguments getCreateCommandableArguments(Commandable commandable) {
+				return null;
+			}
+			/**/
+			
+			public static class Default<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends Adapter<DATA, NODE, NODE_MODEL> implements Serializable {
+				private static final long serialVersionUID = 1L;
+				
+				/**/
+				@Override
+				public UICommandable createCommandable(Commandable commandable) {
+					UICommandable uiCommandable = null;
+					CreateCommandableArguments arguments = getCreateCommandableArguments(commandable);
+					switch(commandable){
+					case ADD:
+						if(CommonBusinessAction.CREATE.equals(arguments.getCommonBusinessAction()))
+							uiCommandable = Builder.instanciateOne().setCommandListener(getTable()).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
+								.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
+						else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction()))
+							uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
+								.setLabel(inject(LanguageBusiness.class).findText("command.add"));
+						break;
+					}
+					return uiCommandable;
+				}
+				
+				@Override
+				public CreateCommandableArguments getCreateCommandableArguments(Commandable commandable) {
+					CreateCommandableArguments arguments = null;
+					switch(commandable){
+					case ADD:
+						arguments = new CreateCommandableArguments();
+						arguments.setCommonBusinessAction(CommonBusinessAction.CREATE);
+						break;
+					}
+					return super.getCreateCommandableArguments(commandable);
+				}
+			}
+		}
 	}
 	
 }
