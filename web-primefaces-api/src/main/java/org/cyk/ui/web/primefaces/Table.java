@@ -336,7 +336,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	
 	public static interface Listener<DATA> extends AbstractTable.Listener<DATA, TreeNode, HierarchyNode> {
 		
-		public static class Adapter<DATA> extends AbstractTable.Listener.Adapter<DATA, TreeNode, HierarchyNode> implements Listener<DATA>,Serializable {
+		public static class Adapter<DATA> extends AbstractTable.Listener.Adapter.Default<DATA, TreeNode, HierarchyNode> implements Listener<DATA>,Serializable {
 
 			private static final long serialVersionUID = 1L;
 

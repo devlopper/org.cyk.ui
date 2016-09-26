@@ -580,6 +580,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				this.identifiableSelectClass = identifiableSelectClass;
 				this.identifiableSelectOne = identifiableSelectOne;
 				this.actionIdentifier = actionIdentifier;
+				this.commonBusinessAction = CommonBusinessAction.SELECT;
 				return this;
 			}
 		}
