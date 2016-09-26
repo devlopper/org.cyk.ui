@@ -565,8 +565,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			private Icon icon;
 			private String actionIdentifier,labelIdentifier;
 			
-			@SuppressWarnings("unchecked")
-			public CreateCommandableArguments select(@SuppressWarnings("rawtypes") Class identifiableSelectClass,String actionIdentifier,Boolean identifiableSelectOne){
+			public CreateCommandableArguments select(Class<? extends AbstractIdentifiable> identifiableSelectClass,String actionIdentifier,Boolean identifiableSelectOne){
 				this.identifiableSelectClass = identifiableSelectClass;
 				this.identifiableSelectOne = identifiableSelectOne;
 				this.actionIdentifier = actionIdentifier;
@@ -607,7 +606,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 							uiCommandable = Builder.instanciateOne().setCommandListener(getTable()).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
 								.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
 						else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction()))
-							uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
+							if(Boolean.TRUE.equals(arguments.getIdentifiableSelectOne()))
+								uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
 								.setLabel(inject(LanguageBusiness.class).findText("command.add"));
 						break;
 					}
