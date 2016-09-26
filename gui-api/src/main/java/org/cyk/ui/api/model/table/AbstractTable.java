@@ -40,6 +40,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormOneData;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.Commandable;
+import org.cyk.ui.api.model.table.AbstractTable.Listener.CreateCommandableArguments;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
@@ -110,17 +111,27 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
 		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?(businessEntityInfos==null?rowDataClass:businessEntityInfos.getClazz()):identifiableConfiguration.getClazz());
+		final CreateCommandableArguments arguments = listenerUtils.getValue(CreateCommandableArguments.class, listeners, new ListenerUtils.ResultMethod<Listener<DATA,NODE,MODEL>, CreateCommandableArguments>() {
+			@Override
+			public CreateCommandableArguments execute(Listener<DATA,NODE,MODEL> listener) {
+				return listener.getCreateCommandableArguments(Commandable.ADD);
+			}
+			@Override
+			public CreateCommandableArguments getNullValue() {
+				return null;
+			}
+		});
 		addRowCommandable = listenerUtils.getValue(UICommandable.class, listeners, new ListenerUtils.ResultMethod<Listener<DATA,NODE,MODEL>, UICommandable>() {
 			@Override
 			public UICommandable execute(Listener<DATA,NODE,MODEL> listener) {
-				return listener.createCommandable(Commandable.ADD);
+				return listener.createCommandable(Commandable.ADD,arguments);
 			}
 			@Override
 			public UICommandable getNullValue() {
 				return null;
 			}
 		});
-
+		
 		initRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).create();
 		cancelRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.cancel").setIcon(Icon.ACTION_CANCEL).create();
 		applyRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.apply").setIcon(Icon.ACTION_APPLY).create();
@@ -550,7 +561,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	public static interface Listener<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> {
 		
 		public static enum Commandable{ADD}
-		UICommandable createCommandable(Commandable commandable);
+		UICommandable createCommandable(Commandable commandable,CreateCommandableArguments arguments);
 		CreateCommandableArguments getCreateCommandableArguments(Commandable commandable);
 		AbstractTable<DATA, NODE, NODE_MODEL> getTable();
 		
@@ -579,7 +590,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public UICommandable createCommandable(Commandable commandable) {
+			public UICommandable createCommandable(Commandable commandable,CreateCommandableArguments arguments) {
 				return null;
 			}
 			@Override
@@ -597,20 +608,20 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				
 				/**/
 				@Override
-				public UICommandable createCommandable(Commandable commandable) {
+				public UICommandable createCommandable(Commandable commandable,CreateCommandableArguments arguments) {
 					UICommandable uiCommandable = null;
-					CreateCommandableArguments arguments = getCreateCommandableArguments(commandable);
-					switch(commandable){
-					case ADD:
-						if(CommonBusinessAction.CREATE.equals(arguments.getCommonBusinessAction()))
-							uiCommandable = Builder.instanciateOne().setCommandListener(getTable()).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
-								.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
-						else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction()))
-							if(Boolean.TRUE.equals(arguments.getIdentifiableSelectOne()))
-								uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
-								.setLabel(inject(LanguageBusiness.class).findText("command.add"));
-						break;
-					}
+					if(arguments!=null)
+						switch(commandable){
+						case ADD:
+							if(CommonBusinessAction.CREATE.equals(arguments.getCommonBusinessAction()))
+								uiCommandable = Builder.instanciateOne().setCommandListener(getTable()).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
+									.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
+							else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction()))
+								if(Boolean.TRUE.equals(arguments.getIdentifiableSelectOne()))
+									uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
+									.setLabel(inject(LanguageBusiness.class).findText("command.add"));
+							break;
+						}
 					return uiCommandable;
 				}
 				
@@ -623,7 +634,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 						arguments.setCommonBusinessAction(CommonBusinessAction.CREATE);
 						break;
 					}
-					return super.getCreateCommandableArguments(commandable);
+					return arguments;
 				}
 			}
 		}
