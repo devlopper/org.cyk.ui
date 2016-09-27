@@ -60,6 +60,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass,getTableListener());
 		
+		//table.getListeners().add(getTableListener());
+		
 		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
 			private static final long serialVersionUID = 3882333007489853654L;
 			@Override

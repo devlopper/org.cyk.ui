@@ -63,6 +63,12 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	@Getter @Setter protected Collection<Parameter> parameters = new ArrayList<>();
 	
 	@Override
+	public UICommandable addCommandListener(CommandListener commandListener) {
+		this.command.getCommandListeners().add(commandListener);
+		return this;
+	}
+	
+	@Override
 	public UICommandable setIdentifier(String anIdentifier) {
 		this.identifier = anIdentifier;
 		return this;

@@ -22,6 +22,8 @@ public interface UICommandable {
 	UICommand getCommand();
 	void setCommand(UICommand aCommand);
 	
+	UICommandable addCommandListener(CommandListener commandListener);
+	
 	String getIdentifier();
 	UICommandable setIdentifier(String anIdentifier);
 	

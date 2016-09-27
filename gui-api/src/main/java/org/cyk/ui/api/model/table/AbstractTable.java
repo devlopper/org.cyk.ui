@@ -111,6 +111,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		super.initialisation();
 		//rowClass = (Class<Row<DATA>>) Class.forName(Row.class.getName());
 		identifiableClass = (Class<? extends AbstractIdentifiable>) (identifiableConfiguration==null?(businessEntityInfos==null?rowDataClass:businessEntityInfos.getClazz()):identifiableConfiguration.getClazz());
+		
 		final CreateCommandableArguments arguments = listenerUtils.getValue(CreateCommandableArguments.class, listeners, new ListenerUtils.ResultMethod<Listener<DATA,NODE,MODEL>, CreateCommandableArguments>() {
 			@Override
 			public CreateCommandableArguments execute(Listener<DATA,NODE,MODEL> listener) {
@@ -131,6 +132,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				return null;
 			}
 		});
+		
+		addRowCommandable.getCommand().getCommandListeners().add(this);
 		
 		initRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).create();
 		cancelRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.cancel").setIcon(Icon.ACTION_CANCEL).create();
@@ -564,6 +567,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		UICommandable createCommandable(Commandable commandable,CreateCommandableArguments arguments);
 		CreateCommandableArguments getCreateCommandableArguments(Commandable commandable);
 		AbstractTable<DATA, NODE, NODE_MODEL> getTable();
+		void setTable(AbstractTable<DATA, NODE, NODE_MODEL> table);
 		
 		/**/
 		@Getter @Setter
@@ -585,19 +589,18 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			}
 		}
 		/**/
-		
+		@Getter @Setter
 		public static class Adapter<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends BeanAdapter implements Listener<DATA, NODE, NODE_MODEL>, Serializable {
 
 			private static final long serialVersionUID = 1L;
 
+			protected AbstractTable<DATA, NODE, NODE_MODEL> table;
+			
 			@Override
 			public UICommandable createCommandable(Commandable commandable,CreateCommandableArguments arguments) {
 				return null;
 			}
-			@Override
-			public AbstractTable<DATA, NODE, NODE_MODEL> getTable() {
-				return null;
-			}
+			
 			@Override
 			public CreateCommandableArguments getCreateCommandableArguments(Commandable commandable) {
 				return null;
@@ -615,14 +618,22 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 						switch(commandable){
 						case ADD:
 							if(CommonBusinessAction.CREATE.equals(arguments.getCommonBusinessAction()))
-								uiCommandable = Builder.instanciateOne().setCommandListener(getTable()).setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
+								uiCommandable = Builder.instanciateOne().setLabelFromId("command.add").setIcon(Icon.ACTION_ADD)
 									.setIdentifier(COMMANDABLE_ADD_IDENTIFIER).create();
-							else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction()))
-								if(Boolean.TRUE.equals(arguments.getIdentifiableSelectOne()))
+							else if(CommonBusinessAction.SELECT.equals(arguments.getCommonBusinessAction())){
+								if(Boolean.TRUE.equals(arguments.getIdentifiableSelectOne())){
 									uiCommandable = Builder.createSelectOne(arguments.getIdentifiableSelectClass(), arguments.getActionIdentifier(), arguments.getIcon())
 									.setLabel(inject(LanguageBusiness.class).findText("command.add"));
+								}
+							}
 							break;
 						}
+					if(uiCommandable==null)
+						logError("Cannot create commandable {} with arguments {}",commandable, arguments);
+					else{
+						
+					}
+						
 					return uiCommandable;
 				}
 				

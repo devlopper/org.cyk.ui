@@ -184,8 +184,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		System.out.println(configuration);
 		System.out.println(customFormModelClass);
 		*/
-		if(listener!=null)
+		if(listener!=null){
 			table.getListeners().add(listener);
+			listener.setTable(table);
+		}
 		table.setUserSession(getUserSession());
 		table.setRowDataClass((Class<Object>) (customFormModelClass==null?(configuration==null?aDataClass:configuration.getFormMap().getManyRead()):customFormModelClass));
 		table.setIdentifiableConfiguration(configuration);
