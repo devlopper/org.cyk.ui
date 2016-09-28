@@ -343,7 +343,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			//System.out.println("AbstractTable.addRowOfRoot()");
 			root = getReferenceFromHierarchy(root,hierarchyData);
 			if( ((AbstractDataTreeNode)root).getChildren()!=null)
-				for(AbstractDataTreeNode node : ((AbstractDataTreeNode)root).getChildren())
+				for(AbstractIdentifiable node : ((AbstractIdentifiable)root).getChildren())
 					collection.add((DATA) node);	
 		}
 		

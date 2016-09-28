@@ -15,6 +15,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 
@@ -24,9 +25,14 @@ public abstract class AbstractQueryOneFormModel<IDENTIFIABLE extends AbstractIde
 	
 	@Input @InputText @NotNull protected IDENTIFIER identifier;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete @NotNull protected IDENTIFIABLE identifiable;
+	@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected IDENTIFIABLE identifiableFromCombo;
 	
 	public static final String FIELD_IDENTIFIER = "identifier";
 	public static final String FIELD_IDENTIFIABLE = "identifiable";
+	public static final String FIELD_IDENTIFIABLE_FROM_COMBO = "identifiableFromCombo";
+	
+	/**/
+	
 	
 	/**/
 	

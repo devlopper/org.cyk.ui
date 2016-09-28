@@ -303,6 +303,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	}
 	
 	protected String formatPathUsingBusiness(Class<?> rootClass,Object object){
+		if(object==null)
+			return Constant.EMPTY_STRING;
 		return formatUsingBusiness(inject(ClazzBusiness.class).findPathOf(rootClass, object));
 	}
 

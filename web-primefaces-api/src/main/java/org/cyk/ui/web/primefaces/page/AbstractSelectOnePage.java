@@ -76,7 +76,9 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 					case IDENTIFIER:
 						return AbstractQueryOneFormModel.FIELD_IDENTIFIER.equals(field.getName());
 					case IDENTIFIABLE:
-						return !AbstractQueryOneFormModel.FIELD_IDENTIFIER.equals(field.getName())/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
+						return isFieldNameNotIn(field, AbstractQueryOneFormModel.FIELD_IDENTIFIER,AbstractQueryOneFormModel.FIELD_IDENTIFIABLE_FROM_COMBO)/*AbstractQueryFormModel.FIELD_IDENTIFIABLE.equals(field.getName())*/;
+					case IDENTIFIABLE_FROM_COMBO:
+						return isFieldNameNotIn(field, AbstractQueryOneFormModel.FIELD_IDENTIFIER,AbstractQueryOneFormModel.FIELD_IDENTIFIABLE);	
 					case CUSTOM:
 						return super.build(data,field);
 					default:
@@ -85,7 +87,7 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 			}
 			@Override
 			public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
-				if(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE.equals(field.getName())){
+				if(isFieldNameIn(field,AbstractQueryOneFormModel.FIELD_IDENTIFIABLE,AbstractQueryOneFormModel.FIELD_IDENTIFIABLE_FROM_COMBO)){
 					Class<?> aClass = null;
 					for(AbstractSelectOnePage.Listener<?,?> selectPageListener : getListeners())
 						if(selectPageListener.getEntityTypeClass()!=null)
@@ -120,6 +122,18 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 		});
 		
 		addInputListener(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE,new WebInput.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("unchecked")
+			@Override
+			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
+				identifiable = (ENTITY) value;
+				if(identifiable==null)
+					webManager.throwValidationExceptionUnknownValue(value);
+				super.validate(facesContext, uiComponent, value);
+			}
+		});
+		
+		addInputListener(AbstractQueryOneFormModel.FIELD_IDENTIFIABLE_FROM_COMBO,new WebInput.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
 			@Override
@@ -287,7 +301,7 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 				@SuppressWarnings("unchecked")
 				@Override
 				public void serve(Object data, String actionIdentifier) {
-					ENTITY identifiable = ((AbstractQueryOneFormModel<ENTITY,?>)data).getIdentifiable();
+					ENTITY identifiable = getSelectedIdentifiable((AbstractQueryOneFormModel<ENTITY, ?>) data);
 					if(RootBusinessLayer.getInstance().getActionPrint().equals(actionIdentifier)){
 						WebNavigationManager.getInstance().redirectToFileConsultManyPage(Arrays.asList(inject(BusinessInterfaceLocator.class).injectTypedByObject(identifiable)
 								.findReportFile(identifiable, getReportTemplate(),Boolean.TRUE)), FileExtension.PDF);
@@ -295,11 +309,23 @@ public abstract class AbstractSelectOnePage<ENTITY extends AbstractIdentifiable>
 					
 				}
 				
+				protected ENTITY getSelectedIdentifiable(AbstractQueryOneFormModel<ENTITY,?> data){
+					switch(type){
+					case IDENTIFIER:return null;
+					case IDENTIFIABLE:return ((AbstractQueryOneFormModel<ENTITY, ?>)data).getIdentifiable();
+					case IDENTIFIABLE_FROM_COMBO:return ((AbstractQueryOneFormModel<ENTITY, ?>)data).getIdentifiableFromCombo();
+					case CUSTOM:return null;
+					}
+					return null;
+				}
+				
 			}
 		}
 		
-		public static enum Type{IDENTIFIER,IDENTIFIABLE,CUSTOM}
+		public static enum Type{IDENTIFIER,IDENTIFIABLE,IDENTIFIABLE_FROM_COMBO,CUSTOM}
 		
 	}
+	
+	
 
 }

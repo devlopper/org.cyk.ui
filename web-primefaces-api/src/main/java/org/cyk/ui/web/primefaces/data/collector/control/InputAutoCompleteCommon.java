@@ -121,7 +121,7 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 					if(AbstractDataTreeNode.class.isAssignableFrom(clazz)){
 						if(((AbstractDataTreeNode)item).getParents()==null)
 							((AbstractDataTreeNodeBusiness) inject(BusinessInterfaceLocator.class).injectTyped((Class<AbstractIdentifiable>)clazz)).setParents((AbstractEnumeration) item);
-						Collection<AbstractDataTreeNode> collection = new ArrayList<>(((AbstractDataTreeNode)item).getParents());
+						Collection<AbstractIdentifiable> collection = new ArrayList<>(((AbstractDataTreeNode)item).getParents());
 						collection.add((AbstractDataTreeNode) item);
 						return StringUtils.join(collection,Constant.CHARACTER_GREATER_THAN);
 					}

@@ -88,10 +88,9 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		if(identifiable==null){
 			
 		}else{
-			if(identifiable.getIdentifier()==null)
-				;
-			else
-				stringBuilder.append(Constant.CHARACTER_SPACE.toString()+Constant.CHARACTER_VERTICAL_BAR+Constant.CHARACTER_SPACE+getContentTitleIdentifiableText());
+			String identiableText = getContentTitleIdentifiableText();
+			if(StringUtils.isNotBlank(identiableText))
+				stringBuilder.append(Constant.CHARACTER_SPACE.toString()+Constant.CHARACTER_VERTICAL_BAR+Constant.CHARACTER_SPACE+identiableText);	
 		}
 		return stringBuilder.toString();
 	}

@@ -54,7 +54,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 						//debug(table.getMaster());
 						table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
 						if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
-							for(AbstractDataTreeNode node : ((AbstractDataTreeNode)table.getMaster()).getChildren())
+							for(AbstractIdentifiable node : ((AbstractDataTreeNode)table.getMaster()).getChildren())
 								results.add(node);	
 					}
 					

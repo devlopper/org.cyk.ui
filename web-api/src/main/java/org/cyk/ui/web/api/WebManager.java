@@ -184,8 +184,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		else{
 			item = new SelectItemGroup(node.getName());
 			List<SelectItem> nodeItems = new ArrayList<>();
-			for(AbstractDataTreeNode child : node.getChildren()){
-				nodeItems.add(getSelectItemFromNode(child));
+			for(AbstractIdentifiable child : node.getChildren()){
+				nodeItems.add(getSelectItemFromNode((AbstractDataTreeNode) child));
 			}
 			((SelectItemGroup)item).setSelectItems(nodeItems.toArray(new SelectItem[]{}));
 		}

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.command.UICommand;
@@ -41,7 +42,8 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	
 	@Override
 	protected String getContentTitleIdentifiableText() {
-		return formatPathUsingBusiness(AbstractIdentifiable.class, identifiable);
+		return formatPathUsingBusiness(AbstractIdentifiable.class, Crud.CREATE.equals(crud) 
+				? inject(ClazzBusiness.class).findParentOf(AbstractIdentifiable.class, identifiable) : identifiable);
 	}
 	
 	protected ExecutionProgress createExecutionProgress(){
