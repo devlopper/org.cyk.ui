@@ -24,6 +24,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
+import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
@@ -40,6 +41,27 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 	public abstract SystemMenu build(USER_SESSION userSession);
 	
 	/**/
+	
+	protected <TYPE> AbstractTree<TREE_NODE,TREE_NODE_MODEL> getNavigator(Class<TREE_NODE> nodeClass,Class<TREE_NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,USER_SESSION userSession){
+		AbstractTree<TREE_NODE,TREE_NODE_MODEL> navigator = createNavigatorTree(userSession);
+		Collection<TYPE> datas = getNavigatorTreeNodeDatas(dataClass,userSession);
+		/*if(datas!=null){
+			for(Object data : datas){
+				NODE_MODEL nodeModel = createHierarchyNodeClassInstance(nodeClass, nodeModelClass, userSession, data);
+				nodeModel.setExpanded(Boolean.FALSE);
+				nodes.add(nodeModel);
+			}
+		}*/
+		navigator.build(dataClass, datas, null);
+		return navigator;
+	}
+	
+	protected AbstractTree<TREE_NODE,TREE_NODE_MODEL> createNavigatorTree(USER_SESSION userSession){
+		return null;
+	}
+	protected <TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,USER_SESSION userSession){
+		return null;
+	}
 	
 	protected void addBusinessMenu(USER_SESSION userSession,SystemMenu systemMenu,COMMANDABLE commandable){
 		addCommandable(userSession,systemMenu.getBusinesses(),commandable); 
@@ -91,6 +113,15 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 			@Override
 			public Collection<String> execute(AbstractSystemMenuBuilderListener<COMMANDABLE,TREE_NODE,TREE_NODE_MODEL,USER_SESSION> listener) {
 				return listener.getInvisibleCommandableIdentifiers(userSession);
+			}
+		});
+	}
+	
+	protected void initialiseNavigatorTree(final USER_SESSION userSession){
+		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractSystemMenuBuilderListener<COMMANDABLE,TREE_NODE,TREE_NODE_MODEL,USER_SESSION>>(){
+			@Override
+			public void execute(AbstractSystemMenuBuilderListener<COMMANDABLE, TREE_NODE, TREE_NODE_MODEL, USER_SESSION> listener) {
+				listener.initialiseNavigatorTree(userSession);
 			}
 		});
 	}
@@ -180,6 +211,7 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		Set<String> getInvisibleCommandableIdentifiers(USER_SESSION userSession);
 		Boolean isCommandableVisible(USER_SESSION userSession,COMMANDABLE commandable);
 		void onBusinessMenuPopulateEnded(USER_SESSION userSession,COMMANDABLE module);
+		void initialiseNavigatorTree(USER_SESSION userSession);
 		
 		/**/
 		
@@ -198,6 +230,9 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 
 			@Override
 			public void onBusinessMenuPopulateEnded(USER_SESSION userSession,COMMANDABLE module) {}
+			
+			@Override
+			public void initialiseNavigatorTree(USER_SESSION userSession) {}
 		}
 	}
 }

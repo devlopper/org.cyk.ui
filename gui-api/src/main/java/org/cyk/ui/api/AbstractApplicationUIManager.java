@@ -87,6 +87,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		businessClassConfig(aClass,formModelClass,null);
 	}
 	
+	@Deprecated
 	protected <TYPE> AbstractTree<TREE_NODE,TREE_NODE_MODEL> getNavigator(Class<TREE_NODE> nodeClass,Class<TREE_NODE_MODEL> nodeModelClass,Class<TYPE> dataClass,USER_SESSION userSession){
 		AbstractTree<TREE_NODE,TREE_NODE_MODEL> navigator = createNavigatorTree(userSession);
 		Collection<TYPE> datas = getNavigatorTreeNodeDatas(dataClass,userSession);
@@ -100,14 +101,15 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 		navigator.build(dataClass, datas, null);
 		return navigator;
 	}
-	
+	@Deprecated
 	public void initialiseNavigatorTree(USER_SESSION userSession){
 		
 	}
-	
+	@Deprecated
 	protected AbstractTree<TREE_NODE,TREE_NODE_MODEL> createNavigatorTree(USER_SESSION userSession){
 		return null;
 	}
+	@Deprecated
 	protected <TYPE> Collection<TYPE> getNavigatorTreeNodeDatas(Class<TYPE> dataClass,USER_SESSION userSession){
 		return null;
 	}
