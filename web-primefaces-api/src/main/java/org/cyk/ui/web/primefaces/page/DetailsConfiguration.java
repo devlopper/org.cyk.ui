@@ -88,11 +88,11 @@ public class DetailsConfiguration implements Serializable {
 			result = getTableColumnAdapter();
 		return result;
 	}
-	
+	/*
 	@SuppressWarnings("rawtypes")
 	public ColumnAdapter getTableColumnAdapter(Class clazz){
 		return getTableColumnAdapter(clazz, null);
-	}
+	}*/
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public  DetailsConfigurationListener.Table.Adapter getTableConfigurationAdapter
