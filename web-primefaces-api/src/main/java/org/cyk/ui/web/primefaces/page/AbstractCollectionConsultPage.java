@@ -41,8 +41,8 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 				return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(itemClass)).findByCollection(identifiable);
 			}
 			@Override
-			public ColumnAdapter getColumnAdapter() {
-				return getDetailsConfiguration(itemDetailsClass).getTableColumnAdapter(null);
+			public ColumnAdapter getColumnAdapter() { 
+				return getDetailsConfiguration(itemDetailsClass).getTableColumnAdapter(null,AbstractCollectionConsultPage.this);
 			}
 			
 		});

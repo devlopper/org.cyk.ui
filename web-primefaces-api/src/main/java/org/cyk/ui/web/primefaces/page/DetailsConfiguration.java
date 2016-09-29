@@ -18,6 +18,13 @@ public class DetailsConfiguration implements Serializable {
 
 	private static final long serialVersionUID = 4302974500599359687L;
 	
+	private String identifier;
+	
+	public DetailsConfiguration setIdentifier(String identifier){
+		this.identifier = identifier;
+		return this;
+	}
+	
 	/* One using form */
 	private DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>> formConfigurationAdapter;
 	private AbstractMethod<DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>
@@ -33,7 +40,7 @@ public class DetailsConfiguration implements Serializable {
 	, Class<AbstractOutputDetails<AbstractIdentifiable>>> getTableConfigurationAdapterMethod;
 	
 	private ColumnAdapter tableColumnAdapter = new DefaultColumnAdapter();
-	private AbstractMethod<ColumnAdapter, Class<AbstractOutputDetails<AbstractIdentifiable>>> getTableColumnAdapterMethod;
+	private AbstractMethod<ColumnAdapter, Object[]> getTableColumnAdapterMethod;
 	
 	@SuppressWarnings("rawtypes")
 	public ControlSetAdapter getFormControlSetAdapter(Class clazz){
@@ -72,15 +79,19 @@ public class DetailsConfiguration implements Serializable {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public ColumnAdapter getTableColumnAdapter(Class clazz){
-		AbstractMethod<ColumnAdapter, Class<AbstractOutputDetails<AbstractIdentifiable>>> method = getGetTableColumnAdapterMethod();
+	public ColumnAdapter getTableColumnAdapter(Class clazz,AbstractPrimefacesPage page){
+		AbstractMethod<ColumnAdapter, Object[]> method = getGetTableColumnAdapterMethod();
 		if(method==null)
 			return getTableColumnAdapter();
-		@SuppressWarnings("unchecked")
-		ColumnAdapter result = method.execute(clazz);
+		ColumnAdapter result = method.execute(new Object[]{clazz,page});
 		if(result == null)
 			result = getTableColumnAdapter();
 		return result;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public ColumnAdapter getTableColumnAdapter(Class clazz){
+		return getTableColumnAdapter(clazz, null);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -140,6 +151,11 @@ public class DetailsConfiguration implements Serializable {
 				return Boolean.FALSE;
 			return super.isColumn(field);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return identifier;
 	}
 	
 }

@@ -294,7 +294,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		//table.setRendered(listener.getRendered());
 		table.getColumnListeners().add(new Table.ColumnAdapter());//internal should be first
-		table.getColumnListeners().add(PrimefacesManager.getDetailsConfiguration(aClass).getTableColumnAdapter(aClass));
+		table.getColumnListeners().add(PrimefacesManager.getDetailsConfiguration(aClass).getTableColumnAdapter(aClass,this));
 		
 		configureDetailsTable(aClass,table, listener);
 		//table.getColumnListeners().add(new Table.ColumnAdapter());

@@ -14,6 +14,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
@@ -56,9 +59,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {
@@ -254,7 +254,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		if(commandable.getCommand().getExecutionProgress()==null)
 			return;
 		//Starts on click
-		commandable.setOnClick(JavaScriptHelper.getInstance().add(commandable.getOnClick(), PrimefacesManager.getInstance().getStartScript(progressBarWidgetVar)));
+		commandable.setOnClick(JavaScriptHelper.getInstance().add(commandable.getOnClick(), getStartScript(progressBarWidgetVar)));
 		//Cancel on execution ends
 		commandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4119943624542439662L;	
@@ -264,7 +264,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			}
 			@Override
 			public Boolean notifyAfterServe(UICommand command,AfterServeState state) {
-				Ajax.oncomplete(PrimefacesManager.getInstance().getCancelScript(progressBarWidgetVar));
+				Ajax.oncomplete(getCancelScript(progressBarWidgetVar));
 				return super.notifyAfterServe(command, state);
 			}
 		});
@@ -274,19 +274,36 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		configureProgressBar(commandable, WebManager.getInstance().getProgressBarWidgetId());
 	}
 	
+	/*private static DetailsConfiguration getExactDetailsConfiguration(Class<?> detailsClass){
+		for(Entry<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> entry : DETAILS_CONFIGURATION_MAP.entrySet())
+			if(entry.getKey().equals(detailsClass))
+				return entry.getValue();
+		return null;
+	}*/
+	
 	@SuppressWarnings("unchecked")
 	public static void registerDetailsConfiguration(Class<?> detailsClass,DetailsConfiguration detailsConfiguration){
+		detailsConfiguration.setIdentifier(detailsClass.getName());
+		DetailsConfiguration current = DETAILS_CONFIGURATION_MAP.get(detailsClass);
+		if(current!=null)
+			System.out.println("   ######   Current Details configuration "+current+" will be replace by "+detailsConfiguration+"   ######");
+		//System.out.println("PrimefacesManager.registerDetailsConfiguration() : "+ToStringBuilder.reflectionToString(DETAILS_CONFIGURATION_MAP)+" : "+DETAILS_CONFIGURATION_MAP.size());
 		DETAILS_CONFIGURATION_MAP.put((Class<? extends AbstractOutputDetails<?>>) detailsClass, detailsConfiguration);
 	}
 	
 	public static DetailsConfiguration getDetailsConfiguration(Class<?> detailsClass){
-		// Exact match
-		if(PrimefacesManager.DETAILS_CONFIGURATION_MAP.containsKey(detailsClass))
-			return PrimefacesManager.DETAILS_CONFIGURATION_MAP.get(detailsClass);
+		if(DETAILS_CONFIGURATION_MAP.containsKey(detailsClass)){
+			return DETAILS_CONFIGURATION_MAP.get(detailsClass);
+		}
 		//Super class match
 		for(Entry<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> entry : DETAILS_CONFIGURATION_MAP.entrySet())
-			if(entry.getKey().isAssignableFrom(detailsClass))
+			if(entry.getKey().isAssignableFrom(detailsClass)){
 				return entry.getValue();
+			}
 		return DETAILS_CONFIGURATION;
+	}
+	
+	public static Collection<DetailsConfiguration> getDetailsConfigurations(){
+		return DETAILS_CONFIGURATION_MAP.values();
 	}
 }
