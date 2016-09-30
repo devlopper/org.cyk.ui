@@ -19,25 +19,38 @@
 				<h:outputText value="#{item.name}" />
 			</p:column>
 			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showNumberColumn}">
-				<p:inputNumber value="#{item.numberValue}" required="true" requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}"
+				<pe:inputNumber value="#{item.numberValue}" required="true" requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}"
 					minValue="#{cc.value.metricCollection.valueIntervalCollection.lowestValue}" 
 					maxValue="#{cc.value.metricCollection.valueIntervalCollection.highestValue}"
 					decimalPlaces="#{cc.value.metricCollection.valueIntervalCollection.numberOfDecimalAfterDot}"
-					rendered="#{not cc.value.showCombobox}"   />
+					rendered="#{not cc.value.showOneChoiceInput}"   />
 				
-				<p:selectOneMenu value="#{item.numberValue}" rendered="#{cc.value.showCombobox}" required="true" 
-					requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}">
-					<f:selectItems value="#{cc.value.choices}" />
-				</p:selectOneMenu>	
+				<ui:fragment rendered="#{cc.value.showOneChoiceInput}">
+					<!--p:selectOneMenu value="#{item.numberValue}" rendered="#{cc.value.showCombobox}" required="true" 
+						requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}">
+						<f:selectItems value="#{cc.value.choices}" />
+					</p:selectOneMenu-->	
+					
+					<ui:include src="include/metricValueCollection/selectOneMenu.xhtml"/>
+					<ui:include src="include/metricValueCollection/selectOneRadio.xhtml"/>
+				</ui:fragment>
+				
+				
+				
 			</p:column>
 			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showStringColumn}">
-				<p:inputText value="#{item.stringValue}" required="true" requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}"
-				 rendered="#{not cc.value.showCombobox}"/>
+				<p:inputText value="#{item.stringValue}" required="true" requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}"
+				 rendered="#{not cc.value.showOneChoiceInput}"/>
 				 
-				 <p:selectOneMenu value="#{item.stringValue}" rendered="#{cc.value.showCombobox}" required="true"
-				 	requiredMessage="#{item.name} - #{uiManager.textInputValueRequired('field.value')}">
-					<f:selectItems value="#{cc.value.choices}" />
-				</p:selectOneMenu>
+				 <ui:fragment rendered="#{cc.value.showOneChoiceInput}">
+					 <!--p:selectOneMenu value="#{item.stringValue}" rendered="#{cc.value.showCombobox}" required="true"
+					 	requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}">
+						<f:selectItems value="#{cc.value.choices}" />
+					</p:selectOneMenu-->
+					
+					<ui:include src="include/metricValueCollection/selectOneMenu.xhtml"/>
+				</ui:fragment>
+				
 			</p:column>
 			
 		</cyk:itemCollection>

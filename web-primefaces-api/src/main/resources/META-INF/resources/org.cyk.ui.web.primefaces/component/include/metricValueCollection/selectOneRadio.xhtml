@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+ 
+	<h:body>
+		<ui:composition>
+			<p:selectOneRadio 
+				value="#{cc.value.isNumber ? item.numberValue : item.stringValue}" 
+				rendered="#{cc.value.showRadio}" 
+				required="true" 
+				requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}">
+				
+				<f:selectItems value="#{cc.value.choices}" />
+				
+			</p:selectOneRadio>	
+		</ui:composition>
+	</h:body>
+</html>

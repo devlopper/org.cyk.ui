@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -18,6 +19,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.cdi.BeanAdapter;
 
 @Getter @Setter
 public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Serializable {
@@ -84,6 +86,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		instance.setIdentifiable(identifiable);
 		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
+		setItemLabel(instance);
 		
 		items.add(instance);
 		
@@ -122,6 +125,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);
 		updateTable();
+	}
+
+	public void setItemLabel(TYPE item){
+		for(Listener<TYPE,IDENTIFIABLE,SELECT_ITEM> listener : itemCollectionListeners)
+			listener.setLabel(this,item);
 	}
 	
 	protected abstract void updateTable();
@@ -177,6 +185,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		void delete(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
 
+		void setLabel(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item);
+		
 		/**
 		 * Take value from item fields to identifiable fields
 		 */
@@ -192,7 +202,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		/**/
 		
 		@Getter @Setter
-		public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>{
+		public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends BeanAdapter implements Listener<TYPE,IDENTIFIABLE,SELECT_ITEM>,Serializable{
 			private static final long serialVersionUID = 5920340778121618178L;
 
 			private Crud crud;
@@ -220,6 +230,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 
 			@Override public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SELECT_ITEM> itemCollection,TYPE item) {}
 		
+			@Override public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection,TYPE item) {}
+			
 			@Override public void write(TYPE item) {}
 			
 			@Override public void read(TYPE item) {}
@@ -230,6 +242,17 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			}
 		}
 		
+		@Getter @Setter
+		public static class Default<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,SELECT_ITEM> extends Adapter<TYPE,IDENTIFIABLE,SELECT_ITEM> implements Serializable{
+			private static final long serialVersionUID = 5920340778121618178L;
+			
+			@Override
+			public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE, SELECT_ITEM> itemCollection,TYPE item) {
+				super.setLabel(itemCollection, item);
+				item.setLabel(inject(FormatterBusiness.class).format(item.getIdentifiable()));
+			}
+			
+		}
 	}
 
 

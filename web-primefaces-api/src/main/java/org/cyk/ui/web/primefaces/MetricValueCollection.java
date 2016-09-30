@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
@@ -21,9 +24,6 @@ import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter @Setter
 public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection<TYPE, IDENTIFIABLE> implements Serializable {
 
@@ -31,26 +31,46 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 
 	private MetricCollection metricCollection;
 	private List<SelectItem> choices = new ArrayList<>();
-	private Boolean isNumber,showNumberColumn,showStringColumn,showCombobox;
+	private Boolean autoSetShowOneChoiceInput=Boolean.TRUE,isNumber,showNumberColumn,showStringColumn,showOneChoiceInput,showCombobox,showRadio;
+	private Long minimumNumberOfItemToShowCombobox=6l;
 	
 	public MetricValueCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
 		super(identifier,itemClass,identifiableClass);
-		
 	}
 	
 	public void setMetricCollection(MetricCollection value){
 		this.metricCollection = value;
-		setLabel(this.metricCollection.getName());
 		isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
 		showNumberColumn = isNumber;
 		showStringColumn = !isNumber;
-		if(showCombobox = inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
-			choices.add(new SelectItem(null, inject(LanguageBusiness.class).findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+		
+		if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
 			for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
 				choices.add(new SelectItem(MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : interval.getLow().getValue()
 						, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? inject(IntervalBusiness.class).findRelativeCode(interval) : inject(NumberBusiness.class).format(interval.getLow().getValue())));
 			}
 		}
+		
+		showOneChoiceInput = metricCollection.getValueIntervalCollection()!=null;
+	}
+	
+	public void addNullChoice(String label){
+		choices.add(new SelectItem(null, label));
+	}
+	public void addNullChoice(){
+		addNullChoice(inject(LanguageBusiness.class).findText(SelectItemBuilderListener.NULL_LABEL_ID));
+	}
+	
+	public Boolean getShowCombobox(){
+		if(showCombobox == null && Boolean.TRUE.equals(autoSetShowOneChoiceInput))
+			showCombobox = choices.size() >= minimumNumberOfItemToShowCombobox;
+		return showCombobox;
+	}
+	
+	public Boolean getShowRadio(){
+		if(showRadio == null && Boolean.TRUE.equals(autoSetShowOneChoiceInput))
+			showRadio = choices.size() < minimumNumberOfItemToShowCombobox;
+		return showRadio;
 	}
 	
 	/**/
@@ -75,7 +95,14 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
 			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue());
 			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue());
-		}	
+		}
+		
+		@Override
+		public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE, SelectItem> itemCollection,TYPE item) {
+			super.setLabel(itemCollection, item);
+			item.setLabel(getMetricValue(item.getIdentifiable()).getMetric().getName() /*StringUtils.defaultIfBlank(item.getLabel(), item.getIdentifiable().getName())*/);
+		}
+		
 		@Override
 		public void write(TYPE item) {
 			super.write(item);

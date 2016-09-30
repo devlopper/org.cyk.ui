@@ -33,6 +33,7 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
@@ -215,6 +216,9 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	public String textInputValueRequired(String nameId){
 		return languageBusiness.findText("input.value.required", new Object[]{text(nameId)});
+	}
+	public String getItemCollectionItemInputValueRequiredMessage(AbstractItemCollectionItem<?> item,String nameId){
+		return item.getLabel()+Constant.CHARACTER_SPACE+Constant.CHARACTER_HYPHEN+Constant.CHARACTER_SPACE+languageBusiness.findText("input.value.required", new Object[]{text(nameId)});
 	}
 	
 	public void registerClassKey(BusinessEntityInfos...theClasses){
