@@ -25,7 +25,6 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 		super.consultInitialisation();
 		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty().getContactCollection()
 				, getDetailsConfiguration(ContactCollectionDetails.class).getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class));
-		contactCollectionDetails.addControlSetListener(getDetailsConfiguration(ContactCollectionDetails.class).getFormControlSetAdapter(ContactCollection.class));
 	} 
 	
 	protected abstract Party getParty();

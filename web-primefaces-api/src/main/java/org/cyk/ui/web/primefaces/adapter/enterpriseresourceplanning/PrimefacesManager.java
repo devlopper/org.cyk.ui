@@ -18,13 +18,16 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.language.LanguageCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
+import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
+import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
@@ -149,6 +152,21 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			.addFieldNames(PhoneNumberEditPage.Form.FIELD_ORDER_NUMBER);
 		
 		getFormConfiguration(ContactCollection.class,Crud.CREATE).addRequiredFieldNames(ContactCollectionEditPage.Form.FIELD_CODE,ContactCollectionEditPage.Form.FIELD_NAME);
+		registerDetailsConfiguration(ContactCollectionDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ContactCollectionDetails.FIELD_PHONE_NUMBERS,ContactCollectionDetails.FIELD_ELECTRONIC_MAILS
+								,ContactCollectionDetails.FIELD_LOCATIONS,ContactCollectionDetails.FIELD_POSTAL_BOXES);
+					}
+				};
+			}
+		});
 		
 		getFormConfiguration(Country.class,Crud.CREATE).addRequiredFieldNames(CountryEditPage.Form.FIELD_CONTINENT,CountryEditPage.Form.FIELD_CODE
 				,CountryEditPage.Form.FIELD_NAME,CountryEditPage.Form.FIELD_PHONE_NUMBER_CODE);
@@ -232,6 +250,37 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
+		registerDetailsConfiguration(JobDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,JobDetails.FIELD_FUNCTION,JobDetails.FIELD_TITLE
+								,JobDetails.FIELD_CONTACTS,JobDetails.FIELD_COMPANY);
+					}
+				};
+			}
+		});
+		
+		registerDetailsConfiguration(SignatureDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,SignatureDetails.FIELD_SPECIMEN);
+					}
+				};
+			}
+		});
+		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz()) && Boolean.TRUE.equals(isAutoConfigureClass(businessEntityInfos.getClazz()))){
 				configurePersonFormConfiguration(businessEntityInfos.getClazz(), null, null);
@@ -297,6 +346,12 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 
 		@Override
 		public Boolean build(Object data,Field field) {
+			if( data instanceof JobDetails ){
+				return isFieldNameIn(field,ArrayUtils.addAll(fieldNames
+						,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
+						,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX
+						,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION));
+			}
 			return (data instanceof AbstractPersonDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames
 					,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
 					,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX

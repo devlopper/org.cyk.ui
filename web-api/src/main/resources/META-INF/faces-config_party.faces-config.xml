@@ -5,6 +5,13 @@
 
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
+		<!-- ########################################### Public Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>applicationSetup</from-outcome>
+			<to-view-id>/public/__application__/install.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
 			<from-outcome>applicationEditView</from-outcome>
@@ -23,10 +30,22 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>applicationSetup</from-outcome>
-			<to-view-id>/public/__application__/install.jsf</to-view-id>
+			<from-outcome>personRelationshipEditView</from-outcome>
+			<to-view-id>/private/party/person/relationship/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>personRelationshipListView</from-outcome>
+			<to-view-id>/private/party/person/relationship/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personRelationshipConsultView</from-outcome>
+			<to-view-id>/private/party/person/relationship/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		
 		
 	</navigation-rule>
 

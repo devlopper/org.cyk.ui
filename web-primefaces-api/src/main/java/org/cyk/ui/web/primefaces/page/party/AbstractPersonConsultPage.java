@@ -1,20 +1,24 @@
 package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
+import java.util.Collection;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
+import org.cyk.system.root.business.api.party.person.PersonRelationshipBusiness;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
-import org.cyk.system.root.business.impl.party.person.RelationshipDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonRelationship;
+import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifiable> extends AbstractPartyConsultPage<PERSON> implements Serializable {
@@ -26,7 +30,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 	
 	protected FormOneData<MedicalDetails> medicalDetails;
 	protected FormOneData<JobDetails> jobDetails;
-	protected FormOneData<RelationshipDetails> relationshipDetails;
+	protected Table<PersonRelationshipDetails> relationshipTable;
 	protected FormOneData<SignatureDetails> signatureDetails;
 	
 	@SuppressWarnings("unchecked")
@@ -41,14 +45,25 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 		adapter.setTitleId(JobDetails.LABEL_IDENTIFIER);
 		adapter.setTabId(JobDetails.LABEL_IDENTIFIER);
 		jobDetails = createDetailsForm(JobDetails.class, getPerson(), adapter);
-		jobDetails.addControlSetListener(getDetailsConfiguration(JobDetails.class).getFormControlSetAdapter(Person.class));
 		
 		adapter = getDetailsConfiguration(SignatureDetails.class).getFormConfigurationAdapter(Person.class, SignatureDetails.class);
 		adapter.setTitleId(SignatureDetails.LABEL_IDENTIFIER);
 		adapter.setTabId(SignatureDetails.LABEL_IDENTIFIER);
 		signatureDetails = createDetailsForm(SignatureDetails.class, getPerson(),adapter);
-		signatureDetails.addControlSetListener(getDetailsConfiguration(SignatureDetails.class).getFormControlSetAdapter(Person.class));
 		
+		adapter = getDetailsConfiguration(MedicalDetails.class).getFormConfigurationAdapter(Person.class, MedicalDetails.class);
+		adapter.setTitleId(MedicalDetails.LABEL_IDENTIFIER);
+		adapter.setTabId(MedicalDetails.LABEL_IDENTIFIER);
+		medicalDetails = createDetailsForm(MedicalDetails.class, getPerson(),adapter);
+		
+		//adapter = getDetailsConfiguration(PersonRelationshipDetails.class).getFormConfigurationAdapter(Person.class, PersonRelationshipDetails.class);
+		relationshipTable = (Table<PersonRelationshipDetails>) createDetailsTable(PersonRelationshipDetails.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipDetails>(PersonRelationship.class, PersonRelationshipDetails.class){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<PersonRelationship> getIdentifiables() {
+				return inject(PersonRelationshipBusiness.class).findByPerson(getPerson());
+			}
+		});
 	} 
 	
 	@Override

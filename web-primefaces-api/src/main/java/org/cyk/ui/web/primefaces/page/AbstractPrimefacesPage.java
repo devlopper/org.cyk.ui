@@ -205,6 +205,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	
 	/**/
 	
+	@SuppressWarnings("unchecked")
 	protected <I extends AbstractIdentifiable> void configureDetailsForm(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form,DetailsConfigurationListener.Form<I,?> listener){
 		if(Boolean.FALSE.equals(form.getRendered()))
 			return;
@@ -215,6 +216,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 					form.setRendered(Boolean.TRUE);
 				else
 					setRenderedIfDetailsMenuCommandable(listener.getTabId(), form,listener.getEnabledInDefaultTab());
+			form.addControlSetListener(getDetailsConfiguration(listener.getDataClass()).getFormControlSetAdapter(listener.getIdentifiableClass()));
 		}
 	}
 	

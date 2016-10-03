@@ -77,7 +77,6 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(getDetailsClass()).getFormConfigurationAdapter(identifiable.getClass(),getDetailsClass());
 		adapter.setEnabledInDefaultTab(Boolean.TRUE);
 		details = createDetailsForm(getDetailsClass(), identifiable, adapter);
-		details.addControlSetListener(getDetailsConfiguration(getDetailsClass()).getFormControlSetAdapter(identifiable.getClass()));
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -28,7 +28,6 @@ public abstract class AbstractFileConsultPage<FILE extends AbstractIdentifiable>
 		adapter.setTitleId(FileContentDetails.LABEL_IDENTIFIER);
 		adapter.setTabId(FileContentDetails.LABEL_IDENTIFIER);
 		contentDetails = createDetailsForm(FileContentDetails.class, identifiable, adapter);
-		contentDetails.addControlSetListener(getDetailsConfiguration(FileContentDetails.class).getFormControlSetAdapter(File.class));
 		
 	} 
 	
