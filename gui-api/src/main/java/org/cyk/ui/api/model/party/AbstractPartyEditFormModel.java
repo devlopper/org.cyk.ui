@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
@@ -31,11 +32,13 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 		setContactCollection();
 	}
 	
-	private void setContactCollection(){
+	protected void setContactCollection(){
 		if(contactCollection.getIdentifiable()==null){
 			if(getParty().getContactCollection()==null)
 				getParty().setContactCollection(new ContactCollection());
 			contactCollection.setIdentifiable(getParty().getContactCollection());	
+			if(getParty().getContactCollection()!=null)
+	    		inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
 		}
 		
 	}

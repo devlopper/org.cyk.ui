@@ -88,6 +88,13 @@ public abstract class AbstractPrimefacesManager extends AbstractWebManager<TreeN
 				return getFormConfiguration(clazz, crud, null);
 			}
 			
+			protected FormConfiguration getUpdateFormConfiguration(Class<?> entityClass, Class<?> clazz, Class<?> detailsClass){
+				return getFormConfiguration(entityClass, Crud.UPDATE,getTabIdentifier(clazz, detailsClass));
+			}
+			protected FormConfiguration getUpdateFormConfiguration(Class<?> entityClass, Class<?> detailsClass){
+				return getUpdateFormConfiguration(entityClass, null, detailsClass);
+			}
+			
 			/**/
 			
 			

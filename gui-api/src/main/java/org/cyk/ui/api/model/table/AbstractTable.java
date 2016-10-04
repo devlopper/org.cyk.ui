@@ -576,9 +576,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			
 			private CommonBusinessAction commonBusinessAction;
 			private Class<? extends AbstractIdentifiable> identifiableSelectClass;
+			private AbstractIdentifiable identifiable;
 			private Boolean identifiableSelectOne;
 			private Icon icon;
-			private String actionIdentifier,labelIdentifier;
+			private String actionIdentifier,labelIdentifier,view;
 			
 			public CreateCommandableArguments select(Class<? extends AbstractIdentifiable> identifiableSelectClass,String actionIdentifier,Boolean identifiableSelectOne){
 				this.identifiableSelectClass = identifiableSelectClass;

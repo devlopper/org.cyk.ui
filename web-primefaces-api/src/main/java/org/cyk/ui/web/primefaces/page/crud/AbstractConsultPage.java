@@ -24,6 +24,7 @@ import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.model.table.AbstractTable.Listener.CreateCommandableArguments;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
@@ -141,10 +142,12 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		}
 		
 		if(Boolean.TRUE.equals(showContextualEditCommandable())){
+			CreateCommandableArguments arguments = getEditCommandableArguments();
 			if(globalIdentifierDetails!=null && Boolean.TRUE.equals(globalIdentifierDetails.getRendered())){
 				contextualMenu.getChildren().add(Builder.createUpdateGlobalIdentifier(identifiable));
-			}else
-				contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, identifiable,"command.edit", Icon.ACTION_UPDATE));
+			}else{
+				contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, arguments.getIdentifiable(),"command.edit", Icon.ACTION_UPDATE,arguments.getView()));
+			}
 		}
 		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
 			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE)
@@ -165,6 +168,13 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 				commandable.setParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
 		
 		return contextualMenu.getChildren().isEmpty() ? null : Arrays.asList(contextualMenu);
+	}
+	
+	protected CreateCommandableArguments getEditCommandableArguments(){
+		CreateCommandableArguments arguments = new CreateCommandableArguments();
+		arguments.setIdentifiable(identifiable);
+		arguments.setView(null);
+		return arguments;
 	}
 	
 	/**/

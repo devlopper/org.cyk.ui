@@ -26,6 +26,7 @@ import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
@@ -42,6 +43,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
+import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
@@ -241,6 +243,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configurePartyModule() {
 		super.configurePartyModule();
 		configurePersonFormConfiguration(Person.class,null,null);
+		
 		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -281,6 +284,21 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
+		registerDetailsConfiguration(MedicalDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MedicalDetails.FIELD_BLOOD_GROUP,MedicalDetails.FIELD_ALLERGIES,MedicalDetails.FIELD_MEDICATIONS);
+					}
+				};
+			}
+		});
+		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz()) && Boolean.TRUE.equals(isAutoConfigureClass(businessEntityInfos.getClazz()))){
 				configurePersonFormConfiguration(businessEntityInfos.getClazz(), null, null);
@@ -304,11 +322,24 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configurePersonFormConfiguration(Class<?> entityClass,String[] requiredFieldNames,String[] fieldNames){
 		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(requiredFieldNames,AbstractPersonEditFormModel.FIELD_CODE
 				,AbstractPersonEditFormModel.FIELD_NAME))
-		.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_IMAGE,AbstractPersonEditFormModel.FIELD_LAST_NAMES
+				.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_IMAGE,AbstractPersonEditFormModel.FIELD_LAST_NAMES
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
 				,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
 				,LanguageCollectionFormModel.FIELD_LANGUAGE_1))
-		.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
+				.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
+		
+		getUpdateFormConfiguration(entityClass, ContactCollection.class, ContactCollectionDetails.class)
+				.addFieldNames(AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
+						,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL,ContactCollectionFormModel.FIELD_POSTALBOX);
+		
+		getUpdateFormConfiguration(entityClass, JobDetails.class)
+			.addFieldNames(AbstractPersonEditFormModel.FIELD_JOB_COMPANY,AbstractPersonEditFormModel.FIELD_JOB_TITLE,AbstractPersonEditFormModel.FIELD_JOB_FUNCTION
+				,AbstractPersonEditFormModel.FIELD_JOB_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
+				,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL,ContactCollectionFormModel.FIELD_POSTALBOX);
+		
+		getUpdateFormConfiguration(entityClass, SignatureDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
+		
+		getUpdateFormConfiguration(entityClass, MedicalDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_BLOOD_GROUP);
 		
 		getFormConfiguration(entityClass, Crud.READ).addFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME
 				,AbstractPersonEditFormModel.FIELD_LAST_NAMES);

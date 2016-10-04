@@ -15,11 +15,13 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
@@ -215,7 +217,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))
-			return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));
+			//return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));//TODO to be deleted
+			return (T) inject(BusinessInterfaceLocator.class).injectTyped(aClass).find(requestParameterLong(identifierId));
 		return null;
 	}
 	
@@ -322,6 +325,15 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		}
 		return identifier.equals(/*detailsMenu==null?*/selectedTabId/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
 	}
+	
+	protected Boolean isDetailsMenuCommandable(Class<?> identifiableClass,Class<?> detailsClass){
+		return isDetailsMenuCommandable(IdentifierProvider.Adapter.getTabOf(identifiableClass, detailsClass), Boolean.FALSE);
+	}
+	
+	protected Boolean isDetailsMenuCommandable(Class<?> detailsClass){
+		return isDetailsMenuCommandable(null, detailsClass);
+	}
+	
 	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData,Boolean defaultDetails){
 		formOneData.setRendered(isDetailsMenuCommandable(identifier,defaultDetails));
 		return formOneData.getRendered();

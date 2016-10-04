@@ -51,8 +51,8 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	public Boolean hasNoRequiredFieldNames(){ 
 		return hasNoNames(requiredFieldNames);
 	}
-	public Boolean hasRequiredFieldName(String fieldName){ 
-		return hasName(requiredFieldNames, fieldName);
+	public Boolean hasRequiredFieldName(String fieldName){
+		return requiredFieldNames!=null && hasName(requiredFieldNames, fieldName);
 	}
 	
 	public Boolean hasNoExcludedFieldNames(){ 

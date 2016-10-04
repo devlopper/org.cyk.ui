@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.language.LanguageCollection;
@@ -39,7 +41,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputEditor;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
@@ -57,17 +58,22 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected LocationFormModel birthLocation = new LocationFormModel();
 	
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected MaritalStatus maritalStatus;
-	@Input @InputChoice @InputOneChoice @InputOneCombo protected PersonTitle title;
+	@Input @InputChoice @InputOneChoice @InputOneRadio protected MaritalStatus maritalStatus;
+	@Input @InputChoice @InputOneChoice @InputOneRadio protected PersonTitle title;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected Country nationality;
 	
 	@Input @InputChoice @InputOneChoice @InputOneRadio protected BloodGroup bloodGroup;
 	//@Input @InputText protected String allergicReactionResponse,allergicReactionType;
 	@Input @InputEditor protected String otherMedicalInformations;
 	
-	@Input @InputText protected String company;
+	/* Job details */
+	
+	@Input @InputText protected String jobCompany;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobTitle jobTitle;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobFunction jobFunction;
+	
+	@IncludeInputs(layout=Layout.VERTICAL)
+	protected ContactCollectionFormModel jobContactCollection = new ContactCollectionFormModel();
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	
@@ -81,8 +87,25 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	}
 	
 	@Override
+	public void setIdentifiable(PERSON identifiable) {
+		super.setIdentifiable(identifiable);
+		setJobContactCollection();
+	}
+	
+	protected void setJobContactCollection(){
+		if(jobContactCollection.getIdentifiable()==null){
+			if(getPerson().getJobInformations()!=null && getPerson().getJobInformations().getContactCollection()==null)
+				getPerson().getJobInformations().setContactCollection(new ContactCollection());
+			jobContactCollection.setIdentifiable(getPerson().getJobInformations().getContactCollection());
+			if(getPerson().getJobInformations().getContactCollection()!=null)
+	    		inject(ContactCollectionBusiness.class).load(getPerson().getJobInformations().getContactCollection());	
+		}
+	}
+	
+	@Override
 	public void read() {
 		super.read();
+		setJobContactCollection();
 		birthDate = getPerson().getBirthDate();
 		lastnames = getPerson().getLastnames();
 		sex = getPerson().getSex();
@@ -98,6 +121,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			signatureSpecimen = getPerson().getExtendedInformations().getSignatureSpecimen();
 		}
 		if(getPerson().getJobInformations()!=null){
+			jobCompany = getPerson().getJobInformations().getCompany();
 			jobFunction = getPerson().getJobInformations().getFunction();
 			jobTitle = getPerson().getJobInformations().getTitle();
 		}
@@ -105,7 +129,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		if(getPerson().getMedicalInformations()!=null){
 			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
 		}
-		
+		System.out.println("AbstractPersonEditFormModel.read()");
+		debug(jobContactCollection.getIdentifiable());
 	}
 	
 	@Override
@@ -142,7 +167,10 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			getJobInformations(Boolean.TRUE).setFunction(jobFunction);
 		if(jobTitle!=null)
 			getJobInformations(Boolean.TRUE).setTitle(jobTitle);
-		
+		getJobInformations(Boolean.TRUE).setCompany(jobCompany);
+		//debug(contactCollection);
+		//jobContactCollection.write();
+		//debug(jobContactCollection.getIdentifiable());
 		if(bloodGroup!=null)
 			getMedicalInformations(Boolean.TRUE).setBloodGroup(bloodGroup);
 		/*if(identifiable.getExtendedInformations()!=null){
@@ -237,8 +265,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	
 	public static final String FIELD_JOB_TITLE = "jobTitle";
 	public static final String FIELD_JOB_FUNCTION = "jobFunction";
-	public static final String FIELD_COMPANY = "jobCompany";
-	public static final String FIELD_JOB_CONTACTS = "jobContacts";
+	public static final String FIELD_JOB_COMPANY = "jobCompany";
+	public static final String FIELD_JOB_CONTACT_COLLECTION = "jobContactCollection";
 	
 	/**/
 	

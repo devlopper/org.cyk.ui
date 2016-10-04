@@ -17,6 +17,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
@@ -480,7 +481,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				super();
 				this.identifiableClass = identifiableClass;
 				this.dataClass = dataClass;
-				titleId = UIManager.getInstance().businessEntityInfos(identifiableClass).getUserInterface().getLabelId();
+				titleId = IdentifierProvider.Adapter.getTabOf(identifiableClass,dataClass);
 				
 				tabId = getTitleId();
 			}

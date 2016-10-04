@@ -6,6 +6,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
 import org.cyk.system.root.business.api.party.person.PersonRelationshipBusiness;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
@@ -40,6 +41,12 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class)
 				.findByCollection(getPerson().getExtendedInformations().getLanguageCollection()));
 		super.consultInitialisation();
+		
+		if(isDetailsMenuCommandable(JobDetails.class)){
+			if(getPerson().getJobInformations().getContactCollection()!=null)
+	    		inject(ContactCollectionBusiness.class).load(getPerson().getJobInformations().getContactCollection());	
+		}
+		
 		@SuppressWarnings("rawtypes")
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(JobDetails.class).getFormConfigurationAdapter(Person.class, JobDetails.class);
 		adapter.setTitleId(JobDetails.LABEL_IDENTIFIER);

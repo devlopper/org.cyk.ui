@@ -26,12 +26,13 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 	@Input @InputText private String postalBox;
 	
 	/* Work */
+	/*
 	@Input @InputText private String workMobilePhoneNumber;
 	@Input @InputText private String workLandPhoneNumber;
 	@Input @InputText @Email private String workElectronicMail;
 	@Input @InputText private String workLocation;
 	@Input @InputText private String workPostalBox;
-	
+	*/
 	@Override
 	public void write() {
 		updatePhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.LAND),landPhoneNumber);

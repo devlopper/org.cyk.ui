@@ -1,12 +1,15 @@
 package org.cyk.ui.api;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.BeanAdapter;
 
@@ -20,7 +23,9 @@ public interface IdentifierProvider{
 	String getViewDynamic(CommonBusinessAction commonBusinessAction,Boolean one);
 	String getViewDynamicReport();
 	String getViewGlobalIdentifierEdit();
-		
+	
+	String getTab(Class<?> identifiableClass,Class<?> detailsClass);
+	
 	/**/
 	
 	public static class Adapter extends BeanAdapter implements IdentifierProvider,Serializable{
@@ -45,6 +50,20 @@ public interface IdentifierProvider{
 		public String getViewGlobalIdentifierEdit() {
 			return null;
 		}
+		@Override
+		public String getTab(Class<?> identifiableClass,Class<?> detailsClass) {
+			return null;
+		}
+		
+		public static String getTabOf(final Class<?> identifiableClass,final Class<?> detailsClass) {
+			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
+				@Override
+				public String execute(IdentifierProvider provider) {
+					return provider.getTab(identifiableClass,detailsClass);
+				}
+			});
+		}
+		
 		public static class Default extends Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;
 			
@@ -86,6 +105,21 @@ public interface IdentifierProvider{
 				if(StringUtils.isEmpty(identifier) && businessEntityInfos.getCrudStrategy().equals(CrudStrategy.BUSINESS))
 					logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
 				return identifier;
+			}
+			
+			@Override
+			public String getTab(Class<?> identifiableClass,Class<?> detailsClass) {
+				Field field = FieldUtils.getDeclaredField(detailsClass, "LABEL_IDENTIFIER", Boolean.TRUE);
+				if(field == null){
+					return UIManager.getInstance().businessEntityInfos(identifiableClass).getUserInterface().getLabelId();
+				}else{
+					try {
+						return (String) FieldUtils.readStaticField(field);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+				return null;
 			}
 			
 		}
