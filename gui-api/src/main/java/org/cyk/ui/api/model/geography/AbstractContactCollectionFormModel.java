@@ -24,13 +24,16 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	private static final long serialVersionUID = -3897201743383535836L;
 	
 	protected PhoneNumber phoneNumber(PhoneNumberType type){
-		for(PhoneNumber phoneNumber : identifiable.getPhoneNumbers())
-			if(phoneNumber.getType().equals(type))
-				return phoneNumber;
+		if(identifiable!=null && identifiable.getPhoneNumbers()!=null)
+			for(PhoneNumber phoneNumber : identifiable.getPhoneNumbers())
+				if(phoneNumber.getType().equals(type))
+					return phoneNumber;
 		return null;
 	}
 	
 	protected void updatePhoneNumber(PhoneNumberType type,String number){
+		if(identifiable==null)
+			return;
 		PhoneNumber phoneNumber = phoneNumber(type);
 		if(phoneNumber ==null){
 			if(!StringUtils.isBlank(number)){
@@ -75,6 +78,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	}
 	
 	protected void updateLocation(LocationType type,String comments){
+		if(identifiable==null)
+			return;
 		Location location = location(type);
 		if(location ==null){
 			if(!StringUtils.isBlank(comments)){
@@ -121,6 +126,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	}
 	
 	protected void updateElectronicMail(String address){
+		if(identifiable==null)
+			return;
 		if(StringUtils.isBlank(address))
 			identifiable.getElectronicMails().clear();
 		else{
@@ -145,6 +152,8 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	}
 	
 	protected void updatePostalBox(String address){
+		if(identifiable==null)
+			return;
 		if(StringUtils.isBlank(address))
 			identifiable.getPostalBoxs().clear();
 		else{

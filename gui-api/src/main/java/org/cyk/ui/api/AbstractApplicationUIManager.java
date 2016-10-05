@@ -249,8 +249,8 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			protected void configureTimeModule(){}
 			protected void configureUserInterfaceModule(){}
 			
-			protected String getTabIdentifier(Class<?> identifiableClass,Class<?> detailsClass){
-				return IdentifierProvider.Adapter.getTabOf(identifiableClass, detailsClass);
+			protected String getTabIdentifier(Class<?> aClass){
+				return IdentifierProvider.Adapter.getTabOf(aClass);
 			}
 		}
 	}

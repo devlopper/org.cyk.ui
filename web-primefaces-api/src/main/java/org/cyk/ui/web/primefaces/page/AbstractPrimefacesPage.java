@@ -481,7 +481,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				super();
 				this.identifiableClass = identifiableClass;
 				this.dataClass = dataClass;
-				titleId = IdentifierProvider.Adapter.getTabOf(identifiableClass,dataClass);
+				titleId = IdentifierProvider.Adapter.getTabOf(identifiableClass);
 				
 				tabId = getTitleId();
 			}

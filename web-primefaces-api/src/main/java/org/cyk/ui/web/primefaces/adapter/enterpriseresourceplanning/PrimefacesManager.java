@@ -328,7 +328,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				,LanguageCollectionFormModel.FIELD_LANGUAGE_1))
 				.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
 		
-		getUpdateFormConfiguration(entityClass, ContactCollection.class, ContactCollectionDetails.class)
+		getUpdateFormConfiguration(entityClass, ContactCollection.class)
 				.addFieldNames(AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
 						,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL,ContactCollectionFormModel.FIELD_POSTALBOX);
 		

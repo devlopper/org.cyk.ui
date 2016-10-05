@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.BeanAdapter;
@@ -24,7 +26,7 @@ public interface IdentifierProvider{
 	String getViewDynamicReport();
 	String getViewGlobalIdentifierEdit();
 	
-	String getTab(Class<?> identifiableClass,Class<?> detailsClass);
+	String getTab(Class<?> aClass);
 	
 	/**/
 	
@@ -51,15 +53,15 @@ public interface IdentifierProvider{
 			return null;
 		}
 		@Override
-		public String getTab(Class<?> identifiableClass,Class<?> detailsClass) {
+		public String getTab(Class<?> aClass) {
 			return null;
 		}
 		
-		public static String getTabOf(final Class<?> identifiableClass,final Class<?> detailsClass) {
+		public static String getTabOf(final Class<?> aClass) {
 			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 				@Override
 				public String execute(IdentifierProvider provider) {
-					return provider.getTab(identifiableClass,detailsClass);
+					return provider.getTab(aClass);
 				}
 			});
 		}
@@ -108,16 +110,16 @@ public interface IdentifierProvider{
 			}
 			
 			@Override
-			public String getTab(Class<?> identifiableClass,Class<?> detailsClass) {
-				Field field = FieldUtils.getDeclaredField(detailsClass, "LABEL_IDENTIFIER", Boolean.TRUE);
-				if(field == null){
-					return UIManager.getInstance().businessEntityInfos(identifiableClass).getUserInterface().getLabelId();
-				}else{
+			public String getTab(Class<?> aClass) {
+				if(AbstractOutputDetails.class.isAssignableFrom(aClass)){
+					Field field = FieldUtils.getDeclaredField(aClass, "LABEL_IDENTIFIER", Boolean.TRUE);
 					try {
 						return (String) FieldUtils.readStaticField(field);
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
+				}else if(AbstractIdentifiable.class.isAssignableFrom(aClass)){
+					return UIManager.getInstance().businessEntityInfos(aClass).getUserInterface().getLabelId();
 				}
 				return null;
 			}

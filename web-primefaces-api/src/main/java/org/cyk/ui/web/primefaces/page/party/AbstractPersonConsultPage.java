@@ -6,8 +6,9 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
-import org.cyk.system.root.business.api.language.LanguageCollectionItemBusiness;
+import org.cyk.system.root.business.api.party.person.JobInformationsBusiness;
+import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
+import org.cyk.system.root.business.api.party.person.PersonExtendedInformationsBusiness;
 import org.cyk.system.root.business.api.party.person.PersonRelationshipBusiness;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
@@ -37,15 +38,11 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void consultInitialisation() {
-		if(getPerson().getExtendedInformations()!=null && getPerson().getExtendedInformations().getLanguageCollection()!=null)
+		/*if(getPerson().getExtendedInformations()!=null && getPerson().getExtendedInformations().getLanguageCollection()!=null)
 			getPerson().getExtendedInformations().getLanguageCollection().setCollection(inject(LanguageCollectionItemBusiness.class)
 				.findByCollection(getPerson().getExtendedInformations().getLanguageCollection()));
+		*/
 		super.consultInitialisation();
-		
-		if(isDetailsMenuCommandable(JobDetails.class)){
-			if(getPerson().getJobInformations().getContactCollection()!=null)
-	    		inject(ContactCollectionBusiness.class).load(getPerson().getJobInformations().getContactCollection());	
-		}
 		
 		@SuppressWarnings("rawtypes")
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(JobDetails.class).getFormConfigurationAdapter(Person.class, JobDetails.class);
@@ -63,7 +60,6 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 		adapter.setTabId(MedicalDetails.LABEL_IDENTIFIER);
 		medicalDetails = createDetailsForm(MedicalDetails.class, getPerson(),adapter);
 		
-		//adapter = getDetailsConfiguration(PersonRelationshipDetails.class).getFormConfigurationAdapter(Person.class, PersonRelationshipDetails.class);
 		relationshipTable = (Table<PersonRelationshipDetails>) createDetailsTable(PersonRelationshipDetails.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipDetails>(PersonRelationship.class, PersonRelationshipDetails.class){
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -72,6 +68,20 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			}
 		});
 	} 
+	
+	@Override
+	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
+		T t = super.identifiableFromRequestParameter(aClass, identifierId);
+		if(isDetailsMenuCommandable(JobDetails.class))
+			inject(JobInformationsBusiness.class).load(((Person)t).getJobInformations());
+		else if(isDetailsMenuCommandable(MedicalDetails.class))
+			inject(MedicalInformationsBusiness.class).load(((Person)t).getMedicalInformations());
+		else{
+			((Person)t).setExtendedInformations(inject(PersonExtendedInformationsBusiness.class).findByParty((Person)t));
+			inject(PersonExtendedInformationsBusiness.class).load(((Person)t).getExtendedInformations());
+		}
+		return t;
+	}
 	
 	@Override
 	protected Party getParty() {

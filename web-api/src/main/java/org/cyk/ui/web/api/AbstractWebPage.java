@@ -15,7 +15,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -218,7 +217,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass,String identifierId){
 		if(hasRequestParameter(identifierId))
 			//return (T) getGenericBusiness().load(aClass,requestParameterLong(identifierId));//TODO to be deleted
-			return (T) inject(BusinessInterfaceLocator.class).injectTyped(aClass).find(requestParameterLong(identifierId));
+			//return (T) inject(BusinessInterfaceLocator.class).injectTyped(aClass).find(requestParameterLong(identifierId));
+			return webManager.getIdentifiableFromRequestParameter(aClass, identifierId, Boolean.FALSE);
 		return null;
 	}
 	
@@ -326,12 +326,8 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		return identifier.equals(/*detailsMenu==null?*/selectedTabId/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
 	}
 	
-	protected Boolean isDetailsMenuCommandable(Class<?> identifiableClass,Class<?> detailsClass){
-		return isDetailsMenuCommandable(IdentifierProvider.Adapter.getTabOf(identifiableClass, detailsClass), Boolean.FALSE);
-	}
-	
-	protected Boolean isDetailsMenuCommandable(Class<?> detailsClass){
-		return isDetailsMenuCommandable(null, detailsClass);
+	protected Boolean isDetailsMenuCommandable(Class<?> aClass){
+		return isDetailsMenuCommandable(IdentifierProvider.Adapter.getTabOf(aClass), Boolean.FALSE);
 	}
 	
 	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData,Boolean defaultDetails){

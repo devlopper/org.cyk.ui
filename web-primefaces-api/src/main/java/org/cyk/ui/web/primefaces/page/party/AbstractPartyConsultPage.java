@@ -24,23 +24,20 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	@Override
 	protected void consultInitialisation() {
 		super.consultInitialisation();
-		if(isDetailsMenuCommandable(ContactCollection.class,ContactCollectionDetails.class)){
-			if(getParty().getContactCollection()!=null)
-	    		inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());	
-		}
+			
 		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty().getContactCollection()
 				, getDetailsConfiguration(ContactCollectionDetails.class).getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class));
-		
-		
-	} 
-	/*
+			
+	}
+	
 	@Override
-	protected CreateCommandableArguments getEditCommandableArguments() {
-		CreateCommandableArguments arguments = super.getEditCommandableArguments();
-		if(isDetailsMenuCommandable("model.entity.contactCollection", Boolean.FALSE))
-			arguments.setIdentifiable(getParty().getContactCollection());
-		return arguments;
-	}*/
+	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
+		T t = super.identifiableFromRequestParameter(aClass, identifierId);
+		if(isDetailsMenuCommandable(ContactCollection.class))
+			if(t instanceof Party)
+				inject(ContactCollectionBusiness.class).load(((Party)t).getContactCollection());
+		return t;
+	}
 	
 	protected abstract Party getParty();
 	

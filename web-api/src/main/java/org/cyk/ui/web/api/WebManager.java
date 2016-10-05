@@ -396,22 +396,43 @@ public class WebManager extends AbstractBean implements Serializable {
 		return hasRequestParameter(Faces.getRequest(),name);
 	}
 	
-	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,String identifierId){
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,String identifierId,Boolean useLoad){
 		if(hasRequestParameter(request,identifierId))
-			return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
+			if(Boolean.TRUE.equals(useLoad))
+				return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
+			else
+				return (T) inject(BusinessInterfaceLocator.class).injectTyped(aClass).find(getRequestParameterAsLong(request,identifierId));
 		return null;
 	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,String identifierId){
+		return getIdentifiableFromRequestParameter(request, aClass, identifierId,Boolean.FALSE);
+	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,String identifierId,Boolean useLoad){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,identifierId,useLoad);
+	}
+	
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,String identifierId){
-		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,identifierId);
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,identifierId,Boolean.FALSE);
+	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,Boolean useBusinessEntityInfosIdentifier,Boolean useLoad){
+		return getIdentifiableFromRequestParameter(request,aClass,Boolean.TRUE.equals(useBusinessEntityInfosIdentifier) 
+				? UIManager.getInstance().businessEntityInfos(aClass).getIdentifier() 
+				: UniformResourceLocatorParameter.IDENTIFIABLE,useLoad);
 	}
 	
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
-		return getIdentifiableFromRequestParameter(request,aClass,Boolean.TRUE.equals(useBusinessEntityInfosIdentifier) 
-				? UIManager.getInstance().businessEntityInfos(aClass).getIdentifier() 
-				: UniformResourceLocatorParameter.IDENTIFIABLE);
+		return getIdentifiableFromRequestParameter(request, aClass, useBusinessEntityInfosIdentifier,Boolean.FALSE);
 	}
+	
+	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,Boolean useBusinessEntityInfosIdentifier,Boolean useLoad){
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,useBusinessEntityInfosIdentifier,useLoad);
+	}
+	
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(Class<T> aClass,Boolean useBusinessEntityInfosIdentifier){
-		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,useBusinessEntityInfosIdentifier);
+		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass,useBusinessEntityInfosIdentifier,Boolean.FALSE);
 	}
 	
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass){

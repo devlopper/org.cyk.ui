@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -96,9 +95,10 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		if(jobContactCollection.getIdentifiable()==null){
 			if(getPerson().getJobInformations()!=null && getPerson().getJobInformations().getContactCollection()==null)
 				getPerson().getJobInformations().setContactCollection(new ContactCollection());
-			jobContactCollection.setIdentifiable(getPerson().getJobInformations().getContactCollection());
-			if(getPerson().getJobInformations().getContactCollection()!=null)
-	    		inject(ContactCollectionBusiness.class).load(getPerson().getJobInformations().getContactCollection());	
+			if(getPerson().getJobInformations()!=null)
+				jobContactCollection.setIdentifiable(getPerson().getJobInformations().getContactCollection());
+			//if(getPerson().getJobInformations().getContactCollection()!=null)
+	    	//	inject(ContactCollectionBusiness.class).load(getPerson().getJobInformations().getContactCollection());	
 		}
 	}
 	
@@ -129,8 +129,6 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		if(getPerson().getMedicalInformations()!=null){
 			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
 		}
-		System.out.println("AbstractPersonEditFormModel.read()");
-		debug(jobContactCollection.getIdentifiable());
 	}
 	
 	@Override
