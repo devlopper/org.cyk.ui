@@ -35,7 +35,11 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@Input @InputText protected String description;
 	
+	@Input @InputText protected String otherDetails;
+	
 	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
+	
+	
 	
 	@Override
 	public void read() {
@@ -46,6 +50,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		abbreviation = identifiable.getAbbreviation();
 		description = identifiable.getDescription();
 		existencePeriod.set(identifiable.getExistencePeriod());
+		otherDetails = identifiable.getOtherDetails();
 	}
 	
 	protected void setBusinessValues(AbstractIdentifiable identifiable){
@@ -57,6 +62,8 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		
 		identifiable.setBirthDate(existencePeriod.getFromDate());
 		identifiable.setDeathDate(existencePeriod.getToDate());
+		
+		identifiable.setOtherDetails(otherDetails);
 	}
 	
 	@Override
@@ -72,4 +79,5 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	public static final String FIELD_ABBREVIATION = "abbreviation";
 	public static final String FIELD_DESCRIPTION = "description";
 	public static final String FIELD_EXISTENCE_PERIOD = "existencePeriod";
+	public static final String FIELD_OTHER_DETAILS = "otherDetails";
 }

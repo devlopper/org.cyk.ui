@@ -385,7 +385,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_IMAGE,AbstractPersonEditFormModel.FIELD_LAST_NAMES
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
 				,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
-				,LanguageCollectionFormModel.FIELD_LANGUAGE_1))
+				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS))
 				.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)
@@ -442,7 +442,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return isFieldNameIn(field,ArrayUtils.addAll(fieldNames
 						,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
 						,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX
-						,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION));
+						,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS));
 			}
 			return (data instanceof AbstractPersonDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames
 					,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
