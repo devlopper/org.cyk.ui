@@ -22,9 +22,11 @@ import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.message.SmtpProperties;
+import org.cyk.system.root.model.party.person.Allergy;
 import org.cyk.system.root.model.party.person.JobFunction;
 import org.cyk.system.root.model.party.person.JobTitle;
 import org.cyk.system.root.model.party.person.MaritalStatus;
+import org.cyk.system.root.model.party.person.Medication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.party.person.PersonRelationshipType;
@@ -108,6 +110,8 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(MaritalStatus.class, null));
 		module.addChild(createListCommandable(PersonTitle.class, null));
 		module.addChild(createListCommandable(Sex.class, null));
+		module.addChild(createListCommandable(Allergy.class, null));
+		module.addChild(createListCommandable(Medication.class, null));
 		return module;
 	}
 	

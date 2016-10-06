@@ -27,6 +27,8 @@ import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
@@ -293,7 +295,65 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MedicalDetails.FIELD_BLOOD_GROUP,MedicalDetails.FIELD_ALLERGIES,MedicalDetails.FIELD_MEDICATIONS);
+						return isFieldNameIn(field,MedicalDetails.FIELD_BLOOD_GROUP,MedicalDetails.FIELD_OTHER_MEDICAL_INFORMATIONS);
+					}
+				};
+			}
+		});
+		
+		registerDetailsConfiguration(MedicalInformationsAllergyDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MedicalInformationsAllergyDetails.FIELD_ALLERGY,MedicalInformationsAllergyDetails.FIELD_REACTION_RESPONSE
+								,MedicalInformationsAllergyDetails.FIELD_REACTION_TYPE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field, MedicalInformationsAllergyDetails.FIELD_ALLERGY,MedicalInformationsAllergyDetails.FIELD_REACTION_RESPONSE
+								,MedicalInformationsAllergyDetails.FIELD_REACTION_TYPE);
+					}
+				};
+			}
+		});
+		
+		registerDetailsConfiguration(MedicalInformationsMedicationDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MedicalInformationsMedicationDetails.FIELD_MEDICATION,MedicalInformationsMedicationDetails.FIELD_MUST_BE_AVAILABLE
+								,MedicalInformationsMedicationDetails.FIELD_MUST_BE_GIVEN);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field, MedicalInformationsMedicationDetails.FIELD_MEDICATION,MedicalInformationsMedicationDetails.FIELD_MUST_BE_AVAILABLE
+								,MedicalInformationsMedicationDetails.FIELD_MUST_BE_GIVEN);
 					}
 				};
 			}
@@ -339,7 +399,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		getUpdateFormConfiguration(entityClass, SignatureDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
 		
-		getUpdateFormConfiguration(entityClass, MedicalDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_BLOOD_GROUP);
+		getUpdateFormConfiguration(entityClass, MedicalDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_BLOOD_GROUP
+				,AbstractPersonEditFormModel.FIELD_OTHER_MEDICAL_INFORMATIONS);
 		
 		getFormConfiguration(entityClass, Crud.READ).addFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME
 				,AbstractPersonEditFormModel.FIELD_LAST_NAMES);

@@ -45,7 +45,37 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>medicalInformationsAllergyEditView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsallergy/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>medicalInformationsAllergyListView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsallergy/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>medicalInformationsAllergyConsultView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsallergy/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>medicalInformationsMedicationEditView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsmedication/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>medicalInformationsMedicationListView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsmedication/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>medicalInformationsMedicationConsultView</from-outcome>
+			<to-view-id>/private/party/person/medical/informationsmedication/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 	</navigation-rule>
 

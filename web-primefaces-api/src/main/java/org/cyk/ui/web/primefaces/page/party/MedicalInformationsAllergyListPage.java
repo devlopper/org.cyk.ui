@@ -8,11 +8,11 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 
 @Named @ViewScoped @Getter @Setter
-public class CrudOneActorPage extends AbstractCrudOnePage<AbstractIdentifiable> implements Serializable {
+public class MedicalInformationsAllergyListPage extends AbstractCrudManyPage<MedicalInformationsAllergy> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

@@ -23,22 +23,18 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void consultInitialisation() {
-		super.consultInitialisation();
-			
+		super.consultInitialisation();		
 		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty().getContactCollection()
 				, getDetailsConfiguration(ContactCollectionDetails.class).getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class));
-			
 	}
 	
 	@Override
-	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
-		T t = super.identifiableFromRequestParameter(aClass, identifierId);
+	protected void processOnIdentifiableFound(PARTY identifiable) {
+		super.processOnIdentifiableFound(identifiable);
 		if(isDetailsMenuCommandable(ContactCollection.class))
-			if(t instanceof Party)
-				inject(ContactCollectionBusiness.class).load(((Party)t).getContactCollection());
-		return t;
+			inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
 	}
-	
+		
 	protected abstract Party getParty();
 	
 }

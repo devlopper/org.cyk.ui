@@ -10,6 +10,8 @@ import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.business.impl.party.person.PersonBusinessImpl;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.party.person.JobInformations;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
@@ -46,6 +48,8 @@ public class ContextListener extends AbstractContextListener {
 			@Override
 			public void afterInstanciateOne(UserAccount userAccount,Person person) {
 				person.getExtendedInformations().setLanguageCollection(inject(LanguageCollectionBusiness.class).instanciateOne(userAccount));
+				person.setJobInformations(new JobInformations(person));
+				person.setMedicalInformations(new MedicalInformations(person));
 				super.afterInstanciateOne(userAccount, person);
 			}
 		});

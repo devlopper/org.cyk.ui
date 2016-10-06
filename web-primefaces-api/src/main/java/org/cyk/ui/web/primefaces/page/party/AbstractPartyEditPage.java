@@ -19,15 +19,10 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 	protected abstract Party getParty();
 		
 	@Override
-	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass, String identifierId) {
-		T t = super.identifiableFromRequestParameter(aClass, identifierId);
-		if(isDetailsMenuCommandable(ContactCollection.class)){
-			if(t instanceof Party){
-				inject(ContactCollectionBusiness.class).load(((Party)t).getContactCollection());
-			}
-		}
-		debug( t );
-		return t;
+	protected void processOnIdentifiableFound(PARTY identifiable) {
+		super.processOnIdentifiableFound(identifiable);
+		if(isDetailsMenuCommandable(ContactCollection.class))
+			inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
 	}
 	
 }

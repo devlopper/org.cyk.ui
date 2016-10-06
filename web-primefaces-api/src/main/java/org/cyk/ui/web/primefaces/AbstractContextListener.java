@@ -23,6 +23,8 @@ import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
 import org.cyk.system.root.business.impl.party.ApplicationDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
@@ -51,6 +53,8 @@ import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
+import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.party.person.PersonRelationshipType;
@@ -94,6 +98,8 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
+import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
+import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonRelationshipEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
@@ -155,6 +161,13 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Person.class, PersonEditPage.Form.class, PersonDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Person.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MedicalInformationsAllergy.class, MedicalInformationsAllergyEditPage.Form.class, MedicalInformationsAllergyDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(MedicalInformationsAllergy.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MedicalInformationsMedication.class, MedicalInformationsMedicationEditPage.Form.class, MedicalInformationsMedicationDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(MedicalInformationsMedication.class, null);
+		
 		//BusinessEntityFormManyPageListener.COLLECTION.add(new AbstractPersonListPage.AbstractPersonListPageAdapter.AbstractDefault.Default<Person>(Person.class));
 		//BusinessEntityFormOnePageListener.COLLECTION.add(new AbstractPersonEditPage.AbstractPageAdapter.Default<Person>(Person.class));
 		//ConsultPageListener.COLLECTION.add(new ConsultPageListener.Adapter.Default<Person>(Person.class));

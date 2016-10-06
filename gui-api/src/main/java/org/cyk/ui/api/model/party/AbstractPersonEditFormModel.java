@@ -36,12 +36,12 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
-import org.cyk.utility.common.annotation.user.interfaces.InputEditor;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 
@@ -62,8 +62,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected Country nationality;
 	
 	@Input @InputChoice @InputOneChoice @InputOneRadio protected BloodGroup bloodGroup;
-	//@Input @InputText protected String allergicReactionResponse,allergicReactionType;
-	@Input @InputEditor protected String otherMedicalInformations;
+	@Input @InputTextarea protected String otherMedicalInformations;
 	
 	/* Job details */
 	
@@ -128,6 +127,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		
 		if(getPerson().getMedicalInformations()!=null){
 			bloodGroup = getPerson().getMedicalInformations().getBloodGroup();
+			otherMedicalInformations = getPerson().getMedicalInformations().getOtherDetails();
 		}
 	}
 	
@@ -139,72 +139,44 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		getPerson().setSex(sex);
 		getPerson().setNationality(nationality);
 		getPerson().setBirthDate(birthDate);
-		if(title!=null)
-			getExtendedInformations(Boolean.TRUE).setTitle(title);
-		if(languageCollection!=null){
-			if(languageCollection.getLanguage1()!=null && languageCollection.getIdentifiable()==null){
-				getExtendedInformations(Boolean.TRUE).setLanguageCollection(new LanguageCollection());
-				languageCollection.setIdentifiable(getExtendedInformations(Boolean.TRUE).getLanguageCollection());
-			}
-			languageCollection.write();
-		}
 		
-		if(maritalStatus!=null)
-			getExtendedInformations(Boolean.TRUE).setMaritalStatus(maritalStatus);
-		
-		if(getExtendedInformations(Boolean.TRUE).getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
-			getPerson().getExtendedInformations().setBirthLocation(new Location());
-			birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
-		}
-		birthLocation.write();
-		
-		if(signatureSpecimen!=null)
-			getExtendedInformations(Boolean.TRUE).setSignatureSpecimen(signatureSpecimen);
-		
-		if(jobFunction!=null)
-			getJobInformations(Boolean.TRUE).setFunction(jobFunction);
-		if(jobTitle!=null)
-			getJobInformations(Boolean.TRUE).setTitle(jobTitle);
-		getJobInformations(Boolean.TRUE).setCompany(jobCompany);
-		//debug(contactCollection);
-		//jobContactCollection.write();
-		//debug(jobContactCollection.getIdentifiable());
-		if(bloodGroup!=null)
-			getMedicalInformations(Boolean.TRUE).setBloodGroup(bloodGroup);
-		/*if(identifiable.getExtendedInformations()!=null){
-			identifiable.getExtendedInformations().setMaritalStatus(maritalStatus);
-			if(identifiable.getExtendedInformations().getBirthLocation()==null) 
-				identifiable.getExtendedInformations().setBirthLocation(new Location());
-			identifiable.getExtendedInformations().getBirthLocation().setComment(birthLocation);
-		}*/
-
-	}
-	
-	private PersonExtendedInformations getExtendedInformations(Boolean createIfNull){
 		PersonExtendedInformations personExtendedInformations = getPerson().getExtendedInformations();
-		if(personExtendedInformations==null)
-			if(Boolean.TRUE.equals(createIfNull))
-				personExtendedInformations = new PersonExtendedInformations(getPerson());
-		getPerson().setExtendedInformations(personExtendedInformations);
-		return personExtendedInformations;
-	}
-	
-	private JobInformations getJobInformations(Boolean createIfNull){
+		if(personExtendedInformations!=null){
+			if(title!=null)
+				personExtendedInformations.setTitle(title);
+			if(languageCollection!=null){
+				if(languageCollection.getLanguage1()!=null && languageCollection.getIdentifiable()==null){
+					personExtendedInformations.setLanguageCollection(new LanguageCollection());
+					languageCollection.setIdentifiable(personExtendedInformations.getLanguageCollection());
+				}
+				languageCollection.write();
+			}
+			
+			personExtendedInformations.setMaritalStatus(maritalStatus);
+			
+			if(personExtendedInformations.getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
+				getPerson().getExtendedInformations().setBirthLocation(new Location());
+				birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
+			}
+			birthLocation.write();
+			
+			if(signatureSpecimen!=null)
+				personExtendedInformations.setSignatureSpecimen(signatureSpecimen);	
+		}
+		
 		JobInformations jobInformations = getPerson().getJobInformations();
-		if(jobInformations==null)
-			if(Boolean.TRUE.equals(createIfNull))
-				jobInformations = new JobInformations(getPerson());
-		getPerson().setJobInformations(jobInformations);
-		return jobInformations;
-	}
+		if(jobInformations!=null){
+			jobInformations.setFunction(jobFunction);
+			jobInformations.setTitle(jobTitle);
+			jobInformations.setCompany(jobCompany);	
+		}
+		
+		MedicalInformations medicalInformations = getPerson().getMedicalInformations();
+		if(medicalInformations!=null){
+			medicalInformations.setBloodGroup(bloodGroup);	
+			medicalInformations.setOtherDetails(otherMedicalInformations);
+		}
 	
-	private MedicalInformations getMedicalInformations(Boolean createIfNull){
-		MedicalInformations informations = getPerson().getMedicalInformations();
-		if(informations==null)
-			if(Boolean.TRUE.equals(createIfNull))
-				informations = new MedicalInformations(getPerson());
-		getPerson().setMedicalInformations(informations);
-		return informations;
 	}
 	
 	/**/

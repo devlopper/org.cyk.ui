@@ -38,7 +38,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 				getParty().setContactCollection(new ContactCollection());
 			contactCollection.setIdentifiable(getParty().getContactCollection());	
 			if(getParty().getContactCollection()!=null)
-	    		inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
+	    		inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());//TODO think it should not be done here but in page instead
 		}
 		
 	}

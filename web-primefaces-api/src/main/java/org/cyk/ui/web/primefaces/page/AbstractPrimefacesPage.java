@@ -218,6 +218,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				else
 					setRenderedIfDetailsMenuCommandable(listener.getTabId(), form,listener.getEnabledInDefaultTab());
 			form.addControlSetListener(getDetailsConfiguration(listener.getDataClass()).getFormControlSetAdapter(listener.getIdentifiableClass()));
+			
+			if(Boolean.FALSE.equals(listener.getRendered()))
+				form.setRendered(Boolean.FALSE);
 		}
 	}
 	
@@ -293,6 +296,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				table.setRendered(setRenderedIfDetailsMenuCommandable(listener.getTabId(), table,listener.getEnabledInDefaultTab()));
 			}
 		//TODO we can go out from here???
+		
+		//if(Boolean.FALSE.equals(listener.getRendered()))
+		//	table.setRendered(Boolean.FALSE);
 		
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		//table.setRendered(listener.getRendered());

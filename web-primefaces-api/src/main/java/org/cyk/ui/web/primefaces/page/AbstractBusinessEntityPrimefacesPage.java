@@ -52,6 +52,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 		if(identifiable!=null){
 			identifiable.getProcessing().setParty(userSession.getUser());
 			identifiable.getProcessing().setIdentifier(actionIdentifier);
+			processOnIdentifiableFound(identifiable);
 		}
 		formModelClassId = __formModelClassId__();
 		formModelClass = __formModelClass__();
@@ -114,6 +115,8 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	protected BusinessEntityInfos fetchBusinessEntityInfos(){
 		return uiManager.classFromKey(requestParameter(UniformResourceLocatorParameter.CLASS));
 	}
+	
+	protected void processOnIdentifiableFound(ENTITY identifiable){}
 	
 	protected String __formModelClassId__(){
 		return requestParameter(UniformResourceLocatorParameter.FORM_MODEL);
