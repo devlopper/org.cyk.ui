@@ -3,8 +3,12 @@ package org.cyk.system.test.business;
 import java.io.Serializable;
 
 import org.cyk.system.test.model.actor.Actor;
+import org.cyk.system.test.model.actor.ActorDetails;
+import org.cyk.system.test.model.actor.ActorEditPage;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 
 public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManager implements Serializable {
 
@@ -19,17 +23,17 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
 				return new PersonDetailsControlSetAdapter(new String[]{PersonDetails.FIELD_BLOOD_GROUP});
 			}
-		});
+		});*/
 		
-		configurePersonFormConfiguration(Actor.class,null,new String[]{ActorEditPage.Form.FIELD_BLOOD_GROUP});
+		configurePersonFormConfiguration(Actor.class,null,new String[]{ActorEditPage.Form.FIELD_REGISTRATION_DATE});
 		registerDetailsConfiguration(ActorDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
 			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new PersonDetailsControlSetAdapter(new String[]{ActorDetails.FIELD_BLOOD_GROUP});
+				return new PersonDetailsControlSetAdapter(new String[]{ActorDetails.FIELD_REGISTRATION_DATE});
 			}
-		});*/
+		});
 	}
 	
 	@Override

@@ -139,7 +139,7 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 			
 			@Override
 			public Collection<String> getExpectedFieldNames() {
-				if(expectedFieldNames == null){
+				//if(expectedFieldNames == null){
 					expectedFieldNames = new ArrayList<>(); 
 					if(identifiableClass!=null && crud!=null){
 						FormConfiguration formConfiguration = FormConfiguration.get(identifiableClass, crud, Boolean.FALSE);
@@ -147,7 +147,7 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 							expectedFieldNames.addAll(formConfiguration.getFieldNames());
 						}
 					}
-				}
+				//}
 				return expectedFieldNames;
 			}
 

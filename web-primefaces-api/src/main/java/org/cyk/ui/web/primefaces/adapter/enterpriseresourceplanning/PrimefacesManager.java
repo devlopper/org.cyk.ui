@@ -388,7 +388,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
 				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
 				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS))
-				.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
+				.addControlSetListener(new PersonFormConfigurationControlSetAdapter(entityClass));
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)
 				.addFieldNames(AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
@@ -420,8 +420,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter<Object> implements Serializable{
 		private static final long serialVersionUID = 1L;
 		
-		public PersonFormConfigurationControlSetAdapter(){
-			super(Person.class,Crud.CREATE);
+		public PersonFormConfigurationControlSetAdapter(Class<?> identifiableClass){
+			super(identifiableClass,Crud.CREATE);
 		}
 		
 		@Override
