@@ -2,6 +2,8 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 
@@ -382,10 +384,10 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configurePersonFormConfiguration(Class<?> entityClass,String[] requiredFieldNames,String[] fieldNames){
 		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(requiredFieldNames,AbstractPersonEditFormModel.FIELD_CODE
 				,AbstractPersonEditFormModel.FIELD_NAME))
-				.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_IMAGE,AbstractPersonEditFormModel.FIELD_LAST_NAMES
+				.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
-				,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
-				,LanguageCollectionFormModel.FIELD_LANGUAGE_1/*,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS*/))
+				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
+				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS))
 				.addControlSetListener(new PersonFormConfigurationControlSetAdapter());
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)
@@ -414,15 +416,21 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	}
 	
 	/**/
-	@Getter @Setter @NoArgsConstructor
+	@Getter @Setter
 	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter<Object> implements Serializable{
 		private static final long serialVersionUID = 1L;
+		
+		public PersonFormConfigurationControlSetAdapter(){
+			super(Person.class,Crud.CREATE);
+		}
+		
 		@Override
 		public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
 			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data )
 				return inject(LanguageBusiness.class).findText("field.birth.location");
 			return super.fiedLabel(controlSet, data,field);
 		}
+		
 	}
 	
 	@Getter @Setter @NoArgsConstructor
@@ -435,7 +443,15 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			super();
 			this.fieldNames = fieldNames;
 		}
-
+		
+		@Override
+		public Collection<String> getExpectedFieldNames() {
+			return Arrays.asList(AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
+					,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION
+					,AbstractPersonDetails.FIELD_SEX,AbstractPersonDetails.FIELD_NATIONALITY
+					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS);
+		}
+		
 		@Override
 		public Boolean build(Object data,Field field) {
 			if( data instanceof JobDetails ){

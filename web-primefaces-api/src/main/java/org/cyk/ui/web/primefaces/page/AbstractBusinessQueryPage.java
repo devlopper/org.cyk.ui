@@ -26,6 +26,9 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
+import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
+import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -260,7 +263,28 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	}
 	
 	@Override
-	public void sort(List<Field> fields) {
+	public void sort(List<Field> fields) {}
+	
+	@Override
+	public void sortObjectFields(List<ObjectField> objectFields, Class<?> aClass) {}
+	
+	@Override
+	public FieldSorter getFieldSorter() {
+		return null;
+	}
+	
+	@Override
+	public ObjectFieldSorter getObjectFieldSorter(List<ObjectField> objectFields, Class<?> aClass) {
+		return null;
+	}
+	
+	@Override
+	public Collection<String> getExpectedFieldNames() {
+		return null;
+	}
+	
+	@Override
+	public void setExpectedFieldNames(Collection<String> collection) {
 		
 	}
 	
@@ -270,9 +294,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	}
 	
 	@Override
-	public void labelBuilt(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field, DynaFormLabel label) {
-		
-	}
+	public void labelBuilt(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Field field, DynaFormLabel label) {}
 	
 	@Override
 	public String fiedLabel(ControlSet<ENTITY, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {

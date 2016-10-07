@@ -11,6 +11,9 @@ import lombok.Setter;
 
 import org.cyk.ui.api.AbstractView;
 import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
+import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
+import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
 
 public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> extends AbstractView implements FormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>, 
 	ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>,Serializable {
@@ -76,11 +79,7 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public void labelBuilt(
-			ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,
-			Field field, LABEL label) {
-		
-	}
+	public void labelBuilt(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Field field, LABEL label) {}
 	
 	@Override
 	public String fiedLabel(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet,Object data,Field field) {
@@ -88,12 +87,31 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public void input(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM> input) {
-		
+	public void input(ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> controlSet,Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM> input) {}
+	
+	@Override
+	public void sort(List<Field> fields) {}
+	
+	@Override
+	public void sortObjectFields(List<ObjectField> objectFields, Class<?> aClass) {}
+	
+	@Override
+	public FieldSorter getFieldSorter() {
+		return null;
 	}
 	
 	@Override
-	public void sort(List<Field> fields) {
+	public ObjectFieldSorter getObjectFieldSorter(List<ObjectField> objectFields, Class<?> aClass) {
+		return null;
+	}
+	
+	@Override
+	public Collection<String> getExpectedFieldNames() {
+		return null;
+	}
+	
+	@Override
+	public void setExpectedFieldNames(Collection<String> collection) {
 		
 	}
 	

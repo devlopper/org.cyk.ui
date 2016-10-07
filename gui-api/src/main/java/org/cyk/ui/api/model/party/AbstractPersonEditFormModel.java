@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -154,7 +153,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			
 			personExtendedInformations.setMaritalStatus(maritalStatus);
 			
-			if(personExtendedInformations.getBirthLocation()==null && (birthLocation.getLocality()!=null || StringUtils.isNotBlank(birthLocation.getOtherDetails()) )){
+			if(personExtendedInformations.getBirthLocation()==null && (birthLocation.getLocality()!=null /*|| StringUtils.isNotBlank(birthLocation.getOtherDetails())*/ )){
 				getPerson().getExtendedInformations().setBirthLocation(new Location());
 				birthLocation.setIdentifiable(getPerson().getExtendedInformations().getBirthLocation());
 			}

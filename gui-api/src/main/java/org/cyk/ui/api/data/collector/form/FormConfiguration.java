@@ -150,10 +150,14 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 		return this;
 	}
 	
+	public Collection<ControlSetListener<?, ?, ?, ?, ?, ?>> getControlSetListener(){
+		if(controlSetListeners == null)
+			controlSetListeners = new ArrayList<>();
+		return controlSetListeners;
+	}
+	
 	public FormConfiguration addControlSetListener(ControlSetListener<?, ?, ?, ?, ?, ?> controlSetListener) {
-		if(this.controlSetListeners == null)
-			this.controlSetListeners = new ArrayList<>();
-		this.controlSetListeners.add(controlSetListener);
+		getControlSetListener().add(controlSetListener);
 		return this;
 	}
 	public FormConfiguration addControlSetListeners(Collection<ControlSetListener<?, ?, ?, ?, ?, ?>> controlSetListeners) {

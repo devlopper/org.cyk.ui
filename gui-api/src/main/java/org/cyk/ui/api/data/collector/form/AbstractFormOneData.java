@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
@@ -19,9 +22,7 @@ import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.model.AbstractItemCollection;
-import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
-import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
@@ -32,9 +33,6 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.Seperat
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -114,11 +112,20 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 
 	private void __objectFields__(List<ObjectField> objectFields,Collection<Class<? extends Annotation>> annotations,final Object data){
-		List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
+		final List<Field> fields = new ArrayList<>(commonUtils.getAllFields(data.getClass(), annotations));
 		
-		new FieldSorter(fields,data.getClass()).sort();
+		listenerUtils.execute(controlSetListeners, new ListenerUtils.VoidMethod<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>>() {
+			@Override
+			public void execute(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener) {
+				listener.sort(fields);
+			}
+		});
+		
+		//new FieldSorter(fields,data.getClass()).sort();
+		
 		for(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener : controlSetListeners)
 			listener.sort(fields);
+		
 		for(Field field : fields){
 			final Field f = field;
 			if(Boolean.TRUE.equals(listenerUtils.getBoolean(controlSetListeners, new ListenerUtils.BooleanMethod<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>>() {
@@ -167,9 +174,15 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			|| (RendererStrategy.MANAGEMENT.equals(rendererStrategy) && Boolean.TRUE.equals(userSession.getIsManager())) ;
 	}
 	
-	private void __autoBuild__(List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
+	private void __autoBuild__(final List<ObjectField> objectFields,ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> controlSet){
 		logDebug("Auto build starts. number of object fields = {}",objectFields.size());
-		new ObjectFieldSorter(objectFields,null).sort();
+		listenerUtils.execute(controlSetListeners, new ListenerUtils.VoidMethod<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>>() {
+			@Override
+			public void execute(ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> listener) {
+				listener.sortObjectFields(objectFields,data.getClass());
+			}
+		});
+		//new ObjectFieldSorter(objectFields,null).sort();
 		Boolean addRow = null;//Boolean seperatorAdded = null;
 		for(ObjectField objectField : objectFields){
 			Boolean build = Boolean.TRUE;

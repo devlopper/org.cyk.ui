@@ -13,6 +13,7 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@Input @InputText protected String description;
 	
-	@Input @InputText protected String otherDetails;
+	@Input @InputTextarea protected String otherDetails;
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
 	

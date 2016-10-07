@@ -131,7 +131,7 @@ public class DetailsConfiguration implements Serializable {
 	
 	public static class DefaultControlSetAdapter extends ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> implements Serializable {
 		private static final long serialVersionUID = -4644620620046718336L;
-
+		
 		@Override
 		public Boolean build(Object data,Field field) {
 			return isFieldNameNotIn(field, AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
