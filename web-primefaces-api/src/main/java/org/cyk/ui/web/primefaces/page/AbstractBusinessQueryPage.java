@@ -279,14 +279,25 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 	}
 	
 	@Override
-	public Collection<String> getExpectedFieldNames() {
+	public List<String> getExpectedFieldNames() {
 		return null;
 	}
 	
 	@Override
-	public void setExpectedFieldNames(Collection<String> collection) {
-		
+	public void setExpectedFieldNames(List<String> collection) {}
+	
+	@Override
+	public String[] getFieldNames() {
+		return null;
 	}
+	@Override
+	public void setFieldNames(String[] names) {}
+	@Override
+	public String[] getRequiredFieldNames() {
+		return null;
+	}
+	@Override
+	public void setRequiredFieldNames(String[] names) {}
 	
 	@Override
 	public Boolean build(Object data,Field field) {

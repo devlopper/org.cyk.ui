@@ -2,8 +2,9 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import javax.faces.model.SelectItem;
 
@@ -50,6 +51,7 @@ import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
+import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
@@ -67,6 +69,7 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -93,7 +96,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -124,7 +127,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		registerDetailsConfiguration(FileDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -138,7 +141,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -162,7 +165,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -181,7 +184,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -202,7 +205,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		registerDetailsConfiguration(MovementCollectionDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -220,7 +223,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		registerDetailsConfiguration(MovementDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -246,13 +249,13 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configurePartyModule() {
 		super.configurePartyModule();
-		configurePersonFormConfiguration(Person.class,null,null);
+		configurePersonFormConfiguration(Person.class,new PersonFormConfigurationControlSetAdapter(Person.class));
 		
 		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new PersonDetailsControlSetAdapter(null);
 			}
 		});
@@ -261,7 +264,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -277,7 +280,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -292,7 +295,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -307,7 +310,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -336,7 +339,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
 				return new DetailsConfiguration.DefaultControlSetAdapter(){
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -362,33 +365,43 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
-			if(AbstractActor.class.isAssignableFrom(businessEntityInfos.getClazz()) && Boolean.TRUE.equals(isAutoConfigureClass(businessEntityInfos.getClazz()))){
-				configurePersonFormConfiguration(businessEntityInfos.getClazz(), null, null);
+			final Class<?> identifiableClass = businessEntityInfos.getClazz();
+			if(AbstractActor.class.isAssignableFrom(identifiableClass) && Boolean.TRUE.equals(isAutoConfigureClass(identifiableClass))){
+				configureActorFormConfiguration(identifiableClass, new ActorFormConfigurationControlSetAdapter(identifiableClass));
+				
+				registerDetailsConfiguration(businessEntityInfos.getUserInterface().getDetailsClass(), new DetailsConfiguration(){
+					private static final long serialVersionUID = 1L;
+					@SuppressWarnings("rawtypes")
+					@Override
+					public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+						return new ActorDetailsControlSetAdapter(identifiableClass);
+					}
+				});
 			}
 		}
-		
+		/*
 		registerDetailsConfiguration(AbstractActorDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
-			public ControlSetAdapter getFormControlSetAdapter(Class clazz) {
-				return new PersonDetailsControlSetAdapter();
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new ActorDetailsControlSetAdapter();
 			}
-		});
+		});*/
 	}
 	
 	protected Boolean isAutoConfigureClass(Class<?> aClass){
 		return Boolean.TRUE;
 	}
 	
-	protected void configurePersonFormConfiguration(Class<?> entityClass,String[] requiredFieldNames,String[] fieldNames){
-		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(requiredFieldNames,AbstractPersonEditFormModel.FIELD_CODE
+	protected void configurePersonFormConfiguration(Class<?> entityClass,PersonFormConfigurationControlSetAdapter formConfigurationControlSetAdapter){
+		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getRequiredFieldNames(),AbstractPersonEditFormModel.FIELD_CODE
 				,AbstractPersonEditFormModel.FIELD_NAME))
-				.addFieldNames(ArrayUtils.addAll(fieldNames,AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
+				.addFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getFieldNames(),AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY
 				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
 				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS))
-				.addControlSetListener(new PersonFormConfigurationControlSetAdapter(entityClass));
+				.addControlSetListener(formConfigurationControlSetAdapter);
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)
 				.addFieldNames(AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
@@ -415,9 +428,13 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		//getFormConfiguration(entityClass, Crud.DELETE).addFieldNames(getFormConfiguration(entityClass, Crud.READ).getFieldNames());
 	}
 	
+	protected void configureActorFormConfiguration(final Class<?> entityClass,ActorFormConfigurationControlSetAdapter formConfigurationControlSetAdapter){
+		configurePersonFormConfiguration(entityClass,formConfigurationControlSetAdapter);
+	}
+	
 	/**/
 	@Getter @Setter
-	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter<Object> implements Serializable{
+	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter.Form<Object> implements Serializable{
 		private static final long serialVersionUID = 1L;
 		
 		public PersonFormConfigurationControlSetAdapter(Class<?> identifiableClass){
@@ -429,23 +446,19 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data )
 				return inject(LanguageBusiness.class).findText("field.birth.location");
 			return super.fiedLabel(controlSet, data,field);
-		}
-		
+		}	
 	}
 	
 	@Getter @Setter @NoArgsConstructor
 	public static class PersonDetailsControlSetAdapter extends DetailsConfiguration.DefaultControlSetAdapter implements Serializable{
 		private static final long serialVersionUID = 1L;
 		
-		private String[] fieldNames;
-		
-		public PersonDetailsControlSetAdapter(String[] fieldNames) {
-			super();
-			this.fieldNames = fieldNames;
+		public PersonDetailsControlSetAdapter(Class<?> identifiableClass) {
+			super(identifiableClass);
 		}
 		
 		@Override
-		public Collection<String> getExpectedFieldNames() {
+		public List<String> getExpectedFieldNames() {
 			return Arrays.asList(AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
 					,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION
 					,AbstractPersonDetails.FIELD_SEX,AbstractPersonDetails.FIELD_NATIONALITY
@@ -466,6 +479,50 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS))
 					||
 					(data instanceof LanguageCollectionDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames,LanguageCollectionDetails.FIELD_LANGUAGES));
+		}
+	}
+	
+	public static final List<String> ACTOR_EXTENDED_FIELD_NAMES = new ArrayList<>();
+	static{
+		ACTOR_EXTENDED_FIELD_NAMES.add(AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
+	}
+	
+	@Getter @Setter
+	public static class ActorFormConfigurationControlSetAdapter extends PersonFormConfigurationControlSetAdapter implements Serializable{
+		
+		private static final long serialVersionUID = 1L;
+		
+		public ActorFormConfigurationControlSetAdapter(Class<?> identifiableClass) {
+			super(identifiableClass);
+			addFieldNamePairOrder(AbstractActorEditFormModel.FIELD_CODE, AbstractActorEditFormModel.FIELD_REGISTRATION_DATE);
+		}
+
+		@Override
+		public String[] getFieldNames() {
+			return ACTOR_EXTENDED_FIELD_NAMES.toArray(new String[]{});
+		}
+	}
+	
+	@Getter @Setter @NoArgsConstructor
+	public static class ActorDetailsControlSetAdapter extends PersonDetailsControlSetAdapter implements Serializable{
+		
+		private static final long serialVersionUID = 1L;
+		
+		public ActorDetailsControlSetAdapter(Class<?> identifiableClass) {
+			super(identifiableClass);
+			addFieldNamePairOrder(AbstractActorDetails.FIELD_CODE, AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
+		}
+		
+		@Override
+		public String[] getFieldNames() {
+			return ACTOR_EXTENDED_FIELD_NAMES.toArray(new String[]{});
+		}
+
+		@Override
+		public Boolean build(Object data, Field field) {
+			if(data instanceof AbstractActorDetails && ACTOR_EXTENDED_FIELD_NAMES.contains(field.getName()))
+				return Boolean.TRUE;
+			return super.build(data, field);
 		}
 	}
 }

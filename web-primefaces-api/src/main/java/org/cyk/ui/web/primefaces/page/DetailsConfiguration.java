@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
@@ -30,8 +32,8 @@ public class DetailsConfiguration implements Serializable {
 	private AbstractMethod<DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>
 	, Class<AbstractOutputDetails<AbstractIdentifiable>>> getFormConfigurationAdapterMethod;
 	
-	private ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> formControlSetAdapter = new DefaultControlSetAdapter();
-	private AbstractMethod<ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>
+	private ControlSetAdapter.Details<AbstractOutputDetails<AbstractIdentifiable>> formControlSetAdapter = new DefaultControlSetAdapter();
+	private AbstractMethod<ControlSetAdapter.Details<AbstractOutputDetails<AbstractIdentifiable>>
 	, Class<AbstractOutputDetails<AbstractIdentifiable>>> getFormControlSetAdapterMethod;
 	
 	/* Many using table */
@@ -43,13 +45,13 @@ public class DetailsConfiguration implements Serializable {
 	private AbstractMethod<ColumnAdapter, Object[]> getTableColumnAdapterMethod;
 	
 	@SuppressWarnings("rawtypes")
-	public ControlSetAdapter getFormControlSetAdapter(Class clazz){
-		AbstractMethod<ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>>
+	public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz){
+		AbstractMethod<ControlSetAdapter.Details<AbstractOutputDetails<AbstractIdentifiable>>
 		, Class<AbstractOutputDetails<AbstractIdentifiable>>> method = getGetFormControlSetAdapterMethod();
 		if(method==null)
 			return getFormControlSetAdapter();
 		@SuppressWarnings("unchecked")
-		ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> result = method.execute(clazz);
+		ControlSetAdapter.Details<AbstractOutputDetails<AbstractIdentifiable>> result = method.execute(clazz);
 		if(result == null)
 			result = getFormControlSetAdapter();
 		return result;
@@ -129,8 +131,13 @@ public class DetailsConfiguration implements Serializable {
 		
 	}
 	
-	public static class DefaultControlSetAdapter extends ControlSetAdapter<AbstractOutputDetails<AbstractIdentifiable>> implements Serializable {
+	@NoArgsConstructor
+	public static class DefaultControlSetAdapter extends ControlSetAdapter.Details<AbstractOutputDetails<AbstractIdentifiable>> implements Serializable {
 		private static final long serialVersionUID = -4644620620046718336L;
+		
+		public DefaultControlSetAdapter(Class<?> identifiableClass) {
+			super(identifiableClass, Crud.READ);
+		}
 		
 		@Override
 		public Boolean build(Object data,Field field) {

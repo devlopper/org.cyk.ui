@@ -22,5 +22,27 @@ public class ControlSetAdapter<DATA> extends ControlSetListener.Adapter.Default<
 		super(identifiableClass, crud);
 	}
 
+	/**/
 	
+	@NoArgsConstructor
+	public static class Form<DATA> extends ControlSetListener.Adapter.Default.Form<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		public Form(Class<?> identifiableClass, Crud crud) {
+			super(identifiableClass, crud);
+		}
+
+	}
+	
+	@NoArgsConstructor
+	public static class Details<DATA> extends ControlSetListener.Adapter.Default.Details<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		public Details(Class<?> identifiableClass, Crud crud) {
+			super(identifiableClass, crud);
+		}
+		
+	}
 }
