@@ -34,6 +34,13 @@ public class MedicalInformationsMedicationEditPage extends AbstractCrudOnePage<M
 		return medicalInformationsMedication;
 	}
 	
+	@Override
+	protected void create() {
+		// TODO Auto-generated method stub
+		super.create();
+		//debug(identifiable);
+	}
+	
 	@Getter @Setter
 	public static class Form extends AbstractFormModel<MedicalInformationsMedication> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
