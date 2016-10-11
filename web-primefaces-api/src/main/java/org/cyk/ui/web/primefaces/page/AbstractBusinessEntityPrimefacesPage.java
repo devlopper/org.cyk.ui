@@ -162,7 +162,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 				table.getAddRowCommandable().addParameter(identifiable);
 			if(listener.getMasters()!=null)
 				for(AbstractIdentifiable master : listener.getMasters())
-			table.getAddRowCommandable().addParameter(master);
+					table.getAddRowCommandable().addParameter(master);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 
 import lombok.Getter;
@@ -77,6 +78,10 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			public String getTabId() {
 				return medicalAdapter.getTabId();
 			}
+			@Override
+			public Collection<? extends AbstractIdentifiable> getMasters() {
+				return Arrays.asList(getPerson().getMedicalInformations());
+			}
 			
 		});
 		
@@ -90,9 +95,12 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			public String getTabId() {
 				return medicalAdapter.getTabId();
 			}
+			@Override
+			public Collection<? extends AbstractIdentifiable> getMasters() {
+				return Arrays.asList(getPerson());
+			}
 			
 		});
-		allergyTable.getAddRowCommandable().addParameter(uiManager.businessEntityInfos(Person.class).getIdentifier(), getPerson().getIdentifier());
 		
 		relationshipTable = (Table<PersonRelationshipDetails>) createDetailsTable(PersonRelationshipDetails.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipDetails>(PersonRelationship.class, PersonRelationshipDetails.class){
 			private static final long serialVersionUID = 1L;

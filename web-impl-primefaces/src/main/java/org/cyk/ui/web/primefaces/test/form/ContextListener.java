@@ -15,6 +15,7 @@ import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
+import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
 import org.cyk.system.test.model.actor.Actor;
 import org.cyk.system.test.model.actor.Actor.SearchCriteria;
 import org.cyk.system.test.model.actor.ActorDetails;
@@ -51,6 +52,16 @@ public class ContextListener extends AbstractContextListener {
 				person.setJobInformations(new JobInformations(person));
 				person.setMedicalInformations(new MedicalInformations(person));
 				super.afterInstanciateOne(userAccount, person);
+			}
+		});
+		
+		ActorBusinessImpl.Listener.COLLECTION.add(new ActorBusinessImpl.Listener.Adapter(){
+			private static final long serialVersionUID = 4605368263736933413L;
+			@Override
+			public void afterInstanciateOne(UserAccount userAccount,Actor actor) {
+				actor.getPerson().getExtendedInformations().setLanguageCollection(inject(LanguageCollectionBusiness.class).instanciateOne(userAccount));
+				actor.getPerson().setMedicalInformations(new MedicalInformations(actor.getPerson()));
+				super.afterInstanciateOne(userAccount, actor);
 			}
 		});
 	}

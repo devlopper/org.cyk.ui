@@ -6,13 +6,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Medication;
-import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -20,6 +16,9 @@ import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter @Named @ViewScoped
 public class MedicalInformationsMedicationEditPage extends AbstractCrudOnePage<MedicalInformationsMedication> implements Serializable {
@@ -29,12 +28,7 @@ public class MedicalInformationsMedicationEditPage extends AbstractCrudOnePage<M
 	@Override
 	protected MedicalInformationsMedication instanciateIdentifiable() {
 		MedicalInformationsMedication medicalInformationsMedication = super.instanciateIdentifiable();
-		medicalInformationsMedication.setInformations(inject(MedicalInformationsBusiness.class)
-				.findByParty(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE)));
-		
-		debug(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE));
-		debug(inject(MedicalInformationsBusiness.class)
-				.findByParty(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE)));
+		medicalInformationsMedication.setInformations(webManager.getIdentifiableFromRequestParameter(MedicalInformations.class, Boolean.TRUE));
 		return medicalInformationsMedication;
 	}
 	
