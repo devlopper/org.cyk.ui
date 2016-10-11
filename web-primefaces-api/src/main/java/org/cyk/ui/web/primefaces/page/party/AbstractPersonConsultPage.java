@@ -92,6 +92,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			}
 			
 		});
+		allergyTable.getAddRowCommandable().addParameter(uiManager.businessEntityInfos(Person.class).getIdentifier(), getPerson().getIdentifier());
 		
 		relationshipTable = (Table<PersonRelationshipDetails>) createDetailsTable(PersonRelationshipDetails.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipDetails>(PersonRelationship.class, PersonRelationshipDetails.class){
 			private static final long serialVersionUID = 1L;

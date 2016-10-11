@@ -31,14 +31,11 @@ public class MedicalInformationsMedicationEditPage extends AbstractCrudOnePage<M
 		MedicalInformationsMedication medicalInformationsMedication = super.instanciateIdentifiable();
 		medicalInformationsMedication.setInformations(inject(MedicalInformationsBusiness.class)
 				.findByParty(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE)));
+		
+		debug(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE));
+		debug(inject(MedicalInformationsBusiness.class)
+				.findByParty(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE)));
 		return medicalInformationsMedication;
-	}
-	
-	@Override
-	protected void create() {
-		// TODO Auto-generated method stub
-		super.create();
-		//debug(identifiable);
 	}
 	
 	@Getter @Setter
