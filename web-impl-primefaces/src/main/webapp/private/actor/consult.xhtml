@@ -12,8 +12,9 @@
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{actorConsultPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{actorConsultPage.details}" />	
-			
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/person/consulttabs.xhtml">
+ 				<ui:param name="personConsultPage" value="#{actorConsultPage}"/>
+ 			</ui:include>
 			
  		</ui:define>
  	</ui:decorate>

@@ -20,7 +20,7 @@ public class DetailsConfiguration implements Serializable {
 
 	private static final long serialVersionUID = 4302974500599359687L;
 	
-	private String identifier;
+	protected String identifier;
 	
 	public DetailsConfiguration setIdentifier(String identifier){
 		this.identifier = identifier;

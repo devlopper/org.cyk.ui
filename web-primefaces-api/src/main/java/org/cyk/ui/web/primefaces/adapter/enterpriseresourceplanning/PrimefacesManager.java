@@ -2,20 +2,10 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.faces.model.SelectItem;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
@@ -23,16 +13,14 @@ import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
-import org.cyk.system.root.business.impl.language.LanguageCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
-import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
-import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.event.Event;
@@ -47,11 +35,9 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
-import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
-import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
@@ -69,11 +55,6 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
-import org.cyk.ui.web.primefaces.page.party.AbstractActorEditPage;
-import org.primefaces.extensions.model.dynaform.DynaFormControl;
-import org.primefaces.extensions.model.dynaform.DynaFormLabel;
-import org.primefaces.extensions.model.dynaform.DynaFormModel;
-import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefacesManagerListener.Adapter implements Serializable {
 
@@ -249,16 +230,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configurePartyModule() {
 		super.configurePartyModule();
-		configurePersonFormConfiguration(Person.class,new PersonFormConfigurationControlSetAdapter(Person.class));
+		configurePersonFormConfiguration(Person.class,new PersonDetailsConfiguration.FormControlSetAdapter(Person.class));
 		
-		registerDetailsConfiguration(PersonDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
-				return new PersonDetailsControlSetAdapter(null);
-			}
-		});
+		registerDetailsConfiguration(PersonDetails.class, new PersonDetailsConfiguration());
 		
 		registerDetailsConfiguration(JobDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
@@ -364,19 +338,40 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
+		registerDetailsConfiguration(PersonRelationshipDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_PERSON2
+								,PersonRelationshipDetails.FIELD_TYPE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field, PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_PERSON2
+								,PersonRelationshipDetails.FIELD_TYPE);
+					}
+				};
+			}
+		});
+		
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			final Class<?> identifiableClass = businessEntityInfos.getClazz();
 			if(AbstractActor.class.isAssignableFrom(identifiableClass) && Boolean.TRUE.equals(isAutoConfigureClass(identifiableClass))){
-				configureActorFormConfiguration(identifiableClass, new ActorFormConfigurationControlSetAdapter(identifiableClass));
-				
-				registerDetailsConfiguration(businessEntityInfos.getUserInterface().getDetailsClass(), new DetailsConfiguration(){
-					private static final long serialVersionUID = 1L;
-					@SuppressWarnings("rawtypes")
-					@Override
-					public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
-						return new ActorDetailsControlSetAdapter(identifiableClass);
-					}
-				});
+				configureActorFormConfiguration(identifiableClass, new ActorDetailsConfiguration.FormControlSetAdapter(identifiableClass));				
+				registerDetailsConfiguration(businessEntityInfos.getUserInterface().getDetailsClass(), new ActorDetailsConfiguration());
 			}
 		}
 		/*
@@ -394,7 +389,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		return Boolean.TRUE;
 	}
 	
-	protected void configurePersonFormConfiguration(Class<?> entityClass,PersonFormConfigurationControlSetAdapter formConfigurationControlSetAdapter){
+	protected void configurePersonFormConfiguration(Class<?> entityClass,PersonDetailsConfiguration.FormControlSetAdapter formConfigurationControlSetAdapter){
 		getFormConfiguration(entityClass, Crud.CREATE).addRequiredFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getRequiredFieldNames(),AbstractPersonEditFormModel.FIELD_CODE
 				,AbstractPersonEditFormModel.FIELD_NAME))
 				.addFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getFieldNames(),AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
@@ -428,101 +423,10 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		//getFormConfiguration(entityClass, Crud.DELETE).addFieldNames(getFormConfiguration(entityClass, Crud.READ).getFieldNames());
 	}
 	
-	protected void configureActorFormConfiguration(final Class<?> entityClass,ActorFormConfigurationControlSetAdapter formConfigurationControlSetAdapter){
+	protected void configureActorFormConfiguration(final Class<?> entityClass,ActorDetailsConfiguration.FormControlSetAdapter formConfigurationControlSetAdapter){
 		configurePersonFormConfiguration(entityClass,formConfigurationControlSetAdapter);
 	}
 	
 	/**/
-	@Getter @Setter
-	public static class PersonFormConfigurationControlSetAdapter extends ControlSetAdapter.Form<Object> implements Serializable{
-		private static final long serialVersionUID = 1L;
-		
-		public PersonFormConfigurationControlSetAdapter(Class<?> identifiableClass){
-			super(identifiableClass,Crud.CREATE);
-		}
-		
-		@Override
-		public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
-			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data )
-				return inject(LanguageBusiness.class).findText("field.birth.location");
-			return super.fiedLabel(controlSet, data,field);
-		}	
-	}
-	
-	@Getter @Setter @NoArgsConstructor
-	public static class PersonDetailsControlSetAdapter extends DetailsConfiguration.DefaultControlSetAdapter implements Serializable{
-		private static final long serialVersionUID = 1L;
-		
-		public PersonDetailsControlSetAdapter(Class<?> identifiableClass) {
-			super(identifiableClass);
-		}
-		
-		@Override
-		public List<String> getExpectedFieldNames() {
-			return Arrays.asList(AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
-					,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION
-					,AbstractPersonDetails.FIELD_SEX,AbstractPersonDetails.FIELD_NATIONALITY
-					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS);
-		}
-		
-		@Override
-		public Boolean build(Object data,Field field) {
-			if( data instanceof JobDetails ){
-				return isFieldNameIn(field,ArrayUtils.addAll(fieldNames
-						,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
-						,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX
-						,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION));
-			}
-			return (data instanceof AbstractPersonDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames
-					,AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
-					,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION,AbstractPersonDetails.FIELD_NATIONALITY,AbstractPersonDetails.FIELD_SEX
-					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS))
-					||
-					(data instanceof LanguageCollectionDetails) && isFieldNameIn(field,ArrayUtils.addAll(fieldNames,LanguageCollectionDetails.FIELD_LANGUAGES));
-		}
-	}
-	
-	public static final List<String> ACTOR_EXTENDED_FIELD_NAMES = new ArrayList<>();
-	static{
-		ACTOR_EXTENDED_FIELD_NAMES.add(AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
-	}
-	
-	@Getter @Setter
-	public static class ActorFormConfigurationControlSetAdapter extends PersonFormConfigurationControlSetAdapter implements Serializable{
-		
-		private static final long serialVersionUID = 1L;
-		
-		public ActorFormConfigurationControlSetAdapter(Class<?> identifiableClass) {
-			super(identifiableClass);
-			addFieldNamePairOrder(AbstractActorEditFormModel.FIELD_CODE, AbstractActorEditFormModel.FIELD_REGISTRATION_DATE);
-		}
 
-		@Override
-		public String[] getFieldNames() {
-			return ACTOR_EXTENDED_FIELD_NAMES.toArray(new String[]{});
-		}
-	}
-	
-	@Getter @Setter @NoArgsConstructor
-	public static class ActorDetailsControlSetAdapter extends PersonDetailsControlSetAdapter implements Serializable{
-		
-		private static final long serialVersionUID = 1L;
-		
-		public ActorDetailsControlSetAdapter(Class<?> identifiableClass) {
-			super(identifiableClass);
-			addFieldNamePairOrder(AbstractActorDetails.FIELD_CODE, AbstractActorEditPage.Form.FIELD_REGISTRATION_DATE);
-		}
-		
-		@Override
-		public String[] getFieldNames() {
-			return ACTOR_EXTENDED_FIELD_NAMES.toArray(new String[]{});
-		}
-
-		@Override
-		public Boolean build(Object data, Field field) {
-			if(data instanceof AbstractActorDetails && ACTOR_EXTENDED_FIELD_NAMES.contains(field.getName()))
-				return Boolean.TRUE;
-			return super.build(data, field);
-		}
-	}
 }
