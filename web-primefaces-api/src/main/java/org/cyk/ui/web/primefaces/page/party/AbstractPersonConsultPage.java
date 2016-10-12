@@ -80,7 +80,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			}
 			@Override
 			public Collection<? extends AbstractIdentifiable> getMasters() {
-				return Arrays.asList(getPerson().getMedicalInformations());
+				return getPerson().getMedicalInformations() == null ? super.getMasters() : Arrays.asList(getPerson().getMedicalInformations());
 			}
 			
 		});
@@ -97,7 +97,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			}
 			@Override
 			public Collection<? extends AbstractIdentifiable> getMasters() {
-				return Arrays.asList(getPerson());
+				return getPerson().getMedicalInformations() == null ? super.getMasters() : Arrays.asList(getPerson().getMedicalInformations());
 			}
 			
 		});
@@ -109,6 +109,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 				return inject(PersonRelationshipBusiness.class).findByPerson(getPerson());
 			}
 		});
+		
 	} 
 	
 	@Override

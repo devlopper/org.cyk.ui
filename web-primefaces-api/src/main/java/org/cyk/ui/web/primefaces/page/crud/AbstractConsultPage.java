@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.ClazzBusiness;
@@ -30,9 +33,6 @@ import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.information.Comments;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<IDENTIFIABLE> implements Serializable {
@@ -224,5 +224,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 			}
 		}
 	}
+	
+	
 	
 }

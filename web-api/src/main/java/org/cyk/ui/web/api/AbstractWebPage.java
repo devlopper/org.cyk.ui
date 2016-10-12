@@ -326,8 +326,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		return identifier.equals(/*detailsMenu==null?*/selectedTabId/*:detailsMenu.getRequestedCommandable().getIdentifier()*/);
 	}
 	
-	protected Boolean isDetailsMenuCommandable(Class<?> aClass){
-		return isDetailsMenuCommandable(IdentifierProvider.Adapter.getTabOf(aClass), Boolean.FALSE);
+	protected Boolean isDetailsMenuCommandable(Class<?> aClass,AbstractIdentifiable identifiable){
+		return 
+				//Boolean.TRUE.equals(getWindowsInstanceManager().isShowDetails(aClass,identifiable,this)) && 
+				isDetailsMenuCommandable(IdentifierProvider.Adapter.getTabOf(aClass), Boolean.FALSE);
 	}
 	
 	protected Boolean setRenderedIfDetailsMenuCommandable(String identifier,FormOneData<?, ?, ?, ?, ?, ?> formOneData,Boolean defaultDetails){

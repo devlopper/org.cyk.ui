@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
@@ -42,9 +45,6 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -362,4 +362,8 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 			
 		}
 	}
+	
+	/**/
+	
+	
 }

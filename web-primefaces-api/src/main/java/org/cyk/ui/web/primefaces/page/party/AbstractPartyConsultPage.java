@@ -23,9 +23,9 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void consultInitialisation() {
-		super.consultInitialisation();		
+		super.consultInitialisation();	
 		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty().getContactCollection()
-				, getDetailsConfiguration(ContactCollectionDetails.class).getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class));
+			, getDetailsConfiguration(ContactCollectionDetails.class).getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class));
 	}
 	
 	@Override
@@ -36,5 +36,8 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	}
 		
 	protected abstract Party getParty();
+
+	/**/
+	
 	
 }

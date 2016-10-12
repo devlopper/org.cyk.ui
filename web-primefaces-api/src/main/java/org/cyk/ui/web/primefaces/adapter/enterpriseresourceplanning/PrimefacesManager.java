@@ -23,6 +23,7 @@ import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
@@ -45,6 +46,7 @@ import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.UserSession;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
@@ -154,6 +156,24 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 						return isFieldNameIn(field,ContactCollectionDetails.FIELD_PHONE_NUMBERS,ContactCollectionDetails.FIELD_ELECTRONIC_MAILS
 								,ContactCollectionDetails.FIELD_LOCATIONS,ContactCollectionDetails.FIELD_POSTAL_BOXES);
 					}
+				};
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable, AbstractOutputDetails<AbstractIdentifiable>> getFormConfigurationAdapter() {
+				Class<? extends AbstractIdentifiable> identifiableClass = ContactCollection.class;
+				Class<? extends AbstractOutputDetails<? extends AbstractIdentifiable>> outputDetailsClass = ContactCollectionDetails.class;
+				return new DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>((Class<AbstractIdentifiable>) identifiableClass,(Class<AbstractOutputDetails<AbstractIdentifiable>>) outputDetailsClass){
+					private static final long serialVersionUID = 1L;
+					/*@Override
+					public Boolean isRendered(AbstractPrimefacesPage page) {
+						AbstractIdentifiable identifiable = null;
+						if(page instanceof AbstractConsultPage<?>)
+							identifiable = ((AbstractConsultPage<AbstractIdentifiable>)page).getIdentifiable();
+						AbstractWindow.WindowsInstanceManager.INSTANCE.isShowDetails(ContactCollection.class, identifiable,page);
+						return super.isRendered(page);
+					}*/
 				};
 			}
 		});

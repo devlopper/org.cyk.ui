@@ -9,10 +9,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
 import org.cyk.system.root.model.party.person.Allergy;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
-import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -29,8 +28,7 @@ public class MedicalInformationsAllergyEditPage extends AbstractCrudOnePage<Medi
 	@Override
 	protected MedicalInformationsAllergy instanciateIdentifiable() {
 		MedicalInformationsAllergy medicalInformationsAllergy = super.instanciateIdentifiable();
-		medicalInformationsAllergy.setInformations(inject(MedicalInformationsBusiness.class)
-				.findByParty(webManager.getIdentifiableFromRequestParameter(Person.class, Boolean.TRUE)));
+		medicalInformationsAllergy.setInformations(webManager.getIdentifiableFromRequestParameter(MedicalInformations.class, Boolean.TRUE));
 		return medicalInformationsAllergy;
 	}
 	

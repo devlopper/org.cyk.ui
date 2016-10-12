@@ -47,6 +47,7 @@ import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.Tree;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.cdi.BeanListener;
@@ -212,24 +213,28 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			return;
 		form.setShowCommands(Boolean.FALSE);
 		if(listener!=null){
-			if(listener.getRendered()==null)
+			Boolean rendered = listener.isRendered(this);
+			//if(rendered==null)
 				if(StringUtils.isBlank(listener.getTabId()))
 					form.setRendered(Boolean.TRUE);
 				else
 					setRenderedIfDetailsMenuCommandable(listener.getTabId(), form,listener.getEnabledInDefaultTab());
 			form.addControlSetListener(getDetailsConfiguration(listener.getDataClass()).getFormControlSetAdapter(listener.getIdentifiableClass()));
 			
-			if(Boolean.FALSE.equals(listener.getRendered()))
+			if(Boolean.FALSE.equals(rendered))
 				form.setRendered(Boolean.FALSE);
 		}
+		
 	}
 	
 	protected <T,I extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> createDetailsForm(Class<T> aClass,I identifiable
 			,final DetailsConfigurationListener.Form<I,T> listener){
-		org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> details = 
-				(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T>) createFormOneData(listener.createData(identifiable), Crud.READ);
-		configureDetailsForm(details,listener);
-		
+		org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> details = null;
+		details = (org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T>) createFormOneData(listener.createData(identifiable), Crud.READ);
+		//details.setRendered(listener.isRendered(this));
+		if(Boolean.TRUE.equals(details.getRendered())){
+			configureDetailsForm(details,listener);
+		}
 		return details;
 	}
 	
@@ -289,16 +294,15 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.setShowHeader(Boolean.FALSE);
 		//System.out.println("Show header : "+table.getShowHeader());
 		//tableFormatJavaScript(table, Boolean.TRUE);
-		if(listener.getRendered()==null)
+		
+		table.setRendered(listener.isRendered(this));
+		if(table.getRendered()==null)
 			if(StringUtils.isBlank(listener.getTabId()))
 				table.setRendered(Boolean.TRUE);
 			else{
 				table.setRendered(setRenderedIfDetailsMenuCommandable(listener.getTabId(), table,listener.getEnabledInDefaultTab()));
 			}
 		//TODO we can go out from here???
-		
-		//if(Boolean.FALSE.equals(listener.getRendered()))
-		//	table.setRendered(Boolean.FALSE);
 		
 		//table.getColumnListeners().add(new DefaultColumnAdapter());
 		//table.setRendered(listener.getRendered());
@@ -462,7 +466,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		Class<DATA> getDataClass();
 		Class<IDENTIFIABLE> getIdentifiableClass();
 		IDENTIFIABLE getIdentifiable(DATA data);
-		Boolean getRendered();
+		Boolean isRendered(AbstractPrimefacesPage page);
 		String getTabId();
 		Boolean getAutoAddTabCommandable();
 		Boolean getEnabledInDefaultTab();
@@ -476,7 +480,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			protected static final long serialVersionUID = 6031762560954439308L;
 			protected Class<IDENTIFIABLE> identifiableClass;
 			protected Class<DATA> dataClass;
-			protected Boolean rendered=null;
 			protected String tabId,titleId;
 			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
 			protected Crud[] cruds = new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};//TODO should be removed ??? because value is taken from database
@@ -490,6 +493,19 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				titleId = IdentifierProvider.Adapter.getTabOf(identifiableClass);
 				
 				tabId = getTitleId();
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public Boolean isRendered(AbstractPrimefacesPage page) {
+				AbstractIdentifiable identifiable = null;
+				if(page instanceof AbstractConsultPage<?>)
+					identifiable = ((AbstractConsultPage<AbstractIdentifiable>)page).getIdentifiable();
+				
+				if(StringUtils.isBlank(((AbstractPrimefacesPage)page).getSelectedTabId()))
+					return getEnabledInDefaultTab();
+				return ((AbstractPrimefacesPage)page).getSelectedTabId().equals(getTabId()) &&
+						WindowInstanceManager.INSTANCE.isShowDetails(dataClass, identifiable,page);
 			}
 			
 			/*
@@ -572,7 +588,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				
 				public Adapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
 					super(identifiableClass,dataClass);
-				}	
+				}
+				
 			}	
 		}
 		

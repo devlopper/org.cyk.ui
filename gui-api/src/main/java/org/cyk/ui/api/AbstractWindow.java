@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
@@ -18,6 +21,7 @@ import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.command.AbstractCommandable;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -33,9 +37,6 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
 import org.joda.time.DateTimeConstants;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABLE extends AbstractCommandable> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -328,5 +329,23 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	
 	protected org.cyk.ui.api.command.AbstractCommandable.Builder<COMANDABLE> instanciateCommandableBuilder(){
 		return Builder.instanciateOne();
+	}
+	
+	protected WindowInstanceManager getWindowsInstanceManager(){
+		return WindowInstanceManager.INSTANCE;
+	}
+	
+	/**/
+	
+	public static class WindowInstanceManager implements Serializable {
+
+		private static final long serialVersionUID = 2796674164692183550L;
+
+		public static WindowInstanceManager INSTANCE = new WindowInstanceManager();
+		
+		public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window){
+			return Boolean.TRUE;
+		}
+		
 	}
 }

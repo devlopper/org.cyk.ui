@@ -7,12 +7,20 @@ import org.cyk.system.root.business.api.language.LanguageCollectionBusiness;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
+import org.cyk.system.root.business.impl.party.person.JobDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
+import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonBusinessImpl;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
+import org.cyk.system.root.business.impl.party.person.SignatureDetails;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.JobInformations;
 import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
@@ -25,6 +33,8 @@ import org.cyk.system.test.model.actor.ActorQueryManyFormModel;
 import org.cyk.system.test.model.actor.ActorQueryOneFormModel;
 import org.cyk.system.test.model.actor.ActorSelectManyPageAdapter;
 import org.cyk.system.test.model.actor.ActorSelectOnePageAdapter;
+import org.cyk.ui.api.AbstractWindow;
+import org.cyk.ui.api.AbstractWindow.WindowInstanceManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
@@ -50,12 +60,11 @@ public class ContextListener extends AbstractContextListener {
 			public void afterInstanciateOne(UserAccount userAccount,Person person) {
 				person.getExtendedInformations().setLanguageCollection(inject(LanguageCollectionBusiness.class).instanciateOne(userAccount));
 				person.setJobInformations(new JobInformations(person));
-				person.setMedicalInformations(new MedicalInformations(person));
 				super.afterInstanciateOne(userAccount, person);
 			}
 		});
 		
-		ActorBusinessImpl.Listener.COLLECTION.add(new ActorBusinessImpl.Listener.Adapter(){
+		ActorBusinessImpl.Listener.COLLECTION.add(new ActorBusinessImpl.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 4605368263736933413L;
 			@Override
 			public void afterInstanciateOne(UserAccount userAccount,Actor actor) {
@@ -64,6 +73,23 @@ public class ContextListener extends AbstractContextListener {
 				super.afterInstanciateOne(userAccount, actor);
 			}
 		});
+		
+		AbstractWindow.WindowInstanceManager.INSTANCE = new WindowInstanceManager(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window) {
+				if(MedicalDetails.class.equals(detailsClass) || MedicalInformationsAllergyDetails.class.equals(detailsClass) 
+						|| MedicalInformationsMedicationDetails.class.equals(detailsClass))
+					return Boolean.FALSE;
+				if(PersonRelationshipDetails.class.equals(detailsClass))
+					return Boolean.FALSE;
+				if(SignatureDetails.class.equals(detailsClass) && identifiable instanceof Person)
+					return Boolean.FALSE;
+				if(JobDetails.class.equals(detailsClass) && identifiable instanceof Actor)
+					return Boolean.FALSE;
+				return super.isShowDetails(detailsClass, identifiable,window);
+			}
+		};
 	}
 	
 	@Override

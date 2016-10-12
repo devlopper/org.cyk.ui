@@ -118,6 +118,10 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	
 	protected void processOnIdentifiableFound(ENTITY identifiable){}
 	
+	protected Boolean isDetailsMenuCommandable(Class<?> aClass){
+		return isDetailsMenuCommandable(aClass, identifiable);
+	}
+	
 	protected String __formModelClassId__(){
 		return requestParameter(UniformResourceLocatorParameter.FORM_MODEL);
 	}
@@ -155,30 +159,34 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@Override
 	protected <T> void configureDetailsTable(Class<T> aClass, Table<T> table,DetailsConfigurationListener.Table<?, ?> listener) {
 		super.configureDetailsTable(aClass, table, listener);
-		//if(Boolean.TRUE.equals(listener.getRendered()))
-		addDetailsMenuCommandable(listener);
-		if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
-			if(Boolean.TRUE.equals(listener.getIsIdentifiableMaster()))
-				table.getAddRowCommandable().addParameter(identifiable);
-			if(listener.getMasters()!=null)
-				for(AbstractIdentifiable master : listener.getMasters())
-					table.getAddRowCommandable().addParameter(master);
+		if(Boolean.TRUE.equals(WindowInstanceManager.INSTANCE.isShowDetails(listener.getDataClass(), identifiable, this))){
+			addDetailsMenuCommandable(listener);
+			if(Boolean.TRUE.equals(ArrayUtils.contains(listener.getCruds(), Crud.CREATE))){
+				if(Boolean.TRUE.equals(listener.getIsIdentifiableMaster()))
+					table.getAddRowCommandable().addParameter(identifiable);
+				if(listener.getMasters()!=null)
+					for(AbstractIdentifiable master : listener.getMasters())
+						table.getAddRowCommandable().addParameter(master);
+			}
 		}
 	}
 	
 	protected void addDetailsMenuCommandable(DetailsConfigurationListener<?, ?> listener){
-		if(listener!=null){
-			if(StringUtils.isNotBlank(listener.getTabId()) && Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
-				Boolean found = Boolean.FALSE;
-				if(detailsMenu!=null)
-					for(UICommandable commandable : detailsMenu.getCommandables()){
-						if(commandable.getIdentifier().equals(listener.getTabId())){
-							found = Boolean.TRUE;
-							break;
-						}
+		if(Boolean.TRUE.equals(WindowInstanceManager.INSTANCE.isShowDetails(listener.getDataClass(), identifiable, this))){
+			//Boolean rendered = listener.isRendered(this); //&& isDetailsMenuCommandable(listener.getIdentifiableClass());
+			if(listener!=null /*&& (rendered == null || Boolean.TRUE.equals(rendered))*/){
+				if(StringUtils.isNotBlank(listener.getTabId()) && Boolean.TRUE.equals(listener.getAutoAddTabCommandable())){
+					Boolean found = Boolean.FALSE;
+					if(detailsMenu!=null)
+						for(UICommandable commandable : detailsMenu.getCommandables()){
+							if(commandable.getIdentifier().equals(listener.getTabId())){
+								found = Boolean.TRUE;
+								break;
+							}
+					}
+					if(Boolean.FALSE.equals(found))
+						addDetailsMenuCommandable(listener.getTabId(),listener.getTitleId(), null);
 				}
-				if(Boolean.FALSE.equals(found))
-					addDetailsMenuCommandable(listener.getTabId(),listener.getTitleId(), null);
 			}
 		}
 	}

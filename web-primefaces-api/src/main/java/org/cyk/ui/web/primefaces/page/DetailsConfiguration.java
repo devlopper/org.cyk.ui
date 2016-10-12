@@ -58,16 +58,14 @@ public class DetailsConfiguration implements Serializable {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public  DetailsConfigurationListener.Form.Adapter getFormConfigurationAdapter
-		(Class identifiableClass,Class detailsClass){
+	public  DetailsConfigurationListener.Form.Adapter getFormConfigurationAdapter(Class identifiableClass,Class detailsClass){
 		AbstractMethod<DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>
 		, Class<AbstractOutputDetails<AbstractIdentifiable>>> method = getGetFormConfigurationAdapterMethod();
 		DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>> result = null;
 		if(method==null){
 			result = getFormConfigurationAdapter();
 			if(result==null)
-				return new DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>(
-						(Class<AbstractIdentifiable>) identifiableClass,detailsClass){
+				return new DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable,AbstractOutputDetails<AbstractIdentifiable>>((Class<AbstractIdentifiable>) identifiableClass,detailsClass){
 					private static final long serialVersionUID = 1L;
 	
 				};
