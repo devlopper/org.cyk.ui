@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.test.form;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageCollectionBusiness;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
@@ -39,6 +40,7 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.PageInstanceManager
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
@@ -60,6 +62,14 @@ public class ContextListener extends AbstractContextListener {
 				person.getExtendedInformations().setLanguageCollection(inject(LanguageCollectionBusiness.class).instanciateOne(userAccount));
 				person.setJobInformations(new JobInformations(person));
 				super.afterInstanciateOne(userAccount, person);
+			}
+			
+			@Override
+			public void beforeCreate(Person person) {
+				super.beforeCreate(person);
+				if(StringUtils.isBlank(person.getCode()))
+					person.setCode(StringUtils.substring(person.getName(),0,3).toUpperCase()+Constant.CHARACTER_UNDESCORE
+							+StringUtils.substring(person.getLastnames(),0,2).toUpperCase());
 			}
 		});
 		

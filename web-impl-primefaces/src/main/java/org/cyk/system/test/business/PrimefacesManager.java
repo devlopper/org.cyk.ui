@@ -2,7 +2,10 @@ package org.cyk.system.test.business;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
+import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.UserSession;
 
 public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManager implements Serializable {
@@ -36,6 +39,9 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 				};
 			}
 		});*/
+		
+		getFormConfiguration(Person.class, Crud.CREATE).deleteRequiredFieldNames(AbstractPersonEditFormModel.FIELD_CODE);
+		
 	}
 	
 	@Override

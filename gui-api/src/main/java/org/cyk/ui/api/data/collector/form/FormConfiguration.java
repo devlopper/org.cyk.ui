@@ -128,6 +128,19 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 		return addRequiredFieldNames(autoAddToFieldNames, formConfiguration.getRequiredFieldNames());
 	}
 	
+	public FormConfiguration deleteRequiredFieldNames(Collection<String> names){
+		if(requiredFieldNames==null)
+			;
+		else 
+			if(names!=null){
+				requiredFieldNames.removeAll(names);
+			}
+		return this;
+	}
+	public FormConfiguration deleteRequiredFieldNames(String...names){
+		return deleteRequiredFieldNames(Arrays.asList(names));
+	}
+	
 	public FormConfiguration addExcludedFieldNames(String...names){
 		if(excludedFieldNames==null)
 			excludedFieldNames = new LinkedHashSet<>();
