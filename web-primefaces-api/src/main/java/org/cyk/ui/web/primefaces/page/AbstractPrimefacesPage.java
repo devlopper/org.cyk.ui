@@ -615,4 +615,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		}
 
 	}
+	
+	public static class PageInstanceManager extends AbstractWebPage.PageInstanceManager implements Serializable {
+
+		private static final long serialVersionUID = 2796674164692183550L;
+
+	}
 }

@@ -368,4 +368,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		}
 	}
 	
+	public static class PageInstanceManager extends WindowInstanceManager implements Serializable {
+
+		private static final long serialVersionUID = 2796674164692183550L;
+
+	}
+	
 }

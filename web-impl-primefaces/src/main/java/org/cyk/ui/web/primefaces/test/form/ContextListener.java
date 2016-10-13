@@ -20,7 +20,6 @@ import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.JobInformations;
 import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
@@ -34,9 +33,9 @@ import org.cyk.system.test.model.actor.ActorQueryOneFormModel;
 import org.cyk.system.test.model.actor.ActorSelectManyPageAdapter;
 import org.cyk.system.test.model.actor.ActorSelectOnePageAdapter;
 import org.cyk.ui.api.AbstractWindow;
-import org.cyk.ui.api.AbstractWindow.WindowInstanceManager;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.PageInstanceManager;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
@@ -74,7 +73,7 @@ public class ContextListener extends AbstractContextListener {
 			}
 		});
 		
-		AbstractWindow.WindowInstanceManager.INSTANCE = new WindowInstanceManager(){
+		AbstractWindow.WindowInstanceManager.INSTANCE = new PageInstanceManager(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window) {

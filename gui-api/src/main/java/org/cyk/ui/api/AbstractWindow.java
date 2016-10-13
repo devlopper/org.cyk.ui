@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.ClazzBusiness;
 import org.cyk.system.root.business.api.Crud;
@@ -345,6 +346,10 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		
 		public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window){
 			return Boolean.TRUE;
+		}
+		
+		protected Boolean isClassIn(Class<?> aClass,Class<?>...classes){
+			return ArrayUtils.contains(classes, aClass);
 		}
 		
 	}
