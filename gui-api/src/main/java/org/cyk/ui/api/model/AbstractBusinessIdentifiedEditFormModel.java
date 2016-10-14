@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor //TODO i think can be merged into super class
 public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractFormModel<IDENTIFIABLE> implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;
@@ -40,7 +40,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
 	
-	
+	@Input @InputText protected Long orderNumber;
 	
 	@Override
 	public void read() {
@@ -52,6 +52,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		description = identifiable.getDescription();
 		existencePeriod.set(identifiable.getExistencePeriod());
 		otherDetails = identifiable.getOtherDetails();
+		orderNumber = identifiable.getOrderNumber();
 	}
 	
 	protected void setBusinessValues(AbstractIdentifiable identifiable){
@@ -65,6 +66,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		identifiable.setDeathDate(existencePeriod.getToDate());
 		
 		identifiable.setOtherDetails(otherDetails);
+		identifiable.setOrderNumber(orderNumber);
 	}
 	
 	@Override
@@ -81,4 +83,5 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	public static final String FIELD_DESCRIPTION = "description";
 	public static final String FIELD_EXISTENCE_PERIOD = "existencePeriod";
 	public static final String FIELD_OTHER_DETAILS = "otherDetails";
+	public static final String FIELD_ORDER_NUMBER = "orderNumber";
 }
