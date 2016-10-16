@@ -16,6 +16,7 @@ import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -92,6 +93,12 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				contentTitle = v;
 		}
 		return contentTitle;
+	}
+	
+	@Override
+	protected String getContentTitleIdentifiableText() {
+		return Constant.EMPTY_STRING;
+		//return super.getContentTitleIdentifiableText();
 	}
 	
 	@Override
