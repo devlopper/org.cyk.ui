@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,10 +16,9 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.Constant;
-import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
@@ -43,8 +43,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		elements = (Collection<ENTITY>) genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
 		
 		@SuppressWarnings("rawtypes")
-		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,ProcessItem>(entityClass
-				, ProcessItem.class){
+		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,ProcessItem>(entityClass, ProcessItem.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<ENTITY> getIdentifiables() {
@@ -58,6 +57,17 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			@Override
 			public String getTabId() {
 				return "1";
+			}
+			@Override
+			public ColumnAdapter getColumnAdapter() {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 7583107184442561534L;
+					
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field, ProcessItem.FIELD_NAME);
+					}
+				};
 			}
 		};
 		table = createDetailsTable(entityClass, listener);
@@ -236,8 +246,6 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 	@Getter @Setter
 	public static class ProcessItem extends AbstractOutputDetails<AbstractIdentifiable> implements Serializable{
 		private static final long serialVersionUID = 2840997923510834856L;
-		
-		@Input @InputText private String name;
 		
 		public ProcessItem(AbstractIdentifiable identifiable) {
 			super(identifiable);

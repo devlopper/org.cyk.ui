@@ -1,134 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-fragment>
-
-	<context-param>
-		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
-		<param-value>/META-INF/resources</param-value>
-	</context-param>
-	<context-param>
-		<description>In order for the Bean Validation model to work as intended, you must set to true</description>
-		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
-		<param-value>-1</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-		<param-value>true</param-value>
-	</context-param>
-
-	<welcome-file-list>
-		<welcome-file>index.jsf</welcome-file>
-	</welcome-file-list>
-	
-	<!-- errors pages -->
-	<error-page>
-		<error-code>401</error-code>
-		<location>/public/__error__/401.jsf</location>
-	</error-page>
-	<error-page>
-		<error-code>404</error-code>
-		<location>/public/__error__/404.jsf</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/public/__error__/500.jsf</location>
-	</error-page>
-	<error-page>
-	    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-	    <location>/public/__error__/viewexpired.xhtml</location>
-	</error-page>
-	
-	<!-- pretty faces -->
-
-	<filter>
-		<filter-name>OCPsoft Rewrite Filter</filter-name>
-		<filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter-mapping>
-		<filter-name>OCPsoft Rewrite Filter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ASYNC</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-	
-	<context-param>
-	   <param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
-	   <param-value>org.cyk.ui.web</param-value>
-	</context-param>
-	
-	<filter>
-		<filter-name>characterEncodingFilter</filter-name>
-		<filter-class>org.cyk.ui.web.api.servlet.CharacterEncodingFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter-mapping>
-		<filter-name>characterEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	<filter>
-		<filter-name>applicationSecurityFilter</filter-name>
-		<filter-class>org.cyk.ui.web.api.servlet.SecurityFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter-mapping>
-		<filter-name>applicationSecurityFilter</filter-name>
-		<url-pattern>/private/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-	
-	<filter>
-		<filter-name>userAgentFilter</filter-name>
-		<filter-class>org.cyk.ui.web.api.servlet.UserAgentFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter-mapping>
-		<filter-name>userAgentFilter</filter-name>
-		<url-pattern>/private/*</url-pattern>
-		<url-pattern>/public/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<!-- shiro -->
-	
-	<context-param>
-    	<param-name>shiroEnvironmentClass</param-name>
-    	<param-value>org.cyk.ui.web.api.security.shiro.WebEnvironment</param-value>
-	</context-param>
-
-	<listener>
-		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-	</listener>
-	
-	<filter>
-		<filter-name>shiroFilter</filter-name>
-		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	<filter-mapping>
-		<filter-name>shiroFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-	
+<web-fragment xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xmlns:webfragment="http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+  <context-param>
+    <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+    <param-value>/META-INF/resources</param-value>
+  </context-param>
+  <context-param>
+    <description>In order for the Bean Validation model to work as intended, you must set to true</description>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.DEVELOPMENT</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+    <param-value>-1</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <welcome-file-list>
+    <welcome-file>index.jsf</welcome-file>
+  </welcome-file-list>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/public/__error__/401.jsf</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/public/__error__/404.jsf</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/public/__error__/500.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <location>/public/__error__/viewexpired.xhtml</location>
+  </error-page>
+  <filter>
+    <filter-name>OCPsoft Rewrite Filter</filter-name>
+    <filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>OCPsoft Rewrite Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  <context-param>
+    <param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
+    <param-value>org.cyk.ui.web</param-value>
+  </context-param>
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.cyk.ui.web.api.servlet.CharacterEncodingFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>applicationSecurityFilter</filter-name>
+    <filter-class>org.cyk.ui.web.api.servlet.SecurityFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>applicationSecurityFilter</filter-name>
+    <url-pattern>/private/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  <filter>
+    <filter-name>userAgentFilter</filter-name>
+    <filter-class>org.cyk.ui.web.api.servlet.UserAgentFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>userAgentFilter</filter-name>
+    <url-pattern>/private/*</url-pattern>
+    <url-pattern>/public/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  <context-param>
+    <param-name>shiroEnvironmentClass</param-name>
+    <param-value>org.cyk.ui.web.api.security.shiro.WebEnvironment</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+  </listener>
+  <filter>
+    <filter-name>shiroFilter</filter-name>
+    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>shiroFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
 </web-fragment>

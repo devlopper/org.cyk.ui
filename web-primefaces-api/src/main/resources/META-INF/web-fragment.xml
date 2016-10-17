@@ -1,111 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-fragment>
-	
-	<context-param>
-		<param-name>primefaces.CACHE_PROVIDER</param-name>
-		<param-value>org.primefaces.cache.EHCacheProvider</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-		<param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>
-	</context-param>
-	<context-param>
-		<param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-		<param-value>6Ld7pMESAAAAAMhr5WSk5bcRrff8Y08NtDi8Buoq</param-value>
-	</context-param>
-	
-	<context-param>
-   		<param-name>primefaces.FONT_AWESOME</param-name>
-   		<param-value>true</param-value>
-	</context-param>
-	
-    <mime-mapping>
-	    <extension>eot</extension>
-	    <mime-type>application/vnd.ms-fontobject</mime-type>
-	</mime-mapping>
-	<mime-mapping>  
-	    <extension>otf</extension>  
-	    <mime-type>font/opentype</mime-type>  
-	</mime-mapping>      
-	<mime-mapping>  
-	    <extension>ttf</extension>  
-	    <mime-type>application/x-font-ttf</mime-type>  
-	</mime-mapping>      
-	<mime-mapping>  
-	    <extension>woff</extension>  
-	    <mime-type>application/x-font-woff</mime-type>  
-	</mime-mapping>
-	<mime-mapping>  
-	    <extension>woff2</extension>  
-	    <mime-type>application/x-font-woff2</mime-type>  
-	</mime-mapping>
-	<mime-mapping>  
-	    <extension>svg</extension>  
-	    <mime-type>image/svg+xml</mime-type>  
-	</mime-mapping>
-	
-	
-	<!--context-param>
-		<param-name>primefaces.UPLOADER</param-name>
-		<param-value>auto|native|commons</param-value>
-	</context-param>
-
-	<filter>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-	</filter-mapping-->
-	
-	<!-- 
-	Since PrettyFaces intercepts mapped HttpRequests then forwards those requests to JSF, 
-	it is necessary to enable any additional filters between PrettyFaces and JSF to listen 
-	to Servlet Forwards. This is done in the web.xml deployment descriptor by adding the 
-	following dispatcher elements to any needed Filters
-	 -->
-	<!--filter-mapping>
-	    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-	    <servlet-name>Faces Servlet</servlet-name>
-	    <dispatcher>FORWARD</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping-->
-
-	<!--servlet>
-		<servlet-name>Push Servlet</servlet-name>
-		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
-		 <load-on-startup>1</load-on-startup>
-		<async-supported>true</async-supported>
-		<init-param>
-            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-            <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
-        </init-param>
-        
-        <init-param>
-      		<param-name>org.atmosphere.useNative</param-name>
-      		<param-value>true</param-value>
-   		</init-param>
-   		<init-param>
-      		<param-name>org.atmosphere.cpr.sessionSupport</param-name>
-      		<param-value>true</param-value>
-   		</init-param>
-   		<init-param>
-        	<param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-           	<param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
-        </init-param>
-        <init-param>
-           	<param-name>org.atmosphere.cpr.broadcasterClass</param-name>
-           	<param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
-        </init-param>
-        <init-param>
-           	<param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
-           	<param-value>1800000</param-value>
-        </init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Push Servlet</servlet-name>
-		<url-pattern>/primepush/*</url-pattern>
-	</servlet-mapping-->
+<web-fragment xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xmlns:webfragment="http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+  <context-param>
+    <param-name>primefaces.CACHE_PROVIDER</param-name>
+    <param-value>org.primefaces.cache.EHCacheProvider</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+    <param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+    <param-value>6Ld7pMESAAAAAMhr5WSk5bcRrff8Y08NtDi8Buoq</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.FONT_AWESOME</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <mime-mapping>
+    <extension>eot</extension>
+    <mime-type>application/vnd.ms-fontobject</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>otf</extension>
+    <mime-type>font/opentype</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>ttf</extension>
+    <mime-type>application/x-font-ttf</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>woff</extension>
+    <mime-type>application/x-font-woff</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>woff2</extension>
+    <mime-type>application/x-font-woff2</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>svg</extension>
+    <mime-type>image/svg+xml</mime-type>
+  </mime-mapping>
 </web-fragment>

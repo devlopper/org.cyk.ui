@@ -26,11 +26,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.persistence.api.file.FileIdentifiableGlobalIdentifierDao;
@@ -504,6 +506,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
 				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		});
+	}
+	
+	public void redirectToFileConsultManyPage(FileRepresentationType fileRepresentationType,Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
+		redirectToFileConsultManyPage(inject(FileBusiness.class).findByRepresentationTypeByIdentifiables(fileRepresentationType,identifiables), fileExtension);
 	}
 	
 	public void redirectToReportFileGeneratePage(AbstractIdentifiable identifiable,String reportTemplateCode,FileExtension fileExtension){
