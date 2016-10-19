@@ -144,6 +144,10 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 		return Boolean.FALSE;
 	}
 	
+	public Boolean isUserInstanceOf(Class<?> aClass){
+		return userAccount!=null && userAccount.getUser()!=null && aClass.isAssignableFrom(userAccount.getUser().getClass());
+	}
+	
 	public static void register(AbstractUserSession<?,?> userSession){
 		USER_SESSION_MAP.put(userSession.getIdentifier(), userSession);
 	}
