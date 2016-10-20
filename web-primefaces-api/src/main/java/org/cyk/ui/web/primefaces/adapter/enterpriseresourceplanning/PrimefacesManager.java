@@ -34,6 +34,8 @@ import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
+import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
@@ -57,6 +59,8 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
+import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
 
 public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefacesManagerListener.Adapter implements Serializable {
 
@@ -300,6 +304,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
+		getFormConfiguration(MedicalInformationsAllergy.class, Crud.CREATE).addRequiredFieldNames(MedicalInformationsAllergyEditPage.Form.FIELD_ALLERGY)
+				.addFieldNames(MedicalInformationsAllergyEditPage.Form.FIELD_REACTION_RESPONSE,MedicalInformationsAllergyEditPage.Form.FIELD_REACTION_TYPE);
+		
 		registerDetailsConfiguration(MedicalInformationsAllergyDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -328,6 +335,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
+		
+		getFormConfiguration(MedicalInformationsMedication.class, Crud.CREATE).addRequiredFieldNames(MedicalInformationsMedicationEditPage.Form.FIELD_MEDICATION)
+		.addFieldNames(MedicalInformationsMedicationEditPage.Form.FIELD_MUST_BE_AVAILABLE,MedicalInformationsMedicationEditPage.Form.FIELD_REACTION_RESPONSE);
 		
 		registerDetailsConfiguration(MedicalInformationsMedicationDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
