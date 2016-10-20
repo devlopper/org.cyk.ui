@@ -337,7 +337,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		getFormConfiguration(MedicalInformationsMedication.class, Crud.CREATE).addRequiredFieldNames(MedicalInformationsMedicationEditPage.Form.FIELD_MEDICATION)
-		.addFieldNames(MedicalInformationsMedicationEditPage.Form.FIELD_MUST_BE_AVAILABLE,MedicalInformationsMedicationEditPage.Form.FIELD_REACTION_RESPONSE);
+		.addFieldNames(MedicalInformationsMedicationEditPage.Form.FIELD_MUST_BE_AVAILABLE,MedicalInformationsMedicationEditPage.Form.FIELD_MUST_BE_GIVEN);
 		
 		registerDetailsConfiguration(MedicalInformationsMedicationDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;

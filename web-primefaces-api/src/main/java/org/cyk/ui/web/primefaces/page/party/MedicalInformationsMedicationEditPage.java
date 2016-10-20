@@ -46,7 +46,7 @@ public class MedicalInformationsMedicationEditPage extends AbstractCrudOnePage<M
 		
 		public static final String FIELD_MEDICATION = "medication";
 		public static final String FIELD_MUST_BE_AVAILABLE = "mustBeAvailable";
-		public static final String FIELD_REACTION_RESPONSE = "reactionResponse";
+		public static final String FIELD_MUST_BE_GIVEN = "mustBeGiven";
 	}
 
 }
