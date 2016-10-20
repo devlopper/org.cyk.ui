@@ -104,6 +104,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	public void read() {
 		super.read();
 		setJobContactCollection();
+		name = getPerson().getName();
 		birthDate = getPerson().getBirthDate();
 		lastnames = getPerson().getLastnames();
 		sex = getPerson().getSex();

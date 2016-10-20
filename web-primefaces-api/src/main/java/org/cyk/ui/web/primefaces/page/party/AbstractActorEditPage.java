@@ -23,6 +23,25 @@ public abstract class AbstractActorEditPage<ACTOR extends AbstractIdentifiable> 
 	}
 	
 	@Getter @Setter
+	public static abstract class AbstractDefault<ACTOR extends AbstractIdentifiable> extends AbstractActorEditPage<ACTOR> implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		/**/
+		
+		@Getter @Setter
+		public static class Default<ACTOR extends AbstractActor> extends AbstractDefault<ACTOR> implements Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected AbstractActor getActor() {
+				return identifiable;
+			}
+			
+		}
+		
+	}
+	
+	@Getter @Setter
 	public static class Form<ACTOR extends AbstractActor> extends AbstractActorEditFormModel.AbstractDefault.Default<ACTOR> implements Serializable {
 
 		private static final long serialVersionUID = 2646571878912106597L;
