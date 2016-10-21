@@ -92,15 +92,6 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			controlSet.setUserDeviceType(formData.getUserDeviceType());
 			
 			controlSet.getControlSetListeners().addAll(controlSetListeners);
-			/*
-			for(Field field : commonUtils.getAllFields(getData().getClass(), annotations)){
-				if(field.getAnnotation(Input.class)!=null)
-					controlSet.row().addField(field);
-				else if(field.getAnnotation(IncludeInputs.class)!=null){
-					
-				}
-			}
-			*/
 			
 			List<ObjectField> objectFields = new ArrayList<>();
 			__objectFields__(objectFields,annotations,getData());
@@ -228,14 +219,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 					controlSet.row(null).addText(text);
 				addRow = null;
 			}
-			
 			if(objectField.getField().getAnnotation(Input.class)!=null){
 				if(addRow==null)
 					addRow = Boolean.TRUE;
-				
 				if(Boolean.TRUE.equals(addRow)){
-						//System.out.println("F : "+objectField.getField());
-						controlSet.row(objectField.getField());
+					controlSet.row(objectField.getField());
 					logDebug("Row created from field {}",objectField.getField().getName());
 				}
 				/*if(Boolean.TRUE.equals(seperatorAdded)){
