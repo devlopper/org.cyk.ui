@@ -50,8 +50,12 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		
 		@Override
 		public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
-			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data )
-				return inject(LanguageBusiness.class).findText("field.birth.location");
+			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data ){
+				if(LocationFormModel.FIELD_LOCALITY.equals(field.getName()))
+					return inject(LanguageBusiness.class).findText("field.birth.location");
+				else if(LocationFormModel.FIELD_OTHER_DETAILS.equals(field.getName()))
+					return inject(LanguageBusiness.class).findText("field.birth.location.other.details");
+			}
 			return super.fiedLabel(controlSet, data,field);
 		}	
 	}

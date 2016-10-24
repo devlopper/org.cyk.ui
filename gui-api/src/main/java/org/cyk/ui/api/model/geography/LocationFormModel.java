@@ -16,6 +16,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Getter @Setter
 public class LocationFormModel extends AbstractFormModel<Location> implements Serializable {
@@ -25,7 +26,7 @@ public class LocationFormModel extends AbstractFormModel<Location> implements Se
 	@Input @InputChoice @InputOneChoice @InputOneCombo private LocationType type;
 	@Input @InputChoice @InputOneChoice @InputOneCombo private LocalityType localityType;
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Locality locality;
-	//@Input @InputText private String otherDetails;
+	@Input @InputText private String locationOtherDetails;
 	
 	/**/
 	
@@ -37,7 +38,7 @@ public class LocationFormModel extends AbstractFormModel<Location> implements Se
 		}else{
 			type = identifiable.getType();
 			locality = identifiable.getLocality();
-			//otherDetails = identifiable.getOtherDetails();	
+			locationOtherDetails = identifiable.getOtherDetails();	
 		}
 		
 	}
@@ -49,7 +50,7 @@ public class LocationFormModel extends AbstractFormModel<Location> implements Se
 			return;
 		identifiable.setType(type);
 		identifiable.setLocality(locality);
-		//identifiable.setOtherDetails(otherDetails);
+		identifiable.setOtherDetails(locationOtherDetails);
 	}
 	
 	/**/
@@ -57,5 +58,5 @@ public class LocationFormModel extends AbstractFormModel<Location> implements Se
 	public static final String FIELD_TYPE = "type";
 	public static final String FIELD_LOCALITY_TYPE = "localityType";
 	public static final String FIELD_LOCALITY = "locality";
-	//public static final String FIELD_OTHER_DETAILS = "otherDetails";
+	public static final String FIELD_OTHER_DETAILS = "locationOtherDetails";
 }
