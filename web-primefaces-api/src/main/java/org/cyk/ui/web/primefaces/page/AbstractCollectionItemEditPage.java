@@ -77,7 +77,7 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 	}
 	
 	@Getter @Setter
-	protected static abstract class AbstractForm<COLLECTION extends AbstractIdentifiable,ITEM extends AbstractIdentifiable> extends AbstractFormModel<ITEM> implements Serializable{
+	protected static abstract class AbstractForm<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractFormModel<ITEM> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected COLLECTION collection;
@@ -92,7 +92,7 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 		
 		/**/
 		
-		public static abstract class AbstractDefault<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractForm<COLLECTION,ITEM> implements Serializable  {
+		public static abstract class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractForm<ITEM,COLLECTION> implements Serializable  {
 			private static final long serialVersionUID = 1L;
 			
 			@Override

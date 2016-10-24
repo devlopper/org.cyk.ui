@@ -38,6 +38,70 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>intervalEditView</from-outcome>
+			<to-view-id>/private/mathematics/interval/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>intervalListView</from-outcome>
+			<to-view-id>/private/mathematics/interval/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>intervalConsultView</from-outcome>
+			<to-view-id>/private/mathematics/interval/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>intervalCollectionEditView</from-outcome>
+			<to-view-id>/private/mathematics/intervalcollection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>intervalCollectionListView</from-outcome>
+			<to-view-id>/private/mathematics/intervalcollection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>intervalCollectionConsultView</from-outcome>
+			<to-view-id>/private/mathematics/intervalcollection/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>metricEditView</from-outcome>
+			<to-view-id>/private/mathematics/metric/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricListView</from-outcome>
+			<to-view-id>/private/mathematics/metric/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricConsultView</from-outcome>
+			<to-view-id>/private/mathematics/metric/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>metricCollectionEditView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionListView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionConsultView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>finiteStateMachineStateLogEditView</from-outcome>
 			<to-view-id>/private/mathematics/finitestatemachinestatelog/edit.xhtml</to-view-id>
 			<redirect />
@@ -52,9 +116,7 @@
 			<to-view-id>/private/mathematics/finitestatemachinestatelog/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		
-		
-		
+				
 	</navigation-rule>
 
 </faces-config>

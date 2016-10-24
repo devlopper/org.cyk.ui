@@ -18,6 +18,10 @@ import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
+import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
@@ -47,6 +51,10 @@ import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.mathematics.Interval;
+import org.cyk.system.root.model.mathematics.IntervalCollection;
+import org.cyk.system.root.model.mathematics.Metric;
+import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
@@ -94,6 +102,10 @@ import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
@@ -246,6 +258,20 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(IntervalCollection.class, IntervalCollectionEditPage.Form.class, IntervalCollectionDetails.class
+				,null,null,null));
+		uiManager.configBusinessIdentifiable(IntervalCollection.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Interval.class, IntervalEditPage.Form.class, IntervalDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Interval.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricCollection.class, MetricCollectionEditPage.Form.class, MetricCollectionDetails.class
+				,null,null,null));
+		uiManager.configBusinessIdentifiable(MetricCollection.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Metric.class, MetricEditPage.Form.class, MetricDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Metric.class, null);
 	}
 	
 	protected void initializeFiniteStateMachineModule(){

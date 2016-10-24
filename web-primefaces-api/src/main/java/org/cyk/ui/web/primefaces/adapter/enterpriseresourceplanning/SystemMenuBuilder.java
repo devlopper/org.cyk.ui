@@ -22,6 +22,10 @@ import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.system.root.model.language.Language;
+import org.cyk.system.root.model.mathematics.Interval;
+import org.cyk.system.root.model.mathematics.IntervalCollection;
+import org.cyk.system.root.model.mathematics.Metric;
+import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.message.SmtpProperties;
@@ -132,6 +136,12 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.MATHEMATICS).getName());
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(Movement.class, null));
+		
+		module.addChild(createListCommandable(IntervalCollection.class, null));
+		module.addChild(createListCommandable(Interval.class, null));
+		
+		module.addChild(createListCommandable(MetricCollection.class, null));
+		module.addChild(createListCommandable(Metric.class, null));
 		return module;
 	}
 	

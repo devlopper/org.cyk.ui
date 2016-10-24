@@ -137,7 +137,7 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 	}
 	
 	@Getter @Setter
-	protected static abstract class AbstractMovementForm<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage.AbstractForm<MovementCollection,MOVEMENT> implements Serializable{
+	protected static abstract class AbstractMovementForm<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage.AbstractForm<MOVEMENT,MovementCollection> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		//@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected MovementCollection collection;

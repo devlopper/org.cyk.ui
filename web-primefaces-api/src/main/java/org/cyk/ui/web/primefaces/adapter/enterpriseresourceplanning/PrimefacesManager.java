@@ -13,6 +13,10 @@ import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
@@ -31,6 +35,10 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.PhoneNumber;
+import org.cyk.system.root.model.mathematics.Interval;
+import org.cyk.system.root.model.mathematics.IntervalCollection;
+import org.cyk.system.root.model.mathematics.Metric;
+import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -57,6 +65,10 @@ import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
@@ -205,6 +217,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configureMathematicsModule() {
 		super.configureMathematicsModule();
+		//Movement
 		getFormConfiguration(MovementCollection.class,Crud.CREATE)
 			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME,MovementCollectionEditPage.Form.FIELD_VALUE);
 		
@@ -245,6 +258,94 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean isColumn(Field field) {
 						return isFieldNameIn(field,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD,PeriodDetails.FIELD_FROM_DATE);
+					}
+				};
+			}
+		});
+		
+		//Interval
+		getFormConfiguration(IntervalCollection.class,Crud.CREATE).addFieldNames(IntervalCollectionEditPage.Form.FIELD_CODE,IntervalCollectionEditPage.Form.FIELD_NAME
+				,IntervalCollectionEditPage.Form.FIELD_LOWEST_VALUE,IntervalCollectionEditPage.Form.FIELD_HIGHEST_VALUE,IntervalCollectionEditPage.Form.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
+	
+		registerDetailsConfiguration(IntervalCollectionDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,IntervalCollectionDetails.FIELD_CODE,IntervalCollectionDetails.FIELD_NAME,IntervalCollectionDetails.FIELD_LOWEST_VALUE
+								,IntervalCollectionDetails.FIELD_HIGHEST_VALUE,IntervalCollectionDetails.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Interval.class,Crud.CREATE)
+			.addFieldNames(IntervalEditPage.Form.FIELD_COLLECTION,IntervalEditPage.Form.FIELD_LOW,IntervalEditPage.Form.FIELD_HIGH);
+		
+		registerDetailsConfiguration(IntervalDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,IntervalDetails.FIELD_COLLECTION,IntervalDetails.FIELD_LOW,IntervalDetails.FIELD_HIGH);
+					}
+				};
+			}
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,IntervalDetails.FIELD_LOW,IntervalDetails.FIELD_HIGH);
+					}
+				};
+			}
+		});
+		
+		//Interval
+		getFormConfiguration(MetricCollection.class,Crud.CREATE).addFieldNames(MetricCollectionEditPage.Form.FIELD_CODE,MetricCollectionEditPage.Form.FIELD_NAME
+				,MetricCollectionEditPage.Form.FIELD_VALUE_INTERVAL_COLLECTION,MetricCollectionEditPage.Form.FIELD_VALUE_TYPE,MetricCollectionEditPage.Form.FIELD_VALUE_INPUTTED);
+	
+		registerDetailsConfiguration(MetricCollectionDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME,MetricCollectionDetails.FIELD_VALUE_INPUTTED
+								,MetricCollectionDetails.FIELD_VALUE_TYPE,MetricCollectionDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Metric.class,Crud.CREATE)
+			.addFieldNames(MetricEditPage.Form.FIELD_COLLECTION,MetricEditPage.Form.FIELD_VALUE_INTERVAL_COLLECTION);
+		
+		registerDetailsConfiguration(MetricDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MetricDetails.FIELD_COLLECTION,MetricDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+					}
+				};
+			}
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MetricDetails.FIELD_VALUE_INTERVAL_COLLECTION);
 					}
 				};
 			}
