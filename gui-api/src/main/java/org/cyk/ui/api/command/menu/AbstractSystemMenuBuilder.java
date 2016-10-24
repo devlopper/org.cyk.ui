@@ -67,6 +67,10 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		addCommandable(userSession,systemMenu.getBusinesses(),commandable); 
 	}
 	
+	protected COMMANDABLE addReference(USER_SESSION userSession,SystemMenu systemMenu,COMMANDABLE commandable){
+		return addCommandable(userSession,systemMenu.getReferenceEntities(),commandable); 
+	}
+	
 	protected void onBusinessMenuPopulateEnded(final USER_SESSION userSession,final COMMANDABLE module){
 		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractSystemMenuBuilderListener<COMMANDABLE,TREE_NODE,TREE_NODE_MODEL,USER_SESSION>>() {
 			@Override
@@ -80,13 +84,14 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		addCommandable(userSession,parent.getChildren(),child); 
 	}
 	
-	private void addCommandable(USER_SESSION userSession,Collection<UICommandable> commandables,COMMANDABLE commandable){
+	private COMMANDABLE addCommandable(USER_SESSION userSession,Collection<UICommandable> commandables,COMMANDABLE commandable){
 		if(commandable==null)
 			;
 		else
 			if(Boolean.TRUE.equals(isCommandableVisible(userSession,commandable))){
 				commandables.add(commandable);
 			}
+		return commandable;
 	}
 	
 	protected Boolean isCommandableVisible(final USER_SESSION userSession,final COMMANDABLE commandable){
@@ -124,6 +129,10 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 				listener.initialiseNavigatorTree(userSession);
 			}
 		});
+	}
+	
+	public Collection<Class<? extends AbstractIdentifiable>> getReferencedIdentifiables(){
+		return null;
 	}
 	
 	/**/
