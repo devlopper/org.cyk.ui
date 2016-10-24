@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,8 +58,6 @@ public class MenuManager extends AbstractBean implements Serializable {
 	public static MenuManager getInstance() {
 		return INSTANCE;
 	}
-	
-	@Inject private ApplicationBusiness applicationBusiness;
 	
 	private Map<ModuleGroup, UICommandable> groupsMap = new HashMap<>();
 	
@@ -236,7 +233,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		UIMenu menu = new DefaultMenu();
 		if(Boolean.TRUE.equals(autoGenerateReferenceEntityMenu)){
 			UICommandable p;
-			List<BusinessEntityInfos> list = new ArrayList<>(applicationBusiness.findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
+			List<BusinessEntityInfos> list = new ArrayList<>(inject(ApplicationBusiness.class).findBusinessEntitiesInfos(CrudStrategy.ENUMERATION));
 			
 			Set<String> categories = new LinkedHashSet<>();
 			for(BusinessEntityInfos businessEntityInfos : list){
