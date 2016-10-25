@@ -147,8 +147,6 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		try{
 			if(identifiable==null){
 				identifiable = instanciateIdentifiable();
-				debug(identifiable);
-				System.out.println(identifiable.getProcessing());
 				identifiable.getProcessing().setIdentifier(actionIdentifier);
 				identifiable.getProcessing().setParty(userSession.getUser());
 			}
@@ -162,14 +160,10 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	@SuppressWarnings("unchecked")
 	protected ENTITY instanciateIdentifiable(){
 		ENTITY entity = null;
-		debug(businessEntityInfos);
 		if(businessEntityInfos!=null){
 			TypedBusiness<ENTITY> business = (TypedBusiness<ENTITY>) inject(BusinessInterfaceLocator.class).injectTyped((Class<ENTITY>)businessEntityInfos.getClazz());
-			System.out
-					.println("AbstractBusinessEntityFormOnePage.instanciateIdentifiable()");
-			if(business!=null){System.out.println("there");
+			if(business!=null){
 				entity = business.instanciateOne(userSession.getUserAccount());	
-				debug(entity);
 			}
 		}
 		

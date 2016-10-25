@@ -26,6 +26,11 @@ public class IntervalExtremityFormModel implements Serializable {
 		excluded = intervalExtremity.getExcluded();
 	}
 	
+	public void write(IntervalExtremity intervalExtremity){
+		intervalExtremity.setValue(value);
+		intervalExtremity.setExcluded(excluded);
+	}
+	
 	public static final String FIELD_VALUE = "value";
 	public static final String FIELD_EXCLUDED = "excluded";
 	

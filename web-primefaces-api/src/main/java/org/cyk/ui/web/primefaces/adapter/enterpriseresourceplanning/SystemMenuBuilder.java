@@ -161,6 +161,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceSecurityCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceUniformResourceLocatorCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceTimeCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceMathematicsCommandable(userSession, mobileCommandables));
 	}
 	
 	/**/
@@ -233,6 +234,14 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		Commandable module = createModuleCommandable("time", null);
 		module.addChild(createListCommandable(TimeDivisionType.class, null));
 		
+		return module;
+	}
+	
+	public Commandable getReferenceMathematicsCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("mathematics", null);
+		module.addChild(createListCommandable(MovementCollection.class, null));
+		module.addChild(createListCommandable(IntervalCollection.class, null));
+		module.addChild(createListCommandable(MetricCollection.class, null));
 		return module;
 	}
 

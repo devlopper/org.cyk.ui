@@ -5,20 +5,19 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.AbstractCollectionItemBusiness;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractCrudOnePage<IDENTIFIABLE> implements Serializable {
@@ -26,18 +25,6 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	protected abstract AbstractCollectionItem<?> getItem();
-	
-	@Override
-	protected IDENTIFIABLE instanciateIdentifiable() {
-		Long collectionIdentifier = requestParameterLong(getCollectionClass());
-		if(collectionIdentifier==null)
-			return super.instanciateIdentifiable();
-		return instanciateIdentifiable(collectionIdentifier);
-	}
-	
-	protected IDENTIFIABLE instanciateIdentifiable(Long collectionIdentifier){
-		return null;
-	}
 	
 	@SuppressWarnings("unchecked")
 	protected Class<COLLECTION> getCollectionClass(){
@@ -67,17 +54,25 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 			return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		}
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		protected ITEM instanciateIdentifiable(Long collectionIdentifier) {
-			return ((AbstractCollectionItemBusiness<ITEM,COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(getItemClass()))
-					.instanciateOne(inject(BusinessInterfaceLocator.class).injectTyped(getCollectionClass()).find(collectionIdentifier));
+		protected ITEM instanciateIdentifiable() {
+			ITEM identifiable = super.instanciateIdentifiable();
+			Long collectionIdentifier = requestParameterLong(getCollectionClass());
+			if(collectionIdentifier==null){
+				
+			}else{
+				COLLECTION collection = inject(BusinessInterfaceLocator.class).injectTyped(getCollectionClass()).find(collectionIdentifier);
+				if(identifiable instanceof AbstractCollectionItem)
+					((AbstractCollectionItem)identifiable).setCollection(collection);
+			}
+			return identifiable;
 		}
 		
 	}
 	
 	@Getter @Setter
-	protected static abstract class AbstractForm<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractFormModel<ITEM> implements Serializable{
+	protected static abstract class AbstractForm<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractBusinessIdentifiedEditFormModel<ITEM> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull protected COLLECTION collection;

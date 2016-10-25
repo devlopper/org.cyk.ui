@@ -3,9 +3,12 @@ package org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
@@ -46,9 +49,11 @@ import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.menu.SystemMenu;
+import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
+import org.cyk.ui.api.model.mathematics.IntervalExtremityFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
@@ -73,6 +78,10 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
+import org.primefaces.extensions.model.dynaform.DynaFormControl;
+import org.primefaces.extensions.model.dynaform.DynaFormLabel;
+import org.primefaces.extensions.model.dynaform.DynaFormModel;
+import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
 public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefacesManagerListener.Adapter implements Serializable {
 
@@ -282,7 +291,25 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		getFormConfiguration(Interval.class,Crud.CREATE)
-			.addFieldNames(IntervalEditPage.Form.FIELD_COLLECTION,IntervalEditPage.Form.FIELD_LOW,IntervalEditPage.Form.FIELD_HIGH);
+			.addFieldNames(IntervalEditPage.Form.FIELD_COLLECTION,IntervalEditPage.Form.FIELD_LOW,IntervalEditPage.Form.FIELD_HIGH,IntervalExtremityFormModel.FIELD_VALUE
+					,IntervalExtremityFormModel.FIELD_EXCLUDED)
+					.addControlSetListener(new ControlSetAdapter<Object>(){
+						private static final long serialVersionUID = 1L;
+						
+						@Override
+						public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
+							if(data instanceof IntervalExtremityFormModel && ((IntervalEditPage.Form)controlSet.getFormData().getData()).getLow() == data ){
+								if(IntervalExtremityFormModel.FIELD_VALUE.equals(field.getName()))
+									return inject(LanguageBusiness.class).findText("field.low.extremity");
+							}
+							if(data instanceof IntervalExtremityFormModel && ((IntervalEditPage.Form)controlSet.getFormData().getData()).getHigh() == data ){
+								if(IntervalExtremityFormModel.FIELD_VALUE.equals(field.getName()))
+									return inject(LanguageBusiness.class).findText("field.high.extremity");
+							}
+							return super.fiedLabel(controlSet, data,field);
+						}	
+						
+					});
 		
 		registerDetailsConfiguration(IntervalDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -291,7 +318,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,IntervalDetails.FIELD_COLLECTION,IntervalDetails.FIELD_LOW,IntervalDetails.FIELD_HIGH);
+						return isFieldNameIn(field,IntervalDetails.FIELD_COLLECTION,IntervalDetails.FIELD_LOW_EXTREMITY,IntervalDetails.FIELD_HIGH_EXTREMITY);
 					}
 				};
 			}
@@ -301,13 +328,13 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,IntervalDetails.FIELD_LOW,IntervalDetails.FIELD_HIGH);
+						return isFieldNameIn(field,IntervalDetails.FIELD_LOW_EXTREMITY,IntervalDetails.FIELD_HIGH_EXTREMITY);
 					}
 				};
 			}
 		});
 		
-		//Interval
+		//Metric
 		getFormConfiguration(MetricCollection.class,Crud.CREATE).addFieldNames(MetricCollectionEditPage.Form.FIELD_CODE,MetricCollectionEditPage.Form.FIELD_NAME
 				,MetricCollectionEditPage.Form.FIELD_VALUE_INTERVAL_COLLECTION,MetricCollectionEditPage.Form.FIELD_VALUE_TYPE,MetricCollectionEditPage.Form.FIELD_VALUE_INPUTTED);
 	
@@ -326,7 +353,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		getFormConfiguration(Metric.class,Crud.CREATE)
-			.addFieldNames(MetricEditPage.Form.FIELD_COLLECTION,MetricEditPage.Form.FIELD_VALUE_INTERVAL_COLLECTION);
+			.addFieldNames(MetricEditPage.Form.FIELD_COLLECTION,MetricEditPage.Form.FIELD_CODE,MetricEditPage.Form.FIELD_NAME);
 		
 		registerDetailsConfiguration(MetricDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -335,7 +362,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MetricDetails.FIELD_COLLECTION,MetricDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+						return isFieldNameIn(field,MetricDetails.FIELD_COLLECTION,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME);
 					}
 				};
 			}
@@ -345,7 +372,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,MetricDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+						return isFieldNameIn(field,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME);
 					}
 				};
 			}
