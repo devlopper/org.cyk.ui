@@ -42,7 +42,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		
 		send(
 			getServletContext(),request, response, 
-			fileName(request, response)+" "+System.currentTimeMillis() + "."+ extension, 
+			fileName(request, response,files)+Constant.CHARACTER_SPACE+System.currentTimeMillis() +Constant.CHARACTER_DOT+ extension, 
 			bytes.length,
 			new ByteArrayInputStream(bytes),getAttachmentType(request, response),1024);
 		
@@ -64,12 +64,25 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 			return fileBusiness.merge(files, fileExtension).toByteArray();
 	}
 	
-	protected String fileName(HttpServletRequest request, HttpServletResponse response) {
-		return RandomStringUtils.randomAlphabetic(4);
+	protected String fileName(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {
+		String name = null;
+		if(files!=null && !files.isEmpty() && files.size()==1){
+			File file = files.iterator().next();
+			if(StringUtils.isNotBlank(file.getName()))
+				name = file.getName();
+			else if(StringUtils.isNotBlank(file.getCode()))
+				name = file.getCode();
+		}
+		if(StringUtils.isBlank(name))
+			name = RandomStringUtils.randomAlphabetic(4);
+		return fileBusiness.convertToFileName(name);
 	}
 	
 	protected String fileExtension(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {
-		return files==null || files.isEmpty()?Constant.EMPTY_STRING:files.iterator().next().getExtension();
+		if(files==null || files.isEmpty())
+			return Constant.EMPTY_STRING;
+		File file = files.iterator().next();
+		return /*StringUtils.equalsIgnoreCase(file.getExtension(),"jrxml") ? "xml" :*/ file.getExtension();
 	}
 	
 	protected AttachmentType getAttachmentType(HttpServletRequest request,HttpServletResponse response){

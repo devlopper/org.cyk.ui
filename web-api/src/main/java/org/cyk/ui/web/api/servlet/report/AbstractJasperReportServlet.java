@@ -47,7 +47,7 @@ public abstract class AbstractJasperReportServlet<MODEL,REPORT extends AbstractR
 	}
 
 	@Override
-	protected String fileName(HttpServletRequest request, HttpServletResponse response) {
+	protected String fileName(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {
 		return report.getFileName();
 	}
 

@@ -31,6 +31,7 @@ public abstract class AbstractFileConsultPage<FILE extends AbstractIdentifiable>
 		exporter.setFileUrlFromRequestParameters(new Object[]{UniformResourceLocatorParameter.IDENTIFIABLE,getFile()
 				,UniformResourceLocatorParameter.FILE_EXTENSION,getFile().getExtension()});
 		exporter.setType(getFile().getMime());
+		
 		/*
 		@SuppressWarnings("rawtypes")
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(FileContentDetails.class).getFormConfigurationAdapter(File.class, FileContentDetails.class);
