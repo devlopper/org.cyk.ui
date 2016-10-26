@@ -11,6 +11,7 @@ import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.FileRepresentationType;
+import org.cyk.system.root.model.file.report.ReportFile;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -162,6 +163,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceUniformResourceLocatorCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceTimeCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMathematicsCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
 	}
 	
 	/**/
@@ -210,9 +212,13 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	}
 	
 	public Commandable getReferenceFileCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
-		Commandable module = createModuleCommandable(UIManager.getInstance().businessEntityInfos(Person.class).getUserInterface().getLabelId(), null);
+		Commandable module = createModuleCommandable(UIManager.getInstance().businessEntityInfos(File.class).getUserInterface().getLabelId(), null);
 		module.addChild(createListCommandable(FileRepresentationType.class, null));
+		module.addChild(createListCommandable(File.class, null));
+		module.addChild(createListCommandable(FileIdentifiableGlobalIdentifier.class, null));
+		
 		module.addChild(createListCommandable(ReportTemplate.class, null));
+		module.addChild(createListCommandable(ReportFile.class, null));
 		return module;
 	}
 	
@@ -244,7 +250,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(MetricCollection.class, null));
 		return module;
 	}
-
+	
 	public static SystemMenuBuilder getInstance(){
 		if(INSTANCE==null)
 			INSTANCE = new SystemMenuBuilder();
