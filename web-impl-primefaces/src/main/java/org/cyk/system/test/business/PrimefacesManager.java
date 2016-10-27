@@ -44,6 +44,29 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 		
 	}
 	
+	/*@Override
+	protected Form<Object> getFormControlSetAdapter(Class<?> aClass) {
+		if(Actor.class.equals(aClass)){
+			return new ActorDetailsConfiguration.FormControlSetAdapter(aClass){
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data, Field field) {
+					if(data instanceof AbstractPersonEditFormModel<?>){
+						if(AbstractPersonEditFormModel.FIELD_CODE.equals(field.getName()))
+							return "ADMISSION NO";
+						if(AbstractPersonEditFormModel.FIELD_NAME.equals(field.getName()))
+							return "SURNAME";
+						if(AbstractPersonEditFormModel.FIELD_LAST_NAMES.equals(field.getName()))
+							return "FORNAME(S)";
+					}
+					return super.fiedLabel(controlSet, data, field);
+				}
+			};
+		}
+		return super.getFormControlSetAdapter(aClass);
+	}*/
+	
 	@Override
 	public SystemMenu getSystemMenu(UserSession userSession) {
 		return SystemMenuBuilder.getInstance().build(userSession);

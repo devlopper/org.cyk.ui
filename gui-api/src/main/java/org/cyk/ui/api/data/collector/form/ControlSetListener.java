@@ -137,6 +137,12 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 			fieldNamePairOrders.add(new String[]{first,second});
 		}
 		
+		/*protected String getFieldLabelIf(Class<?> aClass,Object data,Field field,String fieldName,String label){
+			if(aClass.isAssignableFrom(data.getClass()) && fieldName.equals(field.getName()))
+				return label;
+			return null;
+		}*/
+		
 		/**/
 		@NoArgsConstructor
 		public static class Default<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends Adapter<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> implements Serializable {

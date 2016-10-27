@@ -59,6 +59,7 @@ import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.ActorDetailsConfiguration.FormControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener;
@@ -528,8 +529,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			final Class<?> identifiableClass = businessEntityInfos.getClazz();
 			if(AbstractActor.class.isAssignableFrom(identifiableClass) && Boolean.TRUE.equals(isAutoConfigureClass(identifiableClass))){
-				configureActorFormConfiguration(identifiableClass, new ActorDetailsConfiguration.FormControlSetAdapter(identifiableClass));				
-				registerDetailsConfiguration(businessEntityInfos.getUserInterface().getDetailsClass(), new ActorDetailsConfiguration());
+				configureActorFormConfiguration(identifiableClass, (FormControlSetAdapter) getFormControlSetAdapter(identifiableClass));				
+				registerDetailsConfiguration(businessEntityInfos.getUserInterface().getDetailsClass(), getDetailsConfiguration(identifiableClass));
 			}
 		}
 		/*
@@ -545,6 +546,18 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	
 	protected Boolean isAutoConfigureClass(Class<?> aClass){
 		return Boolean.TRUE;
+	}
+	
+	protected ControlSetAdapter.Form<Object> getFormControlSetAdapter(Class<?> aClass){
+		if(AbstractActor.class.isAssignableFrom(aClass))
+			return new ActorDetailsConfiguration.FormControlSetAdapter(aClass);
+		return null;
+	}
+	
+	protected DetailsConfiguration getDetailsConfiguration(Class<?> aClass){
+		if(AbstractActor.class.isAssignableFrom(aClass))
+			return new ActorDetailsConfiguration();
+		return null;
 	}
 	
 	protected void configurePersonFormConfiguration(Class<?> entityClass,PersonDetailsConfiguration.FormControlSetAdapter formConfigurationControlSetAdapter){

@@ -1,12 +1,16 @@
 package org.cyk.ui.web.primefaces.test.form;
 
+import java.lang.reflect.Field;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageCollectionBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
 import org.cyk.system.root.business.impl.BusinessServiceProvider;
 import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
+import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
 import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
@@ -35,6 +39,8 @@ import org.cyk.system.test.model.actor.ActorSelectManyPageAdapter;
 import org.cyk.system.test.model.actor.ActorSelectOnePageAdapter;
 import org.cyk.ui.api.AbstractWindow;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
+import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.PageInstanceManager;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
@@ -99,6 +105,23 @@ public class ContextListener extends AbstractContextListener {
 				return super.isShowDetails(detailsClass, identifiable,window);
 			}
 		};
+		
+		LanguageBusinessImpl.Listener.COLLECTION.add(new LanguageBusinessImpl.Listener.Adapter.Default.EnterpriseResourcePlanning(){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public FindTextResult afterFindFieldLabelText(Object object,Field field, FindTextResult findTextResult) {
+				if(object instanceof AbstractActorEditFormModel<?>){
+					if(AbstractPersonEditFormModel.FIELD_CODE.equals(field.getName()))
+						findTextResult.setValue("THE ADMISSION NO");
+					else if(AbstractPersonEditFormModel.FIELD_NAME.equals(field.getName()))
+						findTextResult.setValue("MY SURNAME");
+					else if(AbstractPersonEditFormModel.FIELD_LAST_NAMES.equals(field.getName()))
+						findTextResult.setValue("ITS FORNAME(S)");
+				}
+				return super.afterFindFieldLabelText(object, field, findTextResult);
+			}
+		});
 	}
 	
 	@Override

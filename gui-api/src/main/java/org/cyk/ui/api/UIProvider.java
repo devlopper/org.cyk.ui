@@ -105,7 +105,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			Input<?,?,?,?,?,?> input = (Input<?,?,?,?,?,?>)control;
 			input.setObject(data);
 			if(StringUtils.isBlank(input.getLabel())){
-				FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(field);
+				FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field);
 				input.setLabel(findTextResult.getValue());
 				input.setUniqueCssClass(CascadeStyleSheet.generateUniqueClassFrom(input.getType(), findTextResult));
 			}
