@@ -87,6 +87,7 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 		setSecurityMenu(MenuManager.getInstance().securityMenu(this));
 		setUserAccountMenu(MenuManager.getInstance().userAccountMenu(this));
 		setContextualMenu(MenuManager.getInstance().sessionContextualMenu(this));
+		//setNavigatorTree((AbstractTree<NODE, MODEL>) MenuManager.getInstance().sessionNavigatorTree(this,systemMenus));
 		
 		identifier = userAccount.getIdentifier()+" - "+System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(10);
 		notificationChannel = "/"+UIManager.PUSH_NOTIFICATION_CHANNEL+"/"+userAccount.getIdentifier();

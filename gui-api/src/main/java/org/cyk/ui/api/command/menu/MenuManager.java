@@ -15,6 +15,9 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -41,9 +44,6 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Singleton @Deployment(initialisationType=InitialisationType.EAGER) @SuppressWarnings("rawtypes")
 public class MenuManager extends AbstractBean implements Serializable {
@@ -213,7 +213,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 		//menu.addCommandable(createModuleGroup(userSession, ModuleGroup.HELP));
 		
 		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
-			menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.ADMINISTRATION));
+			//menu.addCommandable(createModuleGroup(userSession,systemMenus, ModuleGroup.ADMINISTRATION));
 		}
 		return menu;
 	}

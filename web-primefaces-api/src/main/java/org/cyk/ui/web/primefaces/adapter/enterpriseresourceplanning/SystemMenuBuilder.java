@@ -64,14 +64,14 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	@Override
 	public SystemMenu build(UserSession userSession) {
 		SystemMenu systemMenu = new SystemMenu();
-		addBusinessMenu(userSession,systemMenu,getEventCommandable(userSession, null));
-		addBusinessMenu(userSession,systemMenu,getFileCommandable(userSession, null));
-		addBusinessMenu(userSession,systemMenu,getGeographyCommandable(userSession, null));
-		addBusinessMenu(userSession,systemMenu,getPersonCommandable(userSession, null));
-		addBusinessMenu(userSession,systemMenu,getMathematicsCommandable(userSession, null));
+		//addBusinessMenu(userSession,systemMenu,getEventCommandable(userSession, null));
+		//addBusinessMenu(userSession,systemMenu,getFileCommandable(userSession, null));
+		//addBusinessMenu(userSession,systemMenu,getGeographyCommandable(userSession, null));
+		//addBusinessMenu(userSession,systemMenu,getPersonCommandable(userSession, null));
+		//addBusinessMenu(userSession,systemMenu,getMathematicsCommandable(userSession, null));
 		
 		addReferences(userSession, systemMenu, null);
-		
+		initialiseNavigatorTree(userSession);
 		return systemMenu;
 	}
 	

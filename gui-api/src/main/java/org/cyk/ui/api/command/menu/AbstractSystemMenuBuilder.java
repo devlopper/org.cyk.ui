@@ -122,7 +122,7 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 		});
 	}
 	
-	protected void initialiseNavigatorTree(final USER_SESSION userSession){
+	public void initialiseNavigatorTree(final USER_SESSION userSession){
 		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<AbstractSystemMenuBuilderListener<COMMANDABLE,TREE_NODE,TREE_NODE_MODEL,USER_SESSION>>(){
 			@Override
 			public void execute(AbstractSystemMenuBuilderListener<COMMANDABLE, TREE_NODE, TREE_NODE_MODEL, USER_SESSION> listener) {

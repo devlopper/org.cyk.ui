@@ -82,7 +82,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		if(files==null || files.isEmpty())
 			return Constant.EMPTY_STRING;
 		File file = files.iterator().next();
-		return /*StringUtils.equalsIgnoreCase(file.getExtension(),"jrxml") ? "xml" :*/ file.getExtension();
+		return file.getExtension();
 	}
 	
 	protected AttachmentType getAttachmentType(HttpServletRequest request,HttpServletResponse response){
