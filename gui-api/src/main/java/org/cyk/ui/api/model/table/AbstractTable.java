@@ -180,7 +180,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			@Override
 			public void added(Column column) {
 				super.added(column);
-				column.setTitle(languageBusiness.findFieldLabelText(column.getField()).getValue());
+				column.setTitle(languageBusiness.findFieldLabelText(rowDataClass,column.getField()).getValue());
 			}
 		});
 		rowListeners.add(new RowAdapter<DATA>(){
