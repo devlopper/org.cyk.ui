@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.impl.language.LanguageCollectionDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
@@ -77,7 +78,9 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		
 		@Override
 		public List<String> getExpectedFieldNames() {
-			return Arrays.asList(AbstractPersonDetails.FIELD_CODE,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
+			return Arrays.asList(AbstractPersonDetails.FIELD_CODE
+					,Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST)?AbstractPersonDetails.FIELD_NAME:AbstractPersonDetails.FIELD_LASTNAMES
+					,Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST)?AbstractPersonDetails.FIELD_LASTNAMES:AbstractPersonDetails.FIELD_NAME
 					,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION
 					,AbstractPersonDetails.FIELD_SEX,AbstractPersonDetails.FIELD_NATIONALITY
 					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS);
