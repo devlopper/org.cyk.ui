@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -184,15 +185,24 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 							for(String[] names : fieldNamePairOrders){
 								Integer index1 = list.indexOf(names[1]);
 								if(index1 > -1){
-									Integer index2 = list.indexOf(names[0]);
-									if(index2 > -1)
-										list.add(index2+1, names[1]);
+									Integer index0 = list.indexOf(names[0]);
+									System.out.println(names[0]+":"+index0+" , "+names[1]+":"+index1);
+									if(index0 > -1 && index1 > index0 ){
+										list.remove(index1.intValue());
+										System.out.println(list);
+										System.out.println("INDEX : "+(index0)+" , "+index1);
+										list.add(index0+1, names[1]);
+										System.out.println(list);
+									}
 								}	
 							}	
 						objectFieldSorter.setUseExpectedFieldNames(Boolean.TRUE);
 						objectFieldSorter.setExpectedFieldNames(list.toArray(new String[]{}));
 					}
 				//}
+				System.out
+						.println("ControlSetListener.Adapter.Default.getObjectFieldSorter()");
+				System.out.println(list);
 				return objectFieldSorter;
 			}
 			
@@ -201,6 +211,9 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 				ObjectFieldSorter objectFieldSorter = getObjectFieldSorter(objectFields, aClass);
 				if(objectFieldSorter!=null)
 					objectFieldSorter.sort();
+				System.out
+						.println("ControlSetListener.Adapter.Default.sortObjectFields()");
+				System.out.println(objectFields);
 			}
 		}
 		

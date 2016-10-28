@@ -47,6 +47,10 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		
 		public FormControlSetAdapter(Class<?> identifiableClass){
 			super(identifiableClass,Crud.CREATE);
+			if(Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST))
+				addFieldNamePairOrder(AbstractPersonEditFormModel.FIELD_NAME, AbstractPersonEditFormModel.FIELD_LAST_NAMES);
+			else
+				addFieldNamePairOrder(AbstractPersonEditFormModel.FIELD_LAST_NAMES, AbstractPersonEditFormModel.FIELD_NAME);
 		}
 		
 		@Override
@@ -67,6 +71,10 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		
 		public DetailsControlSetAdapter(Class<?> identifiableClass) {
 			super(identifiableClass);
+			if(Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST))
+				addFieldNamePairOrder(AbstractPersonDetails.FIELD_NAME, AbstractPersonDetails.FIELD_LASTNAMES);
+			else
+				addFieldNamePairOrder(AbstractPersonDetails.FIELD_LASTNAMES, AbstractPersonDetails.FIELD_NAME);
 		}
 		
 		@Override
@@ -79,8 +87,7 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		@Override
 		public List<String> getExpectedFieldNames() {
 			return Arrays.asList(AbstractPersonDetails.FIELD_CODE
-					,Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST)?AbstractPersonDetails.FIELD_NAME:AbstractPersonDetails.FIELD_LASTNAMES
-					,Boolean.TRUE.equals(PersonBusiness.FindNamesArguments.FIRST_NAME_IS_FIRST)?AbstractPersonDetails.FIELD_LASTNAMES:AbstractPersonDetails.FIELD_NAME
+					,AbstractPersonDetails.FIELD_NAME,AbstractPersonDetails.FIELD_LASTNAMES
 					,AbstractPersonDetails.FIELD_IMAGE,AbstractPersonDetails.FIELD_BIRTH_DATE,AbstractPersonDetails.FIELD_BIRTH_LOCATION
 					,AbstractPersonDetails.FIELD_SEX,AbstractPersonDetails.FIELD_NATIONALITY
 					,AbstractPersonDetails.FIELD_LANGUAGE_COLLECTION,AbstractPersonDetails.FIELD_OTHER_DETAILS);
