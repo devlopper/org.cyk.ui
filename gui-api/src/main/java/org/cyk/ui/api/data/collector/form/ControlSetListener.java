@@ -6,12 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -20,6 +15,10 @@ import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
 import org.cyk.utility.common.cdi.BeanAdapter;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
@@ -186,13 +185,13 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 								Integer index1 = list.indexOf(names[1]);
 								if(index1 > -1){
 									Integer index0 = list.indexOf(names[0]);
-									System.out.println(names[0]+":"+index0+" , "+names[1]+":"+index1);
-									if(index0 > -1 && index1 > index0 ){
+									//System.out.println(names[0]+":"+index0+" , "+names[1]+":"+index1);
+									if(index0 > -1 && (index0 > index1 || index1 - index0 > 1 ) ){
+										//System.out.println("BS : "+list);
 										list.remove(index1.intValue());
-										System.out.println(list);
-										System.out.println("INDEX : "+(index0)+" , "+index1);
-										list.add(index0+1, names[1]);
-										System.out.println(list);
+										//System.out.println("BA : "+list);
+										list.add(index0+( index1 - index0 > 1 ? 1 : 0 ), names[1]);
+										//System.out.println("AA : "+list);
 									}
 								}	
 							}	
@@ -200,9 +199,6 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 						objectFieldSorter.setExpectedFieldNames(list.toArray(new String[]{}));
 					}
 				//}
-				System.out
-						.println("ControlSetListener.Adapter.Default.getObjectFieldSorter()");
-				System.out.println(list);
 				return objectFieldSorter;
 			}
 			
@@ -211,9 +207,6 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 				ObjectFieldSorter objectFieldSorter = getObjectFieldSorter(objectFields, aClass);
 				if(objectFieldSorter!=null)
 					objectFieldSorter.sort();
-				System.out
-						.println("ControlSetListener.Adapter.Default.sortObjectFields()");
-				System.out.println(objectFields);
 			}
 		}
 		
