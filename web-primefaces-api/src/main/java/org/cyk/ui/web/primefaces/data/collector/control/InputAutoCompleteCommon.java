@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractEnumeration;
@@ -14,6 +15,8 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.language.LanguageEntry;
+import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInputAutoCompleteCommon;
@@ -101,7 +104,13 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 				@Override
 				public List<VALUE_TYPE> complete(String query) {
 					List<VALUE_TYPE> results = null;
-					if(AbstractIdentifiable.class.isAssignableFrom(clazz)){
+					if(Person.class.isAssignableFrom(clazz)){
+						Person.SearchCriteria searchCriteria = new Person.SearchCriteria();
+						searchCriteria.getName().setValue(query);
+						results = (List<VALUE_TYPE>) inject(PersonBusiness.class).findByCriteria(searchCriteria);
+					}else if(AbstractActor.class.isAssignableFrom(clazz)){
+						
+					}else if(AbstractIdentifiable.class.isAssignableFrom(clazz)){
 						GlobalIdentifier.SearchCriteria searchCriteria = new GlobalIdentifier.SearchCriteria();
 						searchCriteria.getCode().setValue(query);
 						searchCriteria.getName().setValue(query);
