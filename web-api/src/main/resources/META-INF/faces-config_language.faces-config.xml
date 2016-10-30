@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		
+		<navigation-case>
+			<from-outcome>languageListView</from-outcome>
+			<to-view-id>/private/language/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>languageEditView</from-outcome>
+			<to-view-id>/private/language/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>languageConsultView</from-outcome>
+			<to-view-id>/private/language/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		
+	</navigation-rule>
+
+</faces-config>

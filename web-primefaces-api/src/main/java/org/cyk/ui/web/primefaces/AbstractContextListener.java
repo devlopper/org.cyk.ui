@@ -18,6 +18,7 @@ import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
+import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
@@ -51,6 +52,7 @@ import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.information.Comment;
+import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
@@ -101,6 +103,7 @@ import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
+import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
@@ -152,6 +155,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeFiniteStateMachineModule();
 		initializeGeographyModule();
 		initializeInformationModule();
+		initializeLanguageModule();
 		initializeMathematicsModule();
 		initializeNestedSetModule();
 		initializeNetworkModule();
@@ -223,6 +227,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PhoneNumber.class, PhoneNumberEditPage.Form.class, PhoneNumberDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(PhoneNumber.class, null);
+	}
+	
+	protected void initializeLanguageModule(){
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Language.class, LanguageEditPage.Form.class, LanguageDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Language.class, null);
 	}
 	
 	protected void initializeNetworkModule(){

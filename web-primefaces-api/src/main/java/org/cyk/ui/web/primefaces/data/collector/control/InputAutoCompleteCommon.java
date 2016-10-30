@@ -100,10 +100,10 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 					clazz = aClass;
 				}
 				
-				@SuppressWarnings({ "unchecked", "rawtypes" })
+				@SuppressWarnings({ "unchecked" })
 				@Override
 				public List<VALUE_TYPE> complete(String query) {
-					List<VALUE_TYPE> results = null;
+					/*List<VALUE_TYPE> results = null;
 					if(Person.class.isAssignableFrom(clazz)){
 						Person.SearchCriteria searchCriteria = new Person.SearchCriteria();
 						searchCriteria.getName().setValue(query);
@@ -119,7 +119,10 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 							((AbstractDataTreeNodeBusiness) inject(BusinessInterfaceLocator.class).injectTyped((Class<AbstractIdentifiable>)clazz)).setParents(results);
 						}
 					}
-					return results;
+					*/
+					//return results;
+					
+					return (List<VALUE_TYPE>) inject(BusinessInterfaceLocator.class).injectTyped(((Class<AbstractIdentifiable>)clazz)).findByString(query);
 				}
 				
 				@SuppressWarnings({ "unchecked", "rawtypes" })

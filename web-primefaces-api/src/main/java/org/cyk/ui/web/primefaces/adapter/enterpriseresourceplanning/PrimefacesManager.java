@@ -16,6 +16,7 @@ import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
@@ -38,6 +39,7 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.PhoneNumber;
+import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
@@ -71,6 +73,7 @@ import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
+import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
@@ -222,6 +225,29 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
+	}
+	
+	@Override
+	protected void configureLanguageModule() {
+		super.configureLanguageModule();
+		getFormConfiguration(Language.class, Crud.CREATE)
+			.addRequiredFieldNames(LanguageEditPage.Form.FIELD_CODE,LanguageEditPage.Form.FIELD_NAME);
+		
+		registerDetailsConfiguration(LanguageDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,LanguageDetails.FIELD_CODE,LanguageDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+	
 	}
 	
 	@Override
