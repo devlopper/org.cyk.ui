@@ -12,7 +12,7 @@
 	<name>Web User Interface API</name>
 	
 	<groupId>org.cyk.ui.web</groupId>
-	<artifactId>ui-_web-api</artifactId>
+	<artifactId>ui-web-api</artifactId>
 	<packaging>jar</packaging>	
  
 	<properties>
