@@ -11,7 +11,7 @@
 
 	<name>User Interface Test Resources</name>
 
-	<artifactId>ui-_test-resources</artifactId>
+	<artifactId>ui-test-resources</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>

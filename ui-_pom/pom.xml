@@ -19,10 +19,10 @@
 	<url>http://www.cykcorp.org</url>
 
 	<modules>
-		<module>../gui-api</module>
-		<module>../web-api</module>
+		<module>../ui-gui-api</module>
+		<module>../ui-web-api</module>
 		
-		<module>../web-primefaces-api</module>
+		<module>../ui-web-primefaces-api</module>
 		<!--
 		<module>../web-vaadin-api</module>
 		-->

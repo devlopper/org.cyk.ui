@@ -13,7 +13,7 @@
 	<name>Web Primefaces User Interface API</name>
 
 	<groupId>org.cyk.ui.web</groupId>
-	<artifactId>ui-_web-primefaces-api</artifactId>
+	<artifactId>ui-web-primefaces-api</artifactId>
 	<packaging>jar</packaging>
 	
 	<properties>
