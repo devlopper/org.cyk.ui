@@ -5,14 +5,14 @@
 
 	<parent>
 		<groupId>org.cyk.ui</groupId>
-		<artifactId>pom</artifactId>
+		<artifactId>ui-_pom</artifactId>
 		<version>0.0.1</version>
 	</parent>
 
 	<name>Web User Interface API</name>
 	
 	<groupId>org.cyk.ui.web</groupId>
-	<artifactId>web-api</artifactId>
+	<artifactId>ui-_web-api</artifactId>
 	<packaging>jar</packaging>	
  
 	<properties>

@@ -6,14 +6,14 @@
 
 	<parent>
 		<groupId>org.cyk.ui</groupId>
-		<artifactId>pom</artifactId>
+		<artifactId>ui-_pom</artifactId>
 		<version>0.0.1</version>
 	</parent>
 
 	<name>Web Primefaces User Interface API</name>
 
 	<groupId>org.cyk.ui.web</groupId>
-	<artifactId>web-primefaces-api</artifactId>
+	<artifactId>ui-_web-primefaces-api</artifactId>
 	<packaging>jar</packaging>
 	
 	<properties>

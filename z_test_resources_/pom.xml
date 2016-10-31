@@ -5,13 +5,13 @@
 
 	<parent>
 		<groupId>org.cyk.ui</groupId>
-		<artifactId>pom</artifactId>
+		<artifactId>ui-_pom</artifactId>
 		<version>0.0.1</version>
 	</parent>
 
 	<name>User Interface Test Resources</name>
 
-	<artifactId>test-resources</artifactId>
+	<artifactId>ui-_test-resources</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
