@@ -30,6 +30,9 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicat
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
+import org.cyk.system.root.business.impl.security.RoleDetails;
+import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
+import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
@@ -46,10 +49,13 @@ import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
@@ -57,6 +63,7 @@ import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
 import org.cyk.ui.api.model.mathematics.IntervalExtremityFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
+import org.cyk.ui.api.model.security.CredentialsFormModel;
 import org.cyk.ui.api.model.time.PeriodFormModel;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesManager;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
@@ -82,6 +89,9 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
+import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
+import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
+import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -568,6 +578,68 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				return new ActorDetailsControlSetAdapter();
 			}
 		});*/
+	}
+	
+	@Override
+	protected void configureSecurityModule() {
+		super.configureSecurityModule();
+		getFormConfiguration(UniformResourceLocator.class, Crud.CREATE)
+		.addRequiredFieldNames(UniformResourceLocatorEditPage.Form.FIELD_CODE,UniformResourceLocatorEditPage.Form.FIELD_NAME
+				,UniformResourceLocatorEditPage.Form.FIELD_ADDRESS);
+	
+		registerDetailsConfiguration(UniformResourceLocatorDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,UniformResourceLocatorDetails.FIELD_CODE,UniformResourceLocatorDetails.FIELD_NAME
+								,UniformResourceLocatorDetails.FIELD_ADDRESS);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Role.class, Crud.CREATE)
+		.addRequiredFieldNames(RoleEditPage.Form.FIELD_CODE,RoleEditPage.Form.FIELD_NAME,RoleEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
+	
+		registerDetailsConfiguration(RoleDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,RoleDetails.FIELD_CODE,RoleDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(UserAccount.class, Crud.CREATE)
+		.addRequiredFieldNames(UserAccountEditPage.Form.FIELD_USER,UserAccountEditPage.Form.FIELD_ROLES,UserAccountEditPage.Form.FIELD_CREDENTIALS
+				,CredentialsFormModel.FIELD_USERNAME,CredentialsFormModel.FIELD_PASSWORD,CredentialsFormModel.FIELD_PASSWORD_CONFIRMATION);
+	
+		registerDetailsConfiguration(UserAccountDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,UserAccountDetails.FIELD_USER,UserAccountDetails.FIELD_USERNAME,UserAccountDetails.FIELD_DISABLED
+								,UserAccountDetails.FIELD_CURRENT_LOCK);
+					}
+				};
+			}
+		});
 	}
 	
 	protected Boolean isAutoConfigureClass(Class<?> aClass){

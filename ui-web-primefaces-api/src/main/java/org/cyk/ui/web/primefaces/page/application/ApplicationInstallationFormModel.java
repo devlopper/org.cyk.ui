@@ -2,11 +2,7 @@ package org.cyk.ui.web.primefaces.page.application;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.party.Application;
-import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.Installation;
 import org.cyk.system.root.model.security.License;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -16,6 +12,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanCheck;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class ApplicationInstallationFormModel extends AbstractFormModel<Application> implements Serializable {
@@ -40,14 +39,14 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 	private Installation installation = new Installation();
 	
 	public ApplicationInstallationFormModel(Application application) {
-		installation.setApplication(identifiable = application);
+		/*installation.setApplication(identifiable = application);
 		installation.setAdministratorCredentials(administratorCredentials.getCredentialsInputs().getCredentials());
 		
 		installation.setManager(new Person());
 		installation.setManagerCredentials(managerCredentials.getCredentialsInputs().getCredentials());
 		
 		installation.setLicense(license);
-		installation.setFaked(fakedData);
+		installation.setFaked(fakedData);*/
 	}
 	
 	@Override

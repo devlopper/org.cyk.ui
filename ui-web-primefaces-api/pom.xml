@@ -54,7 +54,7 @@
 		
 		<dependency>
 			<groupId>org.cyk.ui.web</groupId>
-			<artifactId>web-api</artifactId>
+			<artifactId>ui-web-api</artifactId>
 			<version>${version.cyk}</version>
 		</dependency>
 		

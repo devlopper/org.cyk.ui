@@ -36,7 +36,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.cyk.ui.api</groupId>
-			<artifactId>gui-api</artifactId>
+			<artifactId>ui-gui-api</artifactId>
 			<version>${version.cyk}</version>
 		</dependency>
 		

@@ -80,30 +80,33 @@ public class UserAccountEditPage extends AbstractCrudOnePage<UserAccount> implem
 	public static class Form extends AbstractFormModel<UserAccount> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		@Input @InputChoice @InputOneChoice @InputOneCombo @Binding(field="user") @NotNull private Person user;
-		@IncludeInputs private CredentialsFormModel credentialsForm = new CredentialsFormModel();
+		@IncludeInputs private CredentialsFormModel credentials = new CredentialsFormModel();
 		@Input @InputChoice @InputManyChoice @InputManyPickList private List<Role> roles;
-		
-		public static final String FIELD_USER = "user";
-		public static final String FIELD_ROLES = "roles";
 		
 		@Override
 		public void read() {
 			super.read();
 			user = (Person) identifiable.getUser();
-			credentialsForm.getCredentials().setUsername(identifiable.getCredentials().getUsername());
-			//credentialsForm.getCredentials().setPassword(identifiable.getCredentials().getPassword());
+			credentials.set(identifiable.getCredentials());
 		}
 		
 		@Override
 		public void write() {
 			super.write();
 			identifiable.setUser(user);
-			identifiable.getCredentials().setUsername(credentialsForm.getCredentials().getUsername());
-			if(identifiable.getIdentifier()==null || StringUtils.isNotBlank(credentialsForm.getCredentials().getPassword()))
-				identifiable.getCredentials().setPassword(credentialsForm.getCredentials().getPassword());
+			credentials.write(identifiable.getCredentials(), identifiable.getIdentifier()==null || StringUtils.isNotBlank(credentials.getPassword()));
+			/*
+			identifiable.getCredentials().setUsername(credentials.getUsername());
+			if(identifiable.getIdentifier()==null || StringUtils.isNotBlank(credentials.getPassword()))
+				identifiable.getCredentials().setPassword(credentials.getPassword());
+			*/
 			identifiable.getRoles().clear();
 			identifiable.getRoles().addAll(roles);
 		}
+		
+		public static final String FIELD_USER = "user";
+		public static final String FIELD_CREDENTIALS = "credentials";
+		public static final String FIELD_ROLES = "roles";
 	}
 	
 	@Getter @Setter

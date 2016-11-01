@@ -81,6 +81,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo private UniformResourceLocator uniformResourceLocator;
 		
+		public static final String FIELD_UNIFORM_RESOURCE_LOCATOR = "uniformResourceLocator";
 	}
 	
 	@Getter @Setter

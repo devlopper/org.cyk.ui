@@ -86,6 +86,7 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 		
 		public static final String FIELD_CODE = "code";
 		public static final String FIELD_NAME = "name";
+		public static final String FIELD_ADDRESS = "address";
 		
 	}
 	
