@@ -124,11 +124,11 @@ import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
-
+     
 	private static final long serialVersionUID = 592943227142026384L;
 	
 	@Inject protected DefaultDesktopLayoutManager layoutManager;
-	@Inject protected PrimefacesManager primefacesManager;
+	@Inject protected PrimefacesManager primefacesManager; 
  
 	@Override 
 	public void contextInitialized(ServletContextEvent event) {

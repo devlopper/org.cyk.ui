@@ -19,6 +19,7 @@
 	<url>http://www.cykcorp.org</url>
 
 	<modules>
+		<module>../ui-test-resources</module>
 		<module>../ui-gui-api</module>
 		<module>../ui-web-api</module>
 		
@@ -30,9 +31,7 @@
 		<module>../desktop-api</module>
 		<module>../desktop-swing-api</module>
 		-->
-		<!--
-		<module>../z_test_resources_</module>
-		-->
+		<module>../ui-web-primefaces-api-test</module>
 	</modules>
 
 	<dependencies>

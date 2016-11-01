@@ -58,7 +58,7 @@ public class ContextListener extends AbstractContextListener {
 	protected void initialisation() {
 		super.initialisation();
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
-		Comment.define(Actor.class);
+		Comment.define(Actor.class); 
 		FileIdentifiableGlobalIdentifier.define(Actor.class);
 		
 		PersonBusinessImpl.Listener.COLLECTION.add(new PersonBusinessImpl.Listener.Adapter(){
