@@ -72,6 +72,9 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		};
 		table = createDetailsTable(entityClass, listener);
 		
+		table.setShowToolBar(Boolean.FALSE);
+		table.setShowActionsColumn(Boolean.FALSE);
+		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
 			Boolean v = processPageListener.getShowForm(this,actionIdentifier);
 			if(v!=null)

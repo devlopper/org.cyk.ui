@@ -113,7 +113,7 @@
 			        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" /> 
 			        </p:column>
 			        
-			        <p:column  width="130">
+			        <p:column rendered="#{cc.value.showActionsColumn}" width="130">
 			       <!-- #{cc.value.showAddRemoveColumn} or #{cc.value.showOpenCommand} -->
 			        	<table><tr>
 			        		<ui:fragment rendered="#{row.openable and cc.value.showOpenCommand and cc.value.openRowCommandable.rendered}" ><td style="border: none;">
