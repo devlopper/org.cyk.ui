@@ -18,7 +18,7 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
 @Getter @Setter
-public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractConsultPage<COLLECTION> implements Serializable {
+public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractConsultPage<IDENTIFIABLE> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -26,26 +26,12 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 	
 	protected abstract COLLECTION getCollection();
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void consultInitialisation() {
 		super.consultInitialisation();
 		 
-		final Class<ITEM> itemClass = getItemClass();
-		final Class<ITEM_DETAILS> itemDetailsClass = getItemDetailsClass();
-		
-		itemTable = (Table<ITEM_DETAILS>) createDetailsTable(itemDetailsClass, new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(itemClass, itemDetailsClass){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Collection<ITEM> getIdentifiables() {
-				return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(itemClass)).findByCollection(identifiable);
-			}
-			@Override
-			public ColumnAdapter getColumnAdapter() { 
-				return getDetailsConfiguration(itemDetailsClass).getTableColumnAdapter(null,AbstractCollectionConsultPage.this);
-			}
-			
-		});
+		//final Class<ITEM> itemClass = getItemClass();
+		//final Class<ITEM_DETAILS> itemDetailsClass = getItemDetailsClass();
 		
 		/*itemTable = (Table<ITEM_DETAILS>) createDetailsTable(itemDetailsClass, new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(itemClass, itemDetailsClass){
 			private static final long serialVersionUID = 1L;
@@ -70,6 +56,25 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 	
 	public static abstract class AbstractDefault<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractCollectionConsultPage<COLLECTION,COLLECTION,ITEM,ITEM_DETAILS> {
 		private static final long serialVersionUID = 1L;
+		
+		@Override
+		protected void consultInitialisation() {
+			// TODO Auto-generated method stub
+			super.consultInitialisation();
+			itemTable = (Table<ITEM_DETAILS>) createDetailsTable(getItemDetailsClass(), new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(getItemClass(), getItemDetailsClass()){
+				private static final long serialVersionUID = 1L;
+				@SuppressWarnings("unchecked")
+				@Override
+				public Collection<ITEM> getIdentifiables() {
+					return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(getItemClass())).findByCollection(identifiable);
+				}
+				@Override
+				public ColumnAdapter getColumnAdapter() { 
+					return getDetailsConfiguration(getItemDetailsClass()).getTableColumnAdapter(null,AbstractDefault.this);
+				}
+				
+			});
+		}
 		
 		@Override
 		protected COLLECTION getCollection() {
