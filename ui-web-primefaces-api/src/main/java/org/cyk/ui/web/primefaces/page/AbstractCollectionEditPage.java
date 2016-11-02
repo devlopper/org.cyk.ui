@@ -29,7 +29,7 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		/**/
 		
 		@Getter @Setter
-		public static abstract class Default<COLLECTION extends AbstractCollection<?>> extends AbstractForm<COLLECTION> implements Serializable{
+		public static abstract class AbstractDefault<COLLECTION extends AbstractCollection<?>> extends AbstractForm<COLLECTION> implements Serializable{
 			private static final long serialVersionUID = -4741435164709063863L;
 			
 			@Input @InputText protected String itemCodeSeparator;
