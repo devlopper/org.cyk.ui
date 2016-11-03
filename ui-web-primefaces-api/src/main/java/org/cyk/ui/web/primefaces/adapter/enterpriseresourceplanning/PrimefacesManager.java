@@ -281,10 +281,15 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		getFormConfiguration(Movement.class,Crud.CREATE)
-			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,/*Form.FIELD_ACTION,*/MovementEditPage.Form.FIELD_VALUE
-					,MovementEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE);
-		//configuration.addFieldNames(Form.FIELD_CURRENT_TOTAL,Form.FIELD_NEXT_TOTAL);
-		
+			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,MovementEditPage.Form.FIELD_VALUE)
+			.addFieldNames(MovementEditPage.Form.FIELD_ACTION,MovementEditPage.Form.FIELD_CURRENT_TOTAL,MovementEditPage.Form.FIELD_NEXT_TOTAL
+					,MovementEditPage.Form.FIELD_DATE);
+		/*
+		getFormConfiguration(Movement.class,Crud.DELETE)
+		.addFieldNames(MovementEditPage.Form.FIELD_COLLECTION,MovementEditPage.Form.FIELD_ACTION,MovementEditPage.Form.FIELD_VALUE
+				//,MovementEditPage.Form.FIELD_CURRENT_TOTAL,MovementEditPage.Form.FIELD_NEXT_TOTAL
+				,MovementEditPage.Form.FIELD_DATE);
+		*/
 		registerDetailsConfiguration(MovementDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
 			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
@@ -292,8 +297,11 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MovementDetails.FIELD_COLLECTION,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD
-								,PeriodDetails.FIELD_FROM_DATE);
+						if(data instanceof MovementDetails)
+							return isFieldNameIn(field,MovementDetails.FIELD_COLLECTION,MovementDetails.FIELD_VALUE,MovementDetails.FIELD_EXISTENCE_PERIOD);
+						if(data instanceof PeriodDetails)
+							return isFieldNameIn(field,PeriodDetails.FIELD_FROM_DATE);
+						return Boolean.FALSE;
 					}
 				};
 			}

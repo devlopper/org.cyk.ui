@@ -314,10 +314,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 
 	public void setChoices(String fieldName,Collection<?> collection,Object selected){
-		webManager.setChoices(form, fieldName, collection,selected);
-		InputChoice<?, ?, ?, ?, ?, ?> inputChoice = (InputChoice<?, ?, ?, ?, ?, ?>) form.findInputByFieldName(fieldName);
-		if(inputChoice instanceof org.cyk.ui.api.data.collector.control.InputManyPickList){
-			((InputManyPickList<?>)inputChoice).updateDualListModel();
+		if(Crud.isCreateOrUpdate(crud)){
+			webManager.setChoices(form, fieldName, collection,selected);
+			InputChoice<?, ?, ?, ?, ?, ?> inputChoice = (InputChoice<?, ?, ?, ?, ?, ?>) form.findInputByFieldName(fieldName);
+			if(inputChoice instanceof org.cyk.ui.api.data.collector.control.InputManyPickList){
+				((InputManyPickList<?>)inputChoice).updateDualListModel();
+			}
 		}
 	}
 	public void setChoices(String fieldName,Collection<?> collection){

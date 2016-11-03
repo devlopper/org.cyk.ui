@@ -6,18 +6,19 @@ import java.math.BigDecimal;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class MovementCollectionEditPage extends AbstractMovementCollectionEditPage<MovementCollection> implements Serializable {
@@ -35,11 +36,11 @@ public class MovementCollectionEditPage extends AbstractMovementCollectionEditPa
 		
 		@Input @InputNumber private BigDecimal value = BigDecimal.ZERO;
 		 
-		@Input @InputChoice @InputOneChoice @InputOneCombo private Interval interval;
+		@Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private Interval interval;
 		
-		@Input @InputChoice @InputOneChoice @InputOneCombo private MovementAction incrementAction;
+		@Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private MovementAction incrementAction;
 		
-		@Input @InputChoice @InputOneChoice @InputOneCombo private MovementAction decrementAction;
+		@Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private MovementAction decrementAction;
 		
 		@Input @InputBooleanButton private Boolean supportDocumentIdentifier = Boolean.FALSE;
 				

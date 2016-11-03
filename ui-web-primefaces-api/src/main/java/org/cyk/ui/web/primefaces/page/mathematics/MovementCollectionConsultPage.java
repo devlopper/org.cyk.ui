@@ -14,13 +14,8 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionConsultPage;
 
 @Named @ViewScoped @Getter @Setter
-public class MovementCollectionConsultPage extends AbstractCollectionConsultPage<MovementCollection,MovementCollection,Movement,MovementDetails> implements Serializable {
+public class MovementCollectionConsultPage extends AbstractCollectionConsultPage.AbstractDefault<MovementCollection,Movement,MovementDetails> implements Serializable {
 	
 	private static final long serialVersionUID = 3274187086682750183L;
-	
-	@Override
-	protected MovementCollection getCollection() {
-		return identifiable;
-	}
 	
 }
