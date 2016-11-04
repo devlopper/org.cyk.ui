@@ -10,18 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractCollection;
+import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 
 @Getter @Setter @Named @ViewScoped
-public class IntervalCollectionEditPage extends AbstractCollectionEditPage<IntervalCollection> implements Serializable {
+public class IntervalCollectionEditPage extends AbstractCollectionEditPage<IntervalCollection,Interval> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	@Getter @Setter
-	public static class Form extends AbstractForm<IntervalCollection> implements Serializable{
+	public static class Form extends AbstractForm<IntervalCollection,Interval> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 
 		@Input @InputNumber private BigDecimal lowestValue;

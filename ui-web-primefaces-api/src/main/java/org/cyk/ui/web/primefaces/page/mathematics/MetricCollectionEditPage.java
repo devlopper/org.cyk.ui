@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
+import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricValueInputted;
 import org.cyk.system.root.model.mathematics.MetricValueType;
@@ -23,12 +24,12 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 
 @Getter @Setter @Named @ViewScoped
-public class MetricCollectionEditPage extends AbstractCollectionEditPage<MetricCollection> implements Serializable {
+public class MetricCollectionEditPage extends AbstractCollectionEditPage<MetricCollection,Metric> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	@Getter @Setter
-	public static class Form extends AbstractForm<MetricCollection> implements Serializable{
+	public static class Form extends AbstractForm<MetricCollection,Metric> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private IntervalCollection valueIntervalCollection;

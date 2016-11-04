@@ -14,7 +14,7 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionConsultPage;
 
 @Named @ViewScoped @Getter @Setter
-public class IntervalCollectionConsultPage extends AbstractCollectionConsultPage.AbstractDefault<IntervalCollection,Interval,IntervalDetails> implements Serializable {
+public class IntervalCollectionConsultPage extends AbstractCollectionConsultPage.Extends<IntervalCollection,Interval,IntervalDetails> implements Serializable {
 	
 	private static final long serialVersionUID = 3274187086682750183L;
 	

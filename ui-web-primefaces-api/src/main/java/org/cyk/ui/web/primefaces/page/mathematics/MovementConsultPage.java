@@ -9,10 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+import org.cyk.system.root.model.mathematics.MovementCollection;
 
 @Named @ViewScoped @Getter @Setter
-public class MovementConsultPage extends AbstractConsultPage<Movement> implements Serializable {
+public class MovementConsultPage extends AbstractMovementConsultPage<Movement,MovementCollection> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

@@ -265,7 +265,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		super.configureMathematicsModule();
 		//Movement
 		getFormConfiguration(MovementCollection.class,Crud.CREATE)
-			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_NAME,MovementCollectionEditPage.Form.FIELD_VALUE);
+			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_VALUE)
+			.addFieldNames(MovementCollectionEditPage.Form.FIELD_NAME,MovementCollectionEditPage.Form.FIELD_INTERVAL,MovementCollectionEditPage.Form.FIELD_INCREMENT_ACTION
+					,MovementCollectionEditPage.Form.FIELD_DECREMENT_ACTION,MovementCollectionEditPage.Form.FIELD_SUPPORT_DOCUMENT_IDENTIFIER);
 		
 		registerDetailsConfiguration(MovementCollectionDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -274,7 +276,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME,MovementCollectionDetails.FIELD_VALUE);
+						return isFieldNameIn(field,MovementCollectionDetails.FIELD_CODE,MovementCollectionDetails.FIELD_NAME,MovementCollectionDetails.FIELD_VALUE
+								,MovementCollectionDetails.FIELD_INTERVAL,MovementCollectionDetails.FIELD_INCREMENT_ACTION,MovementCollectionDetails.FIELD_DECREMENT_ACTION
+								,MovementCollectionDetails.FIELD_SUPPORT_DOCUMENT_IDENTIFIER);
 					}
 				};
 			}

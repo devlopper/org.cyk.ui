@@ -13,7 +13,7 @@ import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionListPage;
 
 @Named @ViewScoped @Getter @Setter
-public class MetricCollectionListPage extends AbstractCollectionListPage<MetricCollection,Metric> implements Serializable {
+public class MetricCollectionListPage extends AbstractCollectionListPage.Extends<MetricCollection,Metric> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

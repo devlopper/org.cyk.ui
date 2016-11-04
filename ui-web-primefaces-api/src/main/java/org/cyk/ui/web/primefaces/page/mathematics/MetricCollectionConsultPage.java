@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
-public class MetricCollectionConsultPage extends AbstractCollectionConsultPage.AbstractDefault<MetricCollection,Metric,MetricDetails> implements Serializable {
+public class MetricCollectionConsultPage extends AbstractCollectionConsultPage.Extends<MetricCollection,Metric,MetricDetails> implements Serializable {
 	
 	private static final long serialVersionUID = 3274187086682750183L;
 	

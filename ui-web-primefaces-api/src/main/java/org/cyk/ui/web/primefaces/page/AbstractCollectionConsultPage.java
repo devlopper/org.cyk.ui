@@ -18,13 +18,11 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
 @Getter @Setter
-public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractConsultPage<IDENTIFIABLE> implements Serializable {
+public abstract class AbstractCollectionConsultPage<COLLECTION extends AbstractIdentifiable,ITEM extends AbstractIdentifiable,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractConsultPage<COLLECTION> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	protected Table<ITEM_DETAILS> itemTable;
-	
-	protected abstract COLLECTION getCollection();
 	
 	@Override
 	protected void consultInitialisation() {
@@ -40,56 +38,43 @@ public abstract class AbstractCollectionConsultPage<IDENTIFIABLE extends Abstrac
 				return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(itemClass)).findByCollection(identifiable);
 			}
 		});*/
+		
+		itemTable = (Table<ITEM_DETAILS>) createDetailsTable(getItemDetailsClass(), new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(getItemClass(), getItemDetailsClass()){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Collection<ITEM> getIdentifiables() {
+				return findByCollection(identifiable);
+			}
+			@Override
+			public ColumnAdapter getColumnAdapter() { 
+				return getDetailsConfiguration(getItemDetailsClass()).getTableColumnAdapter(null,AbstractCollectionConsultPage.this);
+			}
+			
+		});
 	}
+	
+	protected abstract Collection<ITEM> findByCollection(COLLECTION collection);
 	
 	@SuppressWarnings("unchecked")
 	protected Class<ITEM> getItemClass(){
-		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected Class<ITEM_DETAILS> getItemDetailsClass(){
-		return (Class<ITEM_DETAILS>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[3];
+		return (Class<ITEM_DETAILS>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[2];
 	}
 	
 	/**/
 	
-	public static abstract class AbstractDefault<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<?>> extends AbstractCollectionConsultPage<COLLECTION,COLLECTION,ITEM,ITEM_DETAILS> {
+	public static abstract class Extends<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,ITEM_DETAILS extends AbstractOutputDetails<ITEM>> extends AbstractCollectionConsultPage<COLLECTION,ITEM,ITEM_DETAILS> {
 		private static final long serialVersionUID = 1L;
 		
-		@Override
-		protected void consultInitialisation() {
-			// TODO Auto-generated method stub
-			super.consultInitialisation();
-			itemTable = (Table<ITEM_DETAILS>) createDetailsTable(getItemDetailsClass(), new DetailsConfigurationListener.Table.Adapter<ITEM,ITEM_DETAILS>(getItemClass(), getItemDetailsClass()){
-				private static final long serialVersionUID = 1L;
-				@SuppressWarnings("unchecked")
-				@Override
-				public Collection<ITEM> getIdentifiables() {
-					return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(getItemClass())).findByCollection(identifiable);
-				}
-				@Override
-				public ColumnAdapter getColumnAdapter() { 
-					return getDetailsConfiguration(getItemDetailsClass()).getTableColumnAdapter(null,AbstractDefault.this);
-				}
+		@Override @SuppressWarnings("unchecked")
+		protected Collection<ITEM> findByCollection(COLLECTION collection) {
+			return ((AbstractCollectionItemBusiness<ITEM, COLLECTION>)inject(BusinessInterfaceLocator.class).injectTyped(getItemClass())).findByCollection(identifiable);
+		}
 				
-			});
-		}
-		
-		@Override
-		protected COLLECTION getCollection() {
-			return identifiable;
-		}
-		
-		@Override @SuppressWarnings("unchecked")
-		protected Class<ITEM> getItemClass() {
-			return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-		}
-		
-		@Override @SuppressWarnings("unchecked")
-		protected Class<ITEM_DETAILS> getItemDetailsClass() {
-			return (Class<ITEM_DETAILS>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-		}
 	}
 	
 }

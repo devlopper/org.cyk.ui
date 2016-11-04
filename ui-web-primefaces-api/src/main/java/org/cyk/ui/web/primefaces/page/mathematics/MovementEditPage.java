@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
-public class MovementEditPage extends AbstractMovementEditPage.AbstractDefault<Movement,MovementCollection> implements Serializable {
+public class MovementEditPage extends AbstractMovementEditPage.Extends<Movement,MovementCollection> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -23,14 +23,6 @@ public class MovementEditPage extends AbstractMovementEditPage.AbstractDefault<M
 	protected Movement getMovement() {
 		return identifiable;
 	}
-	
-	/*@Override
-	protected Movement instanciateIdentifiable() {
-		Long collectionIdentifier = requestParameterLong(MovementCollection.class);
-		if(collectionIdentifier==null)
-			return super.instanciateIdentifiable();
-		return inject(MovementBusiness.class).instanciateOne(inject(MovementCollectionBusiness.class).find(collectionIdentifier), Boolean.TRUE);
-	}*/
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
