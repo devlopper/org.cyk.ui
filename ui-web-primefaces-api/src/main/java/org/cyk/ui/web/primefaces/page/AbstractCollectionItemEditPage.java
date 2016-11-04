@@ -20,7 +20,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
 @Getter @Setter
-public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractCrudOnePage<IDENTIFIABLE> implements Serializable {
+public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractCrudOnePage<ITEM> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -33,10 +33,10 @@ public abstract class AbstractCollectionItemEditPage<IDENTIFIABLE extends Abstra
 	
 	@SuppressWarnings("unchecked")
 	protected Class<ITEM> getItemClass(){
-		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
-	public static class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractCollectionItemEditPage<ITEM,COLLECTION,ITEM>{
+	public static class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractCollectionItemEditPage<ITEM,COLLECTION>{
 		private static final long serialVersionUID = 1L;
 
 		@Override

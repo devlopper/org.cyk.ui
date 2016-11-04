@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<MOVEMENT,MovementCollection,Movement> implements Serializable {
+public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<ITEM,COLLECTION> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -150,13 +150,13 @@ public abstract class AbstractMovementEditPage<MOVEMENT extends AbstractIdentifi
 		setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, increment==null?null:computeNextTotal(increment));
 	}
 	
-	public static abstract class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractMovementEditPage<ITEM> implements Serializable {
+	public static abstract class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractMovementEditPage<ITEM,COLLECTION> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 	}
 	
 	@Getter @Setter
-	protected static abstract class AbstractMovementForm<MOVEMENT extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractForm<MOVEMENT,COLLECTION> implements Serializable{
+	protected static abstract class AbstractMovementForm<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractForm<ITEM,COLLECTION> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input(readOnly=true,disabled=true) @InputNumber @NotNull protected BigDecimal currentTotal;
