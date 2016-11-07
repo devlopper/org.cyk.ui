@@ -104,7 +104,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		for(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form : formOneDatas)
+		for(FormOneData<?, ?, ?, ?, ?, ?> form : formOneDataCollection.getCollection())
 			for(Control<?, ?, ?, ?, ?> control : form.getSelectedFormData().getControlSets().iterator().next().getControls()){
 				if(control instanceof WebInput<?,?,?,?>)
 					((WebInput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");

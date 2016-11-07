@@ -12,6 +12,7 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
+import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.language.LanguageCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.BloodGroup;
@@ -70,7 +71,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobFunction jobFunction;
 	
 	@IncludeInputs(layout=Layout.VERTICAL)
-	protected ContactCollectionFormModel jobContactCollection = new ContactCollectionFormModel();
+	protected ContactCollectionFormModel jobContactCollection = new ContactCollectionFormModel(LocationType.OFFICE);
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	

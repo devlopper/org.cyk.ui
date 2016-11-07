@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
+import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
@@ -24,7 +25,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 	
 	@OutputSeperator(label=@Text(value="field.contacts"))
 	@IncludeInputs(layout=Layout.VERTICAL)
-	protected ContactCollectionFormModel contactCollection = new ContactCollectionFormModel();
+	protected ContactCollectionFormModel contactCollection = new ContactCollectionFormModel(LocationType.HOME);
 	
 	@Override
 	public void setIdentifiable(PARTY identifiable) {

@@ -7,6 +7,9 @@ public interface View {
 	String getTitle();
 	void setTitle(String title);
 	
+	String getTabTitle();
+	void setTabTitle(String title);
+	
 	Boolean getRendered();
 	void setRendered(Boolean rendered);
 	

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.test.model.actor.MyEntity.MyEnum;
@@ -19,6 +20,8 @@ import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,13 +42,19 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 	
 	private MyIdentifiable entityWithAnnotation = new MyIdentifiable();
 	private FormOneData<MyIdentifiable> form;
+	private Form1 data1;
+	private Form2 data2;
+	private Form3 data3;
+	private FormOneData<Form1> form1;
+	private FormOneData<Form2> form2;
+	private FormOneData<Form3> form3;
 	
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
 		form = (FormOneData<MyIdentifiable>) createFormOneData(entityWithAnnotation,Crud.CREATE);
 
-		form.setTitle("Mon Formulaire");
+		form.setTabTitle("Mon Formulaire");
 		//form.setFieldsRequiredMessage("Champs obligatoire");
 		form.setDynamic(Boolean.TRUE);
 		
@@ -55,6 +64,9 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
 				System.out.println(entityWithAnnotation);
+				debug(data1);
+				debug(data2);
+				debug(data3);
 			}
 		});
 		//((Commandable)form.getSubmitCommandable()).getButton().setAjax(Boolean.FALSE);
@@ -77,6 +89,18 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			}
 		});
 		*/
+		
+		form1 = (FormOneData<Form1>) createFormOneData(data1 = new Form1(),Crud.CREATE);
+		form1.setDynamic(Boolean.TRUE);
+		form1.setTabTitle("Form1");
+		
+		form2 = (FormOneData<Form2>) createFormOneData(data2 = new Form2(),Crud.CREATE);
+		form2.setDynamic(Boolean.TRUE);
+		form2.setTabTitle("Form2");
+		
+		form3 = (FormOneData<Form3>) createFormOneData(data3 = new Form3(),Crud.CREATE);
+		form3.setDynamic(Boolean.TRUE);
+		form3.setTabTitle("Form3");
 	}
 	
 	@Override
@@ -178,7 +202,25 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		
 	}
 	
+	/**/
 	
+	public static class Form1 {
+		
+		@Input @InputText @NotNull private String form1Field1;
+		
+	}
+	
+	public static class Form2 {
+		
+		@Input @InputText private String form2Field1;
+		
+	}
+
+	public static class Form3 {
+		
+		@Input @InputText private String form3Field1;
+		
+	}
 
 	
 }

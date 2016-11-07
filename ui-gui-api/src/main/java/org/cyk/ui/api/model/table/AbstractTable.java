@@ -546,7 +546,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		new FieldSorter(candidates,aClass).sort();
 		
 		for(Field field : candidates){
-			if(field.getAnnotation(Input.class)!=null && AbstractFormOneData.isInput(field, getUserSession())){
+			if(field.getAnnotation(Input.class)!=null && AbstractFormOneData.isInput(null,field, getUserSession())){
 				fields.add(field);
 			} else if(field.getAnnotation(IncludeInputs.class)!=null){
 				__fields__(fields,field.getType(),annotations);

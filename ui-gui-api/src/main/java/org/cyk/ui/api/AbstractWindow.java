@@ -8,9 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.ClazzBusiness;
@@ -31,13 +28,18 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.FormOneData;
+import org.cyk.ui.api.model.FormOneDataCollection;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
 import org.joda.time.DateTimeConstants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABLE extends AbstractCommandable> extends AbstractBean implements UIWindow<FORM,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -60,7 +62,8 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 	@Getter @Setter protected UserDeviceType userDeviceType;
 	@Getter @Setter protected UIMenu mainMenu,contextualMenu,contentMenu,windowHierachyMenu,detailsMenu;
 	
-	protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
+	//protected Collection<FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM>> formOneDatas = new ArrayList<>();
+	@Getter @Setter protected FormOneDataCollection formOneDataCollection = new FormOneDataCollection();
 	protected Collection<AbstractTable<?,?,?>> tables = new ArrayList<>();
 	protected Collection<AbstractEventCalendar> eventCalendars = new ArrayList<>();
 	
@@ -102,7 +105,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 			
 		}
 	
-		for(FormOneData<?, FORM, ROW, LABEL, CONTROL, SELECTITEM> form : formOneDatas ){
+		for(FormOneData<?, ?, ?, ?, ?, ?> form : formOneDataCollection.getCollection() ){
 			form.build();
 			
 			//for(ComponentCreationListener listener : UIManager.componentCreationListeners)
@@ -164,14 +167,18 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		form.setUserSession(getUserSession());
 		form.setEditable(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud));
 		form.setData(data);
+		if(StringUtils.isBlank(form.getTabTitle()) && data instanceof AbstractFormModel)
+			form.setTabTitle(inject(LanguageBusiness.class).findClassLabelText(((AbstractFormModel<?>)data).getIdentifiable().getClass()));
+		
 		form.setUserDeviceType(userDeviceType);
 		if(Boolean.TRUE.equals(form.getEditable())){
 			form.setFieldsRequiredMessage(text("ui.form.fields.required.message"));
 		}
-		formOneDatas.add(form);
+		form.setCollection(formOneDataCollection);
+		formOneDataCollection.add(form);
 		return form;
 	}
-	protected <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
+	public <DATA> FormOneData<DATA, FORM, ROW, LABEL, CONTROL, SELECTITEM> createFormOneData(DATA data,Crud crud){
 		return createFormOneData(data, crud,"command.execute");
 	}
 	

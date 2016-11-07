@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.Crud;
@@ -23,6 +22,9 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 //TODO can be renamed with Edit in the name : AbstractEditFormModel
 public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> extends AbstractBean implements Serializable,FormModelListener<ENTITY> {
 
@@ -37,9 +39,26 @@ public abstract class AbstractFormModel<ENTITY extends AbstractIdentifiable> ext
 	
 	@Getter protected Collection<FormModelListener<ENTITY>> formModelListeners = new ArrayList<>();
 	
+	@Getter @Setter protected Map<String,Boolean> isFieldRenderedMap;
+	
 	protected NumberBusiness numberBusiness = UIManager.getInstance().getNumberBusiness();
 	protected TimeBusiness timeBusiness = UIManager.getInstance().getTimeBusiness();
 	protected RootBusinessLayer rootBusinessLayer = RootBusinessLayer.getInstance();
+	
+	public void setFieldRenderedValue(Boolean value,String...fieldNames){
+		if(isFieldRenderedMap == null)
+			isFieldRenderedMap = new HashMap<>();
+		for(String fieldName : fieldNames)
+			isFieldRenderedMap.put(fieldName, value);
+	}
+	
+	public Boolean isFieldRendered(Field field){
+		return isFieldRendered(field.getName());
+	}
+	
+	public Boolean isFieldRendered(String fieldName){
+		return isFieldRenderedMap==null || isFieldRenderedMap.get(fieldName)==null || Boolean.TRUE.equals(isFieldRenderedMap.get(fieldName));
+	}
 	
 	public void setIdentifiable(ENTITY identifiable) {
 		this.identifiable = identifiable;

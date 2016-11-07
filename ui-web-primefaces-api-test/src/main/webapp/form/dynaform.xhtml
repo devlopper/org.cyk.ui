@@ -22,9 +22,22 @@
  		<ui:param name="pageController" value="#{dynaFormDemoPage}" />
  		<ui:define name="body">
  			
- 			<cyk:formOneData value="#{dynaFormDemoPage.form}" />
+ 			<cyk:formOneDataCollection value="#{dynaFormDemoPage.formOneDataCollection}" />
  			
- 			<!--cyk:formOneData value="#{actorSelectPage.form}" /-->
+ 			<!--p:tabView>
+ 				<p:tab title="Zero">
+ 					<cyk:formOneData value="#{dynaFormDemoPage.form}" />
+ 				</p:tab>
+ 				<p:tab title="One">
+ 					<cyk:formOneData value="#{dynaFormDemoPage.form1}" />
+ 				</p:tab>
+ 				<p:tab title="Two">
+ 					<cyk:formOneData value="#{dynaFormDemoPage.form2}" />
+ 				</p:tab>
+ 				<p:tab title="Three">
+ 					<cyk:formOneData value="#{dynaFormDemoPage.form3}" />
+ 				</p:tab>
+ 			</p:tabView-->
  			
  		</ui:define>
  	</ui:decorate>

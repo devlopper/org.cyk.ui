@@ -23,10 +23,10 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	protected void initialisation() {
 		super.initialisation();
 		form.setDynamic(Boolean.TRUE);
-		if(Crud.DELETE.equals(crud)){
+		/*if(Crud.DELETE.equals(crud)){
 			form.getSubmitCommandable().setLabel(text("command.delete"));
 		}
-		
+		*/
 		form.getSubmitCommandable().getCommand().setExecutionProgress(createExecutionProgress());	
 	}
 	

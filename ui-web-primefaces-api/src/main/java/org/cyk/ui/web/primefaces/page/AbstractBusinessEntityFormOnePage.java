@@ -132,6 +132,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			listener.afterInitialisationEnded(this); 
 	}
 	
+	public <DATA> FormOneData<DATA> createFormOneData(DATA data){
+		if(Crud.DELETE.equals(crud))
+			return null;
+		return (FormOneData<DATA>) createFormOneData(data, crud);
+	}
+	
 	protected String getSubmitCommandableLabelId(){
 		return "command.execute";
 	}

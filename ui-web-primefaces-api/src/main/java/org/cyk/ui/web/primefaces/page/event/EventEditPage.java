@@ -45,7 +45,7 @@ public class EventEditPage extends AbstractCrudOnePage<Event> implements Seriali
 	public static class Form extends AbstractBusinessIdentifiedEditFormModel<Event> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@IncludeInputs(layout=IncludeInputs.Layout.VERTICAL) ContactCollectionFormModel contactCollection = new ContactCollectionFormModel();
+		@IncludeInputs(layout=IncludeInputs.Layout.VERTICAL) ContactCollectionFormModel contactCollection = new ContactCollectionFormModel(null);
 		
 		@Override
 		public void read() {

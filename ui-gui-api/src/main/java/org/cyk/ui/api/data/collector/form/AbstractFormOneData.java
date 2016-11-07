@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
@@ -33,6 +30,9 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator.Seperat
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText.OutputTextLocation;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractForm<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> implements FormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
 
@@ -97,6 +97,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			__objectFields__(objectFields,annotations,getData());
 			
 			__autoBuild__(objectFields, controlSet);
+			
 		}
 		//submitCommandable.setRendered(Crud.READ.equals(controlSet.get));
 		super.__build__();
@@ -133,7 +134,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 				if(input==null){
 					objectFields.add(new ObjectField(data, field));	
 				}else{
-					if( isInput(field, getUserSession()) )
+					if( isInput(data,field, getUserSession()) )
 						objectFields.add(new ObjectField(data, field));	
 				}
 				
@@ -153,9 +154,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		}
 	}
 	
-	public static Boolean isInput(Field field,AbstractUserSession<?, ?> userSession){
+	public static Boolean isInput(Object data,Field field,AbstractUserSession<?, ?> userSession){
 		Input input = field.getAnnotation(Input.class);
 		if(input==null)
+			return Boolean.FALSE;
+		if(data instanceof AbstractFormModel<?> && !Boolean.TRUE.equals(((AbstractFormModel<?>)data).isFieldRendered(field)))
 			return Boolean.FALSE;
 		RendererStrategy rendererStrategy = input.rendererStrategy();
 		if(RendererStrategy.AUTO.equals(rendererStrategy))
@@ -266,6 +269,15 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	
 	@Override
 	public void transfer(UICommand command, Object parameter) {
+		if(getCollection()==null){
+			transfer();
+		}else{
+			for(FormOneData<?, ?, ?, ?, ?, ?> formOneData : getCollection().getCollection())
+				formOneData.transfer();	
+		}
+	}
+	
+	public void transfer(){
 		if(Boolean.TRUE.equals(getEditable()))
 			try {
 				getFormDatas().peek().applyValuesToFields();
@@ -274,7 +286,10 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 			}
 	}
 	
-	
+	@Override
+	public void validate() {
+		//TODO to be implemented
+	}
 	
 	/**/
 	
