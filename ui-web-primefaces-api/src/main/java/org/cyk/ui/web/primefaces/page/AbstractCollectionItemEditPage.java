@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -36,36 +35,31 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
-	public static class AbstractDefault<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractCollectionItemEditPage<ITEM,COLLECTION>{
+	@Override
+	protected ITEM instanciateIdentifiable() {
+		ITEM item;
+		COLLECTION collection = webManager.getIdentifiableFromRequestParameter(getCollectionClass(),Boolean.TRUE);
+		if(collection==null){
+			item = super.instanciateIdentifiable();
+		}else{
+			return instanciateIdentifiable(collection);
+		}
+		return item;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected ITEM instanciateIdentifiable(COLLECTION collection){
+		ITEM item = super.instanciateIdentifiable();
+		if(item instanceof AbstractCollectionItem)
+			((AbstractCollectionItem)item).setCollection(collection);
+		return item;
+	}
+	
+	public static class Extends<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractCollectionItemEditPage<ITEM,COLLECTION>{
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		protected AbstractCollectionItem<?> getItem() {
-			return identifiable;
-		}
-		
-		@SuppressWarnings("unchecked")
-		protected Class<COLLECTION> getCollectionClass(){
-			return (Class<COLLECTION>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-		}
-		
-		@SuppressWarnings("unchecked")
-		protected Class<ITEM> getItemClass(){
-			return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		}
-		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@Override
-		protected ITEM instanciateIdentifiable() {
-			ITEM identifiable = super.instanciateIdentifiable();
-			Long collectionIdentifier = requestParameterLong(getCollectionClass());
-			if(collectionIdentifier==null){
-				
-			}else{
-				COLLECTION collection = inject(BusinessInterfaceLocator.class).injectTyped(getCollectionClass()).find(collectionIdentifier);
-				if(identifiable instanceof AbstractCollectionItem)
-					((AbstractCollectionItem)identifiable).setCollection(collection);
-			}
 			return identifiable;
 		}
 		

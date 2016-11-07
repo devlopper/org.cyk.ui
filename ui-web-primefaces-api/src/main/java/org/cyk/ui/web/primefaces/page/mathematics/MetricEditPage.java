@@ -20,7 +20,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 
 @Named @ViewScoped @Getter @Setter
-public class MetricEditPage extends AbstractCollectionItemEditPage.AbstractDefault<Metric,MetricCollection> implements Serializable {
+public class MetricEditPage extends AbstractCollectionItemEditPage.Extends<Metric,MetricCollection> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 		

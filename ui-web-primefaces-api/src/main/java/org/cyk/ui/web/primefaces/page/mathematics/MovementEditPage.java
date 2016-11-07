@@ -5,14 +5,12 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.model.AbstractCollectionItem;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.utility.common.annotation.FieldOverride;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class MovementEditPage extends AbstractMovementEditPage.Extends<Movement,MovementCollection> implements Serializable {
@@ -24,19 +22,9 @@ public class MovementEditPage extends AbstractMovementEditPage.Extends<Movement,
 		return identifiable;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Movement instanciateIdentifiable() {
-		Movement identifiable = super.instanciateIdentifiable();
-		Long collectionIdentifier = requestParameterLong(MovementCollection.class);
-		if(collectionIdentifier==null){
-			
-		}else{
-			MovementCollection collection = inject(BusinessInterfaceLocator.class).injectTyped(MovementCollection.class).find(collectionIdentifier);
-			if(identifiable instanceof AbstractCollectionItem)
-				((AbstractCollectionItem)identifiable).setCollection(collection);
-		}
-		return identifiable;
+	protected MovementCollection getMovementCollection(MovementCollection collection) {
+		return collection;
 	}
 	
 	@Getter @Setter @FieldOverride(name=AbstractMovementForm.FIELD_COLLECTION,type=MovementCollection.class)

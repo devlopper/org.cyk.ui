@@ -86,10 +86,11 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			if(Boolean.TRUE.equals(showCollectionField()))
 				createAjaxBuilder(AbstractMovementForm.FIELD_COLLECTION).updatedFieldNames(AbstractMovementForm.FIELD_CURRENT_TOTAL,AbstractMovementForm.FIELD_ACTION
 						,AbstractMovementForm.FIELD_VALUE,AbstractMovementForm.FIELD_NEXT_TOTAL)
-				.method(MovementCollection.class,new ListenValueMethod<MovementCollection>() {
+				.method(getCollectionClass(),new ListenValueMethod<COLLECTION>() {
 					@Override
-					public void execute(MovementCollection movementCollection) {
-						selectMovementCollection(movementCollection);
+					public void execute(COLLECTION collection) {
+						selectCollection(collection);
+						//selectMovementCollection(movementCollection);
 					}
 				}).build();
 			if(Boolean.TRUE.equals(showActionField()))
@@ -108,11 +109,18 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 					updateNextTotal(value.subtract(getMovement().getValue()==null?BigDecimal.ZERO:getMovement().getValue()));
 				}
 			}).build();
-			selectMovementCollection(getMovement().getCollection());
 			
-			//if(getMovement().getCollection()!=null && getMovement().getCollection().getDecrementAction()!=null)
-			//	setChoices(AbstractMovementForm.FIELD_ACTION, Arrays.asList(getMovement().getCollection().getDecrementAction(),getMovement().getCollection().getIncrementAction()));
-			//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputOneChoice.class, AbstractMovementForm.FIELD_ACTION).setValue(getMovement().getAction());
+			Movement movement = getMovement();
+			if(movement!=null){
+				selectMovementCollection(getMovement().getCollection());
+				if(Crud.UPDATE.equals(crud)){
+					setFieldValue(AbstractMovementForm.FIELD_VALUE, getMovement().getValue());
+					setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, getMovement().getCollection().getValue());
+				}
+				//if(getMovement().getCollection()!=null && getMovement().getCollection().getDecrementAction()!=null)
+				//	setChoices(AbstractMovementForm.FIELD_ACTION, Arrays.asList(getMovement().getCollection().getDecrementAction(),getMovement().getCollection().getIncrementAction()));
+				//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputOneChoice.class, AbstractMovementForm.FIELD_ACTION).setValue(getMovement().getAction());
+			}
 			
 			if(movementAction==null){
 				org.cyk.ui.api.data.collector.control.InputNumber<?,?,?,?,?> inputNumber = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_VALUE);
@@ -122,11 +130,15 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_CURRENT_TOTAL).setMinimumToInfinite();
 			form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputNumber.class, AbstractMovementForm.FIELD_NEXT_TOTAL).setMinimumToInfinite();
 			
-			if(Crud.UPDATE.equals(crud)){
-				setFieldValue(AbstractMovementForm.FIELD_VALUE, getMovement().getValue());
-				setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, getMovement().getCollection().getValue());
-			}
+			
 		}
+	}
+	
+	protected abstract MovementCollection getMovementCollection(COLLECTION collection);
+	
+	protected void selectCollection(COLLECTION collection){
+		getMovement().setCollection(getMovementCollection(collection));
+		selectMovementCollection(getMovement().getCollection());
 	}
 	
 	protected void selectMovementCollection(MovementCollection movementCollection){
@@ -170,10 +182,16 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 		@Override
 		public void read() {
 			super.read();
-			action = getMovement().getAction();
-			if(getMovement().getValue()!=null)
-				value = getMovement().getValue().abs();
-			date = getMovement().getBirthDate();
+			Movement movement = getMovement();
+			if(movement==null){
+				
+			}else{
+				action = getMovement().getAction();
+				if(getMovement().getValue()!=null)
+					value = getMovement().getValue().abs();
+				date = getMovement().getBirthDate();	
+			}
+			
 		}
 		
 		@Override

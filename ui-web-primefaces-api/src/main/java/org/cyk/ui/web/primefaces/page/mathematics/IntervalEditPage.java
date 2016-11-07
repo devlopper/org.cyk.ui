@@ -17,7 +17,7 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
 @Named @ViewScoped @Getter @Setter
-public class IntervalEditPage extends AbstractCollectionItemEditPage.AbstractDefault<Interval,IntervalCollection> implements Serializable {
+public class IntervalEditPage extends AbstractCollectionItemEditPage.Extends<Interval,IntervalCollection> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
