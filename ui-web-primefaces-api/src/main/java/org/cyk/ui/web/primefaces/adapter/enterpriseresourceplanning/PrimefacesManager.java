@@ -287,7 +287,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		getFormConfiguration(Movement.class,Crud.CREATE)
 			.addRequiredFieldNames(MovementEditPage.Form.FIELD_COLLECTION,MovementEditPage.Form.FIELD_VALUE)
 			.addFieldNames(MovementEditPage.Form.FIELD_ACTION,MovementEditPage.Form.FIELD_CURRENT_TOTAL,MovementEditPage.Form.FIELD_NEXT_TOTAL
-					,MovementEditPage.Form.FIELD_DATE);
+					,MovementEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE);
 		/*
 		getFormConfiguration(Movement.class,Crud.DELETE)
 		.addFieldNames(MovementEditPage.Form.FIELD_COLLECTION,MovementEditPage.Form.FIELD_ACTION,MovementEditPage.Form.FIELD_VALUE
