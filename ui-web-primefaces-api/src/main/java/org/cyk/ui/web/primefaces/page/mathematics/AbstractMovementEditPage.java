@@ -192,9 +192,9 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			if(movement==null){
 				
 			}else{
-				action = getMovement().getAction();
-				if(getMovement().getValue()!=null)
-					value = getMovement().getValue().abs();
+				action = movement.getAction();
+				if(movement.getValue()!=null)
+					value = movement.getValue().abs();
 				//date = getMovement().getBirthDate();	
 			}
 			
