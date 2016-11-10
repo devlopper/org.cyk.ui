@@ -112,8 +112,9 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			if(movement!=null){
 				//selectCollection(getMovement().getCollection());
 				if(Crud.UPDATE.equals(crud)){
-					setFieldValue(AbstractMovementForm.FIELD_VALUE, getMovement().getValue());
-					setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, getMovement().getCollection().getValue());
+					setFieldValue(AbstractMovementForm.FIELD_VALUE, movement.getValue());
+					//if(movement.getCollection()!=null)
+					setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, /*movement.getCollection().getValue()*/getNextTotal(BigDecimal.ZERO));
 				}
 				//if(getMovement().getCollection()!=null && getMovement().getCollection().getDecrementAction()!=null)
 				//	setChoices(AbstractMovementForm.FIELD_ACTION, Arrays.asList(getMovement().getCollection().getDecrementAction(),getMovement().getCollection().getIncrementAction()));

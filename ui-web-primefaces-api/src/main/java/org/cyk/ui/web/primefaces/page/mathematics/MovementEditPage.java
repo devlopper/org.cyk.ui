@@ -23,6 +23,11 @@ public class MovementEditPage extends AbstractMovementEditPage.Extends<Movement,
 	}
 	
 	@Override
+	protected MovementCollection getCollection(Movement item) {
+		return item.getCollection();
+	}
+	
+	@Override
 	protected MovementCollection getMovementCollection(MovementCollection collection) {
 		return collection;
 	}

@@ -28,7 +28,10 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		if(Crud.isCreateOrUpdate(crud)){
-			selectCollection(webManager.getIdentifiableFromRequestParameter(getCollectionClass(),Boolean.TRUE));
+			if(Crud.CREATE.equals(crud))
+				selectCollection(webManager.getIdentifiableFromRequestParameter(getCollectionClass(),Boolean.TRUE));
+			else
+				selectCollection(getCollection(identifiable));
 		}
 	}
 	
@@ -42,6 +45,8 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 	}
 	
 	protected abstract AbstractCollectionItem<?> getItem();
+	
+	protected abstract COLLECTION getCollection(ITEM item);
 	
 	@SuppressWarnings("unchecked")
 	protected Class<COLLECTION> getCollectionClass(){
@@ -76,6 +81,10 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 			return identifiable;
 		}
 
+		@Override
+		protected COLLECTION getCollection(ITEM item) {
+			return item.getCollection();
+		}
 	}
 	
 	@Getter @Setter
