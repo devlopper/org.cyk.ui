@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -23,11 +24,16 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	protected abstract AbstractCollectionItem<?> getItem();
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		if(Crud.isCreateOrUpdate(crud)){
+			selectCollection(webManager.getIdentifiableFromRequestParameter(getCollectionClass(),Boolean.TRUE));
+		}
+	}
 	
-	@SuppressWarnings("unchecked")
-	protected Class<COLLECTION> getCollectionClass(){
-		return (Class<COLLECTION>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+	protected void selectCollection(COLLECTION collection){
+		setFieldValue(AbstractForm.FIELD_COLLECTION, collection);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -35,6 +41,13 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 		return (Class<ITEM>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
+	protected abstract AbstractCollectionItem<?> getItem();
+	
+	@SuppressWarnings("unchecked")
+	protected Class<COLLECTION> getCollectionClass(){
+		return (Class<COLLECTION>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+	}
+		
 	@Override
 	protected ITEM instanciateIdentifiable() {
 		ITEM item;
@@ -62,7 +75,7 @@ public abstract class AbstractCollectionItemEditPage<ITEM extends AbstractIdenti
 		protected AbstractCollectionItem<?> getItem() {
 			return identifiable;
 		}
-		
+
 	}
 	
 	@Getter @Setter

@@ -89,7 +89,6 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 				@Override
 				public void execute(COLLECTION collection) {
 					selectCollection(collection);
-					//selectMovementCollection(movementCollection);
 				}
 			}).build();
 			
@@ -111,7 +110,7 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			
 			Movement movement = getMovement();
 			if(movement!=null){
-				selectMovementCollection(getMovement().getCollection());
+				//selectCollection(getMovement().getCollection());
 				if(Crud.UPDATE.equals(crud)){
 					setFieldValue(AbstractMovementForm.FIELD_VALUE, getMovement().getValue());
 					setFieldValue(AbstractMovementForm.FIELD_NEXT_TOTAL, getMovement().getCollection().getValue());
@@ -135,24 +134,23 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 	
 	protected abstract MovementCollection getMovementCollection(COLLECTION collection);
 	
+	@Override
 	protected void selectCollection(COLLECTION collection){
+		super.selectCollection(collection);
 		Movement movement = getMovement();
 		if(movement==null)
 			return;
 		movement.setCollection(getMovementCollection(collection));
-		selectMovementCollection(movement.getCollection());
-	}
-	
-	protected void selectMovementCollection(MovementCollection movementCollection){
-		setFieldValue(AbstractMovementForm.FIELD_COLLECTION, movementCollection);
-		setChoices(AbstractMovementForm.FIELD_ACTION, movementCollection==null || movementCollection.getIncrementAction()==null?null
-				:Arrays.asList(movementCollection.getIncrementAction(),movementCollection.getDecrementAction()));
+		
+		setChoices(AbstractMovementForm.FIELD_ACTION, movement.getCollection()==null || movement.getCollection().getIncrementAction()==null?null
+				:Arrays.asList(movement.getCollection().getIncrementAction(),movement.getCollection().getDecrementAction()));
 		updateCurrentTotal();
-		Movement movement = getMovement();
+	
 		if(movement!=null && movementAction!=null)
 			movement.setAction(movementAction);
 		selectMovementAction(movement==null?movementAction:movement.getAction());
 	}
+	
 	protected void selectMovementAction(MovementAction movementAction){
 		setFieldValue(AbstractMovementForm.FIELD_ACTION, movementAction);
 		form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).setDisabled(movementAction!=null);
@@ -170,7 +168,7 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 	
 	public static abstract class Extends<ITEM extends AbstractCollectionItem<COLLECTION>,COLLECTION extends AbstractCollection<ITEM>> extends AbstractMovementEditPage<ITEM,COLLECTION> implements Serializable {
 		private static final long serialVersionUID = 1L;
-		
+				
 	}
 	
 	@Getter @Setter
