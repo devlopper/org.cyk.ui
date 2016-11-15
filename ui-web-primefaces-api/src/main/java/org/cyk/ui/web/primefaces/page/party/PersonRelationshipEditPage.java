@@ -25,6 +25,13 @@ public class PersonRelationshipEditPage extends AbstractCrudOnePage<PersonRelati
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
+	@Override
+	protected PersonRelationship instanciateIdentifiable() {
+		PersonRelationship personRelationship = super.instanciateIdentifiable();
+		personRelationship.setPerson2(webManager.getIdentifiableFromRequestParameter(Person.class,Boolean.TRUE));
+		return personRelationship;
+	}
+	
 	@Getter @Setter
 	public static class Form extends AbstractFormModel<PersonRelationship> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;

@@ -19,7 +19,7 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 
 	@Input @InputText private String mobilePhoneNumber;
 	@Input @InputText private String landPhoneNumber;
-	@Input @InputText @Email private String electronicMail;
+	@Input @InputText @Email private String electronicMail1,electronicMail2;
 	@Input @InputText private String location;
 	@Input @InputText private String postalBox;
 	
@@ -35,7 +35,8 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 	public void write() {
 		updatePhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.LAND),landPhoneNumber);
 		updatePhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.MOBILE) ,mobilePhoneNumber);
-		updateElectronicMail(electronicMail);
+		updateElectronicMail(electronicMail1,0);
+		updateElectronicMail(electronicMail2,1);
 		updateLocation(inject(LocationTypeBusiness.class).find(locationTypeCode), location);
 		updatePostalBox(postalBox);
 		super.write();
@@ -45,7 +46,8 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 	public void read() {
 		landPhoneNumber = readPhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.LAND));
 		mobilePhoneNumber = readPhoneNumber(inject(PhoneNumberTypeBusiness.class).find(PhoneNumberType.MOBILE));
-		electronicMail = readElectronicMail();
+		electronicMail1 = readElectronicMail(0);
+		electronicMail2 = readElectronicMail(1);
 		location = readLocation(inject(LocationTypeBusiness.class).find(locationTypeCode));
 		postalBox = readPostalBox();
 		super.read();
@@ -53,7 +55,8 @@ public class ContactCollectionFormModel extends AbstractContactCollectionFormMod
 
 	public static final String FIELD_MOBILE_PHONE_NUMBER = "mobilePhoneNumber";
 	public static final String FIELD_LAND_PHONE_NUMBER = "landPhoneNumber";
-	public static final String FIELD_ELECTRONICMAIL = "electronicMail";
+	public static final String FIELD_ELECTRONICMAIL1 = "electronicMail1";
+	public static final String FIELD_ELECTRONICMAIL2 = "electronicMail2";
 	public static final String FIELD_LOCATION = "location";
 	public static final String FIELD_POSTALBOX = "postalBox";
 	

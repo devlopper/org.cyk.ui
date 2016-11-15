@@ -570,8 +570,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field, PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_PERSON2
-								,PersonRelationshipDetails.FIELD_TYPE);
+						return isFieldNameIn(field, PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_TYPE);
 					}
 				};
 			}
@@ -679,17 +678,20 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				.addFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getFieldNames(),AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY,LocationFormModel.FIELD_OTHER_DETAILS
 				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
-				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS))
+				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS,AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION
+				,ContactCollectionFormModel.FIELD_ELECTRONICMAIL1,ContactCollectionFormModel.FIELD_ELECTRONICMAIL2))
 				.addControlSetListener(formConfigurationControlSetAdapter);
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)
 				.addFieldNames(AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
-						,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL,ContactCollectionFormModel.FIELD_POSTALBOX);
+						,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL1,ContactCollectionFormModel.FIELD_ELECTRONICMAIL2
+						,ContactCollectionFormModel.FIELD_POSTALBOX);
 		
 		getUpdateFormConfiguration(entityClass, JobDetails.class)
 			.addFieldNames(AbstractPersonEditFormModel.FIELD_JOB_COMPANY,AbstractPersonEditFormModel.FIELD_JOB_TITLE,AbstractPersonEditFormModel.FIELD_JOB_FUNCTION
 				,AbstractPersonEditFormModel.FIELD_JOB_CONTACT_COLLECTION,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER
-				,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL,ContactCollectionFormModel.FIELD_POSTALBOX);
+				,ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_ELECTRONICMAIL1,ContactCollectionFormModel.FIELD_ELECTRONICMAIL2
+				,ContactCollectionFormModel.FIELD_POSTALBOX);
 		
 		getUpdateFormConfiguration(entityClass, SignatureDetails.class).addFieldNames(AbstractPersonEditFormModel.FIELD_SIGNATURE_SPECIMEN);
 		

@@ -97,7 +97,7 @@ public class ContextListener extends AbstractContextListener {
 						|| MedicalInformationsMedicationDetails.class.equals(detailsClass))
 					return Boolean.FALSE;
 				if(PersonRelationshipDetails.class.equals(detailsClass))
-					return Boolean.FALSE;
+					return Boolean.TRUE;
 				if(SignatureDetails.class.equals(detailsClass) && identifiable instanceof Person)
 					return Boolean.FALSE;
 				if(JobDetails.class.equals(detailsClass) && identifiable instanceof Actor)

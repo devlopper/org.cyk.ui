@@ -53,7 +53,7 @@ public class PersonEditPage extends AbstractPersonEditPage<Person> implements Se
 	}
 	
 	@Getter @Setter
-	public static class Form extends AbstractPersonEditFormModel.AbstractDefault.Default<Person> implements Serializable {
+	public static class Form extends AbstractPersonEditFormModel.Extends.Default<Person> implements Serializable {
 
 		private static final long serialVersionUID = 2646571878912106597L;
 		

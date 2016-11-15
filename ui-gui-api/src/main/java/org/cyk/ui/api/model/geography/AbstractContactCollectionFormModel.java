@@ -2,9 +2,7 @@ package org.cyk.ui.api.model.geography;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.geography.CountryBusiness;
@@ -17,6 +15,9 @@ import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
 import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractContactCollectionFormModel extends AbstractFormModel<ContactCollection> implements Serializable {
@@ -115,28 +116,39 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	
 	/**/
 	
-	protected String readElectronicMail(){
+	protected String readElectronicMail(Integer index){
 		if(identifiable==null)
 			return null;
 		if(identifiable.getElectronicMails()==null)
 			identifiable.setElectronicMails(new ArrayList<ElectronicMail>());
 		if(identifiable.getElectronicMails().isEmpty())
 			return null;
-		return identifiable.getElectronicMails().iterator().next().getAddress();
+		return index >= identifiable.getElectronicMails().size() ? null : new ArrayList<>(identifiable.getElectronicMails()).get(index.intValue()).getAddress();
 	}
 	
-	protected void updateElectronicMail(String address){
+	protected void updateElectronicMail(String address,Integer index){
 		if(identifiable==null)
 			return;
 		if(StringUtils.isBlank(address))
-			identifiable.getElectronicMails().clear();
-		else{
-			if(identifiable.getElectronicMails().isEmpty()){
-				ElectronicMail em = new ElectronicMail(address);
-				identifiable.getElectronicMails().add(em);
-			}else
-				identifiable.getElectronicMails().iterator().next().setAddress(address);
-		}
+			if(index < identifiable.getElectronicMails().size())
+				((List<ElectronicMail>)identifiable.getElectronicMails()).remove(index.intValue());
+			else
+				;
+		else
+			getElectronicMail(index).setAddress(address);
+	}
+	
+	private ElectronicMail getElectronicMail(Integer index){
+		if(identifiable==null)
+			return null;
+		if(identifiable.getElectronicMails()==null)
+			identifiable.setElectronicMails(new ArrayList<ElectronicMail>());
+		ElectronicMail electronicMail = null;
+		if(index >= identifiable.getElectronicMails().size())
+			identifiable.getElectronicMails().add(electronicMail = new ElectronicMail());
+		else
+			electronicMail = ((List<ElectronicMail>)identifiable.getElectronicMails()).get(index.intValue());
+		return electronicMail;
 	}
 	
 	/**/

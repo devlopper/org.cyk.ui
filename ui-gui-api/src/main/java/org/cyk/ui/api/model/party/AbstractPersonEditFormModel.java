@@ -3,10 +3,6 @@ package org.cyk.ui.api.model.party;
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -25,6 +21,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonExtendedInformations;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
@@ -42,8 +39,15 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneRadio;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
+import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
+import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentifiable> extends AbstractPartyEditFormModel<PERSON>  implements Serializable {
@@ -196,7 +200,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	/**/
 	
 	@Getter @Setter
-	public static abstract class AbstractDefault<PERSON extends Person> extends AbstractPersonEditFormModel<PERSON>  implements Serializable {
+	public static abstract class Extends<PERSON extends Person> extends AbstractPersonEditFormModel<PERSON>  implements Serializable {
 
 		private static final long serialVersionUID = -3897201743383535836L;
 	
@@ -208,7 +212,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 		/**/
 		
 		@Getter @Setter
-		public static class Default<PERSON extends Person> extends AbstractDefault<PERSON>  implements Serializable {
+		public static class Default<PERSON extends Person> extends Extends<PERSON>  implements Serializable {
 
 			private static final long serialVersionUID = -3897201743383535836L;
 				
@@ -241,5 +245,87 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	public static final String FIELD_JOB_CONTACT_COLLECTION = "jobContactCollection";
 	
 	/**/
+	
+	@Getter @Setter
+	public static class Contacts extends AbstractFormModel<Person> implements Serializable {
+		private static final long serialVersionUID = -751917271358280700L;
+		
+		@OutputSeperator(label=@Text(value="father")) 
+		@IncludeInputs private Parent father = new Parent();
+		
+		@OutputSeperator(label=@Text(value="mother")) 
+		@IncludeInputs private Parent mother = new Parent();
+		
+		/**/
+	
+		@Override
+		public void read() {
+			super.read();
+		}
+		
+		@Override
+		public void write() {
+			super.write();
+			
+		}
+		
+		/**/
+		
+		@Getter @Setter
+		public static class Parent extends AbstractBean implements Serializable {
+			private static final long serialVersionUID = 1L;
+			
+			@Input @InputChoice @InputOneChoice @InputOneRadio private PersonTitle title;
+			@Input @InputText private String names;
+			
+			@OutputSeperator(label=@Text(value="contacts")) 
+			@IncludeInputs private ContactCollectionFormModel contactCollection = new ContactCollectionFormModel(null);
+			/*
+			@Input @InputText private String mobilePhoneNumber;
+			@Input @InputText private String email;
+			*/
+			
+			@OutputSeperator(label=@Text(value="home")) 
+			@IncludeInputs private ContactCollectionFormModel homeContactCollection = new ContactCollectionFormModel(LocationType.HOME);
+			/*
+			@Input @InputText private String homeAddress;
+			@Input @InputText private String homePostCode;
+			@Input @InputText private String homePhoneNumber;
+			*/
+			
+			@OutputSeperator(label=@Text(value="work")) 
+			@Input @InputText private String company;
+			@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private JobFunction jobFunction;
+			@IncludeInputs private ContactCollectionFormModel workContactCollection = new ContactCollectionFormModel(LocationType.OFFICE);
+			/*
+			@Input @InputText private String workAddress;
+			@Input @InputText private String workPhoneNumber;
+			@Input @InputText private String workPostCode;
+			*/
+			
+			public Parent() {
+				contactCollection.setFieldRenderedValue(Boolean.FALSE, ContactCollectionFormModel.FIELD_LAND_PHONE_NUMBER,ContactCollectionFormModel.FIELD_LOCATION
+						,ContactCollectionFormModel.FIELD_POSTALBOX);
+				
+				homeContactCollection.setFieldRenderedValue(Boolean.FALSE, ContactCollectionFormModel.FIELD_ELECTRONICMAIL1
+						,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER);
+				
+				workContactCollection.setFieldRenderedValue(Boolean.FALSE, ContactCollectionFormModel.FIELD_ELECTRONICMAIL1
+						,ContactCollectionFormModel.FIELD_MOBILE_PHONE_NUMBER);
+				
+			}
+			
+			public void read(Person person){
+				title = person.getExtendedInformations().getTitle();
+				names = person.getName();
+			}
+			
+			public void write(Person person){
+				person.getExtendedInformations().setTitle(title);
+				person.setName(names);
+			}
+		}	
+	
+	}
 	
 }
