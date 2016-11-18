@@ -39,6 +39,7 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.PhoneNumber;
@@ -77,6 +78,7 @@ import org.cyk.ui.web.primefaces.page.event.EventEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
+import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
@@ -173,6 +175,11 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
+		
+		getFormConfiguration(ReportTemplate.class,Crud.CREATE).addRequiredFieldNames(ReportTemplateEditPage.Form.FIELD_CODE)
+			.addFieldNames(ReportTemplateEditPage.Form.FIELD_NAME
+				,ReportTemplateEditPage.Form.FIELD_TEMPLATE,ReportTemplateEditPage.Form.FIELD_HEADER_IMAGE,ReportTemplateEditPage.Form.FIELD_BACKGROUND_IMAGE
+				,ReportTemplateEditPage.Form.FIELD_DRAFT_BACKGROUND_IMAGE);
 	}
 
 	@Override

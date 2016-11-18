@@ -13,6 +13,7 @@ import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
+import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
@@ -45,6 +46,7 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
+import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
@@ -96,6 +98,7 @@ import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
 import org.cyk.ui.web.primefaces.page.file.DefaultReportBasedOnDynamicBuilderServletAdapter;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifierEditPage;
+import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
@@ -199,6 +202,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(Script.class, null);
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ScriptVariable.class, ScriptVariableEditPage.Form.class, ScriptVariableDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ScriptVariable.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(ReportTemplate.class, ReportTemplateEditPage.Form.class, ReportTemplateDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(ReportTemplate.class, null);
 	}
 	
 	protected void initializeEventModule(){

@@ -5,21 +5,17 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.api.TypedBusiness;
-import org.cyk.system.root.business.api.TypedBusiness.CreateReportFileArguments;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.Exporter;
 import org.cyk.ui.web.primefaces.globalidentification.AbstractJoinGlobalIdentifierEditPage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class FileComputeContentPage extends AbstractJoinGlobalIdentifierEditPage<FileIdentifiableGlobalIdentifier> implements Serializable {
@@ -47,12 +43,13 @@ public class FileComputeContentPage extends AbstractJoinGlobalIdentifierEditPage
 	
 	@Override
 	protected void update() {
-		@SuppressWarnings("unchecked")
+		/*@SuppressWarnings("unchecked")
 		Class<AbstractIdentifiable> clazz = (Class<AbstractIdentifiable>) joinedIdentifiable.getClass();
 		TypedBusiness<AbstractIdentifiable> business = inject(BusinessInterfaceLocator.class).injectTyped(clazz);
 		CreateReportFileArguments<AbstractIdentifiable> arguments = new CreateReportFileArguments<AbstractIdentifiable>(reportTemplate,joinedIdentifiable,
 				identifiable.getFile());
 		business.createReportFile(joinedIdentifiable, arguments);
+		*/
 	}
 	
 }

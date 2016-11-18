@@ -93,6 +93,38 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>representationTypeListView</from-outcome>
+			<to-view-id>/private/file/representationtype/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>representationTypeEditView</from-outcome>
+			<to-view-id>/private/file/representationtype/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>representationTypeConsultView</from-outcome>
+			<to-view-id>/private/file/representationtype/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>reportTemplateListView</from-outcome>
+			<to-view-id>/private/file/report/template/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>reportTemplateEditView</from-outcome>
+			<to-view-id>/private/file/report/template/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>reportTemplateConsultView</from-outcome>
+			<to-view-id>/private/file/report/template/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>toolsreport</from-outcome>
 			<to-view-id>/private/file/report.jsf</to-view-id>
 			<redirect />

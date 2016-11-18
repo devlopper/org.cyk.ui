@@ -9,11 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
-import org.cyk.system.root.business.api.TypedBusiness;
-import org.cyk.system.root.business.api.TypedBusiness.CreateReportFileArguments;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -47,11 +43,12 @@ public class ReportFileGeneratePage extends AbstractJoinGlobalIdentifierEditPage
 	
 	@Override
 	protected void create() {
-		@SuppressWarnings("unchecked")
+		/*@SuppressWarnings("unchecked")
 		Class<AbstractIdentifiable> clazz = (Class<AbstractIdentifiable>) joinedIdentifiable.getClass();
 		TypedBusiness<AbstractIdentifiable> business = inject(BusinessInterfaceLocator.class).injectTyped(clazz);
 		CreateReportFileArguments<AbstractIdentifiable> arguments = new CreateReportFileArguments<AbstractIdentifiable>(((Form)form.getData()).reportTemplate.getCode(),joinedIdentifiable);
 		business.createReportFile(joinedIdentifiable, arguments);	
+		*/
 	}
 	
 	@Override

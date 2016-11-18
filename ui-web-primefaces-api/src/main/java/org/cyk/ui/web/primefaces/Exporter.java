@@ -5,6 +5,8 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
@@ -26,5 +28,11 @@ public class Exporter extends AbstractBean implements Serializable {
 	
 	public void setFileUrlFromRequestParameters(Object[] requestParameters){
 		fileUrl = navigationManager.url(navigationManager.getOutcomeFileServlet(),requestParameters,Boolean.FALSE,Boolean.FALSE);
+	}
+	
+	public void setFileUrlFromRequestParameters(File file){
+		setFileUrlFromRequestParameters(new Object[]{UniformResourceLocatorParameter.IDENTIFIABLE,file
+				,UniformResourceLocatorParameter.FILE_EXTENSION,file.getExtension()});
+		setType(file.getMime());
 	}
 }
