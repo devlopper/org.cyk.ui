@@ -685,8 +685,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				.addFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getFieldNames(),AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY,LocationFormModel.FIELD_OTHER_DETAILS
 				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
-				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS,AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION
-				,ContactCollectionFormModel.FIELD_ELECTRONICMAIL1,ContactCollectionFormModel.FIELD_ELECTRONICMAIL2))
+				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS,AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION))
 				.addControlSetListener(formConfigurationControlSetAdapter);
 		
 		getUpdateFormConfiguration(entityClass, ContactCollection.class)

@@ -44,6 +44,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Sequence;
 import org.cyk.utility.common.annotation.user.interfaces.Sequence.Direction;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.hibernate.validator.constraints.Email;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -81,6 +82,17 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	
 	@IncludeInputs(layout=Layout.VERTICAL)
 	protected LanguageCollectionFormModel languageCollection = new LanguageCollectionFormModel();
+	/*
+	@OutputSeperator(label=@Text(value="field.father"))
+	@IncludeInputs(layout=Layout.VERTICAL)
+	protected ContactCollectionFormModel fatherContactCollection = new ContactCollectionFormModel(LocationType.HOME);
+	
+	@OutputSeperator(label=@Text(value="field.mother"))
+	@IncludeInputs(layout=Layout.VERTICAL)
+	protected ContactCollectionFormModel motherContactCollection = new ContactCollectionFormModel(LocationType.HOME);
+	*/
+	
+	@Input @InputText @Email private String fatherElectronicMail,motherElectronicMail;
 	
 	protected abstract Person getPerson();
 	
@@ -231,6 +243,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	public static final String FIELD_TITLE = "title";
 	public static final String FIELD_SIGNATURE_SPECIMEN = "signatureSpecimen";
 	public static final String FIELD_LANGUAGE_COLLECTION = "languageCollection";
+	public static final String FIELD_FATHER_ELECTRONIC_MAIL = "fatherElectronicMail";
+	public static final String FIELD_MOTHER_ELECTRONIC_MAIL = "motherElectronicMail";
 	
 	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";

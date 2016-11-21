@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.test.model.actor.Actor;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.UserSession;
+import org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.ActorDetailsConfiguration.FormControlSetAdapter;
 
 public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpriseresourceplanning.PrimefacesManager implements Serializable {
 
@@ -42,6 +44,15 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 		
 		getFormConfiguration(Person.class, Crud.CREATE).deleteRequiredFieldNames(AbstractPersonEditFormModel.FIELD_CODE);
 		
+	}
+	
+	@Override
+	protected void configureActorFormConfiguration(Class<?> entityClass,FormControlSetAdapter formConfigurationControlSetAdapter) {
+		super.configureActorFormConfiguration(entityClass, formConfigurationControlSetAdapter);
+		if(Actor.class.equals(entityClass)){
+			getFormConfiguration(entityClass, Crud.CREATE).addFieldNames(AbstractPersonEditFormModel.FIELD_FATHER_ELECTRONIC_MAIL
+					,AbstractPersonEditFormModel.FIELD_MOTHER_ELECTRONIC_MAIL);
+		}
 	}
 	
 	/*@Override
