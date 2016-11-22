@@ -73,9 +73,9 @@ public class ContextListener extends AbstractContextListener {
 			@Override
 			public void beforeCreate(Person person) {
 				super.beforeCreate(person);
-				if(StringUtils.isBlank(person.getCode()))
-					person.setCode(StringUtils.substring(person.getName(),0,3).toUpperCase()+Constant.CHARACTER_UNDESCORE
-							+StringUtils.substring(person.getLastnames(),0,2).toUpperCase());
+				//if(StringUtils.isBlank(person.getCode()))
+				//	person.setCode(StringUtils.substring(person.getName(),0,3).toUpperCase()+Constant.CHARACTER_UNDESCORE
+				//			+StringUtils.substring(person.getLastnames(),0,2).toUpperCase());
 			}
 		});
 		

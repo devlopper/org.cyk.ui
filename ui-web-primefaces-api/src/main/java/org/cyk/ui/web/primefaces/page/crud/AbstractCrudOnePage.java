@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.page.crud;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -63,14 +64,18 @@ public abstract class AbstractCrudOnePage<IDENTIFIABLE extends AbstractIdentifia
 	}
 	
 	protected void create(){
-		getGenericBusiness().create(identifiable);
+		getGenericBusiness().create(identifiable,getIdentifiables());
 	}
 	
 	protected void update(){
-		getGenericBusiness().update(identifiable);
+		getGenericBusiness().update(identifiable,getIdentifiables());
 	}
 	protected void delete(){
-		getGenericBusiness().delete(identifiable);
+		getGenericBusiness().delete(identifiable,getIdentifiables());
+	}
+	
+	protected Collection<? extends AbstractIdentifiable> getIdentifiables(){
+		return null;
 	}
 
 	@Override
