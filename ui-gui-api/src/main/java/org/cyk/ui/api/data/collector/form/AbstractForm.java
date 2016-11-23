@@ -12,6 +12,7 @@ import org.cyk.ui.api.AbstractView;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.api.model.FormOneDataCollection;
 
 public abstract class AbstractForm<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractView implements Form<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,CommandListener, Serializable {
@@ -21,7 +22,8 @@ public abstract class AbstractForm<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> exte
 	@Getter @Setter protected DATA data;
 	@Getter @Setter protected String fieldsRequiredMessage;
 	@Getter @Setter protected Boolean showCommands = Boolean.TRUE,editable,dynamic=Boolean.TRUE;
-	@Getter protected UICommandable submitCommandable;
+	@Getter @Setter protected UICommandable submitCommandable;
+	@Getter @Setter protected UIMenu menu;
 	@Getter @Setter protected AbstractUserSession<?, ?> userSession;
 	@Getter @Setter protected FormOneDataCollection collection;
 	

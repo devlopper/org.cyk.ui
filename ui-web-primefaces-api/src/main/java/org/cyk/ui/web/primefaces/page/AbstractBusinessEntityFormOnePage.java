@@ -66,7 +66,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		form.getSubmitCommandable().getCommand().setConfirm(Crud.DELETE.equals(crud));
 		form.getSubmitCommandable().getCommand().getCommandListeners().add(this);
 		
-		formConfiguration = getFormConfiguration(selectedTabId);
+		formConfiguration = getFormConfiguration(StringUtils.isBlank(formConfigurationIdentifier) ? selectedTabId : formConfigurationIdentifier);
 		if(formConfiguration==null)
 			if(Crud.CREATE.equals(crud))
 				;

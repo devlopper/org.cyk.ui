@@ -22,6 +22,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
@@ -33,6 +34,7 @@ import org.cyk.ui.api.model.DetailsBlockCollection;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
 import org.cyk.ui.api.model.table.AbstractTable;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
+import org.cyk.ui.api.model.table.CellAdapter;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
@@ -225,6 +227,18 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				form.setRendered(Boolean.FALSE);
 		}
 		
+		form.setMenu(new DefaultMenu());
+		form.getMenu().setRenderType(UIMenu.RenderType.BAR);
+		AbstractIdentifiable formIdentifiable = listener.getFormIdentifiable() == null ? ((AbstractOutputDetails<?>)form.getData()).getMaster() : listener.getFormIdentifiable(); 
+		UICommandable commandable = form.getMenu().addCommandable(Builder.createCrud(Crud.UPDATE, formIdentifiable ,"command.update"
+				, Icon.ACTION_UPDATE,listener.getFormViewIdentifier()));
+		commandable.setParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER, listener.getFormConfigurationIdentifier());
+		/*
+		commandable = form.getMenu().addCommandable(Builder.createCrud(Crud.DELETE, formIdentifiable ,"command.delete"
+				, Icon.ACTION_DELETE,listener.getFormViewIdentifier()));
+		commandable.setParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER, listener.getFormConfigurationIdentifier());
+		*/
+		form.setMenuModel(getClass(), "details.menuModel");
 	}
 	
 	protected <T,I extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.form.FormOneData<T> createDetailsForm(Class<T> aClass,I identifiable
@@ -308,6 +322,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.setRendered(listener.getRendered());
 		table.getColumnListeners().add(new Table.ColumnAdapter());//internal should be first
 		table.getColumnListeners().add(PrimefacesManager.getDetailsConfiguration(aClass).getTableColumnAdapter(aClass,this));
+		
+		if(listener.getCellAdapter()!=null)
+			table.getCellListeners().add(listener.getCellAdapter());
 		
 		configureDetailsTable(aClass,table, listener);
 		//table.getColumnListeners().add(new Table.ColumnAdapter());
@@ -468,9 +485,12 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		IDENTIFIABLE getIdentifiable(DATA data);
 		Boolean isRendered(AbstractPrimefacesPage page);
 		String getTabId();
+		String getFormConfigurationIdentifier();
+		String getFormViewIdentifier();
 		Boolean getAutoAddTabCommandable();
 		Boolean getEnabledInDefaultTab();
 		Boolean getIsIdentifiableMaster();
+		AbstractIdentifiable getFormIdentifiable();
 		Collection<? extends AbstractIdentifiable> getMasters();
 		
 		/*  */
@@ -480,11 +500,12 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			protected static final long serialVersionUID = 6031762560954439308L;
 			protected Class<IDENTIFIABLE> identifiableClass;
 			protected Class<DATA> dataClass;
-			protected String tabId,titleId;
+			protected String tabId,titleId,formConfigurationIdentifier,formViewIdentifier;
 			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
 			protected Crud[] cruds = new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};//TODO should be removed ??? because value is taken from database
 			protected Boolean isIdentifiableMaster=Boolean.TRUE;
 			protected Collection<? extends AbstractIdentifiable> masters;
+			protected AbstractIdentifiable formIdentifiable;
 			
 			public AbstractDetailsConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
 				super();
@@ -547,12 +568,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			Collection<ROW_DATA> getDatas();
 			ColumnAdapter getColumnAdapter();
 			RowAdapter<ROW_DATA> getRowAdapter();
+			CellAdapter<ROW_DATA> getCellAdapter();
 			/**/
 			@Getter @Setter
 			public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable,ROW_DATA> extends AbstractDetailsConfigurationAdapter<IDENTIFIABLE,ROW_DATA> implements Table<IDENTIFIABLE,ROW_DATA>{
 				private static final long serialVersionUID = 6031762560954439308L;
 				private ColumnAdapter columnAdapter;
 				private RowAdapter<ROW_DATA> rowAdapter;
+				private CellAdapter<ROW_DATA> cellAdapter;
 				
 				public Adapter(Class<IDENTIFIABLE> identifiableClass, Class<ROW_DATA> dataClass) {
 					super(identifiableClass,dataClass);

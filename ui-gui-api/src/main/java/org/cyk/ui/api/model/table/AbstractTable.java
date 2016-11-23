@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -42,6 +43,7 @@ import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.Commandable;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.CreateCommandableArguments;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -212,6 +214,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				if(Boolean.TRUE.equals(cell.getIsFile())){
 					cell.setIsImage(UIProvider.getInstance().isImage(row.getData(),column.getField()));
 					cell.setShowFileLink(UIProvider.getInstance().isShowFileLink(row.getData(),column.getField()));
+				}else{
+					Object url = AbstractOutputDetails.getUrlOfFieldName(row.getData(),column.getField().getName());
+					cell.setUrl(url==null ? Constant.EMPTY_STRING : url.toString());
 				}
 				if(Boolean.TRUE.equals(lazyLoad)){
 					

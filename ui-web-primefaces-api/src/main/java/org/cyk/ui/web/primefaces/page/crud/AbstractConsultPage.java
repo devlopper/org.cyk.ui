@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.ClazzBusiness;
@@ -33,6 +30,9 @@ import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.information.Comments;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<IDENTIFIABLE> implements Serializable {
@@ -78,6 +78,7 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(getDetailsClass()).getFormConfigurationAdapter(identifiable.getClass(),getDetailsClass());
 		adapter.setEnabledInDefaultTab(Boolean.TRUE);
 		details = createDetailsForm(getDetailsClass(), identifiable, adapter);
+		details.setMenu(null);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -164,8 +165,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		for(UICommandable commandable : contextualMenu.getChildren())
 			if(StringUtils.isEmpty(selectedTabId))
 				;
-			else
+			else{
 				commandable.setParameter(UniformResourceLocatorParameter.TAB_ID, selectedTabId);
+				commandable.setParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER, selectedTabId);
+			}
 		
 		return contextualMenu.getChildren().isEmpty() ? null : Arrays.asList(contextualMenu);
 	}

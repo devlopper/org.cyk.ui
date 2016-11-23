@@ -16,5 +16,6 @@ public class Cell extends DefaultCell implements Serializable {
 	private Control<?, ?, ?, ?, ?> control;
 	
 	private Boolean isFile,isImage,showFileLink;
+	private String url;
 	
 }

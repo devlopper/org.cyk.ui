@@ -243,8 +243,8 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	public static final String FIELD_TITLE = "title";
 	public static final String FIELD_SIGNATURE_SPECIMEN = "signatureSpecimen";
 	public static final String FIELD_LANGUAGE_COLLECTION = "languageCollection";
-	public static final String FIELD_FATHER_ELECTRONIC_MAIL = "fatherElectronicMail";
-	public static final String FIELD_MOTHER_ELECTRONIC_MAIL = "motherElectronicMail";
+	//public static final String FIELD_FATHER_ELECTRONIC_MAIL = "fatherElectronicMail";
+	//public static final String FIELD_MOTHER_ELECTRONIC_MAIL = "motherElectronicMail";
 	
 	public static final String FIELD_BLOOD_GROUP = "bloodGroup";
 	public static final String FIELD_ALLERGIC_REACTION_RESPONSE = "allergicReactionResponse";

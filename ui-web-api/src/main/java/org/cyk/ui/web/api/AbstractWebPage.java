@@ -53,7 +53,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	@Inject transient protected RoleManager roleManager;
 	
 	@Getter @Setter protected String footer,messageDialogOkButtonOnClick="",url,previousUrl,onDocumentReadyJavaScript="",onDocumentLoadJavaScript="",
-		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage,selectedTabId;
+		onDocumentBeforeUnLoadJavaScript="",onDocumentBeforeUnLoadWarningMessage,selectedTabId,formConfigurationIdentifier;
 	@Getter @Setter protected Boolean onDocumentBeforeUnLoadWarn,renderViewError;
 	private String windowMode;
 	@Getter private Layout layout = new Layout(DEFAULT_LAYOUT);
@@ -71,6 +71,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		url = navigationManager.getRequestUrl();
 		previousUrl = requestParameter(UniformResourceLocatorParameter.PREVIOUS_URL);
 		selectedTabId = requestParameter(UniformResourceLocatorParameter.TAB_ID);
+		formConfigurationIdentifier = requestParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER);
 		
 		onDocumentBeforeUnLoadWarningMessage = UIManager.getInstance().text("window.closing.warning");
 		

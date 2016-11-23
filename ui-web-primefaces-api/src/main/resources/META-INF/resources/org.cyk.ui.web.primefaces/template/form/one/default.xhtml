@@ -21,6 +21,11 @@
  		<ui:fragment rendered="#{form.showCommands}">
  			<cyk:command value="#{form.submitCommandable}" executeParameter="#{form.data}"/>
  		</ui:fragment>
+ 		
+ 		<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+			<ui:param name="model" value="#{form.menuModel}" />
+			<ui:param name="menu" value="#{form.menu}" />
+		</ui:include>
  	</ui:insert>
 	
 </ui:composition>

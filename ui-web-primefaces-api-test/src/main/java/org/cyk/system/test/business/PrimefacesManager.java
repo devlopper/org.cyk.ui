@@ -50,8 +50,8 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 	protected void configureActorFormConfiguration(Class<?> entityClass,FormControlSetAdapter formConfigurationControlSetAdapter) {
 		super.configureActorFormConfiguration(entityClass, formConfigurationControlSetAdapter);
 		if(Actor.class.equals(entityClass)){
-			getFormConfiguration(entityClass, Crud.CREATE).addFieldNames(AbstractPersonEditFormModel.FIELD_FATHER_ELECTRONIC_MAIL
-					,AbstractPersonEditFormModel.FIELD_MOTHER_ELECTRONIC_MAIL);
+			//getFormConfiguration(entityClass, Crud.CREATE).addFieldNames(AbstractPersonEditFormModel.FIELD_FATHER_ELECTRONIC_MAIL
+			//		,AbstractPersonEditFormModel.FIELD_MOTHER_ELECTRONIC_MAIL);
 		}
 	}
 	

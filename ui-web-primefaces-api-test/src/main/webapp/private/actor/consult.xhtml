@@ -16,6 +16,37 @@
  				<ui:param name="personConsultPage" value="#{actorConsultPage}"/>
  			</ui:include>
 			
+			<!--ui:param name="personConsultPage" value="#{actorConsultPage}"/>
+			
+			<table style="width: 100%;">
+				<tr style="vertical-align: top;">
+					<td style="width: 50%;"><cyk:formOneData value="#{personConsultPage.details}" /></td>
+					<td><p:fieldset legend="#{uiManager.text('model.entity.contactCollection')}" >
+						<cyk:formOneData value="#{personConsultPage.contactCollectionDetails}" />
+					</p:fieldset></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td style="width: 50%;"><cyk:table value="#{personConsultPage.relationshipTable}" /></td>
+					<td><p:fieldset legend="#{uiManager.text('signature')}" >
+						<cyk:formOneData value="#{personConsultPage.signatureDetails}" />
+					</p:fieldset></td>
+				</tr>
+			</table>
+			
+ 			<cyk:formOneData value="#{personConsultPage.jobDetails}" />
+ 			
+ 			<ui:fragment rendered="#{personConsultPage.medicalDetails.rendered}">
+ 				<cyk:formOneData value="#{personConsultPage.medicalDetails}" />
+ 				<cyk:table value="#{personConsultPage.medicationTable}" />
+ 				<cyk:table value="#{personConsultPage.allergyTable}" />
+ 			</ui:fragment>
+ 			
+ 			
+ 			
+ 			<cyk:fileIdentifiableGlobalIdentifiers value="#{personConsultPage.fileIdentifiableGlobalIdentifiers}" />
+ 			<cyk:comments value="#{personConsultPage.comments}" />
+ 			<cyk:formOneData value="#{personConsultPage.globalIdentifierDetails}" /-->
+			
  		</ui:define>
  	</ui:decorate>
  

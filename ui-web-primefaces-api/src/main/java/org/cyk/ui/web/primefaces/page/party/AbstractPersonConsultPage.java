@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.party.person.JobInformationsBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsAllergyBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
@@ -25,9 +22,16 @@ import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
+import org.cyk.ui.api.model.table.Cell;
+import org.cyk.ui.api.model.table.CellAdapter;
+import org.cyk.ui.api.model.table.Column;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifiable> extends AbstractPartyConsultPage<PERSON> implements Serializable {
@@ -58,7 +62,9 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 		
 		adapter = getDetailsConfiguration(SignatureDetails.class).getFormConfigurationAdapter(Person.class, SignatureDetails.class);
 		adapter.setTitleId(SignatureDetails.LABEL_IDENTIFIER);
-		adapter.setTabId(SignatureDetails.LABEL_IDENTIFIER);
+		adapter.setTabId(businessEntityInfos.getUserInterface().getLabelId());
+		adapter.setEnabledInDefaultTab(Boolean.TRUE);
+		adapter.setFormConfigurationIdentifier(SignatureDetails.LABEL_IDENTIFIER);
 		signatureDetails = createDetailsForm(SignatureDetails.class, getPerson(),adapter);
 		
 		@SuppressWarnings("rawtypes")
@@ -108,9 +114,57 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			public Collection<PersonRelationship> getIdentifiables() {
 				return inject(PersonRelationshipBusiness.class).findByPerson(getPerson());
 			}
+			
+			@Override
+			public String getTabId() {
+				return businessEntityInfos.getUserInterface().getLabelId();
+			}
+			
+			@Override
+			public Boolean getEnabledInDefaultTab() {
+				return Boolean.TRUE;
+			}
+			
+			@Override
+			public Boolean getIsIdentifiableMaster() {
+				return Boolean.FALSE;
+			}
+			
+			@Override
+			public Collection<? extends AbstractIdentifiable> getMasters() {
+				return Arrays.asList(getPerson());
+			}
+			
+			@Override
+			public CellAdapter<PersonRelationshipDetails> getCellAdapter() {
+				return new CellAdapter<PersonRelationshipDetails>(){
+					@Override
+					public void add(Row<PersonRelationshipDetails> row, Column column, Cell cell) {
+						super.add(row, column, cell);
+						row.getData().set__url__person1____("https://www.google.com/?gws_rd=ssl#q=A+Dieu+soit+la+gloire++partition");
+					}
+					
+					
+				};
+			}
 		});
 		
 	} 
+	
+	/*@Override
+	protected void createContactCollectionDetails() {
+		//super.createContactCollectionDetails();
+		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty(), getContactCollectionDetailsAdapter());
+	}*/
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	protected DetailsConfigurationListener.Form.Adapter getContactCollectionDetailsAdapter() {
+		DetailsConfigurationListener.Form.Adapter adapter = super.getContactCollectionDetailsAdapter();
+		adapter.setTabId(businessEntityInfos.getUserInterface().getLabelId());
+		adapter.setEnabledInDefaultTab(Boolean.TRUE);
+		return adapter;
+	}
 	
 	@Override
 	protected void processOnIdentifiableFound(PERSON identifiable) {
