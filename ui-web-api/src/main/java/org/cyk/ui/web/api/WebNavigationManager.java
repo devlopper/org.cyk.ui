@@ -24,7 +24,7 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
@@ -221,6 +221,33 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	    }	    
 		
 	    return url.toString();
+	}
+	
+	public String getPath(String outcome,Boolean actionOutcome,Boolean partial){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		StringBuilder path = new StringBuilder();
+		NavigationCase navigationCase = ((ConfigurableNavigationHandler)facesContext.getApplication().getNavigationHandler()).getNavigationCase(facesContext, null, outcome);
+		if(navigationCase==null){
+			log.severe("No Navigation Case found for "+outcome);
+			return url(OUTCOME_NOT_FOUND, new Object[]{"oc",outcome},Boolean.FALSE,Boolean.FALSE);
+		}
+		String s = navigationCase.getToViewId(facesContext);
+		if(Boolean.TRUE.equals(actionOutcome))
+			path.append(s);
+		else
+			path.append(StringUtils.replace(s, FILE_STATIC_EXTENSION, FILE_PROCESSING_EXTENSION));
+		
+		
+	    if(Boolean.TRUE.equals(partial))
+	    	;
+	    else{
+	    	HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			path = new StringBuilder(StringUtils.removeStartIgnoreCase(//TODO might not work always
+	    			FacesContext.getCurrentInstance().getExternalContext().encodeResourceURL(path.toString()), request.getContextPath()));	    		
+			path.insert(0,request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
+	    }	    
+		
+	    return path.toString();
 	}
 		
 	/*

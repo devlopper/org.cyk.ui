@@ -35,6 +35,7 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 
 	protected BusinessEntityInfos businessEntityInfos;
 	protected IdentifiableConfiguration identifiableConfiguration ;
+	protected Class<ENTITY> identifiableClass;
 	protected ENTITY identifiable;//TODO is it the right place ???
 	protected String formModelClassId;
 	protected Class<?> formModelClass;
@@ -44,9 +45,12 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	@Override
 	protected void initialisation() { 
 		super.initialisation();
+		identifiableClass = (Class<ENTITY>) commonUtils.getClassParameterAt(getClass(), 0);
 		for(BusinessEntityFormPageListener<?> listener : getListeners())
 			listener.initialisationStarted(this); 
 		businessEntityInfos = fetchBusinessEntityInfos();
+		if(businessEntityInfos==null)
+			businessEntityInfos = uiManager.businessEntityInfos(identifiableClass);
 		identifiableConfiguration = uiManager.findConfiguration((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz(),Boolean.TRUE);
 		identifiable = identifiableFromRequestParameter((Class<ENTITY>)businessEntityInfos.getClazz());
 		if(identifiable!=null){

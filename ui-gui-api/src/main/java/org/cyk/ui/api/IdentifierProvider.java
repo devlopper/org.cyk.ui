@@ -8,7 +8,7 @@ import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.ListenerUtils;
@@ -55,6 +55,15 @@ public interface IdentifierProvider{
 		@Override
 		public String getTab(Class<?> aClass) {
 			return null;
+		}
+		
+		public static String getViewOf(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
+			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
+				@Override
+				public String execute(IdentifierProvider provider) {
+					return provider.getView(aClass,commonBusinessAction,one);
+				}
+			});
 		}
 		
 		public static String getTabOf(final Class<?> aClass) {

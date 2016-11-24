@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.AllArgsConstructor;

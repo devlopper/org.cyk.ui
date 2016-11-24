@@ -18,7 +18,7 @@ import lombok.Setter;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
-import org.cyk.system.root.business.api.CommonBusinessAction;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
@@ -103,7 +103,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private ClazzBusiness clazzBusiness;
 	
 	private Locale locale = Locale.FRENCH;
-	private final Collection<Listener> uiManagerListeners = new ArrayList<>();
+	//private final Collection<Listener> uiManagerListeners = new ArrayList<>();
 	/* constants */
 	private final Map<String,BusinessEntityInfos> entitiesRequestParameterIdMap = new HashMap<>();
 	
@@ -341,7 +341,7 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	}
 	
 	public String getCurrentViewUrl(){
-		return listenerUtils.getString(uiManagerListeners, new ListenerUtils.StringMethod<Listener>() {
+		return listenerUtils.getString(Listener.COLLECTION, new ListenerUtils.StringMethod<Listener>() {
 			@Override
 			public String execute(Listener listener) {
 				return listener.getCurrentViewUrl();
@@ -349,14 +349,35 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 		});
 	}
 	
+	public String getViewPath(final String identifier){
+		return listenerUtils.getString(Listener.COLLECTION, new ListenerUtils.StringMethod<Listener>() {
+			@Override
+			public String execute(Listener listener) {
+				return listener.getViewPath(identifier);
+			}
+		});
+	}
+	
 	/**/
 	
 	public static interface Listener {
+		
+		Collection<Listener> COLLECTION = new ArrayList<>();
+		
 		String getCurrentViewUrl();
+		String getViewPath(String identifier);
+		
 		public static class Adapter extends BeanAdapter implements Listener,Serializable {
+			
 			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public String getCurrentViewUrl() {
+				return null;
+			}
+			
+			@Override
+			public String getViewPath(String identifier) {
 				return null;
 			}
 			

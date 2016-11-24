@@ -135,18 +135,6 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 				return Arrays.asList(getPerson());
 			}
 			
-			@Override
-			public CellAdapter<PersonRelationshipDetails> getCellAdapter() {
-				return new CellAdapter<PersonRelationshipDetails>(){
-					@Override
-					public void add(Row<PersonRelationshipDetails> row, Column column, Cell cell) {
-						super.add(row, column, cell);
-						row.getData().set__url__person1____("https://www.google.com/?gws_rd=ssl#q=A+Dieu+soit+la+gloire++partition");
-					}
-					
-					
-				};
-			}
 		});
 		
 	} 

@@ -8,18 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.AbstractModelElementOutputDetails.FieldValue;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUserSession;
@@ -43,7 +40,6 @@ import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.Commandable;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.CreateCommandableArguments;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
-import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
@@ -51,6 +47,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Table;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter @Setter
@@ -215,8 +214,12 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 					cell.setIsImage(UIProvider.getInstance().isImage(row.getData(),column.getField()));
 					cell.setShowFileLink(UIProvider.getInstance().isShowFileLink(row.getData(),column.getField()));
 				}else{
-					Object url = AbstractOutputDetails.getUrlOfFieldName(row.getData(),column.getField().getName());
-					cell.setUrl(url==null ? Constant.EMPTY_STRING : url.toString());
+					Object value = commonUtils.readField(row.getData(), column.getField(),!column.getField().getDeclaringClass().isAssignableFrom(rowDataClass),Boolean.FALSE,
+							UIProvider.getInstance().annotationClasses());
+					if(value instanceof FieldValue){
+						cell.setUrl(((FieldValue)value).getUrl());
+						//cell.setUrl(we);
+					}
 				}
 				if(Boolean.TRUE.equals(lazyLoad)){
 					

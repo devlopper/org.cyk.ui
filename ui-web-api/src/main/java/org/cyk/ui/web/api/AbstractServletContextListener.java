@@ -31,6 +31,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.UniformResourceLocatorBuilderAdapter;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.MenuManager;
 import org.cyk.ui.api.command.menu.MenuManager.ModuleGroup;
@@ -91,7 +92,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		WebNavigationManager.init(event.getServletContext().getContextPath());
 		mobileViewMapping();
 		uiManager.businessEntityInfos(Event.class).getUserInterface().setEditViewId(webNavigationManager.getOutcomeEventCrudOne());
-		
+		UniformResourceLocator.Builder.Listener.COLLECTION.add(new UniformResourceLocatorBuilderAdapter());
 		identifiableConfiguration(event);
 		
 		for(BusinessEntityInfos businessEntityInfos : applicationBusiness.findBusinessEntitiesInfos()){

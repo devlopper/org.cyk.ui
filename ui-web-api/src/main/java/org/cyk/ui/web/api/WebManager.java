@@ -82,11 +82,15 @@ public class WebManager extends AbstractBean implements Serializable {
 		booleanSelectItemsNoNull.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
 		booleanSelectItemsNoNull.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
 		
-		UIManager.getInstance().getUiManagerListeners().add(new UIManager.Listener.Adapter(){
+		UIManager.Listener.COLLECTION.add(new UIManager.Listener.Adapter(){
 			private static final long serialVersionUID = -3858521830715147966L;
 			@Override
 			public String getCurrentViewUrl() {
 				return WebNavigationManager.getInstance().getRequestUrl();
+			}
+			@Override
+			public String getViewPath(String identifier) {
+				return inject(WebNavigationManager.class).getPath(identifier,Boolean.FALSE,Boolean.FALSE);
 			}
 		});
 	}
