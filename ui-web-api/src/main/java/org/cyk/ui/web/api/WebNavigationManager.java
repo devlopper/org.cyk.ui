@@ -2,6 +2,7 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -535,8 +536,12 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
+	public void redirectToFileConsultManyPage(Collection<FileRepresentationType> fileRepresentationTypes,Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
+		redirectToFileConsultManyPage(inject(FileBusiness.class).findByRepresentationTypesByIdentifiables(fileRepresentationTypes,identifiables), fileExtension);
+	}
+	
 	public void redirectToFileConsultManyPage(FileRepresentationType fileRepresentationType,Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
-		redirectToFileConsultManyPage(inject(FileBusiness.class).findByRepresentationTypeByIdentifiables(fileRepresentationType,identifiables), fileExtension);
+		redirectToFileConsultManyPage(Arrays.asList(fileRepresentationType), identifiables, fileExtension);
 	}
 	
 	public void redirectToReportFileGeneratePage(AbstractIdentifiable identifiable,String reportTemplateCode,FileExtension fileExtension){
