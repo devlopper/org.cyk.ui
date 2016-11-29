@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -22,6 +19,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.mathematics.MetricValue;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -33,6 +31,7 @@ import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.ui.web.primefaces.AbstractMetricValueCollection;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.MetricValueCollection;
@@ -43,6 +42,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -196,13 +198,18 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		return collection;
 	}
 	
-	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> MetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> AbstractMetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
 			MetricCollection metricCollection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
-		MetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (MetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
+		AbstractMetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (AbstractMetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
 		metricValueCollection.setMetricCollection(metricCollection);
 		metricValueCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
 		metricValueCollection.getAddCommandable().setRendered(Boolean.FALSE);
 		return metricValueCollection;
+	}
+	
+	protected AbstractMetricValueCollection<MetricValueCollection.Item, MetricValue> 
+		createMetricValueCollection(MetricCollection metricCollection,AbstractItemCollection.Listener<MetricValueCollection.Item, MetricValue,SelectItem> listener) {
+		return createMetricValueCollection(metricCollection, MetricValueCollection.Item.class, MetricValue.class, listener);
 	}
 	
 	@Override

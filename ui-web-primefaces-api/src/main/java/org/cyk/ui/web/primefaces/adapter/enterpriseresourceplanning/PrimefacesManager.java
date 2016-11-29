@@ -22,6 +22,7 @@ import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricValueDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
@@ -463,6 +464,33 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean isColumn(Field field) {
 						return isFieldNameIn(field,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		/*
+		getFormConfiguration(MetricValue.class,Crud.CREATE).addFieldNames(MetricValueEditPage.Form.FIELD_GLOBAL_IDENTIFIER
+				,MetricValueEditPage.Form.FIELD_METRIC_COLLECTION);
+		*/
+		registerDetailsConfiguration(MetricValueDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MetricValueDetails.FIELD_VALUE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MetricValueDetails.FIELD_VALUE);
 					}
 				};
 			}
