@@ -104,7 +104,7 @@
 			  					</ui:fragment>
 			  					<ui:fragment rendered="#{not cell.isFile}" >
 			  						<h:outputText value="#{cell}" title="#{cell}" escape="false" rendered="#{empty cell.url}"/>
-			  						<h:outputLink value="#{cell.url}" rendered="#{not empty cell.url}">
+			  						<h:outputLink value="#{cell.url}" rendered="#{not empty cell.url}" title="#{cell}">
 			  							<h:outputText value="#{cell}" title="#{cell}" escape="false"/>
 			  						</h:outputLink>
 			  					</ui:fragment>

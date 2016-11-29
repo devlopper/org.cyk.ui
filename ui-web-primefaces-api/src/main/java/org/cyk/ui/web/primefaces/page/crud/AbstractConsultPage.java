@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.ClazzBusiness;
-import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
@@ -18,7 +17,10 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.information.GlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
@@ -30,6 +32,8 @@ import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityPrimefacesPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifiers;
 import org.cyk.ui.web.primefaces.page.information.Comments;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifiers;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricValueIdentifiableGlobalIdentifiers;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +46,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	protected FormOneData<? extends AbstractOutputDetails<IDENTIFIABLE>> details;
 	protected Comments comments;
 	protected FileIdentifiableGlobalIdentifiers fileIdentifiableGlobalIdentifiers;
+	protected MetricCollectionIdentifiableGlobalIdentifiers metricCollectionIdentifiableGlobalIdentifiers;
+	protected MetricValueIdentifiableGlobalIdentifiers metricValueIdentifiableGlobalIdentifiers;
 	@SuppressWarnings("rawtypes")
 	protected FormOneData<GlobalIdentifierDetails> globalIdentifierDetails;
 	
@@ -56,6 +62,8 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		
 		comments = new Comments(this, CommentDetails.class,identifiable);
 		fileIdentifiableGlobalIdentifiers = new FileIdentifiableGlobalIdentifiers(this, FileIdentifiableGlobalIdentifierDetails.class,identifiable);
+		metricCollectionIdentifiableGlobalIdentifiers = new MetricCollectionIdentifiableGlobalIdentifiers(this, MetricCollectionIdentifiableGlobalIdentifierDetails.class,identifiable);
+		metricValueIdentifiableGlobalIdentifiers = new MetricValueIdentifiableGlobalIdentifiers(this, MetricValueIdentifiableGlobalIdentifierDetails.class,identifiable);
 		
 		if(Boolean.TRUE.equals(userSession.getIsAdministrator())){
 			globalIdentifierDetails = createDetailsForm(GlobalIdentifierDetails.class, identifiable, new DetailsConfigurationListener.Form.Adapter<IDENTIFIABLE,GlobalIdentifierDetails>((Class<IDENTIFIABLE>) identifiable.getClass(), GlobalIdentifierDetails.class){

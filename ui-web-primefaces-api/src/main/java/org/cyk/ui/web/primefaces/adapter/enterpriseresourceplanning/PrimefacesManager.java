@@ -20,6 +20,7 @@ import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
@@ -48,6 +49,7 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -86,6 +88,7 @@ import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
@@ -406,6 +409,34 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME,MetricCollectionDetails.FIELD_VALUE_INPUTTED
 								,MetricCollectionDetails.FIELD_VALUE_TYPE,MetricCollectionDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(MetricCollectionIdentifiableGlobalIdentifier.class,Crud.CREATE).addFieldNames(MetricCollectionIdentifiableGlobalIdentifierEditPage.Form.FIELD_GLOBAL_IDENTIFIER
+				,MetricCollectionIdentifiableGlobalIdentifierEditPage.Form.FIELD_METRIC_COLLECTION);
+	
+		registerDetailsConfiguration(MetricCollectionIdentifiableGlobalIdentifierDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MetricCollectionIdentifiableGlobalIdentifierDetails.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER
+								,MetricCollectionIdentifiableGlobalIdentifierDetails.FIELD_METRIC_COLLECTION);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MetricCollectionIdentifiableGlobalIdentifierDetails.FIELD_METRIC_COLLECTION);
 					}
 				};
 			}

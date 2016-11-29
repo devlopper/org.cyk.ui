@@ -23,7 +23,9 @@ import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateLogDetails;
@@ -59,6 +61,8 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.mathematics.MetricValueIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateLog;
@@ -111,7 +115,9 @@ import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateLogEdit
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricValueIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
@@ -285,8 +291,23 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 				,null,null,null));
 		uiManager.configBusinessIdentifiable(MetricCollection.class, null);
 		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricCollectionIdentifiableGlobalIdentifier.class, MetricCollectionIdentifiableGlobalIdentifierEditPage.Form.class
+				, MetricCollectionIdentifiableGlobalIdentifierDetails.class
+				,null,null,null));
+		uiManager.configBusinessIdentifiable(MetricCollectionIdentifiableGlobalIdentifier.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricValueIdentifiableGlobalIdentifier.class, MetricValueIdentifiableGlobalIdentifierEditPage.Form.class
+				, MetricValueIdentifiableGlobalIdentifierDetails.class
+				,null,null,null));
+		uiManager.configBusinessIdentifiable(MetricValueIdentifiableGlobalIdentifier.class, null);
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Metric.class, MetricEditPage.Form.class, MetricDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Metric.class, null);
+		
+		/*
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricValue.class, MetricValueEditPage.Form.class, MetricValueDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(MetricValue.class, null);
+		*/
 	}
 	
 	protected void initializeFiniteStateMachineModule(){

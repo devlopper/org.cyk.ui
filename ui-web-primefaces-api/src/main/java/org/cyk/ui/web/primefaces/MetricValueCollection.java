@@ -93,7 +93,7 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
 			super.instanciated(itemCollection, item);
 			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
-			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue());
+			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue().get());
 			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue());
 		}
 		
@@ -106,7 +106,7 @@ public class MetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENT
 		@Override
 		public void write(TYPE item) {
 			super.write(item);
-			getMetricValue(item.getIdentifiable()).setNumberValue(item.getNumberValue());
+			getMetricValue(item.getIdentifiable()).getNumberValue().setUser(item.getNumberValue());
 			getMetricValue(item.getIdentifiable()).setStringValue(item.getStringValue());
 		}
 		

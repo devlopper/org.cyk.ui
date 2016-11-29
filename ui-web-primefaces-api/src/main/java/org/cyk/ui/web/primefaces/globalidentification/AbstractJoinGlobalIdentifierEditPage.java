@@ -19,8 +19,9 @@ import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
-import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -85,7 +86,7 @@ public abstract class AbstractJoinGlobalIdentifierEditPage<IDENTIFIABLE extends 
 		
 		protected AbstractIdentifiable joinedIdentifiable;
 		
-		@Input @InputChoice(load=true) @InputOneChoice @InputOneCombo @NotNull protected GlobalIdentifier identifiableGlobalIdentifier;
+		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete @NotNull protected GlobalIdentifier identifiableGlobalIdentifier;
 				
 		public static final String FIELD_GLOBAL_IDENTIFIER = "identifiableGlobalIdentifier";
 		

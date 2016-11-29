@@ -102,6 +102,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>metricCollectionIdentifiableGlobalIdentifierEditView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/join/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionIdentifiableGlobalIdentifierListView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/join/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionIdentifiableGlobalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/join/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>finiteStateMachineStateLogEditView</from-outcome>
 			<to-view-id>/private/mathematics/finitestatemachinestatelog/edit.xhtml</to-view-id>
 			<redirect />
