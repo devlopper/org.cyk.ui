@@ -19,6 +19,10 @@
 				<h:outputText value="#{item.name}" />
 			</p:column>
 			
+			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showBooleanColumn}">
+				<ui:include src="include/metricValueCollection/selectOneRadio.xhtml"/>
+			</p:column>
+			
 			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showNumberColumn}">
 				<pe:inputNumber value="#{item.numberValue}" required="true" requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}"
 					minValue="#{cc.value.metricCollection.valueIntervalCollection.lowestValue}" 

@@ -23,6 +23,7 @@ import org.cyk.system.root.model.mathematics.MetricValueType;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
+import org.cyk.ui.web.api.WebManager;
 
 @Getter @Setter
 public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection<TYPE, IDENTIFIABLE> implements Serializable {
@@ -31,7 +32,7 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 
 	private MetricCollection metricCollection;
 	private List<SelectItem> choices = new ArrayList<>();
-	private Boolean autoSetShowOneChoiceInput=Boolean.TRUE,isNumber,showNumberColumn,showStringColumn,showOneChoiceInput,showCombobox,showRadio;
+	private Boolean autoSetShowOneChoiceInput=Boolean.TRUE,isNumber,showNumberColumn,isBoolean,showStringColumn,showBooleanColumn,showOneChoiceInput,showCombobox,showRadio;
 	private Long minimumNumberOfItemToShowCombobox=6l;
 	
 	public AbstractMetricValueCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
@@ -40,12 +41,15 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 	
 	public void setMetricCollection(MetricCollection value){
 		this.metricCollection = value;
-		isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
-		showNumberColumn = isNumber;
-		showStringColumn = !isNumber;
+		showNumberColumn = isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
+		showBooleanColumn = isBoolean = MetricValueType.BOOLEAN.equals(metricCollection.getValueType());
+		showStringColumn = MetricValueType.STRING.equals(metricCollection.getValueType());
 		
 		if(metricCollection.getValueIntervalCollection()==null){
 			showOneChoiceInput = Boolean.FALSE;
+			if(isBoolean){
+				choices.addAll(WebManager.getInstance().getBooleanSelectItemsNoNull());
+			}
 		}else{
 			showOneChoiceInput = Boolean.TRUE;
 			if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
