@@ -90,7 +90,7 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		private String name;
 		private BigDecimal numberValue;
 		private String stringValue;
-		
+		private Boolean booleanValue;
 	}
 	
 	/**/
@@ -104,7 +104,8 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 			super.instanciated(itemCollection, item);
 			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
 			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue().get());
-			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue());
+			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue().get());
+			item.setBooleanValue(getMetricValue(item.getIdentifiable()).getBooleanValue().get());
 		}
 		
 		@Override
@@ -116,8 +117,10 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		@Override
 		public void write(TYPE item) {
 			super.write(item);
-			getMetricValue(item.getIdentifiable()).getNumberValue().setUser(item.getNumberValue());
-			getMetricValue(item.getIdentifiable()).setStringValue(item.getStringValue());
+			MetricValue metricValue = getMetricValue(item.getIdentifiable());
+			metricValue.getNumberValue().set(item.getNumberValue());
+			metricValue.getStringValue().set(item.getStringValue());
+			metricValue.getBooleanValue().set(item.getBooleanValue());
 		}
 		
 		protected MetricValue getMetricValue(IDENTIFIABLE identifiable){

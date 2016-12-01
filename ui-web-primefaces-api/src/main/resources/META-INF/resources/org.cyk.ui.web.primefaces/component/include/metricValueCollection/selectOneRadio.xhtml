@@ -12,7 +12,7 @@
 	<h:body>
 		<ui:composition>
 			<p:selectOneRadio 
-				value="#{cc.value.isNumber ? item.numberValue : item.stringValue}" 
+				value="#{cc.value.isBoolean ? item.booleanValue : (cc.value.isNumber ? item.numberValue : item.stringValue)}" 
 				rendered="#{cc.value.showRadio}" 
 				required="true" 
 				requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}">
