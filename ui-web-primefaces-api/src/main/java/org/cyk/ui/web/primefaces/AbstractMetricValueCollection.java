@@ -7,9 +7,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
@@ -18,12 +15,15 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricValue;
-import org.cyk.system.root.model.mathematics.MetricValueInputted;
-import org.cyk.system.root.model.mathematics.MetricValueType;
+import org.cyk.system.root.model.value.ValueSet;
+import org.cyk.system.root.model.value.ValueType;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.WebManager;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection<TYPE, IDENTIFIABLE> implements Serializable {
@@ -41,9 +41,9 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 	
 	public void setMetricCollection(MetricCollection value){
 		this.metricCollection = value;
-		showNumberColumn = isNumber = MetricValueType.NUMBER.equals(metricCollection.getValueType());
-		showBooleanColumn = isBoolean = MetricValueType.BOOLEAN.equals(metricCollection.getValueType());
-		showStringColumn = MetricValueType.STRING.equals(metricCollection.getValueType());
+		showNumberColumn = isNumber = ValueType.NUMBER.equals(metricCollection.getValueProperties().getType());
+		showBooleanColumn = isBoolean = ValueType.BOOLEAN.equals(metricCollection.getValueType());
+		showStringColumn = ValueType.STRING.equals(metricCollection.getValueType());
 		
 		if(metricCollection.getValueIntervalCollection()==null){
 			showOneChoiceInput = Boolean.FALSE;
@@ -54,8 +54,9 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 			showOneChoiceInput = Boolean.TRUE;
 			if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
 				for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
-					choices.add(new SelectItem(MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? interval.getCode() : interval.getLow().getValue()
-							, MetricValueInputted.VALUE_INTERVAL_CODE.equals(metricCollection.getValueInputted()) ? inject(IntervalBusiness.class).findRelativeCode(interval) : inject(NumberBusiness.class).format(interval.getLow().getValue())));
+					choices.add(new SelectItem(ValueSet.INTERVAL_CODE.equals(metricCollection.getValueSet()) ? interval.getCode() : interval.getLow().getValue()
+							, ValueSet.INTERVAL_CODE.equals(metricCollection.getValueSet()) ? inject(IntervalBusiness.class).findRelativeCode(interval) 
+									: inject(NumberBusiness.class).format(interval.getLow().getValue())));
 				}
 			}
 		}
@@ -103,9 +104,9 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
 			super.instanciated(itemCollection, item);
 			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
-			item.setNumberValue(getMetricValue(item.getIdentifiable()).getNumberValue().get());
-			item.setStringValue(getMetricValue(item.getIdentifiable()).getStringValue().get());
-			item.setBooleanValue(getMetricValue(item.getIdentifiable()).getBooleanValue().get());
+			item.setNumberValue(getMetricValue(item.getIdentifiable()).getValue().getNumberValue().get());
+			item.setStringValue(getMetricValue(item.getIdentifiable()).getValue().getStringValue().get());
+			item.setBooleanValue(getMetricValue(item.getIdentifiable()).getValue().getBooleanValue().get());
 		}
 		
 		@Override
@@ -118,9 +119,9 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		public void write(TYPE item) {
 			super.write(item);
 			MetricValue metricValue = getMetricValue(item.getIdentifiable());
-			metricValue.getNumberValue().set(item.getNumberValue());
-			metricValue.getStringValue().set(item.getStringValue());
-			metricValue.getBooleanValue().set(item.getBooleanValue());
+			metricValue.getValue().getNumberValue().set(item.getNumberValue());
+			metricValue.getValue().getStringValue().set(item.getStringValue());
+			metricValue.getValue().getBooleanValue().set(item.getBooleanValue());
 		}
 		
 		protected MetricValue getMetricValue(IDENTIFIABLE identifiable){

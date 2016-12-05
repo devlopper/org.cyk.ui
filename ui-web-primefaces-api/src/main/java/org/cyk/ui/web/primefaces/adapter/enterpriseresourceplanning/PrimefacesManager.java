@@ -408,8 +408,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME,MetricCollectionDetails.FIELD_VALUE_INPUTTED
-								,MetricCollectionDetails.FIELD_VALUE_TYPE,MetricCollectionDetails.FIELD_VALUE_INTERVAL_COLLECTION);
+						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME);
 					}
 				};
 			}
