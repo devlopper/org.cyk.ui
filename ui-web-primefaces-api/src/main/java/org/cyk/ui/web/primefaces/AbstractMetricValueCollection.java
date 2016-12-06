@@ -54,8 +54,8 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 			showOneChoiceInput = Boolean.TRUE;
 			if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
 				for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
-					choices.add(new SelectItem(ValueSet.INTERVAL_CODE.equals(metricCollection.getValueSet()) ? interval.getCode() : interval.getLow().getValue()
-							, ValueSet.INTERVAL_CODE.equals(metricCollection.getValueSet()) ? inject(IntervalBusiness.class).findRelativeCode(interval) 
+					choices.add(new SelectItem(ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet()) ? interval.getCode() : interval.getLow().getValue()
+							, ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet()) ? inject(IntervalBusiness.class).findRelativeCode(interval) 
 									: inject(NumberBusiness.class).format(interval.getLow().getValue())));
 				}
 			}
