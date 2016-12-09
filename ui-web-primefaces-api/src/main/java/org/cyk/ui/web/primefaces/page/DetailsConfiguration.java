@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.globalidentification.AbstractJoinGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.Table.ColumnAdapter;
@@ -142,7 +143,7 @@ public class DetailsConfiguration implements Serializable {
 		public Boolean build(Object data,Field field) {
 			return isFieldNameNotIn(field, AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
 					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION,AbstractOutputDetails.FIELD_EXISTENCE_PERIOD
-					,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE
+					,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE,PeriodDetails.FIELD_DURATION
 					,AbstractOutputDetails.FIELD_ORDER_NUMBER,AbstractOutputDetails.FIELD_WEIGHT,AbstractOutputDetails.FIELD_OTHER_DETAILS);
 		}
 		
@@ -155,8 +156,9 @@ public class DetailsConfiguration implements Serializable {
 		public Boolean isColumn(Field field) {
 			if(isFieldNameIn(field,AbstractOutputDetails.FIELD_CODE,AbstractOutputDetails.FIELD_NAME,AbstractOutputDetails.FIELD_IMAGE
 					,AbstractOutputDetails.FIELD_ABBREVIATION,AbstractOutputDetails.FIELD_DESCRIPTION,AbstractOutputDetails.FIELD_EXISTENCE_PERIOD
-					,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE
-					,AbstractOutputDetails.FIELD_ORDER_NUMBER,AbstractOutputDetails.FIELD_WEIGHT,AbstractOutputDetails.FIELD_OTHER_DETAILS))
+					,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE,PeriodDetails.FIELD_DURATION
+					,AbstractOutputDetails.FIELD_ORDER_NUMBER,AbstractOutputDetails.FIELD_WEIGHT,AbstractOutputDetails.FIELD_OTHER_DETAILS
+					,AbstractJoinGlobalIdentifierDetails.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER))
 				return Boolean.FALSE;
 			return super.isColumn(field);
 		}

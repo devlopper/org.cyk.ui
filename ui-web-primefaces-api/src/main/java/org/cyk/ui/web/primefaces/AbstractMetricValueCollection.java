@@ -12,6 +12,7 @@ import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricValue;
@@ -52,11 +53,20 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 			}
 		}else{
 			showOneChoiceInput = Boolean.TRUE;
+			String choiceName;
+			Object choiceValue;
+			if(Boolean.TRUE.equals(metricCollection.getValueProperties().getNullable())){
+				choices.add(new SelectItem(null,metricCollection.getValueProperties().getNullAbbreviation()));
+			}
 			if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
 				for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
-					choices.add(new SelectItem(ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet()) ? interval.getCode() : interval.getLow().getValue()
-							, ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet()) ? inject(IntervalBusiness.class).findRelativeCode(interval) 
-									: inject(NumberBusiness.class).format(interval.getLow().getValue())));
+					if(ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet())){
+						choiceValue = choiceName = RootConstant.Code.getRelativeCode(interval);
+					}else{
+						choiceValue = interval.getLow().getValue();
+						choiceName = inject(NumberBusiness.class).format(interval.getLow().getValue());
+					}
+					choices.add(new SelectItem(choiceValue,choiceName));
 				}
 			}
 		}

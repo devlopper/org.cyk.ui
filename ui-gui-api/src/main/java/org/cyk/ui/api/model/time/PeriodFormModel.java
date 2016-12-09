@@ -7,6 +7,7 @@ import org.cyk.system.root.model.time.Period;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar;
 import org.cyk.utility.common.annotation.user.interfaces.InputCalendar.Format;
+import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class PeriodFormModel implements Serializable {
 	@Input @InputCalendar(format=Format.DATETIME_LONG)
 	private Date toDate;
 	
+	@Input @InputNumber private Long duration;
+	
 	public void set(Period period){
 		if(period==null)
 			return;
@@ -31,5 +34,6 @@ public class PeriodFormModel implements Serializable {
 	
 	public static final String FIELD_FROM_DATE = "fromDate";
 	public static final String FIELD_TO_DATE = "toDate";
+	public static final String FIELD_DURATION = "duration";
 	
 }
