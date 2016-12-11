@@ -7,15 +7,19 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
+import org.cyk.system.root.business.api.value.MeasureBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricValue;
+import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueSet;
 import org.cyk.system.root.model.value.ValueType;
 import org.cyk.ui.api.SelectItemBuilderListener;
@@ -31,6 +35,8 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 
 	private static final long serialVersionUID = -6459718386925539576L;
 
+	private static final String NULL_STRING = RandomStringUtils.randomAlphanumeric(20)+System.currentTimeMillis();
+	
 	private MetricCollection metricCollection;
 	private List<SelectItem> choices = new ArrayList<>();
 	private Boolean autoSetShowOneChoiceInput=Boolean.TRUE,isNumber,showNumberColumn,isBoolean,showStringColumn,showBooleanColumn,showOneChoiceInput,showCombobox,showRadio;
@@ -54,9 +60,12 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		}else{
 			showOneChoiceInput = Boolean.TRUE;
 			String choiceName;
-			Object choiceValue;
+			Object choiceValue = null;
 			if(Boolean.TRUE.equals(metricCollection.getValueProperties().getNullable())){
-				choices.add(new SelectItem(null,metricCollection.getValueProperties().getNullAbbreviation()));
+				if(ValueSet.INTERVAL_RELATIVE_CODE.equals(metricCollection.getValueSet()))
+					choiceValue = NULL_STRING;
+				
+				choices.add(new SelectItem(choiceValue,metricCollection.getValueProperties().getNullString().getCode()));
 			}
 			if(inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(metricCollection.getValueIntervalCollection())){
 				for(Interval interval : inject(IntervalBusiness.class).findByCollection(metricCollection.getValueIntervalCollection())){
@@ -113,25 +122,39 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		@Override
 		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
 			super.instanciated(itemCollection, item);
-			item.setName(getMetricValue(item.getIdentifiable()).getMetric().getName());
-			item.setNumberValue(getMetricValue(item.getIdentifiable()).getValue().getNumberValue().get());
-			item.setStringValue(getMetricValue(item.getIdentifiable()).getValue().getStringValue().get());
-			item.setBooleanValue(getMetricValue(item.getIdentifiable()).getValue().getBooleanValue().get());
+			MetricValue metricValue = getMetricValue(item.getIdentifiable());
+			Value value = metricValue.getValue();
+			item.setName(inject(FormatterBusiness.class).format(metricValue.getMetric()));
+			item.setNumberValue(inject(MeasureBusiness.class).computeQuotient(value.getMeasure(), value.getNumberValue().get()));
+			if(Boolean.TRUE.equals(metricValue.getValue().getNullable())){
+				if(value.getStringValue().get()==null && Boolean.TRUE.equals(value.getInitialized()))
+					item.setStringValue(NULL_STRING);
+				else
+					item.setStringValue(value.getStringValue().get());
+			}
+			item.setBooleanValue(value.getBooleanValue().get());
 		}
 		
 		@Override
 		public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE, SelectItem> itemCollection,TYPE item) {
 			super.setLabel(itemCollection, item);
-			item.setLabel(getMetricValue(item.getIdentifiable()).getMetric().getName() /*StringUtils.defaultIfBlank(item.getLabel(), item.getIdentifiable().getName())*/);
+			item.setLabel(inject(FormatterBusiness.class).format(getMetricValue(item.getIdentifiable()).getMetric()));
 		}
 		
 		@Override
 		public void write(TYPE item) {
 			super.write(item);
 			MetricValue metricValue = getMetricValue(item.getIdentifiable());
-			metricValue.getValue().getNumberValue().set(item.getNumberValue());
-			metricValue.getValue().getStringValue().set(item.getStringValue());
-			metricValue.getValue().getBooleanValue().set(item.getBooleanValue());
+			Value value = metricValue.getValue();
+			value.getNumberValue().set(inject(MeasureBusiness.class).computeMultiple(value.getMeasure(), item.getNumberValue()));
+			if(Boolean.TRUE.equals(metricValue.getValue().getNullable())){
+				if(NULL_STRING.equals(item.getStringValue()))
+					value.getStringValue().set(null);
+				else
+					value.getStringValue().set(item.getStringValue());	
+			}
+			value.getBooleanValue().set(item.getBooleanValue());
+			value.setInitialized(Boolean.TRUE);
 		}
 		
 		protected MetricValue getMetricValue(IDENTIFIABLE identifiable){
