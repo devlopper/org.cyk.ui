@@ -18,8 +18,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
-import org.cyk.system.root.model.mathematics.MetricCollection;
-import org.cyk.system.root.model.mathematics.MetricValue;
+import org.cyk.system.root.model.value.Value;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -199,17 +198,17 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	}
 	
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> AbstractMetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
-			MetricCollection metricCollection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+			Object collection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
 		AbstractMetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (AbstractMetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
-		metricValueCollection.setMetricCollection(metricCollection);
+		metricValueCollection.setCollection(collection);
 		metricValueCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
 		metricValueCollection.getAddCommandable().setRendered(Boolean.FALSE);
 		return metricValueCollection;
 	}
 	
-	protected AbstractMetricValueCollection<MetricValueCollection.Item, MetricValue> 
-		createMetricValueCollection(MetricCollection metricCollection,AbstractItemCollection.Listener<MetricValueCollection.Item, MetricValue,SelectItem> listener) {
-		return createMetricValueCollection(metricCollection, MetricValueCollection.Item.class, MetricValue.class, listener);
+	protected AbstractMetricValueCollection<MetricValueCollection.Item, Value> 
+		createMetricValueCollection(Object collection,AbstractItemCollection.Listener<MetricValueCollection.Item, Value,SelectItem> listener) {
+		return createMetricValueCollection(collection, MetricValueCollection.Item.class, Value.class, listener);
 	}
 	
 	@Override

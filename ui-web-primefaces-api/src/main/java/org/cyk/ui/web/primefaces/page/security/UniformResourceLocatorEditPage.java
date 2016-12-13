@@ -8,15 +8,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorParameterBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.ui.api.model.AbstractEnumerationForm;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
@@ -25,6 +22,9 @@ import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformResourceLocator> implements Serializable {
@@ -78,14 +78,11 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 	}
 	
 	@Getter @Setter
-	public static class Form extends AbstractFormModel<UniformResourceLocator> implements Serializable{
+	public static class Form extends AbstractEnumerationForm<UniformResourceLocator> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
-		@Input @InputText @NotNull private String code;
-		@Input @InputText @NotNull private String name;
+		
 		@Input @InputText @NotNull private String address;
 		
-		public static final String FIELD_CODE = "code";
-		public static final String FIELD_NAME = "name";
 		public static final String FIELD_ADDRESS = "address";
 		
 	}

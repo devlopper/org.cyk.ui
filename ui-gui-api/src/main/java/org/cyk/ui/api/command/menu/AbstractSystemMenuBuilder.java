@@ -34,6 +34,9 @@ public abstract class AbstractSystemMenuBuilder<COMMANDABLE extends AbstractComm
 
 	private static final long serialVersionUID = 6995162040038809581L;
 
+	@SuppressWarnings("rawtypes")
+	public static AbstractSystemMenuBuilder/*<?, ?, ?, ?>*/ DEFAULT;
+	
 	protected Collection<AbstractSystemMenuBuilderListener<COMMANDABLE,TREE_NODE,TREE_NODE_MODEL,USER_SESSION>> listeners = new ArrayList<>();
 	
 	/**/
