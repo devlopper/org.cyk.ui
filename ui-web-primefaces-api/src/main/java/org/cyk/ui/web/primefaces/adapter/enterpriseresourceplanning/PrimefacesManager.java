@@ -742,7 +742,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				,AbstractPersonEditFormModel.FIELD_NAME))
 				.addFieldNames(ArrayUtils.addAll(formConfigurationControlSetAdapter.getFieldNames(),AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_IMAGE
 				,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_BIRTH_LOCATION,LocationFormModel.FIELD_LOCALITY,LocationFormModel.FIELD_OTHER_DETAILS
-				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
+				,AbstractPersonEditFormModel.FIELD_SEX,AbstractPersonEditFormModel.FIELD_TITLE,AbstractPersonEditFormModel.FIELD_NATIONALITY,AbstractPersonEditFormModel.FIELD_LANGUAGE_COLLECTION
 				,LanguageCollectionFormModel.FIELD_LANGUAGE_1,AbstractPersonEditFormModel.FIELD_OTHER_DETAILS,AbstractPersonEditFormModel.FIELD_CONTACT_COLLECTION))
 				.addControlSetListener(formConfigurationControlSetAdapter);
 		

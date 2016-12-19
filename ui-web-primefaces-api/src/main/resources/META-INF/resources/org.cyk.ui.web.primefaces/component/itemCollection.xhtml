@@ -17,7 +17,7 @@
 		<p:dataTable id="datatable" value="#{cc.value.items}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
 			styleClass="#{cc.value.updateStyleClass}">
         	<f:facet name="header"><h:outputText value="#{cc.value.label}" /> </f:facet>	
-       		<p:column headerText="#" width="4%">
+       		<p:column headerText="#" width="10">
        			<h:outputText value="#{index+1}" />
        			<f:facet name="footer">
        				<!--p:commandButton title="#{uiManager.text('command.add')}" icon="fa-adjust" action="#{cc.value.add}" /-->

@@ -67,33 +67,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	@Inject private LanguageBusiness languageBusiness;
 	
-	private List<SelectItem> booleanSelectItems = new ArrayList<>();
-	private List<SelectItem> booleanSelectItemsNoNull = new ArrayList<>();
-	
-	@Override
-	protected void initialisation() {
-		INSTANCE = this;
-		super.initialisation();
-		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
-		booleanSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
-		booleanSelectItems.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
-		booleanSelectItems.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
-		
-		booleanSelectItemsNoNull.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
-		booleanSelectItemsNoNull.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
-		
-		UIManager.Listener.COLLECTION.add(new UIManager.Listener.Adapter(){
-			private static final long serialVersionUID = -3858521830715147966L;
-			@Override
-			public String getCurrentViewUrl() {
-				return WebNavigationManager.getInstance().getRequestUrl();
-			}
-			@Override
-			public String getViewPath(String identifier) {
-				return inject(WebNavigationManager.class).getPath(identifier,Boolean.FALSE,Boolean.FALSE);
-			}
-		});
-	}
+	private List<SelectItem> booleanSelectItems;
+	private List<SelectItem> booleanSelectItemsNoNull;
 	
 	private final Map<Class<? extends AbstractWebPage<?, ?,?, ?,?>>,Collection<Field>> requestParameterFieldsMap = new HashMap<Class<? extends AbstractWebPage<?,?,?,?,?>>, Collection<Field>>();
 	
@@ -113,6 +88,46 @@ public class WebManager extends AbstractBean implements Serializable {
 	@Setter private String decoratedTemplateInclude;
 		
 	private final String sessionAttributeUserSession = "userSession";
+	
+	@Override
+	protected void initialisation() {
+		INSTANCE = this;
+		super.initialisation();
+		languageBusiness.registerResourceBundle("org.cyk.ui.web.api.resources.message", getClass().getClassLoader());
+		UIManager.Listener.COLLECTION.add(new UIManager.Listener.Adapter(){
+			private static final long serialVersionUID = -3858521830715147966L;
+			@Override
+			public String getCurrentViewUrl() {
+				return WebNavigationManager.getInstance().getRequestUrl();
+			}
+			@Override
+			public String getViewPath(String identifier) {
+				return inject(WebNavigationManager.class).getPath(identifier,Boolean.FALSE,Boolean.FALSE);
+			}
+		});
+	}
+	
+	public List<SelectItem> getBooleanSelectItems(){
+		if(booleanSelectItems==null){
+			booleanSelectItems = new ArrayList<>();
+			booleanSelectItems.add(new SelectItem(null, languageBusiness.findText(SelectItemBuilderListener.NULL_LABEL_ID)));
+			addBooleanSelectItems(booleanSelectItems);
+		}
+		return booleanSelectItems;
+	}
+	
+	public List<SelectItem> getBooleanSelectItemsNoNull(){
+		if(booleanSelectItemsNoNull==null){
+			booleanSelectItemsNoNull = new ArrayList<>();
+			addBooleanSelectItems(booleanSelectItemsNoNull);
+		}
+		return booleanSelectItemsNoNull;
+	}
+	
+	private void addBooleanSelectItems(List<SelectItem> list){
+		list.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
+		list.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
+	}
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){
@@ -446,6 +461,9 @@ public class WebManager extends AbstractBean implements Serializable {
 		return getIdentifiableFromRequestParameter(Faces.getRequest(),aClass);
 	}
 	
+	public <T extends AbstractIdentifiable> Collection<T> getIdentifiablesFromRequestParameter(Class<T> aClass){
+		return decodeIdentifiablesRequestParameter(aClass);
+	}
 	
 	public Object[] getRequestParameterMapAsArray(){
 		Collection<Object> parametersCollection = new ArrayList<Object>();
