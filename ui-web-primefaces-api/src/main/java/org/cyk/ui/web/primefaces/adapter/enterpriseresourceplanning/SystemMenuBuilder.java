@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.cyk.system.root.business.api.security.BusinessServiceCollectionBusiness;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventMissedReason;
@@ -43,7 +44,6 @@ import org.cyk.system.root.model.party.person.PersonRelationshipType;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
-import org.cyk.system.root.model.security.BusinessServiceCollection;
 import org.cyk.system.root.model.security.LockCause;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.time.TimeDivisionType;
@@ -77,7 +77,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getEventCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Event.class, Icon.THING_CALENDAR);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.EVENT).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.EVENT).getName());
 		addChild(userSession,module,createListCommandable(EventMissedReason.class, null));
 		module.addChild(createListCommandable(Event.class, null));
 		module.addChild(createListCommandable(EventParty.class, null));
@@ -90,7 +90,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getFileCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(File.class, Icon.THING_FILE);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.FILE).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.FILE).getName());
 		module.addChild(createListCommandable(File.class, null));
 		module.addChild(createListCommandable(FileIdentifiableGlobalIdentifier.class, null));
 		/*module.addChild(createListCommandable(Script.class, null));
@@ -100,7 +100,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getGeographyCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Contact.class, Icon.THING_LOCATION_ARROW);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.GEOGRAPHY).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.GEOGRAPHY).getName());
 		module.addChild(createListCommandable(LocalityType.class, null));
 		module.addChild(createListCommandable(Locality.class, null));
 		module.addChild(createListCommandable(Country.class, null));
@@ -117,7 +117,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getPersonCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(Person.class, Icon.PERSON);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.PARTY).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.PARTY).getName());
 		module.addChild(createListCommandable(Person.class, null));
 		module.addChild(createListCommandable(PersonRelationship.class, null));
 		module.addChild(createListCommandable(PersonRelationshipType.class, null));
@@ -134,7 +134,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getMathematicsCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("mathematiques", null);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(BusinessServiceCollection.MATHEMATICS).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.MATHEMATICS).getName());
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(Movement.class, null));
 		
