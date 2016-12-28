@@ -14,6 +14,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.event.EventDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
@@ -41,6 +42,7 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
@@ -82,6 +84,7 @@ import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
+import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
@@ -184,6 +187,26 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			.addFieldNames(ReportTemplateEditPage.Form.FIELD_NAME
 				,ReportTemplateEditPage.Form.FIELD_TEMPLATE,ReportTemplateEditPage.Form.FIELD_HEADER_IMAGE,ReportTemplateEditPage.Form.FIELD_BACKGROUND_IMAGE
 				,ReportTemplateEditPage.Form.FIELD_DRAFT_BACKGROUND_IMAGE);
+		
+		getFormConfiguration(Script.class,Crud.CREATE).addRequiredFieldNames(ScriptEditPage.Form.FIELD_CODE,ScriptEditPage.Form.FIELD_FILE
+				,ScriptEditPage.Form.FIELD_EVALUATION_ENGINE)
+		.addFieldNames(ScriptEditPage.Form.FIELD_NAME);
+		
+		registerDetailsConfiguration(ScriptDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ScriptDetails.FIELD_FILE,ScriptDetails.FIELD_EVALUATION_ENGINE,ScriptDetails.FIELD_ARGUMENTS,ScriptDetails.FIELD_RETURNED
+								,ScriptDetails.FIELD_VARIABLES);
+					}
+				};
+			}
+		});
 	}
 
 	@Override

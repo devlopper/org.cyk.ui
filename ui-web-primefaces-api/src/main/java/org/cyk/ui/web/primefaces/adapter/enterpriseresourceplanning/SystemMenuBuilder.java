@@ -12,6 +12,8 @@ import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.FileRepresentationType;
+import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.system.root.model.file.report.ReportFile;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.Contact;
@@ -93,8 +95,8 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.FILE).getName());
 		module.addChild(createListCommandable(File.class, null));
 		module.addChild(createListCommandable(FileIdentifiableGlobalIdentifier.class, null));
-		/*module.addChild(createListCommandable(Script.class, null));
-		module.addChild(createListCommandable(ScriptVariable.class, null));*/
+		module.addChild(createListCommandable(Script.class, null));
+		//module.addChild(createListCommandable(ScriptVariable.class, null));
 		return module;
 	}
 	

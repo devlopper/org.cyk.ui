@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.system.root.business.api.file.ScriptBusiness;
+import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
@@ -16,5 +18,11 @@ public class ScriptConsultPage extends AbstractConsultPage<Script> implements Se
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-
+	@Override
+	protected void consultInitialisation() {
+		super.consultInitialisation();
+		inject(ScriptBusiness.class).evaluate(identifiable);
+		((ScriptDetails)details.getData()).setReturned(identifiable.getReturned().toString());
+	}
+	
 }

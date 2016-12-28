@@ -211,6 +211,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ReportTemplate.class, ReportTemplateEditPage.Form.class, ReportTemplateDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ReportTemplate.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Script.class, ScriptEditPage.Form.class, ScriptDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Script.class, null);
 	}
 	
 	protected void initializeEventModule(){
