@@ -2,14 +2,10 @@ package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.geography.ContactCollection;
-import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
@@ -18,6 +14,10 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter @Setter @NoArgsConstructor
 public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifiable> extends AbstractBusinessIdentifiedEditFormModel<PARTY> implements Serializable {
 
@@ -25,7 +25,7 @@ public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifia
 	
 	@OutputSeperator(label=@Text(value="field.contacts"))
 	@IncludeInputs(layout=Layout.VERTICAL)
-	protected ContactCollectionFormModel contactCollection = new ContactCollectionFormModel(LocationType.HOME);
+	protected ContactCollectionFormModel contactCollection = new ContactCollectionFormModel(RootConstant.Code.LocationType.HOME);
 	
 	@Override
 	public void setIdentifiable(PARTY identifiable) {

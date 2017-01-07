@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Location;
-import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.language.LanguageCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.person.BloodGroup;
@@ -76,7 +76,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 	@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete protected JobFunction jobFunction;
 	
 	@IncludeInputs(layout=Layout.VERTICAL)
-	protected ContactCollectionFormModel jobContactCollection = new ContactCollectionFormModel(LocationType.OFFICE);
+	protected ContactCollectionFormModel jobContactCollection = new ContactCollectionFormModel(RootConstant.Code.LocationType.OFFICE);
 	
 	@Input @InputFile(extensions=@FileExtensions(groups=FileExtensionGroup.IMAGE)) protected File signatureSpecimen;
 	
@@ -300,7 +300,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			*/
 			
 			@OutputSeperator(label=@Text(value="home")) 
-			@IncludeInputs private ContactCollectionFormModel homeContactCollection = new ContactCollectionFormModel(LocationType.HOME);
+			@IncludeInputs private ContactCollectionFormModel homeContactCollection = new ContactCollectionFormModel(RootConstant.Code.LocationType.HOME);
 			/*
 			@Input @InputText private String homeAddress;
 			@Input @InputText private String homePostCode;
@@ -310,7 +310,7 @@ public abstract class AbstractPersonEditFormModel<PERSON extends AbstractIdentif
 			@OutputSeperator(label=@Text(value="work")) 
 			@Input @InputText private String company;
 			@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private JobFunction jobFunction;
-			@IncludeInputs private ContactCollectionFormModel workContactCollection = new ContactCollectionFormModel(LocationType.OFFICE);
+			@IncludeInputs private ContactCollectionFormModel workContactCollection = new ContactCollectionFormModel(RootConstant.Code.LocationType.OFFICE);
 			/*
 			@Input @InputText private String workAddress;
 			@Input @InputText private String workPhoneNumber;
