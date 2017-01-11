@@ -7,9 +7,9 @@ import javax.inject.Named;
 
 import org.cyk.system.root.business.api.geography.LocalityBusiness;
 import org.cyk.system.root.business.api.geography.LocalityTypeBusiness;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.Locality;
-import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -32,7 +32,7 @@ public class CountryEditPage extends AbstractCrudOnePage<Country> implements Ser
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		setChoices(Form.FIELD_CONTINENT, inject(LocalityBusiness.class).findByType(
-				inject(LocalityTypeBusiness.class).find(LocalityType.CONTINENT)));
+				inject(LocalityTypeBusiness.class).find(RootConstant.Code.LocalityType.CONTINENT)));
 	}
 	
 	public static class Form extends AbstractBusinessIdentifiedEditFormModel<Country> implements Serializable{
