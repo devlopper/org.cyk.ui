@@ -2,7 +2,7 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.util.List;
 
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 
 public interface InputAutoCompleteCommon<VALUE_TYPE> {
 

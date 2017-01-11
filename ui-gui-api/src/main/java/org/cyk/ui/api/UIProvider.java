@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.AbstractCommandable;
@@ -107,7 +108,7 @@ public class UIProvider extends AbstractBean implements Serializable {
 			if(StringUtils.isBlank(input.getLabel())){
 				FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field);
 				input.setLabel(findTextResult.getValue());
-				input.setUniqueCssClass(CascadeStyleSheet.generateUniqueClassFrom(input.getType(), findTextResult));
+				input.getCss().setUniqueClass(inject(CascadeStyleSheetBusiness.class).generateUniqueClass(input.getType(), findTextResult.getIdentifier()));
 			}
 			input.setField(field);
 			Size size = field.getAnnotation(Size.class);

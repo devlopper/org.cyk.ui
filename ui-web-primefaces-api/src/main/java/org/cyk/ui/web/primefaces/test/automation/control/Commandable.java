@@ -2,13 +2,14 @@ package org.cyk.ui.web.primefaces.test.automation.control;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.business.impl.userinterface.style.CascadeStyleSheetBusinessImpl;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.primefaces.test.automation.AbstractElement;
 import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.cyk.utility.common.annotation.user.interfaces.Event;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class Commandable extends AbstractElement implements Serializable {
@@ -23,7 +24,7 @@ public class Commandable extends AbstractElement implements Serializable {
 	
 	@Override
 	protected String buildClassName(String labelIdentifier) {
-		return CascadeStyleSheet.generateClassFrom(CascadeStyleSheet.COMMANDABLE_CLASS_PREFIX, labelIdentifier);
+		return new CascadeStyleSheetBusinessImpl().generateClass(UIManager.COMMANDABLE_CLASS_PREFIX, labelIdentifier);
 	}
 	
 	@Override
@@ -31,11 +32,11 @@ public class Commandable extends AbstractElement implements Serializable {
 		super.click();
 		if(Boolean.TRUE.equals(confirmed)){
 			pause(CONFIRMED_PAUSE);
-			SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.CONFIRMATION_DIALOG_YES_COMMANDABLE_CLASS).click();
+			SeleniumHelper.getInstance().getElementByClassContains(UIManager.CONFIRMATION_DIALOG_YES_COMMANDABLE_CLASS).click();
 		}
 		if(Boolean.TRUE.equals(notified)){
 			pause(NOTIFIED_PAUSE);
-			SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS).click();
+			SeleniumHelper.getInstance().getElementByClassContains(UIManager.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS).click();
 		}
 		return this;
 	}

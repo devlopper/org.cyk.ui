@@ -5,10 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.primefaces.test.automation.control.Commandable;
 import org.cyk.ui.web.primefaces.test.automation.control.input.AbstractInput;
 import org.cyk.ui.web.primefaces.test.automation.control.input.InputCalendar;
@@ -19,6 +16,9 @@ import org.cyk.ui.web.primefaces.test.automation.control.input.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.generator.RandomDataProvider;
 import org.cyk.utility.common.generator.RandomDataProvider.RandomFile;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class Form extends AbstractBean implements Serializable {
@@ -85,7 +85,7 @@ public class Form extends AbstractBean implements Serializable {
 	}
 	
 	public Commandable getMessageDialogOkCommandable(){
-		return new Commandable(CascadeStyleSheet.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS){
+		return new Commandable(UIManager.NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS){
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected String buildClassName(String labelIdentifier) {

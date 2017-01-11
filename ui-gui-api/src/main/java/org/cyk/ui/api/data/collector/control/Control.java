@@ -1,6 +1,6 @@
 package org.cyk.ui.api.data.collector.control;
 
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.api.data.collector.form.AbstractControlSet;
 import org.cyk.ui.api.data.collector.layout.Position;
@@ -21,10 +21,7 @@ public interface Control<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> {
 	
 	CascadeStyleSheet getCss();
 	void setCss(CascadeStyleSheet aCascadeStyleSheet);
-	
-	String getUniqueCssClass();
-	void setUniqueCssClass(String value);
-	
+		
 	UserDeviceType getUserDeviceType();
 	
 } 

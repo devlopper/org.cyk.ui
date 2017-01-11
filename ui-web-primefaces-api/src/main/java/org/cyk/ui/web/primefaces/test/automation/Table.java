@@ -2,13 +2,13 @@ package org.cyk.ui.web.primefaces.test.automation;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.cyk.system.root.business.impl.userinterface.style.CascadeStyleSheetBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CascadeStyleSheet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class Table extends AbstractElement implements Serializable {
@@ -37,15 +37,15 @@ public class Table extends AbstractElement implements Serializable {
 		return this;
     }
 	public Table clickRead(String identifier){
-		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"open").click();
+		getHelper().getElementByClassContains(className,new CascadeStyleSheetBusinessImpl().generateClass(identifiableClass, identifier),"open").click();
 		return this;
     }
 	public Table clickUpdate(String identifier){
-		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"edit").click();
+		getHelper().getElementByClassContains(className,new CascadeStyleSheetBusinessImpl().generateClass(identifiableClass, identifier),"edit").click();
 		return this;
     }
 	public Table clickDelete(String identifier){
-		getHelper().getElementByClassContains(className,CascadeStyleSheet.generateClassFrom(identifiableClass, identifier),"remove").click();
+		getHelper().getElementByClassContains(className,new CascadeStyleSheetBusinessImpl().generateClass(identifiableClass, identifier),"remove").click();
 		return this;
     }
 	

@@ -386,5 +386,14 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	
 	/**/
 	
+	public static final String COMMANDABLE_CLASS_PREFIX = "commandable";
+	public static final String COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX = "commandable_user_account";
+	
+	public static final String RESULTS_CONTAINER_CLASS_PREFIX = "results_container_";
+	public static final String NOTIFICATION_DIALOG_OK_COMMANDABLE_CLASS = "messageDialogStyleClassOkButton";
+	public static final String CONFIRMATION_DIALOG_YES_COMMANDABLE_CLASS = "ui-confirmdialog-yes";
+	
+	public static final String CONTEXTUAL_MENU_CLASS = "contextual_menu";
+	public static final String GLOBAL_MENU_CLASS = "global_menu";
 	
 }

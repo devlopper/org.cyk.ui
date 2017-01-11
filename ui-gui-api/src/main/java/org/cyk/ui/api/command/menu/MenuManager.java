@@ -15,12 +15,10 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.Application;
@@ -30,7 +28,6 @@ import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractApplicationUIManager;
 import org.cyk.ui.api.AbstractUserSession;
-import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserDeviceType;
@@ -44,6 +41,9 @@ import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Deployment(initialisationType=InitialisationType.EAGER) @SuppressWarnings("rawtypes")
 public class MenuManager extends AbstractBean implements Serializable {
@@ -135,7 +135,7 @@ public class MenuManager extends AbstractBean implements Serializable {
 			break;
 		case USER_ACCOUNT:
 			commandableGroup = Builder.instanciateOne().setLabel(userSession.getUserAccount().getCredentials().getUsername()).create();
-			commandableGroup.getCascadeStyleSheet().addClass(CascadeStyleSheet.generateUniqueClassFrom(CascadeStyleSheet.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX
+			inject(CascadeStyleSheetBusiness.class).addClasses(commandableGroup.getCascadeStyleSheet(),inject(CascadeStyleSheetBusiness.class).generateUniqueClass(UIManager.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX
 					, commandableGroup.getLabel()));
 			commandableGroup.addChild(notificationsCommandable());
 			commandableGroup.addChild(c=Builder.instanciateOne().setLabelFromId("command.useraccount").setIcon(Icon.THING_USERACCOUNT).setView(ViewType.USER_ACCOUNT_CONSULT).create());

@@ -5,12 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.primefaces.page.security.LoginPage;
 import org.cyk.ui.web.primefaces.test.automation.control.input.AbstractInput;
 import org.cyk.ui.web.primefaces.test.automation.control.menu.ContextMenu;
@@ -23,6 +20,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class SeleniumHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
 	}
 	
 	public void logout(String username){
-		clickGlobalMenu(CascadeStyleSheet.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX,"commandable_command_useraccount_logout_");
+		clickGlobalMenu(UIManager.COMMANDABLE_USER_ACCOUNT_MODULE_CLASS_PREFIX,"commandable_command_useraccount_logout_");
 	}
 	
 	/* Pages */
@@ -141,10 +141,10 @@ public class SeleniumHelper extends AbstractBean implements Serializable {
     }
     
     public void clickContextualMenuEdit(){
-    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickEdit();
+    	new ContextMenu(UIManager.CONTEXTUAL_MENU_CLASS).clickEdit();
     }
     public void clickContextualMenuDelete(){
-    	new ContextMenu(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS).clickDelete();
+    	new ContextMenu(UIManager.CONTEXTUAL_MENU_CLASS).clickDelete();
     }
     
     /* Table */

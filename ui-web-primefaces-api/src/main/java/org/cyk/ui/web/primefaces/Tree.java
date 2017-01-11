@@ -12,7 +12,7 @@ import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameter
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.ClassUserInterface;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.web.api.WebNavigationManager;

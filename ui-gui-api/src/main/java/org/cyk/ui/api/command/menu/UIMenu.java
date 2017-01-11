@@ -2,7 +2,7 @@ package org.cyk.ui.api.command.menu;
 
 import java.util.Collection;
 
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.UICommandable;
 

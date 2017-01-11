@@ -13,7 +13,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.pattern.tree.NestedSet;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.persistence.api.pattern.tree.NestedSetNodeDao;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.model.pattern.tree.NestedSetNodeEditFormModel;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
@@ -34,7 +34,7 @@ public class NestedSetNodeQueryPage extends AbstractBusinessQueryPage<NestedSetN
 	
 	private static final CascadeStyleSheet ROOT = new CascadeStyleSheet();
 	static{
-		ROOT.addClass("rootclass");
+		ROOT.addClasses("rootclass");
 	}
 	
 	@Override

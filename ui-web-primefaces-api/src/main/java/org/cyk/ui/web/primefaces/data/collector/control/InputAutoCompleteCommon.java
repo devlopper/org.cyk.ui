@@ -17,7 +17,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInputAutoCompleteCommon;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;

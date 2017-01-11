@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -108,7 +109,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		for(FormOneData<?, ?, ?, ?, ?, ?> form : formOneDataCollection.getCollection())
 			for(Control<?, ?, ?, ?, ?> control : form.getSelectedFormData().getControlSets().iterator().next().getControls()){
 				if(control instanceof WebInput<?,?,?,?>)
-					((WebInput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");
+					inject(CascadeStyleSheetBusiness.class).addClasses(((WebInput<?,?,?,?>)control).getCss(),"cyk-ui-form-inputfield");
 				else if(control instanceof WebOutput<?, ?, ?, ?>)
 					;//((WebOutput<?,?,?,?>)control).getCss().addClass("cyk-ui-form-inputfield");
 			}
@@ -275,7 +276,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.findInputByFieldName(fieldName);
 		if(input==null)
 			return "";
-		return "$('."+input.getUniqueCssClass()+"').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";//TODO works only in 2 columns mode
+		return "$('."+input.getCss().getUniqueClass()+"').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";//TODO works only in 2 columns mode
 	}
 	
 	protected void onComplete(String...scripts){

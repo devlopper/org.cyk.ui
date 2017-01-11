@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UserDeviceType;
 import org.cyk.ui.api.data.collector.form.AbstractControlSet;
@@ -25,7 +25,6 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	protected Position position = new Position();
 	protected UIManager uiManager = UIManager.getInstance();
 	protected CascadeStyleSheet css = new CascadeStyleSheet();
-	protected String uniqueCssClass;
 	
 	{
 		id = System.currentTimeMillis()+RandomStringUtils.randomAlphanumeric(2);
@@ -39,12 +38,6 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	@Override
 	public UserDeviceType getUserDeviceType() {
 		return set.getUserDeviceType();
-	}
-	
-	public void setUniqueCssClass(String uniqueCssClass){
-		css.removeClass(this.uniqueCssClass);
-		this.uniqueCssClass = uniqueCssClass;
-		css.addClass(getUniqueCssClass());
 	}
 	
 	public static String getControlType(Class<?> aClass){

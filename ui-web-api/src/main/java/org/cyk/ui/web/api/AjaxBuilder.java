@@ -129,7 +129,7 @@ public class AjaxBuilder extends AbstractBean implements Serializable {
 	/**/
 	
 	private String getClassSelector(WebInput<?, ?, ?, ?> input){
-		return String.format(classSelectorFormat, classSelectorSymbol,input.getUniqueCssClass());
+		return String.format(classSelectorFormat, classSelectorSymbol,input.getCss().getUniqueClass());
 	}
 	
 	/**/

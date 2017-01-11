@@ -14,12 +14,13 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.CommandListener;
@@ -35,6 +36,7 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.Table;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -76,8 +78,8 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				super.added(row);
 				CascadeStyleSheet css = getRowCss(row.getType());
 				if(css!=null){
-					row.getCascadeStyleSheet().addClass(css.getClazz());
-					row.getCascadeStyleSheet().addInline(css.getInline());
+					inject(CascadeStyleSheetBusiness.class).addClasses(row.getCascadeStyleSheet(),css.getClazz());
+					inject(CascadeStyleSheetBusiness.class).addInlines(row.getCascadeStyleSheet(),css.getInline());
 				}
 			}
 		});
@@ -102,9 +104,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			@Override
 			public void added(Column column) {
 				super.added(column);
-				column.getCascadeStyleSheet().addClass(
+				inject(CascadeStyleSheetBusiness.class).addClasses(column.getCascadeStyleSheet(),
 						column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
-						"-"+column.getField().getName().toLowerCase());
+						Constant.CHARACTER_MINUS+column.getField().getName().toLowerCase());
 			}
 		});
 		table.getCellListeners().add(cellAdapter = new CellAdapter<Object>(){

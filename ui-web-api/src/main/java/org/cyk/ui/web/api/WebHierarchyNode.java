@@ -2,7 +2,7 @@ package org.cyk.ui.web.api;
 
 import java.io.Serializable;
 
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.model.AbstractHierarchyNode;
 
 import lombok.Getter;

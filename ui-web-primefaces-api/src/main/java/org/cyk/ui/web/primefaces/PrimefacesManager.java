@@ -14,11 +14,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -27,7 +25,6 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUITargetManager;
-import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.SelectItemBuilderListener;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
@@ -59,6 +56,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.push.EventBus;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Named @Deployment(initialisationType=InitialisationType.EAGER) @Getter @Setter
 public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem,String> implements Serializable {
@@ -146,7 +146,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		super.controlInstanceCreated(control);
 		if(control instanceof WebOutputText<?, ?, ?, ?>){
 			if(!(control instanceof WebOutputSeparator<?, ?,?,?>))
-				((WebOutputText<?, ?, ?, ?>)control).getCss().addClass("cyk-ui-form-block-header-title ui-state-highlight");
+				inject(CascadeStyleSheetBusiness.class).addClasses(((WebOutputText<?, ?, ?, ?>)control).getCss(),"cyk-ui-form-block-header-title ui-state-highlight");
 		}else if(control instanceof WebInput){
 			
 		}
@@ -159,9 +159,10 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			if(control instanceof org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>){
 				org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?> autoComplete = 
 						(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete<?>) control;
-				autoComplete.getCommon().getResultsContainerCascadeStyleSheet().addClass(CascadeStyleSheet.RESULTS_CONTAINER_CLASS_PREFIX+autoComplete.getUniqueCssClass());
+				inject(CascadeStyleSheetBusiness.class).addClasses(autoComplete.getCommon().getResultsContainerCascadeStyleSheet()
+						,UIManager.RESULTS_CONTAINER_CLASS_PREFIX+autoComplete.getCss().getUniqueClass());
 			}
-		}
+		} 
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -240,7 +241,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	public String classSelector(WebInput<?, ?, ?, ?> input){
 		if(input==null)
 			return "";
-		return String.format(CLASS_SELECTOR_FORMAT, input.getUniqueCssClass());
+		return String.format(CLASS_SELECTOR_FORMAT, input.getCss().getUniqueClass());
 	}
 	
 	public String getStartScript(String widgetVar){

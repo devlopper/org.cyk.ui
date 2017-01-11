@@ -2,9 +2,9 @@ package org.cyk.ui.api.model.table;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.CascadeStyleSheet;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.CommonUtils;
 
@@ -27,7 +27,7 @@ public class RowAdapter<DATA> extends org.cyk.utility.common.model.table.RowList
 			row.setDeletable(CommonUtils.getInstance().inject(GlobalIdentifierBusiness.class).isDeletable(identifiable));
 			
 			if(identifiable.getIdentifier()!=null && StringUtils.isBlank(row.getCascadeStyleSheet().getUniqueClass()))
-				row.getCascadeStyleSheet().setUniqueClass(CascadeStyleSheet.generateUniqueClassFrom(identifiable));
+				inject(CascadeStyleSheetBusiness.class).setUniqueClass(row.getCascadeStyleSheet(),inject(CascadeStyleSheetBusiness.class).generateUniqueClass(identifiable));
 		}
 	}
 	

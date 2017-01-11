@@ -3,7 +3,7 @@ package org.cyk.ui.web.primefaces.test.automation.control.input;
 import java.io.Serializable;
 import java.util.List;
 
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.AbstractControl;
 import org.cyk.ui.web.primefaces.test.automation.SeleniumHelper;
 import org.openqa.selenium.By;
@@ -17,7 +17,7 @@ public class InputOneAutoComplete extends AbstractInputChoice implements Seriali
 	
 	public InputOneAutoComplete(String fieldName, String filter,Integer value) {
 		super(fieldName, filter,value);
-		resultsContainerWebElement = SeleniumHelper.getInstance().getElementByClassContains(CascadeStyleSheet.RESULTS_CONTAINER_CLASS_PREFIX
+		resultsContainerWebElement = SeleniumHelper.getInstance().getElementByClassContains(UIManager.RESULTS_CONTAINER_CLASS_PREFIX
 				+AbstractControl.getControlType(org.cyk.ui.web.primefaces.data.collector.control.InputOneAutoComplete.class).toLowerCase()+className);
 	}
 	

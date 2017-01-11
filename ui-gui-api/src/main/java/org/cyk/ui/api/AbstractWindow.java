@@ -17,6 +17,7 @@ import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
+import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.api.validation.ValidationPolicy;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -77,7 +78,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		super.initialisation();
 		mainMenu = UIManager.getInstance().isMobileDevice(userDeviceType)?getUserSession().getMobileApplicationMenu():getUserSession().getApplicationMenu();
 		if(mainMenu!=null)
-			mainMenu.getCascadeStyleSheet().addClass(CascadeStyleSheet.GLOBAL_MENU_CLASS);
+			inject(CascadeStyleSheetBusiness.class).addClasses(mainMenu.getCascadeStyleSheet(),UIManager.GLOBAL_MENU_CLASS);
 	}
 	
 	protected void setUserDeviceType() {
@@ -93,7 +94,7 @@ public abstract class AbstractWindow<FORM,ROW,LABEL,CONTROL,SELECTITEM,COMANDABL
 		if(contextualCommandables!=null){
 			if(contextualMenu==null)
 				contextualMenu = new DefaultMenu();
-			contextualMenu.getCascadeStyleSheet().addClass(CascadeStyleSheet.CONTEXTUAL_MENU_CLASS);
+			inject(CascadeStyleSheetBusiness.class).addClasses(contextualMenu.getCascadeStyleSheet(),UIManager.CONTEXTUAL_MENU_CLASS);
 			for(UICommandable subMenu : contextualCommandables){
 				contextualMenu.addCommandable(subMenu);
 				

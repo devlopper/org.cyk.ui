@@ -278,7 +278,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	//TODO should not be here
 	public String getClassSelector(WebInput<?, ?, ?, ?> input){
-		return "@(."+input.getUniqueCssClass()+")";
+		return "@(."+input.getCss().getUniqueClass()+")";
 	}
 	
 	public String encodeIdentifiersAsRequestParameterValue(Collection<Long> identifiers){

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.web.api.AjaxListener;
@@ -65,11 +65,11 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 		return null;
 	}
 	
-	@Override
+	/*@Override
 	public void setUniqueCssClass(String uniqueCssClass) {
 		super.setUniqueCssClass(uniqueCssClass);
 		readOnlyValueCss.addClass(getUniqueCssClass());
-	}
+	}*/
 	
 	public void setReadOnly(Boolean value){
 		this.readOnly = value;

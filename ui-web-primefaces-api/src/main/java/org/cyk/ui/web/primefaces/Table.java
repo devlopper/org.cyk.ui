@@ -16,7 +16,7 @@ import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.ui.api.CascadeStyleSheet;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
@@ -119,7 +119,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		setNumberOfNullUiIndex(null);
 		
 		if(Boolean.TRUE.equals(columns.size()>numberOfColumnsHorizontalHeader))
-			getCascadeStyleSheet().addClass(PrimefacesManager.CSS_CLASS_TABLE_VERTICAL_HEADER);
+			getCascadeStyleSheet().addClasses(PrimefacesManager.CSS_CLASS_TABLE_VERTICAL_HEADER);
 			
 		dataTable.setEditable(getEditable());
 	}
@@ -301,7 +301,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		@Override
 		public void added(Column column) {
 			super.added(column);
-			column.getCascadeStyleSheet().addClass(
+			column.getCascadeStyleSheet().addClasses(
 					column.getField().getDeclaringClass().getSimpleName().toLowerCase()+
 					"-"+column.getField().getName().toLowerCase());
 		}
