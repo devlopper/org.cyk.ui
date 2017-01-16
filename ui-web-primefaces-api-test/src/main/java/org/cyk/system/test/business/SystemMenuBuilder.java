@@ -36,7 +36,7 @@ public class SystemMenuBuilder extends org.cyk.ui.web.primefaces.adapter.enterpr
 		addBusinessMenu(userSession,systemMenu,getGeographyCommandable(userSession, null));
 		addBusinessMenu(userSession,systemMenu,getPersonCommandable(userSession, null));
 		addBusinessMenu(userSession,systemMenu,getMathematicsCommandable(userSession, null));
-		
+		addBusinessMenu(userSession,systemMenu,getMessageCommandable(userSession, null));
 		return systemMenu;
 	}
 	

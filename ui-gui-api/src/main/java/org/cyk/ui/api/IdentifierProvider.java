@@ -113,7 +113,7 @@ public interface IdentifierProvider{
 				if(StringUtils.isEmpty(identifier))
 					identifier = getViewDynamic(commonBusinessAction, one);
 				
-				if(StringUtils.isEmpty(identifier) && businessEntityInfos.getCrudStrategy().equals(CrudStrategy.BUSINESS))
+				if(StringUtils.isEmpty(identifier) && businessEntityInfos.getCrudStrategy()!=null && businessEntityInfos.getCrudStrategy().equals(CrudStrategy.BUSINESS))
 					logWarning("No view identifier found for {} {} {}", aClass.getSimpleName(),commonBusinessAction,Boolean.TRUE.equals(one) ? "one":"many");
 				return identifier;
 			}

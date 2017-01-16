@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.security.RoleBusiness;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
@@ -27,6 +28,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputOneCascadeList;
+import org.cyk.ui.api.data.collector.control.InputOneChoice;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
@@ -102,7 +104,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 				collection.add(role);
 			return collection;
 		}else{
-			return UIManager.getInstance().getGenericBusiness().use((Class<? extends AbstractIdentifiable>) commonUtils.getFieldType(data.getClass(), field)).find().all();
+			Class<? extends AbstractIdentifiable> identifiableClass = (Class<? extends AbstractIdentifiable>) (inputChoice instanceof InputOneChoice ? commonUtils.getFieldType(data.getClass(), field) : aClass);
+			return  (Collection<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll();
+			//return UIManager.getInstance().getGenericBusiness().use(identifiableClass).find().all();
 		}
 	}
 	

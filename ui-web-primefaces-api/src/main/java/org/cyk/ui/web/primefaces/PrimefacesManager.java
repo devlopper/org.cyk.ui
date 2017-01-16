@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,6 +35,7 @@ import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.control.InputManyAutoComplete;
+import org.cyk.ui.api.data.collector.control.InputManyChoice;
 import org.cyk.ui.api.data.collector.control.InputOneAutoComplete;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
@@ -69,6 +71,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	private static final Map<Class<? extends AbstractOutputDetails<?>>, DetailsConfiguration> DETAILS_CONFIGURATION_MAP = new HashMap<>();
 	private static final DetailsConfiguration DETAILS_CONFIGURATION = new DetailsConfiguration();
+	public static final Map<Class<?>, InputAutoCompleteCommon.Listener<?>> INPUT_AUTO_COMPLETE_COMMON_LISTENER_MAP = new HashMap<>();
 		
 	public static final String PUSH_CHANNEL_GLOBAL = "/pushChannelGlobal";
 	public static final String PUSH_CHANNEL_USER = "/pushChannelUser";
@@ -190,7 +193,16 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			else if(inputChoice instanceof InputManyAutoComplete)
 				inputAutoCompleteCommon = ((InputManyAutoComplete<?, ?, ?, ?, ?, ?,?>)inputChoice).getCommon();
 			if(inputAutoCompleteCommon!=null){
-				((InputAutoCompleteCommon<?>)inputAutoCompleteCommon).getAutoCompleteListeners().add(new InputAutoCompleteCommon.Listener.Adapter.Default(fieldType));
+				Class<AbstractIdentifiable> identifiableClass;
+				if(inputChoice instanceof InputManyChoice){
+					identifiableClass = (Class<AbstractIdentifiable>) ((ParameterizedType)inputChoice.getField().getGenericType()).getActualTypeArguments()[0];
+				}else
+					identifiableClass = (Class<AbstractIdentifiable>) fieldType;
+				inputAutoCompleteCommon.setIdentifiableClass(identifiableClass);
+				InputAutoCompleteCommon.Listener listener = INPUT_AUTO_COMPLETE_COMMON_LISTENER_MAP.get(identifiableClass);
+				if(listener == null)
+					listener = new InputAutoCompleteCommon.Listener.Adapter.Default();
+				((InputAutoCompleteCommon<?>)inputAutoCompleteCommon).getAutoCompleteListeners().add(listener);
 			}
 		}else if(inputChoice instanceof InputOneCascadeList){
 			if(AbstractDataTreeNode.class.isAssignableFrom(fieldType)){

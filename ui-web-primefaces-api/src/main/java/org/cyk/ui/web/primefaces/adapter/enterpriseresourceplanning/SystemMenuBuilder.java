@@ -50,6 +50,7 @@ import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.time.TimeDivisionType;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.web.primefaces.AbstractSystemMenuBuilder;
@@ -149,7 +150,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getMessageCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("command.notification.management", null);
-		module.addChild(createListCommandable(SmtpProperties.class, null));
+		module.addChild(Builder.create("sendmail", null, "mailSendView"));
 		
 		return module;
 	}
@@ -165,6 +166,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceTimeCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMathematicsCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceMessageCommandable(userSession, mobileCommandables));
 	}
 	
 	/**/
@@ -249,6 +251,14 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(IntervalCollection.class, null));
 		module.addChild(createListCommandable(MetricCollection.class, null));
+		return module;
+	}
+	
+	public Commandable getReferenceMessageCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("command.notification.management", null);
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.MATHEMATICS).getName());
+		module.addChild(createListCommandable(SmtpProperties.class, null));
+		
 		return module;
 	}
 	

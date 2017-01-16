@@ -13,7 +13,11 @@
 		<ui:param name="input" value="#{control}" />
 		<ui:param name="forId" value="inputOneAutoComplete" />
 		<ui:define name="input">
-			<p:autoComplete id="inputOneAutoComplete" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/choice/autoComplete.xhtml" >
+				<ui:param name="identifier" value="inputOneAutoComplete"/>
+				<ui:param name="multiple" value="false"/>
+			</ui:include>
+			<!--p:autoComplete id="inputOneAutoComplete" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				panelStyleClass="#{control.common.resultsContainerCascadeStyleSheet.clazz}" panelStyle="#{control.common.resultsContainerCascadeStyleSheet.inline}"
 				completeMethod="#{control.common.complete}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 				requiredMessage="#{control.requiredMessage}" disabled="#{control.disabled}" queryDelay="#{control.common.numberOfMillisecondBetweenQueries}" 
@@ -24,7 +28,7 @@
 				 var="item" itemLabel="#{control.common.getLabel(item)}" itemValue="#{item}">
 			
 				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/body.xhtml" />
-			</p:autoComplete>
+			</p:autoComplete-->
 			
 			<!--f:selectItems value="#{control.list}" /-->
 						
