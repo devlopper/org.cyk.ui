@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
@@ -305,6 +306,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		if(StringUtils.isBlank(value))
 			identifiers = null;
 		else{
+			System.out.println("WebManager.decodeIdentifiersRequestParameterValue() : "+value);
 			String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
 			String number = StringUtils.repeat(Constant.CHARACTER_ZERO,Integer.valueOf(tokens[2]))
 					+inject(NumberBusiness.class).decodeBase62(tokens[1]);
@@ -320,8 +322,8 @@ public class WebManager extends AbstractBean implements Serializable {
 		if(StringUtils.isBlank(identifiable))
 			return null;
 		//TODO many parameters can be encoded
-		String encodedParameter = getRequestParameter(request, UniformResourceLocatorParameter.ENCODED);
-		if(name.equals(encodedParameter)){
+		String[] encodedParameterNames = request.getParameterValues(UniformResourceLocatorParameter.ENCODED);
+		if(ArrayUtils.contains(encodedParameterNames, name)){
 			Collection<Long> r = decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
 				identifiers.addAll(r);
@@ -352,15 +354,27 @@ public class WebManager extends AbstractBean implements Serializable {
 		Collection<Long> identifiers = decodeIdentifiersRequestParameter(name, request);
 		@SuppressWarnings("unchecked")
 		TypedBusiness<IDENTIFIABLE> business = (TypedBusiness<IDENTIFIABLE>) BusinessInterfaceLocator.getInstance().injectLocated(identifiableClass);
-		//BusinessLocator.getInstance().locate(identifiableClass);
-		return business.findByIdentifiers(identifiers);
+		Collection<IDENTIFIABLE> collection = business.findByIdentifiers(identifiers);
+		logTrace("Decode identifiables from request parameters. class={} , name={} , count={} , collection={}",identifiableClass,name,collection.size(), collection);
+		return collection;
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass,HttpServletRequest request){
+		return decodeIdentifiablesRequestParameter(identifiableClass,getEncodedParameterName(identifiableClass, request),request);
+		/*
 		String encodedParameter = getRequestParameter(request, UniformResourceLocatorParameter.ENCODED);
 		return decodeIdentifiablesRequestParameter(identifiableClass,UniformResourceLocatorParameter.IDENTIFIABLE.equals(encodedParameter) 
 				? UniformResourceLocatorParameter.IDENTIFIABLE : UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier(),request);
+				*/
 	}
+	
+	private <IDENTIFIABLE extends AbstractIdentifiable> String getEncodedParameterName(Class<IDENTIFIABLE> identifiableClass,HttpServletRequest request){
+		String[] encodedParameterNames = request.getParameterValues(UniformResourceLocatorParameter.ENCODED);
+		System.out.println("WebManager.getEncodedParameterName() : "+StringUtils.join(encodedParameterNames," ; "));
+		return ArrayUtils.contains(encodedParameterNames, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier())
+				? UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier() : UniformResourceLocatorParameter.IDENTIFIABLE;			
+	}
+	
 	public <IDENTIFIABLE extends AbstractIdentifiable> Collection<IDENTIFIABLE> decodeIdentifiablesRequestParameter(Class<IDENTIFIABLE> identifiableClass){
 		return decodeIdentifiablesRequestParameter(identifiableClass, Faces.getRequest());
 	}

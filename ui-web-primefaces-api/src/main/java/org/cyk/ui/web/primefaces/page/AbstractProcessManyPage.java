@@ -5,11 +5,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -20,6 +18,9 @@ import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormOnePage<ENTITY> implements CommandListener,Serializable {
@@ -98,6 +99,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			processPageListener.initialisationEnded(this);
 	}
 	
+	
 	@Override
 	public String getContentTitle() {
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
@@ -114,12 +116,15 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		//return super.getContentTitleIdentifiableText();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.afterInitialisationStarted(this);
+		
+		table.getColumns().get(0).setTitle(inject(LanguageBusiness.class).findClassLabelText((Class<ENTITY>) businessEntityInfos.getClazz()));
 		
 		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners())
 			processPageListener.afterInitialisationEnded(this);
@@ -252,7 +257,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		
 		public ProcessItem(AbstractIdentifiable identifiable) {
 			super(identifiable);
-			name = rootBusinessLayer.getFormatterBusiness().format(identifiable);
+			name = inject(FormatterBusiness.class).format(identifiable);
 		}
 	}
 }
