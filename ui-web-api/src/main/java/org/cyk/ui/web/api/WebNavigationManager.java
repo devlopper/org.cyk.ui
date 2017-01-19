@@ -50,6 +50,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
+import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.omnifaces.util.Faces;
@@ -89,6 +90,24 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			@Override
 			public String getViewGlobalIdentifierEdit() {
 				return INSTANCE.outcomeGlobalIdentifierEdit;
+			}
+		});
+	
+		UrlStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
+		UrlStringBuilder.SCHEME = "http";
+		UrlStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getPathFromIdentifier(String identifier) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				NavigationCase navigationCase = ((ConfigurableNavigationHandler)facesContext.getApplication().getNavigationHandler())
+						.getNavigationCase(facesContext, null, identifier);
+			
+				if(navigationCase==null){
+					
+				}else
+					return navigationCase.getToViewId(facesContext);
+				return super.getPathFromIdentifier(identifier);
 			}
 		});
 	}
@@ -564,6 +583,11 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		else
 			WebNavigationManager.getInstance().redirectToFileConsultManyPage(Utils.getFiles(fileIdentifiableGlobalIdentifiers), FileExtension.PDF);
 	}
+	
+	/*public <IDENTIFIABLE extends AbstractIdentifiable> UrlStringBuilder getRedirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
+			,String actionIdentifier,Object[] parameters){
+		
+	}*/
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> void redirectToDynamicProcessManyPage(String outcome,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables
 			,String actionIdentifier,Object[] parameters){

@@ -27,7 +27,7 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
-	private Table<ProcessItem> table;
+	private Table<Object> table;
 	private Collection<ENTITY> elements;
 	private Boolean showForm;
 	
@@ -43,8 +43,15 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		Collection<Long> identifiers = webManager.decodeIdentifiersRequestParameter();
 		elements = (Collection<ENTITY>) genericBusiness.use((Class<? extends AbstractIdentifiable>) businessEntityInfos.getClazz()).findByIdentifiers(identifiers);
 		
+		Class<Object> itemClass = null;
+		for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
+			Class<Object> v = (Class<Object>) processPageListener.getItemClass(this);
+			if(v!=null)
+				itemClass = v;
+		}
+		
 		@SuppressWarnings("rawtypes")
-		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,ProcessItem>(entityClass, ProcessItem.class){
+		DetailsConfigurationListener.Table.Adapter listener = new DetailsConfigurationListener.Table.Adapter<ENTITY,Object>(entityClass, itemClass){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<ENTITY> getIdentifiables() {
@@ -66,7 +73,13 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 					
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field, ProcessItem.FIELD_NAME);
+						Boolean isColumn = null;
+						for(AbstractProcessManyPage.Listener<?,?> processPageListener : getListeners()){
+							Boolean v = processPageListener.isItemTableColumn(AbstractProcessManyPage.this,field);
+							if(v!=null)
+								isColumn = v;
+						}
+						return isColumn;//isFieldNameIn(field, ProcessItem.FIELD_NAME);
 					}
 				};
 			}
@@ -172,6 +185,8 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 		Boolean getShowForm(AbstractProcessManyPage<?> processManyPage,String actionIdentifier);
 		void serve(AbstractProcessManyPage<?> processManyPage,Object data, String actionIdentifier);
 		String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier);
+		Class<?> getItemClass(AbstractProcessManyPage<?> page);
+		Boolean isItemTableColumn(AbstractProcessManyPage<?> processManyPage,Field field);
 		
 		@Getter @Setter
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
@@ -197,6 +212,17 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 			public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 				return null;
 			}
+			
+			@Override
+			public Class<?> getItemClass(AbstractProcessManyPage<?> page) {
+				return null;
+			}
+			
+			@Override
+			public Boolean isItemTableColumn(AbstractProcessManyPage<?> processManyPage, Field field) {
+				return null;
+			}
+			
 			@Override
 			public void initialisationEnded(AbstractBean bean) {
 				super.initialisationEnded(bean);
@@ -243,7 +269,17 @@ public abstract class AbstractProcessManyPage<ENTITY extends AbstractIdentifiabl
 				@Override
 				public String getContentTitle(AbstractProcessManyPage<?> processManyPage,String actionIdentifier) {
 					return inject(LanguageBusiness.class).findActionIdentifierText(actionIdentifier, processManyPage.getBusinessEntityInfos(), Boolean.FALSE).getValue();
-				}	
+				}
+				
+				@Override
+				public Class<?> getItemClass(AbstractProcessManyPage<?> page) {
+					return ProcessItem.class;
+				}
+				
+				@Override
+				public Boolean isItemTableColumn(AbstractProcessManyPage<?> processManyPage, Field field) {
+					return field.getName().equals(ProcessItem.FIELD_NAME);
+				}
 			}
 		}
 		

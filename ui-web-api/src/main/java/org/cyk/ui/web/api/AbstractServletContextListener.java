@@ -41,7 +41,9 @@ import org.cyk.ui.web.api.WebNavigationManager.Listener;
 import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentListener;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
+import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
 
@@ -87,6 +89,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		servletContext = event.getServletContext();
+		UrlStringBuilder.CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
 		addUrls(event);
 		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());

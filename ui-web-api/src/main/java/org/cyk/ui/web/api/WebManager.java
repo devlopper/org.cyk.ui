@@ -306,7 +306,6 @@ public class WebManager extends AbstractBean implements Serializable {
 		if(StringUtils.isBlank(value))
 			identifiers = null;
 		else{
-			System.out.println("WebManager.decodeIdentifiersRequestParameterValue() : "+value);
 			String[] tokens = StringUtils.split(value, REQUEST_PARAMETER_TOKEN_SEPERATOR);
 			String number = StringUtils.repeat(Constant.CHARACTER_ZERO,Integer.valueOf(tokens[2]))
 					+inject(NumberBusiness.class).decodeBase62(tokens[1]);
@@ -370,7 +369,6 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	private <IDENTIFIABLE extends AbstractIdentifiable> String getEncodedParameterName(Class<IDENTIFIABLE> identifiableClass,HttpServletRequest request){
 		String[] encodedParameterNames = request.getParameterValues(UniformResourceLocatorParameter.ENCODED);
-		System.out.println("WebManager.getEncodedParameterName() : "+StringUtils.join(encodedParameterNames," ; "));
 		return ArrayUtils.contains(encodedParameterNames, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier())
 				? UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier() : UniformResourceLocatorParameter.IDENTIFIABLE;			
 	}

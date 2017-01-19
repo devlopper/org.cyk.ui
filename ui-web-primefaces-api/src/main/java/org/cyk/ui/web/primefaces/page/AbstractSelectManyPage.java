@@ -22,8 +22,10 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.AbstractQueryManyFormModel;
 import org.cyk.ui.api.model.CodesFormModel;
+import org.cyk.ui.web.api.UrlStringBuilderProvider;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
+import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -179,6 +181,7 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 		void beforeServe(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		Object[] getParameters(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
+		UrlStringBuilder getRedirectUrlStringBuilder(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier);
 		
 		@Getter @Setter
 		public static class Adapter<ENTITY_TYPE extends AbstractIdentifiable,IDENTIFIER_TYPE> extends BusinessEntityFormOnePageListener.Adapter<ENTITY_TYPE> implements Listener<ENTITY_TYPE,IDENTIFIER_TYPE>,Serializable {
@@ -212,6 +215,11 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 				return null;
 			}
 			
+			@Override
+			public UrlStringBuilder getRedirectUrlStringBuilder(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {
+				return null;
+			}
+			
 			@SuppressWarnings("unchecked")
 			public static Collection<Listener<?,Object>> getListeners(Class<? extends Identifiable<?>> aClass){
 				Collection<Listener<?,Object>> results = new ArrayList<>();
@@ -236,12 +244,31 @@ public abstract class AbstractSelectManyPage<ENTITY extends AbstractIdentifiable
 				
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
+				public UrlStringBuilder getRedirectUrlStringBuilder(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {
+					UrlStringBuilder urlStringBuilder = inject(UrlStringBuilderProvider.class).getDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
+							,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier);
+					
+					return urlStringBuilder;
+				}
+				
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				@Override
 				public void serve(AbstractSelectManyPage<?> selectManyPage,Object data, String actionIdentifier) {
 					if(StringUtils.isBlank(actionIdentifier))
 						logTrace("No action identifier found for {} to process many", selectManyPage.getBusinessEntityInfos().getClazz());
-					else
-						WebNavigationManager.getInstance().redirectToDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
-							,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier,getParameters(selectManyPage, data, actionIdentifier));
+					else{
+						UrlStringBuilder urlStringBuilder = getRedirectUrlStringBuilder(selectManyPage,data,actionIdentifier);
+						//if(urlStringBuilder!=null)
+						//	System.out.println(urlStringBuilder.build());
+						if(urlStringBuilder==null){
+							WebNavigationManager.getInstance().redirectToDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
+									,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier,getParameters(selectManyPage, data, actionIdentifier));
+						}else{
+							inject(WebNavigationManager.class).redirectToUrl(urlStringBuilder.build());
+						}
+					}
+					//WebNavigationManager.getInstance().redirectToDynamicProcessManyPage((Class<ENTITY>) selectManyPage.getBusinessEntityInfos().getClazz()
+					//		,((AbstractQueryManyFormModel)data).getIdentifiables(), actionIdentifier,getParameters(selectManyPage, data, actionIdentifier));
 				}
 			}
 		}
