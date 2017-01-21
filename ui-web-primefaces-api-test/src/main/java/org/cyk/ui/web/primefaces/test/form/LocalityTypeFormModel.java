@@ -10,7 +10,7 @@ import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
-@Getter @Setter
+@Getter @Setter @Deprecated
 public class LocalityTypeFormModel extends AbstractFormModel<LocalityType> implements Serializable {
 
 	private static final long serialVersionUID = 7821779051431445562L;
