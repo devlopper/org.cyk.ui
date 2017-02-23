@@ -434,6 +434,10 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 			return createReport(identifiable, reportIdentifier, labelid, iconType, Boolean.TRUE);
 		}
 		
+		/*public static UICommandable createReport(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
+			return url(Webna outcomeFileConsultMany,getFileConsultManyPageObjects(identifiables, fileExtension));
+		}*/
+		
 		private UICommandable crud(BusinessEntityInfos businessEntityInfos,ViewType viewType,Icon icon){
 			UICommandable commandable = Builder.instanciateOne().setLabelFromId(businessEntityInfos.getUserInterface().getLabelId()).setIcon(icon).create();
 			commandable.setBusinessEntityInfos(businessEntityInfos);

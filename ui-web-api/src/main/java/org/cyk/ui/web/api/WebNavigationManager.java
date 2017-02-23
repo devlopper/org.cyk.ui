@@ -28,10 +28,12 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.FileBusiness;
+import org.cyk.system.root.business.api.file.FileRepresentationTypeBusiness;
 import org.cyk.system.root.business.api.file.report.ReportTemplateBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -546,13 +548,23 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
-	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
-		redirectTo(outcomeFileConsultMany,new Object[]{
+	public Object[] getFileConsultManyPageObjects(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
+		return new Object[]{
 				UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
 				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
-		});
+		};
+	}
+	
+	public void redirectToFileConsultManyPage(Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){
+		redirectTo(outcomeFileConsultMany,getFileConsultManyPageObjects(identifiables, fileExtension));
+	}
+	
+	public String getUrlToFileConsultManyPage(String fileRepresentationTypeCode,AbstractIdentifiable identifiable,FileExtension fileExtension){
+		Collection<File> files = inject(FileBusiness.class).findByRepresentationTypesByIdentifiables(Arrays.asList(inject(FileRepresentationTypeBusiness.class)
+				.find(fileRepresentationTypeCode)),Arrays.asList(identifiable));
+		return url(outcomeFileConsultMany,getFileConsultManyPageObjects(files, fileExtension));
 	}
 	
 	public void redirectToFileConsultManyPage(Collection<FileRepresentationType> fileRepresentationTypes,Collection<? extends AbstractIdentifiable> identifiables,FileExtension fileExtension){

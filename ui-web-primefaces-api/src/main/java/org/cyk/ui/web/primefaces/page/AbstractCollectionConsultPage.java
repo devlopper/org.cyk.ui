@@ -13,6 +13,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.model.table.ColumnAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
@@ -50,7 +51,25 @@ public abstract class AbstractCollectionConsultPage<COLLECTION extends AbstractI
 				return getDetailsConfiguration(getItemDetailsClass()).getTableColumnAdapter(null,AbstractCollectionConsultPage.this);
 			}
 			
+			@Override
+			public Boolean getEnabledInDefaultTab() {
+				return getEnableItemTableInDefaultTab();
+			}
+			
+			@Override
+			public String getTabId() {
+				return getItemTableTabId();
+			}
+			
 		});
+	}
+	
+	protected Boolean getEnableItemTableInDefaultTab(){
+		return Boolean.FALSE;
+	}
+	
+	protected String getItemTableTabId(){
+		return IdentifierProvider.Adapter.getTabOf(getItemClass());
 	}
 	
 	protected abstract Collection<ITEM> findByCollection(COLLECTION collection);
