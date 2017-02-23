@@ -24,6 +24,7 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtension;
+import org.cyk.utility.common.file.FileNameNormaliser;
 
 public abstract class AbstractFileServlet extends AbstractServlet implements Serializable {
 
@@ -75,7 +76,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		}
 		if(StringUtils.isBlank(name))
 			name = RandomStringUtils.randomAlphabetic(4);
-		return fileBusiness.convertToFileName(name);
+		return new FileNameNormaliser.Adapter.Default().setInput(name).execute();
 	}
 	
 	protected String fileExtension(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {

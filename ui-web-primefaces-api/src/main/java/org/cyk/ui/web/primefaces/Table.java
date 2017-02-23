@@ -29,6 +29,7 @@ import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.computation.DataReadConfiguration;
@@ -222,7 +223,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 				private static final long serialVersionUID = -5029807106028522292L;
 				@Override
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
+					LogMessage.Builder logMessageBuilder = new LogMessage.Builder("Load","data");
+					logMessageBuilder.addParameters("filters",filters);
 					String filter = (String)filters.get("globalFilter");
+					logMessageBuilder.addParameters("global filter",filter);
 					DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 					if(Boolean.TRUE.equals(fetch)){
 						Table.this.load(configuration);
@@ -245,6 +249,8 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 							}
 					}
 					resultsCount =  count(configuration);
+					logMessageBuilder.addParameters("result count",resultsCount);
+					logTrace(logMessageBuilder);
 					return rows;
 				}
 				

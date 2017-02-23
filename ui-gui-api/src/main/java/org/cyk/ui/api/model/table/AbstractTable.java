@@ -270,7 +270,6 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		if(removeRowCommandable!=null)
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
-		logTrace("Table build - Identifiable {}", identifiableClass==null?null:identifiableClass.getSimpleName());
 		super.build();
 		
 		if(!Boolean.TRUE.equals(getLazyLoad())){

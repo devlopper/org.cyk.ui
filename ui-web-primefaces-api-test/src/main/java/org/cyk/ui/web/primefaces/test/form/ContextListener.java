@@ -7,10 +7,7 @@ import javax.servlet.annotation.WebListener;
 
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
 import org.cyk.system.root.business.api.language.LanguageCollectionBusiness;
-import org.cyk.system.root.business.impl.BusinessServiceProvider;
-import org.cyk.system.root.business.impl.BusinessServiceProvider.Service;
 import org.cyk.system.root.business.impl.language.LanguageBusinessImpl;
-import org.cyk.system.root.business.impl.party.person.AbstractActorBusinessImpl;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
@@ -28,7 +25,6 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
 import org.cyk.system.test.model.actor.Actor;
-import org.cyk.system.test.model.actor.Actor.SearchCriteria;
 import org.cyk.system.test.model.actor.ActorDetails;
 import org.cyk.system.test.model.actor.ActorEditPage;
 import org.cyk.system.test.model.actor.ActorProcessManyPageAdapter;
@@ -45,7 +41,6 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.PageInstanceManager
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
-import org.cyk.utility.common.computation.DataReadConfiguration;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -145,14 +140,14 @@ public class ContextListener extends AbstractContextListener {
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Actor.class, ActorEditPage.Form.class, ActorDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Actor.class, null);
 		
-		BusinessServiceProvider.Identifiable.COLLECTION.add(new AbstractActorBusinessImpl.BusinessServiceProviderIdentifiable<Actor,Actor.SearchCriteria>(Actor.class){
+		/*BusinessServiceProvider.Identifiable.COLLECTION.add(new AbstractActorBusinessImpl.BusinessServiceProviderIdentifiable<Actor,Actor.SearchCriteria>(Actor.class){
 			private static final long serialVersionUID = 1322416788278558869L;
 			
 			@Override
 			protected SearchCriteria createSearchCriteria(Service service,DataReadConfiguration dataReadConfiguration) {
 				return new Actor.SearchCriteria(dataReadConfiguration.getGlobalFilter());
 			}
-        });
+        });*/
 		
 	}
 

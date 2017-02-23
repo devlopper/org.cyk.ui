@@ -6,16 +6,13 @@ import java.util.Collection;
 
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.business.impl.BusinessServiceProvider;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
+import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
-import org.cyk.utility.common.computation.Function;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,8 +32,11 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<Object> load(DataReadConfiguration configuration) {
+				LogMessage.Builder logMessageBuilder = new LogMessage.Builder("Load", "data using configuration");
 				table.clear();
 				Collection<Object> results = new ArrayList<>();
+				logMessageBuilder.addParameters("configuration",configuration);
+				logMessageBuilder.addParameters("hierarchy",Boolean.TRUE.equals(table.isDataTreeType()));
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
 					table.setShowHierarchy(Boolean.TRUE);
 					@SuppressWarnings({ "rawtypes" })
@@ -60,14 +60,17 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					
 				}else{
 					Collection<ENTITY> records = null;
-					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
+					Class<ENTITY> identifiableClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							records = (Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
+							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findByString(configuration.getGlobalFilter(),null,configuration);
+							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
 						else
-							records = (Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
+							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll(configuration);
+							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
 					}else
-						records = (Collection<ENTITY>) RootBusinessLayer.getInstance().getGenericBusiness().use(identifiableClass).find().all();
+						records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll();
+							//(Collection<ENTITY>) RootBusinessLayer.getInstance().getGenericBusiness().use(identifiableClass).find().all();
 					
 					/*if(records!=null){
 						if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
@@ -79,6 +82,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					}*/
 					results = datas(records);
 				}
+				logMessageBuilder.addParameters("results count",results.size());
+				logTrace(logMessageBuilder);
 				return results;
 			}
 			
@@ -91,11 +96,14 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							return BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
+							return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countByString(configuration.getGlobalFilter());
+							//BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
 						else
-							return BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
+							return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countByString(configuration.getGlobalFilter());
+							//BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
 					}else
-						return UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
+						return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countAll();
+							//UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
 				}
 				return super.count(configuration);
 			}
