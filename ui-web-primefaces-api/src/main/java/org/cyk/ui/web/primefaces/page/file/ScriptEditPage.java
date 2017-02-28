@@ -8,7 +8,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.ScriptVariableBusiness;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.Script;
@@ -36,13 +35,13 @@ public class ScriptEditPage extends AbstractCrudOnePage<Script> implements Seria
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	private ItemCollection<ScriptVariableItem,ScriptVariable> scriptVariableCollection;
+	private ItemCollection<ScriptVariableItem,ScriptVariable,Script> scriptVariableCollection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		scriptVariableCollection = createItemCollection(ScriptVariableItem.class, ScriptVariable.class
-				,new ItemCollectionWebAdapter<ScriptVariableItem,ScriptVariable>(){
+		scriptVariableCollection = createItemCollection(ScriptVariableItem.class, ScriptVariable.class,identifiable
+				,new ItemCollectionWebAdapter<ScriptVariableItem,ScriptVariable,Script>(identifiable,crud){
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public Collection<ScriptVariable> load() {
@@ -50,7 +49,7 @@ public class ScriptEditPage extends AbstractCrudOnePage<Script> implements Seria
 			}
 			
 			@Override
-			public void instanciated(AbstractItemCollection<ScriptVariableItem, ScriptVariable,SelectItem> itemCollection,ScriptVariableItem item) {
+			public void instanciated(AbstractItemCollection<ScriptVariableItem, ScriptVariable,Script,SelectItem> itemCollection,ScriptVariableItem item) {
 				super.instanciated(itemCollection, item);
 				item.setName(item.getIdentifiable().getName());
 			}	
@@ -58,10 +57,6 @@ public class ScriptEditPage extends AbstractCrudOnePage<Script> implements Seria
 			public void write(ScriptVariableItem item) {
 				super.write(item);
 				item.getIdentifiable().setName(item.getName());
-			}
-			@Override
-			public Crud getCrud() {
-				return crud;
 			}
 			@Override
 			public Boolean isShowAddButton() {

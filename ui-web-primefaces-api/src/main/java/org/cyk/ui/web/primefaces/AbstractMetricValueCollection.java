@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalCollectionBusiness;
@@ -31,7 +32,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection<TYPE, IDENTIFIABLE> implements Serializable {
+public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends ItemCollection<TYPE, IDENTIFIABLE,COLLECTION> implements Serializable {
 
 	private static final long serialVersionUID = -6459718386925539576L;
 
@@ -42,8 +43,8 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 	private Boolean autoSetShowOneChoiceInput=Boolean.TRUE,isNumber,showNumberColumn,isBoolean,showStringColumn,showBooleanColumn,showOneChoiceInput,showCombobox,showRadio;
 	private Long minimumNumberOfItemToShowCombobox=8l;
 	
-	public AbstractMetricValueCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
-		super(identifier,itemClass,identifiableClass);
+	public AbstractMetricValueCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collection,Crud crud) {
+		super(identifier,itemClass,identifiableClass,collection,crud);
 	}
 	
 	public void setMetricCollection(MetricCollection metricCollection,ValueProperties valueProperties){
@@ -122,12 +123,16 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 	
 	/**/
 	
-	public static class AbstractAdapter<TYPE extends AbstractMetricValueItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollection.Adapter<TYPE, IDENTIFIABLE> {
+	public static class AbstractAdapter<TYPE extends AbstractMetricValueItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends ItemCollection.Adapter<TYPE, IDENTIFIABLE,COLLECTION> {
 
 		private static final long serialVersionUID = -91522966404798240L;
+
+		public AbstractAdapter(COLLECTION collection, Crud crud) {
+			super(collection, crud);
+		}
 		
 		@Override
-		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
+		public void instanciated(AbstractItemCollection<TYPE, IDENTIFIABLE,COLLECTION,SelectItem> itemCollection,TYPE item) {
 			super.instanciated(itemCollection, item);
 			//MetricValue metricValue = getMetricValue(item.getIdentifiable());
 			Value value = getValue(item.getIdentifiable()); //metricValue.getValue();
@@ -144,7 +149,7 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 		}
 		
 		@Override
-		public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE, SelectItem> itemCollection,TYPE item) {
+		public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE,COLLECTION, SelectItem> itemCollection,TYPE item) {
 			super.setLabel(itemCollection, item);
 			item.setLabel(getValue(item.getIdentifiable()).getName() /*inject(FormatterBusiness.class).format(getMetricValue(item.getIdentifiable()).getMetric())*/);
 		}

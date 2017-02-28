@@ -9,14 +9,18 @@ import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
+import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Getter @Setter
-public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIdentifiable,ITEM extends AbstractIdentifiable> extends AbstractCrudOnePage<COLLECTION> implements Serializable {
+public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIdentifiable,ITEM extends AbstractIdentifiable,TYPE extends AbstractItemCollectionItem<ITEM>> extends AbstractCrudOnePage<COLLECTION> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
+	
+	protected ItemCollection<TYPE,ITEM,COLLECTION> itemCollection;
 	
 	protected abstract AbstractCollection<?> getCollection();
 	
@@ -48,7 +52,7 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 	/**/
 	
 	@Getter @Setter
-	public static abstract class Extends<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractCollectionEditPage<COLLECTION,ITEM> implements Serializable {
+	public static abstract class Extends<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>,TYPE extends AbstractItemCollectionItem<ITEM>> extends AbstractCollectionEditPage<COLLECTION,ITEM,TYPE> implements Serializable {
 		private static final long serialVersionUID = 3274187086682750183L;
 	
 		@Override
@@ -57,5 +61,6 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		}
 		
 	}
+
 	
 }

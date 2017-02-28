@@ -12,12 +12,13 @@ import lombok.Setter;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 
 @Getter @Setter @Named @ViewScoped
-public class IntervalCollectionEditPage extends AbstractCollectionEditPage<IntervalCollection,Interval> implements Serializable {
+public class IntervalCollectionEditPage extends AbstractCollectionEditPage<IntervalCollection,Interval,AbstractItemCollectionItem<Interval>> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

@@ -62,10 +62,10 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					Collection<ENTITY> records = null;
 					Class<ENTITY> identifiableClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
-						if(Boolean.TRUE.equals(table.getGlobalFilter()))
+						if(Boolean.TRUE.equals(table.getGlobalFilter())){
 							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findByString(configuration.getGlobalFilter(),null,configuration);
 							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
-						else
+						}else
 							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll(configuration);
 							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
 					}else

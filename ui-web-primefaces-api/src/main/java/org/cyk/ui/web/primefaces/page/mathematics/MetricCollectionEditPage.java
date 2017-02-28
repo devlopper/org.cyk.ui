@@ -8,13 +8,14 @@ import javax.inject.Named;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @Named @ViewScoped
-public class MetricCollectionEditPage extends AbstractCollectionEditPage<MetricCollection,Metric> implements Serializable {
+public class MetricCollectionEditPage extends AbstractCollectionEditPage<MetricCollection,Metric,AbstractItemCollectionItem<Metric>> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	

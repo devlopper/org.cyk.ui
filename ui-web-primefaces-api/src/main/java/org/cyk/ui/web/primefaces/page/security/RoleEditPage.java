@@ -7,10 +7,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -27,25 +23,28 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Named @ViewScoped @Getter @Setter
 public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	private ItemCollection<RoleUniformResourceLocatorItem,RoleUniformResourceLocator> roleUniformResourceLocatorCollection;
+	private ItemCollection<RoleUniformResourceLocatorItem,RoleUniformResourceLocator,Role> roleUniformResourceLocatorCollection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		roleUniformResourceLocatorCollection = createItemCollection(RoleUniformResourceLocatorItem.class, RoleUniformResourceLocator.class
-				,new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator>(){
+		roleUniformResourceLocatorCollection = createItemCollection(RoleUniformResourceLocatorItem.class, RoleUniformResourceLocator.class,identifiable
+				,new ItemCollectionWebAdapter<RoleUniformResourceLocatorItem,RoleUniformResourceLocator,Role>(identifiable,crud){
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public Collection<RoleUniformResourceLocator> load() {
 				return inject(RoleUniformResourceLocatorBusiness.class).findByRole(identifiable);
 			}
 			@Override
-			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
+			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,Role,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
 				super.instanciated(itemCollection, item);
 				if(item.getIdentifiable().getUniformResourceLocator()==null)
 					item.getIdentifiable().setUniformResourceLocator(((Form)form.getData()).getUniformResourceLocator());
@@ -54,10 +53,6 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 				item.setName(item.getIdentifiable().getUniformResourceLocator().getName());
 		
 			}	
-			@Override
-			public Crud getCrud() {
-				return crud;
-			}
 			@Override
 			public Boolean isShowAddButton() {
 				return Boolean.TRUE;

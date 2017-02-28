@@ -19,6 +19,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.value.Value;
+import org.cyk.system.root.model.value.ValueCollection;
 import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -188,26 +189,30 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 			return identifiable;
 	}
 	
-	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE> createItemCollection(
-			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> ItemCollection<TYPE, IDENTIFIABLE,COLLECTION> createItemCollection(
+			Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collectionIdentifiable,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,COLLECTION,SelectItem> listener) {
 		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? listener.create() : listener.load();
-		ItemCollection<TYPE, IDENTIFIABLE> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,identifiables, listener);
+		ItemCollection<TYPE, IDENTIFIABLE,COLLECTION> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,collectionIdentifiable,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
-		
+		collection.setLabel(text(uiManager.businessEntityInfos(identifiableClass).getUserInterface().getLabelId()));
+		collection.setShowAddCommandableAtBottom(Boolean.FALSE);
+		collection.setContainerForm(form);
 		return collection;
 	}
 	
-	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable> AbstractMetricValueCollection<TYPE, IDENTIFIABLE> createMetricValueCollection(
-			Object collection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener) {
-		AbstractMetricValueCollection<TYPE,IDENTIFIABLE> metricValueCollection = (AbstractMetricValueCollection<TYPE, IDENTIFIABLE>) createItemCollection(aClass, identifiableClass ,listener);
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>, IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> AbstractMetricValueCollection<TYPE, IDENTIFIABLE,COLLECTION> createMetricValueCollection(
+			Object collection, Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,COLLECTION,SelectItem> listener) {
+		@SuppressWarnings("unchecked")
+		COLLECTION ic = (COLLECTION) collection;
+		AbstractMetricValueCollection<TYPE,IDENTIFIABLE,COLLECTION> metricValueCollection = (AbstractMetricValueCollection<TYPE, IDENTIFIABLE,COLLECTION>) createItemCollection(aClass, identifiableClass,ic ,listener);
 		metricValueCollection.setCollection(collection);
 		metricValueCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
 		metricValueCollection.getAddCommandable().setRendered(Boolean.FALSE);
 		return metricValueCollection;
 	}
 	
-	protected AbstractMetricValueCollection<MetricValueCollection.Item, Value> 
-		createMetricValueCollection(Object collection,AbstractItemCollection.Listener<MetricValueCollection.Item, Value,SelectItem> listener) {
+	protected AbstractMetricValueCollection<MetricValueCollection.Item, Value,ValueCollection> 
+		createMetricValueCollection(Object collection,AbstractItemCollection.Listener<MetricValueCollection.Item, Value,ValueCollection,SelectItem> listener) {
 		return createMetricValueCollection(collection, MetricValueCollection.Item.class, Value.class, listener);
 	}
 	
@@ -237,7 +242,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 							;
 						else
 							formModel.write();
-						for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
+						for(AbstractItemCollection<?,?,?,?> itemCollection : form.getItemCollections()){
 							if(Boolean.TRUE.equals(itemCollection.getAutoWrite())){
 								itemCollection.write();
 							}
@@ -252,7 +257,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 				}
 		}else{
 			if(!Crud.READ.equals(crud) && !Crud.DELETE.equals(crud)){
-				for(AbstractItemCollection<?,?,?> itemCollection : form.getItemCollections()){
+				for(AbstractItemCollection<?,?,?,?> itemCollection : form.getItemCollections()){
 					if(itemCollection.getAddCommandable().getCommand()==command && Boolean.TRUE.equals(itemCollection.getAutoApplyMasterFormFieldValues()) ){
 						form.getSelectedFormData().applyValuesToFields();
 					}

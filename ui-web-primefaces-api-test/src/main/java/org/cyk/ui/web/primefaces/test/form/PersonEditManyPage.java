@@ -6,6 +6,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.party.PersonEditManyForm;
@@ -38,12 +39,12 @@ public class PersonEditManyPage extends AbstractEditManyPage<Person,PersonEditMa
 	}*/
 	
 	@Override
-	public ItemCollectionWebAdapter<PersonEditManyForm, Person> getItemCollectionAdapter() {
-		return new ItemCollectionAdapter<PersonEditManyForm,Person>(businessEntityInfos){
+	public ItemCollectionWebAdapter<PersonEditManyForm, Person,AbstractIdentifiable> getItemCollectionAdapter() {
+		return new ItemCollectionAdapter<PersonEditManyForm,Person,AbstractIdentifiable>(businessEntityInfos){
 			private static final long serialVersionUID = -5381415970572336750L;
 			
 			@Override
-			public void instanciated(AbstractItemCollection<PersonEditManyForm, Person, SelectItem> itemCollection,PersonEditManyForm item) {
+			public void instanciated(AbstractItemCollection<PersonEditManyForm, Person,AbstractIdentifiable, SelectItem> itemCollection,PersonEditManyForm item) {
 				super.instanciated(itemCollection, item);
 				item.setName(item.getIdentifiable().getName());
 				item.setLastname(item.getIdentifiable().getLastnames());

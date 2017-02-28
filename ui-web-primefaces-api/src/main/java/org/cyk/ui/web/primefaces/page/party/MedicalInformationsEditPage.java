@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Allergy;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -31,12 +32,12 @@ public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractAct
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private ItemCollection<AllergyItem,MedicalInformationsAllergy> allergyItems;
+	private ItemCollection<AllergyItem,MedicalInformationsAllergy,MedicalInformations> allergyItems;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,null,null);
+		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,identifiable.getPerson().getMedicalInformations(),null,null);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 1L;

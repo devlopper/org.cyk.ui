@@ -28,7 +28,7 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	
 	void addChoices(String fieldName,List<SELECTITEM> choices);
 	
-	Collection<AbstractItemCollection<?,?,?>> getItemCollections();
+	Collection<AbstractItemCollection<?,?,?,?>> getItemCollections();
 	
 	FormOneDataCollection getCollection();
 	void setCollection(FormOneDataCollection collection);

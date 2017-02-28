@@ -27,12 +27,12 @@ public class ActorRelationshipEditPage extends AbstractCrudOnePage<AbstractActor
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private ItemCollection<RelationshipItem,PersonRelationship> collection;
+	private ItemCollection<RelationshipItem,PersonRelationship,Person> collection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		collection = createItemCollection(form,"qwerty",RelationshipItem.class,PersonRelationship.class,null,null);
+		collection = createItemCollection(form,"qwerty",RelationshipItem.class,PersonRelationship.class,null,null,null);
 		
 	}
 			

@@ -8,7 +8,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorParameterBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
@@ -31,13 +30,13 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	private ItemCollection<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter> uniformResourceLocatorParameterCollection;
+	private ItemCollection<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter,UniformResourceLocator> uniformResourceLocatorParameterCollection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		uniformResourceLocatorParameterCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class
-				,new ItemCollectionWebAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter>(){
+		uniformResourceLocatorParameterCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class,identifiable
+				,new ItemCollectionWebAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter,UniformResourceLocator>(identifiable,crud){
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public Collection<UniformResourceLocatorParameter> load() {
@@ -45,7 +44,7 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 			}
 			
 			@Override
-			public void instanciated(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
+			public void instanciated(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,UniformResourceLocator,SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
 				super.instanciated(itemCollection, item);
 				item.setName(item.getIdentifiable().getName());
 				item.setValue(item.getIdentifiable().getValue());
@@ -55,10 +54,6 @@ public class UniformResourceLocatorEditPage extends AbstractCrudOnePage<UniformR
 				super.write(item);
 				item.getIdentifiable().setName(item.getName());
 				item.getIdentifiable().setValue(item.getValue());
-			}
-			@Override
-			public Crud getCrud() {
-				return crud;
 			}
 			@Override
 			public Boolean isShowAddButton() {

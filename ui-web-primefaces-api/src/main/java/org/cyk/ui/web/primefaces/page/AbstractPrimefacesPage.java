@@ -430,24 +430,25 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		});*/
 	}
 	
-	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> instanciateItemCollection
-		(String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass){
-		ItemCollection<TYPE,IDENTIFIABLE> collection = new ItemCollection<TYPE,IDENTIFIABLE>(identifier,aClass,identifiableClass);
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> instanciateItemCollection
+		(String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION valueCollection){
+		ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> collection = new ItemCollection<TYPE,IDENTIFIABLE,COLLECTION>(identifier,aClass,identifiableClass,valueCollection,Crud.CREATE);
 		return collection;
 	}
 	
-	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
-			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,SelectItem> listener){
-		ItemCollection<TYPE,IDENTIFIABLE> collection = instanciateItemCollection(identifier, aClass, identifiableClass);
+	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
+			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collectionIdentifiable,Collection<IDENTIFIABLE> identifiables,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,COLLECTION,SelectItem> listener){
+		ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> collection = instanciateItemCollection(identifier, aClass, identifiableClass,collectionIdentifiable);
 		form.getItemCollections().add(collection);
 		
-		collection.getItemCollectionListeners().add(new AbstractItemCollection.Listener.Adapter<TYPE,IDENTIFIABLE,SelectItem>(){
+		collection.getItemCollectionListeners().add(new AbstractItemCollection.Listener.Adapter<TYPE,IDENTIFIABLE,COLLECTION,SelectItem>(collectionIdentifiable,Crud.CREATE){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
-			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,SelectItem> itemCollection,TYPE item) {
+			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SelectItem> itemCollection,TYPE item) {
 				item.setForm(createFormOneData(item,Crud.CREATE));
 			}
 		});
+		
 		if(listener!=null){
 			collection.getItemCollectionListeners().add(listener);
 			collection.setEditable(Crud.isCreateOrUpdate(listener.getCrud()));

@@ -22,8 +22,8 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private ItemCollection<PhoneNumberItem,PhoneNumber> phoneNumberCollection;
-	private ItemCollection<ElectronicMailItem,ElectronicMail> electronicMailCollection;
+	private ItemCollection<PhoneNumberItem,PhoneNumber,ContactCollection> phoneNumberCollection;
+	private ItemCollection<ElectronicMailItem,ElectronicMail,ContactCollection> electronicMailCollection;
 	
 	@Override
 	protected void initialisation() {

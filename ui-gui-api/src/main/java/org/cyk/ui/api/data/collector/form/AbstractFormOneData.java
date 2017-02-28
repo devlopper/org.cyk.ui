@@ -41,7 +41,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	@Getter @Setter protected UIWindow<MODEL, LABEL, CONTROL, SELECTITEM> window;
 	@Getter protected final Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
 	@Getter protected final Collection<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>> controlSetListeners = new ArrayList<>();
-	@Getter protected final Collection<AbstractItemCollection<?,?,?>> itemCollections = new ArrayList<>() ;
+	@Getter protected final Collection<AbstractItemCollection<?,?,?,?>> itemCollections = new ArrayList<>() ;
 	
 	/**/
 	

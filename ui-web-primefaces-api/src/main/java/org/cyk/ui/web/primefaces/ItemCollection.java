@@ -7,6 +7,7 @@ import javax.faces.model.SelectItem;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.model.AbstractApplicableValueQuestion;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -16,12 +17,12 @@ import org.cyk.ui.web.api.JavaScriptHelper;
 import org.cyk.ui.web.api.WebManager;
 
 @Getter @Setter
-public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends AbstractWebItemCollection<TYPE,IDENTIFIABLE> implements Serializable {
+public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractWebItemCollection<TYPE,IDENTIFIABLE,COLLECTION> implements Serializable {
 
 	private static final long serialVersionUID = -6459718386925539576L;
 
-	public ItemCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass) {
-		super(identifier,itemClass,identifiableClass);
+	public ItemCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collection,Crud crud) {
+		super(identifier,itemClass,identifiableClass,collection,crud);
 		//((Commandable)addCommandable).getButton().setProcess("@this");
 		//((Commandable)deleteCommandable).getButton().setProcess("@this");
 		
@@ -58,10 +59,16 @@ public class ItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE
 	
 	/**/
 	
-	public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable> extends ItemCollectionWebAdapter<TYPE, IDENTIFIABLE> {
-
+	public static class Adapter<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends ItemCollectionWebAdapter<TYPE, IDENTIFIABLE,COLLECTION> {
+		
 		private static final long serialVersionUID = -91522966404798240L;
 		
+		public Adapter(COLLECTION collection, Crud crud) {
+			super(collection, crud);
+		}
+		
 	}
-
+	
+	/**/
+	
 }

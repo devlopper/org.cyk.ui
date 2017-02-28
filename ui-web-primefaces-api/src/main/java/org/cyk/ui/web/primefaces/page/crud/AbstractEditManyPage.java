@@ -26,7 +26,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 
 	private static final long serialVersionUID = -7392513843271510254L;
 
-	protected ItemCollection<ITEM_COLLECTION_ITEM,ENTITY> elementCollection;
+	protected ItemCollection<ITEM_COLLECTION_ITEM,ENTITY,?> elementCollection;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -37,7 +37,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 			listener.initialisationStarted(this);
 		Class<ENTITY> entityClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 		
-		elementCollection = createItemCollection(getItemCollectionItemClass(), entityClass,getItemCollectionAdapter());
+		elementCollection = createItemCollection(getItemCollectionItemClass(), entityClass,null,getItemCollectionAdapter());
 		elementCollection.getDeleteCommandable().setRendered(Boolean.FALSE);
 		elementCollection.getApplicableValueQuestion().setRendered(Boolean.FALSE);
 		elementCollection.getAddCommandable().setRendered(Boolean.FALSE);
@@ -61,7 +61,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 			listener.afterInitialisationEnded(this);
 	}
 	
-	public ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY> getItemCollectionAdapter(){
+	public ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY,?> getItemCollectionAdapter(){
 		return new ItemCollectionAdapter<>(businessEntityInfos);
 	}
 	
@@ -122,14 +122,15 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 	
 	/**/
 	
-	public static class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>,ENTITY extends AbstractIdentifiable> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY>  implements Serializable {
+	public static class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>,ENTITY extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY,COLLECTION>  implements Serializable {
 		private static final long serialVersionUID = 7806030819027062650L;
 		protected BusinessEntityInfos businessEntityInfos;
 		
 		public ItemCollectionAdapter(BusinessEntityInfos businessEntityInfos) {
-			super();
+			super(null,null);
 			this.businessEntityInfos = businessEntityInfos;
 		}
+		
 		@Override
 		public Collection<ENTITY> create() {
 			Collection<Long> identifiers = WebManager.getInstance().decodeIdentifiersRequestParameter();
@@ -140,7 +141,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 		}
 		
 		@Override
-		public void instanciated(AbstractItemCollection<ITEM_COLLECTION_ITEM, ENTITY,SelectItem> itemCollection,ITEM_COLLECTION_ITEM item) {
+		public void instanciated(AbstractItemCollection<ITEM_COLLECTION_ITEM, ENTITY,COLLECTION,SelectItem> itemCollection,ITEM_COLLECTION_ITEM item) {
 			super.instanciated(itemCollection, item);
 			item.setLabel(RootBusinessLayer.getInstance().getFormatterBusiness().format(item.getIdentifiable()));
 		}	
