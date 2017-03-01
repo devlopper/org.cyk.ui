@@ -69,8 +69,8 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	@Override
-	public org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
-		return getSelectedFormData().findInputByFieldName(fieldName);
+	public org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> getInputByFieldName(String fieldName) {
+		return getSelectedFormData().getInputByFieldName(fieldName);
 	}
 	
 	@SuppressWarnings("unchecked")

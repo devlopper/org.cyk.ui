@@ -333,7 +333,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	public void setChoices(String fieldName,Collection<?> collection,Object selected){
 		if(Crud.isCreateOrUpdate(crud)){
 			webManager.setChoices(form, fieldName, collection,selected);
-			InputChoice<?, ?, ?, ?, ?, ?> inputChoice = (InputChoice<?, ?, ?, ?, ?, ?>) form.findInputByFieldName(fieldName);
+			InputChoice<?, ?, ?, ?, ?, ?> inputChoice = (InputChoice<?, ?, ?, ?, ?, ?>) form.getInputByFieldName(fieldName);
 			if(inputChoice instanceof org.cyk.ui.api.data.collector.control.InputManyPickList){
 				((InputManyPickList<?>)inputChoice).updateDualListModel();
 			}

@@ -273,7 +273,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	}
 	
 	protected String inputRowVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
-		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.findInputByFieldName(fieldName);
+		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.getInputByFieldName(fieldName);
 		if(input==null)
 			return "";
 		return "$('."+input.getCss().getUniqueClass()+"').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";//TODO works only in 2 columns mode
@@ -285,7 +285,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	
 	@SuppressWarnings("unchecked")
 	protected <TYPE> TYPE fieldValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Class<TYPE> typeClass,TYPE nullValue){
-		return (TYPE) form.findInputByFieldName(fieldName).getValue();
+		return (TYPE) form.getInputByFieldName(fieldName).getValue();
 	}
 	
 	protected BigDecimal bigDecimalValue(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,BigDecimal nullValue){
@@ -353,7 +353,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	/**/
 	
 	protected void addInputListener(FormOneData<?, EDITOR, ROW, OUTPUTLABEL, INPUT, SelectItem> form,String fieldName,WebInput.Listener listener){
-		WebInput<?, ?, ?, ?> webInput = ((WebInput<?, ?, ?, ?>)form.findInputByFieldName(fieldName));
+		WebInput<?, ?, ?, ?> webInput = ((WebInput<?, ?, ?, ?>)form.getInputByFieldName(fieldName));
 		if(webInput==null)
 			;//logError("Cannot add web input listener to field named {} because field not found", fieldName);
 		else

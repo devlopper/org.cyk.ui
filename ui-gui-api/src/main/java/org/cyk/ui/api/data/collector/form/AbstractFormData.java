@@ -64,7 +64,7 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
-	public Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName) {
+	public Input<?, ?, ?, ?, ?, ?> getInputByFieldName(String fieldName) {
 		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
 			Input<?, ?, ?, ?, ?, ?> object = set.findInputByFieldName(fieldName);
 			if(object!=null)

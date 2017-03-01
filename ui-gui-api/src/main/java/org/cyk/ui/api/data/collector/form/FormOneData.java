@@ -24,7 +24,7 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	
 	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
 	<T> T findControlByClassByIndex(Class<T> aClass, Integer index);
-	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
+	Input<?, ?, ?, ?, ?, ?> getInputByFieldName(String fieldName);
 	
 	void addChoices(String fieldName,List<SELECTITEM> choices);
 	

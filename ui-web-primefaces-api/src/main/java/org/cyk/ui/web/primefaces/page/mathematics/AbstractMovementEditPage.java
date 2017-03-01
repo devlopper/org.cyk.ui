@@ -76,7 +76,7 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 		if(movement==null || movement.getCollection()==null)
 			return null;
 		return inject(MovementCollectionBusiness.class)
-				.computeValue(getMovement().getCollection(), (MovementAction) form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
+				.computeValue(getMovement().getCollection(), (MovementAction) form.getInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
 	}
 		
 	@Override
@@ -154,7 +154,7 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 	
 	protected void selectMovementAction(MovementAction movementAction){
 		setFieldValue(AbstractMovementForm.FIELD_ACTION, movementAction);
-		form.findInputByFieldName(AbstractMovementForm.FIELD_ACTION).setDisabled(movementAction!=null);
+		form.getInputByFieldName(AbstractMovementForm.FIELD_ACTION).setDisabled(movementAction!=null);
 		updateNextTotal(null);
 	}
 	
