@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.Getter;
 
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.search.StringSearchCriteria;
 import org.cyk.utility.common.annotation.ModelBean;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 
@@ -26,6 +27,18 @@ public class Actor extends AbstractActor implements Serializable {
 
 		public SearchCriteria(String name) {
 			super(name);
+		}
+
+		@Override
+		public void set(String arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void set(StringSearchCriteria arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 		

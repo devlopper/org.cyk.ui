@@ -119,12 +119,12 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		SearchCriteria c = criteria();
 		//c.getReadConfig().setFirstResultIndex(queryFirst);
 		//c.getReadConfig().setMaximumResultCount(3l);
-		return personBusiness.findByCriteria(c);
+		return null;//personBusiness.findByCriteria(c);
 	}
 
 	@Override
 	protected Long __count__() {
-		return personBusiness.countByCriteria(criteria());
+		return null;//personBusiness.countByCriteria(criteria());
 	}	
 	
 	@Override
