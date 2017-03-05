@@ -10,14 +10,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.Person.SearchCriteria;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
@@ -30,6 +25,10 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -109,14 +108,14 @@ public class PersonSearchPage extends AbstractBusinessQueryPage<Person,PersonQue
 		return PersonResultFormModel.class;
 	}
 
-	private SearchCriteria criteria(){
+	/*private SearchCriteria criteria(){
 		SearchCriteria c = new SearchCriteria(query.getName());
 		return c;
-	}
+	}*/
 	
 	@Override
 	protected Collection<Person> __query__() {
-		SearchCriteria c = criteria();
+		//SearchCriteria c = criteria();
 		//c.getReadConfig().setFirstResultIndex(queryFirst);
 		//c.getReadConfig().setMaximumResultCount(3l);
 		return null;//personBusiness.findByCriteria(c);
