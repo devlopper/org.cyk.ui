@@ -23,7 +23,6 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
-import org.omnifaces.util.Ajax;
 
 import lombok.Getter;
 import lombok.Setter;
