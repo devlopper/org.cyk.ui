@@ -273,10 +273,7 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	}
 	
 	protected String inputRowVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
-		WebInput<?, ?, ?, ?> input = (WebInput<?, ?, ?, ?>) form.getInputByFieldName(fieldName);
-		if(input==null)
-			return "";
-		return "$('."+input.getCss().getUniqueClass()+"').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";//TODO works only in 2 columns mode
+		return javaScriptHelper.getFormInputVisibility(form,fieldName, visible);
 	}
 	
 	protected void onComplete(String...scripts){

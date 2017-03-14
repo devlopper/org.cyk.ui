@@ -6,7 +6,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -69,11 +71,21 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	public String update(WebInput<?, ?, ?, ?> input,Object value){
 		if( Boolean.TRUE.equals(((Input<?, ?, ?, ?, ?, ?>)input).getReadOnly()) && !Boolean.TRUE.equals(((Input<?, ?, ?, ?, ?, ?>)input).getKeepShowingInputOnReadOnly())){
 			return "$('."+input.getCss().getUniqueClass()+"').html('"+value+"');";
-		}else{System.out.println("JavaScriptHelper.update()");
+		}else{
 			return "$('."+input.getCss().getUniqueClass()+"').val('"+value+"');";
 		}
 	}
 	
+	public String getFormControlVisibility(Control<?, ?, ?, ?, ?> control,Boolean visible){
+		if(control==null)
+			return Constant.EMPTY_STRING;
+		//We suppose that form is 2 columns based
+		//TODO should work with more than 2 columns
+		return "$('."+control.getCss().getUniqueClass()+"').closest('table').closest('tr')."+(Boolean.TRUE.equals(visible)?"show":"hide")+"();";
+	}
 	
+	public String getFormInputVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
+		return getFormControlVisibility(form.getInputByFieldName(fieldName), visible);
+	}
 
 }

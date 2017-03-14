@@ -43,14 +43,14 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 	protected Language readLanguageAtIndex(Integer index){
 		if(identifiable==null)
 			return null;
-		if(identifiable.getCollection()==null)
-			identifiable.setCollection(new ArrayList<LanguageCollectionItem>());
-		if(identifiable.getCollection().isEmpty())
+		if(identifiable.getItems().getCollection()==null)
+			identifiable.getItems().setCollection(new ArrayList<LanguageCollectionItem>());
+		if(identifiable.getItems().getCollection().isEmpty())
 			return null;
-		if(identifiable.getCollection() instanceof List && index < identifiable.getCollection().size()){
-			return ((List<LanguageCollectionItem>)identifiable.getCollection()).get(index.intValue()).getLanguage();
+		if(identifiable.getItems().getCollection() instanceof List && index < identifiable.getItems().getCollection().size()){
+			return ((List<LanguageCollectionItem>)identifiable.getItems().getCollection()).get(index.intValue()).getLanguage();
 		}
-		Iterator<LanguageCollectionItem> iterator = identifiable.getCollection().iterator();
+		Iterator<LanguageCollectionItem> iterator = identifiable.getItems().getCollection().iterator();
 		Integer count = -1;
 		Language languageIndex = null;
 		while(iterator.hasNext()){
@@ -64,15 +64,15 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 	protected void updateLanguageAtIndex(Integer index,Language language){
 		if(identifiable==null)
 			return;
-		if(language!=null && identifiable.getCollection()==null)
-			identifiable.setCollection(new ArrayList<LanguageCollectionItem>());
-		if(identifiable.getCollection() instanceof List){
+		if(language!=null && identifiable.getItems().getCollection()==null)
+			identifiable.getItems().setCollection(new ArrayList<LanguageCollectionItem>());
+		if(identifiable.getItems().getCollection() instanceof List){
 			if(language == null){
-				if(identifiable.getCollection().size()>index)
-					((List<LanguageCollectionItem>)identifiable.getCollection()).remove(index.intValue());
-			}else if(identifiable.getCollection()!=null)
-				if(identifiable.getCollection().size()>index)
-					((List<LanguageCollectionItem>)identifiable.getCollection()).get(index.intValue()).setLanguage(language);
+				if(identifiable.getItems().getCollection().size()>index)
+					((List<LanguageCollectionItem>)identifiable.getItems().getCollection()).remove(index.intValue());
+			}else if(identifiable.getItems().getCollection()!=null)
+				if(identifiable.getItems().getCollection().size()>index)
+					((List<LanguageCollectionItem>)identifiable.getItems().getCollection()).get(index.intValue()).setLanguage(language);
 				else{
 					identifiable.add(new LanguageCollectionItem(language));
 				}
@@ -80,7 +80,7 @@ public class LanguageCollectionFormModel extends AbstractFormModel<LanguageColle
 			if(language==null)
 				;//identifiable.getCollection().r;
 			else /*if(identifiable.getCollection()!=null)*/ {
-				Iterator<LanguageCollectionItem> iterator = identifiable.getCollection().iterator();
+				Iterator<LanguageCollectionItem> iterator = identifiable.getItems().getCollection().iterator();
 				Integer count = -1;
 				while(iterator.hasNext()){
 					if(++count == index){

@@ -10,6 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.test.model.actor.MyEntity.MyEnum;
 import org.cyk.system.test.model.actor.MyIdentifiable;
@@ -22,6 +23,7 @@ import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.omnifaces.util.Ajax;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -135,11 +137,16 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 			}
 		}).build();
 		
-		createAjaxBuilder(form,"canSum")
+		createAjaxBuilder(form,"canSum").updatedFieldNames("sumResult")
 		.method(Boolean.class,new ListenValueMethod<Boolean>() {
 			@Override
 			public void execute(Boolean value) {
+				form.getInputByFieldName("sumResult").setLabel(RandomStringUtils.randomAlphanumeric(10));
+				setFieldValue(form,"sumResult", new BigDecimal(RandomStringUtils.randomNumeric(5)));
 				onComplete(inputRowVisibility(form,"sumResult",value),inputRowVisibility(form,"multiplyResult",value));
+				//Ajax.update("form:contentp");
+				//Ajax.updateAll();
+				
 			}
 		}).build();
 		
