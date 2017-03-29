@@ -66,7 +66,7 @@ public abstract class AbstractMetricValueCollection<TYPE extends AbstractItemCol
 				if(ValueSet.INTERVAL_RELATIVE_CODE.equals(valueProperties.getSet()))
 					choiceValue = NULL_STRING;
 				
-				choices.add(new SelectItem(choiceValue,valueProperties.getNullString().getCode()));
+				choices.add(new SelectItem(choiceValue,valueProperties.getNullString().getShortName()));
 			}
 			if(ValueSet.INTERVAL_RELATIVE_CODE.equals(valueProperties.getSet()) || inject(IntervalCollectionBusiness.class).isAllIntervalLowerEqualsToHigher(valueProperties.getIntervalCollection())){
 				for(Interval interval : inject(IntervalBusiness.class).findByCollection(valueProperties.getIntervalCollection())){

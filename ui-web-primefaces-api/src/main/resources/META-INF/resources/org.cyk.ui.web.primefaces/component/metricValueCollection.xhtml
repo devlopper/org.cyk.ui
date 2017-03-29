@@ -24,10 +24,11 @@
 			</p:column>
 			
 			<p:column headerText="#{uiManager.text('field.value')}" rendered="#{cc.value.showNumberColumn}">
+				<!-- decimalPlaces="#{cc.value.metricCollection.valueIntervalCollection.numberOfDecimalAfterDot}"  -->
 				<pe:inputNumber value="#{item.numberValue}" required="true" requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}"
 					minValue="#{cc.value.metricCollection.valueIntervalCollection.lowestValue}" 
 					maxValue="#{cc.value.metricCollection.valueIntervalCollection.highestValue}"
-					decimalPlaces="#{cc.value.metricCollection.valueIntervalCollection.numberOfDecimalAfterDot}"
+					decimalPlaces="0"
 					rendered="#{not cc.value.showOneChoiceInput}"   />
 				
 				<ui:fragment rendered="#{cc.value.showOneChoiceInput}">
