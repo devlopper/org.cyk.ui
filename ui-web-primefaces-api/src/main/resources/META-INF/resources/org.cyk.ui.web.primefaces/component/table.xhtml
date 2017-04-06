@@ -79,10 +79,6 @@
 				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 				  					</ui:include></ui:fragment>
 				  					
-				  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneCombo')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneCombo.xhtml" >
-				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
-				  					</ui:include></ui:fragment>
-				  					
 				  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputNumber')}" ><ui:include src="#{controlDir}/input/inputNumber.xhtml" >
 				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 				  					</ui:include></ui:fragment>
@@ -90,6 +86,17 @@
 				  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputBooleanCheck')}" ><ui:include src="#{controlDir}/input/inputBooleanCheck.xhtml" >
 				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
 				  					</ui:include></ui:fragment>
+				  					
+				  					<!-- Choice -->
+				  					<!-- One -->
+				  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneCombo')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneCombo.xhtml" >
+				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+				  					</ui:include></ui:fragment>
+				  					
+				  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneAutoComplete')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneAutoComplete.xhtml" >
+				  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+				  					</ui:include></ui:fragment>
+				  					
 			  					</ui:fragment>
 			  				</f:facet>
 			  				<f:facet name="output">
