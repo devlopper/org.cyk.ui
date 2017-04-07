@@ -9,6 +9,7 @@ import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Party;
+import org.cyk.system.root.model.party.person.JobInformations;
 import org.cyk.system.root.model.party.person.Person;
 
 import lombok.Getter;
@@ -39,11 +40,23 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 	}
 	
 	@Override
+	protected void update() {
+		debug(getPerson().getJobInformations());
+		super.update();
+	}
+	
+	@Override
 	protected void processOnIdentifiableFound(PERSON identifiable) {
 		super.processOnIdentifiableFound(identifiable);
 		if(isDetailsMenuCommandable(JobDetails.class)){
 			getPerson().setJobInformations(inject(JobInformationsBusiness.class).findByParty(getPerson()));
-			inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
+			if(getPerson().getJobInformations()==null)
+				getPerson().setJobInformations(new JobInformations(getPerson()));
+			else
+				inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
+			
+			//inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
+			
 		}else if(isDetailsMenuCommandable(MedicalDetails.class)){
 			getPerson().setMedicalInformations(inject(MedicalInformationsBusiness.class).findByParty(getPerson()));
 			inject(MedicalInformationsBusiness.class).load(getPerson().getMedicalInformations());		

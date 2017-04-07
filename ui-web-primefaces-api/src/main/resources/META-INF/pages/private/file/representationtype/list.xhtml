@@ -10,9 +10,9 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{scriptListPage}" />
+ 		<ui:param name="pageController" value="#{fileRepresentationTypeListPage}" />
  		<ui:define name="body">
- 			<cyk:table value="#{scriptListPage.table}" />
+ 			<cyk:table value="#{fileRepresentationTypeListPage.table}" />
  		</ui:define>
  	</ui:decorate>
  
