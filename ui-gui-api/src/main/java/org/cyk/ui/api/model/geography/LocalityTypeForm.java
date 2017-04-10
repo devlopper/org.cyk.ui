@@ -11,7 +11,7 @@ import org.cyk.utility.common.annotation.FieldOverrides;
 
 @Getter @Setter 
 @FieldOverrides(value = {
-		@FieldOverride(name=AbstractDataTreeForm.FIELD_PARENT,type=LocalityType.class)
+		@FieldOverride(name=AbstractDataTreeForm.FIELD_NEW_PARENT,type=LocalityType.class)
 		})
 public class LocalityTypeForm extends AbstractDataTreeTypeForm<LocalityType> {
 

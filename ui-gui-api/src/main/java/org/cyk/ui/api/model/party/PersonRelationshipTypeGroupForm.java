@@ -11,7 +11,7 @@ import org.cyk.utility.common.annotation.FieldOverrides;
 
 @Getter @Setter 
 @FieldOverrides(value = {
-		@FieldOverride(name=AbstractDataTreeForm.FIELD_PARENT,type=PersonRelationshipTypeGroup.class)
+		@FieldOverride(name=AbstractDataTreeForm.FIELD_NEW_PARENT,type=PersonRelationshipTypeGroup.class)
 		})
 public class PersonRelationshipTypeGroupForm extends AbstractDataTreeTypeForm<PersonRelationshipTypeGroup> {
 

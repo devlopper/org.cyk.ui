@@ -225,7 +225,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			.addFieldNames(PhoneNumberEditPage.Form.FIELD_ORDER_NUMBER);
 		
 		getFormConfiguration(Locality.class,Crud.CREATE).addRequiredFieldNames(LocalityEditPage.Form.FIELD_CODE)
-				.addFieldNames(LocalityEditPage.Form.FIELD_NAME,LocalityEditPage.Form.FIELD_RESIDENT_NAME,LocalityEditPage.Form.FIELD_TYPE,LocalityEditPage.Form.FIELD_PARENT);
+				.addFieldNames(LocalityEditPage.Form.FIELD_NAME,LocalityEditPage.Form.FIELD_RESIDENT_NAME,LocalityEditPage.Form.FIELD_TYPE
+						,LocalityEditPage.Form.FIELD_CURRENT_PARENT,LocalityEditPage.Form.FIELD_NEW_PARENT);
 		registerDetailsConfiguration(LocalityDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
