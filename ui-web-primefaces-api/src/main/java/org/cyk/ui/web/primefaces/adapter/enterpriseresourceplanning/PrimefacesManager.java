@@ -43,6 +43,7 @@ import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -85,6 +86,7 @@ import org.cyk.ui.web.primefaces.page.event.EventEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
+import org.cyk.ui.web.primefaces.page.file.FileRepresentationTypeEditPage;
 import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
@@ -158,6 +160,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		.addRequiredFieldNames(FileEditPage.Form.FIELD_FILE);
 		
 		getFormConfiguration(File.class,Crud.DELETE).addFieldNames(FileEditPage.Form.FIELD_CODE,FileEditPage.Form.FIELD_NAME);
+		
+		getFormConfiguration(FileRepresentationType.class,Crud.CREATE).addRequiredFieldNames(FileRepresentationTypeEditPage.Form.FIELD_CODE)
+		.addFieldNames(FileRepresentationTypeEditPage.Form.FIELD_NAME);
 		
 		registerDetailsConfiguration(FileDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override

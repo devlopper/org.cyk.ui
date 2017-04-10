@@ -11,6 +11,7 @@ import org.cyk.system.root.business.impl.event.EventMissedDetails;
 import org.cyk.system.root.business.impl.event.EventPartyDetails;
 import org.cyk.system.root.business.impl.file.FileDetails;
 import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.file.FileRepresentationTypeDetails;
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
 import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
@@ -47,6 +48,7 @@ import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
@@ -102,6 +104,7 @@ import org.cyk.ui.web.primefaces.page.event.EventPartyEditPage;
 import org.cyk.ui.web.primefaces.page.file.DefaultReportBasedOnDynamicBuilderServletAdapter;
 import org.cyk.ui.web.primefaces.page.file.FileEditPage;
 import org.cyk.ui.web.primefaces.page.file.FileIdentifiableGlobalIdentifierEditPage;
+import org.cyk.ui.web.primefaces.page.file.FileRepresentationTypeEditPage;
 import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
@@ -203,6 +206,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(File.class, FileEditPage.Form.class, FileDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(File.class, null);
 		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(FileRepresentationType.class, FileRepresentationTypeEditPage.Form.class, FileRepresentationTypeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(FileRepresentationType.class, null);
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(FileIdentifiableGlobalIdentifier.class, FileIdentifiableGlobalIdentifierEditPage.Form.class, FileIdentifiableGlobalIdentifierDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(FileIdentifiableGlobalIdentifier.class, null);
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Script.class, ScriptEditPage.Form.class, ScriptDetails.class,null,null,null));
@@ -213,8 +219,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ReportTemplate.class, ReportTemplateEditPage.Form.class, ReportTemplateDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ReportTemplate.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Script.class, ScriptEditPage.Form.class, ScriptDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(Script.class, null);
 	}
 	
 	protected void initializeEventModule(){

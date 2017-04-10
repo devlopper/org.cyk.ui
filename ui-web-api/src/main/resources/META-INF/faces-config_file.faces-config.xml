@@ -93,17 +93,17 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>representationTypeListView</from-outcome>
+			<from-outcome>fileRepresentationTypeListView</from-outcome>
 			<to-view-id>/private/file/representationtype/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>representationTypeEditView</from-outcome>
+			<from-outcome>fileRepresentationTypeEditView</from-outcome>
 			<to-view-id>/private/file/representationtype/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>representationTypeConsultView</from-outcome>
+			<from-outcome>fileRepresentationTypeConsultView</from-outcome>
 			<to-view-id>/private/file/representationtype/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
