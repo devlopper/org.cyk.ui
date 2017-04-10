@@ -40,7 +40,7 @@ public class NestedSetNodeQueryPage extends AbstractBusinessQueryPage<NestedSetN
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		table.getRowListeners().add(new RowAdapter<Object>(){
+		table.getRowListeners().add(new RowAdapter<Object>(getUserSession()){
 			private static final long serialVersionUID = 1L;
 
 			@Override

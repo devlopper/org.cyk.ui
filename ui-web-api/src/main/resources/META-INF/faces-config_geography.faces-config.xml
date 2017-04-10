@@ -70,6 +70,21 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>localityListView</from-outcome>
+			<to-view-id>/private/geography/locality/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>localityEditView</from-outcome>
+			<to-view-id>/private/geography/locality/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>localityConsultView</from-outcome>
+			<to-view-id>/private/geography/locality/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 	</navigation-rule>
 

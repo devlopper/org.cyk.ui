@@ -185,7 +185,8 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				column.setTitle(languageBusiness.findFieldLabelText(rowDataClass,column.getField()).getValue());
 			}
 		});
-		rowListeners.add(new RowAdapter<DATA>(){
+		
+		rowListeners.add(new RowAdapter<DATA>(getUserSession()){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -196,11 +197,13 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 				if(Boolean.TRUE.equals(inplaceEdit) && AbstractFormModel.class.isAssignableFrom(rowDataClass) && 
 						row.getData() instanceof AbstractIdentifiable){
 					row.setData((DATA) AbstractFormModel.instance(null,rowDataClass, (AbstractIdentifiable) row.getData()));
-				}
+				}		
 			}
 		});
 		
 		cellListeners.add(new CellAdapter<DATA>(){
+
+			private static final long serialVersionUID = 1L;
 			@Override
 			public String getValue(Row<DATA> row, Column column) {
 				Object value = commonUtils.readField(row.getData(), column.getField(),!column.getField().getDeclaringClass().isAssignableFrom(rowDataClass),Boolean.FALSE,
@@ -262,10 +265,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			editable = inplaceEdit || Crud.CREATE.equals(crud) || Crud.UPDATE.equals(crud);
 		
 		if(openRowCommandable!=null)
-			openRowCommandable.setRendered(businessEntityInfos==null || !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()));
+			openRowCommandable.setRendered(businessEntityInfos==null || !Boolean.TRUE.equals(inplaceEdit));
 		
 		if(updateRowCommandable!=null)
-			updateRowCommandable.setRendered(businessEntityInfos==null || !CrudStrategy.ENUMERATION.equals(businessEntityInfos.getCrudStrategy()));
+			updateRowCommandable.setRendered(businessEntityInfos==null || !Boolean.TRUE.equals(inplaceEdit));
 		
 		if(removeRowCommandable!=null)
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
@@ -280,6 +283,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			MODEL hierarchyNode = createHierarchyNode();
 			hierarchyNode.setLabel(UIManager.getInstance().getLanguageBusiness().findClassLabelText(businessEntityInfos.getClazz()));
 			createTree();
+			
 			tree.build((Class<DATA>)businessEntityInfos.getClazz(), hierarchyData, (DATA)master);
 			
 			showOpenCommand = getShowHierarchy();
@@ -314,7 +318,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected abstract void open(DATA data);
 	
 	public Boolean isDataTreeType(){
-		return rowDataClass==null?Boolean.FALSE:businessEntityInfos == null ? Boolean.FALSE : AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz());//TODO should be businessEntityInfos.getClazz()
+		return rowDataClass==null?Boolean.FALSE:(businessEntityInfos == null ? Boolean.FALSE : AbstractDataTreeNode.class.isAssignableFrom(businessEntityInfos.getClazz()));//TODO should be businessEntityInfos.getClazz()
 	}
 	/*
 	public String getTitle(){

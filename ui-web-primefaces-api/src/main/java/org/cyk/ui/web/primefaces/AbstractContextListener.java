@@ -17,6 +17,7 @@ import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
+import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
@@ -84,7 +85,6 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.EnumerationForm;
-import org.cyk.ui.api.model.geography.LocalityForm;
 import org.cyk.ui.api.model.geography.LocalityTypeForm;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryManyFormModel;
@@ -108,6 +108,7 @@ import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
+import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
@@ -229,7 +230,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	
 	protected void initializeGeographyModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeForm.class, LocalityTypeForm.class,null,null,null));
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Locality.class, LocalityForm.class, LocalityForm.class,null,null,null));
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Locality.class, LocalityEditPage.Form.class, LocalityDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Locality.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Country.class, CountryEditPage.Form.class, CountryDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Country.class, null);

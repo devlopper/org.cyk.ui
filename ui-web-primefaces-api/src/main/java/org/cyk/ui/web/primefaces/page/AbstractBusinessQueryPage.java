@@ -89,7 +89,7 @@ public abstract class AbstractBusinessQueryPage<ENTITY extends AbstractIdentifia
 		form.setFieldsRequiredMessage(null);
 		((Commandable)form.getSubmitCommandable()).getButton().setUpdate(":"+WebManager.getInstance().getFormId()+":"+componentId()+":resultsOutputPanel");
 		
-		table.getRowListeners().add(new RowAdapter<Object>(){
+		table.getRowListeners().add(new RowAdapter<Object>(getUserSession()){
 
 			private static final long serialVersionUID = 1L;
 

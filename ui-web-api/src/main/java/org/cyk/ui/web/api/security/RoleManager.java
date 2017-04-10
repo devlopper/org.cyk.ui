@@ -6,6 +6,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.AbstractRoleManager;
 import org.omnifaces.util.Faces;
@@ -27,21 +28,21 @@ public class RoleManager extends AbstractRoleManager<HttpServletRequest> impleme
 	}
 	
 	public Boolean isAdministrator(HttpServletRequest request){
-		return Boolean.TRUE.equals(hasRole(request,Role.ADMINISTRATOR));
+		return Boolean.TRUE.equals(hasRole(request,RootConstant.Code.Role.ADMINISTRATOR));
 	}
 	
 	public Boolean isManager(HttpServletRequest request){
-		return Boolean.TRUE.equals(hasRole(request, Role.MANAGER));
+		return Boolean.TRUE.equals(hasRole(request, RootConstant.Code.Role.MANAGER));
 	}
 	
 	@Override
 	public Boolean isSettingManager(HttpServletRequest request) {
-		return Boolean.TRUE.equals(hasRole(request, Role.SETTING_MANAGER));
+		return Boolean.TRUE.equals(hasRole(request, RootConstant.Code.Role.SETTING_MANAGER));
 	}
 	
 	@Override
 	public Boolean isSecurityManager(HttpServletRequest request) {
-		return Boolean.TRUE.equals(hasRole(request, Role.SECURITY_MANAGER));
+		return Boolean.TRUE.equals(hasRole(request, RootConstant.Code.Role.SECURITY_MANAGER));
 	}
 	
 	/**/

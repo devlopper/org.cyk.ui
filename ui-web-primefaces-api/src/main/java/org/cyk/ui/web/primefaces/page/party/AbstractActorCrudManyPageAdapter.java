@@ -44,7 +44,7 @@ public abstract class AbstractActorCrudManyPageAdapter<ACTOR extends AbstractAct
 		super.initialisationEnded(bean);
 		AbstractBusinessEntityFormManyPage<?> page = (AbstractBusinessEntityFormManyPage<?>) bean;
 		page.getTable().setShowOpenCommand(Boolean.TRUE);
-		page.getTable().getRowListeners().add(new RowAdapter<Object>(){
+		page.getTable().getRowListeners().add(new RowAdapter<Object>(null){
 
 			private static final long serialVersionUID = 1L;
 

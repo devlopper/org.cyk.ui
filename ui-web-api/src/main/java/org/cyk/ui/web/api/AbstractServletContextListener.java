@@ -23,12 +23,12 @@ import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusin
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.ContentType;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.Notification.RemoteEndPoint;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.UniformResourceLocatorBuilderAdapter;
@@ -137,7 +137,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	
 	protected void addUrls(ServletContextEvent event){
 		//TODO use shiro object instead for better management
-		addUrl(Role.USER,"/private/index.jsf");
+		addUrl(RootConstant.Code.Role.USER,"/private/index.jsf");
 	}
 	
 	protected void mobileViewMapping(){

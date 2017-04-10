@@ -17,6 +17,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
@@ -128,7 +129,9 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void open(DATA data) {
-		WebNavigationManager.getInstance().redirectToDynamicCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
+		//WebNavigationManager.getInstance().redirectTo(AbstractCommandable.Builder.createList(data));
+		//WebNavigationManager.getInstance().redirectToDynamicCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
+		WebNavigationManager.getInstance().redirectToCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
 	}
 	
 	@Override
@@ -318,6 +321,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 
 		private static final long serialVersionUID = 5607226813206637755L;
 
+		public RowAdapter(AbstractUserSession<?, ?> userSession) {
+			super(userSession);
+		}
+		
 		@Override
 		public void created(Row<T> row) {
 			super.created(row);

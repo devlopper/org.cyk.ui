@@ -20,6 +20,7 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
 import org.cyk.system.root.model.ContentType;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.language.LanguageEntry;
@@ -100,7 +101,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return collection;
 		}else */if(field.getName().equals("roles")){
 			collection = new ArrayList<>();
-			for(Role role : inject(RoleBusiness.class).findAllExclude(Arrays.asList(inject(RoleBusiness.class).find(Role.ADMINISTRATOR))))
+			for(Role role : inject(RoleBusiness.class).findAllExclude(Arrays.asList(inject(RoleBusiness.class).find(RootConstant.Code.Role.ADMINISTRATOR))))
 				collection.add(role);
 			return collection;
 		}else{

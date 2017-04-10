@@ -25,9 +25,9 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.CommonBusinessAction;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
-import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.utility.common.CommonUtils;
@@ -81,7 +81,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				
 			if(Boolean.TRUE.equals(doFilterChain)){
 				if(userSession==null || userAccount==null || inject(UserAccountBusiness.class)
-						.hasRole(userAccount, inject(RoleBusiness.class).find(Role.ADMINISTRATOR)) )
+						.hasRole(userAccount, inject(RoleBusiness.class).find(RootConstant.Code.Role.ADMINISTRATOR)) )
 					filterChain.doFilter(request, response);
 				else {
 					if(Boolean.TRUE.equals(isUrlAccessible(url))){

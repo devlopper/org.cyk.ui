@@ -49,9 +49,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	protected Table<Object> table;
-	protected RowAdapter<Object> rowAdapter;
-	protected ColumnAdapter columnAdapter;
-	protected CellAdapter<Object> cellAdapter;
+	protected RowAdapter<Object> rowAdapter;//TODO should be removed
+	protected ColumnAdapter columnAdapter;//TODO should be removed
+	protected CellAdapter<Object> cellAdapter;//TODO should be removed
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -64,13 +64,14 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		
 		//table.getListeners().add(getTableListener());
 		
-		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(){
+		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(getUserSession()){
 			private static final long serialVersionUID = 3882333007489853654L;
 			@Override
 			public void created(Row<Object> row) {
 				row.setType(getRowType(row));
 				row.setCountable(row.getIsDetail());
-				row.setOpenable(openable);
+				//row.setOpenable(openable);
+				//row.setOpenable(Boolean.TRUE);
 				//AbstractBusinessEntityFormManyPage.this.rowCreated(row);//TODO to be removed. implements listener instead
 			}
 			@Override
@@ -110,6 +111,9 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			}
 		});
 		table.getCellListeners().add(cellAdapter = new CellAdapter<Object>(){
+
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void added(Row<Object> row, Column column, Cell cell) {
 				super.added(row, column, cell);
@@ -155,7 +159,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.afterInitialisationStarted(this); 
 		
-		if(Boolean.TRUE.equals(table.getLazyLoad())){
+		if(!Boolean.TRUE.equals( /*table.getLazyLoad()*/ table.getInplaceEdit() )){
 			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 2679004450545381808L;
 				@Override
@@ -177,7 +181,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 					}else{
 						logTrace("Redirecting to consult view from page. {} , {} , {}"
 								,businessEntityInfos.getUserInterface().getConsultViewId(),businessEntityInfos.getClazz().getSimpleName(),identifiable.getIdentifier());
-					
+						
 						WebNavigationManager.getInstance().redirectTo(businessEntityInfos.getUserInterface().getConsultViewId(), 
 								new Object[]{UniformResourceLocatorParameter.CLASS,UIManager.getInstance().keyFromClass(businessEntityInfos)
 							,UniformResourceLocatorParameter.IDENTIFIABLE,identifiable.getIdentifier().toString(),

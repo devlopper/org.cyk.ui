@@ -8,7 +8,9 @@ import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusines
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.LogMessage;
@@ -26,18 +28,31 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 	protected void initialisation() {
 		super.initialisation();
 		table.setEditable(Boolean.TRUE);
-		table.getRowListeners().add(new RowAdapter<Object>(){
+		table.getRowListeners().add(new RowAdapter<Object>(getUserSession()){
 			private static final long serialVersionUID = 1L;
 
+			@Override
+			public AbstractUserSession<?, ?> getUserSession() {
+				return AbstractCrudManyPage.this.userSession;
+			}
+			
+			@Override
+			public void added(Row<Object> row) {
+				super.added(row);
+				//row.setOpenable(true);
+			}
+			
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<Object> load(DataReadConfiguration configuration) {
 				LogMessage.Builder logMessageBuilder = new LogMessage.Builder("Load", "data using configuration");
 				table.clear();
 				Collection<Object> results = new ArrayList<>();
+				Collection<ENTITY> records = null;
 				logMessageBuilder.addParameters("configuration",configuration);
 				logMessageBuilder.addParameters("hierarchy",Boolean.TRUE.equals(table.isDataTreeType()));
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
+					records = new ArrayList<>();
 					table.setShowHierarchy(Boolean.TRUE);
 					@SuppressWarnings({ "rawtypes" })
 					AbstractDataTreeNodeBusiness business = (AbstractDataTreeNodeBusiness) BusinessInterfaceLocator.getInstance()
@@ -45,21 +60,16 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					for(Object node : business.findHierarchies())
 						table.getHierarchyData().add(node);
 					
-					if(table.getMaster()==null)
+					if(table.getMaster()==null){
 						for(Object node : table.getHierarchyData())
-							results.add(node);
-					else{
-						//business.findHierarchy( master);
-						//System.out.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.load()");
-						//debug(table.getMaster());
+							records.add((ENTITY) node);
+					}else{
 						table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
 						if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
 							for(AbstractIdentifiable node : ((AbstractDataTreeNode)table.getMaster()).getChildren())
-								results.add(node);	
+								records.add((ENTITY) node);	
 					}
-					
 				}else{
-					Collection<ENTITY> records = null;
 					Class<ENTITY> identifiableClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter())){
@@ -80,8 +90,10 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 							for(AbstractIdentifiable identifiable : records)	
 								results.add(AbstractFormModel.instance(table.getRowDataClass(), identifiable));
 					}*/
-					results = datas(records);
+					
 				}
+			
+				results = datas(records);
 				logMessageBuilder.addParameters("results count",results.size());
 				logTrace(logMessageBuilder);
 				return results;
@@ -108,10 +120,12 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				return super.count(configuration);
 			}
 		});	
-				
+		
+		//TODO should be removed
 		rowAdapter.setOpenable(Boolean.TRUE);
 		rowAdapter.setUpdatable(Boolean.TRUE);
 		rowAdapter.setDeletable(Boolean.TRUE);
+		
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
 		table.setShowOpenCommand(Boolean.TRUE);
@@ -130,17 +144,6 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 		}/*else if(table.getAddRowCommandable().getCommand()==command){
 			
 		}*/
-	}
-	
-	/*@Override
-	protected Class<?> __formModelClass__() {
-		if(AbstractEnumeration.class.isAssignableFrom(businessEntityInfos.getClazz()))
-			return EnumerationForm.class;
-		return super.__formModelClass__();
-	}*/
-	
-	/**/
-	
-	
+	}	
 
 }
