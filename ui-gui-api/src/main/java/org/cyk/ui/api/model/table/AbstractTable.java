@@ -378,8 +378,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			for(DATA data : list){
 				//System.out.println("AbstractTable.getReferenceFromHierarchy() : "+((AbstractDataTreeNode)data).getChildren());
 				DATA c = getReferenceFromHierarchy(identifiable, (List<DATA>) ((AbstractDataTreeNode)data).getChildren() );
-				if(c!=null)
+				if(c!=null){
 					return c;
+				}
 			}
 		}
 		

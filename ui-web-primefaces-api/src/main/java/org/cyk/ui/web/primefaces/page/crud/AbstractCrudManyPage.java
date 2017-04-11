@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -15,9 +18,6 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements Serializable {
@@ -57,7 +57,15 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					@SuppressWarnings({ "rawtypes" })
 					AbstractDataTreeNodeBusiness business = (AbstractDataTreeNodeBusiness) BusinessInterfaceLocator.getInstance()
 						.injectTyped((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
-					for(Object node : business.findHierarchies())
+					Collection<?> hierarchies = business.findHierarchies();
+					/*for(Object o1 : hierarchies)
+						if( ((AbstractIdentifiable)o1).getCode().equals("AMERICA") ){
+							for(Object o2 : ((AbstractIdentifiable)o1).getChildren())
+								if( ((AbstractIdentifiable)o2).getCode().equals("CI") ){
+									System.out.println("CI : "+((AbstractIdentifiable)o2).getChildren());
+								}
+						}*/
+					for(Object node : hierarchies)
 						table.getHierarchyData().add(node);
 					
 					if(table.getMaster()==null){
