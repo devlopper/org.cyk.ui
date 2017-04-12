@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.geography.LocalityBusiness;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
@@ -27,17 +28,6 @@ import lombok.Setter;
 public class LocalityEditPage extends AbstractCrudOnePage<Locality> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-	
-	@Override
-	protected void initialisation() {
-		// TODO Auto-generated method stub
-		super.initialisation();
-		if(!Crud.CREATE.equals(crud)){
-			identifiable.getParents().clear();
-			identifiable.getParents().add(inject(LocalityBusiness.class).findParent(identifiable));
-			System.out.println("LocalityEditPage.initialisation() : "+inject(LocalityBusiness.class).findParent(identifiable));
-		}
-	}
 	
 	@Override
 	protected void afterInitialisation() {
@@ -67,6 +57,18 @@ public class LocalityEditPage extends AbstractCrudOnePage<Locality> implements S
 		locality.getParents().add(webManager.getIdentifiableFromRequestParameter(Locality.class,Boolean.TRUE));
 		return locality;
 	}
+	
+	@Override
+	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass) {
+		Locality locality =  (Locality) super.identifiableFromRequestParameter(aClass);
+		if(locality!=null){
+			locality.getParents().clear();
+			locality.getParents().add(inject(LocalityBusiness.class).findParent(locality));
+		}
+		return (T) locality;
+	}
+	
+	
 	
 	@Getter @Setter 
 	@FieldOverrides(value = {

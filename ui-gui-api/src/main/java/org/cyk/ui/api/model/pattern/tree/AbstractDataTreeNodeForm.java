@@ -37,7 +37,6 @@ public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataT
 	public void read() {
 		super.read();
 		this.parent = tempCurrentParent = (ENUMERATION)  identifiable.getParent(); //getBusiness().findParent(identifiable);
-		System.out.println("AbstractDataTreeNodeForm.read() : "+parent);
 		if(parent!=null)
 			this.currentParent = inject(FormatterBusiness.class).format(parent);	
 	}
