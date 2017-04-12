@@ -308,7 +308,6 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.setShowHeader(Boolean.FALSE);
 		//System.out.println("Show header : "+table.getShowHeader());
 		//tableFormatJavaScript(table, Boolean.TRUE);
-		
 		table.setRendered(listener.isRendered(this));
 		if(table.getRendered()==null)
 			if(StringUtils.isBlank(listener.getTabId()))

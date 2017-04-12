@@ -226,7 +226,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		getFormConfiguration(Locality.class,Crud.CREATE).addRequiredFieldNames(LocalityEditPage.Form.FIELD_CODE)
 				.addFieldNames(LocalityEditPage.Form.FIELD_NAME,LocalityEditPage.Form.FIELD_RESIDENT_NAME,LocalityEditPage.Form.FIELD_TYPE
-						,LocalityEditPage.Form.FIELD_CURRENT_PARENT,LocalityEditPage.Form.FIELD_NEW_PARENT);
+						,LocalityEditPage.Form.FIELD_PARENT);
 		registerDetailsConfiguration(LocalityDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -238,6 +238,18 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,LocalityDetails.FIELD_CODE,LocalityDetails.FIELD_NAME
 								,LocalityDetails.FIELD_TYPE,LocalityDetails.FIELD_PARENT,LocalityDetails.FIELD_RESIDENT_NAME);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,LocalityDetails.FIELD_CODE,LocalityDetails.FIELD_NAME,LocalityDetails.FIELD_TYPE,LocalityDetails.FIELD_PARENT
+								,LocalityDetails.FIELD_RESIDENT_NAME);
 					}
 				};
 			}

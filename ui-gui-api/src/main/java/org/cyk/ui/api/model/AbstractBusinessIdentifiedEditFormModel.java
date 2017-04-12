@@ -42,6 +42,11 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@Input @InputText protected Long orderNumber;
 	
+	public AbstractBusinessIdentifiedEditFormModel(IDENTIFIABLE identifiable) {
+		setIdentifiable(identifiable);
+		read();
+	}
+	
 	@Override
 	public void read() {
 		super.read();

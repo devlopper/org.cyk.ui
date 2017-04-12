@@ -12,9 +12,11 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.AbstractUserSession;
@@ -131,7 +133,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	protected void open(DATA data) {
 		//WebNavigationManager.getInstance().redirectTo(AbstractCommandable.Builder.createList(data));
 		//WebNavigationManager.getInstance().redirectToDynamicCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
-		WebNavigationManager.getInstance().redirectToCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
+		if(Boolean.TRUE.equals(inplaceEdit))
+			WebNavigationManager.getInstance().redirectToCrudMany((Class<AbstractIdentifiable>) businessEntityInfos.getClazz(),(AbstractIdentifiable) data);
+		else
+			WebNavigationManager.getInstance().redirectToCrudOne((AbstractIdentifiable) data,Crud.READ,CommonBusinessAction.CONSULT);
 	}
 	
 	@Override

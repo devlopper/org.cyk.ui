@@ -12,13 +12,20 @@
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{localityListPage}" />
  		<ui:define name="body">
- 			<cyk:table value="#{localityListPage.table}" />
+ 			<table>
+ 				<tr valign="top">
+ 					<td>
+ 						<cyk:tree value="#{localityListPage.table.tree}" rendered="#{localityListPage.table.showHierarchy}" />		
+ 					</td>
+ 					<td>
+ 						<cyk:table value="#{localityListPage.table}" />
+ 					</td>
+ 				</tr>
+ 			</table>
+ 			
  		</ui:define>
  		
- 		<ui:define name="westContent">
- 			<cyk:tree value="#{localityListPage.table.tree}" rendered="#{localityListPage.table.showHierarchy}" /><!-- Use page tree menu -->
- 			<ui:include src="#{defaultDesktopLayoutManager.westInclude}" />
- 		</ui:define>
+ 		
  	</ui:decorate>
  
 </html>

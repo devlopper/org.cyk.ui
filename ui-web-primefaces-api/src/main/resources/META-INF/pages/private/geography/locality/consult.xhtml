@@ -12,7 +12,18 @@
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{localityConsultPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{localityConsultPage.details}" />	
+ 			<table>
+ 				<tr valign="top">
+ 					<td>	
+ 						<cyk:tree value="#{localityConsultPage.childrenTable.tree}" />		
+ 					</td>
+ 					<td>
+ 						<cyk:formOneData value="#{localityConsultPage.details}" />
+ 						<cyk:table value="#{localityConsultPage.childrenTable}" />
+ 					</td>
+ 				</tr>
+ 			</table>
+ 			
  					
  		</ui:define>
  	</ui:decorate>

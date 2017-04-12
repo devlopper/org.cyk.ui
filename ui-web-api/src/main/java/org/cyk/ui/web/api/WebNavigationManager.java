@@ -534,6 +534,15 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		});
 	}
 	
+	public void redirectToCrudOne(AbstractIdentifiable data,Crud crud,CommonBusinessAction commonBusinessAction){
+		redirectTo(IdentifierProvider.Adapter.getViewOf(data.getClass(), commonBusinessAction, Boolean.TRUE),new Object[]{
+				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(data.getClass())
+				,UniformResourceLocatorParameter.CRUD, crud
+				,UniformResourceLocatorParameter.PREVIOUS_URL, getRequestUrl()
+				,UniformResourceLocatorParameter.IDENTIFIABLE, data
+		});
+	}
+	
 	public void redirectToDynamicCrudMany(Class<? extends AbstractIdentifiable> dataClass,AbstractIdentifiable data){
 		redirectTo(outcomeDynamicCrudMany,new Object[]{
 				UniformResourceLocatorParameter.CLASS, uiManager.keyFromClass(dataClass),
