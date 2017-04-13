@@ -13,7 +13,7 @@
 		<ui:param name="input" value="#{control}" />
 		<ui:param name="forId" value="inputNumber" />
 		<ui:define name="input">
-			<pe:inputNumber id="inputNumber" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
+			<p:inputNumber id="inputNumber" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
 			    requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}"
 				minValue="#{control.minimum}" maxValue="#{control.maximum}" disabled="#{control.disabled}" readonly="#{control.readOnly}"
@@ -21,7 +21,7 @@
 				symbolPosition="#{control.symbolPosition}" 
 				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}" autocomplete="off">
 				<ui:include src="body.xhtml" />
-			</pe:inputNumber>				
+			</p:inputNumber>				
 		</ui:define>
 	</ui:decorate>
 		

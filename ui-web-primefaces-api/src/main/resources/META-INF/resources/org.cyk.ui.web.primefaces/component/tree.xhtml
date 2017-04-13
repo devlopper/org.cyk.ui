@@ -30,7 +30,7 @@
 			    </p:tree>
 			</ui:fragment>
 			
-			<ui:fragment rendered="#{cc.value.renderType.ordinal() == 2}">
+			<ui:fragment rendered="#{cc.value.renderType.ordinal() == 0}">
 				
 				<p:diagram value="#{cc.value.model}" style="height:400px" styleClass="ui-widget-content"/>
  
@@ -44,7 +44,7 @@
 				    }
 				</style-->
 				
-				<!--style type="text/css">
+				<style type="text/css">
 				    .ui-diagram-element {   
 				        width:5em; 
 				        height:5em;
@@ -60,7 +60,7 @@
 				    .ui-diagram-element:hover {
 				        background-color: #20282b;
 				    }
-				</style-->
+				</style>
 				
 			</ui:fragment>
 		    

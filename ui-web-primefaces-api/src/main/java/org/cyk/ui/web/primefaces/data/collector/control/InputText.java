@@ -19,6 +19,11 @@ public class InputText extends AbstractInput<String> implements WebInputText<Dyn
 	org.cyk.ui.api.data.collector.control.InputText<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,SelectItem>, Serializable {
 
 	private static final long serialVersionUID = 1390099136018097004L;
-
+	
+	@Override
+	public void applyValueToField() throws IllegalAccessException {
+		debug(this);
+		super.applyValueToField();
+	}
 
 }

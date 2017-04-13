@@ -108,6 +108,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 			AbstractUserSession.logout(userAccount);
 			disconnect = Boolean.FALSE;
 		}
+		debug(credentials);
 		UserAccount userAccount = userAccountBusiness.connect(credentials);
 		SecurityUtils.getSubject().login(new UsernamePasswordToken(credentials.getUsername(), credentials.getPassword(),rememberMe));
 		userSession.init(userAccount);
