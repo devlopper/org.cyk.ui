@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
@@ -26,6 +25,9 @@ import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.Constant;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -207,6 +209,11 @@ public abstract class AbstractBusinessEntityPrimefacesPage<ENTITY extends Abstra
 	
 	protected FormConfiguration getFormConfiguration(Crud crud){
 		return getFormConfiguration(crud, selectedTabId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected TypedBusiness<ENTITY> getBusiness(){
+		return inject(BusinessInterfaceLocator.class).injectTyped((Class<ENTITY>) businessEntityInfos.getClazz());
 	}
 	
 	/**/
