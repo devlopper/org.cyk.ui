@@ -21,13 +21,7 @@ import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
-import org.primefaces.model.diagram.Element;
-import org.primefaces.model.diagram.connector.StraightConnector;
-import org.primefaces.model.diagram.endpoint.DotEndPoint;
-import org.primefaces.model.diagram.endpoint.EndPoint;
-import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 
 @Getter @Setter
 public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Serializable {
@@ -153,8 +147,8 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
 	@Override
 	public <TYPE> void build(Class<TYPE> aClass, Collection<TYPE> aCollection,TYPE selected) {
 		super.build(aClass, aCollection, selected);
-		model = new DefaultDiagramModel();
-		model.setMaxConnections(-1);
+		//model = new DefaultDiagramModel();
+		//model.setMaxConnections(-1);
         
         /*Element elementA = new Element("A", "20em", "6em");
         elementA.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
@@ -172,7 +166,7 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
         model.connect(new Connection(elementA.getEndPoints().get(0), elementB.getEndPoints().get(0)));        
         model.connect(new Connection(elementA.getEndPoints().get(0), elementC.getEndPoints().get(0)));
         */
-		
+		/*
 		Element ceo = new Element("CEO", "25em", "6em");
         ceo.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
         model.addElement(ceo);
@@ -193,7 +187,7 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
         model.addElement(pur);
          
         //CTO
-        Element cto = new Element("CTO", "40em", "18em");
+        Element cto = new Element("CTO", "80em", "36em");
         cto.addEndPoint(createEndPoint(EndPointAnchor.TOP));
         cto.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
          
@@ -208,25 +202,28 @@ public class Tree extends AbstractTree<TreeNode, HierarchyNode> implements Seria
         model.addElement(tst);
          
         StraightConnector connector = new StraightConnector();
-        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
-        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        //connector.setPaintStyle("{strokeStyle:'#000000', lineWidth:10}");
+        //connector.setPaintStyle("color: #cccccc;background-color: #404a4e;");
+        //connector.setHoverPaintStyle("{strokeStyle:'#ff0000'}");
                          
         //connections
-        model.connect(new Connection(ceo.getEndPoints().get(0), cfo.getEndPoints().get(0), connector));        
+        Connection c1 = new Connection(ceo.getEndPoints().get(0), cfo.getEndPoints().get(0), connector);
+        model.connect(c1);        
         model.connect(new Connection(ceo.getEndPoints().get(0), cto.getEndPoints().get(0), connector));
         model.connect(new Connection(cfo.getEndPoints().get(1), fin.getEndPoints().get(0), connector));
         model.connect(new Connection(cfo.getEndPoints().get(1), pur.getEndPoints().get(0), connector));
         model.connect(new Connection(cto.getEndPoints().get(1), dev.getEndPoints().get(0), connector));
         model.connect(new Connection(cto.getEndPoints().get(1), tst.getEndPoints().get(0), connector));
+        */
 	}
 	
-	private EndPoint createEndPoint(EndPointAnchor anchor) {
+	/*private EndPoint createEndPoint(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
         endPoint.setStyle("{fillStyle:'#404a4e'}");
         endPoint.setHoverStyle("{fillStyle:'#20282b'}");
          
         return endPoint;
-    }
+    }*/
 	
 	public <TYPE> void build(Class<TYPE> aClass,Collection<TYPE> aCollection,TYPE selected,String consultViewId){
 		build(aClass, aCollection,selected);

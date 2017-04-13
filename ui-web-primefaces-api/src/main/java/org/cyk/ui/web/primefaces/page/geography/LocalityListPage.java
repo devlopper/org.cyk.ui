@@ -16,5 +16,20 @@ public class LocalityListPage extends AbstractCrudManyPage<Locality> implements 
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-
+	
+	@Override
+	protected void initialisation() {
+		// TODO Auto-generated method stub
+		super.initialisation();
+		//table.setGlobalFilter(Boolean.TRUE);
+		table.setUseDataModel(Boolean.TRUE);
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		//table.setLazyLoad(Boolean.TRUE);
+		
+	}
+	
 }

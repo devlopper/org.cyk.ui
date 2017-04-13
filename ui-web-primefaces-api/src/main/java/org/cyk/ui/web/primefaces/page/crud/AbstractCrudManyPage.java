@@ -52,6 +52,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				logMessageBuilder.addParameters("configuration",configuration);
 				logMessageBuilder.addParameters("hierarchy",Boolean.TRUE.equals(table.isDataTreeType()));
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
+					System.out
+							.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.load():"+configuration);
 					records = new ArrayList<>();
 					table.setShowHierarchy(Boolean.TRUE);
 					@SuppressWarnings({ "rawtypes" })
@@ -68,6 +70,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					for(Object node : hierarchies)
 						table.getHierarchyData().add(node);
 					
+					System.out.println("Rows : "+table.getRows());
 					if(table.getMaster()==null){
 						for(Object node : table.getHierarchyData())
 							records.add((ENTITY) node);

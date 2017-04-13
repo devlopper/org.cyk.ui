@@ -77,6 +77,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	@Getter protected Long resultsCount=0l,maximumResultCount=10l;
 	@Getter protected DataTable dataTable = new DataTable();
 	@Getter private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
+	@Getter @Setter private Boolean useDataModel;
 	
 	@Override
 	protected void initialisation() {
@@ -220,7 +221,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	/**/  
 	
 	public Object getValue(){
-		if(Boolean.TRUE.equals(lazyLoad))
+		if(Boolean.TRUE.equals(useDataModel) || Boolean.TRUE.equals(lazyLoad))
 			return getDataModel();
 		return rows;
 	}
