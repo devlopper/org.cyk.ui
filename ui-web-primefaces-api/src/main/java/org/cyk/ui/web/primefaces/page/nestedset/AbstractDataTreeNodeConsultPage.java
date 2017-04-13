@@ -38,7 +38,7 @@ public abstract class AbstractDataTreeNodeConsultPage<DATA_TREE extends Abstract
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<DATA_TREE> getIdentifiables() {
-				return getBusiness().findByParent(identifiable);
+				return getBusiness().findDirectChildrenByParent(identifiable);
 			}
 			
 			@Override

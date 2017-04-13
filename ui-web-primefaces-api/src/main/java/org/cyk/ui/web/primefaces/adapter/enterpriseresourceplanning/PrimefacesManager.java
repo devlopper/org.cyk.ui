@@ -248,8 +248,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,LocalityDetails.FIELD_CODE,LocalityDetails.FIELD_NAME,LocalityDetails.FIELD_TYPE,LocalityDetails.FIELD_PARENT
-								,LocalityDetails.FIELD_RESIDENT_NAME);
+						return isFieldNameIn(field,LocalityDetails.FIELD_CODE,LocalityDetails.FIELD_NAME,LocalityDetails.FIELD_TYPE,LocalityDetails.FIELD_RESIDENT_NAME);
 					}
 				};
 			}

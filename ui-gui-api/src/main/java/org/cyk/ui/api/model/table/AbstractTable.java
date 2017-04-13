@@ -434,7 +434,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 					if(master==null)
 						;
 					else{
-						((AbstractDataTreeNode)identifiable).setParent((AbstractDataTreeNode)master);
+						((AbstractDataTreeNode)identifiable).setParentNode((AbstractDataTreeNode)master);
 					}
 				DATA d = (DATA) AbstractFormModel.instance(null,rowDataClass, identifiable);	
 				editing.add(d);

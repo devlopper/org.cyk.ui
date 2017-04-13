@@ -25,12 +25,15 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 	
 	public static final String ROOT = "Root";
 	
+	public static enum RenderType{FIXED_COLLAPSABLE_VERTICAL,FIXED_COLLAPSABLE_HORIZONTAL,FREE}
+	
 	@Getter protected NODE root,index;
 	@Getter @Setter protected NODE selected,lastExpanded,lastCollapsed;
 	@Getter @Setter protected Boolean dynamic = Boolean.TRUE,expanded=Boolean.TRUE;
 	@Getter @Setter protected String consultViewId,editViewId;
 	@Getter @Setter protected Boolean redirectable,expand=Boolean.TRUE,useSpecificRedirectOnNodeSelected=Boolean.TRUE;
 	@Getter @Setter protected BusinessEntityInfos businessEntityInfos;
+	@Getter @Setter protected RenderType renderType = RenderType.FIXED_COLLAPSABLE_VERTICAL;
 	
 	@Getter protected Collection<Listener<NODE,MODEL>> treeListeners = new ArrayList<>();
 	

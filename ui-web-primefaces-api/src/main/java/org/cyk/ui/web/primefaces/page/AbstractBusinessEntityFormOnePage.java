@@ -9,13 +9,15 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.value.Value;
@@ -42,9 +44,6 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -169,7 +168,7 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	protected ENTITY instanciateIdentifiable(){
 		ENTITY entity = null;
 		if(businessEntityInfos!=null){
-			TypedBusiness<ENTITY> business = (TypedBusiness<ENTITY>) inject(BusinessInterfaceLocator.class).injectTyped((Class<ENTITY>)businessEntityInfos.getClazz());
+			TypedBusiness<ENTITY> business = getBusiness(); //(TypedBusiness<ENTITY>) inject(BusinessInterfaceLocator.class).injectTyped((Class<ENTITY>)businessEntityInfos.getClazz());
 			if(business!=null){
 				entity = business.instanciateOne(userSession.getUserAccount());	
 			}

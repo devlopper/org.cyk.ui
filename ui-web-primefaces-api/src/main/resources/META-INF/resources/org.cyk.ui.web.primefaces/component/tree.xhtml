@@ -14,18 +14,56 @@
 	<!-- collapsedIcon="ui-icon-folder-collapsed" expandedIcon="ui-icon-folder-open" -->
 	<cc:implementation>
 		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
-			<p:tree value="#{cc.value.root}" var="node" selectionMode="single" selection="#{cc.value.selected}" dynamic="#{cc.value.dynamic}" 
-				style="#{cc.value.css.inline}" styleClass="#{cc.value.css.clazz}">
-		        
-		        <p:ajax event="select" listener="#{cc.value.onNodeSelect}" />
-		        <p:ajax event="expand" listener="#{cc.value.onNodeExpand}" />
-		        <p:ajax event="collapse" listener="#{cc.value.onNodeCollapse}" />
-		        
-		        <p:treeNode expanded="#{node.expanded}" collapsedIcon="#{uiManager.iconIdentifier.get(node.collapsedIcon)}" 
-		        	expandedIcon="#{uiManager.iconIdentifier.get(node.expandedIcon)}">
-		            <h:outputText value="#{node.label}" style="#{node.css.inline}" styleClass="#{node.css.clazz}"/>
-		        </p:treeNode>
-		    </p:tree>
+			
+			<ui:fragment rendered="#{cc.value.renderType.ordinal() == 0}">
+				<p:tree value="#{cc.value.root}" var="node" selectionMode="single" selection="#{cc.value.selected}" dynamic="#{cc.value.dynamic}" 
+					style="#{cc.value.css.inline}" styleClass="#{cc.value.css.clazz}">
+			        
+			        <p:ajax event="select" listener="#{cc.value.onNodeSelect}" />
+			        <p:ajax event="expand" listener="#{cc.value.onNodeExpand}" />
+			        <p:ajax event="collapse" listener="#{cc.value.onNodeCollapse}" />
+			        
+			        <p:treeNode expanded="#{node.expanded}" collapsedIcon="#{uiManager.iconIdentifier.get(node.collapsedIcon)}" 
+			        	expandedIcon="#{uiManager.iconIdentifier.get(node.expandedIcon)}">
+			            <h:outputText value="#{node.label}" style="#{node.css.inline}" styleClass="#{node.css.clazz}"/>
+			        </p:treeNode>
+			    </p:tree>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.renderType.ordinal() == 2}">
+				
+				<p:diagram value="#{cc.value.model}" style="height:400px" styleClass="ui-widget-content"/>
+ 
+				<!--style type="text/css">
+				    .ui-diagram-element {
+				        border:0.1em dotted #d4e06b;    
+				        width:14em; 
+				        height:4em;     
+				        line-height:4em;
+				        text-align: center;
+				    }
+				</style-->
+				
+				<!--style type="text/css">
+				    .ui-diagram-element {   
+				        width:5em; 
+				        height:5em;
+				        line-height:5em;
+				        text-align: center;
+				        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+				        border-radius: 5em;
+				        border: 1px solid #404a4e;
+				        background-color: #404a4e;
+				        color: #cccccc;
+				    }
+				 
+				    .ui-diagram-element:hover {
+				        background-color: #20282b;
+				    }
+				</style-->
+				
+			</ui:fragment>
+		    
 		</ui:fragment>
 		
 	    <ui:fragment rendered="#{webNavigationManager.isMobileView(request)}" >
