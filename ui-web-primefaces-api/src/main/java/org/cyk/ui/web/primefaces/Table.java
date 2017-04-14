@@ -239,6 +239,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 					DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 					if(Boolean.TRUE.equals(fetch)){
 						Table.this.load(configuration);
+						System.out.println("hhhhh : "+rows.size());
 					}
 					fetch = Boolean.TRUE;
 					if(StringUtils.isNotBlank(filter)){

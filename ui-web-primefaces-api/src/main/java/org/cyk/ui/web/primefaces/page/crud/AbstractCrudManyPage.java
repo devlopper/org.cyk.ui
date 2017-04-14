@@ -67,13 +67,15 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 									System.out.println("CI : "+((AbstractIdentifiable)o2).getChildren());
 								}
 						}*/
-					for(Object node : hierarchies)
+					for(Object node : hierarchies){
 						table.getHierarchyData().add(node);
+					}
 					
 					System.out.println("Rows : "+table.getRows());
 					if(table.getMaster()==null){
-						for(Object node : table.getHierarchyData())
-							records.add((ENTITY) node);
+						//for(Object node : table.getHierarchyData())
+						//	records.add((ENTITY) node);
+						records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
 					}else{
 						table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
 						if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
@@ -114,7 +116,9 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			@Override
 			public Long count(DataReadConfiguration configuration) {
 				if(Boolean.TRUE.equals(table.isDataTreeType())){
-					
+					System.out
+							.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.count()");
+					return 11l;
 				}else{
 					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
@@ -128,7 +132,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 						return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countAll();
 							//UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
 				}
-				return super.count(configuration);
+				//return super.count(configuration);
 			}
 		});	
 		
