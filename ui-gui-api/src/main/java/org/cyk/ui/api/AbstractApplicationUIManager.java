@@ -215,6 +215,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 				configureTimeModule();
 				configureTreeModule();
 				configureUserInterfaceModule();
+				configureNetworkModule();
 			}
 			
 			@Override
@@ -243,6 +244,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			protected void configureLanguageModule(){}
 			protected void configureMathematicsModule(){}
 			protected void configureMessageModule(){}
+			protected void configureNetworkModule(){}
 			protected void configurePartyModule(){}
 			protected void configureTreeModule(){}
 			protected void configureSecurityModule(){}

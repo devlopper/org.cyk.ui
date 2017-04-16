@@ -32,6 +32,8 @@ import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.message.SmtpProperties;
+import org.cyk.system.root.model.network.Computer;
+import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.Allergy;
 import org.cyk.system.root.model.party.person.BloodGroup;
@@ -47,6 +49,7 @@ import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.system.root.model.security.LockCause;
 import org.cyk.system.root.model.security.SecretQuestion;
+import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.time.TimeDivisionType;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -150,6 +153,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getMessageCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("command.notification.management", null);
+		module.addChild(createListCommandable(SmtpProperties.class, null));
 		module.addChild(Builder.create("sendmail", null, "mailSendView"));
 		
 		return module;
@@ -162,7 +166,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferencePartyCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceLanguageCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceSecurityCommandable(userSession, mobileCommandables));
-		addReference(userSession, systemMenu, getReferenceUniformResourceLocatorCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceNetworkCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceTimeCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMathematicsCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
@@ -208,6 +212,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getReferenceSecurityCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("security", null);
+		module.addChild(createListCommandable(Software.class, null));
 		module.addChild(createListCommandable(LockCause.class, null));
 		module.addChild(createListCommandable(SecretQuestion.class, null));
 		
@@ -225,8 +230,10 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		return module;
 	}
 	
-	public Commandable getReferenceUniformResourceLocatorCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
-		Commandable module = createModuleCommandable(UIManager.getInstance().businessEntityInfos(UniformResourceLocator.class).getUserInterface().getLabelId(), null);
+	public Commandable getReferenceNetworkCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("network", null);
+		module.addChild(createListCommandable(Computer.class, null));
+		module.addChild(createListCommandable(Service.class, null));
 		module.addChild(createListCommandable(UniformResourceLocator.class, null));
 		
 		return module;
@@ -256,7 +263,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getReferenceMessageCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("command.notification.management", null);
-		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.MATHEMATICS).getName());
+		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.MESSAGE).getName());
 		module.addChild(createListCommandable(SmtpProperties.class, null));
 		
 		return module;

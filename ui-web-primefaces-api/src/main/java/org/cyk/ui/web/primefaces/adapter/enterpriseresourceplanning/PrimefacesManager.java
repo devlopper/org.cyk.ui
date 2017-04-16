@@ -27,6 +27,9 @@ import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
+import org.cyk.system.root.business.impl.message.SmtpPropertiesDetails;
+import org.cyk.system.root.business.impl.network.ComputerDetails;
+import org.cyk.system.root.business.impl.network.ServiceDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
@@ -35,6 +38,7 @@ import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
+import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
@@ -58,12 +62,16 @@ import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.message.SmtpProperties;
+import org.cyk.system.root.model.network.Computer;
+import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
@@ -101,9 +109,13 @@ import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGl
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.message.SmtpPropertiesEditPage;
+import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
+import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
+import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -776,6 +788,93 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,UserAccountDetails.FIELD_USER,UserAccountDetails.FIELD_USERNAME,UserAccountDetails.FIELD_DISABLED
 								,UserAccountDetails.FIELD_CURRENT_LOCK);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Software.class, Crud.CREATE)
+		.addRequiredFieldNames(SoftwareEditPage.Form.FIELD_CODE,SoftwareEditPage.Form.FIELD_NAME);
+	
+		registerDetailsConfiguration(SoftwareDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,SoftwareDetails.FIELD_CODE,SoftwareDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+	}
+	
+	@Override
+	protected void configureNetworkModule() {
+		super.configureNetworkModule();
+		getFormConfiguration(Computer.class, Crud.CREATE)
+		.addRequiredFieldNames(ComputerEditPage.Form.FIELD_CODE,ComputerEditPage.Form.FIELD_NAME
+				,ComputerEditPage.Form.FIELD_IP_ADDRESS,ComputerEditPage.Form.FIELD_IP_ADDRESS_NAME);
+	
+		registerDetailsConfiguration(ComputerDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ComputerDetails.FIELD_CODE,ComputerDetails.FIELD_NAME
+								,ComputerDetails.FIELD_IP_ADDRESS,ComputerDetails.FIELD_IP_ADDRESS_NAME);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Service.class, Crud.CREATE)
+		.addRequiredFieldNames(ServiceEditPage.Form.FIELD_CODE,ServiceEditPage.Form.FIELD_NAME,ServiceEditPage.Form.FIELD_COMPUTER,ServiceEditPage.Form.FIELD_PORT
+				,ServiceEditPage.Form.FIELD_AUTHENTICATED,ServiceEditPage.Form.FIELD_SECURED);
+	
+		registerDetailsConfiguration(ServiceDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ServiceDetails.FIELD_CODE,ServiceDetails.FIELD_NAME,ServiceDetails.FIELD_COMPUTER,ServiceDetails.FIELD_PORT
+								,ServiceDetails.FIELD_AUTHENTICATED,ServiceDetails.FIELD_SECURED);
+					}
+				};
+			}
+		});
+		
+	}
+
+	@Override
+	protected void configureMessageModule() {
+		super.configureMessageModule();
+		getFormConfiguration(SmtpProperties.class, Crud.CREATE)
+		.addRequiredFieldNames(SmtpPropertiesEditPage.Form.FIELD_CODE,SmtpPropertiesEditPage.Form.FIELD_SERVICE
+				,SmtpPropertiesEditPage.Form.FIELD_CREDENTIALS,SmtpPropertiesEditPage.Form.FIELD_FROM);
+	
+		registerDetailsConfiguration(SmtpPropertiesDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,SmtpPropertiesDetails.FIELD_CODE,SmtpPropertiesDetails.FIELD_SERVICE
+								,SmtpPropertiesDetails.FIELD_CREDENTIALS,SmtpPropertiesDetails.FIELD_FROM);
 					}
 				};
 			}

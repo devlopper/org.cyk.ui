@@ -31,6 +31,9 @@ import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlob
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.message.SmtpPropertiesDetails;
+import org.cyk.system.root.business.impl.network.ComputerDetails;
+import org.cyk.system.root.business.impl.network.ServiceDetails;
 import org.cyk.system.root.business.impl.party.ApplicationDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
@@ -40,6 +43,7 @@ import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
+import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
@@ -69,6 +73,9 @@ import org.cyk.system.root.model.mathematics.MetricValueIdentifiableGlobalIdenti
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.message.SmtpProperties;
+import org.cyk.system.root.model.network.Computer;
+import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -83,6 +90,7 @@ import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
@@ -124,7 +132,10 @@ import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricValueIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
+import org.cyk.ui.web.primefaces.page.message.SmtpPropertiesEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
+import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
+import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
@@ -132,6 +143,7 @@ import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonRelationshipEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
+import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.primefaces.model.TreeNode;
@@ -174,6 +186,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeNetworkModule();
 		initializePartyModule();
 		initializeSecurityModule();
+		initializeMessageModule();
 	
 	}
 	
@@ -260,6 +273,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(UniformResourceLocator.class, UniformResourceLocatorEditPage.Form.class
 				, UniformResourceLocatorDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(UniformResourceLocator.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Computer.class, ComputerEditPage.Form.class, ComputerDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Computer.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Service.class, ServiceEditPage.Form.class, ServiceDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Service.class, null);
 	}
 	
 	protected void initializeInformationModule(){
@@ -272,9 +291,17 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(Role.class, null);
 		uiManager.registerConfiguration(new IdentifiableConfiguration(License.class, LicenseEditPage.Form.class, LicenseDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(License.class, null);
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Software.class, SoftwareEditPage.Form.class, SoftwareDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Software.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(UserAccount.class, UserAccountEditPage.Form.class, UserAccountDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(UserAccount.class, null);
+	}
+	
+	protected void initializeMessageModule(){
+		uiManager.registerConfiguration(new IdentifiableConfiguration(SmtpProperties.class, SmtpPropertiesEditPage.Form.class, SmtpPropertiesDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(SmtpProperties.class, null);
+		
 	}
 	
 	protected void initializeNestedSetModule(){

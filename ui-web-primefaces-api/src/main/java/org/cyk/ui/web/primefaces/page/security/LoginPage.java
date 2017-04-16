@@ -22,7 +22,9 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessException;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.OpticalDecoderBusiness;
+import org.cyk.system.root.business.api.security.SoftwareBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.AbstractUserSession;
@@ -64,6 +66,8 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 		form.getSubmitCommandable().setIcon(Icon.ACTION_LOGIN);
 		form.setFieldsRequiredMessage(null);
 		
+		identifiable.setSoftware(inject(SoftwareBusiness.class).find(RootConstant.Code.Software.INSTALLED));
+		
 		opticalBarCodeReader = new OpticalBarCodeReader("tabview:obcr",opticalDecoderBusiness);
 		opticalBarCodeReader.getOpticalBarCodeReaderListeners().add(new OpticalBarCodeReaderAdapter<Timer>(){
 			private static final long serialVersionUID = 1519936596082983556L;
@@ -73,7 +77,7 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 				//connect(new Credentials(credentials[0], credentials[1]));
 				identifiable.setUsername(StringUtils.trim(credentials[0]));
 				identifiable.setPassword(StringUtils.trim(credentials[1]));
-				form.getSubmitCommandable().getCommand().execute(new Credentials(credentials[0], credentials[1]));
+				//form.getSubmitCommandable().getCommand().execute(new Credentials(credentials[0], credentials[1]));
 			}
 		});
 	}

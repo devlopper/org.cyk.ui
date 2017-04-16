@@ -23,7 +23,37 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>computerListView</from-outcome>
+			<to-view-id>/private/network/computer/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>computerEditView</from-outcome>
+			<to-view-id>/private/network/computer/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>computerConsultView</from-outcome>
+			<to-view-id>/private/network/computer/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>serviceListView</from-outcome>
+			<to-view-id>/private/network/service/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>serviceEditView</from-outcome>
+			<to-view-id>/private/network/service/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>serviceConsultView</from-outcome>
+			<to-view-id>/private/network/service/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 	</navigation-rule>
 

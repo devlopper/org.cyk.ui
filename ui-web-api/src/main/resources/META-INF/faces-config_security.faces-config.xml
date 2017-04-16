@@ -14,6 +14,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>softwareListView</from-outcome>
+			<to-view-id>/private/security/software/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>softwareEditView</from-outcome>
+			<to-view-id>/private/security/software/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>softwareConsultView</from-outcome>
+			<to-view-id>/private/security/software/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>licenseListView</from-outcome>
 			<to-view-id>/private/security/license/list.xhtml</to-view-id>
 			<redirect />
