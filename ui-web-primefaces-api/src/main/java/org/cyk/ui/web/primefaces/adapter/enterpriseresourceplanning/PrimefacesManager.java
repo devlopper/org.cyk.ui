@@ -17,6 +17,7 @@ import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDe
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
@@ -37,6 +38,7 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicat
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
+import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
@@ -52,6 +54,7 @@ import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
+import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.language.Language;
@@ -70,6 +73,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
@@ -99,6 +103,7 @@ import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
@@ -109,11 +114,12 @@ import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGl
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
-import org.cyk.ui.web.primefaces.page.message.SmtpPropertiesEditPage;
+import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
 import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
 import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
+import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
@@ -314,6 +320,23 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,CountryDetails.FIELD_NAME,CountryDetails.FIELD_PHONE_NUMBER_CODE);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(ElectronicMail.class,Crud.CREATE).addRequiredFieldNames(ElectronicMailEditPage.Form.FIELD_VALUE);
+		
+		registerDetailsConfiguration(ElectronicMailDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ElectronicMailDetails.FIELD_VALUE);
 					}
 				};
 			}
@@ -806,6 +829,24 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,SoftwareDetails.FIELD_CODE,SoftwareDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Credentials.class, Crud.CREATE)
+		.addRequiredFieldNames(CredentialsEditPage.Form.FIELD_SOFTWARE,CredentialsEditPage.Form.FIELD_USERNAME,CredentialsEditPage.Form.FIELD_PASSWORD);
+	
+		registerDetailsConfiguration(CredentialsDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,CredentialsDetails.FIELD_SOFTWARE,CredentialsDetails.FIELD_USERNAME,CredentialsDetails.FIELD_PASSWORD);
 					}
 				};
 			}

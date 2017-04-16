@@ -30,6 +30,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>credentialsListView</from-outcome>
+			<to-view-id>/private/security/credentials/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>credentialsEditView</from-outcome>
+			<to-view-id>/private/security/credentials/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>credentialsConsultView</from-outcome>
+			<to-view-id>/private/security/credentials/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>licenseListView</from-outcome>
 			<to-view-id>/private/security/license/list.xhtml</to-view-id>
 			<redirect />

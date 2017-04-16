@@ -47,6 +47,7 @@ import org.cyk.system.root.model.party.person.PersonRelationshipType;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
+import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.LockCause;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.security.Software;
@@ -207,6 +208,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(LocationType.class, null));
 		module.addChild(createListCommandable(PhoneNumberType.class, null));
 		module.addChild(createListCommandable(Country.class, null));
+		module.addChild(createListCommandable(ElectronicMail.class, null));
 		return module;
 	}
 	
@@ -215,7 +217,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(Software.class, null));
 		module.addChild(createListCommandable(LockCause.class, null));
 		module.addChild(createListCommandable(SecretQuestion.class, null));
-		
+		module.addChild(createListCommandable(Credentials.class, null));
 		return module;
 	}
 	
