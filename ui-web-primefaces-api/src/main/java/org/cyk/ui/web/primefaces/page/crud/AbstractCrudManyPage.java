@@ -101,6 +101,16 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 					else
 						records = getBusiness().findAll();
 			
+				if(StringUtils.isBlank(configuration.getGlobalFilter())){
+					if(AbstractDataTreeNode.class.isAssignableFrom(identifiableClass)){
+						
+					}else{
+						
+					}
+				}else{
+					
+				}
+				
 				results = datas(records);
 				logMessageBuilder.addParameters("results count",results.size());
 				logTrace(logMessageBuilder);
