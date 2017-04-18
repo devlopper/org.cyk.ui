@@ -23,7 +23,7 @@ public class LocalityListPage extends AbstractCrudManyPage<Locality> implements 
 		super.initialisation();
 		//table.setGlobalFilter(Boolean.TRUE);
 		//table.setUseDataModel(Boolean.TRUE);
-		table.setLazyLoad(Boolean.TRUE);
+		//table.setLazyLoad(Boolean.TRUE);
 		//table.setRowCount(10);
 	}
 	

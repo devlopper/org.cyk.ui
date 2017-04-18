@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.utility.common.model.table.DefaultCell;
 
@@ -16,6 +17,6 @@ public class Cell extends DefaultCell implements Serializable {
 	private Control<?, ?, ?, ?, ?> control;
 	
 	private Boolean isFile,isImage,showFileLink;
-	private String url;
-	
+	private String url,tooltip;
+	private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 }

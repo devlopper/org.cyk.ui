@@ -21,8 +21,6 @@ import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
-import org.cyk.ui.api.IdentifierProvider;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -38,7 +36,6 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.omnifaces.util.Ajax;
@@ -110,7 +107,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		commandable = (Commandable) searchCommandable;
 			
 		if(Boolean.TRUE.equals(isDataTreeType()) && StringUtils.isBlank(WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.FILTER)) ){
-			UrlStringBuilder urlStringBuilder = new UrlStringBuilder();
+			/*UrlStringBuilder urlStringBuilder = new UrlStringBuilder();
 			urlStringBuilder.getQueryStringBuilder().addParameter(UniformResourceLocatorParameter.LAZY, UniformResourceLocatorParameter.LAZY_TRUE)
 			.addParameter("clazz", UIManager.getInstance().keyFromClass(identifiableClass));
 			urlStringBuilder.setHost("localhost");
@@ -119,7 +116,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 			urlStringBuilder.addPathTokenReplacement(".xhtml", ".jsf");
 			
 			String url = urlStringBuilder.build()+"&"+UniformResourceLocatorParameter.FILTER+"=";
-			
+			*/
 			//commandable.getButton().setOnclick("window.location='"+url+"'+document.getElementsByClassName('cyk_inputtext_globalfilter')[0].value;");
 		}else{
 			commandable.getButton().setType("button");

@@ -12,6 +12,8 @@ import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.UIManager;
@@ -524,9 +526,13 @@ public abstract class AbstractTree<NODE,MODEL extends AbstractHierarchyNode> ext
 				public Collection<?> children(Object object) {
 					if(object instanceof AbstractDataTreeNode){
 						Collection<Object> collection = new ArrayList<>();
-						if(((AbstractDataTreeNode)object).getChildren()!=null)
+						/*if(((AbstractDataTreeNode)object).getChildren()!=null)
 							for(Object o : ((AbstractDataTreeNode)object).getChildren())
 								collection.add(o);
+						*/
+						for(Object child : ((AbstractDataTreeNodeBusiness<AbstractDataTreeNode>)inject(BusinessInterfaceLocator.class)
+								.injectTypedByObject((AbstractDataTreeNode)object)).findDirectChildrenByParent((AbstractDataTreeNode)object))
+							collection.add(child);
 						return collection;
 					}
 					return null;

@@ -21,6 +21,7 @@ import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -62,7 +63,10 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 			listener.initialisationStarted(this); 
 		String lazy = requestParameter(UniformResourceLocatorParameter.LAZY);
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass,getTableListener());
-		if(StringUtils.isNotBlank(lazy)){
+		if(StringUtils.isBlank(lazy)){
+			if(AbstractDataTreeNode.class.isAssignableFrom(identifiableClass))
+				table.setLazyLoad(Boolean.TRUE);
+		}else{
 			if(lazy.equals(UniformResourceLocatorParameter.LAZY_TRUE))
 				table.setLazyLoad(Boolean.TRUE);
 			else if(lazy.equals(UniformResourceLocatorParameter.LAZY_FALSE))
