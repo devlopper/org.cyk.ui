@@ -14,14 +14,23 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Singleton @Named
+/**
+ * Helper class to get various javascript source code to be executed in page
+ * @author Christian Yao Komenan
+ *
+ */
 public class JavaScriptHelper extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4662624027559597185L;
 	
 	private static final String OPEN_WINDOW_FORMAT = "window.open('%s', '%s', 'location=no,menubar=no,titlebar=no,toolbar=no,width=%s, height=%s');";
+	private static final String WINDOW_LOCATION = "window.location = '%s';";
 	
 	private static final String INSTRUCTION_SEPARATOR = ";";
+	private static final String DOUBLE_SPACE = Constant.CHARACTER_SPACE.toString()+Constant.CHARACTER_SPACE.toString();
+	
 	private static JavaScriptHelper INSTANCE;
+	
 	public static JavaScriptHelper getInstance() {
 		return INSTANCE;
 	}
@@ -37,7 +46,7 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	}
 	
 	public String formatInstruction(String instruction){
-		instruction=StringUtils.replace(instruction, "  ", " ");
+		instruction=StringUtils.replace(instruction, DOUBLE_SPACE, Constant.CHARACTER_SPACE.toString());
 		StringBuilder builder= new StringBuilder(instruction==null?Constant.EMPTY_STRING:instruction);
 		if(StringUtils.isNotBlank(instruction) && !StringUtils.endsWith(builder, INSTRUCTION_SEPARATOR))
 			builder.append(INSTRUCTION_SEPARATOR);
@@ -86,6 +95,10 @@ public class JavaScriptHelper extends AbstractBean implements Serializable {
 	
 	public String getFormInputVisibility(FormOneData<?, ?, ?, ?, ?, ?> form,String fieldName,Boolean visible){
 		return getFormControlVisibility(form.getInputByFieldName(fieldName), visible);
+	}
+	
+	public String getWindowLocation(String url){
+		return String.format(WINDOW_LOCATION, url);
 	}
 
 }

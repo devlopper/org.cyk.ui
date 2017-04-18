@@ -82,7 +82,7 @@ public class ContextListener extends AbstractContextListener {
 			}
 		});
 		
-		AbstractWindow.WindowInstanceManager.INSTANCE = new PageInstanceManager(){
+		/*AbstractWindow.WindowInstanceManager.INSTANCE = new PageInstanceManager(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window) {
@@ -97,7 +97,7 @@ public class ContextListener extends AbstractContextListener {
 					return Boolean.FALSE;
 				return super.isShowDetails(detailsClass, identifiable,window);
 			}
-		};
+		};*/
 		
 		LanguageBusinessImpl.Listener.COLLECTION.add(new LanguageBusinessImpl.Listener.Adapter.Default.EnterpriseResourcePlanning(){
 			private static final long serialVersionUID = 1L;

@@ -3,23 +3,25 @@ package org.cyk.ui.web.primefaces.page.crud;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map.Entry;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUserSession;
+import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
+import org.omnifaces.util.Faces;
 
 @Getter @Setter
 public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements Serializable {
@@ -30,6 +32,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 	protected void initialisation() {
 		super.initialisation();
 		table.setEditable(Boolean.TRUE);
+		table.getSearchCommandable().getCommand().getCommandListeners().add(this);
 		table.getRowListeners().add(new RowAdapter<Object>(getUserSession()){
 			private static final long serialVersionUID = 1L;
 
@@ -89,6 +92,7 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				}
 				*/
 				
+				/*
 				if(Boolean.TRUE.equals(table.getLazyLoad())){
 					if(Boolean.TRUE.equals(table.getGlobalFilter()))
 						//if(StringUtils.isBlank(configuration.getGlobalFilter()))
@@ -100,15 +104,14 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 						records = (Collection<ENTITY>) ((AbstractDataTreeNodeBusiness<?>) getBusiness()).findRoots();
 					else
 						records = getBusiness().findAll();
-			
+				*/
 				if(StringUtils.isBlank(configuration.getGlobalFilter())){
-					if(AbstractDataTreeNode.class.isAssignableFrom(identifiableClass)){
-						
-					}else{
-						
-					}
+					if(AbstractDataTreeNode.class.isAssignableFrom(identifiableClass))
+						records = (Collection<ENTITY>) ((AbstractDataTreeNodeBusiness<?>) getBusiness()).findRoots();
+					else
+						records = getBusiness().findAll(configuration);
 				}else{
-					
+					records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
 				}
 				
 				results = datas(records);
@@ -136,6 +139,8 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 						return getBusiness().countAll();
 				}
 				*/
+				
+				/*
 				if(Boolean.TRUE.equals(table.getLazyLoad())){
 					if(Boolean.TRUE.equals(table.getGlobalFilter()))
 						return getBusiness().countByString(configuration.getGlobalFilter());
@@ -146,6 +151,16 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 							return getBusiness().countByString(configuration.getGlobalFilter());
 				}else
 					return getBusiness().countAll();
+				*/
+				
+				if(StringUtils.isBlank(configuration.getGlobalFilter())){
+					if(AbstractDataTreeNode.class.isAssignableFrom(identifiableClass))
+						return ((AbstractDataTreeNodeBusiness<?>) getBusiness()).countRoots();
+					else
+						return getBusiness().countAll();
+				}else{
+					return getBusiness().countByString(configuration.getGlobalFilter());
+				}
 			}
 		});	
 		
@@ -169,9 +184,11 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			//getGenericBusiness().save(identifiable);
 		}else if(table.getRemoveRowCommandable().getCommand()==command){
 			//getGenericBusiness().delete(identifiable);
-		}/*else if(table.getAddRowCommandable().getCommand()==command){
-			
-		}*/
+		}else if(table.getSearchCommandable().getCommand()==command){
+			for(Entry<String, String[]> entry :  Faces.getRequest().getParameterMap().entrySet())
+				if(entry.getKey().contains(":globalFilter") && entry.getValue()!=null && entry.getValue().length>0 && StringUtils.isNotBlank(entry.getValue()[0]))
+					navigationManager.redirectToCrudMany(identifiableClass, identifiable, new Object[]{UniformResourceLocatorParameter.FILTER,entry.getValue()[0]});
+		}
 	}	
 
 }

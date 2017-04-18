@@ -46,7 +46,7 @@
 		      					
 			      			<f:facet name="right">
 			      				<ui:fragment rendered="#{cc.value.globalFilter}">
-			       					<p:inputText id="globalFilter">
+			       					<p:inputText id="globalFilter" styleClass="cyk_inputtext_globalfilter">
 			       				
 			       					</p:inputText>
 			       					<cyk:command id="searchCommand" value="#{cc.value.searchCommandable}" />
@@ -59,6 +59,7 @@
 					<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
 					<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />
 					<p:ajax event="rowEditCancel" listener="#{cc.value.onRowEditCancel}" />
+					<p:ajax event="rowEditCancel" listener="#{cc.value.listenFilter}" />
 					
 					<p:column headerText="#" width="14"><h:outputText value="#{row.uiIndex==null?'':(row.uiIndex+1)}" /> </p:column>
 					

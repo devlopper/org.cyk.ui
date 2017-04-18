@@ -21,6 +21,8 @@ import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.AbstractUserSession;
 import org.cyk.ui.api.Icon;
+import org.cyk.ui.api.IdentifierProvider;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
@@ -30,16 +32,19 @@ import org.cyk.ui.api.model.table.Cell;
 import org.cyk.ui.api.model.table.Column;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.web.api.JavaScriptHelper;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
 import org.omnifaces.util.Ajax;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.data.FilterEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
@@ -103,8 +108,25 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 		//	commandable.getButton().setOncomplete("clickEditButtonAllRow('"+updateStyleClass+"')");
 		
 		commandable = (Commandable) searchCommandable;
-		commandable.getButton().setType("button");
-		commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
+			
+		if(Boolean.TRUE.equals(isDataTreeType()) && StringUtils.isBlank(WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.FILTER)) ){
+			UrlStringBuilder urlStringBuilder = new UrlStringBuilder();
+			urlStringBuilder.getQueryStringBuilder().addParameter(UniformResourceLocatorParameter.LAZY, UniformResourceLocatorParameter.LAZY_TRUE)
+			.addParameter("clazz", UIManager.getInstance().keyFromClass(identifiableClass));
+			urlStringBuilder.setHost("localhost");
+			urlStringBuilder.setPathIdentifier(IdentifierProvider.Adapter.getViewOf(identifiableClass, CommonBusinessAction.LIST, Boolean.TRUE));
+			urlStringBuilder.setPort(8080);
+			urlStringBuilder.addPathTokenReplacement(".xhtml", ".jsf");
+			
+			String url = urlStringBuilder.build()+"&"+UniformResourceLocatorParameter.FILTER+"=";
+			
+			//commandable.getButton().setOnclick("window.location='"+url+"'+document.getElementsByClassName('cyk_inputtext_globalfilter')[0].value;");
+		}else{
+			commandable.getButton().setType("button");
+			commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
+		}
+		//commandable.getButton().setOnclick("window.location='"+url+"'+document.getElementsByClassName('cyk_inputtext_globalfilter')[0].value;");
+		//commandable.getButton().setOnclick("PF('dataTableWidgetVar').filter();");
 		
 		commandable.getButton().setWidgetVar("searchCommandWidgetVar");
 		
@@ -161,6 +183,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	
 	public void onRowEditCancel(RowEditEvent rowEditEvent){
 		cancelRowEditCommandable.getCommand().execute(rowEditEvent.getObject());
+	}
+	
+	public void listenFilter(FilterEvent event){
+		
 	}
 
 	/*@Override
@@ -236,9 +262,13 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 					LogMessage.Builder logMessageBuilder = new LogMessage.Builder("Load","data");
 					logMessageBuilder.addParameters("filters",filters);
 					String filter = (String)filters.get("globalFilter");
+					if(StringUtils.isBlank(filter))
+						filter = WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.FILTER);
+					
 					logMessageBuilder.addParameters("global filter",filter);
 					
 					DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
+					
 					if(Boolean.TRUE.equals(fetch)){
 						Table.this.load(configuration);
 					}
