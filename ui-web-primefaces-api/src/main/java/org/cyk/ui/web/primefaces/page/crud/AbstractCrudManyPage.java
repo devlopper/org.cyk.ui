@@ -82,10 +82,13 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				}
 			}
 		});	
+		
+		table.setShowOpenCommand(Boolean.TRUE);
+		
 		/*
 		table.setShowHeader(Boolean.TRUE);
 		table.setShowToolBar(Boolean.TRUE);
-		table.setShowOpenCommand(Boolean.TRUE);
+		
 		table.setShowFooter(Boolean.FALSE);
 		*/
 	}

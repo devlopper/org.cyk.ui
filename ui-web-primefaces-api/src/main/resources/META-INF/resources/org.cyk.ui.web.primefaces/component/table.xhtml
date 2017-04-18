@@ -158,7 +158,10 @@
 					paginatorTemplate="#{cc.value.dataTable.paginatorTemplate}" currentPageReportTemplate="#{cc.value.dataTable.currentPageReportTemplate}"
 					tableStyleClass="ui-table-columntoggle" reflow="true">
 					
-					<cc:insertChildren />
+					<cc:insertChildren>
+						
+					</cc:insertChildren>
+					<h:outputText value="#{row.html}" escape="false" />
 					
 				</p:dataList>
 			</ui:fragment>

@@ -22,6 +22,9 @@ import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
+import org.cyk.ui.api.model.table.Row;
+import org.cyk.ui.api.model.table.RowAdapter;
+import org.cyk.ui.api.model.table.AbstractTable.RenderType;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
@@ -131,7 +134,24 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 				return Arrays.asList(getPerson());
 			}
 			
+			@Override
+			public RowAdapter<PersonRelationshipDetails> getRowAdapter() {
+				return new RowAdapter<PersonRelationshipDetails>(getUserSession()){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void added(Row<PersonRelationshipDetails> row) {
+						super.added(row);
+						String format = "%s : <a href='consultlink'>%s</a>";
+						String type = getPerson().equals(row.getData().getMaster().getPerson1()) ? "INVERSE of "+row.getData().getType() : row.getData().getType().getValue();
+						String person = getPerson().equals(row.getData().getMaster().getPerson1()) ? row.getData().getPerson2().getValue() : row.getData().getPerson1().getValue();
+						row.setHtml(String.format(format, type,person));
+					}
+				};
+			}
+			
 		});
+		
+		relationshipTable.setRenderType(RenderType.LIST);
 		
 	} 
 	
