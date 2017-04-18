@@ -7,8 +7,10 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
+import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.ui.api.AbstractUserSession;
@@ -51,60 +53,53 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 				Collection<ENTITY> records = null;
 				logMessageBuilder.addParameters("configuration",configuration);
 				logMessageBuilder.addParameters("hierarchy",Boolean.TRUE.equals(table.isDataTreeType()));
-				if(Boolean.TRUE.equals(table.isDataTreeType())){
-					System.out
-							.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.load():"+configuration);
+				/*if(Boolean.TRUE.equals(table.isDataTreeType())){
 					records = new ArrayList<>();
 					table.setShowHierarchy(Boolean.TRUE);
-					@SuppressWarnings({ "rawtypes" })
-					AbstractDataTreeNodeBusiness business = (AbstractDataTreeNodeBusiness) BusinessInterfaceLocator.getInstance()
-						.injectTyped((Class<AbstractIdentifiable>) businessEntityInfos.getClazz());
-					Collection<?> hierarchies = business.findHierarchies();
-					/*for(Object o1 : hierarchies)
-						if( ((AbstractIdentifiable)o1).getCode().equals("AMERICA") ){
-							for(Object o2 : ((AbstractIdentifiable)o1).getChildren())
-								if( ((AbstractIdentifiable)o2).getCode().equals("CI") ){
-									System.out.println("CI : "+((AbstractIdentifiable)o2).getChildren());
-								}
-						}*/
+					Collection<?> hierarchies = ((AbstractDataTreeNodeBusiness<?>) getBusiness()).findHierarchies();
+					
 					for(Object node : hierarchies){
-						table.getHierarchyData().add(node);
+						table.getHierarchyData().add(node);//TREE data
 					}
 					
-					System.out.println("Rows : "+table.getRows());
-					if(table.getMaster()==null){
-						//for(Object node : table.getHierarchyData())
-						//	records.add((ENTITY) node);
-						records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
+					if(StringUtils.isBlank(configuration.getGlobalFilter())){
+						if(table.getMaster()==null){
+							for(Object node :  ((AbstractDataTreeNodeBusiness<?>) getBusiness()).findRoots())
+								records.add((ENTITY) node);
+							//records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
+						}else{
+							table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
+							//if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
+								for(Object node :  ((AbstractDataTreeNodeBusiness) getBusiness())
+										.findDirectChildrenByParent((AbstractEnumeration) identifiable, configuration) )
+									records.add((ENTITY) node);	
+						}
 					}else{
-						table.setMaster((AbstractIdentifiable) table.getReferenceFromHierarchy(table.getMaster(),table.getHierarchyData()));
-						if( ((AbstractDataTreeNode)table.getMaster()).getChildren()!=null)
-							for(AbstractIdentifiable node : ((AbstractDataTreeNode)table.getMaster()).getChildren())
-								records.add((ENTITY) node);	
+						records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
+						//System.out.println("AbstractCrudManyPage.initialisation() : "+records.size());
 					}
 				}else{
-					Class<ENTITY> identifiableClass = (Class<ENTITY>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter())){
-							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findByString(configuration.getGlobalFilter(),null,configuration);
-							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
+							records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
 						}else
-							records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll(configuration);
-							//(Collection<ENTITY>) BusinessServiceProvider.getInstance().find(identifiableClass, configuration);
+							records = getBusiness().findAll(configuration);
 					}else
-						records = inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).findAll();
-							//(Collection<ENTITY>) RootBusinessLayer.getInstance().getGenericBusiness().use(identifiableClass).find().all();
-					
-					/*if(records!=null){
-						if(AbstractIdentifiable.class.isAssignableFrom(table.getRowDataClass()))
-							for(AbstractIdentifiable identifiable : records)	
-								results.add(identifiable);
-						else
-							for(AbstractIdentifiable identifiable : records)	
-								results.add(AbstractFormModel.instance(table.getRowDataClass(), identifiable));
-					}*/
-					
+						records = getBusiness().findAll();
 				}
+				*/
+				
+				if(Boolean.TRUE.equals(table.getLazyLoad())){
+					if(Boolean.TRUE.equals(table.getGlobalFilter()))
+						//if(StringUtils.isBlank(configuration.getGlobalFilter()))
+						records = getBusiness().findByString(configuration.getGlobalFilter(),null,configuration);
+					else
+						records = getBusiness().findAll(configuration);
+				}else
+					if(Boolean.TRUE.equals(table.isDataTreeType()))
+						records = (Collection<ENTITY>) ((AbstractDataTreeNodeBusiness<?>) getBusiness()).findRoots();
+					else
+						records = getBusiness().findAll();
 			
 				results = datas(records);
 				logMessageBuilder.addParameters("results count",results.size());
@@ -115,24 +110,32 @@ public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> 
 			@SuppressWarnings("unchecked")
 			@Override
 			public Long count(DataReadConfiguration configuration) {
-				if(Boolean.TRUE.equals(table.isDataTreeType())){
-					System.out
-							.println("AbstractCrudManyPage.initialisation().new RowAdapter() {...}.count()");
-					return 11l;
+				/*if(Boolean.TRUE.equals(table.isDataTreeType())){
+					if(StringUtils.isBlank(configuration.getGlobalFilter()))
+						return ((AbstractDataTreeNodeBusiness<?>) getBusiness()).countRoots();
+					else
+						return ((AbstractDataTreeNodeBusiness) getBusiness()).countByString(configuration.getGlobalFilter());
+						//return ((AbstractDataTreeNodeBusiness) getBusiness()).countDirectChildrenByParent((AbstractEnumeration) identifiable);
 				}else{
-					Class<AbstractIdentifiable> identifiableClass = (Class<AbstractIdentifiable>) businessEntityInfos.getClazz();
 					if(Boolean.TRUE.equals(table.getLazyLoad())){
 						if(Boolean.TRUE.equals(table.getGlobalFilter()))
-							return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countByString(configuration.getGlobalFilter());
-							//BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
+							return getBusiness().countByString(configuration.getGlobalFilter());
 						else
-							return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countByString(configuration.getGlobalFilter());
-							//BusinessServiceProvider.getInstance().count(identifiableClass, configuration);
+							return getBusiness().countByString(configuration.getGlobalFilter());
 					}else
-						return inject(BusinessInterfaceLocator.class).injectTyped(identifiableClass).countAll();
-							//UIManager.getInstance().getGenericBusiness().use(identifiableClass).find(Function.COUNT).oneLong();
+						return getBusiness().countAll();
 				}
-				//return super.count(configuration);
+				*/
+				if(Boolean.TRUE.equals(table.getLazyLoad())){
+					if(Boolean.TRUE.equals(table.getGlobalFilter()))
+						return getBusiness().countByString(configuration.getGlobalFilter());
+					else
+						if(Boolean.TRUE.equals(table.isDataTreeType()))
+							return ((AbstractDataTreeNodeBusiness<?>) getBusiness()).countRoots();
+						else
+							return getBusiness().countByString(configuration.getGlobalFilter());
+				}else
+					return getBusiness().countAll();
 			}
 		});	
 		

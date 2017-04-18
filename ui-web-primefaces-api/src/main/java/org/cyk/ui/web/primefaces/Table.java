@@ -75,6 +75,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 	protected LazyDataModel<Row<DATA>> dataModel;
 	@Getter @Setter protected Boolean fetch = Boolean.TRUE;
 	@Getter protected Long resultsCount=0l,maximumResultCount=10l;
+	@Getter @Setter protected Integer rowCount;
 	@Getter protected DataTable dataTable = new DataTable();
 	@Getter private CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 	@Getter @Setter private Boolean useDataModel;
@@ -236,10 +237,10 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 					logMessageBuilder.addParameters("filters",filters);
 					String filter = (String)filters.get("globalFilter");
 					logMessageBuilder.addParameters("global filter",filter);
+					
 					DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 					if(Boolean.TRUE.equals(fetch)){
 						Table.this.load(configuration);
-						System.out.println("hhhhh : "+rows.size());
 					}
 					fetch = Boolean.TRUE;
 					if(StringUtils.isNotBlank(filter)){
@@ -266,7 +267,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 				
 				@Override
 				public int getRowCount() {
-					return resultsCount==null?0:resultsCount.intValue();
+					return rowCount == null ? (resultsCount==null?0:resultsCount.intValue()) : rowCount;
 				}
 			};
 		}

@@ -7,8 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.message.SmtpPropertiesBusiness;
-import org.cyk.system.root.business.impl.message.MailSender;
+import org.cyk.system.root.business.api.message.MailBusiness;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -42,24 +41,20 @@ public class MailSendPage extends AbstractFormPage<MailSendPage.Form> implements
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
 				Message message = new Message();
-				for(ElectronicMail electronicMail : ((Form)form.getData()).getElectronicMails())
-					message.addReceiverIdentifiers(electronicMail.getAddress());
+				//message.getReceiverIdentifiers().addAll(commonUtils.getPropertyValue(((Form)form.getData()).getElectronicMails(), String.class, ElectronicMail.FIELD_ADDRESS));
+				//for(ElectronicMail electronicMail : ((Form)form.getData()).getElectronicMails())
+				//	message.addReceiverIdentifiers(electronicMail.getAddress());
 				
 				message.setSubject(((Form)form.getData()).getSubject());
 				message.setContent(((Form)form.getData()).getContent());
 				
-				MailSender sender = new MailSender();
+				inject(MailBusiness.class).send(message,((Form)form.getData()).getElectronicMails(), ((Form)form.getData()).getSmtpProperties());
+				/*MailSender sender = new MailSender();
 				sender.setProperties(inject(SmtpPropertiesBusiness.class).convertToProperties(((Form)form.getData()).getSmtpProperties()));
 				sender.setInput(message);
-				sender.execute();
+				sender.execute();*/
 			}
 		});
-	}
-	
-	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		//form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputManyAutoComplete.class, "persons").getCommon().setQueryResultsCacheEnabled(Boolean.FALSE);
 	}
 	
 	/**/
@@ -69,10 +64,7 @@ public class MailSendPage extends AbstractFormPage<MailSendPage.Form> implements
 
 		private static final long serialVersionUID = 1L;
 		
-		private Message message = new Message();
-		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull private SmtpProperties smtpProperties;
-		//@Input @InputChoice @InputChoiceAutoComplete @InputManyChoice @InputManyAutoComplete private List<Person> persons;
 		@Input @InputChoice @InputChoiceAutoComplete @InputManyChoice @InputManyAutoComplete @NotNull private List<ElectronicMail> electronicMails;
 		//@Input @InputText private String otherElectronicMails;
 		@Input @InputText @NotNull private String subject;

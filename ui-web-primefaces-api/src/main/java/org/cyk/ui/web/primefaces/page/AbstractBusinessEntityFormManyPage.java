@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
@@ -59,9 +60,16 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 		super.initialisation();
 		for(BusinessEntityFormManyPageListener<?> listener : BusinessEntityFormManyPageListener.Adapter.getBusinessEntityFormManyPageListeners(businessEntityInfos))
 			listener.initialisationStarted(this); 
-		
+		String lazy = requestParameter(UniformResourceLocatorParameter.LAZY);
 		table = (Table<Object>) createTable(businessEntityInfos.getClazz(),identifiableConfiguration,(Class<AbstractFormModel<?>>) formModelClass,getTableListener());
-		
+		if(StringUtils.isNotBlank(lazy)){
+			if(lazy.equals(UniformResourceLocatorParameter.LAZY_TRUE))
+				table.setLazyLoad(Boolean.TRUE);
+			else if(lazy.equals(UniformResourceLocatorParameter.LAZY_FALSE))
+				table.setLazyLoad(Boolean.FALSE);
+			
+			//table.setGlobalFilter(table.getLazyLoad());
+		}
 		//table.getListeners().add(getTableListener());
 		
 		table.getRowListeners().add(rowAdapter = new RowAdapter<Object>(getUserSession()){

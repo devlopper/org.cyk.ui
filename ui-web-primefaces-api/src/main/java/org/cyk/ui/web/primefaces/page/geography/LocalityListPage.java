@@ -22,8 +22,9 @@ public class LocalityListPage extends AbstractCrudManyPage<Locality> implements 
 		// TODO Auto-generated method stub
 		super.initialisation();
 		//table.setGlobalFilter(Boolean.TRUE);
-		table.setUseDataModel(Boolean.TRUE);
-		table.setLazyLoad(Boolean.TRUE);
+		//table.setUseDataModel(Boolean.TRUE);
+		//table.setLazyLoad(Boolean.TRUE);
+		//table.setRowCount(10);
 	}
 	
 	@Override
