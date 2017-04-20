@@ -37,6 +37,8 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergy
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipExtremityDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
@@ -73,6 +75,7 @@ import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
@@ -119,6 +122,7 @@ import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
 import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
+import org.cyk.ui.web.primefaces.page.party.PersonRelationshipTypeRoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
@@ -718,8 +722,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_PERSON2
-								,PersonRelationshipDetails.FIELD_TYPE);
+						return isFieldNameIn(field,PersonRelationshipDetails.FIELD_EXTREMITY1,PersonRelationshipDetails.FIELD_EXTREMITY2
+								,PersonRelationshipExtremityDetails.FIELD_PERSON,PersonRelationshipExtremityDetails.FIELD_ROLE);
 					}
 				};
 			}
@@ -731,7 +735,29 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field, PersonRelationshipDetails.FIELD_PERSON1,PersonRelationshipDetails.FIELD_TYPE);
+						return isFieldNameIn(field, PersonRelationshipDetails.FIELD_PERSON_1,PersonRelationshipDetails.FIELD_ROLE_1
+								,PersonRelationshipDetails.FIELD_PERSON_2,PersonRelationshipDetails.FIELD_ROLE_2);
+					}
+					
+				};
+			}
+		});
+		
+		getFormConfiguration(PersonRelationshipTypeRole.class, Crud.CREATE)
+		.addRequiredFieldNames(PersonRelationshipTypeRoleEditPage.Form.FIELD_CODE,PersonRelationshipTypeRoleEditPage.Form.FIELD_NAME
+				,PersonRelationshipTypeRoleEditPage.Form.FIELD_PERSON_RELATIONSHIP_TYPE,PersonRelationshipTypeRoleEditPage.Form.FIELD_ROLE);
+	
+		registerDetailsConfiguration(PersonRelationshipTypeRoleDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,PersonRelationshipTypeRoleDetails.FIELD_CODE,PersonRelationshipTypeRoleDetails.FIELD_NAME
+								,PersonRelationshipTypeRoleDetails.FIELD_PERSON_RELATIONSHIP_TYPE,PersonRelationshipTypeRoleDetails.FIELD_ROLE);
 					}
 				};
 			}

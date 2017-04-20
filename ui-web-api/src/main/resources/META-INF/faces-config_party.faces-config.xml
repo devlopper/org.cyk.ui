@@ -46,6 +46,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>personRelationshipTypeRoleEditView</from-outcome>
+			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personRelationshipTypeRoleListView</from-outcome>
+			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personRelationshipTypeRoleConsultView</from-outcome>
+			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>medicalInformationsAllergyEditView</from-outcome>
 			<to-view-id>/private/party/person/medical/informationsallergy/edit.xhtml</to-view-id>
 			<redirect />

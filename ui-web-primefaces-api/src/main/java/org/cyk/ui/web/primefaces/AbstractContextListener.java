@@ -40,6 +40,7 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergy
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
@@ -86,6 +87,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.party.person.PersonRelationshipType;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
+import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
@@ -143,6 +145,7 @@ import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonRelationshipEditPage;
+import org.cyk.ui.web.primefaces.page.party.PersonRelationshipTypeRoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
@@ -200,6 +203,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PersonRelationshipTypeGroup.class, PersonRelationshipTypeGroupForm.class, PersonRelationshipTypeGroupForm.class,null,null,null));
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PersonRelationshipType.class, PersonRelationshipTypeForm.class, PersonRelationshipTypeForm.class,null,null,null));		
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(PersonRelationshipTypeRole.class, PersonRelationshipTypeRoleEditPage.Form.class, PersonRelationshipTypeRoleDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(PersonRelationshipTypeRole.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PersonRelationship.class, PersonRelationshipEditPage.Form.class, PersonRelationshipDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(PersonRelationship.class, null);

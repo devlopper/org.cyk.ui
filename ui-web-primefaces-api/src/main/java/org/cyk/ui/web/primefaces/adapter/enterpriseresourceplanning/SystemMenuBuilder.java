@@ -45,6 +45,8 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.system.root.model.party.person.PersonRelationshipType;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
+import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
+import org.cyk.system.root.model.party.person.PersonRelationshipTypeRoleName;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
 import org.cyk.system.root.model.security.Credentials;
@@ -126,7 +128,9 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.PARTY).getName());
 		module.addChild(createListCommandable(Person.class, null));
 		module.addChild(createListCommandable(PersonRelationship.class, null));
+		module.addChild(createListCommandable(PersonRelationshipTypeRoleName.class, null));
 		module.addChild(createListCommandable(PersonRelationshipType.class, null));
+		module.addChild(createListCommandable(PersonRelationshipTypeRole.class, null));
 		module.addChild(createListCommandable(PersonRelationshipTypeGroup.class, null));
 		module.addChild(createListCommandable(JobFunction.class, null));
 		module.addChild(createListCommandable(JobTitle.class, null));

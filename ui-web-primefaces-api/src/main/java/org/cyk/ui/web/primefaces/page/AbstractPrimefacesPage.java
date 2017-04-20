@@ -325,6 +325,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(listener.getRowAdapter()!=null)
 			table.getRowListeners().add(listener.getRowAdapter());
 		
+		if(listener.getColumnAdapter()!=null)
+			table.getColumnListeners().add(listener.getColumnAdapter());
+		
 		if(listener.getCellAdapter()!=null)
 			table.getCellListeners().add(listener.getCellAdapter());
 		

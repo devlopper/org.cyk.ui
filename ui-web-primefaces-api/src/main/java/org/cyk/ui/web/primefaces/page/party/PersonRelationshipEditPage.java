@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
-import org.cyk.system.root.model.party.person.PersonRelationshipType;
+import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
@@ -28,7 +28,7 @@ public class PersonRelationshipEditPage extends AbstractCrudOnePage<PersonRelati
 	@Override
 	protected PersonRelationship instanciateIdentifiable() {
 		PersonRelationship personRelationship = super.instanciateIdentifiable();
-		personRelationship.setPerson2(webManager.getIdentifiableFromRequestParameter(Person.class,Boolean.TRUE));
+		personRelationship.getExtremity1().setPerson(webManager.getIdentifiableFromRequestParameter(Person.class,Boolean.TRUE));
 		return personRelationship;
 	}
 	
@@ -37,9 +37,27 @@ public class PersonRelationshipEditPage extends AbstractCrudOnePage<PersonRelati
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Person person1;
-		@Input @InputChoice @InputOneChoice @InputOneCombo private PersonRelationshipType type;
+		@Input @InputChoice @InputOneChoice @InputOneCombo private PersonRelationshipTypeRole role1;
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Person person2;
-			
+		@Input @InputChoice @InputOneChoice @InputOneCombo private PersonRelationshipTypeRole role2;
+		
+		@Override
+		public void read() {
+			super.read();
+			person1 = identifiable.getExtremity1().getPerson();
+			role1 = identifiable.getExtremity1().getRole();
+			person2 = identifiable.getExtremity2().getPerson();
+			role2 = identifiable.getExtremity2().getRole();
+		}
+		
+		@Override
+		public void write() {
+			super.write();
+			identifiable.getExtremity1().setPerson(person1);
+			identifiable.getExtremity1().setRole(role1);
+			identifiable.getExtremity2().setPerson(person2);
+			identifiable.getExtremity2().setRole(role2);
+		}
 	}
 
 }

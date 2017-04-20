@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.party.person.JobInformationsBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsAllergyBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
@@ -24,13 +27,9 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationship;
 import org.cyk.ui.api.model.table.Row;
 import org.cyk.ui.api.model.table.RowAdapter;
-import org.cyk.ui.api.model.table.AbstractTable.RenderType;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifiable> extends AbstractPartyConsultPage<PERSON> implements Serializable {
@@ -141,17 +140,18 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 					@Override
 					public void added(Row<PersonRelationshipDetails> row) {
 						super.added(row);
-						String format = "%s : <a href='consultlink'>%s</a>";
+						/*String format = "%s : <a href='consultlink'>%s</a>";
 						String type = getPerson().equals(row.getData().getMaster().getPerson1()) ? "INVERSE of "+row.getData().getType() : row.getData().getType().getValue();
 						String person = getPerson().equals(row.getData().getMaster().getPerson1()) ? row.getData().getPerson2().getValue() : row.getData().getPerson1().getValue();
 						row.setHtml(String.format(format, type,person));
+						*/
 					}
 				};
 			}
 			
 		});
 		
-		relationshipTable.setRenderType(RenderType.LIST);
+		//relationshipTable.setRenderType(RenderType.LIST);
 		
 	} 
 	
