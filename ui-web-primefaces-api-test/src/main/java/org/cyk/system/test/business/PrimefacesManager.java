@@ -43,7 +43,9 @@ public class PrimefacesManager extends org.cyk.ui.web.primefaces.adapter.enterpr
 		});*/
 		
 		getFormConfiguration(Person.class, Crud.CREATE).deleteRequiredFieldNames(AbstractPersonEditFormModel.FIELD_CODE);
-		
+		getFormConfiguration(Person.class, Crud.READ).addFieldNames(AbstractPersonEditFormModel.FIELD_CODE,AbstractPersonEditFormModel.FIELD_NAME
+				,AbstractPersonEditFormModel.FIELD_LAST_NAMES,AbstractPersonEditFormModel.FIELD_BIRTH_DATE,AbstractPersonEditFormModel.FIELD_SEX
+				,AbstractPersonEditFormModel.FIELD_IMAGE);
 	}
 	
 	@Override
