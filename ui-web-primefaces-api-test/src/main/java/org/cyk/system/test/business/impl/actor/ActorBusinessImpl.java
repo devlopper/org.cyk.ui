@@ -19,7 +19,7 @@ import lombok.Setter;
 public class ActorBusinessImpl extends AbstractActorBusinessImpl<Actor, ActorDao,Actor.SearchCriteria> implements ActorBusiness,Serializable {
 
 	private static final long serialVersionUID = -7830673760640348717L;
-
+ 
 	/*@Inject
 	public ActorBusinessImpl(ActorDao dao) {
 		super(dao);
