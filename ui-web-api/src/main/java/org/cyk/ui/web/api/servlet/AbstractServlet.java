@@ -12,6 +12,7 @@ import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
+import org.cyk.utility.common.CommonUtils;
 
 public abstract class AbstractServlet extends HttpServlet implements Serializable {
 
@@ -38,6 +39,10 @@ public abstract class AbstractServlet extends HttpServlet implements Serializabl
 	
 	protected UserAccount userAccount(HttpServletRequest request){
 		return (UserAccount) request.getSession().getAttribute("userSession");
+	}
+	
+	protected <T> T inject(Class<T> aClass){
+		return CommonUtils.getInstance().inject(aClass);
 	}
 	
 }

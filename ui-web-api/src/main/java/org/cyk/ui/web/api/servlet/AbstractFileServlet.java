@@ -30,8 +30,6 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 
 	private static final long serialVersionUID = 2265523854362373567L;
 	
-	@Inject protected FileBusiness fileBusiness;
-
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		initialisation(request, response);
 		Collection<File> files = getFiles(request, response);
@@ -56,13 +54,13 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 			return null;
 		if(files.size()==1)
 			try {
-				return IOUtils.toByteArray(fileBusiness.findInputStream(files.iterator().next()));
+				return IOUtils.toByteArray(inject(FileBusiness.class).findInputStream(files.iterator().next()));
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
 			}
 		else
-			return fileBusiness.merge(files, fileExtension).toByteArray();
+			return inject(FileBusiness.class).merge(files, fileExtension).toByteArray();
 	}
 	
 	protected String fileName(HttpServletRequest request, HttpServletResponse response,Collection<File> files) {
@@ -159,7 +157,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 			}
 		*/
 		
-		collection.addAll(fileBusiness.findByIdentifiers(identifiers));
+		collection.addAll(inject(FileBusiness.class).findByIdentifiers(identifiers));
 		
 		return collection;
 	}
