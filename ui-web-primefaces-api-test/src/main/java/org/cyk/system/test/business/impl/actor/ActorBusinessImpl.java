@@ -20,10 +20,10 @@ public class ActorBusinessImpl extends AbstractActorBusinessImpl<Actor, ActorDao
 
 	private static final long serialVersionUID = -7830673760640348717L;
 
-	@Inject
+	/*@Inject
 	public ActorBusinessImpl(ActorDao dao) {
 		super(dao);
-	}
+	}*/
 	
 	@Override
 	protected Collection<? extends org.cyk.system.root.business.impl.AbstractIdentifiableBusinessServiceImpl.Listener<?>> getListeners() {
