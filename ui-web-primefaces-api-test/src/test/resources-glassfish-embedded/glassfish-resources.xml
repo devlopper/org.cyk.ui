@@ -6,20 +6,20 @@
 
 	<!-- JDBC -->
     <!-- Test -->
-   <!--
+   
     <jdbc-connection-pool is-isolation-level-guaranteed="false" name="ArquillianHsqlPool" driver-classname="org.hsqldb.jdbcDriver" res-type="java.sql.Driver">
     	<property name="URL" value="jdbc:hsqldb:mem:hsql" />
     </jdbc-connection-pool>
-    -->
+    
     <!-- Live -->
     
-    <jdbc-connection-pool datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" res-type="javax.sql.DataSource" name="ArquillianHsqlPool">
+    <!--jdbc-connection-pool datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" res-type="javax.sql.DataSource" name="ArquillianHsqlPool">
       <property name="servername" value="localhost"></property>
       <property name="databasename" value="test_guidb"></property>
       <property name="user" value="root"></property>
       <property name="password" value="root"></property>
       <property name="URL" value="jdbc:mysql://localhost:3306/test_guidb"></property>
-    </jdbc-connection-pool>
+    </jdbc-connection-pool-->
     
     <jdbc-resource pool-name="ArquillianHsqlPool" jndi-name="jdbc/arquillian" />
     
