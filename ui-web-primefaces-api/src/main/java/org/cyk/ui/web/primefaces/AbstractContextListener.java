@@ -28,6 +28,7 @@ import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifierDetails;
@@ -73,6 +74,7 @@ import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.MetricValueIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.message.SmtpProperties;
@@ -134,6 +136,7 @@ import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricValueIdentifiableGlobalIdentifierEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
@@ -322,6 +325,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	
 	protected void initializeMathematicsModule(){
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementAction.class, MovementActionEditPage.Form.class, MovementActionDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(MovementAction.class, null);
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(MovementCollection.class, MovementCollectionEditPage.Form.class, MovementCollectionDetails.class
 				,null,null,null));
 		uiManager.configBusinessIdentifiable(MovementCollection.class, null);

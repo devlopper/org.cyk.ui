@@ -73,6 +73,31 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		return getSelectedFormData().getInputByFieldName(fieldName);
 	}
 	
+	@Override
+	public void setInputValue(String fieldName, Object value) {
+		@SuppressWarnings("unchecked")
+		org.cyk.ui.api.data.collector.control.Input<Object, ?, ?, ?, ?, ?> input = (org.cyk.ui.api.data.collector.control.Input<Object, ?, ?, ?, ?, ?>) getInputByFieldName(fieldName);
+		if(input!=null)
+			input.setValue(value);
+	}
+	
+	@Override
+	public void setDataFieldValue(String fromIdentifiableFieldName,String fromDataFieldName,String inputFieldName,Object object) {
+		Object value = commonUtils.readProperty(object, fromIdentifiableFieldName);
+		commonUtils.setProperty(getData(), fromDataFieldName, value);
+		setInputValue(inputFieldName, value);
+	}
+	
+	@Override
+	public void setDataFieldValue(String fromIdentifiableFieldName,String fromDataFieldName,Object object) {
+		setDataFieldValue(fromIdentifiableFieldName, fromDataFieldName, fromDataFieldName, object);
+	}
+	
+	@Override
+	public void setDataFieldValue(String fromIdentifiableFieldName,Object object) {
+		setDataFieldValue(fromIdentifiableFieldName, fromIdentifiableFieldName, object);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addChoices(String fieldName, List<SELECTITEM> choices) {

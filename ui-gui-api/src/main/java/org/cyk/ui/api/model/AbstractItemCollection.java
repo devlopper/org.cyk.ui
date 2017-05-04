@@ -31,6 +31,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Collection<IDENTIFIABLE> initialIdentifiables = new ArrayList<>();
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<COLLECTION> collectionClass;
+	protected List<SELECT_ITEM> choices = new ArrayList<>();
+	protected Boolean automaticallyDeleteSelectedChoice;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
@@ -100,7 +102,15 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			listener.instanciated(this,instance); 
 		setItemLabel(instance);
 		
-		items.add(instance);
+		if(items.add(instance)){
+			if(Boolean.TRUE.equals(automaticallyDeleteSelectedChoice)){
+				for(int index = 0 ; index < choices.size() ; index++){
+					if( getIdentifiableFromChoice(choices.get(index)).equals(oneMasterSelected) ){
+						choices.remove(index);
+					}
+				}	
+			}
+		}
 		
 		read(instance);
 		
@@ -132,8 +142,18 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		return instance;
 	}
 	
+	protected abstract SELECT_ITEM createSelectItem(IDENTIFIABLE identifiable);
+	protected abstract AbstractIdentifiable getIdentifiableFromChoice(SELECT_ITEM choice);
+	protected AbstractIdentifiable getMasterSelected(IDENTIFIABLE identifiable){
+		return null;
+	}
+	
 	public void delete(TYPE item){
-		items.remove(item);
+		if(items.remove(item)){
+			if(Boolean.TRUE.equals(automaticallyDeleteSelectedChoice)){
+				choices.add(createSelectItem(item.getIdentifiable()));
+			}
+		}
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);
 		updateTable();

@@ -26,6 +26,7 @@ import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueDetails;
+import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.message.SmtpPropertiesDetails;
@@ -66,6 +67,7 @@ import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
@@ -115,6 +117,7 @@ import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
@@ -375,6 +378,23 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configureMathematicsModule() {
 		super.configureMathematicsModule();
 		//Movement
+		getFormConfiguration(MovementAction.class,Crud.CREATE)
+		.addRequiredFieldNames(MovementActionEditPage.Form.FIELD_CODE)
+		.addFieldNames(MovementActionEditPage.Form.FIELD_NAME,MovementActionEditPage.Form.FIELD_INTERVAL);
+	
+		registerDetailsConfiguration(MovementActionDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MovementActionDetails.FIELD_CODE,MovementActionDetails.FIELD_NAME,MovementActionDetails.FIELD_INTERVAL);
+					}
+				};
+			}
+		});
+		
 		getFormConfiguration(MovementCollection.class,Crud.CREATE)
 			.addRequiredFieldNames(MovementCollectionEditPage.Form.FIELD_CODE,MovementCollectionEditPage.Form.FIELD_VALUE)
 			.addFieldNames(MovementCollectionEditPage.Form.FIELD_NAME,MovementCollectionEditPage.Form.FIELD_INTERVAL,MovementCollectionEditPage.Form.FIELD_INCREMENT_ACTION

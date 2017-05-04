@@ -28,7 +28,16 @@ public abstract class AbstractWebItemCollection<TYPE extends AbstractItemCollect
 		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.TRUE, UIManager.getInstance().getLanguageBusiness().findText(LanguageEntry.YES)));
 		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.FALSE, UIManager.getInstance().getLanguageBusiness().findText(LanguageEntry.NO)));
 	}
-
 	
+	@Override
+	protected SelectItem createSelectItem(IDENTIFIABLE identifiable) {
+		return WebManager.getInstance().getSelectItem(identifiable);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected IDENTIFIABLE getIdentifiableFromChoice(SelectItem choice) {
+		return (IDENTIFIABLE) choice.getValue();
+	}
 
 }

@@ -30,6 +30,7 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
@@ -261,6 +262,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getReferenceMathematicsCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("mathematics", null);
+		module.addChild(createListCommandable(MovementAction.class, null));
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(IntervalCollection.class, null));
 		module.addChild(createListCommandable(MetricCollection.class, null));

@@ -7,6 +7,22 @@
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		<navigation-case>
+			<from-outcome>movementActionEditView</from-outcome>
+			<to-view-id>/private/mathematics/movementaction/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementActionListView</from-outcome>
+			<to-view-id>/private/mathematics/movementaction/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movementActionConsultView</from-outcome>
+			<to-view-id>/private/mathematics/movementaction/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>movementEditView</from-outcome>
 			<to-view-id>/private/mathematics/movement/edit.xhtml</to-view-id>
 			<redirect />
