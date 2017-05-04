@@ -30,7 +30,7 @@ public abstract class AbstractWebItemCollection<TYPE extends AbstractItemCollect
 	}
 	
 	@Override
-	protected SelectItem createSelectItem(IDENTIFIABLE identifiable) {
+	protected SelectItem createSelectItem(AbstractIdentifiable identifiable) {
 		return WebManager.getInstance().getSelectItem(identifiable);
 	}
 

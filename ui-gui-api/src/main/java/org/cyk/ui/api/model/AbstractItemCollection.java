@@ -98,6 +98,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	public void add(IDENTIFIABLE identifiable){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
+		instance.setMaster(oneMasterSelected);
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
 		setItemLabel(instance);
@@ -142,16 +143,23 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		return instance;
 	}
 	
-	protected abstract SELECT_ITEM createSelectItem(IDENTIFIABLE identifiable);
+	protected abstract SELECT_ITEM createSelectItem(AbstractIdentifiable identifiable);
 	protected abstract AbstractIdentifiable getIdentifiableFromChoice(SELECT_ITEM choice);
+	
 	protected AbstractIdentifiable getMasterSelected(IDENTIFIABLE identifiable){
-		return null;
+		AbstractIdentifiable instance = null;
+		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners){
+			AbstractIdentifiable v = listener.getMasterSelected(this,identifiable);
+			if(v!=null)
+				instance = v;
+		}
+		return instance;
 	}
 	
 	public void delete(TYPE item){
 		if(items.remove(item)){
 			if(Boolean.TRUE.equals(automaticallyDeleteSelectedChoice)){
-				choices.add(createSelectItem(item.getIdentifiable()));
+				choices.add(createSelectItem(item.getMaster()));
 			}
 		}
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
@@ -221,6 +229,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 
 		void setLabel(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> itemCollection,TYPE item);
 		
+		AbstractIdentifiable getMasterSelected(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable);
+		
 		/**
 		 * Take value from item fields to identifiable fields
 		 */
@@ -276,6 +286,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			@Override public void write(TYPE item) {}
 			
 			@Override public void read(TYPE item) {}
+			
+			@Override
+			public AbstractIdentifiable getMasterSelected(AbstractItemCollection<TYPE, IDENTIFIABLE, COLLECTION, SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable) {
+				return null;
+			}
 			
 			@Override
 			public Boolean isShowAddButton() {

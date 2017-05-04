@@ -17,6 +17,7 @@ public abstract class AbstractItemCollectionItem<IDENTIFIABLE extends AbstractId
 	protected FormOneData<? extends AbstractItemCollectionItem<IDENTIFIABLE>,?,?,?,?,?> form;
 	protected String label;
 	protected Boolean applicable=Boolean.TRUE;
+	protected AbstractIdentifiable master;
 	
 	
 }
