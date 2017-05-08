@@ -14,8 +14,8 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 	
 	private static final long serialVersionUID = 7806030819027062650L;
 	
-	@SuppressWarnings("unchecked")
-	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData form) {
 		super(collection, crud, form
 				, (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(AbstractCollectionEditPage.AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED));
 		
