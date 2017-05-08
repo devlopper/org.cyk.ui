@@ -7,7 +7,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.api.security.RoleBusiness;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
@@ -22,9 +24,6 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializable {
@@ -47,7 +46,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 			public void instanciated(AbstractItemCollection<RoleUniformResourceLocatorItem, RoleUniformResourceLocator,Role,SelectItem> itemCollection,RoleUniformResourceLocatorItem item) {
 				super.instanciated(itemCollection, item);
 				if(item.getIdentifiable().getUniformResourceLocator()==null)
-					item.getIdentifiable().setUniformResourceLocator(((Form)form.getData()).getUniformResourceLocator());
+					item.getIdentifiable().setUniformResourceLocator(((Form)RoleEditPage.this.form.getData()).getUniformResourceLocator());
 				if(item.getIdentifiable().getRole()==null)
 					item.getIdentifiable().setRole(identifiable);
 				item.setName(item.getIdentifiable().getUniformResourceLocator().getName());
@@ -60,7 +59,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 		});
 	}
 		
-	@Override
+	/*@Override
 	protected void create() {
 		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
 	}
@@ -68,7 +67,7 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 	@Override
 	protected void update() {
 		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
-	}
+	}*/
 	
 	@Getter @Setter
 	public static class Form extends AbstractEnumerationForm<Role> implements Serializable{

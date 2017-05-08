@@ -20,18 +20,6 @@ public class RoleListPage extends AbstractCrudManyPage<Role> implements Serializ
 	protected void initialisation() {
 		super.initialisation();
 		contextualMenu = userSession.getSecurityMenu();
-		rowAdapter.setOpenable(Boolean.TRUE);
-		rowAdapter.setUpdatable(Boolean.TRUE);
-		rowAdapter.setDeletable(Boolean.TRUE);
-		table.setShowHeader(Boolean.TRUE);
-		table.setShowToolBar(Boolean.TRUE);
-	}
-	
-	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		//table.getAddRowCommandable().setRendered(Boolean.TRUE);
-		table.setShowOpenCommand(Boolean.TRUE);
 	}
 	
 }

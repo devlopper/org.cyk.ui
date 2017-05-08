@@ -26,6 +26,7 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
+import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -44,6 +45,7 @@ import org.cyk.ui.web.primefaces.CommandBuilder;
 import org.cyk.ui.web.primefaces.Commandable;
 import org.cyk.ui.web.primefaces.EventCalendar;
 import org.cyk.ui.web.primefaces.ItemCollection;
+import org.cyk.ui.web.primefaces.ItemCollectionAdapter;
 import org.cyk.ui.web.primefaces.PrimefacesManager;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.ui.web.primefaces.Table;
@@ -441,12 +443,14 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		return collection;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected <TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> createItemCollection(org.cyk.ui.web.primefaces.data.collector.form.FormOneData<?> form
 			,String identifier,Class<TYPE> aClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collectionIdentifiable,Collection<IDENTIFIABLE> identifiables,AbstractItemCollection.Listener<TYPE, IDENTIFIABLE,COLLECTION,SelectItem> listener){
 		ItemCollection<TYPE,IDENTIFIABLE,COLLECTION> collection = instanciateItemCollection(identifier, aClass, identifiableClass,collectionIdentifiable);
 		form.getItemCollections().add(collection);
 		
-		collection.getItemCollectionListeners().add(new AbstractItemCollection.Listener.Adapter<TYPE,IDENTIFIABLE,COLLECTION,SelectItem>(collectionIdentifiable,Crud.CREATE){
+		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE,IDENTIFIABLE,COLLECTION>(collectionIdentifiable,Crud.CREATE
+				,(FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?>) form){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
 			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SelectItem> itemCollection,TYPE item) {
@@ -455,19 +459,24 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		});
 		
 		if(listener!=null){
+			collection.setCrud(listener.getCrud());
 			collection.getItemCollectionListeners().add(listener);
 			collection.setEditable(Crud.isCreateOrUpdate(listener.getCrud()));
 			collection.getAddCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) && Boolean.TRUE.equals(listener.isShowAddButton()));
 			collection.getDeleteCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) &&  collection.getAddCommandable().getRendered());
-			
+			if(listener.getInputChoice()!=null)
+				collection.setInputChoice((InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SelectItem>) listener.getInputChoice());
 		}
+		
+		if(Crud.isCreateOrUpdate(collection.getCrud()))
+			collection.getInputChoice().setIsAutomaticallyRemoveSelected(Boolean.TRUE);
 		
 		collection.setShowFooter(collection.getAddCommandable().getRendered());
 		onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, collection.getFormatJavaScript());
 		
 		if(identifiables!=null)
 			for(IDENTIFIABLE identifiable : identifiables)
-				collection.add(identifiable);
+				collection.add(identifiable,listener.getMasterSelected(collection, identifiable));
 		return collection;
 	}
 	

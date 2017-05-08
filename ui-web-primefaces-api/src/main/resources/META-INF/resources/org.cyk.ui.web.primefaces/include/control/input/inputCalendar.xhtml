@@ -15,12 +15,16 @@
 		<ui:define name="input">
 			<p:calendar id="inputCalendar" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" locale="#{userSession.locale}"
 				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}" label="#{control.label}"
-				requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" pattern="#{control.pattern}"
+				requiredMessage="#{control.requiredMessage}" pattern="#{control.pattern}"
 				navigator="true" mindate="#{control.minimum}" maxdate="#{control.maximum}"
-				 widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}" disabled="#{control.disabled}">
+				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" onclick="#{control.onClick}" disabled="#{control.disabled}">
 				
 				<ui:include src="body.xhtml" />
-			</p:calendar>				
+			</p:calendar>
+			<p:watermark id="inputCalendarWatermark" for="inputCalendar" value="#{control.label}" />
+			<!-- pt:placeholder="#{control.label}"  -->
+			<!-- Not working when we have an input calendar and an item collection -->
+							
 		</ui:define>
 	</ui:decorate>
 		

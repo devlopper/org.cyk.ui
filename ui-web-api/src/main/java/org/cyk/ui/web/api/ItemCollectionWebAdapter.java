@@ -4,6 +4,8 @@ import javax.faces.model.SelectItem;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 
@@ -11,10 +13,14 @@ public class ItemCollectionWebAdapter<TYPE extends AbstractItemCollectionItem<ID
 
 	private static final long serialVersionUID = -2744677394853272140L;
 	
-	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud) {
-		super(collection, crud);
+	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
+			,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
+		super(collection, crud,form,inputChoice);
 	}
 
+	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud) {
+		this(collection, crud,null,null);
+	}
 	
 
 }

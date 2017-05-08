@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -19,9 +22,6 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Serializable {
@@ -66,8 +66,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			private static final long serialVersionUID = -4786916980017894274L;
 			@Override
 			public void serve(UICommand command, Object parameter) {
-				//oneMasterSelected = (AbstractIdentifiable) inputChoice.getValue();
-				add();
+				if(inputChoice.getValue()!=null)
+					add();
 			}
 		});
 		deleteCommandable = Builder.instanciateOne().setLabelFromId("command.delete").setIcon(Icon.ACTION_REMOVE).create();
@@ -97,16 +97,17 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		});
 	}
 	
-	public void add(IDENTIFIABLE identifiable){
+	public void add(IDENTIFIABLE identifiable,AbstractIdentifiable master){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
-		instance.setMaster(inputChoice.getValue());
+		instance.setMaster(master);
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
 		setItemLabel(instance);
 		
 		if(items.add(instance)){
-			inputChoice.removeSelectedAutomatically();
+			if(Crud.isCreateOrUpdate(crud))
+				inputChoice.removeChoice(master);
 		}
 		
 		read(instance);
@@ -120,6 +121,10 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.add(this,instance);
 		updateTable();		
+	}
+	
+	public void add(IDENTIFIABLE identifiable){
+		add(identifiable,inputChoice.getValue());
 	}
 	
 	public void add(){
@@ -239,6 +244,12 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		Boolean isShowAddButton();
 		
+		FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> getForm();
+		void setForm(FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form);
+		
+		InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> getInputChoice();
+		void setInputChoice(InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice);
+		
 		/**/
 		
 		@Getter @Setter
@@ -247,11 +258,16 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 
 			protected COLLECTION collection;
 			protected Crud crud;
+			protected FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form;
+			protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice;
 			
-			public Adapter(COLLECTION collection, Crud crud) {
+			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
+					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
 				super();
 				this.collection = collection;
 				this.crud = crud;
+				this.form = form;
+				this.inputChoice = inputChoice;
 			}
 			
 			@Override
@@ -299,8 +315,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		public static class Default<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable,SELECT_ITEM> extends Adapter<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> implements Serializable{
 			private static final long serialVersionUID = 5920340778121618178L;
 			
-			public Default(COLLECTION collection, Crud crud) {
-				super(collection,crud);
+			public Default(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
+					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
+				super(collection,crud,form,inputChoice);
 			}
 			
 			@Override
