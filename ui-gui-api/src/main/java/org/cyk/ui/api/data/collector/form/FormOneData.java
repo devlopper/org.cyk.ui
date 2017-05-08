@@ -25,6 +25,8 @@ public interface FormOneData<DATA,FORM,ROW,OUTPUTLABEL,INPUT,SELECTITEM> extends
 	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
 	<T> T findControlByClassByIndex(Class<T> aClass, Integer index);
 	Input<?, ?, ?, ?, ?, ?> getInputByFieldName(String fieldName);
+	Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName);
+	
 	void setInputValue(String fieldName,Object value);
 	void setDataFieldValue(String fromIdentifiableFieldName,String fromDataFieldName,String inputFieldName,Object object);
 	void setDataFieldValue(String fromIdentifiableFieldName,String fromDataFieldName,Object object);

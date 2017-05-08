@@ -30,5 +30,6 @@ public interface FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends View 
 	<T> T findInputByClassByFieldName(Class<T> aClass,String fieldName);
 	<T> T findControlByClassByIndex(Class<T> aClass,Integer index);
 	Input<?, ?, ?, ?, ?, ?> getInputByFieldName(String fieldName);
+	Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName);
 	
 }

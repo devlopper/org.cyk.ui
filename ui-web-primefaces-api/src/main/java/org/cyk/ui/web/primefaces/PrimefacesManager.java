@@ -184,7 +184,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 			}
 			pickList.getDualListModel().setTarget(targetList);
 		}else if(inputChoice instanceof InputOneCombo){
-			if( !list.isEmpty() && ((SelectItem)list.get(0)).getValue()!=null )
+			if(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class).nullable() && !list.isEmpty() && ((SelectItem)list.get(0)).getValue()!=null )
 				list.add(0, WebManager.getInstance().getNullSelectItem(field.getType(), SelectItemBuilderListener.DEFAULT));
 		}else if(inputChoice instanceof InputOneAutoComplete || inputChoice instanceof InputManyAutoComplete) {
 			org.cyk.ui.api.data.collector.control.InputAutoCompleteCommon<?> inputAutoCompleteCommon = null;

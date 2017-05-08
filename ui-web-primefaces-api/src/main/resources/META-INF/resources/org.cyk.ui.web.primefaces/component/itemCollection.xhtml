@@ -16,7 +16,40 @@
 	<cc:implementation>
 		<p:dataTable id="datatable" value="#{cc.value.items}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
 			styleClass="#{cc.value.updateStyleClass}">
-        	<f:facet name="header"><h:outputText value="#{cc.value.label}" /> </f:facet>	
+        	<f:facet name="header">
+        		<table>
+        			<tr>
+        				<ui:fragment><td>
+        					<table>
+        						<tr>
+        							<td >
+        								<!--p:selectOneMenu id="choice" value="#{cc.value.oneMasterSelected}" var="identifiable" converter="#{objectConverter}" 
+								       		filter="true" filterMatchMode="contains" styleClass="optionsPanelClass">
+								       		<f:selectItems value="#{cc.value.choices}" />
+								       		<p:column><h:outputText value="#{identifiable}" /></p:column>
+								       	</p:selectOneMenu-->
+								       	
+								       	<!--p:column><h:outputText value="#{salableProduct.product.code}" /></p:column>
+									        <p:column><h:outputText value="#{salableProduct.product.name}" /></p:column-->
+									        
+								       	
+								       	<cyk:inputOneCombo value="#{cc.value.inputChoice}"/>
+        							</td>
+        							<td width="30px">
+        								<cyk:command value="#{cc.value.addCommandable}"/>
+        							</td>
+        						</tr>
+        					</table>
+        				</td></ui:fragment> 
+        				
+        				<td style="width: 55%">
+        					<h:outputText value="#{cc.value.label}" />
+        				</td>
+        			</tr>
+        		</table>
+        		
+        		
+        	</f:facet>	
        		<p:column headerText="#" width="10">
        			<h:outputText value="#{index+1}" />
        			<f:facet name="footer">

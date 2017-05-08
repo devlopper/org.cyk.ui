@@ -19,6 +19,7 @@ import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.utility.common.CommonUtils;
+import org.cyk.utility.common.annotation.user.interfaces.Input.RendererStrategy;
  
 @NoArgsConstructor
 public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractView implements ControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -71,23 +72,34 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	 * @param control
 	 * @return
 	 */
-	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> add(Control<MODEL,ROW, LABEL, CONTROL, SELECTITEM> control){
+	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> add(Control<MODEL,ROW, LABEL, CONTROL, SELECTITEM> control,Field field){
+		Boolean add = field==null
+				|| !RendererStrategy.MANUAL.equals(field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.Input.class).rendererStrategy());
+		
 		if(Boolean.TRUE.equals(__collectPositions__)){
-			control.getPosition().getRow().setIndex(__rowCount__-1);
-			control.getPosition().getColumn().setIndex(++__columnCount__);
+			if( add ){
+				control.getPosition().getRow().setIndex(__rowCount__-1);
+				control.getPosition().getColumn().setIndex(++__columnCount__);	
+			}
+			
 			control.setSet(this);
 			controls.add(control);
 		}else{
-			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners)
-				if(control instanceof OutputLabel){
-					LABEL l = listener.createLabel(this,(OutputLabel<MODEL,ROW, LABEL, CONTROL, SELECTITEM>) control,__row__);
-					if(l!=null)
-						__label__ = l;
-				}else{
-					__control__ = listener.createControl(this,control,__row__);
-					if(__label__!=null && __control__!=null)
-						setControlLabel(__label__, __control__);
-				}
+			if( add ){
+			
+				for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners)
+					if(control instanceof OutputLabel){
+						LABEL l = listener.createLabel(this,(OutputLabel<MODEL,ROW, LABEL, CONTROL, SELECTITEM>) control,__row__);
+						if(l!=null)
+							__label__ = l;
+					}else{
+						__control__ = listener.createControl(this,control,__row__);
+						if(__label__!=null && __control__!=null)
+							setControlLabel(__label__, __control__);
+					}
+				
+			}
+			
 		}
 		return this;
 	}
@@ -118,7 +130,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners) 
 				listener.labelBuilt(this, field, (LABEL) label);
 			*/
-			add(label);
+			add(label,field);
 		}
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createFieldControl(object, field);
 		if(control instanceof Input<?,?,?,?,?,?>){
@@ -143,8 +155,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 					listener.input(this,(Input<?, MODEL, ROW, LABEL, CONTROL, SELECTITEM>)control);
 			}
 		}
-			
-		add(control);
+		add(control,field);
 		return this;
 	}
 	
@@ -153,7 +164,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		@SuppressWarnings("unchecked")
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createSeparator(label);
 		control.getPosition().getColumn().setSpan(2);//TODO to be done automatically
-		add(control);
+		add(control,null);
 		return this;
 	}
 	
@@ -162,7 +173,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		@SuppressWarnings("unchecked")
 		Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM> control = (Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createOutputText(text);
 		control.getPosition().getColumn().setSpan(2);//TODO to be done automatically
-		add(control);
+		add(control,null);
 		return this;
 	}
 		
@@ -212,7 +223,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		for(int rowIndex = 0;rowIndex < __rowCount__; rowIndex++){
 			Integer columnCount = 0;
 			for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls)
-				if(control.getPosition().getRow().getIndex()==rowIndex)
+				if(control.getPosition().getRow().getIndex()!=null && control.getPosition().getRow().getIndex()==rowIndex)
 					columnCount += control.getPosition().getColumn().getSpan();
 			if(columnCount > maximumColumnCount)
 				maximumColumnCount = columnCount;
@@ -222,18 +233,19 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			row(null);
 			Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> lastControl = null;
 			for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls)
-				if(control.getPosition().getRow().getIndex()==rowIndex)
+				if(control.getPosition().getRow().getIndex()!=null && control.getPosition().getRow().getIndex()==rowIndex)
 					lastControl = control;
 			
-			lastControl.getPosition().getColumn().setSpan(maximumColumnCount-lastControl.getPosition().getColumn().getIndex()+1);
+			if(lastControl!=null)
+				lastControl.getPosition().getColumn().setSpan(maximumColumnCount-lastControl.getPosition().getColumn().getIndex()+1);
 		}		
 		// use the target specific control
 		for(int rowIndex = 0;rowIndex < __rowCount__; rowIndex++){
 			row(null);
 			Integer columnCount = 0;
 			for(Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control : controls){
-				if(control.getPosition().getRow().getIndex()==rowIndex){
-					add(control);
+				if(control.getPosition().getRow().getIndex()!=null && control.getPosition().getRow().getIndex()==rowIndex){
+					add(control,null);
 					columnCount += control.getPosition().getColumn().getSpan();
 				}
 			}
@@ -283,11 +295,26 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 		return null;
 	}
 	
+	@Override
+	public Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName) {
+		for(int index = 0 ; index < controls.size() ;){
+			Control<MODEL,ROW,LABEL,CONTROL,SELECTITEM> control = controls.get(index);
+			if( (control instanceof Input<?,?,?,?,?,?>) 
+					&& ( ((Input<?,?,?,?,?,?>)control).getField().getName().equals(fieldName)) 
+					){
+				System.out.println("AbstractControlSet.removeInputByFieldName() : "+fieldName+" : " +index);
+				return (Input<?, ?, ?, ?, ?, ?>) controls.remove(index);
+			}
+			index++;
+		}
+		return null;
+	}
+	
 	/* short cuts methods */
 
 	@SuppressWarnings("unchecked")
 	public AbstractControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> addLabel(String label){
-		return add((Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(label));
+		return add((Control<MODEL, ROW, LABEL, CONTROL, SELECTITEM>) UIProvider.getInstance().createLabel(label),null);
 	}
 		
 }

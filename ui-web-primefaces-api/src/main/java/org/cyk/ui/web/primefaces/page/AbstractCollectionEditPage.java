@@ -2,8 +2,7 @@ package org.cyk.ui.web.primefaces.page;
 
 import java.io.Serializable;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.faces.model.SelectItem;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
@@ -13,7 +12,14 @@ import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.Input.RendererStrategy;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIdentifiable,ITEM extends AbstractIdentifiable,TYPE extends AbstractItemCollectionItem<ITEM>> extends AbstractCrudOnePage<COLLECTION> implements Serializable {
@@ -22,6 +28,19 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 	
 	protected ItemCollection<TYPE,ITEM,COLLECTION> itemCollection;
 	
+	@Override
+	protected void initialisation() {
+		super.initialisation();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		if(itemCollection!=null)
+			itemCollection.setInputChoice((org.cyk.ui.api.data.collector.control.InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SelectItem>) form.getInputByFieldName(AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED));
+	}
+	
 	protected abstract AbstractCollection<?> getCollection();
 	
 	@Getter @Setter
@@ -29,12 +48,14 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputText protected String itemCodeSeparator;
+		@Input(rendererStrategy=RendererStrategy.MANUAL) @InputChoice(nullable=false) @InputOneChoice @InputOneCombo protected AbstractIdentifiable oneItemMasterSelected;
 		
 		protected abstract AbstractCollection<?> getCollection();
 		
 		/**/
 		
 		public static final String FIELD_ITEM_CODE_SEPARATOR = "itemCodeSeparator";
+		public static final String FIELD_ONE_ITEM_MASTER_SELECTED = "oneItemMasterSelected";
 		
 		/**/
 		

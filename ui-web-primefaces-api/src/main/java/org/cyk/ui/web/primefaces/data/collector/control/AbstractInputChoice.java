@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.ui.web.api.ObjectConverter;
+import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.data.collector.control.WebInputChoice;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -27,6 +28,7 @@ org.cyk.ui.api.data.collector.control.InputChoice<VALUE_TYPE,DynaFormModel,DynaF
 	protected Boolean filtered;
 	protected FilterMode filterMode = FilterMode.CONTAINS;
 	protected String filterModeAsString;
+	protected Boolean isAutomaticallyRemoveSelected;
 	
 	@Override
 	public Converter getConverter() {
@@ -43,4 +45,34 @@ org.cyk.ui.api.data.collector.control.InputChoice<VALUE_TYPE,DynaFormModel,DynaF
 		return filterModeAsString;
 	}
 	
+	@Override
+	public void addChoice(Object object) {
+		list.add(WebManager.getInstance().getSelectItem(object));
+	}
+	
+	@Override
+	public void removeChoice(Object object) {
+		for(int index = 0 ; index < list.size() ; index++){
+			if(list.get(index).getValue()!=null && list.get(index).getValue().equals(object) ){
+				list.remove(index);
+			}
+		}	
+	}
+	
+	@Override
+	public void removeSelected() {
+		removeChoice(getValue());
+	}
+	
+	@Override
+	public void removeSelectedAutomatically() {
+		if(Boolean.TRUE.equals(isAutomaticallyRemoveSelected))
+			removeSelected();
+	}
+	
+	@Override
+	public void addChoiceIfAutomaticallyRemoveSelected(Object object) {
+		if(Boolean.TRUE.equals(isAutomaticallyRemoveSelected))
+			addChoice(object);
+	}
 }

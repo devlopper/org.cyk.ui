@@ -14,6 +14,7 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -31,8 +32,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Collection<IDENTIFIABLE> initialIdentifiables = new ArrayList<>();
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<COLLECTION> collectionClass;
-	protected List<SELECT_ITEM> choices = new ArrayList<>();
-	protected Boolean automaticallyDeleteSelectedChoice;
+	//protected List<SELECT_ITEM> choices = new ArrayList<>();//TODO to be deleted , use inputChoice
+	protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
@@ -44,7 +45,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected FormOneData<?, ?, ?, ?, ?, ?> containerForm;
 	protected COLLECTION collection;
 	protected IDENTIFIABLE oneSelected;
-	protected AbstractIdentifiable oneMasterSelected;
+	//protected AbstractIdentifiable oneMasterSelected;
 	protected Crud crud;
 	
 	@SuppressWarnings("unchecked")
@@ -65,6 +66,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			private static final long serialVersionUID = -4786916980017894274L;
 			@Override
 			public void serve(UICommand command, Object parameter) {
+				//oneMasterSelected = (AbstractIdentifiable) inputChoice.getValue();
 				add();
 			}
 		});
@@ -98,19 +100,13 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	public void add(IDENTIFIABLE identifiable){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
-		instance.setMaster(oneMasterSelected);
+		instance.setMaster(inputChoice.getValue());
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
 		setItemLabel(instance);
 		
 		if(items.add(instance)){
-			if(Boolean.TRUE.equals(automaticallyDeleteSelectedChoice)){
-				for(int index = 0 ; index < choices.size() ; index++){
-					if( getIdentifiableFromChoice(choices.get(index)).equals(oneMasterSelected) ){
-						choices.remove(index);
-					}
-				}	
-			}
+			inputChoice.removeSelectedAutomatically();
 		}
 		
 		read(instance);
@@ -143,7 +139,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		return instance;
 	}
 	
+	@Deprecated
 	protected abstract SELECT_ITEM createSelectItem(AbstractIdentifiable identifiable);
+	@Deprecated
 	protected abstract AbstractIdentifiable getIdentifiableFromChoice(SELECT_ITEM choice);
 	
 	protected AbstractIdentifiable getMasterSelected(IDENTIFIABLE identifiable){
@@ -158,9 +156,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public void delete(TYPE item){
 		if(items.remove(item)){
-			if(Boolean.TRUE.equals(automaticallyDeleteSelectedChoice)){
-				choices.add(createSelectItem(item.getMaster()));
-			}
+			inputChoice.addChoiceIfAutomaticallyRemoveSelected(item.getMaster());
 		}
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);

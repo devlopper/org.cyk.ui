@@ -21,6 +21,8 @@ public interface ControlSet<DATA, MODEL,ROW, LABEL, CONTROL, SELECTITEM> extends
 	<T> T findControlByIndex(Class<T> aClass,Integer index);
 	Input<?, ?, ?, ?, ?, ?> findInputByFieldName(String fieldName);
 	
+	Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName);
+	
 	MODEL getModel();
 	
 	Boolean getShowInFrame();

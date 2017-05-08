@@ -74,6 +74,16 @@ public abstract class AbstractFormData<DATA, MODEL, ROW, LABEL, CONTROL, SELECTI
 	}
 	
 	@Override
+	public Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName) {
+		for(ControlSet<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> set : controlSets){
+			Input<?, ?, ?, ?, ?, ?> object = set.removeInputByFieldName(fieldName);
+			if(object!=null)
+				return object;
+		}
+		return null;
+	}
+	
+	@Override
 	public Boolean build(Object data,Field field) {
 		return null;
 	}

@@ -14,6 +14,10 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl> implements Serializable {
 
 	private static final long serialVersionUID = -8473077267633574874L;
@@ -21,6 +25,8 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 	{
 		templateId = "/org.cyk.ui.web.primefaces/template/formdata/default.xhtml";
 	}
+	
+	private String label;//TODO workaround for itemCollection , label property not found
 	
 	@Override
 	public ControlSet<DATA> createControlSet() {

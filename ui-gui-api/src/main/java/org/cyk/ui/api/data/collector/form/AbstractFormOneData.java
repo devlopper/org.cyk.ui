@@ -74,6 +74,11 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	}
 	
 	@Override
+	public org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> removeInputByFieldName(String fieldName) {
+		return getSelectedFormData().removeInputByFieldName(fieldName);
+	}
+	
+	@Override
 	public void setInputValue(String fieldName, Object value) {
 		@SuppressWarnings("unchecked")
 		org.cyk.ui.api.data.collector.control.Input<Object, ?, ?, ?, ?, ?> input = (org.cyk.ui.api.data.collector.control.Input<Object, ?, ?, ?, ?, ?>) getInputByFieldName(fieldName);
@@ -186,9 +191,9 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 		if(data instanceof AbstractFormModel<?> && !Boolean.TRUE.equals(((AbstractFormModel<?>)data).isFieldRendered(field)))
 			return Boolean.FALSE;
 		RendererStrategy rendererStrategy = input.rendererStrategy();
-		if(RendererStrategy.AUTO.equals(rendererStrategy))
+		if(RendererStrategy.AUTO.equals(rendererStrategy) || RendererStrategy.MANUAL.equals(rendererStrategy))
 			rendererStrategy = RendererStrategy.ALWAYS;
-		return RendererStrategy.ALWAYS.equals(rendererStrategy)
+		return RendererStrategy.ALWAYS.equals(rendererStrategy) 
 			|| (RendererStrategy.ADMINISTRATION.equals(rendererStrategy) && Boolean.TRUE.equals(userSession.getIsAdministrator()))
 			|| (RendererStrategy.MANAGEMENT.equals(rendererStrategy) && Boolean.TRUE.equals(userSession.getIsManager())) ;
 	}
