@@ -19,20 +19,10 @@
         	<f:facet name="header">
         		<table>
         			<tr>
-        				<ui:fragment><td>
+        				<ui:fragment rendered="#{cc.value.crud.ordinal() == 0 or cc.value.crud.ordinal() == 2}" ><td>
         					<table>
         						<tr>
-        							<td >
-        								<!--p:selectOneMenu id="choice" value="#{cc.value.oneMasterSelected}" var="identifiable" converter="#{objectConverter}" 
-								       		filter="true" filterMatchMode="contains" styleClass="optionsPanelClass">
-								       		<f:selectItems value="#{cc.value.choices}" />
-								       		<p:column><h:outputText value="#{identifiable}" /></p:column>
-								       	</p:selectOneMenu-->
-								       	
-								       	<!--p:column><h:outputText value="#{salableProduct.product.code}" /></p:column>
-									        <p:column><h:outputText value="#{salableProduct.product.name}" /></p:column-->
-									        
-								       	
+        							<td>
 								       	<cyk:inputOneCombo value="#{cc.value.inputChoice}"/>
         							</td>
         							<td width="30px">

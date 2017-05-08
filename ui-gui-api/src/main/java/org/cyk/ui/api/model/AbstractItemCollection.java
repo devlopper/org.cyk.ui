@@ -32,7 +32,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Collection<IDENTIFIABLE> initialIdentifiables = new ArrayList<>();
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<COLLECTION> collectionClass;
-	//protected List<SELECT_ITEM> choices = new ArrayList<>();//TODO to be deleted , use inputChoice
+	
 	protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
