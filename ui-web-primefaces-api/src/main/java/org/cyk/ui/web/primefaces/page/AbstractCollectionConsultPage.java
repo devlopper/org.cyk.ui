@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.business.api.AbstractCollectionItemBusiness;
+import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
@@ -15,6 +16,7 @@ import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.model.table.ColumnAdapter;
+import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
@@ -52,6 +54,11 @@ public abstract class AbstractCollectionConsultPage<COLLECTION extends AbstractI
 			}
 			
 			@Override
+			public RowAdapter<ITEM_DETAILS> getRowAdapter() {
+				return getItemTableRowAdapter();
+			}
+			
+			@Override
 			public Boolean getEnabledInDefaultTab() {
 				return getEnableItemTableInDefaultTab();
 			}
@@ -59,6 +66,11 @@ public abstract class AbstractCollectionConsultPage<COLLECTION extends AbstractI
 			@Override
 			public String getTabId() {
 				return getItemTableTabId();
+			}
+			
+			@Override
+			public Crud[] getCruds() {
+				return getItemTableCruds();
 			}
 			
 		});
@@ -70,6 +82,14 @@ public abstract class AbstractCollectionConsultPage<COLLECTION extends AbstractI
 	
 	protected String getItemTableTabId(){
 		return IdentifierProvider.Adapter.getTabOf(getItemClass());
+	}
+	
+	protected RowAdapter<ITEM_DETAILS> getItemTableRowAdapter(){
+		return null;
+	}
+	
+	protected Crud[] getItemTableCruds(){
+		return new Crud[]{Crud.READ,Crud.UPDATE,Crud.DELETE};
 	}
 	
 	protected abstract Collection<ITEM> findByCollection(COLLECTION collection);

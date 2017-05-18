@@ -134,7 +134,8 @@ public class CommandBuilder extends AbstractBean implements Serializable {
 				if(UICommandable.ProcessGroup.THIS.equals(aCommandable.getProcessGroup()))
 					menuItem.setProcess("@this");	
 			}
-			
+			//if(StringUtils.isNotBlank(aCommandable.getOnClick()))
+			//	menuItem.setOnclick(aCommandable.getOnClick());
 			
 			if(parent!=null)
 				parent.addElement(menuItem);

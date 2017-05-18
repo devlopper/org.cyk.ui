@@ -24,6 +24,7 @@
 				<f:selectItems value="#{control.list}" />
 				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/body.xhtml" />
 			</p:selectOneMenu>				
+			<p:watermark id="inputOneComboWatermark" for="inputOneCombo" value="#{control.label}" />
 		</ui:define>
 	</ui:decorate>
 		

@@ -13,16 +13,17 @@ import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.IdentifierProvider;
 import org.cyk.ui.api.UIManager;
+import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.menu.DefaultMenu;
 import org.cyk.ui.api.command.menu.UIMenu;
@@ -337,7 +338,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		//table.getColumnListeners().add(new Table.ColumnAdapter());
 		//buildTable(table);
 		table.setInplaceEdit(Boolean.FALSE);
-		table.setTitle(null);//TODO can be in listener as boolean method or computed base on others details
+		if(Boolean.TRUE.equals(listener.getAutomaticallySetTitle()))
+			table.setTitle(inject(LanguageBusiness.class).findClassLabelText(listener.getIdentifiableClass()));
+		else
+			table.setTitle(null);//TODO can be in listener as boolean method or computed base on others details
 		return table;
 	}
 	
@@ -494,6 +498,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 	public static interface DetailsConfigurationListener<IDENTIFIABLE extends AbstractIdentifiable,DATA>{
 		Crud[] getCruds();
 		String getTitleId();
+		Boolean getAutomaticallySetTitle();
 		DATA createData(IDENTIFIABLE identifiable);
 		Class<DATA> getDataClass();
 		Class<IDENTIFIABLE> getIdentifiableClass();
@@ -516,7 +521,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			protected Class<IDENTIFIABLE> identifiableClass;
 			protected Class<DATA> dataClass;
 			protected String tabId,titleId,formConfigurationIdentifier,formViewIdentifier;
-			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE;
+			protected Boolean autoAddTabCommandable = Boolean.TRUE,enabledInDefaultTab=Boolean.FALSE,automaticallySetTitle=Boolean.FALSE;
 			protected Crud[] cruds = new Crud[]{Crud.CREATE,Crud.READ,Crud.UPDATE,Crud.DELETE};//TODO should be removed ??? because value is taken from database
 			protected Boolean isIdentifiableMaster=Boolean.TRUE;
 			protected Collection<? extends AbstractIdentifiable> masters;

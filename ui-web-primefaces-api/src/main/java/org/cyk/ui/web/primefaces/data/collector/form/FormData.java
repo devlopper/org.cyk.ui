@@ -9,6 +9,7 @@ import org.cyk.ui.api.data.collector.control.InputFile;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.ui.web.api.data.collector.form.AbstractWebFormData;
 import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.data.collector.control.InputAutoCompleteCommon;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -27,6 +28,7 @@ public class FormData<DATA> extends AbstractWebFormData<DATA, DynaFormModel, Dyn
 	}
 	
 	private String label;//TODO workaround for itemCollection , label property not found
+	private InputAutoCompleteCommon<?> common = new InputAutoCompleteCommon<>();//TODO workaround javax.el.PropertyNotFoundException: The class 'org.cyk.ui.web.primefaces.data.collector.form.FormData' does not have the property 'common'.
 	
 	@Override
 	public ControlSet<DATA> createControlSet() {

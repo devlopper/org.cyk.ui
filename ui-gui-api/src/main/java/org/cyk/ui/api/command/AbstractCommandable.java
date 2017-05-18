@@ -180,7 +180,7 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 		private CommonBusinessAction commonBusinessAction;
 		private String actionIdentifier,selectedTabId;
 		private Class<? extends AbstractIdentifiable> identifiableClass;
-		private Boolean one;
+		private Boolean one,useUrlOnClick;
 		private AbstractIdentifiable master;
 		private FindTextResult findTextResult;
 		
@@ -616,6 +616,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 							.generateUniqueClass(UIManager.COMMANDABLE_CLASS_PREFIX,findTextResult.getIdentifier()));
 					//TODO many call of setLabel will add too more classes where previous are useless
 			}
+			
+			if(Boolean.TRUE.equals(useUrlOnClick)){
+				
+			}
+			
 			return instance;
 		}
 		

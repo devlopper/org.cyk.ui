@@ -15,7 +15,7 @@
 		requiredMessage="#{control.requiredMessage}" disabled="#{control.disabled}" queryDelay="#{control.common.numberOfMillisecondBetweenQueries}" 
 		minQueryLength="#{control.common.numberOfCharacterBeforeQuery}" forceSelection="#{control.common.forceSelectionEnabled}" 
 		cache="#{control.common.queryResultsCacheEnabled}" cacheTimeout="#{control.common.numberOfMillisecondQueryResultsCacheTimeOut}" 
-		emptyMessage="#{control.common.noResultMessage}" pt:placeholder="#{control.label}" multiple="#{multiple}"
+		emptyMessage="#{control.common.noResultMessage}"  multiple="#{multiple}"
 		widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" appendTo="#{control.common.appendTo}"
 		var="item" itemLabel="#{control.common.getLabel(item)}" itemValue="#{item}">
 		
@@ -25,5 +25,7 @@
 		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/body.xhtml" />
 		
 	</p:autoComplete>
+	<p:watermark id="#{identifier}Watermark" for="#{identifier}" value="#{control.label}" />
+	<!-- pt:placeholder="#{control.label}" -->
 		
 </ui:composition>
