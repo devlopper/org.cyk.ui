@@ -156,6 +156,11 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	}
 	
 	@Override
+	public Boolean getShowContextualMenu() {
+		return getShowMainMenu();
+	}
+	
+	@Override
 	public Boolean getRenderedAsDialog() {
 		return UniformResourceLocatorParameter.WINDOW_MODE_DIALOG.equals(windowMode);
 	}
