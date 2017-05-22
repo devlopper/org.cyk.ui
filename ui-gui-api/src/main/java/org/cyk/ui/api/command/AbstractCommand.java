@@ -7,9 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.AbstractBusinessException;
 import org.cyk.system.root.business.impl.validation.ExceptionUtils;
@@ -17,9 +14,12 @@ import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
 import org.cyk.ui.api.UIMessageManager.Text;
 import org.cyk.ui.api.command.CommandListener.AfterServeState;
-import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.ExecutionProgress;
+import org.cyk.utility.common.helper.ThrowableHelper;
+
+import lombok.Getter;
+import lombok.Setter;
 
 //@Log
 public abstract class AbstractCommand extends AbstractBean implements UICommand , Serializable {
@@ -97,13 +97,13 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 	}
 	
 	private Object fail(Object parameter,Throwable throwable) {
-		Throwable cause = CommonUtils.getInstance().getThrowableInstanceOf(throwable, AbstractBusinessException.class);
+		Throwable cause = inject(ThrowableHelper.class).getInstanceOf(throwable, AbstractBusinessException.class);
 		Set<String> messages = new LinkedHashSet<>();
 		if(throwable!=null)
-			throwable.printStackTrace();
+			logThrowable(throwable);
 		if(cause==null){
 			if(throwable!=null){
-				logThrowable(throwable);
+				//logThrowable(throwable);
 				messages.add(ExceptionUtils.getInstance().getMessage(throwable));
 			}
 			//messages.add(UIManager.getInstance().text("command.serve.failure.summary"));

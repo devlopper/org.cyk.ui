@@ -19,7 +19,7 @@ public class UrlStringBuilderProvider extends org.cyk.system.root.business.api.U
 			,Collection<IDENTIFIABLE> identifiables,String actionIdentifier){
 		UrlStringBuilder builder = new UrlStringBuilder();
 		builder.setHost(Faces.getRequest().getServerName()).setPort(Faces.getRequest().getServerPort())
-			.setPathIdentifier(inject(WebNavigationManager.class).getOutcomeProcessMany()).addPathTokenReplacement(".xhtml", ".jsf");
+			.setIdentifier(inject(WebNavigationManager.class).getOutcomeProcessMany());
 		builder.getQueryStringBuilder().addParameter(UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 				: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables))
 			.addParameter(UniformResourceLocatorParameter.CLASS,inject(UIManager.class).businessEntityInfos(identifiableClass).getIdentifier())

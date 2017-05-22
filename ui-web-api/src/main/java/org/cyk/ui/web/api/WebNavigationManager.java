@@ -66,6 +66,10 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public static WebNavigationManager getInstance() {
 		return INSTANCE;
 	}
+	
+	private static final String FILE_STATIC_EXTENSION = ".xhtml";
+	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
+	
 	static{
 		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
@@ -95,21 +99,28 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			}
 		});
 	
-		UrlStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
+		UrlStringBuilder.PathStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
 		UrlStringBuilder.SCHEME = "http";
-		UrlStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.Listener.Adapter.Default(){
+		UrlStringBuilder.PathStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
+			
 			@Override
-			public String getPathFromIdentifier(String identifier) {
+			public String getIdentifierMapping(String identifier) {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				NavigationCase navigationCase = ((ConfigurableNavigationHandler)facesContext.getApplication().getNavigationHandler())
-						.getNavigationCase(facesContext, null, identifier);
-			
+						.getNavigationCase(facesContext, null, identifier);			
 				if(navigationCase==null){
 					
 				}else
 					return navigationCase.getToViewId(facesContext);
-				return super.getPathFromIdentifier(identifier);
+				return super.getIdentifierMapping(identifier);
+			}
+			
+			@Override
+			public Map<String, String> getTokenReplacementMap() {
+				Map<String, String> map = new HashMap<>();
+				map.put(FILE_STATIC_EXTENSION, FILE_PROCESSING_EXTENSION);
+				return map;
 			}
 		});
 	}
@@ -134,8 +145,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 	public static final String OUTCOME_SUCCESS_VIEW = "succes";
 	
 	private static final String QUERY_PARAMETER_FACES_REDIRECT_NAME = "faces-redirect";
-	private static final String FILE_STATIC_EXTENSION = ".xhtml";
-	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
+	
 	
 	@Getter private String dynamicDirectory = "__dynamic__";
 	@Getter @Setter private String contextPath;

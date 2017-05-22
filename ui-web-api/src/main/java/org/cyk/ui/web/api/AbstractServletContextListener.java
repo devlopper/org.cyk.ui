@@ -89,7 +89,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		servletContext = event.getServletContext();
-		UrlStringBuilder.CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
+		UrlStringBuilder.PathStringBuilder.CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
 		addUrls(event);
 		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());
