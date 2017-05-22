@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.inject.Singleton;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.UIManager;
 import org.cyk.utility.common.builder.UrlStringBuilder;
@@ -24,7 +25,7 @@ public class UrlStringBuilderProvider extends org.cyk.system.root.business.api.U
 				: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables))
 			.addParameter(UniformResourceLocatorParameter.CLASS,inject(UIManager.class).businessEntityInfos(identifiableClass).getIdentifier())
 			.addParameter(UniformResourceLocatorParameter.ACTION_IDENTIFIER, actionIdentifier)
-			.addParameter(UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE)
+			.addParameter(RootConstant.Code.UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE)
 		;
 		return builder;
 	}

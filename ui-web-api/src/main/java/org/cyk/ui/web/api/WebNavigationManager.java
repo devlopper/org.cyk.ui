@@ -26,6 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.model.CommonBusinessAction;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.file.FileRepresentationTypeBusiness;
@@ -67,8 +68,8 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		return INSTANCE;
 	}
 	
-	private static final String FILE_STATIC_EXTENSION = ".xhtml";
-	private static final String FILE_PROCESSING_EXTENSION = ".jsf";
+	public static final String FILE_STATIC_EXTENSION = ".xhtml";
+	public static final String FILE_PROCESSING_EXTENSION = ".jsf";
 	
 	static{
 		IdentifierProvider.COLLECTION.add(new IdentifierProvider.Adapter.Default(){
@@ -99,30 +100,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			}
 		});
 	
-		UrlStringBuilder.PathStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
-		UrlStringBuilder.SCHEME = "http";
-		UrlStringBuilder.PathStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.Listener.Adapter.Default(){
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public String getIdentifierMapping(String identifier) {
-				FacesContext facesContext = FacesContext.getCurrentInstance();
-				NavigationCase navigationCase = ((ConfigurableNavigationHandler)facesContext.getApplication().getNavigationHandler())
-						.getNavigationCase(facesContext, null, identifier);			
-				if(navigationCase==null){
-					
-				}else
-					return navigationCase.getToViewId(facesContext);
-				return super.getIdentifierMapping(identifier);
-			}
-			
-			@Override
-			public Map<String, String> getTokenReplacementMap() {
-				Map<String, String> map = new HashMap<>();
-				map.put(FILE_STATIC_EXTENSION, FILE_PROCESSING_EXTENSION);
-				return map;
-			}
-		});
+		
 	}
 	
 	public static final Map<String, String> MOBILE_VIEW_MAP = new HashMap<String, String>();
@@ -583,7 +561,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 				UniformResourceLocatorParameter.IDENTIFIABLE, identifiables==null || identifiables.isEmpty() ? null 
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,UniformResourceLocatorParameter.FILE_EXTENSION, fileExtension.getValue()
-				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
+				,RootConstant.Code.UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		};
 	}
 	
@@ -638,7 +616,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 						: WebManager.getInstance().encodeIdentifiablesAsRequestParameterValue(identifiables)
 				,UniformResourceLocatorParameter.CLASS,uiManager.businessEntityInfos(identifiableClass).getIdentifier()
 				,UniformResourceLocatorParameter.ACTION_IDENTIFIER, actionIdentifier
-				,UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
+				,RootConstant.Code.UniformResourceLocatorParameter.ENCODED, UniformResourceLocatorParameter.IDENTIFIABLE
 		}, parameters);
 		redirectTo(outcome,__parameters__);
 	}

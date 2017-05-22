@@ -1,9 +1,14 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -84,6 +89,31 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		menuManager.addMenuListener((org.cyk.ui.api.command.menu.MenuManager.Listener) this);
 		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession<?,?>>) this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
+		
+		UrlStringBuilder.PathStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
+		UrlStringBuilder.SCHEME = "http";
+		UrlStringBuilder.PathStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public String getIdentifierMapping(String identifier) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				NavigationCase navigationCase = ((ConfigurableNavigationHandler)facesContext.getApplication().getNavigationHandler())
+						.getNavigationCase(facesContext, null, identifier);			
+				if(navigationCase==null){
+					
+				}else
+					return navigationCase.getToViewId(facesContext);
+				return super.getIdentifierMapping(identifier);
+			}
+			
+			@Override
+			public Map<String, String> getTokenReplacementMap() {
+				Map<String, String> map = new HashMap<>();
+				map.put(WebNavigationManager.FILE_STATIC_EXTENSION, WebNavigationManager.FILE_PROCESSING_EXTENSION);
+				return map;
+			}
+		});
 	}
 	
 	@Override

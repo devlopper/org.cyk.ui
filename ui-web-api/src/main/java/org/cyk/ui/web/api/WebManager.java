@@ -29,6 +29,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -321,7 +322,7 @@ public class WebManager extends AbstractBean implements Serializable {
 		if(StringUtils.isBlank(identifiable))
 			return null;
 		//TODO many parameters can be encoded
-		String[] encodedParameterNames = request.getParameterValues(UniformResourceLocatorParameter.ENCODED);
+		String[] encodedParameterNames = request.getParameterValues(RootConstant.Code.UniformResourceLocatorParameter.ENCODED);
 		if(ArrayUtils.contains(encodedParameterNames, name)){
 			Collection<Long> r = decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
@@ -368,7 +369,7 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	private <IDENTIFIABLE extends AbstractIdentifiable> String getEncodedParameterName(Class<IDENTIFIABLE> identifiableClass,HttpServletRequest request){
-		String[] encodedParameterNames = request.getParameterValues(UniformResourceLocatorParameter.ENCODED);
+		String[] encodedParameterNames = request.getParameterValues(RootConstant.Code.UniformResourceLocatorParameter.ENCODED);
 		return ArrayUtils.contains(encodedParameterNames, UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier())
 				? UIManager.getInstance().businessEntityInfos(identifiableClass).getIdentifier() : UniformResourceLocatorParameter.IDENTIFIABLE;			
 	}

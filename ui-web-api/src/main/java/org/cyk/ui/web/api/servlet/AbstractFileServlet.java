@@ -20,6 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.utility.common.Constant;
@@ -132,7 +133,7 @@ public abstract class AbstractFileServlet extends AbstractServlet implements Ser
 		Collection<File> collection = new ArrayList<>();
 		Collection<Long> identifiers = new ArrayList<>();
 		String identifiable = requestParameter(request, UniformResourceLocatorParameter.IDENTIFIABLE);
-		String encodedParameter = requestParameter(request, UniformResourceLocatorParameter.ENCODED);
+		String encodedParameter = requestParameter(request, RootConstant.Code.UniformResourceLocatorParameter.ENCODED);
 		if(UniformResourceLocatorParameter.IDENTIFIABLE.equals(encodedParameter)){
 			Collection<Long> r = webManager.decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
