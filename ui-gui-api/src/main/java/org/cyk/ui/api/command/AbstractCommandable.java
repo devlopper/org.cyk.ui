@@ -27,11 +27,12 @@ import org.cyk.ui.api.UIProvider;
 import org.cyk.utility.common.AbstractBuilder;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
+import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractCommandable implements UICommandable , Serializable {
+public abstract class AbstractCommandable extends AbstractBean implements UICommandable , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
 
@@ -164,6 +165,11 @@ public abstract class AbstractCommandable implements UICommandable , Serializabl
 	public UICommandable setParameter(String name, Object value) {
 		Parameter.setParameter(parameters, name, value);
 		return this;
+	}
+	
+	public <COMPONENT> COMPONENT getComponent(Class<COMPONENT> componentClass,Object[] arguments){
+		throwNotYetImplemented();
+		return null;
 	}
 	
 	@Override

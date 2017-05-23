@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -51,6 +52,7 @@ import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
+import org.omnifaces.util.Faces;
 
 public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends WebHierarchyNode,USER_SESSION extends AbstractWebUserSession<NODE,NODE_MODEL>> extends AbstractBean implements ServletContextListener,MenuManager.Listener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
 
@@ -90,6 +92,31 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession<?,?>>) this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
 		
+		UrlStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public HttpServletRequest getRequest() {
+				return Faces.getRequest();
+			}
+			
+			@Override
+			public String getScheme(Object request) {
+				return ((HttpServletRequest)request).getScheme();
+			}
+			
+			@Override
+			public String getHost(Object request) {
+				return ((HttpServletRequest)request).getServerName();
+			}
+			
+			@Override
+			public Integer getPort(Object request) {
+				return ((HttpServletRequest)request).getServerPort();
+			}
+			
+		});
+		
 		UrlStringBuilder.PathStringBuilder.PATH_NOT_FOUND_IDENTIFIER = "oc";
 		UrlStringBuilder.SCHEME = "http";
 		UrlStringBuilder.PathStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.Listener.Adapter.Default(){
@@ -113,6 +140,22 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 				map.put(WebNavigationManager.FILE_STATIC_EXTENSION, WebNavigationManager.FILE_PROCESSING_EXTENSION);
 				return map;
 			}
+			
+			@Override
+			public String getContext(Object request) {
+				return ((HttpServletRequest)request).getSession().getServletContext().getContextPath();
+			}
+			
+			@Override
+			public String getConsultFilesIdentifier() {
+				return WebNavigationManager.getInstance().getOutcomeFileConsultMany();
+			}
+		});
+		
+		UrlStringBuilder.QueryStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.QueryStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			
+			
 		});
 	}
 	

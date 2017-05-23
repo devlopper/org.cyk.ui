@@ -160,7 +160,10 @@ public class CommandBuilder extends AbstractBean implements Serializable {
 			return null;
 		MenuModel model = new DefaultMenuModel();
 		for(UICommandable commandable : aMenu.getCommandables()){
-			model.addElement(menuItem(commandable,null, Introspector.decapitalize(managedBeanClass.getSimpleName()), fieldName));
+			//model.addElement(menuItem(commandable,null, Introspector.decapitalize(managedBeanClass.getSimpleName()), fieldName));
+			
+			model.addElement(((Commandable)commandable).getComponent(MenuElement.class, new Object[]{null,Introspector.decapitalize(managedBeanClass.getSimpleName())
+				, new String[]{fieldName}}));
 		}
 		return model;
 	}
