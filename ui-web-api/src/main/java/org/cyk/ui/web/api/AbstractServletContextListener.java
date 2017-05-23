@@ -1,6 +1,7 @@
 package org.cyk.ui.web.api;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -48,7 +49,9 @@ import org.cyk.ui.web.api.security.RoleManager;
 import org.cyk.ui.web.api.security.shiro.Realm;
 import org.cyk.ui.web.api.security.shiro.WebEnvironmentListener;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
+import org.cyk.utility.common.builder.NameValueCollectionStringBuilder;
 import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
@@ -156,6 +159,40 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 			private static final long serialVersionUID = 1L;
 			
 			
+		});
+		
+		NameValueCollectionStringBuilder.Listener.COLLECTION.add(new NameValueCollectionStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public String getEncodedParameterName() {
+				return RootConstant.Code.UniformResourceLocatorParameter.ENCODED;
+			}
+			
+			@Override
+			public String getFileExtensionName() {
+				return UniformResourceLocatorParameter.FILE_EXTENSION;
+			}
+			
+			@Override
+			public FileExtension getFileExtension(Collection<?> files) {
+				return FileExtension.PDF;
+			}
+			
+			@Override
+			public String getWindowsModeName() {
+				return UniformResourceLocatorParameter.WINDOW_MODE;
+			}
+			
+			@Override
+			public String getWindowsModeDialogName() {
+				return UniformResourceLocatorParameter.WINDOW_MODE_DIALOG;
+			}
+			
+			@Override
+			public String getIdentifiableName() {
+				return UniformResourceLocatorParameter.IDENTIFIABLE;
+			}
 		});
 	}
 	
