@@ -8,12 +8,4 @@ public class CommandableBuilder extends AbstractCommandableBuilder<Commandable> 
 
 	private static final long serialVersionUID = -2137482834257337646L;
 
-	@Override
-	public Commandable build() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
 }

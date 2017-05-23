@@ -111,6 +111,11 @@ public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCom
 		return this;
 	}
 	
+	public AbstractCommandableBuilder<COMMANDABLE> setLabelId(String labelId){
+		instance.setLabel(inject(LanguageBusiness.class).findText(labelId));
+		return this;
+	}
+	
 	public AbstractCommandableBuilder<COMMANDABLE> setLabel(String label){
 		instance.setLabel(label);
 		return this;

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
@@ -16,6 +17,7 @@ import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.CommonBusinessAction;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.Icon;
@@ -27,11 +29,13 @@ import org.cyk.ui.api.UIProvider;
 import org.cyk.utility.common.AbstractBuilder;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
+import org.cyk.utility.common.builder.javascript.OpenWindowStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public abstract class AbstractCommandable extends AbstractBean implements UICommandable , Serializable {
 
 	private static final long serialVersionUID = 3245517653342272298L;
@@ -170,6 +174,12 @@ public abstract class AbstractCommandable extends AbstractBean implements UIComm
 	public <COMPONENT> COMPONENT getComponent(Class<COMPONENT> componentClass,Object[] arguments){
 		throwNotYetImplemented();
 		return null;
+	}
+	
+	public UICommandable setOnClickOpenWindowToConsultFiles(String fileRepresentationTypeCode,AbstractIdentifiable identifiable){
+		Collection<File> files = inject(FileBusiness.class).findByRepresentationTypeCodeByIdentifiable(fileRepresentationTypeCode,identifiable);
+		setOnClick(inject(OpenWindowStringBuilder.class).addFiles(identifiable, files).build());
+		return this;
 	}
 	
 	@Override
