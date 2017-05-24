@@ -820,7 +820,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		super.configureSecurityModule();
 		getFormConfiguration(UniformResourceLocator.class, Crud.CREATE)
 		.addRequiredFieldNames(UniformResourceLocatorEditPage.Form.FIELD_CODE,UniformResourceLocatorEditPage.Form.FIELD_NAME
-				,UniformResourceLocatorEditPage.Form.FIELD_ADDRESS);
+				,UniformResourceLocatorEditPage.Form.FIELD_ADDRESS/*,UniformResourceLocatorEditPage.Form.FIELD_ONE_ITEM_MASTER_SELECTED*/);
 	
 		registerDetailsConfiguration(UniformResourceLocatorDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;

@@ -14,6 +14,7 @@ import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusin
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.RoleUniformResourceLocator;
+import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.AbstractEnumerationForm;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -58,17 +59,15 @@ public class RoleEditPage extends AbstractCrudOnePage<Role> implements Serializa
 			}
 		});
 	}
-		
-	/*@Override
-	protected void create() {
-		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
-	}
 	
 	@Override
-	protected void update() {
-		inject(RoleBusiness.class).save(identifiable, roleUniformResourceLocatorCollection.getIdentifiables());
-	}*/
-	
+	public void transfer(UICommand command, Object parameter) throws Exception {
+		super.transfer(command, parameter);
+		if(form.getSubmitCommandable().getCommand()==command){
+			getIdentifiable().getRoleUniformResourceLocators().setCollection(roleUniformResourceLocatorCollection.getIdentifiables());
+		}
+	}
+		
 	@Getter @Setter
 	public static class Form extends AbstractEnumerationForm<Role> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;

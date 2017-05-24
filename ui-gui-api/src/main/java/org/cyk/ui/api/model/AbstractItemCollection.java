@@ -66,7 +66,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			private static final long serialVersionUID = -4786916980017894274L;
 			@Override
 			public void serve(UICommand command, Object parameter) {
-				if(inputChoice.getValue()!=null)
+				if(inputChoice==null || inputChoice.getValue()!=null)
 					add();
 			}
 		});

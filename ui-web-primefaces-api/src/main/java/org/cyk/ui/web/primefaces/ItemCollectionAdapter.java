@@ -18,6 +18,5 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData form) {
 		super(collection, crud, form
 				, (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(AbstractCollectionEditPage.AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED));
-		
 	}
 }

@@ -473,7 +473,8 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		}
 		
 		if(Crud.isCreateOrUpdate(collection.getCrud()))
-			collection.getInputChoice().setIsAutomaticallyRemoveSelected(Boolean.TRUE);
+			if(collection.getInputChoice()!=null)
+				collection.getInputChoice().setIsAutomaticallyRemoveSelected(Boolean.TRUE);
 		
 		collection.setShowFooter(collection.getAddCommandable().getRendered());
 		onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, collection.getFormatJavaScript());
