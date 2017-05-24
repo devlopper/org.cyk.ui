@@ -89,6 +89,7 @@ public interface UICommandable {
 	UICommandable addParameter(AbstractIdentifiable identifiable);
 	
 	void addChild(UICommandable aCommandable);
+	void addChild(AbstractCommandableBuilder<?> commandableBuilder);
 	
 	UICommandable addCrudParameters(Crud crud,AbstractIdentifiable identifiable,AbstractOutputDetails<?> details);
 	UICommandable addCrudParameters(Crud crud,AbstractIdentifiable identifiable);

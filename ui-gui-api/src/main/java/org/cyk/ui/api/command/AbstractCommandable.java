@@ -69,6 +69,11 @@ public abstract class AbstractCommandable extends AbstractBean implements UIComm
 	@Getter @Setter protected Collection<Parameter> parameters = new ArrayList<>();
 	
 	@Override
+	public void addChild(AbstractCommandableBuilder<?> commandableBuilder) {
+		addChild(commandableBuilder.build());
+	}
+	
+	@Override
 	public UICommandable addCommandListener(CommandListener commandListener) {
 		this.command.getCommandListeners().add(commandListener);
 		return this;

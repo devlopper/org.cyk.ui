@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
@@ -22,6 +23,9 @@ import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.UICommandable.ViewType;
 import org.cyk.utility.common.AbstractBuilder;
+import org.cyk.utility.common.builder.TextStringBuilder;
+import org.cyk.utility.common.builder.javascript.AbstractJavascriptStringBuilder;
+import org.cyk.utility.common.builder.javascript.OpenWindowStringBuilder;
 
 @Getter @Setter @Accessors(chain=true)
 public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCommandable> extends AbstractBuilder<COMMANDABLE> {
@@ -34,15 +38,21 @@ public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCom
 	private Boolean one,useUrlOnClick;
 	private AbstractIdentifiable master;
 	private FindTextResult findTextResult;
+	private TextStringBuilder labelStringBuilder;
+	private AbstractJavascriptStringBuilder onClickStringBuilder;
 	
 	@Override
 	public COMMANDABLE build() {
+		if(instance==null)
+			instanciate();
+		
 		if(instance.getCommand()==null)
 			instance.setCommand(new DefaultCommand());
 		
 		if(instance.getCommand().getMessageManager()==null)
 			instance.getCommand().setMessageManager(MessageManager.INSTANCE);
 		
+		/*
 		if(instance.getViewId()==null && instance.getViewType()==null){
 			setView(UIManager.getInstance().getViewIdentifier(identifiableClass, commonBusinessAction,one));
 			if(instance.getViewId()==null)//No specific view has been defined so we'll use the dynamic one
@@ -51,9 +61,10 @@ public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCom
 				else
 					setView(ViewType.DYNAMIC_CRUD_MANY);
 				//setView(UIManager.getInstance().getViewDynamic(commonBusinessAction,one));
-		}
-		if(instance.getViewId() != null || instance.getViewType()!=null)
+		}*/
+		//if(instance.getViewId() != null || instance.getViewType()!=null)
 			instance.setCommandRequestType(CommandRequestType.UI_VIEW);
+		
 		
 		if(StringUtils.isBlank(instance.getLabel()))
 			if(StringUtils.isBlank(actionIdentifier))
@@ -65,8 +76,8 @@ public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCom
 		//setLabelParameters(labelParameters = FindDoSomethingTextParameters.create(actionIdentifier, identifiableClass));
 		
 		if(StringUtils.isBlank(instance.getLabel()) && labelParameters!=null){
-			findTextResult = inject(LanguageBusiness.class).findDoSomethingText(labelParameters);
-			instance.setLabel(findTextResult.getValue());
+			//findTextResult = inject(LanguageBusiness.class).findDoSomethingText(labelParameters);
+			//instance.setLabel(findTextResult.getValue());
 		}
 		
 		if(master!=null)
@@ -100,7 +111,28 @@ public abstract class AbstractCommandableBuilder<COMMANDABLE extends AbstractCom
 			
 		}
 		
+		instance.setLabel(getLabelStringBuilder().build());
+		if(onClickStringBuilder!=null)
+			instance.setOnClick(onClickStringBuilder.build());
+		
 		return instance;
+	}
+	
+	public TextStringBuilder getLabelStringBuilder(){
+		if(labelStringBuilder==null)
+			labelStringBuilder = new TextStringBuilder();
+		return labelStringBuilder;
+	}
+	
+	public AbstractCommandableBuilder<COMMANDABLE> setOnClickOpenFiles(String fileRepresentationTypeCode,AbstractIdentifiable identifiable){
+		setOnClickStringBuilder(inject(OpenWindowStringBuilder.class).addFiles(identifiable
+				, inject(FileBusiness.class).findByRepresentationTypeCodeByIdentifiable(fileRepresentationTypeCode,identifiable)));
+		return this;
+	}
+	
+	public AbstractCommandableBuilder<COMMANDABLE> setLabelIdentifier(String identifier){
+		getLabelStringBuilder().setIdentifier(identifier);
+		return this;
 	}
 	
 	public AbstractCommandableBuilder<COMMANDABLE> setView(Object view){

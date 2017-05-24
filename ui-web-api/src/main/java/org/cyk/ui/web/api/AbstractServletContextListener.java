@@ -52,6 +52,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.builder.NameValueCollectionStringBuilder;
+import org.cyk.utility.common.builder.TextStringBuilder;
 import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.joda.time.DateTimeConstants;
@@ -193,6 +194,16 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 			public String getIdentifiableName() {
 				return UniformResourceLocatorParameter.IDENTIFIABLE;
 			}
+		});
+	
+		TextStringBuilder.Listener.COLLECTION.add(new TextStringBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public String getIdentifierMapping(String identifier) {
+				return inject(LanguageBusiness.class).findText(identifier);
+			}
+			
 		});
 	}
 	
