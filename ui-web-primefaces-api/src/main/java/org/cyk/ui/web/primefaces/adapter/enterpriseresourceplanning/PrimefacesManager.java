@@ -214,6 +214,20 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					}
 				};
 			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,FileIdentifiableGlobalIdentifierDetails.FIELD_CODE
+								,FileIdentifiableGlobalIdentifierDetails.FIELD_NAME
+								,FileIdentifiableGlobalIdentifierDetails.FIELD_FILE
+								);
+					}
+				};
+			}
 		});
 		
 		getFormConfiguration(ReportTemplate.class,Crud.CREATE).addRequiredFieldNames(ReportTemplateEditPage.Form.FIELD_CODE)
