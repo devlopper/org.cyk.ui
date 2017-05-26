@@ -11,7 +11,7 @@
  		<ui:param name="pageController" value="#{roleEditPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{roleEditPage.form}" />
- 			<cyk:itemCollection value="#{roleEditPage.roleUniformResourceLocatorCollection}" >
+ 			<cyk:itemCollection value="#{roleEditPage.itemCollection}" >
  				<p:column headerText="#{uiManager.text('field.name')}" >
  					<h:outputText value="#{item.name}" />
  				</p:column>

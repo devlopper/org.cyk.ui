@@ -30,8 +30,10 @@ import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementDetails;
 import org.cyk.system.root.business.impl.message.SmtpPropertiesDetails;
+import org.cyk.system.root.business.impl.message.UniformResourceLocatorParameterDetails;
 import org.cyk.system.root.business.impl.network.ComputerDetails;
 import org.cyk.system.root.business.impl.network.ServiceDetails;
+import org.cyk.system.root.business.impl.party.ApplicationDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
@@ -43,6 +45,7 @@ import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRole
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
+import org.cyk.system.root.business.impl.security.RoleUniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
@@ -818,11 +821,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configureSecurityModule() {
 		super.configureSecurityModule();
-		getFormConfiguration(UniformResourceLocator.class, Crud.CREATE)
-		.addRequiredFieldNames(UniformResourceLocatorEditPage.Form.FIELD_CODE,UniformResourceLocatorEditPage.Form.FIELD_NAME
-				,UniformResourceLocatorEditPage.Form.FIELD_ADDRESS/*,UniformResourceLocatorEditPage.Form.FIELD_ONE_ITEM_MASTER_SELECTED*/);
-	
-		registerDetailsConfiguration(UniformResourceLocatorDetails.class, new DetailsConfiguration(){
+		
+		registerDetailsConfiguration(ApplicationDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
@@ -831,15 +831,27 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,UniformResourceLocatorDetails.FIELD_CODE,UniformResourceLocatorDetails.FIELD_NAME
-								,UniformResourceLocatorDetails.FIELD_ADDRESS);
+						return isFieldNameIn(field,ApplicationDetails.FIELD_NAME,ApplicationDetails.FIELD_SMTP_PROPERTIES
+								,ApplicationDetails.FIELD_WEB_CONTEXT,ApplicationDetails.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz, AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,ApplicationDetails.FIELD_NAME,ApplicationDetails.FIELD_SMTP_PROPERTIES
+								,ApplicationDetails.FIELD_WEB_CONTEXT,ApplicationDetails.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
 					}
 				};
 			}
 		});
 		
-		getFormConfiguration(Role.class, Crud.CREATE)
-		.addRequiredFieldNames(RoleEditPage.Form.FIELD_CODE,RoleEditPage.Form.FIELD_NAME,RoleEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
+		getFormConfiguration(Role.class, Crud.CREATE).addRequiredFieldNames(RoleEditPage.Form.FIELD_CODE)
+		.addFieldNames(RoleEditPage.Form.FIELD_NAME,RoleEditPage.Form.FIELD_ONE_ITEM_MASTER_SELECTED);
 	
 		registerDetailsConfiguration(RoleDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
@@ -851,6 +863,32 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,RoleDetails.FIELD_CODE,RoleDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		
+		registerDetailsConfiguration(RoleUniformResourceLocatorDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,RoleUniformResourceLocatorDetails.FIELD_ROLE,RoleUniformResourceLocatorDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,RoleUniformResourceLocatorDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
 					}
 				};
 			}
@@ -951,6 +989,57 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,ServiceDetails.FIELD_CODE,ServiceDetails.FIELD_NAME,ServiceDetails.FIELD_COMPUTER,ServiceDetails.FIELD_PORT
 								,ServiceDetails.FIELD_AUTHENTICATED,ServiceDetails.FIELD_SECURED);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(UniformResourceLocator.class, Crud.CREATE).addRequiredFieldNames(UniformResourceLocatorEditPage.Form.FIELD_ADDRESS)
+		.addFieldNames(UniformResourceLocatorEditPage.Form.FIELD_CODE,UniformResourceLocatorEditPage.Form.FIELD_NAME
+				/*,UniformResourceLocatorEditPage.Form.FIELD_ONE_ITEM_MASTER_SELECTED*/);
+	
+		registerDetailsConfiguration(UniformResourceLocatorDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,UniformResourceLocatorDetails.FIELD_CODE,UniformResourceLocatorDetails.FIELD_NAME
+								,UniformResourceLocatorDetails.FIELD_ADDRESS);
+					}
+				};
+			}
+		});
+		
+		
+		registerDetailsConfiguration(UniformResourceLocatorParameterDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,UniformResourceLocatorParameterDetails.FIELD_NAME
+								,UniformResourceLocatorParameterDetails.FIELD_VALUE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,UniformResourceLocatorParameterDetails.FIELD_NAME
+								,UniformResourceLocatorParameterDetails.FIELD_VALUE
+								
+								);
 					}
 				};
 			}

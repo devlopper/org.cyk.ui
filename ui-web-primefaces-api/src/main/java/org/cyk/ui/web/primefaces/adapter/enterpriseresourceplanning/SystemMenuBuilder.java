@@ -36,6 +36,7 @@ import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.Allergy;
 import org.cyk.system.root.model.party.person.BloodGroup;
 import org.cyk.system.root.model.party.person.JobFunction;
@@ -219,6 +220,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	
 	public Commandable getReferenceSecurityCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("security", null);
+		module.addChild(createListCommandable(Application.class, null));
 		module.addChild(createListCommandable(Software.class, null));
 		module.addChild(createListCommandable(LockCause.class, null));
 		module.addChild(createListCommandable(SecretQuestion.class, null));

@@ -17,7 +17,7 @@ import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Log @Singleton
+@Log @Singleton @Deprecated
 public class NavigationHelper extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 7627367286110326059L;

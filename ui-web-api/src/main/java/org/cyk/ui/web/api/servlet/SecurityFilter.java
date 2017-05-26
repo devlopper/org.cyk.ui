@@ -227,7 +227,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 				
 				@Override
 				public Boolean isUrlFiltered() {
-					return Boolean.TRUE.equals(RootBusinessLayer.getInstance().getApplication().getUniformResourceLocatorFilteringEnabled());
+					return Boolean.TRUE.equals(RootBusinessLayer.getInstance().getApplication().getUniformResourceLocatorFiltered());
 				}
 				
 				@Override

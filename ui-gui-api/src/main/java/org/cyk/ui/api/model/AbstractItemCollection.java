@@ -106,8 +106,10 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		setItemLabel(instance);
 		
 		if(items.add(instance)){
-			if(Crud.isCreateOrUpdate(crud))
-				inputChoice.removeChoice(master);
+			if(Crud.isCreateOrUpdate(crud)){
+				if(inputChoice!=null)
+					inputChoice.removeChoice(master);
+			}
 		}
 		
 		read(instance);
@@ -124,7 +126,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 	
 	public void add(IDENTIFIABLE identifiable){
-		add(identifiable,inputChoice.getValue());
+		add(identifiable,inputChoice==null ? null : inputChoice.getValue());
 	}
 	
 	public void add(){
@@ -161,7 +163,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public void delete(TYPE item){
 		if(items.remove(item)){
-			inputChoice.addChoiceIfAutomaticallyRemoveSelected(item.getMaster());
+			if(inputChoice!=null)
+				inputChoice.addChoiceIfAutomaticallyRemoveSelected(item.getMaster());
 		}
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.delete(this,item);

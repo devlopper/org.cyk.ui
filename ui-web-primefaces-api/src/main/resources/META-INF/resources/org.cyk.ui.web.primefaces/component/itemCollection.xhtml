@@ -19,7 +19,7 @@
         	<f:facet name="header">
         		<table>
         			<tr>
-        				<ui:fragment rendered="#{cc.value.crud.ordinal() == 0 or cc.value.crud.ordinal() == 2}" ><td>
+        				<ui:fragment rendered="#{cc.value.inputChoice != null and (cc.value.crud.ordinal() == 0 or cc.value.crud.ordinal() == 2)}" ><td>
         					<table>
         						<tr>
         							<td>

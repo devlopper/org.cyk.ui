@@ -13,7 +13,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
 			private static final long serialVersionUID = -7737204312141333272L;
     		@Override
     		public void installationStarted(Installation installation) {
-    			installation.getApplication().setUniformResourceLocatorFilteringEnabled(Boolean.FALSE);
+    			installation.getApplication().setUniformResourceLocatorFiltered(Boolean.FALSE);
     			installation.getApplication().setWebContext("gui-primefaces");
     			installation.getApplication().setName("GuiApp");
     			super.installationStarted(installation);

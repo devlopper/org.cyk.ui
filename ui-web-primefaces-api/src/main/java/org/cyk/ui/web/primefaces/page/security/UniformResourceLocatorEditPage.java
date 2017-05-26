@@ -8,16 +8,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorParameterBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.command.UICommand;
-import org.cyk.ui.api.model.AbstractEnumerationForm;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.Commandable;
@@ -27,6 +23,9 @@ import org.cyk.utility.common.annotation.FieldOverride;
 import org.cyk.utility.common.annotation.FieldOverrides;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<UniformResourceLocator,UniformResourceLocatorParameter,UniformResourceLocatorEditPage.UniformResourceLocatorParameterItem> implements Serializable {
@@ -43,33 +42,6 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		/*uniformResourceLocatorParameterCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class,identifiable
-				,new ItemCollectionWebAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter,UniformResourceLocator>(identifiable,crud){
-			private static final long serialVersionUID = -3872058204105902514L;
-			@Override
-			public Collection<UniformResourceLocatorParameter> load() {
-				return inject(UniformResourceLocatorParameterBusiness.class).findByUniformResourceLocator(identifiable);
-			}
-			
-			@Override
-			public void instanciated(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,UniformResourceLocator,SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
-				super.instanciated(itemCollection, item);
-				item.setName(item.getIdentifiable().getName());
-				item.setValue(item.getIdentifiable().getValue());
-			}	
-			@Override
-			public void write(UniformResourceLocatorParameterItem item) {
-				super.write(item);
-				item.getIdentifiable().setName(item.getName());
-				item.getIdentifiable().setValue(item.getValue());
-			}
-			@Override
-			public Boolean isShowAddButton() {
-				return Boolean.TRUE;
-			}
-			
-		});
-		*/
 		itemCollection = createItemCollection(UniformResourceLocatorParameterItem.class, UniformResourceLocatorParameter.class,identifiable 
 				,new UniformResourceLocatorParameterItemAdapter(identifiable,crud,form));
 		itemCollection.setShowAddCommandableAtBottom(Boolean.TRUE);
@@ -123,14 +95,7 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 			getCollection().getParameters().setCollection(inject(UniformResourceLocatorParameterBusiness.class).findByUniformResourceLocator(getCollection()));
 			return getCollection().getParameters().getCollection();
 		}
-		
-		/*@Override
-		public UniformResourceLocatorParameter instanciate(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,UniformResourceLocator, SelectItem> itemCollection) {
-			UniformResourceLocatorParameter uniformResourceLocatorParameter = inject(UniformResourceLocatorParameterBusiness.class).instanciateOne();
-			
-			return uniformResourceLocatorParameter;
-		}*/
-		
+				
 		@Override
 		public void instanciated(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,UniformResourceLocator,SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
 			super.instanciated(itemCollection, item);
@@ -143,32 +108,12 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 			super.write(item);
 			item.getIdentifiable().setName(item.getName());
 			item.getIdentifiable().setValue(item.getValue());
+			item.getIdentifiable().setUniformResourceLocator(collection);
 		}
-		
-		@Override
-		public void delete(AbstractItemCollection<UniformResourceLocatorParameterItem, UniformResourceLocatorParameter,UniformResourceLocator, SelectItem> itemCollection,UniformResourceLocatorParameterItem item) {
-			super.delete(itemCollection, item);
-			//inject(UniformResourceLocatorBusiness.class).remove(collection, item.getIdentifiable());
-		}
-		
+				
 		@Override
 		public Boolean isShowAddButton() {
 			return Boolean.TRUE;
-		}
-		
-		@Override
-		public void read(UniformResourceLocatorParameterItem item) {
-			super.read(item);
-			/*
-			item.setCode(item.getIdentifiable().getSalableProduct().getProduct().getCode());
-			item.setName(item.getIdentifiable().getSalableProduct().getProduct().getName());
-			item.setUnitPrice(inject(NumberBusiness.class).format(item.getIdentifiable().getSalableProduct().getPrice()));
-			item.setQuantity(item.getIdentifiable().getQuantity());
-			item.setQuantifiedPrice(inject(NumberBusiness.class).format(item.getIdentifiable().getQuantifiedPrice()));
-			item.setReduction(item.getIdentifiable().getReduction()==null?null:new BigDecimal(item.getIdentifiable().getReduction().intValue()));
-			item.setTotalPrice(inject(NumberBusiness.class).format(item.getIdentifiable().getCost().getValue()));
-			*/
-			//item.setInstanceChoices(new ArrayList<>(inject(SalableProductInstanceBusiness.class).findByCollection(item.getIdentifiable().getSalableProduct())));
 		}
 		
 		/*@Override
