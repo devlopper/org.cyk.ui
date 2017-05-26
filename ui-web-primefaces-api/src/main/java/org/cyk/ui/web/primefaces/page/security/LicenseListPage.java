@@ -15,22 +15,5 @@ import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 public class LicenseListPage extends AbstractCrudManyPage<License> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-
-	@Override
-	protected void initialisation() {
-		super.initialisation();
-		contextualMenu = userSession.getSecurityMenu();
-		rowAdapter.setOpenable(Boolean.TRUE);
-		rowAdapter.setUpdatable(Boolean.TRUE);
-		table.setShowHeader(Boolean.FALSE);
-		table.setShowToolBar(Boolean.FALSE);
-	}
-	
-	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		table.getAddRowCommandable().setRendered(Boolean.FALSE);
-		table.setShowOpenCommand(Boolean.TRUE);
-	}
 	
 }

@@ -44,6 +44,7 @@ import org.cyk.system.root.business.impl.party.person.PersonRelationshipExtremit
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
+import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.RoleUniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
@@ -76,12 +77,14 @@ import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.security.Credentials;
+import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
@@ -126,10 +129,12 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
 import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
 import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
+import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.PersonRelationshipTypeRoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
+import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
@@ -473,8 +478,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		//Interval
-		getFormConfiguration(IntervalCollection.class,Crud.CREATE).addFieldNames(IntervalCollectionEditPage.Form.FIELD_CODE,IntervalCollectionEditPage.Form.FIELD_NAME
-				,IntervalCollectionEditPage.Form.FIELD_LOWEST_VALUE,IntervalCollectionEditPage.Form.FIELD_HIGHEST_VALUE,IntervalCollectionEditPage.Form.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
+		getFormConfiguration(IntervalCollection.class,Crud.CREATE).addRequiredFieldNames(IntervalCollectionEditPage.Form.FIELD_CODE).addFieldNames(IntervalCollectionEditPage.Form.FIELD_NAME
+				,IntervalCollectionEditPage.Form.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
 	
 		registerDetailsConfiguration(IntervalCollectionDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -822,6 +827,10 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	protected void configureSecurityModule() {
 		super.configureSecurityModule();
 		
+		getFormConfiguration(Application.class, Crud.CREATE).addRequiredFieldNames(ApplicationEditPage.Form.FIELD_NAME)
+		.addFieldNames(ApplicationEditPage.Form.FIELD_SMTP_PROPERTIES,ApplicationEditPage.Form.FIELD_WEB_CONTEXT
+				,ApplicationEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
+		
 		registerDetailsConfiguration(ApplicationDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -845,6 +854,38 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					public Boolean isColumn(Field field) {
 						return isFieldNameIn(field,ApplicationDetails.FIELD_NAME,ApplicationDetails.FIELD_SMTP_PROPERTIES
 								,ApplicationDetails.FIELD_WEB_CONTEXT,ApplicationDetails.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(License.class, Crud.CREATE).addRequiredFieldNames(LicenseEditPage.Form.FIELD_CODE)
+		.addFieldNames(LicenseEditPage.Form.FIELD_EXISTENCE_PERIOD,PeriodFormModel.FIELD_FROM_DATE
+				,PeriodFormModel.FIELD_TO_DATE);
+		
+		registerDetailsConfiguration(LicenseDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,LicenseDetails.FIELD_CODE,LicenseDetails.FIELD_EXISTENCE_PERIOD
+								,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz, AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,LicenseDetails.FIELD_CODE,LicenseDetails.FIELD_EXISTENCE_PERIOD
+								,PeriodDetails.FIELD_FROM_DATE,PeriodDetails.FIELD_TO_DATE);
 					}
 				};
 			}

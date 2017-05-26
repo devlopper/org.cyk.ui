@@ -13,6 +13,32 @@
  		<ui:param name="pageController" value="#{intervalCollectionEditPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{intervalCollectionEditPage.form}"/>
+ 			<cyk:itemCollection value="#{intervalCollectionEditPage.itemCollection}" >
+ 				<!-- low -->
+ 				<p:column headerText="#{uiManager.text('field.low.excluded')}" >
+ 					<p:selectBooleanButton offLabel="[" onLabel="]" value="#{item.low.excluded}" rendered="#{intervalCollectionEditPage.form.editable}"/>
+ 					<h:outputText value="#{item.low.excluded}" rendered="#{not intervalCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('field.low.value')}" >
+ 					<p:inputText value="#{item.low.value}" rendered="#{intervalCollectionEditPage.form.editable}">
+ 					
+ 					</p:inputText>
+ 					<h:outputText value="#{item.low.value}" rendered="#{not intervalCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				
+ 				<!-- high -->
+ 				<p:column headerText="#{uiManager.text('field.high.value')}" >
+ 					<p:inputText value="#{item.high.value}" rendered="#{intervalCollectionEditPage.form.editable}">
+ 					
+ 					</p:inputText>
+ 					<h:outputText value="#{item.high.value}" rendered="#{not intervalCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('field.high.excluded')}" >
+ 					<p:selectBooleanButton offLabel="]" onLabel="[" value="#{item.high.excluded}" rendered="#{intervalCollectionEditPage.form.editable}"/>
+ 					<h:outputText value="#{item.high.excluded}" rendered="#{not intervalCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				
+ 			</cyk:itemCollection>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">

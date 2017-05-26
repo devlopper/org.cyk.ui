@@ -66,7 +66,7 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			if(!goTo(application==null, PATH_INSTALL, request, response)){
 				//System.out.println("SecurityFilter.__filter__() INstalled / Expired ? : "+Boolean.TRUE.equals(application.getLicense().getExpirable()));
 				if(Boolean.TRUE.equals(application.getLicense().getExpirable())){
-					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getPeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
+					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getExistencePeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
 							, PATH_LICENSE_EXPIRED, request, response))
 						doFilterChain = Boolean.TRUE;
 					else{
