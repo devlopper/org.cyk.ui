@@ -100,21 +100,6 @@ public class IntervalCollectionEditPage extends AbstractCollectionEditPage.Exten
 		private static final long serialVersionUID = 3828481396841243726L;
 		
 		protected IntervalExtremityFormModel low=new IntervalExtremityFormModel(),high=new IntervalExtremityFormModel();
-	
-		@Override
-		public void read() {
-			super.read();
-			low.set(identifiable.getLow());
-			high.set(identifiable.getHigh());
-		}
-				
-		@Override
-		public void write() {
-			super.write();
-			System.out.println("IntervalCollectionEditPage.IntervalItem.write() : 0 "+low.getValue());
-			low.write(identifiable.getLow());
-			high.write(identifiable.getHigh());
-			System.out.println("IntervalCollectionEditPage.IntervalItem.write() : 1 "+low.getValue());
-		}
+
 	}
 }

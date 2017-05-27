@@ -24,6 +24,7 @@ import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionTypeDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
@@ -51,6 +52,8 @@ import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
+import org.cyk.system.root.business.impl.value.MeasureDetails;
+import org.cyk.system.root.business.impl.value.ValuePropertiesDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
@@ -70,6 +73,7 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.mathematics.MetricCollectionType;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -88,6 +92,8 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.system.root.model.value.Measure;
+import org.cyk.system.root.model.value.ValueProperties;
 import org.cyk.ui.api.command.menu.SystemMenu;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.ContactCollectionFormModel;
@@ -122,6 +128,7 @@ import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionTypeEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
@@ -139,6 +146,8 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
+import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
+import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -541,7 +550,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		
 		//Metric
 		getFormConfiguration(MetricCollection.class,Crud.CREATE).addFieldNames(MetricCollectionEditPage.Form.FIELD_CODE,MetricCollectionEditPage.Form.FIELD_NAME
-				,MetricCollectionEditPage.Form.FIELD_VALUE_INTERVAL_COLLECTION,MetricCollectionEditPage.Form.FIELD_VALUE_TYPE,MetricCollectionEditPage.Form.FIELD_VALUE_INPUTTED);
+				,MetricCollectionEditPage.Form.FIELD_TYPE,MetricCollectionEditPage.Form.FIELD_VALUE_PROPERTIES,MetricCollectionEditPage.Form.FIELD_VALUE);
 	
 		registerDetailsConfiguration(MetricCollectionDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -550,7 +559,25 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME);
+						return isFieldNameIn(field,MetricCollectionDetails.FIELD_CODE,MetricCollectionDetails.FIELD_NAME,MetricCollectionDetails.FIELD_TYPE
+								,MetricCollectionDetails.FIELD_VALUE_PROPERTIES,MetricCollectionDetails.FIELD_VALUE);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(MetricCollectionType.class,Crud.CREATE).addFieldNames(MetricCollectionTypeEditPage.Form.FIELD_CODE,MetricCollectionTypeEditPage.Form.FIELD_NAME
+				,MetricCollectionTypeEditPage.Form.FIELD_COLLECTION_VALUE_PROPERTIES,MetricCollectionTypeEditPage.Form.FIELD_METRIC_VALUE_PROPERTIES);
+	
+		registerDetailsConfiguration(MetricCollectionTypeDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MetricCollectionTypeDetails.FIELD_CODE,MetricCollectionTypeDetails.FIELD_NAME
+								,MetricCollectionTypeDetails.FIELD_COLLECTION_VALUE_PROPERTIES,MetricCollectionTypeDetails.FIELD_METRIC_VALUE_PROPERTIES);
 					}
 				};
 			}
@@ -585,7 +612,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		getFormConfiguration(Metric.class,Crud.CREATE)
-			.addFieldNames(MetricEditPage.Form.FIELD_COLLECTION,MetricEditPage.Form.FIELD_CODE,MetricEditPage.Form.FIELD_NAME);
+			.addFieldNames(MetricEditPage.Form.FIELD_COLLECTION,MetricEditPage.Form.FIELD_CODE,MetricEditPage.Form.FIELD_NAME,MetricEditPage.Form.FIELD_VALUE_PROPERTIES);
 		
 		registerDetailsConfiguration(MetricDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L; @SuppressWarnings("rawtypes") @Override
@@ -594,7 +621,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MetricDetails.FIELD_COLLECTION,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME);
+						return isFieldNameIn(field,MetricDetails.FIELD_COLLECTION,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME,MetricDetails.FIELD_VALUE_PROPERTIES);
 					}
 				};
 			}
@@ -604,7 +631,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME);
+						return isFieldNameIn(field,MetricDetails.FIELD_CODE,MetricDetails.FIELD_NAME,MetricDetails.FIELD_VALUE_PROPERTIES);
 					}
 				};
 			}
@@ -986,6 +1013,66 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,CredentialsDetails.FIELD_SOFTWARE,CredentialsDetails.FIELD_USERNAME,CredentialsDetails.FIELD_PASSWORD);
+					}
+				};
+			}
+		});
+	}
+	
+	@Override
+	protected void configureValueModule() {
+		super.configureValueModule();
+		getFormConfiguration(ValueProperties.class, Crud.CREATE)
+		.addRequiredFieldNames(ValuePropertiesEditPage.Form.FIELD_CODE).addFieldNames(ValuePropertiesEditPage.Form.FIELD_NAME,ValuePropertiesEditPage.Form.FIELD_MEASURE
+				,ValuePropertiesEditPage.Form.FIELD_INTERVAL_COLLECTION,ValuePropertiesEditPage.Form.FIELD_TYPE,ValuePropertiesEditPage.Form.FIELD_SET
+				,ValuePropertiesEditPage.Form.FIELD_DERIVED,ValuePropertiesEditPage.Form.FIELD_DERIVATION_SCRIPT,ValuePropertiesEditPage.Form.FIELD_NULLABLE
+				,ValuePropertiesEditPage.Form.FIELD_NULL_STRING);
+	
+		registerDetailsConfiguration(ValuePropertiesDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,ValuePropertiesDetails.FIELD_CODE,ValuePropertiesDetails.FIELD_NAME,ValuePropertiesDetails.FIELD_MEASURE
+								,ValuePropertiesDetails.FIELD_INTERVAL_COLLECTION,ValuePropertiesDetails.FIELD_TYPE,ValuePropertiesDetails.FIELD_SET
+								,ValuePropertiesDetails.FIELD_DERIVED,ValuePropertiesDetails.FIELD_DERIVATION_SCRIPT,ValuePropertiesDetails.FIELD_NULLABLE
+								,ValuePropertiesDetails.FIELD_NULL_STRING);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,ValuePropertiesDetails.FIELD_CODE,ValuePropertiesDetails.FIELD_NAME,ValuePropertiesDetails.FIELD_MEASURE
+								,ValuePropertiesDetails.FIELD_INTERVAL_COLLECTION,ValuePropertiesDetails.FIELD_TYPE,ValuePropertiesDetails.FIELD_SET
+								,ValuePropertiesDetails.FIELD_DERIVED,ValuePropertiesDetails.FIELD_DERIVATION_SCRIPT,ValuePropertiesDetails.FIELD_NULLABLE
+								,ValuePropertiesDetails.FIELD_NULL_STRING);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(Measure.class, Crud.CREATE)
+		.addRequiredFieldNames(MeasureEditPage.Form.FIELD_CODE).addFieldNames(MeasureEditPage.Form.FIELD_NAME,MeasureEditPage.Form.FIELD_TYPE,MeasureEditPage.Form.FIELD_VALUE);
+	
+		registerDetailsConfiguration(MeasureDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){ 
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MeasureDetails.FIELD_CODE,MeasureDetails.FIELD_NAME,MeasureDetails.FIELD_TYPE,MeasureDetails.FIELD_VALUE);
 					}
 				};
 			}

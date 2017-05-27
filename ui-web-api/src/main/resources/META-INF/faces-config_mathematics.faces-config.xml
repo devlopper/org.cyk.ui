@@ -118,6 +118,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>metricCollectionTypeEditView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionTypeListView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricCollectionTypeConsultView</from-outcome>
+			<to-view-id>/private/mathematics/metriccollection/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>metricCollectionIdentifiableGlobalIdentifierEditView</from-outcome>
 			<to-view-id>/private/mathematics/metriccollection/join/edit.xhtml</to-view-id>
 			<redirect />

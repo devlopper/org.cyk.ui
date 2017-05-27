@@ -26,6 +26,7 @@ import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
+import org.cyk.system.root.business.impl.mathematics.MetricCollectionTypeDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
@@ -49,6 +50,8 @@ import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
+import org.cyk.system.root.business.impl.value.MeasureDetails;
+import org.cyk.system.root.business.impl.value.ValuePropertiesDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
@@ -72,6 +75,7 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.mathematics.MetricCollectionType;
 import org.cyk.system.root.model.mathematics.MetricValueIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
@@ -98,6 +102,8 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.system.root.model.value.Measure;
+import org.cyk.system.root.model.value.ValueProperties;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.EnumerationForm;
@@ -134,6 +140,7 @@ import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
+import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionTypeEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricValueIdentifiableGlobalIdentifierEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
@@ -155,6 +162,8 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
+import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
+import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -196,6 +205,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializePartyModule();
 		initializeSecurityModule();
 		initializeMessageModule();
+		initializeValueModule();
 	
 	}
 	
@@ -342,6 +352,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Interval.class, IntervalEditPage.Form.class, IntervalDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Interval.class, null);
 		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricCollectionType.class, MetricCollectionTypeEditPage.Form.class, MetricCollectionTypeDetails.class
+				,null,null,null));
+		uiManager.configBusinessIdentifiable(MetricCollectionType.class, null);
+		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(MetricCollection.class, MetricCollectionEditPage.Form.class, MetricCollectionDetails.class
 				,null,null,null));
 		uiManager.configBusinessIdentifiable(MetricCollection.class, null);
@@ -369,6 +383,14 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(FiniteStateMachineStateIdentifiableGlobalIdentifier.class
 				, FiniteStateMachineStateIdentifiableGlobalIdentifierEditPage.Form.class, FiniteStateMachineStateIdentifiableGlobalIdentifierDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(FiniteStateMachineStateIdentifiableGlobalIdentifier.class, null);
+	}
+	
+	protected void initializeValueModule(){
+		uiManager.registerConfiguration(new IdentifiableConfiguration(Measure.class, MeasureEditPage.Form.class, MeasureDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(Measure.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(ValueProperties.class, ValuePropertiesEditPage.Form.class, ValuePropertiesDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(ValueProperties.class, null);
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.model.file.ScriptEvaluationEngine;
 import org.cyk.system.root.model.file.report.ReportFile;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.Contact;
@@ -29,6 +30,7 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
+import org.cyk.system.root.model.mathematics.MetricCollectionType;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -57,6 +59,10 @@ import org.cyk.system.root.model.security.LockCause;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.time.TimeDivisionType;
+import org.cyk.system.root.model.value.Measure;
+import org.cyk.system.root.model.value.MeasureType;
+import org.cyk.system.root.model.value.NullString;
+import org.cyk.system.root.model.value.ValueProperties;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -177,6 +183,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceNetworkCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceTimeCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMathematicsCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceValueCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMessageCommandable(userSession, mobileCommandables));
 	}
@@ -236,6 +243,9 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(File.class, null));
 		module.addChild(createListCommandable(FileIdentifiableGlobalIdentifier.class, null));
 		
+		module.addChild(createListCommandable(Script.class, null));
+		module.addChild(createListCommandable(ScriptEvaluationEngine.class, null));
+		
 		module.addChild(createListCommandable(ReportTemplate.class, null));
 		module.addChild(createListCommandable(ReportFile.class, null));
 		return module;
@@ -269,7 +279,18 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(MovementAction.class, null));
 		module.addChild(createListCommandable(MovementCollection.class, null));
 		module.addChild(createListCommandable(IntervalCollection.class, null));
+		module.addChild(createListCommandable(MetricCollectionType.class, null));
 		module.addChild(createListCommandable(MetricCollection.class, null));
+		return module;
+	}
+	
+	public Commandable getReferenceValueCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("value", null);
+		module.addChild(createListCommandable(NullString.class, null));
+		
+		module.addChild(createListCommandable(MeasureType.class, null));
+		module.addChild(createListCommandable(Measure.class, null));
+		module.addChild(createListCommandable(ValueProperties.class, null));
 		return module;
 	}
 	

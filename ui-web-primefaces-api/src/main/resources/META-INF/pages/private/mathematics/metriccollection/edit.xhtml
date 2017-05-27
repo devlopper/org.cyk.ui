@@ -13,6 +13,27 @@
  		<ui:param name="pageController" value="#{metricCollectionEditPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{metricCollectionEditPage.form}"/>
+ 			<cyk:itemCollection value="#{metricCollectionEditPage.itemCollection}" >
+ 				<p:column headerText="#{uiManager.text('field.code')}" >
+ 					<p:inputText value="#{item.code}" rendered="#{metricCollectionEditPage.form.editable}">
+ 					
+ 					</p:inputText>
+ 					<h:outputText value="#{item.code}" rendered="#{not metricCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				
+ 				<p:column headerText="#{uiManager.text('field.name')}" >
+ 					<p:inputText value="#{item.name}" rendered="#{metricCollectionEditPage.form.editable}">
+ 					
+ 					</p:inputText>
+ 					<h:outputText value="#{item.name}" rendered="#{not metricCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 				<p:column headerText="#{uiManager.text('field.value.properties')}" >
+ 					<p:selectOneMenu value="#{item.valueProperties}" converter="#{objectConverter}" >
+ 						<f:selectItems value="#{metricCollectionEditPage.valueProperties}" />
+ 					</p:selectOneMenu>
+ 					<h:outputText value="#{item.valueProperties}" rendered="#{not metricCollectionEditPage.form.editable}" />
+ 				</p:column>
+ 			</cyk:itemCollection>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">

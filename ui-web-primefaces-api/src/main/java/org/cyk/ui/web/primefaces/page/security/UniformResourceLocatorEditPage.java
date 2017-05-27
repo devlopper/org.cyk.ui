@@ -86,7 +86,7 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 	public static class UniformResourceLocatorParameterItemAdapter extends org.cyk.ui.web.primefaces.ItemCollectionAdapter<UniformResourceLocatorParameterItem,UniformResourceLocatorParameter,UniformResourceLocator> implements Serializable{
 		private static final long serialVersionUID = 1L;
 
-		public UniformResourceLocatorParameterItemAdapter(UniformResourceLocator uniformResourceLocator, Crud crud,FormOneData form) {
+		public UniformResourceLocatorParameterItemAdapter(UniformResourceLocator uniformResourceLocator, Crud crud,FormOneData<?> form) {
 			super(uniformResourceLocator, crud,form);
 		}
 		

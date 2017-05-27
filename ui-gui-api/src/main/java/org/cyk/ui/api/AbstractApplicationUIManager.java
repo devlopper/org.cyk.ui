@@ -212,6 +212,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 				configureMessageModule();
 				configurePartyModule();
 				configureSecurityModule();
+				configureValueModule();
 				configureTimeModule();
 				configureTreeModule();
 				configureUserInterfaceModule();
@@ -248,6 +249,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			protected void configurePartyModule(){}
 			protected void configureTreeModule(){}
 			protected void configureSecurityModule(){}
+			protected void configureValueModule(){}
 			protected void configureTimeModule(){}
 			protected void configureUserInterfaceModule(){}
 			
