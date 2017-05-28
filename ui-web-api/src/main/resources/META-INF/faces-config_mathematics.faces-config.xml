@@ -102,6 +102,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>metricValueEditView</from-outcome>
+			<to-view-id>/private/mathematics/metric/value/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricValueListView</from-outcome>
+			<to-view-id>/private/mathematics/metric/value/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>metricValueConsultView</from-outcome>
+			<to-view-id>/private/mathematics/metric/value/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>metricCollectionEditView</from-outcome>
 			<to-view-id>/private/mathematics/metriccollection/edit.xhtml</to-view-id>
 			<redirect />

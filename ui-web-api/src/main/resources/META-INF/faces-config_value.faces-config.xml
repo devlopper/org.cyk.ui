@@ -8,6 +8,22 @@
 		<!-- ########################################### Private Navigations Cases ############################################### -->
 		
 		<navigation-case>
+			<from-outcome>valueListView</from-outcome>
+			<to-view-id>/private/value/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>valueEditView</from-outcome>
+			<to-view-id>/private/value/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>valueConsultView</from-outcome>
+			<to-view-id>/private/value/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>valuePropertiesListView</from-outcome>
 			<to-view-id>/private/value/properties/list.xhtml</to-view-id>
 			<redirect />
@@ -20,6 +36,22 @@
 		<navigation-case>
 			<from-outcome>valuePropertiesConsultView</from-outcome>
 			<to-view-id>/private/value/properties/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>valueCollectionListView</from-outcome>
+			<to-view-id>/private/value/collection/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>valueCollectionEditView</from-outcome>
+			<to-view-id>/private/value/collection/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>valueCollectionConsultView</from-outcome>
+			<to-view-id>/private/value/collection/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

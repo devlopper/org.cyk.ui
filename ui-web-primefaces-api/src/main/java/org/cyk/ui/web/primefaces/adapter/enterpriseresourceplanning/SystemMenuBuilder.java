@@ -31,6 +31,7 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionType;
+import org.cyk.system.root.model.mathematics.MetricValue;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
@@ -62,6 +63,8 @@ import org.cyk.system.root.model.time.TimeDivisionType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.MeasureType;
 import org.cyk.system.root.model.value.NullString;
+import org.cyk.system.root.model.value.Value;
+import org.cyk.system.root.model.value.ValueCollection;
 import org.cyk.system.root.model.value.ValueProperties;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
@@ -281,16 +284,18 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(IntervalCollection.class, null));
 		module.addChild(createListCommandable(MetricCollectionType.class, null));
 		module.addChild(createListCommandable(MetricCollection.class, null));
+		module.addChild(createListCommandable(MetricValue.class, null));
 		return module;
 	}
 	
 	public Commandable getReferenceValueCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("value", null);
 		module.addChild(createListCommandable(NullString.class, null));
-		
 		module.addChild(createListCommandable(MeasureType.class, null));
 		module.addChild(createListCommandable(Measure.class, null));
 		module.addChild(createListCommandable(ValueProperties.class, null));
+		module.addChild(createListCommandable(ValueCollection.class, null));
+		module.addChild(createListCommandable(Value.class, null));
 		return module;
 	}
 	
