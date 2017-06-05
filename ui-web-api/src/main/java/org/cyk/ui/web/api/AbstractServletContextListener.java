@@ -211,6 +211,21 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	public void contextInitialized(ServletContextEvent event) {
 		servletContext = event.getServletContext();
 		UrlStringBuilder.PathStringBuilder.CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
+		UrlStringBuilder.PathStringBuilder.IdentifierBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.IdentifierBuilder.Listener.Adapter.Default(){
+			private static final long serialVersionUID = 7112717654641763443L;
+			@Override
+			public String get(Object action, Object subject) {
+				BusinessEntityInfos businessEntityInfos = inject(ApplicationBusiness.class).findBusinessEntityInfos(((AbstractIdentifiable)subject).getClass());
+				switch((Constant.Action)action){
+				case CONSULT:
+					if(CrudStrategy.BUSINESS.equals(businessEntityInfos.getCrudStrategy()))
+						return businessEntityInfos.getUserInterface().getConsultViewId();
+				default:
+				}
+				return super.get(action, subject);
+			}
+		});
+		
 		addUrls(event);
 		UIManager.CONTENT_TYPE = ContentType.HTML;
 		WebNavigationManager.init(event.getServletContext().getContextPath());

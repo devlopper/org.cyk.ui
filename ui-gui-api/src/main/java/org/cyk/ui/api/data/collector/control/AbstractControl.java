@@ -43,4 +43,8 @@ public abstract class AbstractControl<MODEL,ROW,LABEL,CONTROL,CHOICE_ITEM> exten
 	public static String getControlType(Class<?> aClass){
 		return aClass.getSimpleName();
 	}
+	
+	public String getUrl(){
+		return null;
+	}
 } 

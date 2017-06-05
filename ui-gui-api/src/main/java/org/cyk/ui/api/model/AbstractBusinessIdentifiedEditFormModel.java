@@ -11,6 +11,7 @@ import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
@@ -42,6 +43,8 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@Input @InputText protected Long orderNumber;
 	
+	@Input @InputBooleanButton protected Boolean defaulted;
+	
 	public AbstractBusinessIdentifiedEditFormModel(IDENTIFIABLE identifiable) {
 		setIdentifiable(identifiable);
 		read();
@@ -58,6 +61,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		existencePeriod.set(identifiable.getExistencePeriod());
 		otherDetails = identifiable.getOtherDetails();
 		orderNumber = identifiable.getOrderNumber();
+		defaulted = identifiable.getDefaulted();
 	}
 	
 	protected void setBusinessValues(AbstractIdentifiable identifiable){
@@ -72,6 +76,8 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		
 		identifiable.setOtherDetails(otherDetails);
 		identifiable.setOrderNumber(orderNumber);
+		
+		identifiable.setDefaulted(defaulted);
 	}
 	
 	@Override
@@ -89,4 +95,5 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	public static final String FIELD_EXISTENCE_PERIOD = "existencePeriod";
 	public static final String FIELD_OTHER_DETAILS = "otherDetails";
 	public static final String FIELD_ORDER_NUMBER = "orderNumber";
+	public static final String FIELD_DEFAULTED = "defaulted";
 }

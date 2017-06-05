@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.cyk.system.root.business.impl.AbstractModelElementOutputDetails.FieldValue;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.data.collector.control.Input;
@@ -83,4 +84,7 @@ public abstract class AbstractInput<VALUE_TYPE> extends AbstractControl implemen
 			this.requiredMessage = UIManager.getInstance().getLanguageBusiness().findText("input.value.required", new Object[]{label});
 	}
 	
+	public String getUrl(){
+		return value instanceof FieldValue ? ((FieldValue)value).getUrl() : null;
+	}
 }

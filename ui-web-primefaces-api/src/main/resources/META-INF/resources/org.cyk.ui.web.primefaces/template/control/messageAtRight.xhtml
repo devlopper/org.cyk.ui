@@ -20,7 +20,17 @@
  	
  	<ui:fragment rendered="#{input.readOnly and not input.keepShowingInputOnReadOnly}">
  		<h:outputText value=" : " />	
+ 		
+ 		<!--
  		<h:outputText value="#{input.readOnlyValue}" style="#{input.readOnlyValueCss.inline}" styleClass="#{input.readOnlyValueCss.clazz}" escape="false"/>		
+ 		-->
+ 		
+ 		<h:outputText value="#{input.readOnlyValue}" style="#{input.readOnlyValueCss.inline}" styleClass="#{input.readOnlyValueCss.clazz}" escape="false"
+ 			 rendered="#{empty input.url}"/>
+		<h:outputLink value="#{input.url}" rendered="#{not empty input.url}" >
+			<h:outputText value="#{input.readOnlyValue}" escape="false"/>
+		</h:outputLink>
+ 		
 	</ui:fragment>
 		
 </ui:composition>

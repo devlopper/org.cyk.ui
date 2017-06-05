@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
@@ -16,7 +15,11 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData form) {
-		super(collection, crud, form
-				, (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(AbstractCollectionEditPage.AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED));
+		super(collection, crud, form);
+	}
+	
+	@Override
+	public String getFieldOneItemMasterSelectedName() {
+		return AbstractCollectionEditPage.AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED;
 	}
 }

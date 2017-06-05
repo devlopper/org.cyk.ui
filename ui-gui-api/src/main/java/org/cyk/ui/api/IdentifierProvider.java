@@ -56,7 +56,7 @@ public interface IdentifierProvider{
 		public String getTab(Class<?> aClass) {
 			return null;
 		}
-		
+		@Deprecated //Use PathIdentifier.IdentifierProvider for now
 		public static String getViewOf(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
 			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 				@Override

@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.ui.api.Icon;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.AbstractCommandable.Builder;
@@ -22,6 +21,9 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractItemCollection<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable,SELECT_ITEM> extends AbstractBean implements Serializable {
@@ -211,7 +213,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public static interface Listener<TYPE extends AbstractItemCollectionItem<IDENTIFIABLE>,IDENTIFIABLE extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable,SELECT_ITEM> {
 		
+		IdentifiableRuntimeCollection<IDENTIFIABLE> getRuntimeCollection();
+		
 		Collection<IDENTIFIABLE> create();
+		
+		Collection<IDENTIFIABLE> findByCollection(COLLECTION collection);
 		
 		Collection<IDENTIFIABLE> load();
 		
@@ -253,6 +259,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> getInputChoice();
 		void setInputChoice(InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice);
 		
+		String getFieldOneItemMasterSelectedName();
+		
 		/**/
 		
 		@Getter @Setter
@@ -271,6 +279,16 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				this.crud = crud;
 				this.form = form;
 				this.inputChoice = inputChoice;
+			}
+			
+			@SuppressWarnings("unchecked")
+			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
+				super();
+				this.collection = collection;
+				this.crud = crud;
+				this.form = form;
+				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName()))
+					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
 			}
 			
 			@Override
@@ -312,6 +330,20 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				return null;
 			}
 			
+			@Override
+			public IdentifiableRuntimeCollection<IDENTIFIABLE> getRuntimeCollection() {
+				return null;
+			}
+			
+			@Override
+			public Collection<IDENTIFIABLE> findByCollection(COLLECTION collection) {
+				return null;
+			}
+			
+			@Override
+			public String getFieldOneItemMasterSelectedName() {
+				return null;
+			}
 		}
 		
 		@Getter @Setter
@@ -323,10 +355,34 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				super(collection,crud,form,inputChoice);
 			}
 			
+			public Default(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
+				super(collection,crud,form);
+			}
+			
 			@Override
 			public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE,COLLECTION, SELECT_ITEM> itemCollection,TYPE item) {
 				super.setLabel(itemCollection, item);
 				item.setLabel(inject(FormatterBusiness.class).format(item.getIdentifiable()));
+			}
+			
+			@Override
+			public Collection<IDENTIFIABLE> load() {
+				IdentifiableRuntimeCollection<IDENTIFIABLE> runtimeCollection = getRuntimeCollection();
+				if(runtimeCollection==null)
+					return super.load();
+				Collection<IDENTIFIABLE> identifiables = findByCollection(getCollection());
+				if(identifiables==null)
+					return super.load();
+				runtimeCollection.setCollection(identifiables);
+				return runtimeCollection.getCollection();
+			}
+			
+			@Override
+			public Boolean isShowAddButton() {
+				IdentifiableRuntimeCollection<IDENTIFIABLE> runtimeCollection = getRuntimeCollection();
+				if(runtimeCollection==null)
+					return super.isShowAddButton();
+				return Boolean.TRUE.equals(runtimeCollection.isSynchonizationEnabled());
 			}
 			
 		}

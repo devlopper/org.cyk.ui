@@ -17,6 +17,10 @@ public class ItemCollectionWebAdapter<TYPE extends AbstractItemCollectionItem<ID
 			,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
 		super(collection, crud,form,inputChoice);
 	}
+	
+	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
+		super(collection, crud,form);
+	}
 
 	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud) {
 		this(collection, crud,null,null);
