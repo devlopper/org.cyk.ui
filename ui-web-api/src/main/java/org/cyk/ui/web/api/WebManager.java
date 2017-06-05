@@ -30,7 +30,6 @@ import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
-import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.persistence.impl.Utils;
@@ -127,8 +126,8 @@ public class WebManager extends AbstractBean implements Serializable {
 	}
 	
 	private void addBooleanSelectItems(List<SelectItem> list){
-		list.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(LanguageEntry.YES)));
-		list.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(LanguageEntry.NO)));
+		list.add(new SelectItem(Boolean.TRUE, languageBusiness.findText(RootConstant.Code.LanguageEntry.YES)));
+		list.add(new SelectItem(Boolean.FALSE, languageBusiness.findText(RootConstant.Code.LanguageEntry.NO)));
 	}
 	
 	public String facesMessageSeverity(FacesMessage facesMessage){

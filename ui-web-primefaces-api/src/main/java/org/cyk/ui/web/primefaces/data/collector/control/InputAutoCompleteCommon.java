@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
@@ -15,7 +12,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.AbstractModelElement;
-import org.cyk.system.root.model.language.LanguageEntry;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.web.api.data.collector.control.WebInputAutoCompleteCommon;
@@ -26,13 +23,16 @@ import org.cyk.utility.common.cdi.BeanAdapter;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter @Setter
 public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements WebInputAutoCompleteCommon<VALUE_TYPE>,Serializable {
 
 	private static final long serialVersionUID = 770592182009797467L;
 
 	private Integer numberOfCharacterBeforeQuery=1,numberOfMillisecondBetweenQueries=300,numberOfMillisecondQueryResultsCacheTimeOut=1000 * 300;
-	private String noResultMessage=inject(LanguageBusiness.class).findText(LanguageEntry.NO_RESULT_FOUND),appendTo;
+	private String noResultMessage=inject(LanguageBusiness.class).findText(RootConstant.Code.LanguageEntry.NO_RESULT_FOUND),appendTo;
 	private Boolean forceSelectionEnabled=Boolean.TRUE,queryResultsCacheEnabled=Boolean.TRUE;
 	private CascadeStyleSheet resultsContainerCascadeStyleSheet = new CascadeStyleSheet();
 	private Class<AbstractIdentifiable> identifiableClass;

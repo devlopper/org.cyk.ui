@@ -23,7 +23,6 @@ import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
-import org.cyk.system.root.model.language.LanguageEntry;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.data.collector.control.Control;
@@ -151,9 +150,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			return UIManager.getInstance().getTimeBusiness().format(field, (Date)value);
 		else if(value instanceof Boolean)
 			if(Boolean.TRUE.equals(value))
-				return UIManager.getInstance().text(LanguageEntry.YES);
+				return UIManager.getInstance().text(RootConstant.Code.LanguageEntry.YES);
 			else if(Boolean.FALSE.equals(value))
-				return UIManager.getInstance().text(LanguageEntry.NO);
+				return UIManager.getInstance().text(RootConstant.Code.LanguageEntry.NO);
 			else
 				return UIManager.getInstance().text("notspecified");
 		else if(value instanceof Collection<?>){

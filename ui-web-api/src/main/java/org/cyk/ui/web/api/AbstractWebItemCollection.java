@@ -7,7 +7,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.language.LanguageEntry;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -25,8 +25,8 @@ public abstract class AbstractWebItemCollection<TYPE extends AbstractItemCollect
 	public AbstractWebItemCollection(String identifier,Class<TYPE> itemClass,Class<IDENTIFIABLE> identifiableClass,COLLECTION collection,Crud crud) {
 		super(itemClass,identifiableClass,collection,crud);
 		this.identifier = identifier;
-		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.TRUE, UIManager.getInstance().getLanguageBusiness().findText(LanguageEntry.YES)));
-		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.FALSE, UIManager.getInstance().getLanguageBusiness().findText(LanguageEntry.NO)));
+		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.TRUE, UIManager.getInstance().getLanguageBusiness().findText(RootConstant.Code.LanguageEntry.YES)));
+		applicableValueQuestion.getAnswers().add(new SelectItem(Boolean.FALSE, UIManager.getInstance().getLanguageBusiness().findText(RootConstant.Code.LanguageEntry.NO)));
 	}
 	
 	@Override
