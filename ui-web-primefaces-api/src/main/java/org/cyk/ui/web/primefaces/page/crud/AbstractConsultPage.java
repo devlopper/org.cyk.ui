@@ -128,6 +128,10 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 		return Boolean.TRUE;
 	}
 	
+	protected Boolean showContextualDuplicateCommandable(){
+		return Boolean.TRUE;
+	}
+	
 	protected Boolean showContextualCreateCommandables(){
 		return Boolean.FALSE;
 	}
@@ -158,6 +162,12 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 				contextualMenu.getChildren().add(Builder.createCrud(Crud.UPDATE, arguments.getIdentifiable(),"command.edit", Icon.ACTION_UPDATE,arguments.getView()));
 			}
 		}
+		
+		if(Boolean.TRUE.equals(showContextualDuplicateCommandable())){
+			CreateCommandableArguments arguments = getDuplicateCommandableArguments();
+			contextualMenu.getChildren().add(Builder.createCrud(Crud.CREATE, arguments.getIdentifiable(),"command.duplicate", Icon.ACTION_DUPLICATE,arguments.getView()));
+		}
+		
 		if(Boolean.TRUE.equals(showContextualDeleteCommandable())){
 			contextualMenu.getChildren().add(Builder.createCrud(Crud.DELETE, identifiable,"command.delete", Icon.ACTION_DELETE)
 					.setParameter(UniformResourceLocatorParameter.PREVIOUS_URL, webManager.getRequestParameter(UniformResourceLocatorParameter.PREVIOUS_URL)));
@@ -182,6 +192,13 @@ public abstract class AbstractConsultPage<IDENTIFIABLE extends AbstractIdentifia
 	}
 	
 	protected CreateCommandableArguments getEditCommandableArguments(){
+		CreateCommandableArguments arguments = new CreateCommandableArguments();
+		arguments.setIdentifiable(identifiable);
+		arguments.setView(null);
+		return arguments;
+	}
+	
+	protected CreateCommandableArguments getDuplicateCommandableArguments(){
 		CreateCommandableArguments arguments = new CreateCommandableArguments();
 		arguments.setIdentifiable(identifiable);
 		arguments.setView(null);
