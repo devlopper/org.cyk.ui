@@ -54,6 +54,8 @@ import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeRoleName;
 import org.cyk.system.root.model.party.person.PersonTitle;
 import org.cyk.system.root.model.party.person.Sex;
+import org.cyk.system.root.model.pattern.tree.DataTree;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.LockCause;
@@ -189,6 +191,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceValueCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMessageCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceDataTreeCommandable(userSession, mobileCommandables));
 	}
 	
 	/**/
@@ -303,6 +306,15 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		Commandable module = createModuleCommandable("command.notification.management", null);
 		module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.MESSAGE).getName());
 		module.addChild(createListCommandable(SmtpProperties.class, null));
+		
+		return module;
+	}
+	
+	public Commandable getReferenceDataTreeCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("command.datatree.management", null);
+		//module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.d).getName());
+		module.addChild(createListCommandable(DataTreeType.class, null));
+		module.addChild(createListCommandable(DataTree.class, null));
 		
 		return module;
 	}

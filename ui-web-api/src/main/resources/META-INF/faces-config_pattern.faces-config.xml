@@ -22,7 +22,37 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>dataTreeEditView</from-outcome>
+			<to-view-id>/private/pattern/tree/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataTreeListView</from-outcome>
+			<to-view-id>/private/pattern/tree/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataTreeConsultView</from-outcome>
+			<to-view-id>/private/pattern/tree/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>dataTreeTypeEditView</from-outcome>
+			<to-view-id>/private/pattern/tree/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataTreeTypeListView</from-outcome>
+			<to-view-id>/private/pattern/tree/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataTreeTypeConsultView</from-outcome>
+			<to-view-id>/private/pattern/tree/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 		
 	</navigation-rule>
 

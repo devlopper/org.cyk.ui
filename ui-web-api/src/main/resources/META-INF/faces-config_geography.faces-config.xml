@@ -86,6 +86,22 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>localityTypeListView</from-outcome>
+			<to-view-id>/private/geography/locality/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>localityTypeEditView</from-outcome>
+			<to-view-id>/private/geography/locality/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>localityTypeConsultView</from-outcome>
+			<to-view-id>/private/geography/locality/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 	</navigation-rule>
 
 </faces-config>

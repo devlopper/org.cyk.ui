@@ -10,12 +10,22 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{localityListPage}" />
+ 		<ui:param name="pageController" value="#{localityTypeConsultPage}" />
  		<ui:define name="body">
- 			<ui:include src="/org.cyk.ui.web.primefaces/include/pattern/datatree/list.xhtml"/>
+ 			<table>
+ 				<tr valign="top">
+ 					<td>	
+ 						<cyk:tree value="#{localityTypeConsultPage.childrenTable.tree}" />		
+ 					</td>
+ 					<td>
+ 						<cyk:formOneData value="#{localityTypeConsultPage.details}" />
+ 						<cyk:table value="#{localityTypeConsultPage.childrenTable}" />
+ 					</td>
+ 				</tr>
+ 			</table>
+ 			
+ 					
  		</ui:define>
- 		
- 		
  	</ui:decorate>
  
 </html>

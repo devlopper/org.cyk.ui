@@ -217,6 +217,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 				configureTreeModule();
 				configureUserInterfaceModule();
 				configureNetworkModule();
+				configurePatternModule();
 			}
 			
 			@Override
@@ -252,6 +253,7 @@ public abstract class AbstractApplicationUIManager<TREE_NODE,TREE_NODE_MODEL ext
 			protected void configureValueModule(){}
 			protected void configureTimeModule(){}
 			protected void configureUserInterfaceModule(){}
+			protected void configurePatternModule(){}
 			
 			protected String getTabIdentifier(Class<?> aClass){
 				return IdentifierProvider.Adapter.getTabOf(aClass);

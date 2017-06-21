@@ -19,6 +19,7 @@ import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
+import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
@@ -44,6 +45,8 @@ import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipExtremityDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
+import org.cyk.system.root.business.impl.pattern.tree.DataTreeDetails;
+import org.cyk.system.root.business.impl.pattern.tree.DataTreeTypeDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
@@ -52,6 +55,8 @@ import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
+import org.cyk.system.root.business.impl.userinterface.MenuItemDetails;
+import org.cyk.system.root.business.impl.userinterface.MenuItemTypeDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionItemDetails;
@@ -69,6 +74,7 @@ import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
@@ -91,11 +97,15 @@ import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
+import org.cyk.system.root.model.pattern.tree.DataTree;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.system.root.model.userinterface.MenuItem;
+import org.cyk.system.root.model.userinterface.MenuItemType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueCollection;
@@ -129,6 +139,7 @@ import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
+import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
@@ -142,6 +153,8 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
+import org.cyk.ui.web.primefaces.page.nestedset.DataTreeEditPage;
+import org.cyk.ui.web.primefaces.page.nestedset.DataTreeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
 import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
@@ -154,6 +167,8 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.MenuItemEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.MenuItemTypeEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
@@ -289,6 +304,34 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		getFormConfiguration(PhoneNumber.class,Crud.CREATE).addRequiredFieldNames(PhoneNumberEditPage.Form.FIELD_COLLECTION,PhoneNumberEditPage.Form.FIELD_VALUE
 				,PhoneNumberEditPage.Form.FIELD_COUNTRY,PhoneNumberEditPage.Form.FIELD_TYPE)
 			.addFieldNames(PhoneNumberEditPage.Form.FIELD_ORDER_NUMBER);
+		
+		getFormConfiguration(LocalityType.class,Crud.CREATE).addRequiredFieldNames(LocalityTypeEditPage.Form.FIELD_CODE)
+		.addFieldNames(LocalityTypeEditPage.Form.FIELD_NAME,LocalityTypeEditPage.Form.FIELD_PARENT);
+		registerDetailsConfiguration(LocalityTypeDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,LocalityTypeDetails.FIELD_CODE,LocalityTypeDetails.FIELD_NAME,LocalityTypeDetails.FIELD_PARENT);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,LocalityTypeDetails.FIELD_CODE,LocalityTypeDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
 		
 		getFormConfiguration(Locality.class,Crud.CREATE).addRequiredFieldNames(LocalityEditPage.Form.FIELD_CODE)
 				.addFieldNames(LocalityEditPage.Form.FIELD_NAME,LocalityEditPage.Form.FIELD_RESIDENT_NAME,LocalityEditPage.Form.FIELD_TYPE
@@ -1300,6 +1343,128 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 	}
+	
+	@Override
+	protected void configureUserInterfaceModule() {
+		getFormConfiguration(MenuItemType.class,Crud.CREATE).addRequiredFieldNames(MenuItemTypeEditPage.Form.FIELD_CODE)
+		.addFieldNames(MenuItemTypeEditPage.Form.FIELD_NAME,MenuItemTypeEditPage.Form.FIELD_PARENT);
+		registerDetailsConfiguration(MenuItemTypeDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MenuItemTypeDetails.FIELD_CODE,MenuItemTypeDetails.FIELD_NAME,MenuItemTypeDetails.FIELD_PARENT);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MenuItemTypeDetails.FIELD_CODE,MenuItemTypeDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(MenuItem.class,Crud.CREATE).addRequiredFieldNames(MenuItemEditPage.Form.FIELD_CODE)
+				.addFieldNames(MenuItemEditPage.Form.FIELD_NAME,MenuItemEditPage.Form.FIELD_TYPE
+						,MenuItemEditPage.Form.FIELD_PARENT,MenuItemEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
+		registerDetailsConfiguration(MenuItemDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,MenuItemDetails.FIELD_CODE,MenuItemDetails.FIELD_NAME
+								,MenuItemDetails.FIELD_TYPE,MenuItemDetails.FIELD_PARENT,MenuItemDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,MenuItemDetails.FIELD_CODE,MenuItemDetails.FIELD_NAME,MenuItemDetails.FIELD_TYPE,MenuItemDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
+					}
+				};
+			}
+		});
+	}
+	
+	protected void configurePatternModule(){
+		getFormConfiguration(DataTreeType.class,Crud.CREATE).addRequiredFieldNames(DataTreeTypeEditPage.Form.FIELD_CODE)
+		.addFieldNames(DataTreeTypeEditPage.Form.FIELD_NAME,DataTreeTypeEditPage.Form.FIELD_PARENT);
+		registerDetailsConfiguration(DataTreeTypeDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,DataTreeTypeDetails.FIELD_CODE,DataTreeTypeDetails.FIELD_NAME,DataTreeTypeDetails.FIELD_PARENT);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,DataTreeTypeDetails.FIELD_CODE,DataTreeTypeDetails.FIELD_NAME);
+					}
+				};
+			}
+		});
+		
+		getFormConfiguration(DataTree.class,Crud.CREATE).addRequiredFieldNames(DataTreeEditPage.Form.FIELD_CODE)
+				.addFieldNames(DataTreeEditPage.Form.FIELD_NAME,DataTreeEditPage.Form.FIELD_TYPE
+						,DataTreeEditPage.Form.FIELD_PARENT);
+		registerDetailsConfiguration(DataTreeDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,DataTreeDetails.FIELD_CODE,DataTreeDetails.FIELD_NAME
+								,DataTreeDetails.FIELD_TYPE,DataTreeDetails.FIELD_PARENT);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,DataTreeDetails.FIELD_CODE,DataTreeDetails.FIELD_NAME,DataTreeDetails.FIELD_TYPE);
+					}
+				};
+			}
+		});
+	}
+	
 	
 	protected Boolean isAutoConfigureClass(Class<?> aClass){
 		return Boolean.TRUE;

@@ -19,6 +19,7 @@ import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
+import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
@@ -44,6 +45,8 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicat
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
+import org.cyk.system.root.business.impl.pattern.tree.DataTreeDetails;
+import org.cyk.system.root.business.impl.pattern.tree.DataTreeTypeDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
 import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
@@ -100,6 +103,8 @@ import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
 import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
+import org.cyk.system.root.model.pattern.tree.DataTree;
+import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.pattern.tree.NestedSetNode;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.License;
@@ -113,7 +118,6 @@ import org.cyk.system.root.model.value.ValueProperties;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.EnumerationForm;
-import org.cyk.ui.api.model.geography.LocalityTypeForm;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryManyFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryOneFormModel;
@@ -138,6 +142,7 @@ import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
+import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
@@ -154,6 +159,8 @@ import org.cyk.ui.web.primefaces.page.mathematics.MovementActionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MovementEditPage;
 import org.cyk.ui.web.primefaces.page.message.mail.SmtpPropertiesEditPage;
+import org.cyk.ui.web.primefaces.page.nestedset.DataTreeEditPage;
+import org.cyk.ui.web.primefaces.page.nestedset.DataTreeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.nestedset.NestedSetNodeEditPage;
 import org.cyk.ui.web.primefaces.page.network.ComputerEditPage;
 import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
@@ -215,7 +222,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeSecurityModule();
 		initializeMessageModule();
 		initializeValueModule();
-	
+		/*
+		MetricCollectionIdentifiableGlobalIdentifier.define(DataTree.class);
+		MetricCollectionIdentifiableGlobalIdentifier.define(DataTreeType.class);
+		MetricValueIdentifiableGlobalIdentifier.define(DataTree.class);
+		MetricValueIdentifiableGlobalIdentifier.define(DataTreeType.class);
+		*/
 	}
 	
 	protected void initializePartyModule(){
@@ -277,7 +289,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	
 	protected void initializeGeographyModule(){
-		uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeForm.class, LocalityTypeForm.class,null,null,null));
+		//uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeForm.class, LocalityTypeForm.class,null,null,null));
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeEditPage.Form.class, LocalityTypeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(LocalityType.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Locality.class, LocalityEditPage.Form.class, LocalityDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Locality.class, null);
@@ -341,6 +356,12 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected void initializeNestedSetModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(NestedSetNode.class, NestedSetNodeEditPage.Form.class, NestedSetNodeDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(NestedSetNode.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(DataTreeType.class, DataTreeTypeEditPage.Form.class, DataTreeTypeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(DataTreeType.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(DataTree.class, DataTreeEditPage.Form.class, DataTreeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(DataTree.class, null);
 	}
 	
 	protected void initializeMathematicsModule(){

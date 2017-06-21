@@ -12,13 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.BusinessManager;
 import org.cyk.system.root.business.api.ClazzBusiness;
-import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.FormatterBusiness;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.api.file.FileBusiness;
@@ -27,11 +23,11 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
-import org.cyk.system.root.business.api.security.RoleSecuredViewBusiness;
 import org.cyk.system.root.business.api.time.TimeBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.ui.api.config.IdentifiableConfiguration;
@@ -45,6 +41,9 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.AbstractStartupBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Singleton @Getter @Setter @Named(value="uiManager") @Deployment(initialisationType=InitialisationType.EAGER)
 public class UIManager extends AbstractStartupBean implements Serializable {
@@ -99,7 +98,6 @@ public class UIManager extends AbstractStartupBean implements Serializable {
 	@Inject private TimeBusiness timeBusiness;
 	@Inject private NumberBusiness numberBusiness;
 	@Inject private PersonBusiness personBusiness;
-	@Inject private RoleSecuredViewBusiness roleSecuredViewBusiness;
 	@Inject private ClazzBusiness clazzBusiness;
 	
 	private Locale locale = Locale.FRENCH;
