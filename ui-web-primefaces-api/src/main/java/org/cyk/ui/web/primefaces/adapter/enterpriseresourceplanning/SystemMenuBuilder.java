@@ -62,6 +62,14 @@ import org.cyk.system.root.model.security.LockCause;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.time.TimeDivisionType;
+import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
+import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenu;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuItem;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuLocation;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuRenderType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.MeasureType;
 import org.cyk.system.root.model.value.NullString;
@@ -192,6 +200,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		addReference(userSession, systemMenu, getReferenceFileCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceMessageCommandable(userSession, mobileCommandables));
 		addReference(userSession, systemMenu, getReferenceDataTreeCommandable(userSession, mobileCommandables));
+		addReference(userSession, systemMenu, getReferenceUserInterfaceCommandable(userSession, mobileCommandables));
 	}
 	
 	/**/
@@ -316,6 +325,22 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(DataTreeType.class, null));
 		module.addChild(createListCommandable(DataTree.class, null));
 		
+		return module;
+	}
+	
+	public Commandable getReferenceUserInterfaceCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
+		Commandable module = createModuleCommandable("command.userinterface.management", null);
+		//module.setLabel(inject(BusinessServiceCollectionBusiness.class).find(RootConstant.Code.BusinessServiceCollection.d).getName());
+		module.addChild(createListCommandable(UserInterfaceMenu.class, null));
+		module.addChild(createListCommandable(UserInterfaceMenuNode.class, null));
+		module.addChild(createListCommandable(UserInterfaceMenuNodeType.class, null));
+		module.addChild(createListCommandable(UserInterfaceCommand.class, null));
+		
+		module.addChild(createListCommandable(UserInterfaceMenuItem.class, null));
+		module.addChild(createListCommandable(UserInterfaceComponent.class, null));
+		
+		module.addChild(createListCommandable(UserInterfaceMenuLocation.class, null));
+		module.addChild(createListCommandable(UserInterfaceMenuRenderType.class, null));
 		return module;
 	}
 	

@@ -54,6 +54,12 @@ import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceCommandDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceComponentDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuItemDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeTypeDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueDetails;
@@ -111,6 +117,12 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
+import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenu;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuItem;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueCollection;
@@ -176,6 +188,12 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceCommandEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceComponentEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuItemEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
@@ -222,6 +240,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		initializeSecurityModule();
 		initializeMessageModule();
 		initializeValueModule();
+		initializeUserInterfaceModule();
 		/*
 		MetricCollectionIdentifiableGlobalIdentifier.define(DataTree.class);
 		MetricCollectionIdentifiableGlobalIdentifier.define(DataTreeType.class);
@@ -431,6 +450,26 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ValueCollection.class, ValueCollectionEditPage.Form.class, ValueCollectionDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ValueCollection.class, null);
+	}
+	
+	protected void initializeUserInterfaceModule(){
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuNode.class, UserInterfaceMenuNodeEditPage.Form.class, UserInterfaceMenuNodeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceMenuNode.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuNodeType.class, UserInterfaceMenuNodeTypeEditPage.Form.class, UserInterfaceMenuNodeTypeDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceMenuNodeType.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceComponent.class, UserInterfaceComponentEditPage.Form.class, UserInterfaceComponentDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceComponent.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceCommand.class, UserInterfaceCommandEditPage.Form.class, UserInterfaceCommandDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceCommand.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenu.class, UserInterfaceMenuEditPage.Form.class, UserInterfaceMenuDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceMenu.class, null);
+		
+		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuItem.class, UserInterfaceMenuItemEditPage.Form.class, UserInterfaceMenuItemDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(UserInterfaceMenuItem.class, null);
 	}
 	
 	@Override

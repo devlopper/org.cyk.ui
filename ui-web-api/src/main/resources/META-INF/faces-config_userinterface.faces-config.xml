@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeTypeListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeTypeEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuNodeTypeConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/node/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceComponentListView</from-outcome>
+			<to-view-id>/private/userinterface/component/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceComponentEditView</from-outcome>
+			<to-view-id>/private/userinterface/component/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceComponentConsultView</from-outcome>
+			<to-view-id>/private/userinterface/component/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceCommandListView</from-outcome>
+			<to-view-id>/private/userinterface/command/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceCommandEditView</from-outcome>
+			<to-view-id>/private/userinterface/command/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceCommandConsultView</from-outcome>
+			<to-view-id>/private/userinterface/command/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuItemListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/item/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuItemEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/item/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuItemConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/item/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+	</navigation-rule>
+
+</faces-config>

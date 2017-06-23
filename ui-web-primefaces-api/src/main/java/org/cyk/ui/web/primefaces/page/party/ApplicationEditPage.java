@@ -32,7 +32,7 @@ public class ApplicationEditPage extends AbstractCrudOnePage<Application> implem
 		@Input @InputChoice @InputOneChoice @InputOneCombo private SmtpProperties smtpProperties;
 		
 		@Input @InputBooleanButton private Boolean uniformResourceLocatorFiltered;
-		
+	
 		@Input @InputText @NotNull private String webContext;
 		
 		/**/
@@ -40,6 +40,7 @@ public class ApplicationEditPage extends AbstractCrudOnePage<Application> implem
 		public static final String FIELD_SMTP_PROPERTIES = "smtpProperties";
 		public static final String FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED = "uniformResourceLocatorFiltered";
 		public static final String FIELD_WEB_CONTEXT = "webContext";
+		
 	}
 
 }

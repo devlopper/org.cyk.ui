@@ -55,8 +55,8 @@ import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
-import org.cyk.system.root.business.impl.userinterface.MenuItemDetails;
-import org.cyk.system.root.business.impl.userinterface.MenuItemTypeDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeDetails;
+import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeTypeDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionItemDetails;
@@ -104,8 +104,8 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.system.root.model.userinterface.MenuItem;
-import org.cyk.system.root.model.userinterface.MenuItemType;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueCollection;
@@ -167,8 +167,8 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.MenuItemEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.MenuItemTypeEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeEditPage;
+import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
@@ -909,8 +909,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		super.configureSecurityModule();
 		
 		getFormConfiguration(Application.class, Crud.CREATE).addRequiredFieldNames(ApplicationEditPage.Form.FIELD_NAME)
-		.addFieldNames(ApplicationEditPage.Form.FIELD_SMTP_PROPERTIES,ApplicationEditPage.Form.FIELD_WEB_CONTEXT
-				,ApplicationEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
+		.addFieldNames(ApplicationEditPage.Form.FIELD_SMTP_PROPERTIES
+				,ApplicationEditPage.Form.FIELD_WEB_CONTEXT,ApplicationEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
 		
 		registerDetailsConfiguration(ApplicationDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
@@ -933,8 +933,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,ApplicationDetails.FIELD_NAME,ApplicationDetails.FIELD_SMTP_PROPERTIES
-								,ApplicationDetails.FIELD_WEB_CONTEXT,ApplicationDetails.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
+						return isFieldNameIn(field,ApplicationDetails.FIELD_NAME,ApplicationDetails.FIELD_MENU_PRIMARY,ApplicationDetails.FIELD_MENU_SECONDARY
+								,ApplicationDetails.FIELD_SMTP_PROPERTIES,ApplicationDetails.FIELD_WEB_CONTEXT,ApplicationDetails.FIELD_UNIFORM_RESOURCE_LOCATOR_FILTERED);
 					}
 				};
 			}
@@ -1346,9 +1346,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	
 	@Override
 	protected void configureUserInterfaceModule() {
-		getFormConfiguration(MenuItemType.class,Crud.CREATE).addRequiredFieldNames(MenuItemTypeEditPage.Form.FIELD_CODE)
-		.addFieldNames(MenuItemTypeEditPage.Form.FIELD_NAME,MenuItemTypeEditPage.Form.FIELD_PARENT);
-		registerDetailsConfiguration(MenuItemTypeDetails.class, new DetailsConfiguration(){
+		getFormConfiguration(UserInterfaceMenuNodeType.class,Crud.CREATE).addRequiredFieldNames(UserInterfaceMenuNodeTypeEditPage.Form.FIELD_CODE)
+		.addFieldNames(UserInterfaceMenuNodeTypeEditPage.Form.FIELD_NAME,UserInterfaceMenuNodeTypeEditPage.Form.FIELD_PARENT);
+		registerDetailsConfiguration(UserInterfaceMenuNodeTypeDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
@@ -1357,7 +1357,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MenuItemTypeDetails.FIELD_CODE,MenuItemTypeDetails.FIELD_NAME,MenuItemTypeDetails.FIELD_PARENT);
+						return isFieldNameIn(field,UserInterfaceMenuNodeTypeDetails.FIELD_CODE,UserInterfaceMenuNodeTypeDetails.FIELD_NAME,UserInterfaceMenuNodeTypeDetails.FIELD_PARENT);
 					}
 				};
 			}
@@ -1368,16 +1368,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,MenuItemTypeDetails.FIELD_CODE,MenuItemTypeDetails.FIELD_NAME);
+						return isFieldNameIn(field,UserInterfaceMenuNodeTypeDetails.FIELD_CODE,UserInterfaceMenuNodeTypeDetails.FIELD_NAME);
 					}
 				};
 			}
 		});
 		
-		getFormConfiguration(MenuItem.class,Crud.CREATE).addRequiredFieldNames(MenuItemEditPage.Form.FIELD_CODE)
-				.addFieldNames(MenuItemEditPage.Form.FIELD_NAME,MenuItemEditPage.Form.FIELD_TYPE
-						,MenuItemEditPage.Form.FIELD_PARENT,MenuItemEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
-		registerDetailsConfiguration(MenuItemDetails.class, new DetailsConfiguration(){
+		getFormConfiguration(UserInterfaceMenuNode.class,Crud.CREATE).addRequiredFieldNames(UserInterfaceMenuNodeEditPage.Form.FIELD_CODE)
+				.addFieldNames(UserInterfaceMenuNodeEditPage.Form.FIELD_NAME,UserInterfaceMenuNodeEditPage.Form.FIELD_TYPE
+						,UserInterfaceMenuNodeEditPage.Form.FIELD_PARENT,UserInterfaceMenuNodeEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
+		registerDetailsConfiguration(UserInterfaceMenuNodeDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
@@ -1386,8 +1386,8 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,MenuItemDetails.FIELD_CODE,MenuItemDetails.FIELD_NAME
-								,MenuItemDetails.FIELD_TYPE,MenuItemDetails.FIELD_PARENT,MenuItemDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
+						return isFieldNameIn(field,UserInterfaceMenuNodeDetails.FIELD_CODE,UserInterfaceMenuNodeDetails.FIELD_NAME
+								,UserInterfaceMenuNodeDetails.FIELD_TYPE,UserInterfaceMenuNodeDetails.FIELD_PARENT,UserInterfaceMenuNodeDetails.FIELD_COMMAND);
 					}
 				};
 			}
@@ -1398,7 +1398,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,MenuItemDetails.FIELD_CODE,MenuItemDetails.FIELD_NAME,MenuItemDetails.FIELD_TYPE,MenuItemDetails.FIELD_UNIFORM_RESOURCE_LOCATOR);
+						return isFieldNameIn(field,UserInterfaceMenuNodeDetails.FIELD_CODE,UserInterfaceMenuNodeDetails.FIELD_NAME,UserInterfaceMenuNodeDetails.FIELD_TYPE,UserInterfaceMenuNodeDetails.FIELD_COMMAND);
 					}
 				};
 			}
