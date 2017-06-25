@@ -27,7 +27,6 @@ import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
-import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
@@ -81,7 +80,6 @@ import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
-import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
@@ -152,7 +150,6 @@ import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateIdentifiableGlobalIdentifierEditPage;
-import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
@@ -403,10 +400,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Movement.class, MovementEditPage.Form.class, MovementDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Movement.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(IntervalCollection.class, IntervalCollectionEditPage.Form.class, IntervalCollectionDetails.class
-				,null,null,null));
-		uiManager.configBusinessIdentifiable(IntervalCollection.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Interval.class, IntervalEditPage.Form.class, IntervalDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Interval.class, null);

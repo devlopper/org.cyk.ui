@@ -12,6 +12,13 @@
  		<ui:param name="pageController" value="#{userInterfaceMenuConsultPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{userInterfaceMenuConsultPage.details}" />
+ 			<cyk:table value="#{userInterfaceMenuConsultPage.itemTable}" />
+ 			
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+				<ui:param name="model" value="#{pageController.sampleMenuModel}" />
+				<ui:param name="menu" value="#{pageController.sampleMenu}" />
+			</ui:include>
+ 			
  			<cyk:formOneData value="#{userInterfaceMenuConsultPage.globalIdentifierDetails}" />
  		</ui:define>
  	</ui:decorate>

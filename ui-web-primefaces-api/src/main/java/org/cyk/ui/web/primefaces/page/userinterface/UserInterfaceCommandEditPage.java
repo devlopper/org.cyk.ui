@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
 import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
@@ -31,6 +33,8 @@ public class UserInterfaceCommandEditPage extends AbstractCrudOnePage<UserInterf
 		private static final long serialVersionUID = 2646571878912106597L;
 		
 		 @Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private UserInterfaceComponent component;
+		 @Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private UniformResourceLocator uniformResourceLocator;
+		 @Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private Script script;
 		
 		@Override
 		public void read() {
@@ -45,6 +49,8 @@ public class UserInterfaceCommandEditPage extends AbstractCrudOnePage<UserInterf
 		}
 		
 		public static final String FIELD_COMPONENT = "component";
+		public static final String FIELD_UNIFORM_RESOURCE_LOCATOR = "uniformResourceLocator";
+		public static final String FIELD_SCRIPT = "script";
 		
 	}
 

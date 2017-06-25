@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.network.UniformResourceLocator;
+import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
@@ -34,9 +34,9 @@ public class UserInterfaceMenuNodeEditPage extends AbstractDataTreeNodeEditPage<
 	public static class Form extends AbstractDataTreeForm<UserInterfaceMenuNode,UserInterfaceMenuNodeType> {
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private UniformResourceLocator uniformResourceLocator;
+		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private UserInterfaceCommand command;
 		
-		public static final String FIELD_UNIFORM_RESOURCE_LOCATOR = "uniformResourceLocator";
+		public static final String FIELD_COMMAND = "command";
 	
 	}
 	

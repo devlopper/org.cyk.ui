@@ -100,7 +100,7 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 	}
 	
 	public FormConfiguration addRequiredFieldNames(Boolean autoAddToFieldNames,Collection<String> names){
-		if(requiredFieldNames==null)
+		if(requiredFieldNames==null)//TODO do better
 			requiredFieldNames = new LinkedHashSet<>();
 		if(names!=null){
 			requiredFieldNames.addAll(names);
@@ -110,7 +110,7 @@ public class FormConfiguration extends AbstractBean implements Serializable {
 		return this;
 	}
 	public FormConfiguration addRequiredFieldNames(Boolean autoAddToFieldNames,String...names){
-		if(requiredFieldNames==null)
+		if(requiredFieldNames==null)//TODO do better
 			requiredFieldNames = new LinkedHashSet<>();
 		if(names!=null){
 			requiredFieldNames.addAll(Arrays.asList(names));

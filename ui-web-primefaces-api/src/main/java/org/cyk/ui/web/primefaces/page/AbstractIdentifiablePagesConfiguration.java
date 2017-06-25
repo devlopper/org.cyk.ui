@@ -53,6 +53,8 @@ public abstract class AbstractIdentifiablePagesConfiguration<TYPE extends Abstra
 	protected String[] getFieldNames(Constant.Action action){
 		FieldHelper fieldHelper = new FieldHelper();
 		Set<String> names = new HashSet<>();
+		if(AbstractIdentifiableBusinessServiceImpl.isAutoSetPropertyValueClass(GlobalIdentifier.FIELD_CODE, getIdentifiableClass()))
+			names.add(AbstractBusinessIdentifiedEditFormModel.FIELD_CODE);
 		names.addAll(fieldHelper.getNamesWhereReferencedByStaticField(getIdentifiableClass(), Boolean.FALSE));
 		names.add(AbstractBusinessIdentifiedEditFormModel.FIELD_NAME);
 		return names.toArray(Constant.EMPTY_STRING_ARRAY);
@@ -84,8 +86,12 @@ public abstract class AbstractIdentifiablePagesConfiguration<TYPE extends Abstra
 	protected void __configure__(ViewType viewType,Constant.Action action){}
 	
 	protected void processFormConfigurations(){
-		getFormConfiguration(getIdentifiableClass(),Crud.CREATE).addRequiredFieldNames(getRequiredFieldNames(Constant.Action.CREATE))
-		.addFieldNames(getFieldNames(Constant.Action.CREATE));
+		String[] fieldNames = getRequiredFieldNames(Constant.Action.CREATE);
+		if(fieldNames!=null)
+			getFormConfiguration(getIdentifiableClass(),Crud.CREATE).addRequiredFieldNames(fieldNames);
+		fieldNames = getFieldNames(Constant.Action.CREATE);
+		if(fieldNames!=null)
+			getFormConfiguration(getIdentifiableClass(),Crud.CREATE).addFieldNames(fieldNames);
 	}
 	
 	protected DetailsConfiguration getDetailsConfiguration(){

@@ -180,6 +180,9 @@ public class Commandable extends AbstractWebCommandable implements Serializable 
 			}
 			for(UICommandable commandable : aCommandable.getChildren())
 				getMenuElement((Commandable) commandable, subMenu, managedBeanName, fields);
+			
+			if(parent!=null)
+				parent.addElement(subMenu);
 			return subMenu;
 		}
 	}

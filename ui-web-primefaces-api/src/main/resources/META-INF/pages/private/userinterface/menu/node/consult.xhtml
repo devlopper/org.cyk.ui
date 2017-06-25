@@ -10,16 +10,21 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{localityTypeConsultPage}" />
+ 		<ui:param name="pageController" value="#{userInterfaceMenuNodeConsultPage}" />
  		<ui:define name="body">
  			<table>
  				<tr valign="top">
  					<td>	
- 						<cyk:tree value="#{localityTypeConsultPage.childrenTable.tree}" />		
+ 						<cyk:tree value="#{userInterfaceMenuNodeConsultPage.childrenTable.tree}" />		
  					</td>
  					<td>
- 						<cyk:formOneData value="#{localityTypeConsultPage.details}" />
- 						<cyk:table value="#{localityTypeConsultPage.childrenTable}" />
+ 						<cyk:formOneData value="#{userInterfaceMenuNodeConsultPage.details}" />
+ 						<cyk:table value="#{userInterfaceMenuNodeConsultPage.childrenTable}" />
+ 						
+ 						<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+							<ui:param name="model" value="#{pageController.sampleMenuModel}" />
+							<ui:param name="menu" value="#{pageController.sampleMenu}" />
+						</ui:include>
  					</td>
  				</tr>
  			</table>

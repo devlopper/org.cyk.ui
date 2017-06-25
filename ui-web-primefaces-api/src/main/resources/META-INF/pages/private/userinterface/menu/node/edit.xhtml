@@ -10,13 +10,13 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{localityTypeEditPage}" />
+ 		<ui:param name="pageController" value="#{userInterfaceMenuNodeEditPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{localityTypeEditPage.form}"/>
+ 			<cyk:formOneData value="#{userInterfaceMenuNodeEditPage.form}"/>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{localityTypeEditPage.form.submitCommandable}" executeParameter="#{localityTypeEditPage.form.data}" />
+ 			<cyk:command value="#{userInterfaceMenuNodeEditPage.form.submitCommandable}" executeParameter="#{userInterfaceMenuNodeEditPage.form.data}" />
  		</ui:define>
  	</ui:decorate>
  

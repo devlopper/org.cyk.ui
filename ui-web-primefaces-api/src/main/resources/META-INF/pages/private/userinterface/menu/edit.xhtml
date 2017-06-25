@@ -12,10 +12,16 @@
  		<ui:param name="pageController" value="#{userInterfaceMenuEditPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{userInterfaceMenuEditPage.form}" />
+ 			<cyk:itemCollection value="#{userInterfaceMenuEditPage.itemCollection}" >
+ 				<p:column  >
+ 					<h:outputText value="#{item.master}"/>
+ 				</p:column>
+ 				
+ 			</cyk:itemCollection>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{userInterfaceMenuEditPage.form.submitMenuable}" executeParameter="#{userInterfaceMenuEditPage.form.data}" />
+ 			<cyk:command value="#{userInterfaceMenuEditPage.form.submitCommandable}" executeParameter="#{userInterfaceMenuEditPage.form.data}" />
  		</ui:define>
  	</ui:decorate>
  

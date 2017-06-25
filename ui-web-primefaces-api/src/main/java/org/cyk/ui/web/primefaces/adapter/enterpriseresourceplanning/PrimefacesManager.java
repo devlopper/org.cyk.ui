@@ -21,7 +21,6 @@ import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
-import org.cyk.system.root.business.impl.mathematics.IntervalCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionIdentifiableGlobalIdentifierDetails;
@@ -55,9 +54,6 @@ import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.time.PeriodDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceComponentDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeTypeDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionItemDetails;
@@ -79,7 +75,6 @@ import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
-import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Metric;
 import org.cyk.system.root.model.mathematics.MetricCollection;
 import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalIdentifier;
@@ -105,9 +100,6 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueCollection;
@@ -144,7 +136,6 @@ import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
-import org.cyk.ui.web.primefaces.page.mathematics.IntervalCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.IntervalEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.MetricCollectionIdentifiableGlobalIdentifierEditPage;
@@ -169,9 +160,6 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceComponentEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
@@ -543,6 +531,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 		
 		//Interval
+		/*
 		getFormConfiguration(IntervalCollection.class,Crud.CREATE).addRequiredFieldNames(IntervalCollectionEditPage.Form.FIELD_CODE).addFieldNames(IntervalCollectionEditPage.Form.FIELD_NAME
 				,IntervalCollectionEditPage.Form.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
 	
@@ -559,7 +548,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
-		
+		*/
 		getFormConfiguration(Interval.class,Crud.CREATE)
 			.addFieldNames(IntervalEditPage.Form.FIELD_COLLECTION,IntervalEditPage.Form.FIELD_LOW,IntervalEditPage.Form.FIELD_HIGH,IntervalExtremityFormModel.FIELD_VALUE
 					,IntervalExtremityFormModel.FIELD_EXCLUDED)
@@ -1348,95 +1337,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	}
 	
 	@Override
-	protected void configureUserInterfaceModule() {
-		/*getFormConfiguration(UserInterfaceMenuNodeType.class,Crud.CREATE).addRequiredFieldNames(UserInterfaceMenuNodeTypeEditPage.Form.FIELD_CODE)
-		.addFieldNames(UserInterfaceMenuNodeTypeEditPage.Form.FIELD_NAME,UserInterfaceMenuNodeTypeEditPage.Form.FIELD_PARENT);
-		registerDetailsConfiguration(UserInterfaceMenuNodeTypeDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
-				return new DetailsConfiguration.DefaultControlSetAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,UserInterfaceMenuNodeTypeDetails.FIELD_CODE,UserInterfaceMenuNodeTypeDetails.FIELD_NAME,UserInterfaceMenuNodeTypeDetails.FIELD_PARENT);
-					}
-				};
-			}
-			
-			@Override
-			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
-				return new DetailsConfiguration.DefaultColumnAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,UserInterfaceMenuNodeTypeDetails.FIELD_CODE,UserInterfaceMenuNodeTypeDetails.FIELD_NAME);
-					}
-				};
-			}
-		});
-		*/
-		/*getFormConfiguration(UserInterfaceMenuNode.class,Crud.CREATE).addRequiredFieldNames(UserInterfaceMenuNodeEditPage.Form.FIELD_CODE)
-				.addFieldNames(UserInterfaceMenuNodeEditPage.Form.FIELD_NAME,UserInterfaceMenuNodeEditPage.Form.FIELD_TYPE
-						,UserInterfaceMenuNodeEditPage.Form.FIELD_PARENT,UserInterfaceMenuNodeEditPage.Form.FIELD_UNIFORM_RESOURCE_LOCATOR);
-		registerDetailsConfiguration(UserInterfaceMenuNodeDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
-				return new DetailsConfiguration.DefaultControlSetAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,UserInterfaceMenuNodeDetails.FIELD_CODE,UserInterfaceMenuNodeDetails.FIELD_NAME
-								,UserInterfaceMenuNodeDetails.FIELD_TYPE,UserInterfaceMenuNodeDetails.FIELD_PARENT,UserInterfaceMenuNodeDetails.FIELD_COMMAND);
-					}
-				};
-			}
-			
-			@Override
-			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
-				return new DetailsConfiguration.DefaultColumnAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,UserInterfaceMenuNodeDetails.FIELD_CODE,UserInterfaceMenuNodeDetails.FIELD_NAME,UserInterfaceMenuNodeDetails.FIELD_TYPE,UserInterfaceMenuNodeDetails.FIELD_COMMAND);
-					}
-				};
-			}
-		});
-		*/
-		/*
-		getFormConfiguration(UserInterfaceComponent.class,Crud.CREATE).addRequiredFieldNames(UserInterfaceComponentEditPage.Form.FIELD_CODE)
-		.addFieldNames(UserInterfaceComponentEditPage.Form.FIELD_NAME);
-		registerDetailsConfiguration(UserInterfaceComponentDetails.class, new DetailsConfiguration(){
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			@Override
-			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
-				return new DetailsConfiguration.DefaultControlSetAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,UserInterfaceComponentDetails.FIELD_CODE,UserInterfaceComponentDetails.FIELD_NAME);
-					}
-				};
-			}
-			
-			@Override
-			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
-				return new DetailsConfiguration.DefaultColumnAdapter(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Boolean isColumn(Field field) {
-						return isFieldNameIn(field,UserInterfaceComponentDetails.FIELD_CODE,UserInterfaceComponentDetails.FIELD_NAME);
-					}
-				};
-			}
-		});
-		*/
-	}
+	protected void configureUserInterfaceModule() {}
 	
 	protected void configurePatternModule(){
 		getFormConfiguration(DataTreeType.class,Crud.CREATE).addRequiredFieldNames(DataTreeTypeEditPage.Form.FIELD_CODE)

@@ -1,19 +1,27 @@
 package org.cyk.ui.web.primefaces.page.userinterface;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.api.userinterface.UserInterfaceMenuItemBusiness;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenu;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuItem;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuLocation;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuRenderType;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
-import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
+import org.cyk.utility.common.annotation.FieldOverride;
+import org.cyk.utility.common.annotation.FieldOverrides;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,54 +32,38 @@ public class UserInterfaceMenuEditPage extends AbstractCollectionEditPage.Extend
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	@Override
-	protected void afterInitialisation() {
-		super.afterInitialisation();
-		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
-		itemCollection = createItemCollection(Item.class, UserInterfaceMenuItem.class,identifiable 
-				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter<Item,UserInterfaceMenuItem,UserInterfaceMenu>(identifiable,crud,form){
-					private static final long serialVersionUID = 1L;
+	protected ItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu> instanciateItemCollection() {
+		return createItemCollection(Item.class, UserInterfaceMenuItem.class,identifiable 
+				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<Item,UserInterfaceMenuItem,UserInterfaceMenu>(identifiable,crud,form){
+			private static final long serialVersionUID = 1L;
 			
-					@Override
-					public Collection<UserInterfaceMenuItem> load() {
-						getCollection().getItems().setCollection(inject(UserInterfaceMenuItemBusiness.class).findByCollection(getCollection()));
-						return getCollection().getItems().getCollection();
-					}
-					
-					@Override
-					public UserInterfaceMenuItem instanciate(AbstractItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu, SelectItem> itemCollection) {
-						UserInterfaceMenuItem interval = inject(UserInterfaceMenuItemBusiness.class).instanciateOne();
-						interval.setCollection(collection);
-						return interval;
-					}
-					
-					@Override
-					public Boolean isShowAddButton() {
-						return Boolean.TRUE;
-					}
-					
-					@Override
-					public void read(Item item) {
-						super.read(item);
-						
-					}
-					
-					@Override
-					public void write(Item item) {
-						super.write(item);
-						
-					}
-					
+			@Override
+			public void instanciated(AbstractItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu, SelectItem> itemCollection,Item item) {
+				super.instanciated(itemCollection, item);
+				item.getIdentifiable().setMenuNode((UserInterfaceMenuNode) getInputChoice().getValue());
+			}
+			
+			@Override
+			public AbstractIdentifiable getMasterSelected(AbstractItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu, SelectItem> itemCollection,
+					UserInterfaceMenuItem identifiable) {
+				return identifiable.getMenuNode();
+			}
+			
 		});
-		
-		itemCollection.setShowAddCommandableAtBottom(Boolean.TRUE);
-		((Commandable)itemCollection.getAddCommandable()).getButton().setImmediate(Boolean.TRUE);
 	}
 	
 	@Getter @Setter
+	@FieldOverrides(value = {
+			@FieldOverride(name=AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED,type=UserInterfaceMenuNode.class)
+			})
 	public static class Form extends AbstractForm.Extends<UserInterfaceMenu,UserInterfaceMenuItem> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
-
 		
+		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuLocation menuLocation;
+		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuRenderType renderType;
+		
+		public static final String FIELD_MENU_LOCATION = "menuLocation";
+		public static final String FIELD_RENDER_TYPE = "renderType";
 	}
 
 	@Getter @Setter
