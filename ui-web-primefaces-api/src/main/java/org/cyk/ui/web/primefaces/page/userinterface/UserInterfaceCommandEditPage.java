@@ -6,8 +6,14 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
+import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,21 +30,21 @@ public class UserInterfaceCommandEditPage extends AbstractCrudOnePage<UserInterf
 
 		private static final long serialVersionUID = 2646571878912106597L;
 		
-		//@Input @InputChoice(set=ChoiceSet.YES_NO) @InputOneChoice @InputOneRadio @NotNull private Boolean expirable;
-		//@Input @InputChoice(set=ChoiceSet.YES_NO) @InputOneChoice @InputOneRadio @NotNull private Boolean expired;
+		 @Input @InputChoice @InputOneChoice @InputChoiceAutoComplete @InputOneAutoComplete private UserInterfaceComponent component;
 		
 		@Override
 		public void read() {
 			super.read();
 			
-			//expirationDate = identifiable.getPeriod().getToDate();
 		}
 		
 		@Override
 		public void write() {
 			super.write();
-			//identifiable.getPeriod().setToDate(expirationDate);
+			
 		}
+		
+		public static final String FIELD_COMPONENT = "component";
 		
 	}
 

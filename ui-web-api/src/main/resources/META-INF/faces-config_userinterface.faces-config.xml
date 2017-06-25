@@ -103,6 +103,38 @@
 			<redirect />
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuLocationListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/location/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuLocationEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/location/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuLocationConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/location/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userInterfaceMenuRenderTypeListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/rendertype/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuRenderTypeEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/rendertype/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuRenderTypeConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/rendertype/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 	</navigation-rule>
 
 </faces-config>

@@ -7,6 +7,7 @@ import javax.faces.model.SelectItem;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.ItemCollection;
@@ -79,6 +80,14 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		@Override
 		protected AbstractCollection<?> getCollection() {
 			return identifiable;
+		}
+		
+		@Override
+		public void transfer(UICommand command, Object parameter) throws Exception {
+			super.transfer(command, parameter);
+			if(form.getSubmitCommandable().getCommand()==command){
+				getIdentifiable().getItems().setCollection(itemCollection.getIdentifiables());
+			}
 		}
 		
 	}

@@ -1,6 +1,10 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
@@ -54,12 +58,6 @@ import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
 import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceCommandDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceComponentDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuItemDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeDetails;
-import org.cyk.system.root.business.impl.userinterface.UserInterfaceMenuNodeTypeDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueDetails;
@@ -117,12 +115,6 @@ import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.Role;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
-import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenu;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuItem;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.Value;
 import org.cyk.system.root.model.value.ValueCollection;
@@ -139,6 +131,7 @@ import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.AbstractServletContextListener;
 import org.cyk.ui.web.api.ContextParam;
+import org.cyk.ui.web.primefaces.page.AbstractIdentifiablePagesConfiguration;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage.ConsultPageListener;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
 import org.cyk.ui.web.primefaces.page.event.EventMissedEditPage;
@@ -188,21 +181,19 @@ import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
 import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceCommandEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceComponentEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuItemEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeEditPage;
-import org.cyk.ui.web.primefaces.page.userinterface.UserInterfaceMenuNodeTypeEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
      
 	private static final long serialVersionUID = 592943227142026384L;
+	
+	protected static final Map<Class<?>,AbstractIdentifiablePagesConfiguration<?>> IDENTIFIABLE_CONFIGURATON_MAP = new HashMap<>();
 	
 	@Inject protected DefaultDesktopLayoutManager layoutManager;
 	@Inject protected PrimefacesManager primefacesManager; 
@@ -227,6 +218,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(identifiableConfiguration = new IdentifiableConfiguration(AbstractEnumeration.class, EnumerationForm.class, EnumerationForm.class,null,null,null));
 		identifiableConfiguration.setUsableByChild(Boolean.TRUE);
 		
+		registerIdentifiablePagesConfigurations();
+		
+		executIdentifiablePagesConfigurations();
+		
 		initializeEventModule();
 		initializeFileModule();
 		initializeFiniteStateMachineModule();
@@ -247,6 +242,21 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		MetricValueIdentifiableGlobalIdentifier.define(DataTree.class);
 		MetricValueIdentifiableGlobalIdentifier.define(DataTreeType.class);
 		*/
+	}
+	
+	protected void registerIdentifiablePagesConfigurations(){
+		InstanceHelper instanceHelper = new InstanceHelper();
+		for(Class<?> clazz : new ClassHelper().get("org.cyk.ui.web.primefaces.page", AbstractIdentifiablePagesConfiguration.class)){
+			if(Modifier.isAbstract(clazz.getModifiers()))
+				continue;
+			AbstractIdentifiablePagesConfiguration<?> configuration = (AbstractIdentifiablePagesConfiguration<?>) instanceHelper.instanciateOne(clazz);
+			IDENTIFIABLE_CONFIGURATON_MAP.put(configuration.getIdentifiableClass(), configuration);
+		}
+	}
+	
+	protected void executIdentifiablePagesConfigurations(){
+		for(Entry<Class<?>, AbstractIdentifiablePagesConfiguration<?>> entry : IDENTIFIABLE_CONFIGURATON_MAP.entrySet())
+			entry.getValue().configure();
 	}
 	
 	protected void initializePartyModule(){
@@ -452,25 +462,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(ValueCollection.class, null);
 	}
 	
-	protected void initializeUserInterfaceModule(){
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuNode.class, UserInterfaceMenuNodeEditPage.Form.class, UserInterfaceMenuNodeDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceMenuNode.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuNodeType.class, UserInterfaceMenuNodeTypeEditPage.Form.class, UserInterfaceMenuNodeTypeDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceMenuNodeType.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceComponent.class, UserInterfaceComponentEditPage.Form.class, UserInterfaceComponentDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceComponent.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceCommand.class, UserInterfaceCommandEditPage.Form.class, UserInterfaceCommandDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceCommand.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenu.class, UserInterfaceMenuEditPage.Form.class, UserInterfaceMenuDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceMenu.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UserInterfaceMenuItem.class, UserInterfaceMenuItemEditPage.Form.class, UserInterfaceMenuItemDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UserInterfaceMenuItem.class, null);
-	}
+	protected void initializeUserInterfaceModule(){}
 	
 	@Override
 	protected void identifiableConfiguration(ServletContextEvent event) {

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
-import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.utility.common.annotation.FieldOverride;
 import org.cyk.utility.common.annotation.FieldOverrides;
 
@@ -23,7 +22,7 @@ public class LocalityTypeEditPage extends AbstractDataTreeNodeEditPage<LocalityT
 	@FieldOverrides(value = {
 			@FieldOverride(name=AbstractDataTreeForm.FIELD_PARENT,type=LocalityType.class)
 			})
-	public static class Form extends AbstractDataTreeTypeForm<LocalityType> {
+	public static class Form extends AbstractForm<LocalityType> {
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		

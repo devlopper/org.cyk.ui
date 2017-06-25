@@ -53,6 +53,6 @@ public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataT
 			identifiable.setNewParent(parent);
 	}
 	
-	public static final String FIELD_CURRENT_PARENT = "currentParent";
+	//public static final String FIELD_CURRENT_PARENT = "currentParent";
 	public static final String FIELD_PARENT = "parent";
 }

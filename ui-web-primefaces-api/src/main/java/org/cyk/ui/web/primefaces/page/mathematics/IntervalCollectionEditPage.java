@@ -74,14 +74,6 @@ public class IntervalCollectionEditPage extends AbstractCollectionEditPage.Exten
 		((Commandable)itemCollection.getAddCommandable()).getButton().setImmediate(Boolean.TRUE);
 	}
 	
-	@Override
-	public void transfer(UICommand command, Object parameter) throws Exception {
-		super.transfer(command, parameter);
-		if(form.getSubmitCommandable().getCommand()==command){
-			getIdentifiable().getItems().setCollection(itemCollection.getIdentifiables());
-		}
-	}
-	
 	@Getter @Setter
 	public static class Form extends AbstractForm.Extends<IntervalCollection,Interval> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;

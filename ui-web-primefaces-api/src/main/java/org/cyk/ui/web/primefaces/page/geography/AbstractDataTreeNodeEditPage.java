@@ -6,15 +6,17 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
+import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
+import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractDataTreeNodeEditPage<DATA_TREE_NODE extends AbstractDataTreeNode> extends AbstractCrudOnePage<DATA_TREE_NODE> implements Serializable {
@@ -65,5 +67,12 @@ public abstract class AbstractDataTreeNodeEditPage<DATA_TREE_NODE extends Abstra
 		}
 		return (T) node;
 	}*/
+	
+	@Getter @Setter 
+	public static abstract class AbstractForm<NODE extends AbstractDataTreeType> extends AbstractDataTreeTypeForm<NODE> {
+		private static final long serialVersionUID = -4741435164709063863L;
+		
+		
+	}
 	
 }
