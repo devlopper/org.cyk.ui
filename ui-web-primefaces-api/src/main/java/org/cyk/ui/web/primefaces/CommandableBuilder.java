@@ -36,7 +36,7 @@ public class CommandableBuilder extends AbstractCommandableBuilder<Commandable> 
 	}
 	
 	public Commandable get(UserInterfaceMenuItem userInterfaceMenuItem){
-		return get(userInterfaceMenuItem.getMenuNode());
+		return get(userInterfaceMenuItem.getNode());
 	}
 	
 	public MenuModel menuModel(@NotNull UIMenu aMenu,Class<?> managedBeanClass,String fieldName){

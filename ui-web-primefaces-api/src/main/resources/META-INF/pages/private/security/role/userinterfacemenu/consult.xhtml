@@ -9,14 +9,10 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{userInterfaceMenuConsultPage}" />
+ 		<ui:param name="pageController" value="#{roleUserInterfaceMenuConsultPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{userInterfaceMenuConsultPage.details}" />
- 			<cyk:table value="#{userInterfaceMenuConsultPage.itemTable}" />
- 			
-			<cyk:menu value="#{pageController.menu}" />
- 			
- 			<cyk:formOneData value="#{userInterfaceMenuConsultPage.globalIdentifierDetails}" />
+ 			<cyk:formOneData value="#{roleUserInterfaceMenuConsultPage.details}" />
+ 			<cyk:formOneData value="#{roleUserInterfaceMenuConsultPage.globalIdentifierDetails}" />
  		</ui:define>
  	</ui:decorate>
  

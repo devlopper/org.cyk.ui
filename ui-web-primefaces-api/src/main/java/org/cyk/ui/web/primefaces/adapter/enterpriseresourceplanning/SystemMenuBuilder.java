@@ -59,6 +59,7 @@ import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.security.Credentials;
 import org.cyk.system.root.model.security.License;
 import org.cyk.system.root.model.security.LockCause;
+import org.cyk.system.root.model.security.RoleUserInterfaceMenu;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.time.TimeDivisionType;
@@ -249,6 +250,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(LockCause.class, null));
 		module.addChild(createListCommandable(SecretQuestion.class, null));
 		module.addChild(createListCommandable(Credentials.class, null));
+		module.addChild(createListCommandable(RoleUserInterfaceMenu.class, null));
 		return module;
 	}
 	

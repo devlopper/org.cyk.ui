@@ -13,6 +13,7 @@ import org.cyk.ui.web.primefaces.page.geography.AbstractDataTreeNodeEditPage;
 import org.cyk.utility.common.annotation.FieldOverride;
 import org.cyk.utility.common.annotation.FieldOverrides;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoiceAutoComplete;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneAutoComplete;
@@ -35,8 +36,10 @@ public class UserInterfaceMenuNodeEditPage extends AbstractDataTreeNodeEditPage<
 		private static final long serialVersionUID = -4741435164709063863L;
 		
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private UserInterfaceCommand command;
+		@Input @InputBooleanButton private Boolean automaticallyCreateCommand;
 		
 		public static final String FIELD_COMMAND = "command";
+		public static final String FIELD_AUTOMATICALLY_CREATE_COMMAND = "automaticallyCreateCommand";
 	
 	}
 	

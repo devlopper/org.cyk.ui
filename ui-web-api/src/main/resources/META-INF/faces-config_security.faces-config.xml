@@ -78,6 +78,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>roleUserInterfaceMenuListView</from-outcome>
+			<to-view-id>/private/security/role/userinterfacemenu/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleUserInterfaceMenuEditView</from-outcome>
+			<to-view-id>/private/security/role/userinterfacemenu/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>roleUserInterfaceMenuConsultView</from-outcome>
+			<to-view-id>/private/security/role/userinterfacemenu/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>userAccountListView</from-outcome>
 			<to-view-id>/private/security/useraccount/list.xhtml</to-view-id>
 			<redirect />

@@ -11,6 +11,7 @@ import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -45,6 +46,11 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 		public Extends(COLLECTION collection, Crud crud, FormOneData form) {
 			super(collection, crud, form);
 			entityClass = (Class<ENTITY>) new ClassHelper().getParameterAt(getClass(), 1, AbstractCollectionItem.class);
+		}
+		
+		@Override
+		public IdentifiableRuntimeCollection<ENTITY> getRuntimeCollection() {
+			return getCollection().getItems();
 		}
 		
 		@SuppressWarnings("unchecked")

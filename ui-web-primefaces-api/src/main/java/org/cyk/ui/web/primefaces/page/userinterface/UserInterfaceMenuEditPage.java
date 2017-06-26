@@ -40,13 +40,14 @@ public class UserInterfaceMenuEditPage extends AbstractCollectionEditPage.Extend
 			@Override
 			public void instanciated(AbstractItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu, SelectItem> itemCollection,Item item) {
 				super.instanciated(itemCollection, item);
-				item.getIdentifiable().setMenuNode((UserInterfaceMenuNode) getInputChoice().getValue());
+				if(item.getIdentifiable().getNode()==null)
+					item.getIdentifiable().setNode((UserInterfaceMenuNode) getInputChoice().getValue());
 			}
 			
 			@Override
 			public AbstractIdentifiable getMasterSelected(AbstractItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu, SelectItem> itemCollection,
 					UserInterfaceMenuItem identifiable) {
-				return identifiable.getMenuNode();
+				return identifiable.getNode();
 			}
 			
 		});
@@ -59,10 +60,10 @@ public class UserInterfaceMenuEditPage extends AbstractCollectionEditPage.Extend
 	public static class Form extends AbstractForm.Extends<UserInterfaceMenu,UserInterfaceMenuItem> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuLocation menuLocation;
+		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuLocation location;
 		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuRenderType renderType;
 		
-		public static final String FIELD_MENU_LOCATION = "menuLocation";
+		public static final String FIELD_MENU_LOCATION = "location";
 		public static final String FIELD_RENDER_TYPE = "renderType";
 	}
 
