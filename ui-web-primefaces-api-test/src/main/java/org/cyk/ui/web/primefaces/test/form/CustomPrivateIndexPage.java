@@ -24,18 +24,17 @@ public class CustomPrivateIndexPage extends AbstractPrimefacesPage implements Se
 	
 	//private ItemCollection<PersonDetails> personCollection = new ItemCollection<>("qwerty",PersonDetails.class);
 	 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		tablePersonDetails = (Table<PersonDetails>) createTable(PersonDetails.class, null, null);
+		//tablePersonDetails = (Table<PersonDetails>) createTable(PersonDetails.class, null, null);
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		// TODO Auto-generated method stub
 		super.afterInitialisation();
-		tablePersonDetails.addRow(new PersonDetails("Ali bongo 2", "12/09/1983"));
+		//tablePersonDetails.addRow(new PersonDetails("Ali bongo 2", "12/09/1983"));
 		//personCollection.setLabel("Details de personnes");
 		//System.out.println("PrivateIndexPage.initialisation()");
 		//throw new RuntimeException();

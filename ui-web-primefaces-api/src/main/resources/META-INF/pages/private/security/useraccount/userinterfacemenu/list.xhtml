@@ -8,14 +8,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
-    
-    <!--  
-	<p:menubar id="menubar" model="#{pageController.mainMenuModel}" styleClass="#{pageController.mainMenu.cascadeStyleSheet.clazz}" 
-		style="#{pageController.mainMenu.cascadeStyleSheet.inline}"/> 
-	-->
-	
-	<ui:fragment rendered="#{userSession.menu != null}" >
-		<cyk:menu value="#{userSession.menu}" />
-	</ui:fragment>
-	
+
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{userAccountUserInterfaceMenuListPage}" />
+ 		<ui:define name="body">
+ 			<cyk:table value="#{userAccountUserInterfaceMenuListPage.table}" />
+ 		</ui:define>
+ 	</ui:decorate>
+ 	
 </html>

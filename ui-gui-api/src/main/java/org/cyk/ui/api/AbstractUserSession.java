@@ -82,7 +82,12 @@ public abstract class AbstractUserSession<NODE,MODEL extends AbstractHierarchyNo
 		
 		setUserAccount(userAccount);
 		Collection<SystemMenu> systemMenus = MenuManager.getInstance().systemMenus(this);
-		setApplicationMenu(MenuManager.getInstance().applicationMenu(this,systemMenus));
+		if(Boolean.TRUE.equals(isAdministrator)){
+			setApplicationMenu(MenuManager.getInstance().applicationMenu(this,systemMenus));	
+		}else{
+			
+		}
+		
 		setMobileApplicationMenu(MenuManager.getInstance().mobileApplicationMenu(this,systemMenus));
 		setReferenceEntityMenu(MenuManager.getInstance().referenceEntityMenu(this,systemMenus));
 		setSecurityMenu(MenuManager.getInstance().securityMenu(this));
