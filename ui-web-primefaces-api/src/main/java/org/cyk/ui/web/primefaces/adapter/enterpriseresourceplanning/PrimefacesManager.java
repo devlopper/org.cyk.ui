@@ -89,6 +89,7 @@ import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
 import org.cyk.system.root.model.party.person.Person;
@@ -732,6 +733,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					}
 				};
 			}
+			
+			@Override
+			public org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable, AbstractOutputDetails<AbstractIdentifiable>> getFormConfigurationAdapter() {
+				return new org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener.Form.Adapter(Person.class,JobDetails.class){
+					@Override
+					public String getFormConfigurationIdentifier() {
+						return "job";
+					}
+				};
+			}
 		});
 		
 		registerDetailsConfiguration(SignatureDetails.class, new DetailsConfiguration(){
@@ -759,6 +770,16 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					@Override
 					public Boolean build(Object data,Field field) {
 						return isFieldNameIn(field,MedicalDetails.FIELD_BLOOD_GROUP,MedicalDetails.FIELD_OTHER_MEDICAL_INFORMATIONS);
+					}
+				};
+			}
+			
+			@Override
+			public org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener.Form.Adapter<AbstractIdentifiable, AbstractOutputDetails<AbstractIdentifiable>> getFormConfigurationAdapter() {
+				return new org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage.DetailsConfigurationListener.Form.Adapter(MedicalInformations.class,MedicalDetails.class){
+					@Override
+					public String getFormConfigurationIdentifier() {
+						return "medical";
 					}
 				};
 			}

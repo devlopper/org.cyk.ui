@@ -40,12 +40,6 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 	}
 	
 	@Override
-	protected void update() {
-		debug(getPerson().getJobInformations());
-		super.update();
-	}
-	
-	@Override
 	protected void processOnIdentifiableFound(PERSON identifiable) {
 		super.processOnIdentifiableFound(identifiable);
 		if(isDetailsMenuCommandable(JobDetails.class)){

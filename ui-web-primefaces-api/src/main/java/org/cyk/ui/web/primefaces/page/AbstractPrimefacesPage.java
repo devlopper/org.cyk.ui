@@ -235,7 +235,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		AbstractIdentifiable formIdentifiable = listener.getFormIdentifiable() == null ? ((AbstractOutputDetails<?>)form.getData()).getMaster() : listener.getFormIdentifiable(); 
 		UICommandable commandable = form.getMenu().addCommandable(Builder.createCrud(Crud.UPDATE, formIdentifiable ,"command.update"
 				, Icon.ACTION_UPDATE,listener.getFormViewIdentifier()));
-		commandable.setParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER, listener.getFormConfigurationIdentifier());
+		
+		commandable.addParameter(UniformResourceLocatorParameter.FORM_IDENTIFIER, listener.getFormConfigurationIdentifier());
+		commandable.addParameter(UniformResourceLocatorParameter.TAB_ID, listener.getFormConfigurationIdentifier());
 		/*
 		commandable = form.getMenu().addCommandable(Builder.createCrud(Crud.DELETE, formIdentifiable ,"command.delete"
 				, Icon.ACTION_DELETE,listener.getFormViewIdentifier()));

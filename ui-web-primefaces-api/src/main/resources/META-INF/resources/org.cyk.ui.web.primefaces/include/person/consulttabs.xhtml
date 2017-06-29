@@ -12,23 +12,25 @@
 	<h:body>
 		<ui:composition>
 			
-			<table style="width: 100%;">
-				<tr style="vertical-align: top;">
-					<td style="width: 50%;"><cyk:formOneData value="#{personConsultPage.details}" /></td>
-					<td><p:fieldset legend="#{uiManager.text('model.entity.contactCollection')}" >
-						<cyk:formOneData value="#{personConsultPage.contactCollectionDetails}" />
-					</p:fieldset></td>
-				</tr>
-				<tr style="vertical-align: top;">
-					<td style="width: 50%;">
-						<cyk:table value="#{personConsultPage.relationshipTable}" />
-					</td>
-					<td><p:fieldset legend="#{uiManager.text('signature')}" >
-						<cyk:formOneData value="#{personConsultPage.signatureDetails}" />
-					</p:fieldset></td>
-				</tr>
-			</table>
-			
+			<ui:fragment rendered="#{personConsultPage.details.rendered}" >
+				<table style="width: 100%;">
+					<tr style="vertical-align: top;">
+						<td style="width: 50%;"><cyk:formOneData value="#{personConsultPage.details}" /></td>
+						<td><p:fieldset legend="#{uiManager.text('model.entity.contactCollection')}" >
+							<cyk:formOneData value="#{personConsultPage.contactCollectionDetails}" />
+						</p:fieldset></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 50%;">
+							<cyk:table value="#{personConsultPage.relationshipTable}" />
+						</td>
+						<td><p:fieldset legend="#{uiManager.text('signature')}" >
+							<cyk:formOneData value="#{personConsultPage.signatureDetails}" />
+						</p:fieldset></td>
+					</tr>
+				</table>
+			</ui:fragment>
+				
  			<cyk:formOneData value="#{personConsultPage.jobDetails}" />
  			
  			<ui:fragment rendered="#{personConsultPage.medicalDetails.rendered}">
