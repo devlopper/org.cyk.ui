@@ -48,7 +48,7 @@ public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataT
 	public void write() {
 		super.write();
 		if(identifiable.getIdentifier()==null)
-			identifiable.setParent(parent);
+			identifiable.setParentNode(parent);
 		else
 			identifiable.setNewParent(parent);
 	}

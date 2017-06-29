@@ -40,6 +40,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>userInterfaceMenuTypeListView</from-outcome>
+			<to-view-id>/private/userinterface/menu/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuTypeEditView</from-outcome>
+			<to-view-id>/private/userinterface/menu/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userInterfaceMenuTypeConsultView</from-outcome>
+			<to-view-id>/private/userinterface/menu/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>userInterfaceComponentListView</from-outcome>
 			<to-view-id>/private/userinterface/component/list.xhtml</to-view-id>
 			<redirect />

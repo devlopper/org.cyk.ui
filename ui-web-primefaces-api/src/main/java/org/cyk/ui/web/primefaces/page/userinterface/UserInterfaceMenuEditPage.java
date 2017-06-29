@@ -9,9 +9,9 @@ import javax.inject.Named;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenu;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuItem;
-import org.cyk.system.root.model.userinterface.UserInterfaceMenuLocation;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuRenderType;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuType;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.primefaces.ItemCollection;
@@ -60,10 +60,10 @@ public class UserInterfaceMenuEditPage extends AbstractCollectionEditPage.Extend
 	public static class Form extends AbstractForm.Extends<UserInterfaceMenu,UserInterfaceMenuItem> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuLocation location;
+		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuType type;
 		@Input @InputChoice @InputOneChoice @InputOneCombo private UserInterfaceMenuRenderType renderType;
 		
-		public static final String FIELD_MENU_LOCATION = "location";
+		public static final String FIELD_MENU_TYPE = "type";
 		public static final String FIELD_RENDER_TYPE = "renderType";
 	}
 

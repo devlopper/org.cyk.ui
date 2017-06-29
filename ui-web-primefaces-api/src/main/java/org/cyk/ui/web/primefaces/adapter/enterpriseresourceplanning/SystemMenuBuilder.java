@@ -72,6 +72,7 @@ import org.cyk.system.root.model.userinterface.UserInterfaceMenuLocation;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuNode;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuNodeType;
 import org.cyk.system.root.model.userinterface.UserInterfaceMenuRenderType;
+import org.cyk.system.root.model.userinterface.UserInterfaceMenuType;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.MeasureType;
 import org.cyk.system.root.model.value.NullString;
@@ -343,6 +344,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(UserInterfaceMenuItem.class, null));
 		module.addChild(createListCommandable(UserInterfaceComponent.class, null));
 		
+		module.addChild(createListCommandable(UserInterfaceMenuType.class, null));
 		module.addChild(createListCommandable(UserInterfaceMenuLocation.class, null));
 		module.addChild(createListCommandable(UserInterfaceMenuRenderType.class, null));
 		return module;
