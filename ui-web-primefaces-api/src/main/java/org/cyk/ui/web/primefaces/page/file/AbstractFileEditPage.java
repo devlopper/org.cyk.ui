@@ -2,10 +2,6 @@ package org.cyk.ui.web.primefaces.page.file;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
@@ -20,6 +16,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> extends AbstractCrudOnePage<FILE> implements Serializable {
@@ -70,7 +69,7 @@ public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> ex
 				getFile().setExtension(file.getExtension());
 			
 			if(StringUtils.isNotBlank(uniformResourceLocator) || file == null)
-				getFile().setUri(URI.create(uniformResourceLocator));
+				getFile().setUri(uniformResourceLocator);
 			else
 				getFile().setUri(file.getUri());
 			
