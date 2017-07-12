@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractJoinGlobalIdentifierConsultPage<IDENTIFIABLE extends AbstractJoinGlobalIdentifier> extends AbstractConsultPage<IDENTIFIABLE> implements Serializable {
-
+ 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
 	@Override

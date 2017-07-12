@@ -330,7 +330,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(DataTreeType.class, null));
 		module.addChild(createListCommandable(DataTree.class, null));
 		
-		return module;
+		return module; 
 	}
 	
 	public Commandable getReferenceUserInterfaceCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
