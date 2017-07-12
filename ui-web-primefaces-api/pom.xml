@@ -24,34 +24,6 @@
 		<version.primefaces.extensions>4.0.0</version.primefaces.extensions>
 		<version.cyk>0.0.1</version.cyk>
 	</properties>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.compiler.plugin}</version>
-				<configuration>
-					<source>${version.maven.compiler.source}</source>
-					<target>${version.maven.compiler.target}</target>
-					<fork>false</fork>
-					<meminitial>8192m</meminitial>
-          			<maxmem>8192m</maxmem>
-				</configuration>
-				<!--executions>
-	                <execution>
-	                    <id>default-testCompile</id>
-	                    <phase>test-compile</phase>
-	                    <goals>
-	                        <goal>testCompile</goal>
-	                    </goals>
-	                    <configuration>
-	                        <skip>true</skip>
-	                    </configuration>
-	                </execution>
-	            </executions-->
-			</plugin>
-		</plugins>
-	</build>
 
 	<repositories>
 		<repository>
