@@ -15,7 +15,7 @@ import lombok.Setter;
 public class PersonEditPage extends AbstractPersonEditPage<Person> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-	
+	 
 	@Override
 	protected void afterInitialisation() {
 		// TODO Auto-generated method stub

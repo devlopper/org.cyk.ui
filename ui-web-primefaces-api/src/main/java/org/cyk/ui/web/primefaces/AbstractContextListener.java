@@ -239,7 +239,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		MetricValueIdentifiableGlobalIdentifier.define(DataTree.class);
 		MetricValueIdentifiableGlobalIdentifier.define(DataTreeType.class);
 		*/
-	}
+	}  
 	
 	protected void registerIdentifiablePagesConfigurations(){
 		InstanceHelper instanceHelper = new InstanceHelper();
