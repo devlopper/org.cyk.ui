@@ -69,6 +69,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 		final DetailsConfigurationListener.Form.Adapter medicalAdapter = getDetailsConfiguration(MedicalDetails.class).getFormConfigurationAdapter(Person.class, MedicalDetails.class);
 		medicalAdapter.setTitleId(MedicalDetails.LABEL_IDENTIFIER);
 		medicalAdapter.setTabId(MedicalDetails.LABEL_IDENTIFIER);
+		medicalAdapter.setIdentifiableClass(Person.class);//FIXME when not set , it gives null pointer , WHY ?
 		
 		medicalDetails = createDetailsForm(MedicalDetails.class, getPerson(),medicalAdapter);
 		
