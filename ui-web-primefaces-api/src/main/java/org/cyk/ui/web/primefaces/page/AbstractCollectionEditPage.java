@@ -41,6 +41,7 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		itemCollection = instanciateItemCollection();
 		if(itemCollection!=null)
 			itemCollection.setInputChoice((org.cyk.ui.api.data.collector.control.InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SelectItem>) form.getInputByFieldName(AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED));
+		itemCollection.setShowAddCommandableAtBottom(itemCollection.getInputChoice()==null);
 	}
 	
 	protected ItemCollection<TYPE,ITEM,COLLECTION> instanciateItemCollection(){

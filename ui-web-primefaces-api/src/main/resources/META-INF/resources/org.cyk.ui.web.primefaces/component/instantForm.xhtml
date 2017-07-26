@@ -14,7 +14,92 @@
 	</cc:interface>
 
 	<cc:implementation>
-		INSTANT FORM
+		<style>
+			.instantTableClass{
+	        	border: solid 0px white;
+	        }
+	        .instantTableTrClass{
+	        	
+	        }
+	        .instantTableTdClass{
+	    		padding: 0px;
+	    		margin: 0px;
+	        }
+	        
+	        .instantTableTd2DigitsOnlyClass{
+	        	width: 18px;
+	        }
+	        
+	        .instantTableTd3DigitsOnlyClass{
+	        	width: 26px;
+	        }
+	        
+	        .instantTableTd4DigitsOnlyClass{
+	        	width: 37px;
+	        }
+	        
+	        .instantTableTdLabelClass{
+	        	width: 5px !important;
+	        	padding: 0px;
+	        	text-align: left;
+	        }
+			.unitClass{
+	        	
+	        }
+	        .valueClass input{
+	        	
+	        }
+	        
+	        .inputNumber2DigitsOnlyClass input{
+	        	width: 18px;
+	        }
+	        
+	        .inputNumber3DigitsOnlyClass input{
+	        	width: 26px;
+	        }
+	        
+	        .inputNumber4DigitsOnlyClass input{
+	        	width: 37px;
+	        }
+	        
+	        .yearClass input{
+	        	
+	        }
+	        
+	        
+		</style>
+		<!-- INS : #{cc.value.inputs} -->
+		<table class="instantTableClass" border="0" cellpadding="0" cellspacing="0"><tr class="instantTableTrClass">
+			<td class="instantTableTdClass instantTableTd4DigitsOnlyClass">V:#{cc.value.year} <pe:inputNumber value="#{cc.value.year}" minValue="-1" maxValue="9999" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber4DigitsOnlyClass yearClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="Y" styleClass="unitClass" /></td>
+			
+			<td class="instantTableTdClass instantTableTd2DigitsOnlyClass"><pe:inputNumber value="#{cc.value.month}" minValue="0" maxValue="12" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber2DigitsOnlyClass monthClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="M" styleClass="unitClass" /></td>
+			
+			<td class="instantTableTdClass instantTableTd2DigitsOnlyClass"><pe:inputNumber value="#{cc.value.day}" minValue="0" maxValue="31" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber2DigitsOnlyClass dayClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="D" styleClass="unitClass" /></td>
+			
+			<!--td>DW</td-->
+			
+			<td class="instantTableTdClass instantTableTd2DigitsOnlyClass"><pe:inputNumber value="#{cc.value.hour}" minValue="-1" maxValue="23" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber2DigitsOnlyClass dayClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="H" styleClass="unitClass" /></td>
+			
+			<td class="instantTableTdClass instantTableTd2DigitsOnlyClass"><pe:inputNumber value="#{cc.value.minute}" minValue="-1" maxValue="59" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber2DigitsOnlyClass dayClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="MN" styleClass="unitClass" /></td>
+			
+			<td class="instantTableTdClass instantTableTd2DigitsOnlyClass"><pe:inputNumber value="#{cc.value.second}" minValue="-1" maxValue="59" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber2DigitsOnlyClass dayClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="S" styleClass="unitClass" /></td>
+			
+			<td class="instantTableTdClass instantTableTd3DigitsOnlyClass"><pe:inputNumber value="#{cc.value.millisecond}" minValue="-1" maxValue="999" decimalPlaces="0" thousandSeparator="" 
+				styleClass="valueClass inputNumber3DigitsOnlyClass dayClass"/></td>
+			<td class="instantTableTdClass instantTableTdLabelClass"><h:outputText value="MS" styleClass="unitClass" /></td>
+		</tr></table>
 	</cc:implementation>
 
 </ui:composition>

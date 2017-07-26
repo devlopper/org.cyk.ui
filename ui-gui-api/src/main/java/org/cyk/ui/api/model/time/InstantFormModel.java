@@ -1,39 +1,44 @@
 package org.cyk.ui.api.model.time;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import org.cyk.system.root.model.time.Instant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
-
-import lombok.Getter;
-import lombok.Setter;
+import org.cyk.utility.common.helper.InstanceHelper;
 
 @Getter @Setter
 public class InstantFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  
-	@Input @InputNumber	private Short year;
-	@Input @InputNumber	private Byte month;
-	@Input @InputNumber	private Byte day;
-	@Input @InputNumber	private Byte dayInWeekIndex;
-	@Input @InputNumber	private Byte hour;
-	@Input @InputNumber	private Byte minute;
-	@Input @InputNumber	private Byte second;	
-	@Input @InputNumber	private Short millisecond;
+	@Input @InputNumber	private Short year=-1;
+	@Input @InputNumber	private Byte month=0;
+	@Input @InputNumber	private Byte day=0;
+	@Input @InputNumber	private Byte dayInWeekIndex=0;
+	@Input @InputNumber	private Byte hour=-1;
+	@Input @InputNumber	private Byte minute=-1;
+	@Input @InputNumber	private Byte second=-1;	
+	@Input @InputNumber	private Short millisecond=-1;
+	
+	private List<org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>> inputs;
 	
 	public void set(Instant instant){
 		if(instant==null)
 			return;
-		year = instant.getYear();
-		month = instant.getMonth();
-		day = instant.getDay();
-		dayInWeekIndex = instant.getDayInWeekIndex();
-		hour = instant.getHour();
-		minute = instant.getMinute();
-		second = instant.getSecond();
-		millisecond = instant.getMillisecond();
+		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Short("-1"));
+		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Byte("0"));
+		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Byte("0"));
+		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Byte("0"));
+		hour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHour(),new Byte("-1"));
+		minute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinute(),new Byte("-1"));
+		second = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecond(),new Byte("-1"));
+		millisecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecond(),new Short("-1"));
 	}
 	
 	public void write(Instant instant){
@@ -47,6 +52,13 @@ public class InstantFormModel implements Serializable {
 		instant.setMillisecond(millisecond);
 	}
 	
+	public InstantFormModel addInput(org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> input){
+		if(inputs==null)
+			inputs = new ArrayList<>();
+		inputs.add(input);
+		return this;
+	}
+	
 	public static final String FIELD_YEAR = "year";
 	public static final String FIELD_MONTH = "month";
 	public static final String FIELD_DAY = "day";
@@ -55,5 +67,14 @@ public class InstantFormModel implements Serializable {
 	public static final String FIELD_SECOND = "second";
 	public static final String FIELD_MILLISECOND = "millisecond";
 	public static final String FIELD_DAY_IN_WEEK_INDEX = "dayInWeekIndex";
+
+	/**/
 	
+	@Getter @Setter
+	public static class Unit implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		
+		
+	}
 }

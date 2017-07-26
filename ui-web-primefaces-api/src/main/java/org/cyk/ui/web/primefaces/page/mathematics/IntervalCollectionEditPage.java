@@ -27,25 +27,7 @@ public class IntervalCollectionEditPage extends AbstractCollectionEditPage.Exten
 		return createItemCollection(IntervalItem.class, Interval.class,identifiable 
 				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<IntervalItem,Interval,IntervalCollection>(identifiable,crud,form){
 			private static final long serialVersionUID = 1L;
-			/*
-			@Override
-			public Collection<Interval> load() {
-				getCollection().getItems().setCollection(inject(IntervalBusiness.class).findByCollection(getCollection()));
-				return getCollection().getItems().getCollection();
-			}
 			
-			@Override
-			public Interval instanciate(AbstractItemCollection<IntervalItem, Interval, IntervalCollection, SelectItem> itemCollection) {
-				Interval interval = inject(IntervalBusiness.class).instanciateOne();
-				interval.setCollection(collection);
-				return interval;
-			}
-			
-			@Override
-			public Boolean isShowAddButton() {
-				return Boolean.TRUE;
-			}
-			*/
 			@Override
 			public void read(IntervalItem item) {
 				super.read(item);

@@ -7,6 +7,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.cyk.system.root.business.api.time.ScheduleItemBusiness;
 import org.cyk.system.root.model.time.Schedule;
 import org.cyk.system.root.model.time.ScheduleItem;
@@ -15,9 +18,6 @@ import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.api.model.time.InstantIntervalFormModel;
 import org.cyk.ui.web.primefaces.ItemCollection;
 import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter @Setter @Named @ViewScoped
 public class ScheduleEditPage extends AbstractCollectionEditPage.Extends<Schedule,ScheduleItem,ScheduleEditPage.ScheduleItemItem> implements Serializable {
@@ -41,11 +41,6 @@ public class ScheduleEditPage extends AbstractCollectionEditPage.Extends<Schedul
 				ScheduleItem interval = inject(ScheduleItemBusiness.class).instanciateOne();
 				interval.setCollection(collection);
 				return interval;
-			}
-			
-			@Override
-			public Boolean isShowAddButton() {
-				return Boolean.TRUE;
 			}
 			
 			@Override
@@ -75,6 +70,37 @@ public class ScheduleEditPage extends AbstractCollectionEditPage.Extends<Schedul
 		private static final long serialVersionUID = 3828481396841243726L;
 		
 		protected InstantIntervalFormModel instantInterval=new InstantIntervalFormModel();
-
+		protected String from,to;//FIXME workaround to avoid promerty not found
+		
+		@Override
+		public void read() {
+			super.read();
+			instantInterval.set(identifiable.getInstantInterval());
+		}
+		
+		@Override
+		public void write() {
+			super.write();
+			instantInterval.write(identifiable.getInstantInterval());
+		}
+		
+		/*
+		{
+			InputNumber inputNumber = new InputNumber();
+			inputNumber.setLabel("y");
+			instantInterval.getFrom().addInput(inputNumber);
+			
+			inputNumber = new InputNumber();
+			inputNumber.setLabel("MONTH");
+			instantInterval.getFrom().addInput(inputNumber);
+			
+			inputNumber = new InputNumber();
+			inputNumber.setLabel("DA");
+			instantInterval.getFrom().addInput(inputNumber);
+			
+			System.out
+					.println("ScheduleEditPage.ScheduleItemItem.enclosing_method() : "+instantInterval.getFrom().getInputs());
+		}*/
+		
 	}
 }
