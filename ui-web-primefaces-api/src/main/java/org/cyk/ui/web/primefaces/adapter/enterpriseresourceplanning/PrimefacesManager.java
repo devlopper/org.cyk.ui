@@ -1420,6 +1420,11 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		});
 	}
 	
+	@Override
+	protected void configureTimeModule() {
+		super.configureTimeModule();
+		
+	}
 	
 	protected Boolean isAutoConfigureClass(Class<?> aClass){
 		return Boolean.TRUE;

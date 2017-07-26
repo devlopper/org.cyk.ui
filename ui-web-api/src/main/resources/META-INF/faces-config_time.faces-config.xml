@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		
+		<navigation-case>
+			<from-outcome>scheduleListView</from-outcome>
+			<to-view-id>/private/time/schedule/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleEditView</from-outcome>
+			<to-view-id>/private/time/schedule/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleConsultView</from-outcome>
+			<to-view-id>/private/time/schedule/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>scheduleItemListView</from-outcome>
+			<to-view-id>/private/time/schedule/item/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleItemEditView</from-outcome>
+			<to-view-id>/private/time/schedule/item/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleItemConsultView</from-outcome>
+			<to-view-id>/private/time/schedule/item/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>scheduleIdentifiableGlobalIdentifierListView</from-outcome>
+			<to-view-id>/private/time/schedule/identifiableglobalidentifier/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleIdentifiableGlobalIdentifierEditView</from-outcome>
+			<to-view-id>/private/time/schedule/identifiableglobalidentifier/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>scheduleIdentifiableGlobalIdentifierConsultView</from-outcome>
+			<to-view-id>/private/time/schedule/identifiableglobalidentifier/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+	</navigation-rule>
+
+</faces-config>

@@ -63,6 +63,9 @@ import org.cyk.system.root.model.security.RoleUserInterfaceMenu;
 import org.cyk.system.root.model.security.SecretQuestion;
 import org.cyk.system.root.model.security.Software;
 import org.cyk.system.root.model.security.UserAccountUserInterfaceMenu;
+import org.cyk.system.root.model.time.Schedule;
+import org.cyk.system.root.model.time.ScheduleIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.time.ScheduleItem;
 import org.cyk.system.root.model.time.TimeDivisionType;
 import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
 import org.cyk.system.root.model.userinterface.UserInterfaceComponent;
@@ -290,7 +293,9 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	public Commandable getReferenceTimeCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable("time", null);
 		module.addChild(createListCommandable(TimeDivisionType.class, null));
-		
+		module.addChild(createListCommandable(Schedule.class, null));
+		module.addChild(createListCommandable(ScheduleItem.class, null));
+		module.addChild(createListCommandable(ScheduleIdentifiableGlobalIdentifier.class, null));
 		return module;
 	}
 	
