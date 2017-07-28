@@ -4,27 +4,29 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.Size;
 
 import org.cyk.system.root.model.time.Instant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.helper.InstanceHelper;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter @Setter
 public class InstantFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  
-	@Input @InputNumber	private Short year=-1;
-	@Input @InputNumber	private Byte month=0;
-	@Input @InputNumber	private Byte day=0;
-	@Input @InputNumber	private Byte dayInWeekIndex=0;
-	@Input @InputNumber	private Byte hour=-1;
-	@Input @InputNumber	private Byte minute=-1;
-	@Input @InputNumber	private Byte second=-1;	
-	@Input @InputNumber	private Short millisecond=-1;
+	@Input @InputNumber @Size(min=-1,max=9999) private Short year=-1;
+	@Input @InputNumber	@Size(min=-1,max=12) private Byte month=0;
+	@Input @InputNumber	@Size(min=-1,max=31) private Byte day=0;
+	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayInWeekIndex=0;
+	@Input @InputNumber	@Size(min=-1,max=23) private Byte hour=-1;
+	@Input @InputNumber	@Size(min=-1,max=59) private Byte minute=-1;
+	@Input @InputNumber	@Size(min=-1,max=59) private Byte second=-1;	
+	@Input @InputNumber	@Size(min=-1,max=999) private Short millisecond=-1;
 	
 	private List<org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>> inputs;
 	
