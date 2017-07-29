@@ -101,7 +101,7 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 		Set<String> messages = new LinkedHashSet<>();
 		if(throwable!=null){
 			//logThrowable(throwable);
-			throwable.printStackTrace();
+			//throwable.printStackTrace();
 		}
 		if(cause==null){
 			if(throwable!=null){

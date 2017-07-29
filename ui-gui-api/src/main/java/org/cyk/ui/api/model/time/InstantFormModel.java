@@ -20,9 +20,9 @@ public class InstantFormModel implements Serializable {
 	private static final long serialVersionUID = -465747050467060317L;
  
 	@Input @InputNumber @Size(min=-1,max=9999) private Short year=-1;
-	@Input @InputNumber	@Size(min=-1,max=12) private Byte month=0;
-	@Input @InputNumber	@Size(min=-1,max=31) private Byte day=0;
-	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayInWeekIndex=0;
+	@Input @InputNumber	@Size(min=-1,max=12) private Byte month=-1;
+	@Input @InputNumber	@Size(min=-1,max=31) private Byte day=-1;
+	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayInWeekIndex=-1;
 	@Input @InputNumber	@Size(min=-1,max=23) private Byte hour=-1;
 	@Input @InputNumber	@Size(min=-1,max=59) private Byte minute=-1;
 	@Input @InputNumber	@Size(min=-1,max=59) private Byte second=-1;	
@@ -34,9 +34,9 @@ public class InstantFormModel implements Serializable {
 		if(instant==null)
 			return;
 		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Short("-1"));
-		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Byte("0"));
-		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Byte("0"));
-		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Byte("0"));
+		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Byte("-1"));
+		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Byte("-1"));
+		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Byte("-1"));
 		hour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHour(),new Byte("-1"));
 		minute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinute(),new Byte("-1"));
 		second = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecond(),new Byte("-1"));
