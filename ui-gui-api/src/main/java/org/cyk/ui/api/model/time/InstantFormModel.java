@@ -19,28 +19,28 @@ public class InstantFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  
-	@Input @InputNumber @Size(min=-1,max=9999) private Short year=-1;
-	@Input @InputNumber	@Size(min=-1,max=12) private Byte month=-1;
-	@Input @InputNumber	@Size(min=-1,max=31) private Byte day=-1;
-	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayInWeekIndex=-1;
-	@Input @InputNumber	@Size(min=-1,max=23) private Byte hour=-1;
-	@Input @InputNumber	@Size(min=-1,max=59) private Byte minute=-1;
-	@Input @InputNumber	@Size(min=-1,max=59) private Byte second=-1;	
-	@Input @InputNumber	@Size(min=-1,max=999) private Short millisecond=-1;
+	@Input @InputNumber @Size(min=-1,max=9999) private Long year=-1l;
+	@Input @InputNumber	@Size(min=-1,max=12) private Long month=-1l;
+	@Input @InputNumber	@Size(min=-1,max=31) private Long day=-1l;
+	@Input @InputNumber	@Size(min=-1,max=7) private Long dayInWeekIndex=-1l;
+	@Input @InputNumber	@Size(min=-1,max=23) private Long hour=-1l;
+	@Input @InputNumber	@Size(min=-1,max=59) private Long minute=-1l;
+	@Input @InputNumber	@Size(min=-1,max=59) private Long second=-1l;	
+	@Input @InputNumber	@Size(min=-1,max=999) private Long millisecond=-1l;
 	
 	private List<org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>> inputs;
 	
 	public void set(Instant instant){
 		if(instant==null)
 			return;
-		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Short("-1"));
-		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Byte("-1"));
-		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Byte("-1"));
-		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Byte("-1"));
-		hour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHour(),new Byte("-1"));
-		minute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinute(),new Byte("-1"));
-		second = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecond(),new Byte("-1"));
-		millisecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecond(),new Short("-1"));
+		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Long("-1"));
+		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Long("-1"));
+		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Long("-1"));
+		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Long("-1"));
+		hour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHour(),new Long("-1"));
+		minute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinute(),new Long("-1"));
+		second = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecond(),new Long("-1"));
+		millisecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecond(),new Long("-1"));
 	}
 	
 	public void write(Instant instant){

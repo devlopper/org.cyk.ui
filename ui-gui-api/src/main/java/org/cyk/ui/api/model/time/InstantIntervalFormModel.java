@@ -2,11 +2,15 @@ package org.cyk.ui.api.model.time;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.time.InstantInterval;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 
@@ -20,6 +24,8 @@ public class InstantIntervalFormModel implements Serializable {
 	
 	@OutputSeperator(label=@Text(value="field.instant.to"))
 	@IncludeInputs(label=@Text(value="field.instant.to")) private InstantFormModel to = new InstantFormModel();
+	
+	@Input @InputNumber	@Size(min=-1,max=Integer.MAX_VALUE) private Long distanceInMillisecond;
 	
 	public void set(InstantInterval instantInterval){
 		if(instantInterval==null)
@@ -35,5 +41,6 @@ public class InstantIntervalFormModel implements Serializable {
 	
 	public static final String FIELD_FROM = "from";
 	public static final String FIELD_TO = "to";
+	public static final String FIELD_DISTANCE_IN_MILLISECOND = "distanceInMillisecond";
 	
 }
