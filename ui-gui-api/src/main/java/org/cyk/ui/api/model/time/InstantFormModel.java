@@ -10,6 +10,7 @@ import org.cyk.system.root.model.time.Instant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.helper.InstanceHelper;
+import org.cyk.utility.common.helper.NumberHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,29 +19,29 @@ import lombok.Setter;
 public class InstantFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
- 
-	@Input @InputNumber @Size(min=-1,max=9999) private Short year=-1;
-	@Input @InputNumber	@Size(min=-1,max=12) private Byte monthOfYear=-1;
-	@Input @InputNumber	@Size(min=-1,max=31) private Byte dayOfMonth=-1;
-	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayOfWeek=-1;
-	@Input @InputNumber	@Size(min=-1,max=23) private Byte hourOfDay=-1;
-	@Input @InputNumber	@Size(min=-1,max=59) private Byte minuteOfHour=-1;
-	@Input @InputNumber	@Size(min=-1,max=59) private Byte secondOfMinute=-1;	
-	@Input @InputNumber	@Size(min=-1,max=999) private Short millisecondOfSecond=-1;
+
+	@Input @InputNumber @Size(min=0,max=9999) private Short year=NumberHelper.SHORT_ZERO;
+	@Input @InputNumber	@Size(min=0,max=12) private Byte monthOfYear=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=31) private Byte dayOfMonth=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=7) private Byte dayOfWeek=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=23) private Byte hourOfDay=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=59) private Byte minuteOfHour=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=59) private Byte secondOfMinute=NumberHelper.BYTE_ZERO;
+	@Input @InputNumber	@Size(min=0,max=999) private Short millisecondOfSecond=NumberHelper.SHORT_ZERO;
 	
 	private List<org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>> inputs;
 	
 	public void set(Instant instant){
 		if(instant==null)
 			return;
-		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Short("-1"));
-		monthOfYear = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonthOfYear(),new Byte("-1"));
-		dayOfMonth = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfMonth(),new Byte("-1"));
-		dayOfWeek = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfWeek(),new Byte("-1"));
-		hourOfDay = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHourOfDay(),new Byte("-1"));
-		minuteOfHour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinuteOfHour(),new Byte("-1"));
-		secondOfMinute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecondOfMinute(),new Byte("-1"));
-		millisecondOfSecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecondOfSecond(),new Short("-1"));
+		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),NumberHelper.SHORT_ZERO);
+		monthOfYear = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonthOfYear(),NumberHelper.BYTE_ZERO);
+		dayOfMonth = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfMonth(),NumberHelper.BYTE_ZERO);
+		dayOfWeek = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfWeek(),NumberHelper.BYTE_ZERO);
+		hourOfDay = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHourOfDay(),NumberHelper.BYTE_ZERO);
+		minuteOfHour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinuteOfHour(),NumberHelper.BYTE_ZERO);
+		secondOfMinute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecondOfMinute(),NumberHelper.BYTE_ZERO);
+		millisecondOfSecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecondOfSecond(),NumberHelper.SHORT_ZERO);
 	}
 	
 	public void write(Instant instant){
@@ -75,8 +76,6 @@ public class InstantFormModel implements Serializable {
 	@Getter @Setter
 	public static class Unit implements Serializable {
 		private static final long serialVersionUID = 1L;
-		
-		
-		
+				
 	}
 }
