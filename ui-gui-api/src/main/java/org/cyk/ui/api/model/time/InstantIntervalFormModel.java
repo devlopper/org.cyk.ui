@@ -25,6 +25,7 @@ public class InstantIntervalFormModel implements Serializable {
 	@OutputSeperator(label=@Text(value="field.instant.to"))
 	@IncludeInputs(label=@Text(value="field.instant.to")) private InstantFormModel to = new InstantFormModel();
 	
+	@Input @InputNumber	@Size(min=-1,max=Integer.MAX_VALUE) private Long portionInMillisecond;
 	@Input @InputNumber	@Size(min=-1,max=Integer.MAX_VALUE) private Long distanceInMillisecond;
 	
 	public void set(InstantInterval instantInterval){
@@ -32,15 +33,18 @@ public class InstantIntervalFormModel implements Serializable {
 			return;
 		from.set(instantInterval.getFrom());
 		to.set(instantInterval.getTo());
+		portionInMillisecond = instantInterval.getPortionInMillisecond();
 	}
 	
 	public void write(InstantInterval instantInterval){
 		from.write(instantInterval.getFrom());
 		to.write(instantInterval.getTo());
+		instantInterval.setPortionInMillisecond(portionInMillisecond);
 	}
 	
 	public static final String FIELD_FROM = "from";
 	public static final String FIELD_TO = "to";
+	public static final String FIELD_PORTION_IN_MILLISECOND = "portionInMillisecond";
 	public static final String FIELD_DISTANCE_IN_MILLISECOND = "distanceInMillisecond";
 	
 }

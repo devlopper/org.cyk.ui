@@ -5,22 +5,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.event.EventPartyBusiness;
+import org.cyk.system.root.business.api.time.ScheduleItemBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventParty;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.model.event.AbstractEventCalendar;
+import org.cyk.utility.common.helper.EventHelper;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.menu.MenuModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class EventCalendar extends AbstractEventCalendar implements Serializable {
 
@@ -56,6 +58,13 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 					scheduleEvent.setEditable(false);
 					addEvent(scheduleEvent);
 				}
+				
+				for(EventHelper.Event event : inject(ScheduleItemBusiness.class).findEvents(start, end)){
+					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(event.getName(),event.getFrom(),event.getTo());
+					scheduleEvent.setEditable(false);
+					addEvent(scheduleEvent);
+				}
+				
 			}
 		};	
 	}

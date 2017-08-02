@@ -19,39 +19,39 @@ public class InstantFormModel implements Serializable {
 
 	private static final long serialVersionUID = -465747050467060317L;
  
-	@Input @InputNumber @Size(min=-1,max=9999) private Long year=-1l;
-	@Input @InputNumber	@Size(min=-1,max=12) private Long month=-1l;
-	@Input @InputNumber	@Size(min=-1,max=31) private Long day=-1l;
-	@Input @InputNumber	@Size(min=-1,max=7) private Long dayInWeekIndex=-1l;
-	@Input @InputNumber	@Size(min=-1,max=23) private Long hour=-1l;
-	@Input @InputNumber	@Size(min=-1,max=59) private Long minute=-1l;
-	@Input @InputNumber	@Size(min=-1,max=59) private Long second=-1l;	
-	@Input @InputNumber	@Size(min=-1,max=999) private Long millisecond=-1l;
+	@Input @InputNumber @Size(min=-1,max=9999) private Short year=-1;
+	@Input @InputNumber	@Size(min=-1,max=12) private Byte monthOfYear=-1;
+	@Input @InputNumber	@Size(min=-1,max=31) private Byte dayOfMonth=-1;
+	@Input @InputNumber	@Size(min=-1,max=7) private Byte dayOfWeek=-1;
+	@Input @InputNumber	@Size(min=-1,max=23) private Byte hourOfDay=-1;
+	@Input @InputNumber	@Size(min=-1,max=59) private Byte minuteOfHour=-1;
+	@Input @InputNumber	@Size(min=-1,max=59) private Byte secondOfMinute=-1;	
+	@Input @InputNumber	@Size(min=-1,max=999) private Short millisecondOfSecond=-1;
 	
 	private List<org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?>> inputs;
 	
 	public void set(Instant instant){
 		if(instant==null)
 			return;
-		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Long("-1"));
-		month = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonth(),new Long("-1"));
-		day = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDay(),new Long("-1"));
-		dayInWeekIndex = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayInWeekIndex(),new Long("-1"));
-		hour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHour(),new Long("-1"));
-		minute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinute(),new Long("-1"));
-		second = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecond(),new Long("-1"));
-		millisecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecond(),new Long("-1"));
+		year = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getYear(),new Short("-1"));
+		monthOfYear = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMonthOfYear(),new Byte("-1"));
+		dayOfMonth = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfMonth(),new Byte("-1"));
+		dayOfWeek = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getDayOfWeek(),new Byte("-1"));
+		hourOfDay = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getHourOfDay(),new Byte("-1"));
+		minuteOfHour = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMinuteOfHour(),new Byte("-1"));
+		secondOfMinute = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getSecondOfMinute(),new Byte("-1"));
+		millisecondOfSecond = InstanceHelper.getInstance().getIfNotNullElseDefault(instant.getMillisecondOfSecond(),new Short("-1"));
 	}
 	
 	public void write(Instant instant){
 		instant.setYear(year);
-		instant.setMonth(month);
-		instant.setDay(day);
-		instant.setDayInWeekIndex(dayInWeekIndex);
-		instant.setHour(hour);
-		instant.setMinute(minute);
-		instant.setSecond(second);
-		instant.setMillisecond(millisecond);
+		instant.setMonthOfYear(monthOfYear);
+		instant.setDayOfMonth(dayOfMonth);
+		instant.setDayOfWeek(dayOfWeek);
+		instant.setHourOfDay(hourOfDay);
+		instant.setMinuteOfHour(minuteOfHour);
+		instant.setSecondOfMinute(secondOfMinute);
+		instant.setMillisecondOfSecond(millisecondOfSecond);
 	}
 	
 	public InstantFormModel addInput(org.cyk.ui.api.data.collector.control.Input<?, ?, ?, ?, ?, ?> input){
@@ -62,13 +62,13 @@ public class InstantFormModel implements Serializable {
 	}
 	
 	public static final String FIELD_YEAR = "year";
-	public static final String FIELD_MONTH = "month";
-	public static final String FIELD_DAY = "day";
-	public static final String FIELD_HOUR = "hour";
-	public static final String FIELD_MINUTE = "minute";
-	public static final String FIELD_SECOND = "second";
-	public static final String FIELD_MILLISECOND = "millisecond";
-	public static final String FIELD_DAY_IN_WEEK_INDEX = "dayInWeekIndex";
+	public static final String FIELD_MONTH_OF_YEAR = "monthOfYear";
+	public static final String FIELD_DAY_OF_MONTH = "dayOfMonth";
+	public static final String FIELD_DAY_OF_WEEK = "dayOfWeek";
+	public static final String FIELD_HOUR_OF_DAY = "hourOfDay";
+	public static final String FIELD_MINUTE_OF_HOUR = "minuteOfHour";
+	public static final String FIELD_SECOND_OF_MINUTE = "secondOfMinute";
+	public static final String FIELD_MILLISECOND_OF_SECOND = "millisecondOfSecond";
 
 	/**/
 	

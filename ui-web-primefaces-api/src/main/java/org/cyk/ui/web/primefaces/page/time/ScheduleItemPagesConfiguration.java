@@ -21,8 +21,9 @@ public class ScheduleItemPagesConfiguration extends AbstractIdentifiablePagesCon
 	@Override
 	protected String[] getFieldNames(Action action) {
 		return ArrayUtils.addAll(super.getFieldNames(action), new String[]{ScheduleItemEditPage.Form.FIELD_INSTANT_INTERVAL,InstantIntervalFormModel.FIELD_FROM
-			,InstantIntervalFormModel.FIELD_TO,InstantFormModel.FIELD_YEAR,InstantFormModel.FIELD_MONTH,InstantFormModel.FIELD_DAY,InstantFormModel.FIELD_HOUR
-			,InstantFormModel.FIELD_MINUTE,InstantFormModel.FIELD_SECOND,InstantFormModel.FIELD_MILLISECOND});
+			,InstantIntervalFormModel.FIELD_TO,InstantFormModel.FIELD_YEAR,InstantFormModel.FIELD_MONTH_OF_YEAR,InstantFormModel.FIELD_DAY_OF_MONTH
+			,InstantFormModel.FIELD_DAY_OF_WEEK,InstantFormModel.FIELD_HOUR_OF_DAY,InstantFormModel.FIELD_MINUTE_OF_HOUR,InstantFormModel.FIELD_SECOND_OF_MINUTE
+			,InstantFormModel.FIELD_MILLISECOND_OF_SECOND,InstantIntervalFormModel.FIELD_PORTION_IN_MILLISECOND});
 	}
 	
 }
