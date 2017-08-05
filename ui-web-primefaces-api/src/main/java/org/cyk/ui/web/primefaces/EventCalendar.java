@@ -58,7 +58,6 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 					scheduleEvent.setEditable(false);
 					addEvent(scheduleEvent);
 				}
-				
 				for(EventHelper.Event event : inject(ScheduleItemBusiness.class).findEvents(start, end)){
 					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(event.getName(),event.getFrom(),event.getTo());
 					scheduleEvent.setEditable(false);
