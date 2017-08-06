@@ -2,10 +2,12 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.event.EventPartyBusiness;
 import org.cyk.system.root.business.api.time.ScheduleItemBusiness;
 import org.cyk.system.root.model.ContentType;
@@ -41,24 +43,11 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 			private static final long serialVersionUID = -2583150177323754107L;
 			@Override
 			public void loadEvents(Date start, Date end) {
-				for(Event event : EventCalendar.this.events(start,end)){
-					String object = null;//event.getType().getName();
-					/*if(StringUtils.isBlank(object))
-						object = event.getObject();
-					else
-						object += " - "+ event.getObject();*/
-					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(object,event.getExistencePeriod().getFromDate(),event.getExistencePeriod().getToDate(),event);
-					
-					/*
-					if(event.getAlarm().getExistencePeriod().getFromDate()!=null)
-						scheduleEvent.setDescription("Alarm : "+UIManager.getInstance().formatDate(event.getAlarm().getExistencePeriod().getFromDate(), Boolean.TRUE)+
-							" - "+UIManager.getInstance().formatDate(event.getAlarm().getExistencePeriod().getToDate(), Boolean.TRUE));
-					*/
-					
-					scheduleEvent.setEditable(false);
-					addEvent(scheduleEvent);
-				}
-				for(EventHelper.Event event : inject(ScheduleItemBusiness.class).findEvents(start, end)){
+				Collection<EventHelper.Event> events = new ArrayList<>();
+				events.addAll(inject(EventBusiness.class).findEvents(start, end));
+				events.addAll(inject(ScheduleItemBusiness.class).findEvents(start, end));
+				
+				for(EventHelper.Event event : events){
 					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(event.getName(),event.getFrom(),event.getTo());
 					scheduleEvent.setEditable(false);
 					addEvent(scheduleEvent);
