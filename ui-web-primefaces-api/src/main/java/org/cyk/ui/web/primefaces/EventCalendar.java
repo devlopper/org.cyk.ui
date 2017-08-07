@@ -2,14 +2,11 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.event.EventBusiness;
 import org.cyk.system.root.business.api.event.EventPartyBusiness;
-import org.cyk.system.root.business.api.time.ScheduleItemBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventParty;
@@ -43,16 +40,11 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 			private static final long serialVersionUID = -2583150177323754107L;
 			@Override
 			public void loadEvents(Date start, Date end) {
-				Collection<EventHelper.Event> events = new ArrayList<>();
-				events.addAll(inject(EventBusiness.class).findEvents(start, end));
-				events.addAll(inject(ScheduleItemBusiness.class).findEvents(start, end));
-				
-				for(EventHelper.Event event : events){
+				for(EventHelper.Event event : EventHelper.getInstance().get(start, end)){
 					DefaultScheduleEvent scheduleEvent = new DefaultScheduleEvent(event.getName(),event.getFrom(),event.getTo());
 					scheduleEvent.setEditable(false);
 					addEvent(scheduleEvent);
 				}
-				
 			}
 		};	
 	}
