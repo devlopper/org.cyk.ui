@@ -12,7 +12,9 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{personListPage}" />
  		<ui:define name="body">
- 			<cyk:table value="#{personListPage.table}" />
+ 			<cyk:table value="#{personListPage.table}" >
+ 				#{row.data.code} - #{row.data.name} - #{row.data.lastnames}
+ 			</cyk:table>
  		</ui:define>
  		
  	</ui:decorate>

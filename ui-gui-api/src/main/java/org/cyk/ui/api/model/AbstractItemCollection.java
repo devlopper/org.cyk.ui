@@ -191,8 +191,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	
 	public void write(){
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
-			for(TYPE item : items)
+			for(TYPE item : items){
 				listener.write(item);
+			}
 	}
 	
 	public void read(){
@@ -383,6 +384,11 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				if(runtimeCollection==null)
 					return super.isShowAddButton();
 				return Boolean.TRUE.equals(runtimeCollection.isSynchonizationEnabled());
+			}
+			
+			@Override
+			public void write(TYPE item) {
+				item.write();
 			}
 			
 		}

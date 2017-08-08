@@ -258,7 +258,7 @@ public class Table<DATA> extends AbstractTable<DATA,TreeNode,HierarchyNode> impl
 				public List<Row<DATA>> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 					LogMessage.Builder logMessageBuilder = new LogMessage.Builder("Load","data");
 					logMessageBuilder.addParameters("filters",filters);
-					String filter = (String)filters.get("globalFilter");
+					String filter = filters == null ? null : (String)filters.get("globalFilter");
 					if(StringUtils.isBlank(filter))
 						filter = WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.FILTER);
 					
