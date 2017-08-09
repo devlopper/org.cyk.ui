@@ -406,10 +406,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				private static final long serialVersionUID = 8640883295366346645L;
 				@Override
 				public void serve(UICommand command, Object parameter) {
-					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
-						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE
+					//debug(parameter);
+					navigationManager.redirectToDynamicCrudOne(listener.getFormIdentifiable(),Crud.UPDATE
 								,table.getUpdateRowCommandable().getParameters(),listener.getEditPageOutcome());
-					}
 				}
 			});
 		}

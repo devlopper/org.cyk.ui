@@ -278,7 +278,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
 		
 		if(updateCommandable!=null)
-			updateCommandable.setRendered(/*businessEntityInfos==null || !Boolean.TRUE.equals(inplaceEdit)*/Boolean.TRUE);
+			updateCommandable.setRendered(/*businessEntityInfos==null || !Boolean.TRUE.equals(inplaceEdit)*/Boolean.FALSE);
 		
 		super.build();
 		

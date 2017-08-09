@@ -16,6 +16,8 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.data.collector.control.Control;
+import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.ListenerUtils;
@@ -288,8 +290,13 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				this.collection = collection;
 				this.crud = crud;
 				this.form = form;
-				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName()))
+				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName())){
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
+					//System.out.println(form.get getFormDatas().peek().getData().getClass());
+					//for(Control control : form.getFormDatas().peek().getControlSets().iterator().next().getControls())
+					//	if(control instanceof Input)
+							;//System.out.println( ((Input)control).getField() );
+				}
 			}
 			
 			@Override
