@@ -59,6 +59,7 @@ import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.cdi.DefaultBeanAdapter;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -398,6 +399,22 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			crudCollection.add(Crud.CREATE);
 		*/
 		
+		//if(Boolean.TRUE.equals(table.getShowXXXCommand())){
+		if(!StringHelper.getInstance().isBlank(listener.getEditPageOutcome())){
+			table.getUpdateCommandable().setRendered(Boolean.TRUE);
+			table.getUpdateCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
+				private static final long serialVersionUID = 8640883295366346645L;
+				@Override
+				public void serve(UICommand command, Object parameter) {
+					if( ((Row<?>)parameter).getData() instanceof  AbstractOutputDetails){
+						navigationManager.redirectToDynamicCrudOne(((Row<? extends AbstractOutputDetails<?>>)parameter).getData().getMaster(),Crud.UPDATE
+								,table.getUpdateRowCommandable().getParameters(),listener.getEditPageOutcome());
+					}
+				}
+			});
+		}
+		//}
+		
 		//if(Boolean.TRUE.equals(table.getShowOpenCommand())){
 			table.getOpenRowCommandable().getCommand().getCommandListeners().add(new CommandAdapter(){
 				private static final long serialVersionUID = 8640883295366346645L;
@@ -520,6 +537,9 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		AbstractIdentifiable getFormIdentifiable();
 		Collection<? extends AbstractIdentifiable> getMasters();
 		
+		String getEditPageOutcome();
+		DetailsConfigurationListener<IDENTIFIABLE,DATA> setEditPageOutcome(String editPageOutcome);
+		
 		/*  */
 		
 		@Getter @Setter
@@ -533,6 +553,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			protected Boolean isIdentifiableMaster=Boolean.TRUE;
 			protected Collection<? extends AbstractIdentifiable> masters;
 			protected AbstractIdentifiable formIdentifiable;
+			protected String editPageOutcome;
 			
 			public AbstractDetailsConfigurationAdapter(Class<IDENTIFIABLE> identifiableClass, Class<DATA> dataClass) {
 				super();
@@ -541,6 +562,11 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 				titleId = IdentifierProvider.Adapter.getTabOf(identifiableClass);
 				
 				tabId = getTitleId();
+			}
+			
+			public DetailsConfigurationListener<IDENTIFIABLE,DATA> setEditPageOutcome(String editPageOutcome){
+				this.editPageOutcome = editPageOutcome;
+				return this;
 			}
 			
 			@SuppressWarnings("unchecked")

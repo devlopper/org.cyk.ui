@@ -15,6 +15,7 @@
 			<p:toolbar id="toolbar" rendered="#{table.showToolBar}">
       			<f:facet name="left">
       				<cyk:command value="#{table.addRowCommandable}" />
+      				<cyk:command value="#{table.updateCommandable}" />
       				<cyk:command value="#{table.importCommandable}" />
       				<ui:fragment rendered="#{(table.addRowCommandable.button.rendered or table.importCommandable.button.rendered) and (table.exportCommandable.button.rendered or table.printCommandable.button.rendered)}" ><span class="ui-separator">
 			        	<span class="ui-icon ui-icon-grip-dotted-vertical" />

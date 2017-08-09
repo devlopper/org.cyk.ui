@@ -74,7 +74,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 	protected Boolean editable=null,selectable=Boolean.TRUE,inplaceEdit=Boolean.TRUE,lazyLoad=null,globalFilter=null,showToolBar=Boolean.TRUE,
 			showEditColumn,showAddRemoveColumn,persistOnApplyRowEdit,persistOnRemoveRow,rendered=Boolean.TRUE;
 	protected AbstractTree<NODE,MODEL> tree;
-	protected UICommandable addRowCommandable,importCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
+	protected UICommandable addRowCommandable,updateCommandable,importCommandable,initRowEditCommandable,cancelRowEditCommandable,applyRowEditCommandable,removeRowCommandable,openRowCommandable,
 		updateRowCommandable,searchCommandable,exportCommandable,exportToPdfCommandable,exportToXlsCommandable,printCommandable;
 	protected UIMenu exportMenu = new DefaultMenu();
 	protected Boolean showHierarchy,showOpenCommand=Boolean.FALSE,showFooterCommandBlock=Boolean.TRUE,showHeader=Boolean.TRUE,showFooter=Boolean.FALSE,built=Boolean.FALSE
@@ -136,6 +136,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		});
 		
 		addRowCommandable.getCommand().getCommandListeners().add(this);
+		
+		updateCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit.many").setIcon(Icon.ACTION_EDIT_MANY)
+				.setShowLabel(Boolean.TRUE).create();
 		
 		initRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit").setIcon(Icon.ACTION_EDIT).create();
 		cancelRowEditCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.cancel").setIcon(Icon.ACTION_CANCEL).create();
@@ -273,6 +276,9 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		
 		if(removeRowCommandable!=null)
 			removeRowCommandable.getCommand().setConfirm(inplaceEdit);
+		
+		if(updateCommandable!=null)
+			updateCommandable.setRendered(/*businessEntityInfos==null || !Boolean.TRUE.equals(inplaceEdit)*/Boolean.TRUE);
 		
 		super.build();
 		
