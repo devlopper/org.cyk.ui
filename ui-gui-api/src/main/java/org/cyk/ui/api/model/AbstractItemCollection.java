@@ -195,10 +195,16 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	}
 	
 	public void write(){
-		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
+		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners) {
 			for(TYPE item : items){
 				listener.write(item);
 			}
+			IdentifiableRuntimeCollection<IDENTIFIABLE> identifiableRuntimeCollection = listener.getRuntimeCollection();
+			if(identifiableRuntimeCollection!=null && identifiableRuntimeCollection.isSynchonizationEnabled())
+				identifiableRuntimeCollection.setCollection(getIdentifiables());
+		}
+		
+		
 	}
 	
 	public void read(){
