@@ -14,16 +14,16 @@ public class ItemCollectionWebAdapter<TYPE extends AbstractItemCollectionItem<ID
 	private static final long serialVersionUID = -2744677394853272140L;
 	
 	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
-			,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
-		super(collection, crud,form,inputChoice);
+			,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice,Class<IDENTIFIABLE> identifiableClass) {
+		super(collection, crud,form,inputChoice,identifiableClass);
 	}
 	
-	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
-		super(collection, crud,form);
+	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form,Class<IDENTIFIABLE> identifiableClass) {
+		super(collection, crud,form,identifiableClass);
 	}
 
 	public ItemCollectionWebAdapter(COLLECTION collection, Crud crud) {
-		this(collection, crud,null,null);
+		this(collection, crud,null,null,null);
 	}
 	
 

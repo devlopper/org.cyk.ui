@@ -476,7 +476,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		form.getItemCollections().add(collection);
 		
 		collection.getItemCollectionListeners().add(new ItemCollectionAdapter<TYPE,IDENTIFIABLE,COLLECTION>(collectionIdentifiable,Crud.CREATE
-				,(FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?>) form){
+				,(FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?>) form,identifiableClass){
 			private static final long serialVersionUID = 4920928936636548919L;
 			@Override
 			public void instanciated(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SelectItem> itemCollection,TYPE item) {
@@ -491,7 +491,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			collection.getAddCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) && Boolean.TRUE.equals(listener.isShowAddButton()));
 			collection.getDeleteCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) &&  collection.getAddCommandable().getRendered());
 			if(listener.getInputChoice()!=null)
-				collection.setInputChoice((InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SelectItem>) listener.getInputChoice());
+				collection.setInputChoice((InputChoice<?, ?, ?, ?, ?, SelectItem>) listener.getInputChoice());
 		}
 		
 		if(Crud.isCreateOrUpdate(collection.getCrud()))

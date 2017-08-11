@@ -79,7 +79,7 @@ public class RoleEditPage extends AbstractCollectionEditPage<Role,RoleUniformRes
 		private static final long serialVersionUID = 1L;
 
 		public RoleUniformResourceLocatorItemAdapter(Role role, Crud crud,FormOneData<?> form) {
-			super(role, crud,form);
+			super(role, crud,form,RoleUniformResourceLocator.class);
 		}
 		
 		@Override

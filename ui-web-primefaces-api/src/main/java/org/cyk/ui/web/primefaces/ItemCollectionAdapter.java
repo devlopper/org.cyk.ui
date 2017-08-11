@@ -16,7 +16,6 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
 import org.cyk.ui.web.api.ItemCollectionWebAdapter;
-import org.cyk.ui.web.primefaces.page.AbstractCollectionEditPage;
 import org.cyk.utility.common.helper.ClassHelper;
 
 public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemCollectionItem<ENTITY>,ENTITY extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends ItemCollectionWebAdapter<ITEM_COLLECTION_ITEM,ENTITY,COLLECTION>  implements Serializable {
@@ -24,13 +23,8 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 	private static final long serialVersionUID = 7806030819027062650L;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData form) {
-		super(collection, crud, form);
-	}
-	
-	@Override
-	public String getFieldOneItemMasterSelectedName() {
-		return AbstractCollectionEditPage.AbstractForm.FIELD_ONE_ITEM_MASTER_SELECTED;
+	public ItemCollectionAdapter(COLLECTION collection, Crud crud,FormOneData form,Class<ENTITY> identifiableClass) {
+		super(collection, crud, form,identifiableClass);
 	}
 	
 	/**/
@@ -43,8 +37,8 @@ public class ItemCollectionAdapter<ITEM_COLLECTION_ITEM extends AbstractItemColl
 		protected Class<ENTITY> entityClass;
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public Extends(COLLECTION collection, Crud crud, FormOneData form) {
-			super(collection, crud, form);
+		public Extends(COLLECTION collection, Crud crud, FormOneData form,Class<ENTITY> identifiableClass) {
+			super(collection, crud, form,identifiableClass);
 			entityClass = (Class<ENTITY>) new ClassHelper().getParameterAt(getClass(), 1, AbstractCollectionItem.class);
 		}
 		

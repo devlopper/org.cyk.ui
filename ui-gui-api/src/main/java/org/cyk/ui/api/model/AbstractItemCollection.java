@@ -8,6 +8,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.FormatterBusiness;
+import org.cyk.system.root.business.api.TypedBusiness;
+import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.ui.api.Icon;
@@ -16,13 +18,14 @@ import org.cyk.ui.api.command.AbstractCommandable.Builder;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable;
-import org.cyk.ui.api.data.collector.control.Control;
-import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
 import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
+import org.cyk.utility.common.helper.MethodHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +40,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Class<IDENTIFIABLE> identifiableClass;
 	protected Class<COLLECTION> collectionClass;
 	
-	protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
+	protected InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 	protected Class<TYPE> itemClass;
 	protected List<TYPE> items = new ArrayList<>();
 	protected Collection<Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM>> itemCollectionListeners = new ArrayList<>();
@@ -101,7 +104,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		});
 	}
 	
-	public void add(IDENTIFIABLE identifiable,AbstractIdentifiable master){
+	public void add(IDENTIFIABLE identifiable,Object master){
 		TYPE instance = newInstance(itemClass);
 		instance.setIdentifiable(identifiable);
 		instance.setMaster(master);
@@ -155,10 +158,10 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	@Deprecated
 	protected abstract AbstractIdentifiable getIdentifiableFromChoice(SELECT_ITEM choice);
 	
-	protected AbstractIdentifiable getMasterSelected(IDENTIFIABLE identifiable){
-		AbstractIdentifiable instance = null;
+	protected Object getMasterSelected(IDENTIFIABLE identifiable){
+		Object instance = null;
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners){
-			AbstractIdentifiable v = listener.getMasterSelected(this,identifiable);
+			Object v = listener.getMasterSelected(this,identifiable);
 			if(v!=null)
 				instance = v;
 		}
@@ -242,7 +245,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 
 		void setLabel(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> itemCollection,TYPE item);
 		
-		AbstractIdentifiable getMasterSelected(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable);
+		Object getMasterSelected(AbstractItemCollection<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable);
 		
 		/**
 		 * Take value from item fields to identifiable fields
@@ -262,6 +265,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> getInputChoice();
 		void setInputChoice(InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice);
 		
+		Class<IDENTIFIABLE> getIdentifiableClass();
+		void setIdentifiableClass(Class<IDENTIFIABLE> identifiableClass);
+		
 		String getFieldOneItemMasterSelectedName();
 		
 		/**/
@@ -274,28 +280,31 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			protected Crud crud;
 			protected FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form;
 			protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice;
+			protected Class<IDENTIFIABLE> identifiableClass;
 			
 			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
-					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
+					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice,Class<IDENTIFIABLE> identifiableClass) {
 				super();
 				this.collection = collection;
 				this.crud = crud;
 				this.form = form;
 				this.inputChoice = inputChoice;
+				this.identifiableClass = identifiableClass;
 			}
 			
 			@SuppressWarnings("unchecked")
-			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
+			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form,Class<IDENTIFIABLE> identifiableClass) {
 				super();
 				this.collection = collection;
 				this.crud = crud;
 				this.form = form;
+				this.identifiableClass = identifiableClass;
 				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName())){
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
 					//System.out.println(form.get getFormDatas().peek().getData().getClass());
 					//for(Control control : form.getFormDatas().peek().getControlSets().iterator().next().getControls())
 					//	if(control instanceof Input)
-							;//System.out.println( ((Input)control).getField() );
+							//;//System.out.println( ((Input)control).getField() );
 				}
 			}
 			
@@ -329,7 +338,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			@Override public void read(TYPE item) {}
 			
 			@Override
-			public AbstractIdentifiable getMasterSelected(AbstractItemCollection<TYPE, IDENTIFIABLE, COLLECTION, SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable) {
+			public Object getMasterSelected(AbstractItemCollection<TYPE, IDENTIFIABLE, COLLECTION, SELECT_ITEM> itemCollection,IDENTIFIABLE identifiable) {
 				return null;
 			}
 			
@@ -359,18 +368,62 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			private static final long serialVersionUID = 5920340778121618178L;
 			
 			public Default(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
-					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice) {
-				super(collection,crud,form,inputChoice);
+					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice,Class<IDENTIFIABLE> identifiableClass) {
+				super(collection,crud,form,inputChoice,identifiableClass);
 			}
 			
-			public Default(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form) {
-				super(collection,crud,form);
+			public Default(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form,Class<IDENTIFIABLE> identifiableClass) {
+				super(collection,crud,form,identifiableClass);
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public IdentifiableRuntimeCollection<IDENTIFIABLE> getRuntimeCollection() {
+				if(getInputChoice()==null)
+					return null;
+				return InstanceHelper.getInstance()
+						.callGetMethod(getCollection(), IdentifiableRuntimeCollection.class, getInputChoice().getField().getType().getSimpleName()+"s")
+						.setSynchonizationEnabled(Boolean.TRUE); 
+				//getCollection().getSubjects().setSynchonizationEnabled(Boolean.TRUE);
+			}
+			
+			@Override
+			public Object getMasterSelected(AbstractItemCollection<TYPE, IDENTIFIABLE, COLLECTION, SELECT_ITEM> itemCollection,
+					IDENTIFIABLE identifiable) {
+				if(getInputChoice()==null)
+					return null;
+				return (AbstractIdentifiable) InstanceHelper.getInstance().callGetMethod(identifiable, inputChoice.getField().getType(), inputChoice.getField().getType().getSimpleName());
 			}
 			
 			@Override
 			public void setLabel(AbstractItemCollection<TYPE, IDENTIFIABLE,COLLECTION, SELECT_ITEM> itemCollection,TYPE item) {
 				super.setLabel(itemCollection, item);
-				item.setLabel(inject(FormatterBusiness.class).format(item.getIdentifiable()));
+				if(getInputChoice()==null)
+					return;
+				item.setLabel(inject(FormatterBusiness.class).format( getMasterSelected(itemCollection, item.getIdentifiable()) ));
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public IDENTIFIABLE instanciate(AbstractItemCollection<TYPE, IDENTIFIABLE, COLLECTION, SELECT_ITEM> itemCollection) {
+				if(getInputChoice()==null)
+					return null;
+				Class<AbstractIdentifiable> businessClass = (Class<AbstractIdentifiable>) ClassHelper.getInstance().getByName(getIdentifiableClass());
+				TypedBusiness<AbstractIdentifiable> business = (TypedBusiness<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(businessClass);
+				Object value = getInputChoice().getValue();
+				return (IDENTIFIABLE) InstanceHelper.getInstance().call(business,businessClass, "instanciateOne"
+						, new MethodHelper.Method.Parameter(getCollection().getClass(),getCollection())
+						, new MethodHelper.Method.Parameter(getInputChoice().getField().getType(),value) 
+						); 
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public Collection<IDENTIFIABLE> findByCollection(COLLECTION collection) {
+				Class<AbstractIdentifiable> businessClass = (Class<AbstractIdentifiable>) ClassHelper.getInstance().getByName(getIdentifiableClass());
+				TypedBusiness<AbstractIdentifiable> business = (TypedBusiness<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(businessClass);
+				return InstanceHelper.getInstance().call(business,Collection.class, "findBy"+collection.getClass().getSimpleName()
+						, MethodHelper.Method.Parameter.buildArray(collection.getClass(),collection)); 
 			}
 			
 			@Override

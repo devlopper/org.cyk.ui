@@ -127,7 +127,7 @@ public abstract class AbstractEditManyPage<ENTITY extends AbstractIdentifiable,I
 		protected BusinessEntityInfos businessEntityInfos;
 		
 		public ItemCollectionAdapter(BusinessEntityInfos businessEntityInfos) {
-			super(null,null,null,null);
+			super(null,null,null,null,null);
 			this.businessEntityInfos = businessEntityInfos;
 		}
 		

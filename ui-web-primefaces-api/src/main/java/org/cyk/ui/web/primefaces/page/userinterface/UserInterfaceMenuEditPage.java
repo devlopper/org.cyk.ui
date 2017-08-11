@@ -34,7 +34,7 @@ public class UserInterfaceMenuEditPage extends AbstractCollectionEditPage.Extend
 	@Override
 	protected ItemCollection<Item, UserInterfaceMenuItem, UserInterfaceMenu> instanciateItemCollection() {
 		return createItemCollection(Item.class, UserInterfaceMenuItem.class,identifiable 
-				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<Item,UserInterfaceMenuItem,UserInterfaceMenu>(identifiable,crud,form){
+				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<Item,UserInterfaceMenuItem,UserInterfaceMenu>(identifiable,crud,form,UserInterfaceMenuItem.class){
 			private static final long serialVersionUID = 1L;
 			
 			@Override

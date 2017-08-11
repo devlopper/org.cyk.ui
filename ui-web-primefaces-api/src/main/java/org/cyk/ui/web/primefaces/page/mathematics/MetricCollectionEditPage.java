@@ -39,7 +39,7 @@ public class MetricCollectionEditPage extends AbstractCollectionEditPage.Extends
 	@Override
 	protected ItemCollection<MetricItem, Metric, MetricCollection> instanciateItemCollection() {
 		return createItemCollection(MetricItem.class, Metric.class,identifiable 
-			,new org.cyk.ui.web.primefaces.ItemCollectionAdapter<MetricItem,Metric,MetricCollection>(identifiable,crud,form){
+			,new org.cyk.ui.web.primefaces.ItemCollectionAdapter<MetricItem,Metric,MetricCollection>(identifiable,crud,form,Metric.class){
 				private static final long serialVersionUID = 1L;
 				/*
 				@Override

@@ -25,7 +25,7 @@ public class IntervalCollectionEditPage extends AbstractCollectionEditPage.Exten
 	@Override
 	protected ItemCollection<IntervalItem, Interval, IntervalCollection> instanciateItemCollection() {
 		return createItemCollection(IntervalItem.class, Interval.class,identifiable 
-				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<IntervalItem,Interval,IntervalCollection>(identifiable,crud,form){
+				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<IntervalItem,Interval,IntervalCollection>(identifiable,crud,form,Interval.class){
 			private static final long serialVersionUID = 1L;
 			
 			@Override

@@ -87,7 +87,7 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 		private static final long serialVersionUID = 1L;
 
 		public UniformResourceLocatorParameterItemAdapter(UniformResourceLocator uniformResourceLocator, Crud crud,FormOneData<?> form) {
-			super(uniformResourceLocator, crud,form);
+			super(uniformResourceLocator, crud,form,UniformResourceLocatorParameter.class);
 		}
 		
 		@Override

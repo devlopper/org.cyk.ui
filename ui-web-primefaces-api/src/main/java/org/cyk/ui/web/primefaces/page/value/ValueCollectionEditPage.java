@@ -29,7 +29,7 @@ public class ValueCollectionEditPage extends AbstractCollectionEditPage.Extends<
 		super.afterInitialisation();
 		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
 		itemCollection = createItemCollection(ValueCollectionItemItem.class, ValueCollectionItem.class,identifiable 
-				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter<ValueCollectionItemItem,ValueCollectionItem,ValueCollection>(identifiable,crud,form){
+				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter<ValueCollectionItemItem,ValueCollectionItem,ValueCollection>(identifiable,crud,form,ValueCollectionItem.class){
 					private static final long serialVersionUID = 1L;
 			
 					@Override

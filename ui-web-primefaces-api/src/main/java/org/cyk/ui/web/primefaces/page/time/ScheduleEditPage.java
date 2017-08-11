@@ -27,7 +27,7 @@ public class ScheduleEditPage extends AbstractCollectionEditPage.Extends<Schedul
 	@Override
 	protected ItemCollection<ScheduleItemItem, ScheduleItem, Schedule> instanciateItemCollection() {
 		return createItemCollection(ScheduleItemItem.class, ScheduleItem.class,identifiable 
-				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<ScheduleItemItem,ScheduleItem,Schedule>(identifiable,crud,form){
+				,new org.cyk.ui.web.primefaces.ItemCollectionAdapter.Extends<ScheduleItemItem,ScheduleItem,Schedule>(identifiable,crud,form,ScheduleItem.class){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
