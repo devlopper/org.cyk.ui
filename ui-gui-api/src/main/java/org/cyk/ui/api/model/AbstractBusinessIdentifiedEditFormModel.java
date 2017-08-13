@@ -1,6 +1,7 @@
 package org.cyk.ui.api.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
@@ -13,6 +14,7 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs.Layout;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
+import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
 
@@ -41,7 +43,9 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
 	
-	@Input @InputText protected Long orderNumber;
+	@Input @InputNumber protected Long orderNumber;
+	
+	@Input @InputNumber protected BigDecimal weight;
 	
 	@Input @InputBooleanButton protected Boolean defaulted;
 	
@@ -61,6 +65,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		existencePeriod.set(identifiable.getExistencePeriod());
 		otherDetails = identifiable.getOtherDetails();
 		orderNumber = identifiable.getOrderNumber();
+		weight = identifiable.getWeight();
 		defaulted = identifiable.getDefaulted();
 	}
 	
@@ -71,11 +76,13 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		identifiable.setAbbreviation(abbreviation);
 		identifiable.setDescription(description);
 		
-		identifiable.setBirthDate(existencePeriod.getFromDate());
-		identifiable.setDeathDate(existencePeriod.getToDate());
+		//identifiable.setBirthDate(existencePeriod.getFromDate());
+		//identifiable.setDeathDate(existencePeriod.getToDate());
+		existencePeriod.write(identifiable.getExistencePeriod());
 		
 		identifiable.setOtherDetails(otherDetails);
 		identifiable.setOrderNumber(orderNumber);
+		identifiable.setWeight(weight);
 		
 		identifiable.setDefaulted(defaulted);
 	}
@@ -95,5 +102,6 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	public static final String FIELD_EXISTENCE_PERIOD = "existencePeriod";
 	public static final String FIELD_OTHER_DETAILS = "otherDetails";
 	public static final String FIELD_ORDER_NUMBER = "orderNumber";
+	public static final String FIELD_WEIGHT = "weight";
 	public static final String FIELD_DEFAULTED = "defaulted";
 }

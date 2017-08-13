@@ -24,7 +24,6 @@ import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.MethodHelper;
 
 import lombok.Getter;
@@ -387,10 +386,10 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			public IdentifiableRuntimeCollection<IDENTIFIABLE> getRuntimeCollection() {
 				if(getInputChoice()==null)
 					return null;
-				return InstanceHelper.getInstance()
-						.callGetMethod(getCollection(), IdentifiableRuntimeCollection.class, getInputChoice().getField().getType().getSimpleName()+"s")
-						.setSynchonizationEnabled(Boolean.TRUE); 
-				//getCollection().getSubjects().setSynchonizationEnabled(Boolean.TRUE);
+				String methodName = MethodHelper.getInstance().getFirstExist(getCollection().getClass(), new String[]{
+						MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET, ClassHelper.getInstance().getVariableName(getIdentifiableClass(),Boolean.TRUE))
+						,MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET,ClassHelper.getInstance().getVariableName(getInputChoice().getField().getType(),Boolean.TRUE))});
+				return MethodHelper.getInstance().call(getCollection(), IdentifiableRuntimeCollection.class, methodName ).setSynchonizationEnabled(Boolean.TRUE); 
 			}
 			
 			@Override
@@ -398,7 +397,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 					IDENTIFIABLE identifiable) {
 				if(getInputChoice()==null)
 					return null;
-				return (AbstractIdentifiable) InstanceHelper.getInstance().callGetMethod(identifiable, inputChoice.getField().getType(), inputChoice.getField().getType().getSimpleName());
+				return (AbstractIdentifiable) MethodHelper.getInstance().callGet(identifiable, inputChoice.getField().getType(), inputChoice.getField().getType().getSimpleName());
 			}
 			
 			@Override
@@ -417,7 +416,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				Class<AbstractIdentifiable> businessClass = (Class<AbstractIdentifiable>) ClassHelper.getInstance().getByName(getIdentifiableClass());
 				TypedBusiness<AbstractIdentifiable> business = (TypedBusiness<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(businessClass);
 				Object value = getInputChoice().getValue();
-				return (IDENTIFIABLE) InstanceHelper.getInstance().call(business,businessClass, "instanciateOne"
+				return (IDENTIFIABLE) MethodHelper.getInstance().call(business,businessClass, "instanciateOne"
 						, new MethodHelper.Method.Parameter(getCollection().getClass(),getCollection())
 						, new MethodHelper.Method.Parameter(getInputChoice().getField().getType(),value) 
 						); 
@@ -428,7 +427,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			public Collection<IDENTIFIABLE> findByCollection(COLLECTION collection) {
 				Class<AbstractIdentifiable> businessClass = (Class<AbstractIdentifiable>) ClassHelper.getInstance().getByName(getIdentifiableClass());
 				TypedBusiness<AbstractIdentifiable> business = (TypedBusiness<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(businessClass);
-				return InstanceHelper.getInstance().call(business,Collection.class, "findBy"+collection.getClass().getSimpleName()
+				return MethodHelper.getInstance().call(business,Collection.class, "findBy"+collection.getClass().getSimpleName()
 						, MethodHelper.Method.Parameter.buildArray(collection.getClass(),collection)); 
 			}
 			

@@ -183,7 +183,6 @@ import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.InstanceHelper;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -242,11 +241,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}  
 	
 	protected void registerIdentifiablePagesConfigurations(){
-		InstanceHelper instanceHelper = new InstanceHelper();
 		for(Class<?> clazz : new ClassHelper().get("org.cyk.ui.web.primefaces.page", AbstractIdentifiablePagesConfiguration.class)){
 			if(Modifier.isAbstract(clazz.getModifiers()))
 				continue;
-			AbstractIdentifiablePagesConfiguration<?> configuration = (AbstractIdentifiablePagesConfiguration<?>) instanceHelper.instanciateOne(clazz);
+			AbstractIdentifiablePagesConfiguration<?> configuration = (AbstractIdentifiablePagesConfiguration<?>) ClassHelper.getInstance().instanciateOne(clazz);
 			IDENTIFIABLE_CONFIGURATON_MAP.put(configuration.getIdentifiableClass(), configuration);
 		}
 	}
