@@ -46,7 +46,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 	protected Boolean autoWrite=Boolean.TRUE,autoApplyMasterFormFieldValues=Boolean.TRUE;
 	protected AbstractApplicableValueQuestion<SELECT_ITEM> applicableValueQuestion;
 	protected UICommandable addCommandable,deleteCommandable;
-	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,showItemLabel=Boolean.FALSE,editable=Boolean.TRUE,showAddCommandableAtBottom=Boolean.TRUE;
+	protected Boolean showHeader=Boolean.TRUE,showFooter=Boolean.TRUE,showItemLabel=Boolean.FALSE,editable=Boolean.TRUE,showAddCommandableAtBottom=Boolean.TRUE
+			,isInputChoiceUnique=Boolean.TRUE;
 	
 	protected FormOneData<?, ?, ?, ?, ?, ?> containerForm;
 	protected COLLECTION collection;
@@ -113,7 +114,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		if(items.add(instance)){
 			if(Crud.isCreateOrUpdate(crud)){
-				if(inputChoice!=null)
+				if(inputChoice!=null && (isInputChoiceUnique==null || Boolean.TRUE.equals(isInputChoiceUnique)))
 					inputChoice.removeChoice(master);
 			}
 		}
@@ -263,6 +264,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		void read(TYPE item);
 		
 		Boolean isShowAddButton();
+		Boolean getIsInputChoiceUnique();
 		
 		FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> getForm();
 		void setForm(FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form);
@@ -286,6 +288,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			protected FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form;
 			protected InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice;
 			protected Class<IDENTIFIABLE> identifiableClass;
+			protected Boolean isInputChoiceUnique;
 			
 			public Adapter(COLLECTION collection, Crud crud,FormOneData<AbstractIdentifiable, ?, ?, ?, ?, ?> form
 					,InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?> inputChoice,Class<IDENTIFIABLE> identifiableClass) {
@@ -306,6 +309,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				this.identifiableClass = identifiableClass;
 				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName())){
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
+					if(this.inputChoice != null){
+						
+					}
 					//System.out.println(form.get getFormDatas().peek().getData().getClass());
 					//for(Control control : form.getFormDatas().peek().getControlSets().iterator().next().getControls())
 					//	if(control instanceof Input)

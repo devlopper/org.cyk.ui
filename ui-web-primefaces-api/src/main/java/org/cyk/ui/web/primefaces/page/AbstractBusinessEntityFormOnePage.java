@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -40,6 +41,7 @@ import org.cyk.ui.web.primefaces.MetricValueCollection;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
+import org.cyk.utility.common.helper.ClassHelper;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -193,7 +195,12 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 		Collection<IDENTIFIABLE> identifiables = Crud.CREATE.equals(crud) ? listener.create() : listener.load();
 		ItemCollection<TYPE, IDENTIFIABLE,COLLECTION> collection = super.createItemCollection(form, "qwerty", aClass, identifiableClass,collectionIdentifiable,identifiables, listener);
 		collection.getAddCommandable().getCommand().getCommandListeners().add(this);
-		collection.setLabel(text(uiManager.businessEntityInfos(identifiableClass).getUserInterface().getLabelId()));
+		if(collection.getInputChoice()!=null){
+			if(ClassHelper.getInstance().isInstanceOf(AbstractIdentifiable.class,collection.getInputChoice().getField().getType()))
+				collection.setLabel( inject(LanguageBusiness.class).findClassLabelText(collection.getInputChoice().getField().getType()) );
+			else
+				collection.setLabel(text(uiManager.businessEntityInfos(identifiableClass).getUserInterface().getLabelId()));
+		}
 		collection.setShowAddCommandableAtBottom(Boolean.FALSE);
 		collection.setContainerForm(form);
 		return collection;

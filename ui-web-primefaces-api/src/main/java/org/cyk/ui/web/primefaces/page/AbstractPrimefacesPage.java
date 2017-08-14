@@ -492,6 +492,7 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 			collection.getDeleteCommandable().setRendered(Boolean.TRUE.equals(collection.getEditable()) &&  collection.getAddCommandable().getRendered());
 			if(listener.getInputChoice()!=null)
 				collection.setInputChoice((InputChoice<?, ?, ?, ?, ?, SelectItem>) listener.getInputChoice());
+			collection.setIsInputChoiceUnique(listener.getIsInputChoiceUnique());
 		}
 		
 		if(Crud.isCreateOrUpdate(collection.getCrud()))
