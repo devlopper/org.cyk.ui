@@ -24,12 +24,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
+import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
+import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
 import org.cyk.system.root.persistence.impl.Utils;
@@ -187,6 +189,13 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public List<SelectItem> getSelectItems(Class<?> aClass){
 		return getSelectItems(aClass, UIManager.getInstance().findSelectItemBuildListener(aClass));
+	}
+	
+	public List<SelectItem> getSelectItems(Interval interval){
+		List<SelectItem> selectItems = new ArrayList<>();
+		for(Long value : inject(IntervalBusiness.class).findIntegers(interval))
+			selectItems.add(new SelectItem(value, String.valueOf(value)));
+		return selectItems;
 	}
 	
 	public List<SelectItem> getSelectItemsFromNodes(List<? extends AbstractDataTreeNode> nodes){
