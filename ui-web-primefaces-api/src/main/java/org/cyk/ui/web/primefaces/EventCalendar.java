@@ -99,7 +99,7 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 				StringBuilder builder = new StringBuilder();
 				if(eventParticipation.getParty() instanceof Person){
 					Person person = (Person)eventParticipation.getParty();
-					UIManager.getInstance().getPersonBusiness().load(person);
+					//UIManager.getInstance().getPersonBusiness().load(person);
 					builder.append( person.getNames() );
 					if(person.getContactCollection().getPhoneNumbers()!=null && !person.getContactCollection().getPhoneNumbers().isEmpty())
 						builder.append(" - "+person.getContactCollection().getPhoneNumbers().iterator().next().getNumber());

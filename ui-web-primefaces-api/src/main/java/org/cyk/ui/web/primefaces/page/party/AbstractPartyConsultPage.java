@@ -36,8 +36,8 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	@Override
 	protected void processOnIdentifiableFound(PARTY identifiable) {
 		super.processOnIdentifiableFound(identifiable);
-		if(StringUtils.isBlank(selectedTabId) || isDetailsMenuCommandable(identifiable.getClass()))
-			inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
+		//if(StringUtils.isBlank(selectedTabId) || isDetailsMenuCommandable(identifiable.getClass()))
+		//	inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
 	}
 	
 	@SuppressWarnings("rawtypes")

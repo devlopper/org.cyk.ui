@@ -47,16 +47,16 @@ public abstract class AbstractPersonEditPage<PERSON extends AbstractIdentifiable
 			if(getPerson().getJobInformations()==null)
 				getPerson().setJobInformations(new JobInformations(getPerson()));
 			else
-				inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
+				;//inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
 			
 			//inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
 			
 		}else if(isDetailsMenuCommandable(MedicalDetails.class)){
 			getPerson().setMedicalInformations(inject(MedicalInformationsBusiness.class).findByParty(getPerson()));
-			inject(MedicalInformationsBusiness.class).load(getPerson().getMedicalInformations());		
+			//inject(MedicalInformationsBusiness.class).load(getPerson().getMedicalInformations());		
 		}else {
 			getPerson().setExtendedInformations(inject(PersonExtendedInformationsBusiness.class).findByParty(getPerson()));
-			inject(PersonExtendedInformationsBusiness.class).load(getPerson().getExtendedInformations());		
+			//inject(PersonExtendedInformationsBusiness.class).load(getPerson().getExtendedInformations());		
 		}
 	}
 	

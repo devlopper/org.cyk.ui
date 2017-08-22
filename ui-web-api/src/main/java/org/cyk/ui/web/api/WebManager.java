@@ -27,7 +27,6 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.mathematics.IntervalBusiness;
 import org.cyk.system.root.business.api.mathematics.NumberBusiness;
 import org.cyk.system.root.business.impl.BusinessInterfaceLocator;
-import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.network.UniformResourceLocatorParameterBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
@@ -438,9 +437,9 @@ public class WebManager extends AbstractBean implements Serializable {
 	
 	public <T extends AbstractIdentifiable> T getIdentifiableFromRequestParameter(HttpServletRequest request,Class<T> aClass,String identifierId,Boolean useLoad){
 		if(hasRequestParameter(request,identifierId))
-			if(Boolean.TRUE.equals(useLoad))
-				return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
-			else
+			//if(Boolean.TRUE.equals(useLoad))
+			//	return (T) RootBusinessLayer.getInstance().getGenericBusiness().load(aClass,getRequestParameterAsLong(request,identifierId));
+			//else
 				return (T) inject(BusinessInterfaceLocator.class).injectTyped(aClass).find(getRequestParameterAsLong(request,identifierId));
 		return null;
 	}

@@ -27,8 +27,8 @@ public abstract class AbstractPartyEditPage<PARTY extends AbstractIdentifiable> 
 	@Override
 	protected void processOnIdentifiableFound(PARTY identifiable) {
 		super.processOnIdentifiableFound(identifiable);
-		if(isDetailsMenuCommandable(ContactCollection.class))
-			inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
+		//if(isDetailsMenuCommandable(ContactCollection.class))
+		//	inject(ContactCollectionBusiness.class).load(getParty().getContactCollection());
 	}
 	
 	/**/

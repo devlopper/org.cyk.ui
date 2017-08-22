@@ -176,13 +176,13 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 		super.processOnIdentifiableFound(identifiable);
 		if(isDetailsMenuCommandable(JobDetails.class)){
 			getPerson().setJobInformations(inject(JobInformationsBusiness.class).findByParty(getPerson()));
-			inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
+			//inject(JobInformationsBusiness.class).load(getPerson().getJobInformations());
 		}else if(isDetailsMenuCommandable(MedicalDetails.class)){
 			getPerson().setMedicalInformations(inject(MedicalInformationsBusiness.class).findByParty(getPerson()));
-			inject(MedicalInformationsBusiness.class).load(getPerson().getMedicalInformations());
+			//inject(MedicalInformationsBusiness.class).load(getPerson().getMedicalInformations());
 		}else{
 			getPerson().setExtendedInformations(inject(PersonExtendedInformationsBusiness.class).findByParty(getPerson()));
-			inject(PersonExtendedInformationsBusiness.class).load(getPerson().getExtendedInformations());		
+			//inject(PersonExtendedInformationsBusiness.class).load(getPerson().getExtendedInformations());		
 		}
 	}
 	
