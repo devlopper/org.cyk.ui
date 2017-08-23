@@ -42,11 +42,6 @@ public class GuiBusinessLayer extends AbstractBusinessLayer implements Serializa
         
         
     }
-	
-	@Override
-	protected void fakeTransactions() {
-		
-	}
 
 	@Override
 	protected void persistData() {

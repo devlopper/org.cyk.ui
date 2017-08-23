@@ -54,7 +54,6 @@ public class ApplicationInstallationFormModel extends AbstractFormModel<Applicat
 		super.write();
 		installation.getApplication().setName(administratorCredentials.getName());
 		installation.getManager().setName(managerCredentials.getName());
-		installation.setFaked(fakedData);
 	}
 	
 }
