@@ -241,7 +241,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}  
 	
 	protected void registerIdentifiablePagesConfigurations(){
-		for(Class<?> clazz : new ClassHelper().get("org.cyk.ui.web.primefaces.page", AbstractIdentifiablePagesConfiguration.class)){
+		for(Class<?> clazz : new ClassHelper().get("org.cyk" /*"org.cyk.ui.web.primefaces.page"*/, AbstractIdentifiablePagesConfiguration.class)){
 			if(Modifier.isAbstract(clazz.getModifiers()))
 				continue;
 			AbstractIdentifiablePagesConfiguration<?> configuration = (AbstractIdentifiablePagesConfiguration<?>) ClassHelper.getInstance().instanciateOne(clazz);
