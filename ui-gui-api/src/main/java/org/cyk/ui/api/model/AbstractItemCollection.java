@@ -390,11 +390,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			@SuppressWarnings("unchecked")
 			@Override
 			public IdentifiableRuntimeCollection<IDENTIFIABLE> getRuntimeCollection() {
-				if(getInputChoice()==null)
-					return null;
 				String methodName = MethodHelper.getInstance().getFirstExist(getCollection().getClass(), new String[]{
 						MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET, ClassHelper.getInstance().getVariableName(getIdentifiableClass(),Boolean.TRUE))
-						,MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET,ClassHelper.getInstance().getVariableName(getInputChoice().getField().getType(),Boolean.TRUE))});
+						,getInputChoice() == null ? null : MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET,ClassHelper.getInstance().getVariableName(getInputChoice().getField().getType(),Boolean.TRUE))});
 				return MethodHelper.getInstance().call(getCollection(), IdentifiableRuntimeCollection.class, methodName ).setSynchonizationEnabled(Boolean.TRUE); 
 			}
 			
@@ -435,6 +433,17 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				TypedBusiness<AbstractIdentifiable> business = (TypedBusiness<AbstractIdentifiable>) inject(BusinessInterfaceLocator.class).injectTyped(businessClass);
 				return MethodHelper.getInstance().call(business,Collection.class, "findBy"+collection.getClass().getSimpleName()
 						, MethodHelper.Method.Parameter.buildArray(collection.getClass(),collection)); 
+			}
+			
+			@Override
+			public Collection<IDENTIFIABLE> create() {
+				IdentifiableRuntimeCollection<IDENTIFIABLE> runtimeCollection = getRuntimeCollection();
+				if(runtimeCollection==null)
+					return super.create();
+				Collection<IDENTIFIABLE> identifiables = runtimeCollection.getCollection();
+				if(identifiables==null)
+					return super.load();
+				return identifiables;
 			}
 			
 			@Override
