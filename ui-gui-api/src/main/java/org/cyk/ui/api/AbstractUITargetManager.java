@@ -33,6 +33,11 @@ import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
+import org.cyk.utility.common.helper.SelectItemHelper;
+import org.cyk.utility.common.helper.SelectItemHelper.Builder.Many;
+import org.cyk.utility.common.helper.SelectItemHelper.Builder.One;
 
 public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM,ICON_IDENTIFIER> extends AbstractBean implements 
 	UIProvider.Listener<MODEL,ROW,LABEL,CONTROL,SELECTITEM> , Serializable {
@@ -57,7 +62,22 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	@SuppressWarnings("unchecked")
 	@Override
 	public void choices(InputChoice<?,?,?,?,?,?> inputChoice,Object data, Field field, List<Object> list) {
-		ChoiceSet choiceSet = field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class).set();
+		org.cyk.utility.common.annotation.user.interfaces.InputChoice annotation = 
+				field.getAnnotation(org.cyk.utility.common.annotation.user.interfaces.InputChoice.class);
+		ChoiceSet choiceSet = annotation.set();
+		
+		SelectItemHelper.Builder.One<Object> itemBuilder = (One<Object>) (annotation.itemBuilderClass() == null ? null 
+				: SelectItemHelper.Builder.One.Null.class.equals(annotation.itemBuilderClass()) ? null 
+						: ClassHelper.getInstance().instanciateOne(annotation.itemBuilderClass()));
+		
+		SelectItemHelper.Builder.Many<Object> itemsBuilder = (Many<Object>) (annotation.itemsBuilderClass() == null ? null 
+				: SelectItemHelper.Builder.Many.Null.class.equals(annotation.itemsBuilderClass()) ? null 
+						: ClassHelper.getInstance().instanciateOne(annotation.itemsBuilderClass()));
+		
+		InstanceHelper.Many getChoices = (InstanceHelper.Many) (annotation.getChoicesClass() == null ? null 
+				: InstanceHelper.Many.Null.class.equals(annotation.getChoicesClass()) ? null 
+						: ClassHelper.getInstance().instanciateOne(annotation.getChoicesClass()));
+		
 		Class<?> type = commonUtils.getFieldType(data.getClass(), field);
 		if(List.class.equals(type))
 	        type = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
@@ -70,11 +90,22 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			}else{
 				if(inputChoice instanceof InputOneCascadeList){
 					
-				}else
-					for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
-						AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
-						list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+				}else{
+					if(itemBuilder==null && itemsBuilder==null){
+						for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
+							AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
+							list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+						}	
+					}else{
+						if(itemsBuilder==null)
+							itemsBuilder = new SelectItemHelper.Builder.Many.Adapter.Default<Object>();
+						itemsBuilder.setNullable(field.getAnnotation(NotNull.class) == null);
+						itemsBuilder.setOneBuilder(itemBuilder);
+						Collection<AbstractIdentifiable> identifiables = (Collection<AbstractIdentifiable>) (getChoices == null 
+								? findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field) : getChoices.execute());
+						list.addAll(itemsBuilder.setInstances(identifiables).execute());
 					}
+				}
 			}
 		}else if(type.isEnum()){
 			for(Enum<?> value : (Enum<?>[])type.getEnumConstants())

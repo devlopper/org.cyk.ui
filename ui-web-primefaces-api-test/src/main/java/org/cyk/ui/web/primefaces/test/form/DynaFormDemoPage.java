@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.test.form;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -11,18 +12,38 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.system.root.business.api.Crud;
+import org.cyk.system.root.business.api.party.person.PersonBusiness;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.party.person.PersonExtendedInformations;
+import org.cyk.system.root.model.search.StringSearchCriteria;
+import org.cyk.system.root.persistence.api.party.person.PersonExtendedInformationsDao;
 import org.cyk.system.test.model.actor.MyEntity.MyEnum;
-import org.cyk.system.test.model.actor.MyIdentifiable;
+import org.cyk.system.test.model.actor.MyIdentifiableDetails1;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.web.api.AjaxBuilder;
 import org.cyk.ui.web.api.AjaxListener.ListenValueMethod;
+import org.cyk.ui.web.api.SelectItemHelper;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputBooleanButton;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputNumber;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
+import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
+import org.cyk.utility.common.annotation.user.interfaces.OutputText;
+import org.cyk.utility.common.annotation.user.interfaces.Text;
+import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
+import org.cyk.utility.common.helper.InstanceHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -228,5 +249,94 @@ public class DynaFormDemoPage extends AbstractPrimefacesPage implements Serializ
 		
 	}
 
+	/**/
 	
+	@Getter @Setter
+	public static class MyIdentifiable extends AbstractIdentifiable implements Serializable {
+
+		private static final long serialVersionUID = 2551782857718212950L;
+		
+		@Input @InputText //@NotNull
+		private String textOneLine;
+
+		@Input @InputTextarea //@NotNull
+		private String textManyLine;
+		
+		@Input @InputNumber /*@NotNull*/ private BigDecimal number1=BigDecimal.ZERO;
+		@Input @InputNumber /*@NotNull*/ private BigDecimal number2=BigDecimal.ZERO;
+		
+		@Input @InputBooleanButton private Boolean canSum;
+		
+		@OutputSeperator(label=@Text(value="results")) 
+		@OutputText(label=@Text(valueType=ValueType.VALUE,value="This is the results section")) 
+		@Input(disabled=true) @InputText 
+		private String sumResult;
+		@Input(disabled=true) @InputText private String multiplyResult = "159753.852";
+		
+		@Input(disabled=true)
+		@InputChoice
+		@InputOneChoice
+		@InputOneCombo
+		private MyEnum myEnum = MyEnum.V3;
+		
+		@Input @InputChoice @InputOneChoice @InputOneCombo private Person persons;
+		@Input @NotNull @InputChoice(itemBuilderClass=CustomSelectPersonBuilder1.class,nullable=false,getChoicesClass=CustomePersonList2.class) @InputOneChoice @InputOneCombo private Person persons1;
+		@Input @InputChoice(itemBuilderClass=CustomSelectPersonBuilder2.class,getChoicesClass=CustomePersonList1.class) @InputOneChoice @InputOneCombo private Person persons2;
+		
+		@Input(disabled=true) @InputTextarea
+		private String textManyLine2 = "Text Many Line Two";
+		
+		//@IncludeInputs
+		//@OutputSeperator
+		private MyIdentifiableDetails1 details1;
+		
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+		}
+		
+		public static class CustomSelectPersonBuilder1 extends SelectItemHelper.OneBuilder {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getFieldValue(Object instance, String fieldName) {
+				if(instance instanceof Person && ((Person)instance).getSex()!=null)
+					return ((Person)instance).getNames()+"("+((Person)instance).getSex()+")";
+				return super.getFieldValue(instance, fieldName);
+			}
+		}
+		
+		public static class CustomSelectPersonBuilder2 extends SelectItemHelper.OneBuilder {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getFieldValue(Object instance, String fieldName) {
+				if(instance instanceof Person && ((Person)instance).getSex()!=null){
+					PersonExtendedInformations personExtendedInformations = inject(PersonExtendedInformationsDao.class).readByParty((Person)instance);
+					if(personExtendedInformations!=null)
+						return "("+((Person)instance).getSex()+")"+((Person)instance).getNames()+"("+personExtendedInformations.getTitle()+")";
+				}
+					
+				return super.getFieldValue(instance, fieldName);
+			}
+		}
+		
+		public static class CustomePersonList1 extends InstanceHelper.Many.Adapter.Default implements Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Collection<?> __execute__() {
+				return inject(PersonBusiness.class).findAll();
+			}
+			
+		}
+		
+		public static class CustomePersonList2 extends InstanceHelper.Many.Adapter.Default implements Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Collection<?> __execute__() {
+				return inject(PersonBusiness.class).findByString(new StringSearchCriteria("komenan"));
+			}
+			
+		}
+	}
 }

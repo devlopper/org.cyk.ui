@@ -3,9 +3,6 @@ package org.cyk.system.test.model.actor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -22,6 +19,9 @@ import org.cyk.utility.common.annotation.user.interfaces.OutputSeperator;
 import org.cyk.utility.common.annotation.user.interfaces.OutputText;
 import org.cyk.utility.common.annotation.user.interfaces.Text;
 import org.cyk.utility.common.annotation.user.interfaces.Text.ValueType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public class MyIdentifiable extends AbstractIdentifiable implements Serializable {
@@ -40,7 +40,7 @@ public class MyIdentifiable extends AbstractIdentifiable implements Serializable
 	@Input @InputBooleanButton private Boolean canSum;
 	
 	@OutputSeperator(label=@Text(value="results")) 
-	@OutputText(label=@Text(type=ValueType.VALUE,value="This is the results section")) 
+	@OutputText(label=@Text(valueType=ValueType.VALUE,value="This is the results section")) 
 	@Input(disabled=true) @InputText 
 	private String sumResult;
 	@Input(disabled=true) @InputText private String multiplyResult = "159753.852";

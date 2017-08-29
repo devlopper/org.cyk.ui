@@ -55,6 +55,7 @@ import org.cyk.utility.common.builder.NameValueCollectionStringBuilder;
 import org.cyk.utility.common.builder.TextStringBuilder;
 import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.SelectItemHelper;
 import org.joda.time.DateTimeConstants;
 import org.omnifaces.util.Faces;
 
@@ -95,6 +96,8 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		menuManager.addMenuListener((org.cyk.ui.api.command.menu.MenuManager.Listener) this);
 		WebNavigationManager.Listener.COLLECTION.add((Listener<AbstractWebUserSession<?,?>>) this);	
 		rootBusinessLayer = RootBusinessLayer.getInstance();
+		
+		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.SelectItemHelper.OneBuilder.class;
 		
 		UrlStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;

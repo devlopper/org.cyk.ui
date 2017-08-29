@@ -25,6 +25,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.MethodHelper;
+import org.cyk.utility.common.helper.StringHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -393,6 +394,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				String methodName = MethodHelper.getInstance().getFirstExist(getCollection().getClass(), new String[]{
 						MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET, ClassHelper.getInstance().getVariableName(getIdentifiableClass(),Boolean.TRUE))
 						,getInputChoice() == null ? null : MethodHelper.getInstance().getName(MethodHelper.Method.Type.GET,ClassHelper.getInstance().getVariableName(getInputChoice().getField().getType(),Boolean.TRUE))});
+				if(StringHelper.getInstance().isBlank(methodName))
+					return null;
 				return MethodHelper.getInstance().call(getCollection(), IdentifiableRuntimeCollection.class, methodName ).setSynchonizationEnabled(Boolean.TRUE); 
 			}
 			
