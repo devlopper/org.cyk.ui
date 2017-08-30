@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
-import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.ui.api.Icon;
@@ -58,7 +57,6 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.cdi.DefaultBeanAdapter;
-import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -498,6 +496,10 @@ public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormMod
 		if(Crud.isCreateOrUpdate(collection.getCrud()))
 			if(collection.getInputChoice()!=null)
 				collection.getInputChoice().setIsAutomaticallyRemoveSelected(Boolean.TRUE);
+		
+		if(collection.getInputChoice()!=null){
+			collection.setItemLabel(collection.getInputChoice().getLabel());
+		}
 		
 		collection.setShowFooter(collection.getAddCommandable().getRendered());
 		onDocumentLoadJavaScript = javaScriptHelper.add(onDocumentLoadJavaScript, collection.getFormatJavaScript());

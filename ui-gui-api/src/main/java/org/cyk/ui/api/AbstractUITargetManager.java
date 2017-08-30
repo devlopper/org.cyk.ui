@@ -99,7 +99,10 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 					}else{
 						if(itemsBuilder==null)
 							itemsBuilder = new SelectItemHelper.Builder.Many.Adapter.Default<Object>();
-						itemsBuilder.setNullable(field.getAnnotation(NotNull.class) == null);
+						//if(field.getAnnotation(NotNull.class) == null)
+							itemsBuilder.setNullable(annotation.nullable());
+						//else
+						//	itemsBuilder.setNullable(field.getAnnotation(NotNull.class) == null);
 						itemsBuilder.setOneBuilder(itemBuilder);
 						Collection<AbstractIdentifiable> identifiables = (Collection<AbstractIdentifiable>) (getChoices == null 
 								? findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field) : getChoices.execute());

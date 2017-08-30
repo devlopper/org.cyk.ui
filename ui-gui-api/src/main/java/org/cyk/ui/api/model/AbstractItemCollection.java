@@ -80,6 +80,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		});
 		deleteCommandable = Builder.instanciateOne().setLabelFromId("command.delete").setIcon(Icon.ACTION_REMOVE).create();
 		deleteCommandable.setShowLabel(Boolean.FALSE);
+		deleteCommandable.setSkipValidation(Boolean.TRUE);
 		deleteCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
 			private static final long serialVersionUID = -4786916980017894274L;
 			@Override
@@ -111,7 +112,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		instance.setMaster(master);
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.instanciated(this,instance); 
-		setItemLabel(instance);
+		__setItemLabel__(instance);
 		
 		if(items.add(instance)){
 			if(Crud.isCreateOrUpdate(crud)){
@@ -180,7 +181,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		updateTable();
 	}
 
-	public void setItemLabel(TYPE item){
+	protected void __setItemLabel__(TYPE item){
 		for(Listener<TYPE,IDENTIFIABLE,COLLECTION,SELECT_ITEM> listener : itemCollectionListeners)
 			listener.setLabel(this,item);
 	}
@@ -313,6 +314,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
 					if(this.inputChoice != null){
 						this.inputChoice.setRequired(Boolean.FALSE);
+						
 					}
 					//System.out.println(form.get getFormDatas().peek().getData().getClass());
 					//for(Control control : form.getFormDatas().peek().getControlSets().iterator().next().getControls())
@@ -475,6 +477,13 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				item.write();
 			}
 			
+			@Override
+			public String getFieldOneItemMasterSelectedName() {
+				/*if(inputChoice==null)
+					return null;
+				*/
+				return "one"+getIdentifiableClass().getSimpleName()+"Selected";
+			}
 		}
 	}
 
