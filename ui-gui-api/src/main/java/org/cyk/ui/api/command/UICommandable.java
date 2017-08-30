@@ -51,6 +51,9 @@ public interface UICommandable {
 	Boolean getRendered();
 	void setRendered(Boolean aValue);
 	
+	Boolean getSkipValidation();
+	void setSkipValidation(Boolean skipValidation);
+	
 	Boolean getRequested();
 	void setRequested(Boolean aValue);
 	

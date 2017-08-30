@@ -48,7 +48,7 @@ public abstract class AbstractCommandable extends AbstractBean implements UIComm
 	@Getter @Setter protected Integer index;
 	@Getter protected Icon icon;
 	@Getter protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
-	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE;
+	@Getter @Setter protected Boolean showLabel=Boolean.TRUE,rendered=Boolean.TRUE,requested=Boolean.FALSE,skipValidation=Boolean.FALSE;
 	@Getter @Setter protected Object viewId;
 	@Getter @Setter protected ViewType viewType;
 	@Getter @Setter protected NavigationMode navigationMode = NavigationMode.DEFAULT;

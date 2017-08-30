@@ -115,8 +115,9 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 		
 		if(items.add(instance)){
 			if(Crud.isCreateOrUpdate(crud)){
-				if(inputChoice!=null && (isInputChoiceUnique==null || Boolean.TRUE.equals(isInputChoiceUnique)))
+				if(inputChoice!=null && (isInputChoiceUnique==null || Boolean.TRUE.equals(isInputChoiceUnique))){
 					inputChoice.removeChoice(master);
+				}
 			}
 		}
 		
@@ -311,7 +312,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName())){
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
 					if(this.inputChoice != null){
-						
+						this.inputChoice.setRequired(Boolean.FALSE);
 					}
 					//System.out.println(form.get getFormDatas().peek().getData().getClass());
 					//for(Control control : form.getFormDatas().peek().getControlSets().iterator().next().getControls())

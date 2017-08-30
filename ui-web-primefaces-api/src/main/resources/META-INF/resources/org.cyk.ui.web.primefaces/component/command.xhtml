@@ -41,7 +41,7 @@
 			>
 			
 			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
-			
+			<f:param name="skipValidation" value="#{cc.value.skipValidation}" />
 		</p:commandButton>
 
 		<p:commandButton id="#{cc.id}ButtonWithConfirm"
