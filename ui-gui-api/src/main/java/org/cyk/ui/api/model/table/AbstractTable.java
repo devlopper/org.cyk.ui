@@ -40,12 +40,14 @@ import org.cyk.ui.api.model.AbstractTree;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.Commandable;
 import org.cyk.ui.api.model.table.AbstractTable.Listener.CreateCommandableArguments;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.BeanAdapter;
 import org.cyk.utility.common.computation.DataReadConfiguration;
+import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.model.table.Table;
 
 import lombok.Getter;
@@ -136,6 +138,10 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		});
 		
 		addRowCommandable.getCommand().getCommandListeners().add(this);
+		
+		addRowCommandable.setType(UICommandable.Type.CLICKABLE_ONLY);
+		addRowCommandable.setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
+				.Default().setUniformResourceLocatorStringifier(Constant.Action.CREATE, identifiableClass).execute());
 		
 		updateCommandable = Builder.instanciateOne().setCommandListener(this).setLabelFromId("command.edit.many").setIcon(Icon.ACTION_EDIT_MANY)
 				.setShowLabel(Boolean.TRUE).create();

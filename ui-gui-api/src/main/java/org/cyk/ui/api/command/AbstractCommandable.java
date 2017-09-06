@@ -57,6 +57,7 @@ public abstract class AbstractCommandable extends AbstractBean implements UIComm
 	@Getter @Setter protected RenderType renderType;
 	@Getter @Setter protected ProcessGroup processGroup;
 	@Getter @Setter protected CommandRequestType commandRequestType;
+	@Getter @Setter protected Type type;
 	@Getter @Setter protected Collection<UICommandable> children = new ArrayList<UICommandable>(){
 		private static final long serialVersionUID = -5378067672438543808L;
 		public boolean add(UICommandable aCommandable){

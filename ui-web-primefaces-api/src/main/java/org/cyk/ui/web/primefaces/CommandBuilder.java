@@ -10,6 +10,7 @@ import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.security.UserAccount;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.UICommandable;
+import org.cyk.ui.api.command.UICommandable.CommandRequestType;
 import org.cyk.ui.api.command.UICommandable.Parameter;
 import org.cyk.ui.api.command.menu.UIMenu;
 import org.cyk.ui.web.api.WebManager;
@@ -54,6 +55,13 @@ public class CommandBuilder extends AbstractBean implements Serializable {
 			commandButton.setStyleClass(aCommandable.getCascadeStyleSheet().getClazz());
 			commandButton.setStyle(aCommandable.getCascadeStyleSheet().getInline());
 		}
+		if(UICommandable.Type.CLICKABLE_ONLY.equals(aCommandable.getType()))
+			commandButton.setType("button");
+		else if(UICommandable.Type.SUBMIT.equals(aCommandable.getType()))
+			commandButton.setType("submit");
+		else if(UICommandable.Type.RESET.equals(aCommandable.getType()))
+			commandButton.setType("reset");
+		
 		return commandButton;
 	}
 	

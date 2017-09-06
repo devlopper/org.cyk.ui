@@ -234,7 +234,10 @@ public abstract class AbstractWebPage<EDITOR,ROW,OUTPUTLABEL,INPUT,COMMANDABLE e
 	}
 	
 	protected Crud crudFromRequestParameter(){
-		return UniformResourceLocatorParameterBusinessImpl.getCrudAsObject(requestParameter(UniformResourceLocatorParameter.CRUD));
+		Crud crud = UniformResourceLocatorParameterBusinessImpl.getCrudAsObject(requestParameter(UniformResourceLocatorParameter.CRUD));
+		if(crud==null)
+			crud = Crud.valueOf(StringUtils.upperCase(requestParameter("action")));
+		return crud;
 	}
 	
 	protected Boolean hasRequestParameter(String name){

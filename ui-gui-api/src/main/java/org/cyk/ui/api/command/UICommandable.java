@@ -60,6 +60,9 @@ public interface UICommandable {
 	CommandRequestType getCommandRequestType();
 	void setCommandRequestType(CommandRequestType aCommandRequestType);
 	
+	Type getType();
+	void setType(Type type);
+	
 	EventListener getEventListener();
 	void setEventListener(EventListener anEventListener);
 	
@@ -114,7 +117,41 @@ public interface UICommandable {
 	
 	public enum RenderType{BUTTON,LINK}
 	
-	public enum CommandRequestType{UI_VIEW,BUSINESS_PROCESSING}
+	/**
+	 * Request type
+	 * @author Christian
+	 *
+	 */
+	public enum CommandRequestType{
+		/**
+		 * an user interface is requested
+		 */
+		UI_VIEW
+		/**
+		 * a business processing is requested
+		 */
+		,BUSINESS_PROCESSING
+	}
+	
+	/**
+	 * Commandable type
+	 * @author Christian
+	 *
+	 */
+	public enum Type{
+		/**
+		 * The commandable submits data
+		 */
+		SUBMIT
+		/**
+		 * The commandable resets input data to initial value
+		 */
+		,RESET
+		/**
+		 * The commandable is clickable only
+		 */
+		,CLICKABLE_ONLY
+	}
 	
 	public enum NavigationMode{DEFAULT,CLICK}
 	

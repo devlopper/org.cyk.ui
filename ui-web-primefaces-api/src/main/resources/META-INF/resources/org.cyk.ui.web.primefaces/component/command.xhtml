@@ -75,6 +75,8 @@
 			
 		</p:commandButton>
 		
+		<!--p:commandButton type="button" value="MyBut" onclick="#{cc.value.onClick}"></p:commandButton-->
+		
 		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
 			<p:confirmDialog global="true">
 	        	<p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
