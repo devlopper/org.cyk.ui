@@ -14,25 +14,25 @@
 
 	<cc:implementation>
 		<!--  rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"  -->
-		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="PROPERTY"/>
+		<pe:importConstants className="org.cyk.ui.api.CommandHelper$Command" var="UI_PROPERTY"/>
+		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="WEB_PROPERTY"/>
 		<p:commandButton 
 			id="#{cc.id}Button"
 			action="#{cc.value.execute}" 
-			ajax="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_AJAX)}"
-			icon="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_ICON)}"
-			process="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_PROCESS)}"
-			rendered="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_RENDERED)}"
-			disabled="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_DISABLED)}"
-			type="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_TYPE)}"
-			title="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_TITLE)}"
-			update="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_UPDATE)}"
-			value="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_VALUE)}" 
-			oncomplete="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_ONCOMPLETE)}"
-			onclick="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_ONCLICK)}"
-			immediate="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_IMMEDIATE)}"
-			widgetVar="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_WIDGETVAR)}"
-			styleClass="#{cc.value.getProperty(PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}" 
-			
+			ajax="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_AJAX,true)}"
+			icon="#{cc.value.getProperty(UI_PROPERTY.COMMAND_PROPERTY_NAME_ICON)}"
+			process="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_PROCESS)}"
+			rendered="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_RENDERED,true)}"
+			disabled="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_DISABLED)}"
+			type="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TYPE)}"
+			title="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TITLE)}"
+			update="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_UPDATE)}"
+			value="#{cc.value.getProperty(UI_PROPERTY.COMMAND_PROPERTY_NAME_LABEL)}" 
+			oncomplete="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCOMPLETE)}"
+			onclick="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCLICK)}"
+			immediate="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_IMMEDIATE)}"
+			widgetVar="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_WIDGET_VAR)}"
+			styleClass="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}" 
 		>
 			
 		</p:commandButton>

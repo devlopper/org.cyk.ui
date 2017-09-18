@@ -7,13 +7,17 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+	xmlns:cyk_incubation="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component_incubation">
 
 	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.InputCollection">
 		<cc:attribute name="value" required="true" />
 	</cc:interface>
 
 	<cc:implementation>
+		<cyk_incubation:command value="#{cc.value.addCommand}">
+ 			
+ 		</cyk_incubation:command>
 		<p:dataTable id="datatable" value="#{cc.value.collection.collection}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
 			>
         	<!--
@@ -60,11 +64,15 @@
 					<p:ajax event="change" update="#{cc.value.applicableValueQuestion.update}" />
 				</p:selectBooleanCheckbox>	
        		</p:column>
-       		
-       		<p:column width="4%" rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"> 
-       	!		<cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/>
-       		</p:column>
        		-->
+       		<!--  rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"  -->
+       		<p:column width="4%" > 
+       			<!--cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/-->
+       			<cyk_incubation:command value="#{cc.value.deleteCommand}">
+ 			
+ 				</cyk_incubation:command>
+       		</p:column>
+       		
        	</p:dataTable>
 			
 	</cc:implementation>

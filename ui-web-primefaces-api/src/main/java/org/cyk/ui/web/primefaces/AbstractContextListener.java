@@ -180,8 +180,8 @@ import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
-import org.cyk.utility.common.helper.NotificationHelper.Notification.Viewer;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -197,7 +197,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	@Override 
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
+		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
+		CommandHelper.Command.Adapter.Default.DEFAULT_CLASS = (Class<CommandHelper.Command>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.CommandHelper.Command.class);
 		layoutManager.setLogoPath(stringContextParameter(ContextParam.LOGO_PATH, event,layoutManager.getLogoPath()));
 		layoutManager.setLoginBackgroundPath(stringContextParameter(ContextParam.LOGIN_BACKGROUN_DPATH, event,layoutManager.getLoginBackgroundPath()));
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));

@@ -28,7 +28,8 @@ public class CommandDemoPage extends AbstractPrimefacesPage implements Serializa
 			private static final long serialVersionUID = 1L;
 			
 		};
-		command1.setProperty(Command.COMMAND_PROPERTY_NAME_AJAX, Boolean.TRUE);
+		command1.setProperty(Command.COMMAND_PROPERTY_NAME_LABEL, "Command 1");
+		command1.setProperty(Command.COMMAND_PROPERTY_NAME_ICON, "ui-icon-trash");
 	}
 	
 }
