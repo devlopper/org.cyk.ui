@@ -17,6 +17,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>contactCollectionEditPhoneNumbersView</from-outcome>
+			<to-view-id>/private/geography/contactcollection/editphonenumbers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>contactCollectionConsultView</from-outcome>
 			<to-view-id>/private/geography/contactcollection/consult.xhtml</to-view-id>
 			<redirect />

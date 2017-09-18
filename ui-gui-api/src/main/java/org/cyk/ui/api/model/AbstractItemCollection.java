@@ -311,6 +311,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				this.form = form;
 				this.identifiableClass = identifiableClass;
 				if(StringUtils.isNotBlank(getFieldOneItemMasterSelectedName())){
+					System.out.println("AbstractItemCollection.Listener.Adapter.Adapter() : "+getFieldOneItemMasterSelectedName());
 					this.inputChoice = (InputChoice<AbstractIdentifiable, ?, ?, ?, ?, ?>) form.getInputByFieldName(getFieldOneItemMasterSelectedName());
 					if(this.inputChoice != null){
 						this.inputChoice.setRequired(Boolean.FALSE);

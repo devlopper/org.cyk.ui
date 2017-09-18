@@ -76,7 +76,7 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 		});
 		*/
 	}
-	
+		
 	/**/
 	
 	public static class Form extends AbstractBusinessIdentifiedEditFormModel<ContactCollection> implements Serializable{

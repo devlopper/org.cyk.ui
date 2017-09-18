@@ -1,0 +1,43 @@
+package org.cyk.ui.web.primefaces.test.form;
+
+import java.io.Serializable;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import org.cyk.ui.api.data.collector.control.InputCollection;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Named
+@ViewScoped
+@Getter
+@Setter
+public class InputCollectionDemoPage extends AbstractPrimefacesPage implements Serializable {
+
+	private static final long serialVersionUID = 3274187086682750183L;
+
+	private InputCollection<Item> inputCollection1 = new InputCollection<>();
+	
+	@Override
+	protected void initialisation() { 
+		super.initialisation(); 
+		inputCollection1.getCollection().addOne(new Item().setName("One"));
+		inputCollection1.getCollection().addOne(new Item().setName("Three"));
+		inputCollection1.getCollection().addOne(new Item().setName("Another one"));
+	}
+	
+	@Getter @Setter @Accessors(chain=true)
+	public static class Item extends InputCollection.Element<Object> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public Item setName(String name) {
+			return (Item) super.setName(name);
+		}
+		
+	}
+}

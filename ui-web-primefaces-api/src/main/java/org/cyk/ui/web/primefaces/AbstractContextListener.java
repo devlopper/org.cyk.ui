@@ -19,7 +19,6 @@ import org.cyk.system.root.business.impl.file.FileRepresentationTypeDetails;
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
 import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
-import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
@@ -71,7 +70,6 @@ import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
-import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Locality;
@@ -141,7 +139,6 @@ import org.cyk.ui.web.primefaces.page.file.FileRepresentationTypeEditPage;
 import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
@@ -183,6 +180,8 @@ import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.NotificationHelper;
+import org.cyk.utility.common.helper.NotificationHelper.Notification.Viewer;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -194,9 +193,11 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	@Inject protected DefaultDesktopLayoutManager layoutManager;
 	@Inject protected PrimefacesManager primefacesManager; 
  
+	@SuppressWarnings("unchecked")
 	@Override 
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
+		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
 		layoutManager.setLogoPath(stringContextParameter(ContextParam.LOGO_PATH, event,layoutManager.getLogoPath()));
 		layoutManager.setLoginBackgroundPath(stringContextParameter(ContextParam.LOGIN_BACKGROUN_DPATH, event,layoutManager.getLoginBackgroundPath()));
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));
@@ -324,8 +325,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Country.class, CountryEditPage.Form.class, CountryDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Country.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(ContactCollection.class, null);
+		//uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
+		//uiManager.configBusinessIdentifiable(ContactCollection.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMail.class, ElectronicMailEditPage.Form.class, ElectronicMailDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(ElectronicMail.class, null);

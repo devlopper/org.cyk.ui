@@ -1,19 +1,13 @@
 package org.cyk.ui.api.model.geography;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.geography.CountryBusiness;
-import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.ElectronicMail;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
-import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 
 import lombok.Getter;
@@ -25,15 +19,15 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 	private static final long serialVersionUID = -3897201743383535836L;
 	
 	protected PhoneNumber phoneNumber(PhoneNumberType type){
-		if(identifiable!=null && identifiable.getPhoneNumbers()!=null)
+		/*if(identifiable!=null && identifiable.getPhoneNumbers()!=null)
 			for(PhoneNumber phoneNumber : identifiable.getPhoneNumbers())
 				if(phoneNumber.getType().equals(type))
-					return phoneNumber;
+					return phoneNumber;*/
 		return null;
 	}
 	
 	protected void updatePhoneNumber(PhoneNumberType type,String number){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return;
 		PhoneNumber phoneNumber = phoneNumber(type);
 		if(phoneNumber ==null){
@@ -50,36 +44,37 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 			else
 				phoneNumber.setNumber(number);
 		}
+		*/
 	}
 	
 	protected void deletePhoneNumber(PhoneNumberType type){
-		PhoneNumber phoneNumber = phoneNumber(type);
+		/*PhoneNumber phoneNumber = phoneNumber(type);
 		if(phoneNumber!=null)
-			identifiable.getPhoneNumbers().remove(phoneNumber);
+			identifiable.getPhoneNumbers().remove(phoneNumber);*/
 	}
 	
 	protected String readPhoneNumber(PhoneNumberType type){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return null;
 		if(identifiable.getPhoneNumbers()==null)
 			identifiable.setPhoneNumbers(new ArrayList<PhoneNumber>());
 		for(PhoneNumber p : identifiable.getPhoneNumbers())
 			if(p.getType().equals(type))
-				return p.getNumber();
+				return p.getNumber();*/
 		return null;
 	}
 	
 	/**/
 	
 	protected Location location(LocationType type){
-		for(Location location : identifiable.getLocations())
+		/*for(Location location : identifiable.getLocations())
 			if(location.getType().equals(type))
-				return location;
+				return location;*/
 		return null;
 	}
 	
 	protected void updateLocation(LocationType type,String comments){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return;
 		Location location = location(type);
 		if(location ==null){
@@ -94,40 +89,42 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 				deleteLocation(type);
 			else
 				location.setOtherDetails(comments);
-		}
+		}*/
 	}
 	
 	protected void deleteLocation(LocationType type){
-		Location location = location(type);
+		/*Location location = location(type);
 		if(location==null)
-			identifiable.getLocations().remove(location);
+			identifiable.getLocations().remove(location);*/
 	}
 	
 	protected String readLocation(LocationType type){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return null;
 		if(identifiable.getLocations()==null)
 			identifiable.setLocations(new ArrayList<Location>());
 		for(Location p : identifiable.getLocations())
 			if(p.getType()!=null && p.getType().equals(type))
-				return p.getOtherDetails();
+				return p.getOtherDetails();*/
 		return null;
 	}
 	
 	/**/
 	
 	protected String readElectronicMail(Integer index){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return null;
 		if(identifiable.getElectronicMails()==null)
 			identifiable.setElectronicMails(new ArrayList<ElectronicMail>());
 		if(identifiable.getElectronicMails().isEmpty())
 			return null;
 		return index >= identifiable.getElectronicMails().size() ? null : new ArrayList<>(identifiable.getElectronicMails()).get(index.intValue()).getAddress();
+		*/
+		return null;
 	}
 	
 	protected void updateElectronicMail(String address,Integer index){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return;
 		if(StringUtils.isBlank(address))
 			if(index < identifiable.getElectronicMails().size())
@@ -136,10 +133,11 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 				;
 		else
 			getElectronicMail(index).setAddress(address);
+		*/
 	}
 	
 	private ElectronicMail getElectronicMail(Integer index){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return null;
 		if(identifiable.getElectronicMails()==null)
 			identifiable.setElectronicMails(new ArrayList<ElectronicMail>());
@@ -149,21 +147,26 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 		else
 			electronicMail = ((List<ElectronicMail>)identifiable.getElectronicMails()).get(index.intValue());
 		return electronicMail;
+		*/
+		return null;
 	}
 	
 	/**/
 	
 	protected String readPostalBox(){
-		if(identifiable==null)
+		/*if(identifiable==null)
 			return null;
 		if(identifiable.getPostalBoxs()==null)
 			identifiable.setPostalBoxs(new ArrayList<PostalBox>());
 		if(identifiable.getPostalBoxs().isEmpty())
 			return null;
 		return identifiable.getPostalBoxs().iterator().next().getValue();
+		*/
+		return null;
 	}
 	
 	protected void updatePostalBox(String address){
+		/*
 		if(identifiable==null)
 			return;
 		if(StringUtils.isBlank(address))
@@ -175,6 +178,7 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 			}else
 				identifiable.getPostalBoxs().iterator().next().setValue(address);
 		}
+		*/
 	}
 	
 }

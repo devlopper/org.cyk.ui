@@ -101,8 +101,8 @@ public class EventCalendar extends AbstractEventCalendar implements Serializable
 					Person person = (Person)eventParticipation.getParty();
 					//UIManager.getInstance().getPersonBusiness().load(person);
 					builder.append( person.getNames() );
-					if(person.getContactCollection().getPhoneNumbers()!=null && !person.getContactCollection().getPhoneNumbers().isEmpty())
-						builder.append(" - "+person.getContactCollection().getPhoneNumbers().iterator().next().getNumber());
+					//if(person.getContactCollection().getPhoneNumbers()!=null && !person.getContactCollection().getPhoneNumbers().isEmpty())
+					//	builder.append(" - "+person.getContactCollection().getPhoneNumbers().iterator().next().getNumber());
 				}else
 					builder.append( eventParticipation.getParty().getName() );
 				
