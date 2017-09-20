@@ -18,7 +18,7 @@
 		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="WEB_PROPERTY"/>
 		<p:commandButton 
 			id="#{cc.id}Button"
-			action="#{cc.value.execute}" 
+			action="#{cc.value.execute(cc.attrs.executeParameter)}" 
 			ajax="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_AJAX,true)}"
 			icon="#{cc.value.getProperty(UI_PROPERTY.COMMAND_PROPERTY_NAME_ICON)}"
 			process="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_PROCESS)}"
@@ -27,15 +27,24 @@
 			type="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TYPE)}"
 			title="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TITLE)}"
 			update="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_UPDATE)}"
-			value="#{cc.value.getProperty(UI_PROPERTY.COMMAND_PROPERTY_NAME_LABEL)}" 
+			value="#{cc.value.name}" 
 			oncomplete="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCOMPLETE)}"
 			onclick="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCLICK)}"
 			immediate="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_IMMEDIATE)}"
 			widgetVar="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_WIDGET_VAR)}"
 			styleClass="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}" 
 		>
-			
+			<!--
+			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />
+			-->
 		</p:commandButton>
+		
+		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
+			<p:confirmDialog global="true">
+	        	<p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        	<p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    	</p:confirmDialog>
+		</ui:fragment>		
 		
 		<!--p:commandButton id="#{cc.id}Button"
 			action="#{cc.value.command.execute(cc.attrs.executeParameter)}" 

@@ -17,7 +17,20 @@ public class CommandHelper extends AbstractBean implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		public static final String COMMAND_PROPERTY_NAME_ICON = "COMMAND_PROPERTY_NAME_ICON";
-		public static final String COMMAND_PROPERTY_NAME_LABEL = "COMMAND_PROPERTY_NAME_LABEL";
+		
+		@Override
+		public Command setProperty(String name, Object value) {
+			return (Command) super.setProperty(name, value);
+		}
+		
+		@Override
+		public Command setName(String name) {
+			return (Command) super.setName(name);
+		}
+		
+		public Command setIcon(Object icon) {
+			return setProperty(COMMAND_PROPERTY_NAME_ICON, icon);
+		}
 		
 	}
 

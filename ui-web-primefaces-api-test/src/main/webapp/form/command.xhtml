@@ -13,10 +13,18 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{commandDemoPage}" />
  		<ui:define name="body">
- 			<cyk_incubation:command value="#{commandDemoPage.command1}">
+ 			<cyk_incubation:command value="#{commandDemoPage.defaultCommand}"/>
  			
- 			</cyk_incubation:command>
+ 			<cyk_incubation:command value="#{commandDemoPage.successCommand}"/>
+ 			<cyk_incubation:command value="#{commandDemoPage.failureCommand}"/>
  			
+ 			<cyk_incubation:command value="#{commandDemoPage.customSuccessMessageCommand}"/>
+ 			<cyk_incubation:command value="#{commandDemoPage.customFailureMessageCommand}"/>
+ 			
+ 			<cyk_incubation:command value="#{commandDemoPage.parameterCommand}" executeParameter="true"/>
+ 			
+ 			<cyk_incubation:command value="#{commandDemoPage.successConfirmableCommand}"/>
+ 			<cyk_incubation:command value="#{commandDemoPage.failureConfirmableCommand}"/>
  			
  		</ui:define>
  	</ui:decorate>

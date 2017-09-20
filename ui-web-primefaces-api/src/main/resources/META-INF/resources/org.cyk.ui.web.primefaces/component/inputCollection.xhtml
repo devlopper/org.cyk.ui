@@ -68,9 +68,7 @@
        		<!--  rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"  -->
        		<p:column width="4%" > 
        			<!--cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/-->
-       			<cyk_incubation:command value="#{cc.value.deleteCommand}">
- 			
- 				</cyk_incubation:command>
+       			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{item}"/>
        		</p:column>
        		
        	</p:dataTable>
