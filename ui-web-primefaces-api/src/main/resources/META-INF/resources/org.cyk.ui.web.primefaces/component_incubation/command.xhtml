@@ -20,7 +20,7 @@
 			id="#{cc.id}Button"
 			action="#{cc.value.execute(cc.attrs.executeParameter)}" 
 			ajax="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_AJAX,true)}"
-			icon="#{cc.value.getProperty(UI_PROPERTY.COMMAND_PROPERTY_NAME_ICON)}"
+			icon="#{cc.value.mappedIcon}"
 			process="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_PROCESS)}"
 			rendered="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_RENDERED,true)}"
 			disabled="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_DISABLED)}"

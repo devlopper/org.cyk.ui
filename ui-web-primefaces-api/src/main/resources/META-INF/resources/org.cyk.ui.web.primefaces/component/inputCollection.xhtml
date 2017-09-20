@@ -15,10 +15,8 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<cyk_incubation:command value="#{cc.value.addCommand}">
- 			
- 		</cyk_incubation:command>
-		<p:dataTable id="datatable" value="#{cc.value.collection.collection}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
+		<cyk_incubation:command value="#{cc.value.addCommand}"/>
+ 		<p:dataTable id="datatable" value="#{cc.value.collection.collection}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
 			>
         	<!--
         	<f:facet name="header">
@@ -44,17 +42,25 @@
         		</table>
         	</f:facet>	
         	-->
-        	<!--
-       		<p:column headerText="#" width="10">
-       			<h:outputText value="#{index+1}" />
-       			<f:facet name="footer">
-       				<ui:fragment rendered="#{cc.value.showAddCommandableAtBottom}"><cyk:command value="#{cc.value.addCommandable}"/></ui:fragment>
-       			</f:facet>
-       		</p:column>
-       		-->
-       		<p:column headerText="#{cc.value.elementNameColumnName}" rendered="#{cc.value.isShowElementNameColumn}">
- 				<h:outputText value="#{item.name}"/>
- 			</p:column>
+
+			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
+		 		<ui:param name="column" value="#{cc.value.indexColumn}" />
+		 		<ui:define name="content">
+		 			<h:outputText value="#{index+1}" />
+		 		</ui:define>
+		 		<ui:define name="footer">
+		 			<ui:fragment rendered="#{cc.value.indexColumn.footerCommands.contains(cc.value.addCommand)}">
+		 				<cyk_incubation:command value="#{cc.value.addCommand}"/>
+		 			</ui:fragment>	
+		 		</ui:define>
+		 	</ui:decorate>
+			
+ 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
+		 		<ui:param name="column" value="#{cc.value.nameColumn}" />
+		 		<ui:define name="content">
+		 			<h:outputText value="#{item.name}"/>
+		 		</ui:define>
+		 	</ui:decorate>
        		
        		<cc:insertChildren/>
        		<!--
@@ -66,10 +72,15 @@
        		</p:column>
        		-->
        		<!--  rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"  -->
-       		<p:column width="4%" > 
-       			<!--cyk:command value="#{cc.value.deleteCommandable}" executeParameter="#{item}"/-->
-       			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{item}"/>
-       		</p:column>
+       		<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
+		 		<ui:param name="column" value="#{cc.value.commandsColumn}" />
+		 		<ui:define name="content">
+		 			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{item}"/>
+		 		</ui:define>
+		 	</ui:decorate>
+       		<!--p:column width="4%" > 
+       			
+       		</p:column-->
        		
        	</p:dataTable>
 			
