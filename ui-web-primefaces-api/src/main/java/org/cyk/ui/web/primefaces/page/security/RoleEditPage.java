@@ -49,7 +49,7 @@ public class RoleEditPage extends AbstractCollectionEditPage<Role,RoleUniformRes
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		super.transfer(command, parameter);
 		if(form.getSubmitCommandable().getCommand()==command){
-			getIdentifiable().getRoleUniformResourceLocators().setCollection(itemCollection.getIdentifiables());
+			getIdentifiable().getRoleUniformResourceLocators().setElements(itemCollection.getIdentifiables());
 		}
 	}
 		
@@ -84,8 +84,8 @@ public class RoleEditPage extends AbstractCollectionEditPage<Role,RoleUniformRes
 		
 		@Override
 		public Collection<RoleUniformResourceLocator> load() {
-			getCollection().getRoleUniformResourceLocators().setCollection(inject(RoleUniformResourceLocatorBusiness.class).findByRole(getCollection()));
-			return getCollection().getRoleUniformResourceLocators().getCollection();
+			getCollection().getRoleUniformResourceLocators().setElements(inject(RoleUniformResourceLocatorBusiness.class).findByRole(getCollection()));
+			return getCollection().getRoleUniformResourceLocators().getElements();
 		}
 				
 		@Override

@@ -32,8 +32,8 @@ public class ScheduleEditPage extends AbstractCollectionEditPage.Extends<Schedul
 			
 			@Override
 			public Collection<ScheduleItem> load() {
-				getCollection().getItems().setCollection(inject(ScheduleItemBusiness.class).findByCollection(getCollection()));
-				return getCollection().getItems().getCollection();
+				getCollection().getItems().setElements(inject(ScheduleItemBusiness.class).findByCollection(getCollection()));
+				return getCollection().getItems().getElements();
 			}
 			
 			@Override

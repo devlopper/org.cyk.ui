@@ -15,7 +15,7 @@
 	<cc:implementation>
 		<!--  rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"  -->
 		<pe:importConstants className="org.cyk.ui.api.CommandHelper$Command" var="UI_PROPERTY"/>
-		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="WEB_PROPERTY"/>
+		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="WEB_PROPERTY"/>#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}
 		<p:commandButton 
 			id="#{cc.id}Button"
 			action="#{cc.value.execute(cc.attrs.executeParameter)}" 

@@ -204,7 +204,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 			}
 			IdentifiableRuntimeCollection<IDENTIFIABLE> identifiableRuntimeCollection = listener.getRuntimeCollection();
 			if(identifiableRuntimeCollection!=null && identifiableRuntimeCollection.isSynchonizationEnabled())
-				identifiableRuntimeCollection.setCollection(getIdentifiables());
+				identifiableRuntimeCollection.setElements(getIdentifiables());
 		}
 		
 		
@@ -447,7 +447,7 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				IdentifiableRuntimeCollection<IDENTIFIABLE> runtimeCollection = getRuntimeCollection();
 				if(runtimeCollection==null)
 					return super.create();
-				Collection<IDENTIFIABLE> identifiables = runtimeCollection.getCollection();
+				Collection<IDENTIFIABLE> identifiables = runtimeCollection.getElements();
 				if(identifiables==null)
 					return super.load();
 				return identifiables;
@@ -461,8 +461,8 @@ public abstract class AbstractItemCollection<TYPE extends AbstractItemCollection
 				Collection<IDENTIFIABLE> identifiables = findByCollection(getCollection());
 				if(identifiables==null)
 					return super.load();
-				runtimeCollection.setCollection(identifiables);
-				return runtimeCollection.getCollection();
+				runtimeCollection.setElements(identifiables);
+				return runtimeCollection.getElements();
 			}
 			
 			@Override

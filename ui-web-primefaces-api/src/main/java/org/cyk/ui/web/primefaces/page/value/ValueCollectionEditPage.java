@@ -34,8 +34,8 @@ public class ValueCollectionEditPage extends AbstractCollectionEditPage.Extends<
 			
 					@Override
 					public Collection<ValueCollectionItem> load() {
-						getCollection().getItems().setCollection(inject(ValueCollectionItemBusiness.class).findByCollection(getCollection()));
-						return getCollection().getItems().getCollection();
+						getCollection().getItems().setElements(inject(ValueCollectionItemBusiness.class).findByCollection(getCollection()));
+						return getCollection().getItems().getElements();
 					}
 					
 					@Override

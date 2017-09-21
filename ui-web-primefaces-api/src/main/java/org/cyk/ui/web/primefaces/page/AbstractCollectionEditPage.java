@@ -100,7 +100,7 @@ public abstract class AbstractCollectionEditPage<COLLECTION extends AbstractIden
 		public void transfer(UICommand command, Object parameter) throws Exception {
 			super.transfer(command, parameter);
 			if(form.getSubmitCommandable().getCommand()==command){
-				getIdentifiable().getItems().setCollection(itemCollection.getIdentifiables());
+				getIdentifiable().getItems().setElements(itemCollection.getIdentifiables());
 			}
 		}
 		

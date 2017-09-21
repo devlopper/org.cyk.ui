@@ -53,7 +53,7 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 	public void transfer(UICommand command, Object parameter) throws Exception {
 		super.transfer(command, parameter);
 		if(form.getSubmitCommandable().getCommand()==command){
-			getIdentifiable().getParameters().setCollection(itemCollection.getIdentifiables());
+			getIdentifiable().getParameters().setElements(itemCollection.getIdentifiables());
 		}
 	}
 		
@@ -92,8 +92,8 @@ public class UniformResourceLocatorEditPage extends AbstractCollectionEditPage<U
 		
 		@Override
 		public Collection<UniformResourceLocatorParameter> load() {
-			getCollection().getParameters().setCollection(inject(UniformResourceLocatorParameterBusiness.class).findByUniformResourceLocator(getCollection()));
-			return getCollection().getParameters().getCollection();
+			getCollection().getParameters().setElements(inject(UniformResourceLocatorParameterBusiness.class).findByUniformResourceLocator(getCollection()));
+			return getCollection().getParameters().getElements();
 		}
 				
 		@Override

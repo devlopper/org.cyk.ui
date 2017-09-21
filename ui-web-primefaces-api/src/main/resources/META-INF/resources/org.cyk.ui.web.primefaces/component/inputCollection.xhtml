@@ -15,33 +15,31 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<cyk_incubation:command value="#{cc.value.addCommand}"/>
- 		<p:dataTable id="datatable" value="#{cc.value.collection.collection}" var="item" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
-			>
-        	<!--
+		
+ 		<p:dataTable id="datatable" value="#{cc.value.collection.elements}" var="element" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
+			styleClass="#{cc.value.cascadeStyleSheet.clazz}">
         	<f:facet name="header">
         		<table>
         			<tr>
-        				<ui:fragment rendered="#{cc.value.inputChoice != null and (cc.value.crud.ordinal() == 0 or cc.value.crud.ordinal() == 2)}" ><td>
+        				<ui:fragment rendered="#{cc.value.collection.sources != null and (cc.value.collection.isCreatable or cc.value.collection.isUpdatable or cc.value.collection.isDeletable)}" ><td>
         					<table>
         						<tr>
         							<td>
 								       	<cyk:inputOneCombo value="#{cc.value.inputChoice}"/>
         							</td>
         							<td width="30px">
-        								<cyk:command value="#{cc.value.addCommandable}"/>
+        								<cyk_incubation:command value="#{cc.value.addCommand}"/>
         							</td>
         						</tr>
         					</table>
         				</td></ui:fragment> 
         				
         				<td style="width: 55%">
-        					<h:outputText value="#{cc.value.label}" />
+        					<h:outputText value="#{cc.value.collection.name}" />
         				</td>
         			</tr>
         		</table>
         	</f:facet>	
-        	-->
 
 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
 		 		<ui:param name="column" value="#{cc.value.indexColumn}" />
@@ -58,14 +56,14 @@
  			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
 		 		<ui:param name="column" value="#{cc.value.nameColumn}" />
 		 		<ui:define name="content">
-		 			<h:outputText value="#{item.name}"/>
+		 			<h:outputText value="#{element.name}"/>
 		 		</ui:define>
 		 	</ui:decorate>
        		
        		<cc:insertChildren/>
        		<!--
        		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.editable and cc.value.applicableValueQuestion.rendered}">
-       			<p:selectBooleanCheckbox value="#{item.applicable}" >
+       			<p:selectBooleanCheckbox value="#{element.applicable}" >
 					<f:selectItems value="#{cc.value.applicableValueQuestion.answers}" />
 					<p:ajax event="change" update="#{cc.value.applicableValueQuestion.update}" />
 				</p:selectBooleanCheckbox>	
@@ -75,7 +73,7 @@
        		<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
 		 		<ui:param name="column" value="#{cc.value.commandsColumn}" />
 		 		<ui:define name="content">
-		 			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{item}"/>
+		 			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{element}"/>
 		 		</ui:define>
 		 	</ui:decorate>
        		<!--p:column width="4%" > 

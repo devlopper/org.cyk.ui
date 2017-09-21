@@ -22,17 +22,19 @@
  		<ui:param name="pageController" value="#{inputCollectionDemoPage}" />
  		<ui:define name="body">
  			
+ 			<cyk:formOneData value="#{inputCollectionDemoPage.form}"/>
+ 			
  			<cyk:inputCollection value="#{inputCollectionDemoPage.inputCollection1}" >
  				<p:column headerText="my col1" >
  				
  				</p:column>
  			</cyk:inputCollection>
  			
- 			<!--cyk:inputCollection value="#{inputCollectionDemoPage.inputCollection2}" >
+ 			<cyk:inputCollection value="#{inputCollectionDemoPage.inputCollection2}" >
  				<p:column headerText="my col2" >
  				
  				</p:column>
- 			</cyk:inputCollection-->
+ 			</cyk:inputCollection>
  			
  		</ui:define>
  	</ui:decorate>

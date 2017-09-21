@@ -2,22 +2,42 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.GridHelper;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
-@Getter @Setter
-public class InputCollection<T> extends GridHelper.Grid<T> implements Serializable {
+@Getter @Setter @Accessors(chain=true)
+public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T> implements Serializable {
 	private static final long serialVersionUID = -3543754685060813767L;
 
-	//protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
+	protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
 	
-	/**/
-	
+	protected InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
+
 	public InputCollection(Class<T> elementClass) {
 		super(elementClass);
+		cascadeStyleSheet.addClass(getIdentifier());
+	}
+	
+	public InputCollection<T,SELECT_ITEM> setInputChoice(InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice){
+		this.inputChoice = inputChoice;
+		if(this.inputChoice!=null){
+			getCollection().setSources(this.inputChoice.getList());
+			getCollection().setIsEachElementHasSource(Boolean.TRUE);
+		}
+		return this;
+	}
+	
+	@Override
+	protected void add() {
+		if(inputChoice==null)
+			super.add();
+		else if(inputChoice.getValue()!=null)
+			collection.addOne(inputChoice.getValue());
 	}
 	
 	/**/

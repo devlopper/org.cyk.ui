@@ -16,7 +16,7 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 	public InputCollection(Class<T> elementClass) {
 		super(elementClass);
 		//in order to trigger update we need to use a unique css class to identify input
-		getAddCommand().setProperty(Command.COMMAND_PROPERTY_NAME_STYLE_CLASS, getAddCommand().getProperty(Command.COMMAND_PROPERTY_NAME_STYLE_CLASS)+" "+identifier);
+		getCascadeStyleSheet().addClass(identifier);
 		getAddCommand().setProperty(Command.COMMAND_PROPERTY_NAME_UPDATE, "@(."+identifier+")");
 		getDeleteCommand().setProperty(Command.COMMAND_PROPERTY_NAME_UPDATE, "@(."+identifier+")");
 		getIndexColumn().setWidth("10");
