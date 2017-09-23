@@ -14,25 +14,24 @@
 
 	<cc:implementation>
 		<!--  rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"  -->
-		<pe:importConstants className="org.cyk.ui.api.CommandHelper$Command" var="UI_PROPERTY"/>
-		<pe:importConstants className="org.cyk.ui.web.api.CommandHelper$Command" var="WEB_PROPERTY"/>#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}
+		<pe:importConstants className="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
 		<p:commandButton 
 			id="#{cc.id}Button"
 			action="#{cc.value.execute(cc.attrs.executeParameter)}" 
-			ajax="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_AJAX,true)}"
+			ajax="#{cc.value.getProperty(UI_CONSTANT.AJAX,true)}"
 			icon="#{cc.value.mappedIcon}"
-			process="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_PROCESS)}"
-			rendered="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_RENDERED,true)}"
-			disabled="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_DISABLED)}"
-			type="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TYPE)}"
-			title="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_TITLE)}"
-			update="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_UPDATE)}"
+			process="#{cc.value.getProperty(UI_CONSTANT.PROCESS)}"
+			rendered="#{cc.value.getProperty(UI_CONSTANT.RENDERED,true)}"
+			disabled="#{cc.value.getProperty(UI_CONSTANT.DISABLED)}"
+			type="#{cc.value.getProperty(UI_CONSTANT.TYPE)}"
+			title="#{cc.value.getProperty(UI_CONSTANT.TITLE)}"
+			update="#{cc.value.getProperty(UI_CONSTANT.UPDATE)}"
 			value="#{cc.value.name}" 
-			oncomplete="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCOMPLETE)}"
-			onclick="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_ONCLICK)}"
-			immediate="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_IMMEDIATE)}"
-			widgetVar="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_WIDGET_VAR)}"
-			styleClass="#{cc.value.getProperty(WEB_PROPERTY.COMMAND_PROPERTY_NAME_STYLE_CLASS)}" 
+			oncomplete="#{cc.value.getProperty(UI_CONSTANT.ONCOMPLETE)}"
+			onclick="#{cc.value.getProperty(UI_CONSTANT.ONCLICK)}"
+			immediate="#{cc.value.getProperty(UI_CONSTANT.IMMEDIATE)}"
+			widgetVar="#{cc.value.getProperty(UI_CONSTANT.WIDGET_VAR)}"
+			styleClass="#{cc.value.getProperty(UI_CONSTANT.STYLE_CLASS)}" 
 		>
 			<!--
 			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />

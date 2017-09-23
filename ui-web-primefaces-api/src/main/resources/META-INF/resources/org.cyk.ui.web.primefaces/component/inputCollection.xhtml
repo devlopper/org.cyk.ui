@@ -15,9 +15,9 @@
 	</cc:interface>
 
 	<cc:implementation>
-		
+		<pe:importConstants className="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
  		<p:dataTable id="datatable" value="#{cc.value.collection.elements}" var="element" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
-			styleClass="#{cc.value.cascadeStyleSheet.clazz}">
+			styleClass="#{cc.value.propertiesMap.get(UI_CONSTANT.STYLE_CLASS)}">
         	<f:facet name="header">
         		<table>
         			<tr>
