@@ -26,6 +26,11 @@ public interface Constant {
 	
 	String TYPE = "TYPE";
 	
+	/**/
+	
+	String NAME_RENDERED = "NAME_RENDERED";
+	String ICON_RENDERED = "NAME_RENDERED";
+	
 	public static interface Component {
 			
 		public static interface Visible extends Component {

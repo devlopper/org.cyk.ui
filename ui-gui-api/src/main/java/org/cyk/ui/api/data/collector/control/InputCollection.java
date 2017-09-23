@@ -2,7 +2,6 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.GridHelper;
 
@@ -14,13 +13,12 @@ import lombok.experimental.Accessors;
 public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T> implements Serializable {
 	private static final long serialVersionUID = -3543754685060813767L;
 
-	protected CascadeStyleSheet cascadeStyleSheet = new CascadeStyleSheet();
-	
 	protected InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 
 	public InputCollection(Class<T> elementClass) {
 		super(elementClass);
-		cascadeStyleSheet.addClass(getIdentifier());
+		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
+		getDeleteCommand().setNameRendered(getDeleteCommand().getMappedIcon()==null);
 	}
 	
 	public InputCollection<T,SELECT_ITEM> setInputChoice(InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice){
