@@ -39,8 +39,11 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	private FormOneData<Form> form;
-	private InputCollection<Child> inputCollection1 = new InputCollection<>(Child.class);
-	private InputCollection<Child> inputCollection2 = new InputCollection<>(Child.class);
+	private InputCollection<Child> inputCollectionSourceNo = new InputCollection<>(Child.class);
+	private InputCollection<Child> inputCollectionSourceNoInput = new InputCollection<>(Child.class);
+	
+	private InputCollection<Child> inputCollectionSourceYes = new InputCollection<>(Child.class);
+	private InputCollection<Child> inputCollectionSourceYesInput = new InputCollection<>(Child.class);
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -55,7 +58,10 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 			@Override
 			public void serve(UICommand command, Object parameter) {
 				super.serve(command, parameter);
-				
+				System.out.println("SELECTED Source No        : "+inputCollectionSourceNo.getCollection().getElements());
+				System.out.println("SELECTED Source No  Input : "+inputCollectionSourceNoInput.getCollection().getElements());
+				System.out.println("SELECTED Source Yes       : "+inputCollectionSourceYes.getCollection().getElements());
+				System.out.println("SELECTED Source Yes Input : "+inputCollectionSourceYesInput.getCollection().getElements());
 			}
 		});
 		
@@ -64,29 +70,38 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		inputCollection1.getCollection().setName("Number letter list");
-		inputCollection1.getCollection().addOne(new Child().setName("One"));
-		inputCollection1.getCollection().addOne(new Child().setName("Three"));
-		inputCollection1.getCollection().addOne(new Child().setName("Another one"));
+		inputCollectionSourceNo.getCollection().setName("Source No");
+		/*inputCollectionSourceNo.getCollection().addOne(new Child().setName("One"));
+		inputCollectionSourceNo.getCollection().addOne(new Child().setName("Three"));
+		inputCollectionSourceNo.getCollection().addOne(new Child().setName("Another one"));*/
 		
-		inputCollection1.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		inputCollectionSourceNo.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source) {
-				element.setName("Another element "+System.currentTimeMillis());
+				element.setName("Source No "+System.currentTimeMillis());
 			}
 		});
 		
-		final org.cyk.ui.api.data.collector.control.InputChoice<?, ?, ?, ?, ?, SelectItem> inputChoice = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, "master");
-		inputChoice.getList().add(new SelectItem(new Master("M1"), "M1"));
-		inputChoice.getList().add(new SelectItem(new Master("M2"), "M2"));
-		inputChoice.getList().add(new SelectItem(new Master("M3"), "M3"));
-		inputChoice.getList().add(new SelectItem(new Master("M4"), "M4"));
-		inputChoice.getList().add(new SelectItem(new Master("M5"), "M5"));
-		inputCollection2.setInputChoice(inputChoice);
-		inputCollection2.getCollection().setName("Number digit list");
+		inputCollectionSourceNoInput.getCollection().setName("Source No Input");
+		inputCollectionSourceNoInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void addOne(Instance<Child> instance, Child element,Object source) {
+				element.setName("Source No Input "+System.currentTimeMillis());
+			}
+		});
 		
-		inputCollection2.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		final org.cyk.ui.api.data.collector.control.InputChoice<?, ?, ?, ?, ?, SelectItem> inputChoice1 = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, "master1");
+		inputChoice1.getList().add(new SelectItem(new Master("M1"), "M1"));
+		inputChoice1.getList().add(new SelectItem(new Master("M2"), "M2"));
+		inputChoice1.getList().add(new SelectItem(new Master("M3"), "M3"));
+		inputChoice1.getList().add(new SelectItem(new Master("M4"), "M4"));
+		inputChoice1.getList().add(new SelectItem(new Master("M5"), "M5"));
+		inputCollectionSourceYes.setInputChoice(inputChoice1);
+		inputCollectionSourceYes.getCollection().setName("Source Yes");
+		
+		inputCollectionSourceYes.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -104,7 +119,44 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 				if(object instanceof Child){
 					return ((Child)object).getObject();
 				}else if(object instanceof Master){
-					for(SelectItem selectItem : inputChoice.getList()){
+					for(SelectItem selectItem : inputChoice1.getList()){
+						if(selectItem.getValue()==object){
+							return selectItem;
+						}
+					}
+				}
+				return super.getSource(instance, object);
+			}
+		});
+		
+		final org.cyk.ui.api.data.collector.control.InputChoice<?, ?, ?, ?, ?, SelectItem> inputChoice2 = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, "master2");
+		inputChoice2.getList().add(new SelectItem(new Master("MM1"), "MM1"));
+		inputChoice2.getList().add(new SelectItem(new Master("MM2"), "MM2"));
+		inputChoice2.getList().add(new SelectItem(new Master("MM3"), "MM3"));
+		inputChoice2.getList().add(new SelectItem(new Master("MM4"), "MM4"));
+		inputChoice2.getList().add(new SelectItem(new Master("MM5"), "MM5"));
+		inputCollectionSourceYesInput.setInputChoice(inputChoice2);
+		inputCollectionSourceYesInput.getCollection().setName("Source Yes Input");
+		
+		inputCollectionSourceYesInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Boolean isInstanciatable(Instance<Child> instance, Object object) {
+				return object instanceof Master;
+			}
+			
+			@Override
+			public void addOne(Instance<Child> instance, Child element,Object source) {
+				element.setName("Child of M "+((Master)((SelectItem)source).getValue()).getName());
+			}
+			
+			@Override
+			public Object getSource(Instance<Child> instance, Object object) {
+				if(object instanceof Child){
+					return ((Child)object).getObject();
+				}else if(object instanceof Master){
+					for(SelectItem selectItem : inputChoice2.getList()){
 						if(selectItem.getValue()==object){
 							return selectItem;
 						}
@@ -128,7 +180,8 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	public static class Form extends AbstractBean implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList.class) @InputOneChoice @InputOneCombo private Master master;
+		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList.class) @InputOneChoice @InputOneCombo private Master master1;
+		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList.class) @InputOneChoice @InputOneCombo private Master master2;
 		
 	}
 	
@@ -140,14 +193,20 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 		
 	}
 	
-	@Getter @Setter @Accessors(chain=true)
+	@Getter @Setter
 	public static class Child extends InputCollection.Element<Object> implements Serializable {
 		private static final long serialVersionUID = 1L;
+		
+		private String text;
 		
 		@Override
 		public Child setName(String name) {
 			return (Child) super.setName(name);
 		}
 		
+		@Override
+		public String toString() {
+			return super.toString()+" text="+text;
+		}
 	}
 }

@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.data.collector.control;
 import java.io.Serializable;
 
 import org.cyk.ui.api.Constant;
+import org.cyk.utility.common.helper.JQueryHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,8 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 		//in order to trigger update we need to use a unique css class to identify input
 		getPropertiesMap().addString(Constant.STYLE_CLASS,org.cyk.utility.common.Constant.CHARACTER_SPACE.toString(), identifier);
 		
-		getAddCommand().setProperty(Constant.UPDATE, "@(."+identifier+")");
-		getDeleteCommand().setProperty(Constant.UPDATE, "@(."+identifier+")");
+		getAddCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
+		getDeleteCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
 		getIndexColumn().setWidth("10");
 		getIndexColumn().addFooterCommand(getAddCommand());
 	}

@@ -36,6 +36,8 @@
 			<!--
 			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />
 			-->
+			<f:param name="#{UI_CONSTANT.SKIP_VALIDATION}" value="#{cc.value.getProperty(UI_CONSTANT.SKIP_VALIDATION)}" />
+			<f:param name="#{UI_CONSTANT.INPUT_VALUE_IS_NOT_REQUIRED}" value="#{cc.value.getProperty(UI_CONSTANT.INPUT_VALUE_IS_NOT_REQUIRED)}" />
 		</p:commandButton>
 		
 		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >

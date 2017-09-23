@@ -2,6 +2,7 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.io.Serializable;
 
+import org.cyk.ui.api.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.GridHelper;
 
@@ -17,7 +18,10 @@ public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T> implement
 
 	public InputCollection(Class<T> elementClass) {
 		super(elementClass);
+		getAddCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
+		
+		getDeleteCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getDeleteCommand().setNameRendered(getDeleteCommand().getMappedIcon()==null);
 	}
 	

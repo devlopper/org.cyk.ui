@@ -25,6 +25,8 @@ public interface Constant {
 	String UPDATE = "UPDATE";
 	
 	String TYPE = "TYPE";
+	String SKIP_VALIDATION = "SKIP_VALIDATION";
+	String INPUT_VALUE_IS_NOT_REQUIRED = "INPUT_VALUE_IS_NOT_REQUIRED";
 	
 	/**/
 	

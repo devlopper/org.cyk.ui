@@ -109,6 +109,10 @@ public class WebManager extends AbstractBean implements Serializable {
 		});
 	}
 	
+	public String getParameterIsInputValueNotRequired(){
+		return Faces.getRequest().getParameter(org.cyk.ui.api.Constant.INPUT_VALUE_IS_NOT_REQUIRED);
+	}
+	
 	public List<SelectItem> getBooleanSelectItems(){
 		if(booleanSelectItems==null){
 			booleanSelectItems = new ArrayList<>();
