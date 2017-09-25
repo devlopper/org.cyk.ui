@@ -2,9 +2,15 @@ package org.cyk.ui.api.data.collector.control;
 
 import java.io.Serializable;
 
+import javax.faces.model.SelectItem;
+
 import org.cyk.ui.api.Constant;
+import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.CollectionHelper.Instance;
 import org.cyk.utility.common.helper.GridHelper;
+import org.cyk.utility.common.helper.ThrowableHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +22,8 @@ public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T> implement
 
 	protected InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 
-	public InputCollection(Class<T> elementClass) {
-		super(elementClass);
+	public InputCollection(Class<T> elementClass,Class<SELECT_ITEM> sourceClass,Class<?> sourceObjectClass) {
+		super(elementClass,sourceClass,sourceObjectClass);
 		getAddCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
 		
@@ -31,6 +37,17 @@ public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T> implement
 			getCollection().setSources(this.inputChoice.getList());
 			getCollection().setIsEachElementHasSource(Boolean.TRUE);
 		}
+		return this;
+	}
+	
+	protected Object getSelectItemValue(SELECT_ITEM selectItem){
+		ThrowableHelper.getInstance().throwNotYetImplemented();
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public InputCollection<T,SELECT_ITEM> setInputChoice(FormOneData<?,?,?,?,?,?> form,String fieldName){
+		setInputChoice(form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class,fieldName));
 		return this;
 	}
 	

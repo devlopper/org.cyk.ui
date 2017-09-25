@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.CommandAdapter;
@@ -19,6 +20,7 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.CollectionHelper.Instance;
@@ -42,10 +44,9 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	private InputCollection<Child> inputCollectionSourceNo = new InputCollection<>(Child.class);
 	private InputCollection<Child> inputCollectionSourceNoInput = new InputCollection<>(Child.class);
 	
-	private InputCollection<Child> inputCollectionSourceYes = new InputCollection<>(Child.class);
-	private InputCollection<Child> inputCollectionSourceYesInput = new InputCollection<>(Child.class);
+	private InputCollection<Child> inputCollectionSourceYes = new InputCollection<>(Child.class,Master.class);
+	private InputCollection<Child> inputCollectionSourceYesInput = new InputCollection<>(Child.class,Master.class);
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initialisation() { 
 		super.initialisation(); 
@@ -71,108 +72,66 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		inputCollectionSourceNo.getCollection().setName("Source No");
-		/*inputCollectionSourceNo.getCollection().addOne(new Child().setName("One"));
-		inputCollectionSourceNo.getCollection().addOne(new Child().setName("Three"));
-		inputCollectionSourceNo.getCollection().addOne(new Child().setName("Another one"));*/
 		
-		inputCollectionSourceNo.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		/*inputCollectionSourceNo.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public void addOne(Instance<Child> instance, Child element,Object source) {
+			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
 				element.setName("Source No "+System.currentTimeMillis());
 			}
-		});
+		});*/
 		
 		inputCollectionSourceNoInput.getCollection().setName("Source No Input");
-		inputCollectionSourceNoInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		/*inputCollectionSourceNoInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			@Override
-			public void addOne(Instance<Child> instance, Child element,Object source) {
+			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
 				element.setName("Source No Input "+System.currentTimeMillis());
 			}
-		});
+		});*/
 		
-		final org.cyk.ui.api.data.collector.control.InputChoice<?, ?, ?, ?, ?, SelectItem> inputChoice1 = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, "master1");
-		inputChoice1.getList().add(new SelectItem(new Master("M1"), "M1"));
-		inputChoice1.getList().add(new SelectItem(new Master("M2"), "M2"));
-		inputChoice1.getList().add(new SelectItem(new Master("M3"), "M3"));
-		inputChoice1.getList().add(new SelectItem(new Master("M4"), "M4"));
-		inputChoice1.getList().add(new SelectItem(new Master("M5"), "M5"));
-		inputCollectionSourceYes.setInputChoice(inputChoice1);
+		inputCollectionSourceYes.setInputChoice(form,"master1");
 		inputCollectionSourceYes.getCollection().setName("Source Yes");
 		
-		inputCollectionSourceYes.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		/*inputCollectionSourceYes.getCollection().addListener(new InputCollection.CollectionAdapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public Boolean isInstanciatable(Instance<Child> instance, Object object) {
-				return object instanceof Master;
+			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
+				element.setName("C1 "+((Master)sourceObject).getName());
 			}
 			
-			@Override
-			public void addOne(Instance<Child> instance, Child element,Object source) {
-				element.setName("Child of Master "+((Master)((SelectItem)source).getValue()).getName());
-			}
-			
-			@Override
-			public Object getSource(Instance<Child> instance, Object object) {
-				if(object instanceof Child){
-					return ((Child)object).getObject();
-				}else if(object instanceof Master){
-					for(SelectItem selectItem : inputChoice1.getList()){
-						if(selectItem.getValue()==object){
-							return selectItem;
-						}
-					}
-				}
-				return super.getSource(instance, object);
-			}
-		});
+		});*/
 		
-		final org.cyk.ui.api.data.collector.control.InputChoice<?, ?, ?, ?, ?, SelectItem> inputChoice2 = form.findInputByClassByFieldName(org.cyk.ui.api.data.collector.control.InputChoice.class, "master2");
-		inputChoice2.getList().add(new SelectItem(new Master("MM1"), "MM1"));
-		inputChoice2.getList().add(new SelectItem(new Master("MM2"), "MM2"));
-		inputChoice2.getList().add(new SelectItem(new Master("MM3"), "MM3"));
-		inputChoice2.getList().add(new SelectItem(new Master("MM4"), "MM4"));
-		inputChoice2.getList().add(new SelectItem(new Master("MM5"), "MM5"));
-		inputCollectionSourceYesInput.setInputChoice(inputChoice2);
+		inputCollectionSourceYesInput.setInputChoice(form,"master2");
 		inputCollectionSourceYesInput.getCollection().setName("Source Yes Input");
 		
-		inputCollectionSourceYesInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		/*inputCollectionSourceYesInput.getCollection().addListener(new InputCollection.CollectionAdapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public Boolean isInstanciatable(Instance<Child> instance, Object object) {
-				return object instanceof Master;
+			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
+				element.setName("C2 "+((Master)((SelectItem)source).getValue()).getName());
 			}
 			
-			@Override
-			public void addOne(Instance<Child> instance, Child element,Object source) {
-				element.setName("Child of M "+((Master)((SelectItem)source).getValue()).getName());
-			}
-			
-			@Override
-			public Object getSource(Instance<Child> instance, Object object) {
-				if(object instanceof Child){
-					return ((Child)object).getObject();
-				}else if(object instanceof Master){
-					for(SelectItem selectItem : inputChoice2.getList()){
-						if(selectItem.getValue()==object){
-							return selectItem;
-						}
-					}
-				}
-				return super.getSource(instance, object);
-			}
-		});
+		});*/
 	}
 	
-	public static class MasterList extends InstanceHelper.Many.Adapter.Default implements Serializable {
+	public static class MasterList1 extends InstanceHelper.Many.Adapter.Default implements Serializable {
 		private static final long serialVersionUID = 1L;
 		@Override
 		protected Collection<?> __execute__() {
-			System.out.println("InputCollectionDemoPage.MasterList.__execute__()");
-			return new ArrayList<>(Arrays.asList(new Master("Master1"),new Master("Master2"),new Master("Master3"),new Master("Master4")));
+			return new ArrayList<>(Arrays.asList(new SelectItem(new Master("ML11"),"ML11"),new SelectItem(new Master("ML12"),"ML12")
+					,new SelectItem(new Master("ML13"),"ML13"),new SelectItem(new Master("ML14"),"ML14")));
+		}
+	}
+	
+	public static class MasterList2 extends InstanceHelper.Many.Adapter.Default implements Serializable {
+		private static final long serialVersionUID = 1L;
+		@Override
+		protected Collection<?> __execute__() {
+			return new ArrayList<>(Arrays.asList(new SelectItem(new Master("ML21"),"ML21"),new SelectItem(new Master("ML22"),"ML22")
+					,new SelectItem(new Master("ML23"),"ML23"),new SelectItem(new Master("ML24"),"ML24")));
 		}
 	}
 	
@@ -180,13 +139,14 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	public static class Form extends AbstractBean implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList.class) @InputOneChoice @InputOneCombo private Master master1;
-		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList.class) @InputOneChoice @InputOneCombo private Master master2;
+		@NotNull @Input @InputText private String globalText;
+		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList1.class,nullable=false) @InputOneChoice @InputOneCombo private Master master1;
+		@Input(rendererStrategy=Input.RendererStrategy.MANUAL) @InputChoice(getChoicesClass=MasterList2.class,nullable=false) @InputOneChoice @InputOneCombo private Master master2;
 		
 	}
 	
 	@Getter @Setter @Accessors(chain=true) @AllArgsConstructor @ToString(of="name")
-	public static class Master implements Serializable {
+	public static class Master extends AbstractBean implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private String name;

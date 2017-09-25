@@ -21,14 +21,13 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{inputCollectionDemoPage}" />
  		<ui:define name="body">
- 			<pe:importConstants className="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
  			<cyk:formOneData value="#{inputCollectionDemoPage.form}"/>
  			
  			<cyk:inputCollection value="#{inputCollectionDemoPage.inputCollectionSourceNo}" />
  				
  			<cyk:inputCollection value="#{inputCollectionDemoPage.inputCollectionSourceNoInput}" >
  				<p:column headerText="Text" >
- 					<p:inputText value="#{element.text}" required="#{not param[UI_CONSTANT.INPUT_VALUE_IS_NOT_REQUIRED]}" />
+ 					<p:inputText value="#{element.text}" required="#{not viewHelper.parameterValueInputValueIsNotRequired}" />
  				</p:column>
  			</cyk:inputCollection>
  			
@@ -36,7 +35,7 @@
  				
  			<cyk:inputCollection value="#{inputCollectionDemoPage.inputCollectionSourceYesInput}" >
  				<p:column headerText="Text" >
- 					<p:inputText value="#{element.text}" required="#{not param[UI_CONSTANT.INPUT_VALUE_IS_NOT_REQUIRED]}" />
+ 					<p:inputText value="#{element.text}" required="#{not viewHelper.parameterValueInputValueIsNotRequired}" />
  				</p:column>
  			</cyk:inputCollection>
  			

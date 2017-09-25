@@ -14,8 +14,8 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 
 	/**/
 	
-	public InputCollection(Class<T> elementClass) {
-		super(elementClass);
+	public InputCollection(Class<T> elementClass,Class<?> sourceObjectClass) {
+		super(elementClass,sourceObjectClass);
 		//in order to trigger update we need to use a unique css class to identify input
 		getPropertiesMap().addString(Constant.STYLE_CLASS,org.cyk.utility.common.Constant.CHARACTER_SPACE.toString(), identifier);
 		
@@ -25,7 +25,15 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 		getIndexColumn().addFooterCommand(getAddCommand());
 	}
 	
+	public InputCollection(Class<T> elementClass) {
+		this(elementClass,(Class<?>)null);
+	}
+	
 	/**/
 	
+	public static class CollectionAdapter<T> extends org.cyk.ui.web.api.data.collector.control.InputCollection.CollectionAdapter<T> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+	}
 	
 }

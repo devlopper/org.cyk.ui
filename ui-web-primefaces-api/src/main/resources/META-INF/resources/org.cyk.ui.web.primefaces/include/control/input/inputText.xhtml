@@ -15,7 +15,7 @@
 		<!--ui:param name="forId" value="#{controlId == null ? uiManager.isMobileDevice(userDeviceType) ? 'mobileInputText':'noMobileInputText' : controlId}" /-->
 		<ui:define name="input">
 			<p:inputText id="#{forId}" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" widgetVar="#{control.widgetVar}"
-				required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}" disabled="#{control.disabled}"
+				required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}" disabled="#{control.disabled}"
 				 requiredMessage="#{control.requiredMessage}" pt:placeholder="#{control.label}" label="#{control.label}" 
 				 onchange="#{control.onChange}" onclick="#{control.onClick}"  >
 				<ui:include src="body.xhtml" />

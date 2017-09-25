@@ -119,6 +119,9 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			for(GlobalIdentifier globalIdentifier : inject(GlobalIdentifierBusiness.class).findAll()){
 				list.add(Boolean.TRUE.equals(itemWrapper)?item(globalIdentifier):globalIdentifier);
 			}		
+		}else{
+			if(getChoices!=null)
+				list.addAll(getChoices.execute());
 		}
 	}
 	
