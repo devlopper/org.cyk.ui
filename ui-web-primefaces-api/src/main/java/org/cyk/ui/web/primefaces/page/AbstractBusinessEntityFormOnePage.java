@@ -27,6 +27,7 @@ import org.cyk.ui.api.command.CommandListener;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.control.InputCollection;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.data.collector.form.FormConfiguration;
@@ -259,6 +260,8 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 								item.write();
 							}*/
 						}
+						for(InputCollection<?, ?> inputCollection : form.getInputCollections())
+							inputCollection.getCollection().write();
 					}
 					
 					

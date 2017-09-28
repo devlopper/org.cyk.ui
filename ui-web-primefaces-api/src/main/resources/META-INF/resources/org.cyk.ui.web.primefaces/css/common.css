@@ -228,6 +228,18 @@ border: none;
 	width: 260px !important;
 }
 
+.ui-selectonemenu .cyk-ui-form-inputfield-relative,.cyk-ui-form-inputfield-relative{
+	width: 88% !important;
+	
+}
+input.cyk-ui-form-inputfield-relative {
+	width: 99% !important;
+	
+}
+/*.ui-selectonemenu-filter-container input{
+	width: 100% !important;
+}*/
+
 .ui-multiselectlistbox{
  	width: 600px !important;
  }	

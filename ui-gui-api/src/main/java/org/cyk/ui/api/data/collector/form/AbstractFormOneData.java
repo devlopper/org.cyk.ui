@@ -18,6 +18,7 @@ import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.command.UICommandable.EventListener;
 import org.cyk.ui.api.command.UICommandable.ProcessGroup;
 import org.cyk.ui.api.data.collector.control.InputChoice;
+import org.cyk.ui.api.data.collector.control.InputCollection;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
 import org.cyk.utility.common.ListenerUtils;
@@ -42,6 +43,7 @@ public abstract class AbstractFormOneData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITE
 	@Getter protected final Stack<FormData<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>> formDatas = new Stack<>(); 
 	@Getter protected final Collection<ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM>> controlSetListeners = new ArrayList<>();
 	@Getter protected final Collection<AbstractItemCollection<?,?,?,?>> itemCollections = new ArrayList<>() ;
+	@Getter protected final Collection<InputCollection<?, ?>> inputCollections = new ArrayList<>() ;
 	
 	/**/
 	

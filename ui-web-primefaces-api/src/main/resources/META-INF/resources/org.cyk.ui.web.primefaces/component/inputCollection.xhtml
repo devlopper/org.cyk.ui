@@ -59,8 +59,17 @@
 		 			<h:outputText value="#{element.name}"/>
 		 		</ui:define>
 		 	</ui:decorate>
-       		
+		 	
+		 	<!-- some ajax stuff not working with this : like input validation is not required -->
+       		<!--
+       		<p:columns var="column" value="#{cc.value.columns}" headerText="#{column.name}">
+      			<ui:include src="/org.cyk.ui.web.primefaces/include/table/column/content.xhtml">
+      					
+      			</ui:include>
+			</p:columns>
+			-->
        		<cc:insertChildren/>
+
        		<!--
        		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.editable and cc.value.applicableValueQuestion.rendered}">
        			<p:selectBooleanCheckbox value="#{element.applicable}" >

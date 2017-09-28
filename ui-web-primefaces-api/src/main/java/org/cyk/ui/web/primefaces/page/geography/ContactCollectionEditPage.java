@@ -4,77 +4,98 @@ import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
+
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.geography.Contact;
+import org.cyk.system.root.model.geography.ContactCollection;
+import org.cyk.system.root.model.geography.Country;
+import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.LocationType;
+import org.cyk.system.root.model.geography.PhoneNumber;
+import org.cyk.system.root.model.geography.PhoneNumberType;
+import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
+import org.cyk.ui.web.primefaces.data.collector.control.InputCollection;
+import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.helper.GridHelper;
+import org.cyk.utility.common.helper.GridHelper.Grid;
+import org.cyk.utility.common.helper.GridHelper.Grid.Column;
+import org.cyk.utility.common.helper.MarkupLanguageHelper;
+import org.cyk.utility.common.helper.MethodHelper;
+import org.cyk.utility.common.helper.StringHelper;
+import org.hibernate.validator.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import org.cyk.system.root.model.geography.Contact;
-import org.cyk.system.root.model.geography.ContactCollection;
-import org.cyk.system.root.model.geography.ElectronicMail;
-import org.cyk.system.root.model.geography.PhoneNumber;
-import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
-import org.cyk.ui.api.model.AbstractItemCollectionItem;
-import org.cyk.ui.web.primefaces.ItemCollection;
-import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 
 @Named @ViewScoped @Getter @Setter
 public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollection> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private ItemCollection<PhoneNumberItem,PhoneNumber,ContactCollection> phoneNumberCollection;
-	private ItemCollection<ElectronicMailItem,ElectronicMail,ContactCollection> electronicMailCollection;
+	private InputCollection<PhoneNumberItem> phoneNumberCollection;
+	private InputCollection<ElectronicMailItem> electronicMailColection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		/*
-		phoneNumberCollection = createItemCollection(PhoneNumberItem.class, PhoneNumber.class
-				,new ItemCollectionWebAdapter<PhoneNumberItem,PhoneNumber>(){
-			private static final long serialVersionUID = -3872058204105902514L;
-			@Override
-			public Collection<PhoneNumber> load() {
-				return inject(PhoneNumberBusiness.class).findByCollection(identifiable);
-			}
-			@Override
-			public void instanciated(AbstractItemCollection<PhoneNumberItem, PhoneNumber,SelectItem> itemCollection,PhoneNumberItem item) {
-				super.instanciated(itemCollection, item);
-				
 		
-			}	
-			@Override
-			public Crud getCrud() {
-				return crud;
-			}
-			@Override
-			public Boolean isShowAddButton() {
-				return Boolean.TRUE;
-			}
-		});
+	}
+	
+	@Override
+	protected void afterInitialisation() {
+		super.afterInitialisation();
+		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
+	
+		phoneNumberCollection = instanciateInputCollection(PhoneNumber.class);	
+		electronicMailColection = instanciateInputCollection(ElectronicMail.class);
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,Class<?> sourceObjectClass,String...fieldNames){
+		InputCollection<T> inputCollection = (InputCollection<T>) new GridHelper.Grid.Builder.Adapter.Default<T>()
+				.setElementObjectClass(identifiableClass)
+				.setElementClassContainerClass(getClass())
+				.setElementClass(aClass)
+				.setMasterObject(identifiable)
+				.setGridCollection((java.util.Collection<Grid<T,?>>) MethodHelper.getInstance().callGet(form, java.util.Collection.class, "inputCollections"))
+				.addListener(new GridHelper.Grid.Listener.Adapter<T>(){
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public void addColumn(Grid<T, ?> grid, Column<?> column) {
+						column.getFieldDescriptor().getPropertiesMap().set(MarkupLanguageHelper.Attributes.STYLE_CLASS, "cyk-ui-form-inputfield-relative");
+					}
+				})
+				.setOutput(new InputCollection<>(StringHelper.getInstance().getClazz(identifiableClass),aClass,identifiableClass))
+				.execute();	
+		return inputCollection;
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass,aClass,null, fieldNames);
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass, null, fieldNames);
+	}
+	
+	@Override
+	protected void update() {
+		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(PhoneNumber.class));
+		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(ElectronicMail.class));
 		
-		electronicMailCollection = createItemCollection(ElectronicMailItem.class, ElectronicMail.class
-				,new ItemCollectionWebAdapter<ElectronicMailItem,ElectronicMail>(){
-			private static final long serialVersionUID = -3872058204105902514L;
-			@Override
-			public Collection<ElectronicMail> load() {
-				return inject(ElectronicMailBusiness.class).findByCollection(identifiable);
-			}
-			@Override
-			public void instanciated(AbstractItemCollection<ElectronicMailItem, ElectronicMail,SelectItem> itemCollection,ElectronicMailItem item) {
-				super.instanciated(itemCollection, item);
-				
+		identifiable.addPhoneNumbers(phoneNumberCollection.getCollection().getElementObjects(PhoneNumber.class));
 		
-			}	
-			@Override
-			public Crud getCrud() {
-				return crud;
-			}
-			@Override
-			public Boolean isShowAddButton() {
-				return Boolean.TRUE;
-			}
-		});
-		*/
+		
+		identifiable.addElectronicMails(electronicMailColection.getCollection().getElementObjects(ElectronicMail.class));
+		
+		super.update();
 	}
 		
 	/**/
@@ -87,20 +108,33 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	/**/
 	
 	@Getter @Setter
-	public static abstract class AbstractContactItem<CONTACT extends Contact> extends AbstractItemCollectionItem<CONTACT> implements Serializable {
-		private static final long serialVersionUID = 3828481396841243726L;
-		protected String value;
-	}
-	
-	@Getter @Setter
-	public static class PhoneNumberItem extends AbstractContactItem<PhoneNumber> implements Serializable {
+	public static abstract class AbstractContactItem<CONTACT extends Contact> extends InputCollection.Element<CONTACT> implements Serializable {
 		private static final long serialVersionUID = 3828481396841243726L;
 		
 	}
 	
 	@Getter @Setter
+	public static class PhoneNumberItem extends AbstractContactItem<PhoneNumber> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@NotNull @Input @InputChoice @InputOneChoice @InputOneCombo private Country country;
+		@NotNull @Input @InputChoice @InputOneChoice @InputOneCombo private PhoneNumberType type;
+		@NotNull @Input @InputText protected String number;
+		@Input @InputChoice @InputOneChoice @InputOneCombo private LocationType locationType;
+		
+		public static final String FIELD_COUNTRY = "country";
+		public static final String FIELD_TYPE = "type";
+		public static final String FIELD_NUMBER = "number";
+		public static final String FIELD_LOCATION_TYPE = "locationType";
+	}
+	
+	@Getter @Setter
 	public static class ElectronicMailItem extends AbstractContactItem<ElectronicMail> implements Serializable {
 		private static final long serialVersionUID = 3828481396841243726L;
+		
+		@NotNull @Email @Input @InputText protected String address;
+		
+		public static final String FIELD_ADDRESS = "address";
 		
 	}
 }

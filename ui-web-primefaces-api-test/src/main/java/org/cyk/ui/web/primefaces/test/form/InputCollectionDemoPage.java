@@ -41,11 +41,11 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	private FormOneData<Form> form;
-	private InputCollection<Child> inputCollectionSourceNo = new InputCollection<>(Child.class);
-	private InputCollection<Child> inputCollectionSourceNoInput = new InputCollection<>(Child.class);
+	private InputCollection<Child> inputCollectionSourceNo = new InputCollection<>("Source No",Child.class,null);
+	private InputCollection<Child> inputCollectionSourceNoInput = new InputCollection<>("Source No Input",Child.class,null);
 	
-	private InputCollection<Child> inputCollectionSourceYes = new InputCollection<>(Child.class,Master.class);
-	private InputCollection<Child> inputCollectionSourceYesInput = new InputCollection<>(Child.class,Master.class);
+	private InputCollection<Child> inputCollectionSourceYes = new InputCollection<>("Source Yes",Child.class,null,Master.class);
+	private InputCollection<Child> inputCollectionSourceYesInput = new InputCollection<>("Source Yes Input",Child.class,null,Master.class);
 	
 	@Override
 	protected void initialisation() { 
@@ -71,50 +71,43 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		inputCollectionSourceNo.getCollection().setName("Source No");
-		
-		/*inputCollectionSourceNo.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		inputCollectionSourceNo.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName("Source No "+System.currentTimeMillis());
+				element.setName(instance.getName()+" "+System.currentTimeMillis());
 			}
-		});*/
+		});
 		
-		inputCollectionSourceNoInput.getCollection().setName("Source No Input");
-		/*inputCollectionSourceNoInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
+		inputCollectionSourceNoInput.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName("Source No Input "+System.currentTimeMillis());
+				element.setName(instance.getName()+" "+System.currentTimeMillis());
 			}
-		});*/
+		});
 		
 		inputCollectionSourceYes.setInputChoice(form,"master1");
-		inputCollectionSourceYes.getCollection().setName("Source Yes");
-		
-		/*inputCollectionSourceYes.getCollection().addListener(new InputCollection.CollectionAdapter<Child>(){
+		inputCollectionSourceYes.getCollection().addListener(new CollectionHelper.Instance.Listener.Adapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName("C1 "+((Master)sourceObject).getName());
+				element.setName(instance.getName()+" "+((Master)sourceObject).getName());
 			}
 			
-		});*/
+		});
 		
 		inputCollectionSourceYesInput.setInputChoice(form,"master2");
-		inputCollectionSourceYesInput.getCollection().setName("Source Yes Input");
-		
-		/*inputCollectionSourceYesInput.getCollection().addListener(new InputCollection.CollectionAdapter<Child>(){
+		inputCollectionSourceYesInput.getCollection().addListener(new InputCollection.CollectionAdapter<Child>(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName("C2 "+((Master)((SelectItem)source).getValue()).getName());
+				element.setName(instance.getName()+" "+((Master)sourceObject).getName());
 			}
 			
-		});*/
+		});
 	}
 	
 	public static class MasterList1 extends InstanceHelper.Many.Adapter.Default implements Serializable {

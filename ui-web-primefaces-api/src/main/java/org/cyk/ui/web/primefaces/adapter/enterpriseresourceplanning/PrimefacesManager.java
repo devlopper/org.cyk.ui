@@ -20,6 +20,7 @@ import org.cyk.system.root.business.impl.geography.CountryDetails;
 import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
+import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricCollectionDetails;
@@ -296,6 +297,35 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		getFormConfiguration(PhoneNumber.class,Crud.CREATE).addRequiredFieldNames(PhoneNumberEditPage.Form.FIELD_COLLECTION,PhoneNumberEditPage.Form.FIELD_VALUE
 				,PhoneNumberEditPage.Form.FIELD_COUNTRY,PhoneNumberEditPage.Form.FIELD_TYPE)
 			.addFieldNames(PhoneNumberEditPage.Form.FIELD_ORDER_NUMBER);
+		
+		registerDetailsConfiguration(PhoneNumberDetails.class, new DetailsConfiguration(){
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			@Override
+			public ControlSetAdapter.Details getFormControlSetAdapter(Class clazz) {
+				return new DetailsConfiguration.DefaultControlSetAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean build(Object data,Field field) {
+						return isFieldNameIn(field,PhoneNumberDetails.FIELD_COUNTRY,PhoneNumberDetails.FIELD_TYPE,PhoneNumberDetails.FIELD_LOCATION_TYPE
+								,PhoneNumberDetails.FIELD_VALUE);
+					}
+				};
+			}
+			
+			@Override
+			public ColumnAdapter getTableColumnAdapter(@SuppressWarnings("rawtypes") Class clazz,AbstractPrimefacesPage page) {
+				return new DetailsConfiguration.DefaultColumnAdapter(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Boolean isColumn(Field field) {
+						return isFieldNameIn(field,PhoneNumberDetails.FIELD_COUNTRY,PhoneNumberDetails.FIELD_TYPE
+								,PhoneNumberDetails.FIELD_LOCATION_TYPE,PhoneNumberDetails.FIELD_VALUE
+								);
+					}
+				};
+			}
+		});
 		
 		getFormConfiguration(LocalityType.class,Crud.CREATE).addRequiredFieldNames(LocalityTypeEditPage.Form.FIELD_CODE)
 		.addFieldNames(LocalityTypeEditPage.Form.FIELD_NAME,LocalityTypeEditPage.Form.FIELD_PARENT);

@@ -56,6 +56,7 @@ import org.cyk.utility.common.builder.NameValueCollectionStringBuilder;
 import org.cyk.utility.common.builder.TextStringBuilder;
 import org.cyk.utility.common.builder.UrlStringBuilder;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.SelectItemHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.joda.time.DateTimeConstants;
@@ -216,6 +217,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		InstanceHelper.Listener.Adapter.Default.DEFAULT_CLASS = org.cyk.system.root.business.impl.helper.InstanceHelper.Listener.class;
 		servletContext = event.getServletContext();
 		/*UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_SCHEME = "http";
 		UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_HOST = "localhost";

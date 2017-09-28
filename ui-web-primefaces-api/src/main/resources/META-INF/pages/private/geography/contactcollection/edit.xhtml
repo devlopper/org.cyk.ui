@@ -13,20 +13,49 @@
  		<ui:param name="pageController" value="#{contactCollectionEditPage}" />
  		<ui:define name="body">
  			<cyk:formOneData value="#{contactCollectionEditPage.form}"/>
- 			<!--
- 			<cyk:itemCollection value="#{contactCollectionEditPage.phoneNumberCollection}" >
- 				<p:column headerText="#{uiManager.text('field.name')}" >
- 					<h:outputText value="#{item.value}" />
- 				</p:column>
- 			</cyk:itemCollection>
  			
- 			<cyk:itemCollection value="#{contactCollectionEditPage.electronicMailCollection}" >
- 				<p:column headerText="#{uiManager.text('field.name')}" >
- 					<h:outputText value="#{item.value}" />
- 					
- 				</p:column>
- 			</cyk:itemCollection>
- 			-->
+ 			<table>
+ 				<tr style="vertical-align: top;">
+ 					<td style="width: 60%;">
+ 						<cyk:inputCollection value="#{contactCollectionEditPage.phoneNumberCollection}" >
+			  				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+								<ui:param name="column" value="#{contactCollectionEditPage.phoneNumberCollection.getColumn('country')}"/>
+							</ui:include>
+			 				
+			 				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+								<ui:param name="column" value="#{contactCollectionEditPage.phoneNumberCollection.getColumn('type')}"/>
+							</ui:include>
+							
+							<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+								<ui:param name="column" value="#{contactCollectionEditPage.phoneNumberCollection.getColumn('number')}"/>
+							</ui:include>
+							
+			 				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+								<ui:param name="column" value="#{contactCollectionEditPage.phoneNumberCollection.getColumn('locationType')}"/>
+							</ui:include>
+							
+							<!--
+							<p:columns var="column" value="#{contactCollectionEditPage.phoneNumberCollection.columns}">
+								<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+									
+								</ui:include>
+							</p:columns>
+							-->
+			 			</cyk:inputCollection>
+ 					</td>
+ 					<td>
+ 						<cyk:inputCollection value="#{contactCollectionEditPage.electronicMailColection}" >
+			 				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+								<ui:param name="column" value="#{contactCollectionEditPage.electronicMailColection.getColumn('address')}"/>
+							</ui:include>
+			 			</cyk:inputCollection>
+ 					</td>
+ 				</tr>
+ 			</table>
+ 			
+ 			
+ 			
+ 			
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">

@@ -15,19 +15,13 @@ public class InputCollection<T> extends org.cyk.ui.api.data.collector.control.In
 
 	/**/
 	
-	public InputCollection(Class<T> elementClass,Class<?> sourceObjectClass) {
-		super(elementClass,SelectItem.class,sourceObjectClass);
-		getCollection().addListener(new CollectionAdapter<T>());
-		getCollection().setGetGetSourceObjectMethodName(GET_VALUE);
+	public InputCollection(String name,Class<T> elementClass,Class<?> elementObjectClass,Class<?> sourceObjectClass) {
+		super(elementClass,elementObjectClass,SelectItem.class,sourceObjectClass);
+		getCollection().setName(name).setGetSourceObjectMethodName(GET_VALUE);
 	}
 	
-	public InputCollection(Class<T> elementClass) {
-		this(elementClass,null);
-	}
-	
-	@Override
-	protected Object getSelectItemValue(SelectItem selectItem) {
-		return selectItem.getValue();
+	public InputCollection(String name,Class<T> elementClass,Class<?> elementObjectClass) {
+		this(name,elementClass,elementObjectClass,null);
 	}
 	
 	public static class CollectionAdapter<T> extends CollectionHelper.Instance.Listener.Adapter<T> implements Serializable {
