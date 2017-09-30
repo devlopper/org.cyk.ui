@@ -20,7 +20,7 @@ import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
 import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
-import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailAddressDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
@@ -71,7 +71,7 @@ import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
@@ -140,7 +140,7 @@ import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ElectronicMailAddressEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
@@ -336,8 +336,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		//uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
 		//uiManager.configBusinessIdentifiable(ContactCollection.class, null);
 		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMail.class, ElectronicMailEditPage.Form.class, ElectronicMailDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(ElectronicMail.class, null);
+		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMailAddress.class, ElectronicMailAddressEditPage.Form.class, ElectronicMailAddressDetails.class,null,null,null));
+		uiManager.configBusinessIdentifiable(ElectronicMailAddress.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(PhoneNumber.class, PhoneNumberEditPage.Form.class, PhoneNumberDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(PhoneNumber.class, null);

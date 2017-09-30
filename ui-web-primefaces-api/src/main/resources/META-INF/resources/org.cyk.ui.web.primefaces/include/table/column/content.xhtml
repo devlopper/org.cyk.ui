@@ -9,14 +9,11 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	
 	<ui:fragment rendered="#{column.fieldDescriptor.isValueTextable}">
 		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/inputText.xhtml"/>
 	</ui:fragment>
 	<ui:fragment rendered="#{column.fieldDescriptor.isValueSelectableOneCombo}">
 		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/selectOneMenu.xhtml"/>
 	</ui:fragment>
-		
-	
 
 </ui:composition>

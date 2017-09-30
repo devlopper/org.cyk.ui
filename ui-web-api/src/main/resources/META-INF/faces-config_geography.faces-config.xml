@@ -44,18 +44,18 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>electronicMailListView</from-outcome>
-			<to-view-id>/private/geography/electronicmail/list.xhtml</to-view-id>
+			<from-outcome>electronicMailAddressListView</from-outcome>
+			<to-view-id>/private/geography/electronicmailaddress/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>electronicMailEditView</from-outcome>
-			<to-view-id>/private/geography/electronicmail/edit.xhtml</to-view-id>
+			<from-outcome>electronicMailAddressEditView</from-outcome>
+			<to-view-id>/private/geography/electronicmailaddress/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>electronicMailConsultView</from-outcome>
-			<to-view-id>/private/geography/electronicmail/consult.xhtml</to-view-id>
+			<from-outcome>electronicMailAddressConsultView</from-outcome>
+			<to-view-id>/private/geography/electronicmailaddress/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

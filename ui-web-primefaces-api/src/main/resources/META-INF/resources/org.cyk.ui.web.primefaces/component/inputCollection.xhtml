@@ -69,7 +69,35 @@
 			</p:columns>
 			-->
        		<cc:insertChildren/>
-
+       		
+       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(0)}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(1)}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(2)}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(3)}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(4)}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(5)}"/>
+			</ui:include>
+			
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
+				<ui:param name="column" value="#{cc.value.getColumnAt(6)}"/>
+			</ui:include>
+			
+       		<!--
+       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/columns.xhtml" >
+				<ui:param name="inputCollection" value="#{cc.value}"/>
+			</ui:include>
+			-->
        		<!--
        		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.editable and cc.value.applicableValueQuestion.rendered}">
        			<p:selectBooleanCheckbox value="#{element.applicable}" >

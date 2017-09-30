@@ -17,7 +17,7 @@ import org.cyk.system.root.business.impl.file.FileIdentifiableGlobalIdentifierDe
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
 import org.cyk.system.root.business.impl.geography.CountryDetails;
-import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailAddressDetails;
 import org.cyk.system.root.business.impl.geography.LocalityDetails;
 import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
@@ -70,7 +70,7 @@ import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.PhoneNumber;
@@ -133,7 +133,7 @@ import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.geography.ContactCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ElectronicMailEditPage;
+import org.cyk.ui.web.primefaces.page.geography.ElectronicMailAddressEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
 import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
 import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
@@ -395,7 +395,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,ContactCollectionDetails.FIELD_PHONE_NUMBERS,ContactCollectionDetails.FIELD_ELECTRONIC_MAILS
+						return isFieldNameIn(field,ContactCollectionDetails.FIELD_PHONE_NUMBERS,ContactCollectionDetails.FIELD_ELECTRONIC_MAIL_ADDRESSES
 								,ContactCollectionDetails.FIELD_LOCATIONS,ContactCollectionDetails.FIELD_POSTAL_BOXES);
 					}
 				};
@@ -438,9 +438,9 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 			}
 		});
 		
-		getFormConfiguration(ElectronicMail.class,Crud.CREATE).addRequiredFieldNames(ElectronicMailEditPage.Form.FIELD_VALUE);
+		getFormConfiguration(ElectronicMailAddress.class,Crud.CREATE).addRequiredFieldNames(ElectronicMailAddressEditPage.Form.FIELD_VALUE);
 		
-		registerDetailsConfiguration(ElectronicMailDetails.class, new DetailsConfiguration(){
+		registerDetailsConfiguration(ElectronicMailAddressDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			@Override
@@ -449,7 +449,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Boolean build(Object data,Field field) {
-						return isFieldNameIn(field,ElectronicMailDetails.FIELD_VALUE);
+						return isFieldNameIn(field,ElectronicMailAddressDetails.FIELD_VALUE);
 					}
 				};
 			}

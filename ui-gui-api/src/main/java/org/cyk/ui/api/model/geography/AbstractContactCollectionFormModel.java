@@ -3,7 +3,7 @@ package org.cyk.ui.api.model.geography;
 import java.io.Serializable;
 
 import org.cyk.system.root.model.geography.ContactCollection;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
@@ -136,7 +136,7 @@ public abstract class AbstractContactCollectionFormModel extends AbstractFormMod
 		*/
 	}
 	
-	private ElectronicMail getElectronicMail(Integer index){
+	private ElectronicMailAddress getElectronicMail(Integer index){
 		/*if(identifiable==null)
 			return null;
 		if(identifiable.getElectronicMails()==null)

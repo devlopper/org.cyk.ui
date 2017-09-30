@@ -6,11 +6,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
+import org.cyk.system.root.business.api.geography.ContactBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
@@ -22,6 +23,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
+import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.GridHelper;
 import org.cyk.utility.common.helper.GridHelper.Grid;
 import org.cyk.utility.common.helper.GridHelper.Grid.Column;
@@ -39,7 +41,7 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	private InputCollection<PhoneNumberItem> phoneNumberCollection;
-	private InputCollection<ElectronicMailItem> electronicMailColection;
+	private InputCollection<ElectronicMailAddressItem> electronicMailAddressColection;
 	
 	@Override
 	protected void initialisation() {
@@ -51,9 +53,12 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
-	
+		identifiable.getItems().addMany(inject(ContactBusiness.class).findByCollection(identifiable));
+			
 		phoneNumberCollection = instanciateInputCollection(PhoneNumber.class);	
-		electronicMailColection = instanciateInputCollection(ElectronicMail.class);
+		electronicMailAddressColection = instanciateInputCollection(ElectronicMailAddress.class);
+		
+		System.out.println("ContactCollectionEditPage.afterInitialisation() : "+identifiable.getItems().getElementClass());
 	}
 	
 	@SuppressWarnings({ "unchecked" })
@@ -74,6 +79,7 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 				})
 				.setOutput(new InputCollection<>(StringHelper.getInstance().getClazz(identifiableClass),aClass,identifiableClass))
 				.execute();	
+		inputCollection.getCollection().setMasterElementObjectCollection(MethodHelper.getInstance().callGet(identifiable, CollectionHelper.Instance.class, "items"));
 		return inputCollection;
 	}
 	
@@ -87,14 +93,13 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	
 	@Override
 	protected void update() {
-		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(PhoneNumber.class));
-		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(ElectronicMail.class));
-		
+		/*identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(PhoneNumber.class));
 		identifiable.addPhoneNumbers(phoneNumberCollection.getCollection().getElementObjects(PhoneNumber.class));
 		
-		
-		identifiable.addElectronicMails(electronicMailColection.getCollection().getElementObjects(ElectronicMail.class));
-		
+		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(ElectronicMailAddress.class));
+		identifiable.addElectronicMailAddresses(electronicMailAddressColection.getCollection().getElementObjects(ElectronicMailAddress.class));
+		*/
+		System.out.println("ContactCollectionEditPage.update() : "+identifiable.getItems().getElements());
 		super.update();
 	}
 		
@@ -129,7 +134,7 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	}
 	
 	@Getter @Setter
-	public static class ElectronicMailItem extends AbstractContactItem<ElectronicMail> implements Serializable {
+	public static class ElectronicMailAddressItem extends AbstractContactItem<ElectronicMailAddress> implements Serializable {
 		private static final long serialVersionUID = 3828481396841243726L;
 		
 		@NotNull @Email @Input @InputText protected String address;

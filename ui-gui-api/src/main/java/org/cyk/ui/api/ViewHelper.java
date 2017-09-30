@@ -6,6 +6,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.RandomHelper;
 
 @Singleton @Named
 public class ViewHelper extends AbstractBean implements Serializable {
@@ -23,6 +24,10 @@ public class ViewHelper extends AbstractBean implements Serializable {
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+	}
+	
+	public String getRandomIdentifier(){
+		return RandomHelper.getInstance().getAlphabetic(5);
 	}
 	
 	public String getParameterNameInputValueIsNotRequired(){

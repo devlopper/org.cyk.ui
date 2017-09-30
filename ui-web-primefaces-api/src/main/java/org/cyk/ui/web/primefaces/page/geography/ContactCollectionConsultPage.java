@@ -7,7 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.system.root.business.api.geography.PhoneNumberBusiness;
-import org.cyk.system.root.business.impl.geography.ElectronicMailDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailAddressDetails;
 import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -27,7 +27,7 @@ public class ContactCollectionConsultPage extends AbstractConsultPage<ContactCol
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	private Table<PhoneNumberDetails> phoneNumberTable;
-	private Table<ElectronicMailDetails> electronicMailTable;
+	private Table<ElectronicMailAddressDetails> electronicMailAddressTable;
 	
 	@Override
 	protected void consultInitialisation() {

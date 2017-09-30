@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.security.Credentials;
@@ -34,7 +34,7 @@ public class SmtpPropertiesEditPage extends AbstractCrudOnePage<SmtpProperties> 
 		
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Service service;
 		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private Credentials credentials;
-		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private ElectronicMail from;
+		@Input @InputChoice @InputChoiceAutoComplete @InputOneChoice @InputOneAutoComplete private ElectronicMailAddress from;
 		
 		public static final String FIELD_SERVICE = "service";
 		public static final String FIELD_FROM = "from";

@@ -8,7 +8,7 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.message.MailBusiness;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.ui.api.command.CommandAdapter;
 import org.cyk.ui.api.command.UICommand;
@@ -48,7 +48,7 @@ public class MailSendPage extends AbstractFormPage<MailSendPage.Form> implements
 				message.setSubject(((Form)form.getData()).getSubject());
 				message.setContent(((Form)form.getData()).getContent());
 				
-				inject(MailBusiness.class).send(message,((Form)form.getData()).getElectronicMails(), ((Form)form.getData()).getSmtpProperties());
+				inject(MailBusiness.class).send(message,((Form)form.getData()).getElectronicMailAddresses(), ((Form)form.getData()).getSmtpProperties());
 				/*MailSender sender = new MailSender();
 				sender.setProperties(inject(SmtpPropertiesBusiness.class).convertToProperties(((Form)form.getData()).getSmtpProperties()));
 				sender.setInput(message);
@@ -65,7 +65,7 @@ public class MailSendPage extends AbstractFormPage<MailSendPage.Form> implements
 		private static final long serialVersionUID = 1L;
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo @NotNull private SmtpProperties smtpProperties;
-		@Input @InputChoice @InputChoiceAutoComplete @InputManyChoice @InputManyAutoComplete @NotNull private List<ElectronicMail> electronicMails;
+		@Input @InputChoice @InputChoiceAutoComplete @InputManyChoice @InputManyAutoComplete @NotNull private List<ElectronicMailAddress> electronicMailAddresses;
 		//@Input @InputText private String otherElectronicMails;
 		@Input @InputText @NotNull private String subject;
 		@Input @InputTextarea @NotNull private String content;

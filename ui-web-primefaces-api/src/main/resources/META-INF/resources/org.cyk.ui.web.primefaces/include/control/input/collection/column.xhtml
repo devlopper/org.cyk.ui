@@ -9,7 +9,7 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<p:column headerText="#{column.name}" >
+	<p:column headerText="#{column.name}" rendered="#{column!=null}">
 		<ui:include src="/org.cyk.ui.web.primefaces/include/table/column/content.xhtml">
        					
        	</ui:include>

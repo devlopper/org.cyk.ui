@@ -13,7 +13,7 @@ import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
@@ -100,7 +100,7 @@ public class ContactCollectionEditPhoneNumbersPage extends AbstractCrudOnePage<C
 	}
 	
 	@Getter @Setter
-	public static class ElectronicMailItem extends AbstractContactItem<ElectronicMail> implements Serializable {
+	public static class ElectronicMailItem extends AbstractContactItem<ElectronicMailAddress> implements Serializable {
 		private static final long serialVersionUID = 3828481396841243726L;
 		
 	}

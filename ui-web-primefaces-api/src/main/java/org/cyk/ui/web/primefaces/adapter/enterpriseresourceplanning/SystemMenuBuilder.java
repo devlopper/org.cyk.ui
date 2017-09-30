@@ -19,7 +19,7 @@ import org.cyk.system.root.model.file.report.ReportTemplate;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMail;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
 import org.cyk.system.root.model.geography.LocationType;
@@ -141,7 +141,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(Locality.class, null));
 		module.addChild(createListCommandable(Country.class, null));
 		module.addChild(createListCommandable(ContactCollection.class, null));
-		module.addChild(createListCommandable(ElectronicMail.class, null));
+		module.addChild(createListCommandable(ElectronicMailAddress.class, null));
 		module.addChild(createListCommandable(LocationType.class, null));
 		//module.addChild(createListCommandable(Location.class, null));
 		module.addChild(createListCommandable(PhoneNumberType.class, null));
@@ -243,7 +243,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(LocationType.class, null));
 		module.addChild(createListCommandable(PhoneNumberType.class, null));
 		module.addChild(createListCommandable(Country.class, null));
-		module.addChild(createListCommandable(ElectronicMail.class, null));
+		module.addChild(createListCommandable(ElectronicMailAddress.class, null));
 		module.addChild(createListCommandable(ContactCollection.class, null));
 		return module;
 	}
