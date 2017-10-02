@@ -53,12 +53,10 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	protected void afterInitialisation() {
 		super.afterInitialisation();
 		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
-		identifiable.getItems().addMany(inject(ContactBusiness.class).findByCollection(identifiable));
+		//identifiable.getItems().addMany(inject(ContactBusiness.class).findByCollection(identifiable));
 			
 		phoneNumberCollection = instanciateInputCollection(PhoneNumber.class);	
 		electronicMailAddressColection = instanciateInputCollection(ElectronicMailAddress.class);
-		
-		System.out.println("ContactCollectionEditPage.afterInitialisation() : "+identifiable.getItems().getElementClass());
 	}
 	
 	@SuppressWarnings({ "unchecked" })
@@ -89,18 +87,6 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	
 	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,String...fieldNames){
 		return instanciateInputCollection(identifiableClass, null, fieldNames);
-	}
-	
-	@Override
-	protected void update() {
-		/*identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(PhoneNumber.class));
-		identifiable.addPhoneNumbers(phoneNumberCollection.getCollection().getElementObjects(PhoneNumber.class));
-		
-		identifiable.getItems().getElements().removeAll(identifiable.getItems().filter(ElectronicMailAddress.class));
-		identifiable.addElectronicMailAddresses(electronicMailAddressColection.getCollection().getElementObjects(ElectronicMailAddress.class));
-		*/
-		System.out.println("ContactCollectionEditPage.update() : "+identifiable.getItems().getElements());
-		super.update();
 	}
 		
 	/**/
