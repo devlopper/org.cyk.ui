@@ -6,15 +6,19 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.geography.ContactBusiness;
-import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
+import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
+import org.cyk.system.root.model.geography.PostalBox;
+import org.cyk.system.root.model.geography.Website;
+import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.InputCollection;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
@@ -23,13 +27,6 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
-import org.cyk.utility.common.helper.CollectionHelper;
-import org.cyk.utility.common.helper.GridHelper;
-import org.cyk.utility.common.helper.GridHelper.Grid;
-import org.cyk.utility.common.helper.GridHelper.Grid.Column;
-import org.cyk.utility.common.helper.MarkupLanguageHelper;
-import org.cyk.utility.common.helper.MethodHelper;
-import org.cyk.utility.common.helper.StringHelper;
 import org.hibernate.validator.constraints.Email;
 
 import lombok.Getter;
@@ -41,52 +38,25 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 	private static final long serialVersionUID = 3274187086682750183L;
 
 	private InputCollection<PhoneNumberItem> phoneNumberCollection;
-	private InputCollection<ElectronicMailAddressItem> electronicMailAddressColection;
+	private InputCollection<ElectronicMailAddressItem> electronicMailAddressCollection;
+	private InputCollection<LocationItem> locationCollection;
+	private InputCollection<PostalBoxItem> postalBoxCollection;
+	private InputCollection<WebsiteItem> websiteCollection;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		
+		inject(ContactCollectionBusiness.class).prepare(identifiable, crud);
 	}
 	
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		identifiable.getItems().setSynchonizationEnabled(Boolean.TRUE);
-		//identifiable.getItems().addMany(inject(ContactBusiness.class).findByCollection(identifiable));
-			
 		phoneNumberCollection = instanciateInputCollection(PhoneNumber.class);	
-		electronicMailAddressColection = instanciateInputCollection(ElectronicMailAddress.class);
-	}
-	
-	@SuppressWarnings({ "unchecked" })
-	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,Class<?> sourceObjectClass,String...fieldNames){
-		InputCollection<T> inputCollection = (InputCollection<T>) new GridHelper.Grid.Builder.Adapter.Default<T>()
-				.setElementObjectClass(identifiableClass)
-				.setElementClassContainerClass(getClass())
-				.setElementClass(aClass)
-				.setMasterObject(identifiable)
-				.setGridCollection((java.util.Collection<Grid<T,?>>) MethodHelper.getInstance().callGet(form, java.util.Collection.class, "inputCollections"))
-				.addListener(new GridHelper.Grid.Listener.Adapter<T>(){
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public void addColumn(Grid<T, ?> grid, Column<?> column) {
-						column.getFieldDescriptor().getPropertiesMap().set(MarkupLanguageHelper.Attributes.STYLE_CLASS, "cyk-ui-form-inputfield-relative");
-					}
-				})
-				.setOutput(new InputCollection<>(StringHelper.getInstance().getClazz(identifiableClass),aClass,identifiableClass))
-				.execute();	
-		inputCollection.getCollection().setMasterElementObjectCollection(MethodHelper.getInstance().callGet(identifiable, CollectionHelper.Instance.class, "items"));
-		return inputCollection;
-	}
-	
-	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,String...fieldNames){
-		return instanciateInputCollection(identifiableClass,aClass,null, fieldNames);
-	}
-	
-	protected <T,IDENTIFIABLE extends AbstractIdentifiable> InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,String...fieldNames){
-		return instanciateInputCollection(identifiableClass, null, fieldNames);
+		electronicMailAddressCollection = instanciateInputCollection(ElectronicMailAddress.class);
+		locationCollection = instanciateInputCollection(Location.class);
+		postalBoxCollection = instanciateInputCollection(PostalBox.class);
+		websiteCollection = instanciateInputCollection(Website.class);
 	}
 		
 	/**/
@@ -126,6 +96,45 @@ public class ContactCollectionEditPage extends AbstractCrudOnePage<ContactCollec
 		@NotNull @Email @Input @InputText protected String address;
 		
 		public static final String FIELD_ADDRESS = "address";
+		
+	}
+	
+	@Getter @Setter
+	public static class LocationItem extends AbstractContactItem<Location> implements Serializable {
+		private static final long serialVersionUID = 3828481396841243726L;
+		
+		@NotNull @Input @InputChoice @InputOneChoice @InputOneCombo private LocationType type;
+		@NotNull @Input @InputChoice @InputOneChoice @InputOneCombo private Locality locality;
+		@NotNull @Input @InputText private String otherDetails;
+		/*
+		@NotNull @Input @InputText protected BigDecimal longitude;
+		@NotNull @Input @InputText protected BigDecimal latitude;
+		@NotNull @Input @InputText protected BigDecimal altitude;
+		*/
+		public static final String FIELD_TYPE = "type";
+		public static final String FIELD_LOCALITY = "locality";
+		public static final String FIELD_OTHER_DETAILS = "otherDetails";
+		
+	}
+	
+	@Getter @Setter
+	public static class PostalBoxItem extends AbstractContactItem<PostalBox> implements Serializable {
+		private static final long serialVersionUID = 3828481396841243726L;
+		
+		@NotNull @Input @InputText protected String value;
+		
+		public static final String FIELD_VALUE = "value";
+		
+	}
+	
+	@Getter @Setter
+	public static class WebsiteItem extends AbstractContactItem<Website> implements Serializable {
+		private static final long serialVersionUID = 3828481396841243726L;
+		
+		@NotNull @Input @InputChoice @InputOneChoice @InputOneCombo
+		private UniformResourceLocator uniformResourceLocator;
+		
+		public static final String FIELD_UNIFORM_RESOURCE_LOCATOR = "uniformResourceLocator";
 		
 	}
 }

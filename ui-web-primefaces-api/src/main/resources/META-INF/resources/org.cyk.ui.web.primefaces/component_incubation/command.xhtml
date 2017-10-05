@@ -14,7 +14,7 @@
 
 	<cc:implementation>
 		<!--  rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"  -->
-		<pe:importConstants className="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
+		<p:importConstants type="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
 		<p:commandButton 
 			id="#{cc.id}Button"
 			action="#{cc.value.execute(cc.attrs.executeParameter)}" 

@@ -24,6 +24,13 @@ public class InputCollection<T> extends org.cyk.ui.api.data.collector.control.In
 		this(name,elementClass,elementObjectClass,null);
 	}
 	
+	/**/
+	
+	public static class Element<T> extends org.cyk.ui.api.data.collector.control.InputCollection.Element<T> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+	}
+	
 	public static class CollectionAdapter<T> extends CollectionHelper.Instance.Listener.Adapter<T> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		

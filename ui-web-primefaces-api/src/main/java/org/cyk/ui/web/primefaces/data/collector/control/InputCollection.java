@@ -23,16 +23,21 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 		
 		getAddCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
 		getDeleteCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
-		getIndexColumn().setWidth("25");
-		getIndexColumn().addFooterCommand(getAddCommand());
-		getCommandsColumn().setWidth("30");
+		get__indexColumn__().setWidth("25");
+		get__indexColumn__().addFooterCommand(getAddCommand());
+		get__commandsColumn__().setWidth("30");
 	}
 	
 	public InputCollection(String name,Class<T> elementClass,Class<?> elementObjectClass) {
 		this(name,elementClass,elementObjectClass,(Class<?>)null);
 	}
 	
+	/**/
 	
+	public static class Element<T> extends org.cyk.ui.web.api.data.collector.control.InputCollection.Element<T> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+	}
 	
 	/**/
 	

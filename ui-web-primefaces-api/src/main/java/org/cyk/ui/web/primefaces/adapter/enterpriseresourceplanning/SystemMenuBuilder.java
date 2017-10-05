@@ -22,9 +22,12 @@ import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.geography.LocalityType;
+import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.LocationType;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PhoneNumberType;
+import org.cyk.system.root.model.geography.PostalBox;
+import org.cyk.system.root.model.geography.Website;
 import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -240,10 +243,16 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		Commandable module = createModuleCommandable(UIManager.getInstance().businessEntityInfos(Contact.class).getUserInterface().getLabelId(), null);
 		module.addChild(createListCommandable(LocalityType.class, null));
 		module.addChild(createListCommandable(Locality.class, null));
+		module.addChild(createListCommandable(Country.class, null));
 		module.addChild(createListCommandable(LocationType.class, null));
 		module.addChild(createListCommandable(PhoneNumberType.class, null));
-		module.addChild(createListCommandable(Country.class, null));
+		
+		module.addChild(createListCommandable(PhoneNumber.class, null));
 		module.addChild(createListCommandable(ElectronicMailAddress.class, null));
+		module.addChild(createListCommandable(Location.class, null));
+		module.addChild(createListCommandable(Website.class, null));
+		module.addChild(createListCommandable(PostalBox.class, null));
+		
 		module.addChild(createListCommandable(ContactCollection.class, null));
 		return module;
 	}

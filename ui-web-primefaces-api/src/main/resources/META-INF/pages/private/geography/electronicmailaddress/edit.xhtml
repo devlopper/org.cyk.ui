@@ -10,13 +10,13 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{electronicMailEditPage}" />
+ 		<ui:param name="pageController" value="#{electronicMailAddressEditPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{electronicMailEditPage.form}"/>
+ 			<cyk:formOneData value="#{electronicMailAddressEditPage.form}"/>
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{electronicMailEditPage.form.submitCommandable}" executeParameter="#{electronicMailEditPage.form.data}" />
+ 			<cyk:command value="#{electronicMailAddressEditPage.form.submitCommandable}" executeParameter="#{electronicMailAddressEditPage.form.data}" />
  		</ui:define>
  	</ui:decorate>
  

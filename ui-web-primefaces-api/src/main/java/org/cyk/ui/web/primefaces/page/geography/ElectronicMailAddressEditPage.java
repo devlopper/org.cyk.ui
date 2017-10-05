@@ -7,9 +7,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
 import org.cyk.ui.web.api.data.collector.control.WebInput;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.internal.constraintvalidators.EmailValidator;
 
@@ -24,7 +27,7 @@ public class ElectronicMailAddressEditPage extends AbstractContactEditPage<Elect
 	@Override
 	protected void afterInitialisation() {
 		super.afterInitialisation();
-		addInputListener(Form.FIELD_VALUE, new WebInput.Listener.Adapter.Default(){
+		addInputListener(Form.FIELD_ADDRESS, new WebInput.Listener.Adapter.Default(){
 			private static final long serialVersionUID = -6937448701586032931L;
 			@Override
 			public void validate(FacesContext facesContext,UIComponent uiComponent, Object value)throws ValidatorException {
@@ -37,16 +40,9 @@ public class ElectronicMailAddressEditPage extends AbstractContactEditPage<Elect
 	public static class Form extends AbstractForm<ElectronicMailAddress> implements Serializable{
 		private static final long serialVersionUID = -4741435164709063863L;
 		
-		@Override
-		public void write() {
-			super.write();
-			identifiable.setAddress(value);
-		}
+		@Input @InputText @NotNull @Email private String address;
 		
-		@Override @Email
-		public String getValue() {
-			return super.getValue();
-		}
+		public static final String FIELD_ADDRESS = "address";
 	}
 	
 	

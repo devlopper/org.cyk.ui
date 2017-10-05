@@ -75,7 +75,7 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName(instance.getName()+" "+System.currentTimeMillis());
+				element.set__name__(instance.getName()+" "+System.currentTimeMillis());
 			}
 		});
 		
@@ -83,7 +83,7 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName(instance.getName()+" "+System.currentTimeMillis());
+				element.set__name__(instance.getName()+" "+System.currentTimeMillis());
 			}
 		});
 		
@@ -93,7 +93,7 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 			
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName(instance.getName()+" "+((Master)sourceObject).getName());
+				element.set__name__(instance.getName()+" "+((Master)sourceObject).getName());
 			}
 			
 		});
@@ -104,7 +104,7 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 			
 			@Override
 			public void addOne(Instance<Child> instance, Child element,Object source,Object sourceObject) {
-				element.setName(instance.getName()+" "+((Master)sourceObject).getName());
+				element.set__name__(instance.getName()+" "+((Master)sourceObject).getName());
 			}
 			
 		});
@@ -153,8 +153,8 @@ public class InputCollectionDemoPage extends AbstractPrimefacesPage implements S
 		private String text;
 		
 		@Override
-		public Child setName(String name) {
-			return (Child) super.setName(name);
+		public Child set__name__(String name) {
+			return (Child) super.set__name__(name);
 		}
 		
 		@Override

@@ -19,11 +19,6 @@ import org.cyk.system.root.business.impl.file.FileRepresentationTypeDetails;
 import org.cyk.system.root.business.impl.file.ScriptDetails;
 import org.cyk.system.root.business.impl.file.ScriptVariableDetails;
 import org.cyk.system.root.business.impl.file.report.ReportTemplateDetails;
-import org.cyk.system.root.business.impl.geography.CountryDetails;
-import org.cyk.system.root.business.impl.geography.ElectronicMailAddressDetails;
-import org.cyk.system.root.business.impl.geography.LocalityDetails;
-import org.cyk.system.root.business.impl.geography.LocalityTypeDetails;
-import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
 import org.cyk.system.root.business.impl.information.CommentDetails;
 import org.cyk.system.root.business.impl.language.LanguageDetails;
 import org.cyk.system.root.business.impl.mathematics.IntervalDetails;
@@ -54,7 +49,6 @@ import org.cyk.system.root.business.impl.security.CredentialsDetails;
 import org.cyk.system.root.business.impl.security.LicenseDetails;
 import org.cyk.system.root.business.impl.security.RoleDetails;
 import org.cyk.system.root.business.impl.security.SoftwareDetails;
-import org.cyk.system.root.business.impl.security.UniformResourceLocatorDetails;
 import org.cyk.system.root.business.impl.security.UserAccountDetails;
 import org.cyk.system.root.business.impl.value.MeasureDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
@@ -70,11 +64,6 @@ import org.cyk.system.root.model.file.FileRepresentationType;
 import org.cyk.system.root.model.file.Script;
 import org.cyk.system.root.model.file.ScriptVariable;
 import org.cyk.system.root.model.file.report.ReportTemplate;
-import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMailAddress;
-import org.cyk.system.root.model.geography.Locality;
-import org.cyk.system.root.model.geography.LocalityType;
-import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.language.Language;
 import org.cyk.system.root.model.mathematics.Interval;
@@ -91,7 +80,6 @@ import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateIden
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.network.Service;
-import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
@@ -139,11 +127,6 @@ import org.cyk.ui.web.primefaces.page.file.FileRepresentationTypeEditPage;
 import org.cyk.ui.web.primefaces.page.file.ReportTemplateEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptEditPage;
 import org.cyk.ui.web.primefaces.page.file.ScriptVariableEditPage;
-import org.cyk.ui.web.primefaces.page.geography.CountryEditPage;
-import org.cyk.ui.web.primefaces.page.geography.ElectronicMailAddressEditPage;
-import org.cyk.ui.web.primefaces.page.geography.LocalityEditPage;
-import org.cyk.ui.web.primefaces.page.geography.LocalityTypeEditPage;
-import org.cyk.ui.web.primefaces.page.geography.PhoneNumberEditPage;
 import org.cyk.ui.web.primefaces.page.information.CommentEditPage;
 import org.cyk.ui.web.primefaces.page.language.LanguageEditPage;
 import org.cyk.ui.web.primefaces.page.mathematics.FiniteStateMachineStateIdentifiableGlobalIdentifierEditPage;
@@ -173,7 +156,6 @@ import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.SoftwareEditPage;
-import org.cyk.ui.web.primefaces.page.security.UniformResourceLocatorEditPage;
 import org.cyk.ui.web.primefaces.page.security.UserAccountEditPage;
 import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
@@ -321,27 +303,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		uiManager.configBusinessIdentifiable(EventMissed.class, null);
 	}
 	
-	protected void initializeGeographyModule(){
-		//uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeForm.class, LocalityTypeForm.class,null,null,null));
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(LocalityType.class, LocalityTypeEditPage.Form.class, LocalityTypeDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(LocalityType.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Locality.class, LocalityEditPage.Form.class, LocalityDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(Locality.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(Country.class, CountryEditPage.Form.class, CountryDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(Country.class, null);
-		
-		//uiManager.registerConfiguration(new IdentifiableConfiguration(ContactCollection.class, ContactCollectionEditPage.Form.class, ContactCollectionDetails.class,null,null,null));
-		//uiManager.configBusinessIdentifiable(ContactCollection.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(ElectronicMailAddress.class, ElectronicMailAddressEditPage.Form.class, ElectronicMailAddressDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(ElectronicMailAddress.class, null);
-		
-		uiManager.registerConfiguration(new IdentifiableConfiguration(PhoneNumber.class, PhoneNumberEditPage.Form.class, PhoneNumberDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(PhoneNumber.class, null);
-	}
+	protected void initializeGeographyModule(){}
 	
 	protected void initializeLanguageModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Language.class, LanguageEditPage.Form.class, LanguageDetails.class,null,null,null));
@@ -349,10 +311,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	}
 	
 	protected void initializeNetworkModule(){
-		uiManager.registerConfiguration(new IdentifiableConfiguration(UniformResourceLocator.class, UniformResourceLocatorEditPage.Form.class
-				, UniformResourceLocatorDetails.class,null,null,null));
-		uiManager.configBusinessIdentifiable(UniformResourceLocator.class, null);
-		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Computer.class, ComputerEditPage.Form.class, ComputerDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Computer.class, null);
 		

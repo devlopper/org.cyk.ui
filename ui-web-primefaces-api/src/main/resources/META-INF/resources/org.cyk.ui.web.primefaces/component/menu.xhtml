@@ -14,7 +14,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<pe:importConstants className="org.cyk.system.root.model.RootConstant$Code$UserInterfaceMenuRenderType" var="UserInterfaceMenuRenderType"/>
+		<p:importConstants type="org.cyk.system.root.model.RootConstant$Code$UserInterfaceMenuRenderType" var="UserInterfaceMenuRenderType"/>
 		
 		<p:menu model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.PLAIN}" 
 			styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>

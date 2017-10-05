@@ -15,7 +15,7 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<pe:importConstants className="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
+		<p:importConstants type="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
  		<p:dataTable id="datatable" value="#{cc.value.collection.elements}" var="element" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
 			styleClass="#{cc.value.propertiesMap.get(UI_CONSTANT.STYLE_CLASS)}">
         	<f:facet name="header">
@@ -42,21 +42,21 @@
         	</f:facet>	
 
 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.indexColumn}" />
+		 		<ui:param name="column" value="#{cc.value.__indexColumn__}" />
 		 		<ui:define name="content">
 		 			<h:outputText value="#{index+1}" />
 		 		</ui:define>
 		 		<ui:define name="footer">
-		 			<ui:fragment rendered="#{cc.value.indexColumn.footerCommands.contains(cc.value.addCommand)}">
+		 			<ui:fragment rendered="#{cc.value.__indexColumn__.footerCommands.contains(cc.value.addCommand)}">
 		 				<cyk_incubation:command value="#{cc.value.addCommand}"/>
 		 			</ui:fragment>	
 		 		</ui:define>
 		 	</ui:decorate>
 			
  			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.nameColumn}" />
+		 		<ui:param name="column" value="#{cc.value.__nameColumn__}" />
 		 		<ui:define name="content">
-		 			<h:outputText value="#{element.name}"/>
+		 			<h:outputText value="#{element.__name__}"/>
 		 		</ui:define>
 		 	</ui:decorate>
 		 	
@@ -108,7 +108,7 @@
        		-->
        		<!--  rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"  -->
        		<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.commandsColumn}" />
+		 		<ui:param name="column" value="#{cc.value.__commandsColumn__}" />
 		 		<ui:define name="content">
 		 			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{element}"/>
 		 		</ui:define>

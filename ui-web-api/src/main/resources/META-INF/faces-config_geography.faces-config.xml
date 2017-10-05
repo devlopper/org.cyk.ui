@@ -76,6 +76,22 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>phoneNumberTypeListView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>phoneNumberTypeEditView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>phoneNumberTypeConsultView</from-outcome>
+			<to-view-id>/private/geography/phonenumber/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>localityListView</from-outcome>
 			<to-view-id>/private/geography/locality/list.xhtml</to-view-id>
 			<redirect />
@@ -104,6 +120,70 @@
 		<navigation-case>
 			<from-outcome>localityTypeConsultView</from-outcome>
 			<to-view-id>/private/geography/locality/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>locationListView</from-outcome>
+			<to-view-id>/private/geography/location/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationEditView</from-outcome>
+			<to-view-id>/private/geography/location/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationConsultView</from-outcome>
+			<to-view-id>/private/geography/location/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>locationTypeListView</from-outcome>
+			<to-view-id>/private/geography/location/type/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationTypeEditView</from-outcome>
+			<to-view-id>/private/geography/location/type/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationTypeConsultView</from-outcome>
+			<to-view-id>/private/geography/location/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>websiteListView</from-outcome>
+			<to-view-id>/private/geography/website/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>websiteEditView</from-outcome>
+			<to-view-id>/private/geography/website/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>websiteConsultView</from-outcome>
+			<to-view-id>/private/geography/website/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>postalBoxListView</from-outcome>
+			<to-view-id>/private/geography/postalbox/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>postalBoxEditView</from-outcome>
+			<to-view-id>/private/geography/postalbox/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>postalBoxConsultView</from-outcome>
+			<to-view-id>/private/geography/postalbox/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

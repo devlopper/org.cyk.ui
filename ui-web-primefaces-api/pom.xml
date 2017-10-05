@@ -17,22 +17,12 @@
 	<packaging>jar</packaging>
 	
 	<properties>
-		<!--version.primefaces>6.0</version.primefaces-->
-		<version.primefaces>5.3</version.primefaces>
+		<version.primefaces>6.1</version.primefaces>
 		<version.primefaces.themes>1.0.10</version.primefaces.themes> 
-		<!--version.primefaces.extensions>6.0.0</version.primefaces.extensions-->
-		<version.primefaces.extensions>4.0.0</version.primefaces.extensions>
+		<version.primefaces.extensions>6.1.1</version.primefaces.extensions>
 		<version.cyk>0.0.1</version.cyk>
 	</properties>
-
-	<repositories>
-		<repository>
-			<id>prime-repo</id>
-			<name>PrimeFaces Maven Repository</name>
-			<url>http://repository.primefaces.org</url>
-		</repository>
-	</repositories>
-
+	
 	<dependencies>
 
 		<!-- Primefaces Components Library -->

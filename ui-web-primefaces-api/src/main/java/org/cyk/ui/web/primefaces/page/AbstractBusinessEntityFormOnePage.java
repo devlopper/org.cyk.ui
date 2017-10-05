@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
 import org.cyk.system.root.business.api.Crud;
@@ -19,6 +16,7 @@ import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
+import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.value.Value;
@@ -43,10 +41,20 @@ import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.data.collector.control.InputManyPickList;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.GridHelper;
+import org.cyk.utility.common.helper.GridHelper.Grid;
+import org.cyk.utility.common.helper.GridHelper.Grid.Column;
+import org.cyk.utility.common.helper.MarkupLanguageHelper;
+import org.cyk.utility.common.helper.MethodHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -366,6 +374,55 @@ public abstract class AbstractBusinessEntityFormOnePage<ENTITY extends AbstractI
 	
 	public Object getChoice(String fieldName,Integer index){
 		return webManager.getChoice(form, fieldName, index);
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,CollectionHelper.Instance<?> masterElementObjectCollection,Class<T> aClass,Class<?> sourceObjectClass,String...fieldNames){
+		org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> inputCollection = (org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T>) new GridHelper.Grid.Builder.Adapter.Default<T>()
+				.setElementObjectClass(identifiableClass)
+				.setElementClassContainerClass(getClass())
+				.setElementClass(aClass)
+				.setMasterObject(identifiable)
+				.setGridCollection((java.util.Collection<Grid<T,?>>) MethodHelper.getInstance().callGet(form, java.util.Collection.class, "inputCollections"))
+				.addListener(new GridHelper.Grid.Listener.Adapter<T>(){
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public void addColumn(Grid<T, ?> grid, Column<?> column) {
+						column.getFieldDescriptor().getPropertiesMap().set(MarkupLanguageHelper.Attributes.STYLE_CLASS, "cyk-ui-form-inputfield-relative");
+					}
+				})
+				/*.addCollectionListener(new CollectionHelper.Instance.Listener.Adapter<T>(){
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void addOne(Instance<T> instance, T element, Object source, Object sourceObject) {
+						super.addOne(instance, element, source, sourceObject);
+					}
+				})*/
+				.setMasterElementObjectCollection(masterElementObjectCollection)
+				.setOutput(new org.cyk.ui.web.primefaces.data.collector.control.InputCollection<>(StringHelper.getInstance().getClazz(identifiableClass),aClass,identifiableClass))
+				.execute();	
+		return inputCollection;
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,Class<?> sourceObjectClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass, ((AbstractCollection<?>)identifiable).getItems(), aClass, sourceObjectClass, fieldNames);
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,CollectionHelper.Instance<?> masterElementObjectCollection,Class<T> aClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass,masterElementObjectCollection,aClass,null, fieldNames);
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,Class<T> aClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass,((AbstractCollection<?>)identifiable).getItems(),aClass,null, fieldNames);
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,CollectionHelper.Instance<?> masterElementObjectCollection,String...fieldNames){
+		return instanciateInputCollection(identifiableClass,masterElementObjectCollection, null, fieldNames);
+	}
+	
+	protected <T,IDENTIFIABLE extends AbstractIdentifiable> org.cyk.ui.web.primefaces.data.collector.control.InputCollection<T> instanciateInputCollection(Class<IDENTIFIABLE> identifiableClass,String...fieldNames){
+		return instanciateInputCollection(identifiableClass,((AbstractCollection<?>)identifiable).getItems(), null, fieldNames);
 	}
 	
 	/**/
