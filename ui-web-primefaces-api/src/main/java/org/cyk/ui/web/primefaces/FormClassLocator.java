@@ -42,15 +42,15 @@ public class FormClassLocator extends ClassLocator implements Serializable {
 				return "ui.web.primefaces.page";
 			}
 			@Override
-			protected String getModuleSuffix() {
-				return "EditPage$Form";
+			protected String[] getModuleSuffixes() {
+				return new String[]{"EditPage$Form"};
 			}
 			
 			@Override
-			protected String __execute__(Class<?> aClass) {
-				String name =  super.__execute__(aClass);
-				name = StringUtils.remove(name, "system.root.");
-				return name;
+			protected String[] __execute__(Class<?> aClass) {
+				String[] names =  super.__execute__(aClass);
+				names[0] = StringUtils.remove(names[0], "system.root.");
+				return names;
 			}
 		});
 		getClassLocatorListeners().add(listener);

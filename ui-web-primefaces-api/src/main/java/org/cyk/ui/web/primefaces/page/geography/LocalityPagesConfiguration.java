@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.userinterface;
+package org.cyk.ui.web.primefaces.page.geography;
 
 import java.io.Serializable;
 

@@ -18,7 +18,8 @@ import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 
-@Getter @Setter @Named @ViewScoped
+@Getter @Setter 
+//@Named @ViewScoped
 public class PersonRelationshipTypeRoleEditPage extends AbstractCrudOnePage<PersonRelationshipTypeRole> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;

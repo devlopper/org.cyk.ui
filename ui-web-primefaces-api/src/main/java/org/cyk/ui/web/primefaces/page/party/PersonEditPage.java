@@ -11,7 +11,8 @@ import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import lombok.Getter;
 import lombok.Setter;
 
-@Named @ViewScoped @Getter @Setter
+//@Named @ViewScoped 
+@Getter @Setter
 public class PersonEditPage extends AbstractPersonEditPage<Person> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;

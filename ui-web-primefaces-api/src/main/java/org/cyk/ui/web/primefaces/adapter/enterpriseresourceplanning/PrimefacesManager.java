@@ -36,7 +36,6 @@ import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicat
 import org.cyk.system.root.business.impl.party.person.PersonDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.party.person.PersonRelationshipExtremityDetails;
-import org.cyk.system.root.business.impl.party.person.PersonRelationshipTypeRoleDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeTypeDetails;
@@ -724,7 +723,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		getFormConfiguration(PersonRelationshipTypeRole.class, Crud.CREATE)
 		.addRequiredFieldNames(PersonRelationshipTypeRoleEditPage.Form.FIELD_CODE,PersonRelationshipTypeRoleEditPage.Form.FIELD_NAME
 				,PersonRelationshipTypeRoleEditPage.Form.FIELD_PERSON_RELATIONSHIP_TYPE,PersonRelationshipTypeRoleEditPage.Form.FIELD_ROLE);
-	
+		/*
 		registerDetailsConfiguration(PersonRelationshipTypeRoleDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -740,7 +739,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
-		
+		*/
 		for(BusinessEntityInfos businessEntityInfos : inject(ApplicationBusiness.class).findBusinessEntitiesInfos()){
 			final Class<?> identifiableClass = businessEntityInfos.getClazz();
 			if(AbstractActor.class.isAssignableFrom(identifiableClass) && Boolean.TRUE.equals(isAutoConfigureClass(identifiableClass))){

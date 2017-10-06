@@ -40,7 +40,8 @@ public class CountryEditPage extends AbstractCrudOnePage<Country> implements Ser
 	@Override
 	protected <T extends AbstractIdentifiable> T identifiableFromRequestParameter(Class<T> aClass) {
 		T country = super.identifiableFromRequestParameter(aClass);
-		((Country)country).setContinent((Locality) inject(LocalityBusiness.class).findParent(((Country)country).getLocality()));
+		if(country!=null)
+			((Country)country).setContinent((Locality) inject(LocalityBusiness.class).findParent(((Country)country).getLocality()));
 		return country;
 	}
 	

@@ -296,6 +296,8 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	@SuppressWarnings("unchecked")
 	public static void registerDetailsConfiguration(Class<?> detailsClass,DetailsConfiguration detailsConfiguration){
+		if(detailsClass==null)
+			return;
 		detailsConfiguration.setIdentifier(detailsClass.getName());
 		DetailsConfiguration current = DETAILS_CONFIGURATION_MAP.get(detailsClass);
 		if(current!=null)

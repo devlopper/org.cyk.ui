@@ -7,8 +7,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.system.root.business.api.geography.PhoneNumberBusiness;
-import org.cyk.system.root.business.impl.geography.ElectronicMailAddressDetails;
-import org.cyk.system.root.business.impl.geography.PhoneNumberDetails;
+import org.cyk.system.root.business.impl.geography.ElectronicMailAddressBusinessImpl;
+import org.cyk.system.root.business.impl.geography.PhoneNumberBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.geography.PhoneNumber;
@@ -26,13 +26,13 @@ public class ContactCollectionConsultPage extends AbstractConsultPage<ContactCol
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
-	private Table<PhoneNumberDetails> phoneNumberTable;
-	private Table<ElectronicMailAddressDetails> electronicMailAddressTable;
+	private Table<PhoneNumberBusinessImpl.Details> phoneNumberTable;
+	private Table<ElectronicMailAddressBusinessImpl.Details> electronicMailAddressTable;
 	
 	@Override
 	protected void consultInitialisation() {
 		super.consultInitialisation();
-		phoneNumberTable = (Table<PhoneNumberDetails>) createDetailsTable(PhoneNumberDetails.class, new DetailsConfigurationListener.Table.Adapter<PhoneNumber,PhoneNumberDetails>(PhoneNumber.class, PhoneNumberDetails.class){
+		phoneNumberTable = (Table<PhoneNumberBusinessImpl.Details>) createDetailsTable(PhoneNumberBusinessImpl.Details.class, new DetailsConfigurationListener.Table.Adapter<PhoneNumber,PhoneNumberBusinessImpl.Details>(PhoneNumber.class, PhoneNumberBusinessImpl.Details.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<PhoneNumber> getIdentifiables() {

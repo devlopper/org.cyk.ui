@@ -2,9 +2,7 @@ package org.cyk.ui.web.primefaces.page.party;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
-import org.cyk.system.root.business.impl.geography.ContactCollectionDetails;
+import org.cyk.system.root.business.impl.geography.ContactCollectionBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.Party;
@@ -20,7 +18,7 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
-	protected FormOneData<ContactCollectionDetails> contactCollectionDetails;
+	protected FormOneData<ContactCollectionBusinessImpl.Details> contactCollectionDetails;
 	
 	@Override
 	protected void consultInitialisation() {
@@ -30,7 +28,7 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	
 	@SuppressWarnings("unchecked")
 	protected void createContactCollectionDetails(){
-		contactCollectionDetails = createDetailsForm(ContactCollectionDetails.class, getParty().getContactCollection(), getContactCollectionDetailsAdapter());
+		contactCollectionDetails = createDetailsForm(ContactCollectionBusinessImpl.Details.class, getParty().getContactCollection(), getContactCollectionDetailsAdapter());
 	}
 	
 	@Override
@@ -42,8 +40,8 @@ public abstract class AbstractPartyConsultPage<PARTY extends AbstractIdentifiabl
 	
 	@SuppressWarnings("rawtypes")
 	protected DetailsConfigurationListener.Form.Adapter getContactCollectionDetailsAdapter(){
-		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(ContactCollectionDetails.class)
-				.getFormConfigurationAdapter(ContactCollection.class, ContactCollectionDetails.class);
+		DetailsConfigurationListener.Form.Adapter adapter = getDetailsConfiguration(ContactCollectionBusinessImpl.Details.class)
+				.getFormConfigurationAdapter(ContactCollection.class, ContactCollectionBusinessImpl.Details.class);
 		adapter.setFormIdentifiable(identifiable);
 		adapter.setFormConfigurationIdentifier(IdentifierProvider.Adapter.getTabOf(ContactCollection.class));
 		return adapter;

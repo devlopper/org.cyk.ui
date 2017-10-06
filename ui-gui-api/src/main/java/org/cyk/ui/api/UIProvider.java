@@ -61,6 +61,8 @@ import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.StringHelper;
+import org.cyk.utility.common.userinterface.CascadeStyleSheetHelper;
 
 @Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
 public class UIProvider extends AbstractBean implements Serializable {
@@ -107,9 +109,11 @@ public class UIProvider extends AbstractBean implements Serializable {
 			input.setObject(data);
 			if(StringUtils.isBlank(input.getLabel())){
 				//debug(data);
-				FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field);
-				input.setLabel(findTextResult.getValue());
-				input.getCss().setUniqueClass(inject(CascadeStyleSheetBusiness.class).generateUniqueClass(input.getType(), findTextResult.getIdentifier()));
+				//FindTextResult findTextResult = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field);
+				//input.setLabel(findTextResult.getValue());
+				input.setLabel(StringHelper.getInstance().getField(field));
+				//input.getCss().setUniqueClass(inject(CascadeStyleSheetBusiness.class).generateUniqueClass(input.getType(), findTextResult.getIdentifier()));
+				input.getCss().setUniqueClass(CascadeStyleSheetHelper.getInstance().getClass(data, field));
 			}
 			input.setField(field);
 			Size size = field.getAnnotation(Size.class);

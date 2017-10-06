@@ -11,7 +11,8 @@ import lombok.Setter;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.table.AbstractTable.RenderType;
 
-@Named @ViewScoped @Getter @Setter
+//@Named @ViewScoped 
+@Getter @Setter
 public class PersonListPage extends AbstractPersonListPage<Person> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;

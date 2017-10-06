@@ -223,18 +223,22 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 	public Commandable getReferencePartyCommandable(UserSession userSession,Collection<UICommandable> mobileCommandables){
 		Commandable module = createModuleCommandable(UIManager.getInstance().businessEntityInfos(Person.class).getUserInterface().getLabelId(), null);
 		module.addChild(createListCommandable(Allergy.class, null));
-		module.addChild(createListCommandable(BloodGroup.class, null));
 		module.addChild(createListCommandable(Medication.class, null));
+		module.addChild(createListCommandable(BloodGroup.class, null));
 		
 		module.addChild(createListCommandable(JobFunction.class, null));
 		module.addChild(createListCommandable(JobTitle.class, null));
 		
-		module.addChild(createListCommandable(Person.class, null));
 		module.addChild(createListCommandable(Sex.class, null));
 		module.addChild(createListCommandable(MaritalStatus.class, null));
 		module.addChild(createListCommandable(PersonTitle.class, null));
+		
+		module.addChild(createListCommandable(PersonRelationshipTypeRoleName.class, null));
+		module.addChild(createListCommandable(PersonRelationshipTypeRole.class, null));
 		module.addChild(createListCommandable(PersonRelationshipType.class, null));
 		module.addChild(createListCommandable(PersonRelationshipTypeGroup.class, null));
+		
+		module.addChild(createListCommandable(Person.class, null));
 		
 		return module;
 	}

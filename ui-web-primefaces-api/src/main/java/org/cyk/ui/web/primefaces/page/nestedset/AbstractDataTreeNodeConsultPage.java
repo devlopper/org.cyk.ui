@@ -7,7 +7,7 @@ import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
-import org.cyk.system.root.business.impl.geography.AbstractDataTreeNodeDetails;
+import org.cyk.system.root.business.impl.pattern.tree.AbstractDataTreeNodeBusinessImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public abstract class AbstractDataTreeNodeConsultPage<DATA_TREE extends AbstractDataTreeNode,DETAILS extends AbstractDataTreeNodeDetails<DATA_TREE>> extends AbstractConsultPage<DATA_TREE> implements Serializable {
+public abstract class AbstractDataTreeNodeConsultPage<DATA_TREE extends AbstractDataTreeNode,DETAILS extends AbstractDataTreeNodeBusinessImpl.Details<?>> extends AbstractConsultPage<DATA_TREE> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 
