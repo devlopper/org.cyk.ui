@@ -159,81 +159,81 @@
 		
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleEditView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleListView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleConsultView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleNameEditView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/name/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleNameListView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/name/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeRoleNameConsultView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/role/name/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>personRelationshipTypeGroupEditView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/group/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeGroupListView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/group/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeGroupConsultView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>personTitleEditView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>personTitleListView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>personTitleConsultView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/group/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>personRelationshipTypeEditView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/edit.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/edit.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeListView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/list.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>personRelationshipTypeConsultView</from-outcome>
-			<to-view-id>/private/party/person/relationshiptyperole/consult.xhtml</to-view-id>
+			<to-view-id>/private/party/person/relationship/type/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>personTitleEditView</from-outcome>
+			<to-view-id>/private/party/person/title/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personTitleListView</from-outcome>
+			<to-view-id>/private/party/person/title/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>personTitleConsultView</from-outcome>
+			<to-view-id>/private/party/person/title/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		

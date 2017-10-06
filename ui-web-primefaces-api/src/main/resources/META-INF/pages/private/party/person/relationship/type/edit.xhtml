@@ -5,15 +5,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
-    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{personRelationshipTypeRoleConsultPage}" />
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{personRelationshipTypeEditPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{personRelationshipTypeRoleConsultPage.details}" />	
+ 			<cyk:formOneData value="#{personRelationshipTypeEditPage.form}" />
  		</ui:define>
+ 		
+ 		<ui:define name="contentMenuBar">
+ 			<cyk:command value="#{personRelationshipTypeEditPage.form.submitCommandable}" executeParameter="#{personRelationshipTypeEditPage.form.data}" />
+ 		</ui:define>
+ 		
  	</ui:decorate>
- 
+ 	
 </html>
