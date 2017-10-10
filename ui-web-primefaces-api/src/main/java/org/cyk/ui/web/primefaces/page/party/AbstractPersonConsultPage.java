@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.business.api.party.person.JobInformationsBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsAllergyBusiness;
 import org.cyk.system.root.business.api.party.person.MedicalInformationsBusiness;
@@ -17,7 +14,7 @@ import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
-import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
+import org.cyk.system.root.business.impl.party.person.PersonRelationshipBusinessImpl;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.party.Party;
@@ -30,6 +27,9 @@ import org.cyk.ui.api.model.table.RowAdapter;
 import org.cyk.ui.web.primefaces.Table;
 import org.cyk.ui.web.primefaces.data.collector.form.FormOneData;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifiable> extends AbstractPartyConsultPage<PERSON> implements Serializable {
@@ -44,7 +44,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 	protected Table<MedicalInformationsAllergyDetails> allergyTable;
 	
 	protected FormOneData<JobDetails> jobDetails;
-	protected Table<PersonRelationshipDetails> relationshipTable;
+	protected Table<PersonRelationshipBusinessImpl.Details> relationshipTable;
 	protected FormOneData<SignatureDetails> signatureDetails;
 	
 	@SuppressWarnings("unchecked")
@@ -107,7 +107,7 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			
 		});
 		
-		relationshipTable = (Table<PersonRelationshipDetails>) createDetailsTable(PersonRelationshipDetails.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipDetails>(PersonRelationship.class, PersonRelationshipDetails.class){
+		relationshipTable = (Table<PersonRelationshipBusinessImpl.Details>) createDetailsTable(PersonRelationshipBusinessImpl.Details.class, new DetailsConfigurationListener.Table.Adapter<PersonRelationship,PersonRelationshipBusinessImpl.Details>(PersonRelationship.class, PersonRelationshipBusinessImpl.Details.class){
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<PersonRelationship> getIdentifiables() {
@@ -135,11 +135,11 @@ public abstract class AbstractPersonConsultPage<PERSON extends AbstractIdentifia
 			}
 			
 			@Override
-			public RowAdapter<PersonRelationshipDetails> getRowAdapter() {
-				return new RowAdapter<PersonRelationshipDetails>(getUserSession()){
+			public RowAdapter<PersonRelationshipBusinessImpl.Details> getRowAdapter() {
+				return new RowAdapter<PersonRelationshipBusinessImpl.Details>(getUserSession()){
 					private static final long serialVersionUID = 1L;
 					@Override
-					public void added(Row<PersonRelationshipDetails> row) {
+					public void added(Row<PersonRelationshipBusinessImpl.Details> row) {
 						super.added(row);
 						/*String format = "%s : <a href='consultlink'>%s</a>";
 						String type = getPerson().equals(row.getData().getMaster().getPerson1()) ? "INVERSE of "+row.getData().getType() : row.getData().getType().getValue();

@@ -8,13 +8,20 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
-
- 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{personRelationshipTypeRoleNameListPage}" />
- 		<ui:define name="body">
- 			<cyk:table value="#{personRelationshipTypeRoleNameListPage.table}" />
- 		</ui:define>
- 		
- 	</ui:decorate>
- 	
+ 
+	<h:body>
+		<ui:composition>
+			<table>
+ 				<tr valign="top">
+ 					<td>	
+ 						<cyk:tree value="#{pageController.childrenTable.tree}" />		
+ 					</td>
+ 					<td>
+ 						<cyk:formOneData value="#{pageController.details}" />
+ 						<cyk:table value="#{pageController.childrenTable}" />
+ 					</td>
+ 				</tr>
+ 			</table>
+		</ui:composition>
+	</h:body>
 </html>

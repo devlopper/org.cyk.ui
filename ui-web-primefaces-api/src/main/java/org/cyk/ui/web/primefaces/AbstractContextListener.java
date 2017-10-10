@@ -39,8 +39,6 @@ import org.cyk.system.root.business.impl.party.ApplicationDetails;
 import org.cyk.system.root.business.impl.party.person.AbstractActorDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
-import org.cyk.system.root.business.impl.party.person.PersonDetails;
-import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeTypeDetails;
 import org.cyk.system.root.business.impl.pattern.tree.NestedSetNodeDetails;
@@ -83,10 +81,6 @@ import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
-import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonRelationship;
-import org.cyk.system.root.model.party.person.PersonRelationshipType;
-import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTree;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeType;
 import org.cyk.system.root.model.pattern.tree.DataTree;
@@ -107,8 +101,6 @@ import org.cyk.ui.api.model.EnumerationForm;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryManyFormModel;
 import org.cyk.ui.api.model.party.AbstractActorQueryOneFormModel;
-import org.cyk.ui.api.model.party.PersonRelationshipTypeForm;
-import org.cyk.ui.api.model.party.PersonRelationshipTypeGroupForm;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeForm;
 import org.cyk.ui.api.model.pattern.tree.AbstractDataTreeTypeForm;
 import org.cyk.ui.web.api.AbstractServletContextListener;
@@ -147,8 +139,6 @@ import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
-import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
-import org.cyk.ui.web.primefaces.page.party.PersonRelationshipEditPage;
 import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
@@ -245,12 +235,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	protected void initializePartyModule(){
 		uiManager.registerConfiguration(new IdentifiableConfiguration(Application.class, ApplicationEditPage.Form.class, ApplicationDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(Application.class, null);
-		
-		//uiManager.registerConfiguration(new IdentifiableConfiguration(PersonRelationship.class, PersonRelationshipEditPage.Form.class, PersonRelationshipDetails.class,null,null,null));
-		//uiManager.configBusinessIdentifiable(PersonRelationship.class, null);
-		
-		//uiManager.registerConfiguration(new IdentifiableConfiguration(Person.class, PersonEditPage.Form.class, PersonDetails.class,null,null,null));
-		//uiManager.configBusinessIdentifiable(Person.class, null);
 		
 		uiManager.registerConfiguration(new IdentifiableConfiguration(MedicalInformationsAllergy.class, MedicalInformationsAllergyEditPage.Form.class, MedicalInformationsAllergyDetails.class,null,null,null));
 		uiManager.configBusinessIdentifiable(MedicalInformationsAllergy.class, null);

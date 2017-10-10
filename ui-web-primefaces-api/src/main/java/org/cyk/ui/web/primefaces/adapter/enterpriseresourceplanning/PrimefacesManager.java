@@ -33,9 +33,6 @@ import org.cyk.system.root.business.impl.party.person.JobDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsAllergyDetails;
 import org.cyk.system.root.business.impl.party.person.MedicalInformationsMedicationDetails;
-import org.cyk.system.root.business.impl.party.person.PersonDetails;
-import org.cyk.system.root.business.impl.party.person.PersonRelationshipDetails;
-import org.cyk.system.root.business.impl.party.person.PersonRelationshipExtremityDetails;
 import org.cyk.system.root.business.impl.party.person.SignatureDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeDetails;
 import org.cyk.system.root.business.impl.pattern.tree.DataTreeTypeDetails;
@@ -51,7 +48,6 @@ import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueCollectionItemDetails;
 import org.cyk.system.root.business.impl.value.ValueDetails;
 import org.cyk.system.root.business.impl.value.ValuePropertiesDetails;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
@@ -75,11 +71,8 @@ import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.network.Service;
 import org.cyk.system.root.model.party.Application;
 import org.cyk.system.root.model.party.person.AbstractActor;
-import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
 import org.cyk.system.root.model.party.person.MedicalInformationsMedication;
-import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
 import org.cyk.system.root.model.pattern.tree.DataTree;
 import org.cyk.system.root.model.pattern.tree.DataTreeType;
 import org.cyk.system.root.model.security.Credentials;
@@ -133,7 +126,6 @@ import org.cyk.ui.web.primefaces.page.network.ServiceEditPage;
 import org.cyk.ui.web.primefaces.page.party.ApplicationEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsAllergyEditPage;
 import org.cyk.ui.web.primefaces.page.party.MedicalInformationsMedicationEditPage;
-import org.cyk.ui.web.primefaces.page.party.PersonRelationshipTypeRoleEditPage;
 import org.cyk.ui.web.primefaces.page.security.CredentialsEditPage;
 import org.cyk.ui.web.primefaces.page.security.LicenseEditPage;
 import org.cyk.ui.web.primefaces.page.security.RoleEditPage;
@@ -556,6 +548,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 	@Override
 	protected void configurePartyModule() {
 		super.configurePartyModule();
+		/*
 		configurePersonFormConfiguration(Person.class,new PersonDetailsConfiguration.FormControlSetAdapter(Person.class));
 		
 		registerDetailsConfiguration(PersonDetails.class, new PersonDetailsConfiguration());
@@ -625,7 +618,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
-		
+		*/
 		getFormConfiguration(MedicalInformationsAllergy.class, Crud.CREATE).addRequiredFieldNames(MedicalInformationsAllergyEditPage.Form.FIELD_ALLERGY)
 				.addFieldNames(MedicalInformationsAllergyEditPage.Form.FIELD_REACTION_RESPONSE,MedicalInformationsAllergyEditPage.Form.FIELD_REACTION_TYPE);
 		
@@ -689,7 +682,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 				};
 			}
 		});
-		
+		/*
 		registerDetailsConfiguration(PersonRelationshipDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
@@ -723,6 +716,7 @@ public class PrimefacesManager extends AbstractPrimefacesManager.AbstractPrimefa
 		getFormConfiguration(PersonRelationshipTypeRole.class, Crud.CREATE)
 		.addRequiredFieldNames(PersonRelationshipTypeRoleEditPage.Form.FIELD_CODE,PersonRelationshipTypeRoleEditPage.Form.FIELD_NAME
 				,PersonRelationshipTypeRoleEditPage.Form.FIELD_PERSON_RELATIONSHIP_TYPE,PersonRelationshipTypeRoleEditPage.Form.FIELD_ROLE);
+		*/
 		/*
 		registerDetailsConfiguration(PersonRelationshipTypeRoleDetails.class, new DetailsConfiguration(){
 			private static final long serialVersionUID = 1L;

@@ -80,12 +80,17 @@ public abstract class AbstractIdentifiablePagesConfiguration<TYPE extends Abstra
 	
 	protected void __configurePages__(){
 		processFormConfigurations();
+		//if(getDetailsConfiguration()!=null)
+		//	System.out.println("AbstractIdentifiablePagesConfiguration.__configurePages__() : "+getDetails());
 		registerDetailsConfiguration(getDetails(), getDetailsConfiguration());
 	}
 	
 	protected void __configure__(ViewType viewType,Constant.Action action){}
 	
 	protected void processFormConfigurations(){
+		//DetailsConfiguration detailsConfiguration = getDetailsConfiguration();
+		//if(detailsConfiguration!=null)
+		//	getFormConfiguration(getIdentifiableClass(),Crud.CREATE).addControlSetListener(detailsConfiguration.getFormControlSetAdapter());
 		String[] fieldNames = getRequiredFieldNames(Constant.Action.CREATE);
 		if(fieldNames!=null)
 			getFormConfiguration(getIdentifiableClass(),Crud.CREATE).addRequiredFieldNames(fieldNames);

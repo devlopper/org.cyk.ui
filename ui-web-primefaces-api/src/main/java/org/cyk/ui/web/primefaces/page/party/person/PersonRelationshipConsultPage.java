@@ -5,19 +5,16 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.web.primefaces.page.party.AbstractPersonConsultPage;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.root.model.party.person.PersonRelationship;
+import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
+
 @Named @ViewScoped @Getter @Setter
-public class PersonConsultPage extends AbstractPersonConsultPage<Person> implements Serializable {
+public class PersonRelationshipConsultPage extends AbstractConsultPage<PersonRelationship> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-
-	@Override
-	protected Person getPerson() {
-		return identifiable;
-	}
+	
+	
 }

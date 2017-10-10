@@ -6,19 +6,16 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness.FindDoSomethingTextParameters;
 import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.model.Identifiable;
 import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
 import org.cyk.system.root.model.pattern.tree.AbstractDataTreeNode;
@@ -43,6 +40,9 @@ import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.model.table.Dimension.DimensionType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter //TODO should extends Row , Column , Cell , Table Listener to avoid creating specific methods
 public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityPrimefacesPage<ENTITY> 
@@ -309,6 +309,7 @@ public abstract class AbstractBusinessEntityFormManyPage<ENTITY extends Abstract
 				if(constructor==null)
 					throw new IllegalArgumentException("No constructor found for "+table.getRowDataClass()+" with parameter "+entity.getClass());
 				//return table.getRowDataClass().getConstructor(entity.getClass()).newInstance(entity);
+				//return ClassHelper.getInstance().instanciate(table.getRowDataClass(), new Object[]{entity.getClass(),entity}); //constructor.newInstance(entity);
 				return constructor.newInstance(entity);
 			} catch (Exception e) {
 				e.printStackTrace();

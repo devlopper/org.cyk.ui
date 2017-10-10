@@ -2,7 +2,7 @@ package org.cyk.ui.web.primefaces.page.file;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
+import org.cyk.system.root.business.impl.party.person.PersonBusinessImpl.AbstractPersonDetails;
 import org.cyk.system.root.model.file.report.ReportBasedOnDynamicBuilderParameters;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.ui.web.api.servlet.report.ReportBasedOnDynamicBuilderServletListener;

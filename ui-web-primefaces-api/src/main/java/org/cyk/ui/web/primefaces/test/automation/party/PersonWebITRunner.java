@@ -6,7 +6,7 @@ import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.language.LanguageCollectionFormModel;
-import org.cyk.ui.web.primefaces.page.party.PersonEditPage;
+import org.cyk.ui.web.primefaces.page.party.person.PersonEditPage;
 import org.cyk.ui.web.primefaces.test.automation.Form;
 import org.cyk.ui.web.primefaces.test.automation.IdentifiableWebITRunner;
 

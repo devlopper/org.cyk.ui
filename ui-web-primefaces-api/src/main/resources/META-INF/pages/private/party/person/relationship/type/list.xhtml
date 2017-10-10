@@ -12,7 +12,7 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{personRelationshipTypeListPage}" />
  		<ui:define name="body">
- 			<cyk:table value="#{personRelationshipTypeListPage.table}" />
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/pattern/datatree/list.xhtml"/>
  		</ui:define>
  		
  	</ui:decorate>

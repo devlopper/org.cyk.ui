@@ -8,13 +8,13 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{personRelationshipTypeRoleEditPage}" />
+ 		<ui:param name="pageController" value="#{personRelationshipTypeRoleNameEditPage}" />
  		<ui:define name="body">
- 			<cyk:formOneData value="#{personRelationshipTypeRoleEditPage.form}" />
+ 			<cyk:formOneData value="#{personRelationshipTypeRoleNameEditPage.form}" />
  		</ui:define>
  		
  		<ui:define name="contentMenuBar">
- 			<cyk:command value="#{personRelationshipTypeRoleEditPage.form.submitCommandable}" executeParameter="#{personRelationshipTypeRoleEditPage.form.data}" />
+ 			<cyk:command value="#{personRelationshipTypeRoleNameEditPage.form.submitCommandable}" executeParameter="#{personRelationshipTypeRoleNameEditPage.form.data}" />
  		</ui:define>
  		
  	</ui:decorate>

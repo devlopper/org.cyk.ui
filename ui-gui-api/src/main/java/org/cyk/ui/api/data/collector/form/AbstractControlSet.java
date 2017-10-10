@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.AbstractView;
-import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.UIProvider;
 import org.cyk.ui.api.data.collector.control.Control;
 import org.cyk.ui.api.data.collector.control.Input;
 import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.annotation.user.interfaces.Input.RendererStrategy;
+import org.cyk.utility.common.helper.StringHelper;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
  
 @NoArgsConstructor
 public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends AbstractView implements ControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM>,Serializable {
@@ -105,7 +105,7 @@ public abstract class AbstractControlSet<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM
 	}
 	
 	protected String getFieldLabel(Object data,Field field){
-		String fieldLabel = UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field).getValue();
+		String fieldLabel = StringHelper.getInstance().getField(field); //UIManager.getInstance().getLanguageBusiness().findFieldLabelText(data,field).getValue();
 		for(ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> listener : controlSetListeners){ 
 			String c = listener.fiedLabel(this, data,field);
 			if(StringUtils.isNotBlank(c))

@@ -12,14 +12,9 @@ import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.file.FileBusiness;
-import org.cyk.system.root.business.api.language.LanguageBusiness.FindTextResult;
-import org.cyk.system.root.business.api.userinterface.style.CascadeStyleSheetBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.system.root.model.file.File;
 import org.cyk.ui.api.command.AbstractCommandable;
@@ -63,6 +58,9 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.CascadeStyleSheetHelper;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter @Singleton @Named("uiProvider") @Deployment(initialisationType=InitialisationType.EAGER) 
 public class UIProvider extends AbstractBean implements Serializable {

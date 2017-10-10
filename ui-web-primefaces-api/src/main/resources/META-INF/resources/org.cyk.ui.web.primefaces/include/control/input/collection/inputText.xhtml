@@ -11,7 +11,8 @@
 	
 	<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/inputtext/component.xhtml" >
 		<ui:param name="identifier" value="inputtext_#{column == null ? viewHelper.getRandomIdentifier() : column.identifier}"/>
-		<ui:param name="value" value="#{element[column.field.name]}"/>
+		<!--ui:param name="value" value="#{element[column.field.name]}"/-->
+		<ui:param name="value" value="#{element.__fieldsContainer__[column.field.name]}"/>
 		<ui:param name="attributes" value="#{column.fieldDescriptor.propertiesMap}"/>
 	</ui:include>
 

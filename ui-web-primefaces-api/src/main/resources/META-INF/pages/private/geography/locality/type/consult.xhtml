@@ -12,7 +12,8 @@
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{localityTypeConsultPage}" />
  		<ui:define name="body">
- 			<table>
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/pattern/datatree/consult.xhtml"/>
+ 			<!--table>
  				<tr valign="top">
  					<td>	
  						<cyk:tree value="#{localityTypeConsultPage.childrenTable.tree}" />		
@@ -22,7 +23,7 @@
  						<cyk:table value="#{localityTypeConsultPage.childrenTable}" />
  					</td>
  				</tr>
- 			</table>
+ 			</table-->
  			
  					
  		</ui:define>

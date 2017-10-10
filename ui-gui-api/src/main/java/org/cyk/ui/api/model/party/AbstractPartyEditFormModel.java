@@ -2,7 +2,6 @@ package org.cyk.ui.api.model.party;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.business.api.geography.ContactCollectionBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.geography.ContactCollection;
@@ -18,7 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @Deprecated
 public abstract class AbstractPartyEditFormModel<PARTY extends AbstractIdentifiable> extends AbstractBusinessIdentifiedEditFormModel<PARTY> implements Serializable {
 
 	private static final long serialVersionUID = -3897201743383535836L;

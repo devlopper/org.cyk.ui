@@ -239,6 +239,7 @@ public class SystemMenuBuilder extends AbstractSystemMenuBuilder implements Seri
 		module.addChild(createListCommandable(PersonRelationshipTypeGroup.class, null));
 		
 		module.addChild(createListCommandable(Person.class, null));
+		module.addChild(createListCommandable(PersonRelationship.class, null));
 		
 		return module;
 	}

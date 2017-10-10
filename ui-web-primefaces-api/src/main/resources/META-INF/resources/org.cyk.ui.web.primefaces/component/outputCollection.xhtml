@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+	xmlns:cyk_incubation="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component_incubation">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.OutputCollection">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+		<p:dataTable id="datatable" value="#{cc.value.elements}" var="element" rowIndexVar="index" rendered="#{cc.value.propertiesMap.rendered}"
+			sortMode="#{cc.value.propertiesMap.sortMode}" reflow="#{cc.value.propertiesMap.reflow}"
+			
+			lazy="#{cc.value.propertiesMap.lazy}"
+			
+			rows="#{cc.value.collection.elements.size()}"
+			paginator="#{cc.value.propertiesMap.paginator}" paginatorPosition="#{cc.value.propertiesMap.paginatorPosition}"
+			paginatorTemplate="#{cc.value.propertiesMap.paginatorTemplate}" currentPageReportTemplate="#{cc.value.propertiesMap.currentPageReportTemplate}"
+			
+			styleClass="#{cc.value.propertiesMap.styleClass}" style="#{cc.value.propertiesMap.style}" 
+			tableStyleClass="#{cc.value.propertiesMap.tableStyleClass}" rowStyleClass="#{element.propertiesMap.rowStyleClass}"
+			
+			emptyMessage="#{cc.value.propertiesMap.emptyMessage}"
+		>
+			
+			<f:facet name="header">
+      			<h:outputText value="#{cc.value.collection.name}" rendered="#{not cc.value.collection.name}" />
+      			MENU
+      		</f:facet>
+			
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsBeforeChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>
+			
+       		<cc:insertChildren/>
+       		
+       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsAfterChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>
+       		
+       	</p:dataTable>
+			
+	</cc:implementation>
+
+</ui:composition>

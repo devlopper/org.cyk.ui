@@ -7,26 +7,27 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.api.party.person.PersonBusiness;
 import org.cyk.system.root.business.impl.language.LanguageCollectionDetails;
-import org.cyk.system.root.business.impl.party.person.AbstractPersonDetails;
 import org.cyk.system.root.business.impl.party.person.JobDetails;
+import org.cyk.system.root.business.impl.party.person.PersonBusinessImpl.AbstractPersonDetails;
 import org.cyk.ui.api.data.collector.form.ControlSet;
 import org.cyk.ui.api.model.geography.LocationFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.data.collector.control.ControlSetAdapter;
 import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
+import org.cyk.ui.web.primefaces.page.party.AbstractPersonEditPage;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter @Setter
 public class PersonDetailsConfiguration extends DetailsConfiguration implements Serializable {
@@ -55,7 +56,8 @@ public class PersonDetailsConfiguration extends DetailsConfiguration implements 
 		
 		@Override
 		public String fiedLabel(ControlSet<Object, DynaFormModel, DynaFormRow, DynaFormLabel, DynaFormControl, SelectItem> controlSet,Object data,Field field) {
-			if(data instanceof LocationFormModel && ((AbstractPersonEditFormModel<?>)controlSet.getFormData().getData()).getBirthLocation() == data ){
+			System.out.println("PersonDetailsConfiguration.FormControlSetAdapter.fiedLabel()");
+			if(data instanceof LocationFormModel && ((AbstractPersonEditPage.AbstractForm<?>)controlSet.getFormData().getData()).getBirthLocation() == data ){
 				if(LocationFormModel.FIELD_LOCALITY.equals(field.getName()))
 					return inject(LanguageBusiness.class).findText("field.birth.location");
 				else if(LocationFormModel.FIELD_OTHER_DETAILS.equals(field.getName()))
