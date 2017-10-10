@@ -14,8 +14,12 @@ import lombok.experimental.Accessors;
 public class OutputCollection<T> extends org.cyk.ui.api.data.collector.control.OutputCollection<T> implements Serializable {
 	private static final long serialVersionUID = -3543754685060813767L;
 
-	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables) {
-		super(elementClass,elementObjectClass,identifiableClass,identifiables);
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
+		super(elementClass,elementObjectClass,identifiableClass,elementObjectClassFieldNames,identifiables);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames) {
+		this(elementClass,elementObjectClass,identifiableClass,elementObjectClassFieldNames,null);
 	}
 	
 	/**/

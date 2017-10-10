@@ -8,8 +8,10 @@ import org.cyk.system.root.business.impl.DetailsClassLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.ArrayHelper;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.MarkupLanguageHelper;
 import org.cyk.utility.common.helper.ThrowableHelper;
 
 import lombok.Getter;
@@ -23,19 +25,35 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 	protected Boolean isLazyLoaded = Boolean.TRUE;
 	protected Object lazyDataModel;
 	
-	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables) {
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass
+			,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
 		super(elementClass,elementObjectClass,null,null);
+		
 		this.identifiableClass = identifiableClass;
 		if(this.identifiableClass!=null){
-			//FIXME do not do this if it is lazy loaded
 			getCollection().setFieldsContainerClass(getCollection().getElementObjectClass());
-			getCollection().setIsCreatable(Boolean.TRUE).setIsUpdatable(Boolean.FALSE).setIsRemovable(Boolean.FALSE);
-			add(identifiables);
+			getCollection().setIsUpdatable(Boolean.FALSE);
+			if(identifiables==null){
+				if(isLazyLoaded==null)
+					isLazyLoaded = Boolean.TRUE;
+			}else{
+				add(identifiables);	
+			}
+			
+		}
+		
+		if(ArrayHelper.getInstance().isNotEmpty(elementObjectClassFieldNames)){
+			addElementObjectFieldsAsColumns(elementObjectClassFieldNames);
+			get__nameColumn__().setIsShowable(Boolean.FALSE);
 		}
 	}
 	
-	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables) {
-		this(elementClass,inject(DetailsClassLocator.class).locate(identifiableClass),identifiableClass,identifiables);
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
+		this(elementClass,inject(DetailsClassLocator.class).locate(identifiableClass),identifiableClass,elementObjectClassFieldNames,identifiables);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,String[] elementObjectClassFieldNames,Class<IDENTIFIABLE> identifiableClass) {
+		this(elementClass,identifiableClass,elementObjectClassFieldNames,null);
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection<T> add(Collection<IDENTIFIABLE> identifiables){

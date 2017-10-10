@@ -25,10 +25,11 @@ public class PersonListPage extends AbstractPersonListPage<Person> implements Se
 	protected void initialisation() {
 		// TODO Auto-generated method stub
 		super.initialisation();
-		collection = new OutputCollection<Person>(Person.class,inject(PersonBusiness.class).findAll());
+		/*collection = new OutputCollection<Person>(Person.class,inject(PersonBusiness.class).findAll());
 		collection.addElementObjectFieldsAsColumns(PersonBusinessImpl.Details.FIELD_CODE,PersonBusinessImpl.Details.FIELD_NAME,PersonBusinessImpl.Details.FIELD_LASTNAMES
 				,PersonBusinessImpl.Details.FIELD_BIRTH_DATE);
 		collection.get__nameColumn__().setIsShowable(Boolean.FALSE);
+		*/
 		//collection.getCollection().setMany(inject(PersonBusiness.class).findAll());
 	}
 	

@@ -29,8 +29,8 @@ public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_ITE
 		getAddCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
 		
-		getDeleteCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
-		getDeleteCommand().setNameRendered(getDeleteCommand().getMappedIcon()==null);
+		getRemoveCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
+		getRemoveCommand().setNameRendered(getRemoveCommand().getMappedIcon()==null);
 	}
 	
 	public InputCollection<T,SELECT_ITEM> setInputChoice(InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice){

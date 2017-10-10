@@ -22,7 +22,7 @@ public class InputCollection<T> extends org.cyk.ui.web.api.data.collector.contro
 		getPropertiesMap().addString(Constant.STYLE_CLASS,org.cyk.utility.common.Constant.CHARACTER_SPACE.toString(), identifier);
 		
 		getAddCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
-		getDeleteCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
+		getRemoveCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
 		get__indexColumn__().setWidth("25");
 		get__indexColumn__().addFooterCommand(getAddCommand());
 		get__commandsColumn__().setWidth("30");

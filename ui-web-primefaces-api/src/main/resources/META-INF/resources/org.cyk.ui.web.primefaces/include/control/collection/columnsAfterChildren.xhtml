@@ -35,7 +35,12 @@
      <ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
  		<ui:param name="column" value="#{collection.__commandsColumn__}" />
  		<ui:define name="content">
- 			<cyk_incubation:command value="#{collection.deleteCommand}" executeParameter="#{element}"/>
+ 			<!-- collection's commands -->
+ 			<cyk_incubation:command value="#{collection.removeCommand}" executeParameter="#{element}"/>
+ 			<!-- element's commands -->
+ 			<cyk_incubation:command value="#{element.readCommand}" executeParameter="#{element}"/>
+ 			<cyk_incubation:command value="#{element.updateCommand}" executeParameter="#{element}"/>
+ 			<cyk_incubation:command value="#{element.removeCommand}" executeParameter="#{element}"/>
  		</ui:define>
  	</ui:decorate>
 

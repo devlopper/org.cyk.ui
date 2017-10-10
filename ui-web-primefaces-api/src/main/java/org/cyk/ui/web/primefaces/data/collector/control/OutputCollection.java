@@ -1,7 +1,6 @@
  package org.cyk.ui.web.primefaces.data.collector.control;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.impl.DetailsClassLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.network.UniformResourceLocatorParameter;
-import org.cyk.ui.web.api.WebManager;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.computation.DataReadConfiguration;
-import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.primefaces.model.SortOrder;
 
@@ -26,18 +21,26 @@ import lombok.experimental.Accessors;
 public class OutputCollection<T> extends org.cyk.ui.web.api.data.collector.control.OutputCollection<T> implements Serializable {
 	private static final long serialVersionUID = -3543754685060813767L;
 
-	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables) {
-		super(elementClass,elementObjectClass,identifiableClass,identifiables);
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
+		super(elementClass,elementObjectClass,identifiableClass,elementObjectClassFieldNames,identifiables);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<IDENTIFIABLE> identifiableClass,Collection<IDENTIFIABLE> identifiables) {
-		this((Class<T>) Element.class,inject(DetailsClassLocator.class).locate(identifiableClass),identifiableClass,identifiables);
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
+		this((Class<T>) Element.class,inject(DetailsClassLocator.class).locate(identifiableClass),identifiableClass,elementObjectClassFieldNames,identifiables);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames) {
+		this(identifiableClass,elementObjectClassFieldNames,null);
+	}
+	
+	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<IDENTIFIABLE> identifiableClass) {
+		this(identifiableClass,null);
 	}
 	
 	@Override
 	protected Object instanciateLazyDataModel() {
-		return new LazyDataModel<T>(this,identifiableClass);
+		return new LazyDataModel<T>(this,identifiableClass,4l);
 	}
 	
 	/**/
@@ -60,42 +63,28 @@ public class OutputCollection<T> extends org.cyk.ui.web.api.data.collector.contr
 		private OutputCollection<T> outputCollection;
 		private Class<? extends AbstractIdentifiable> identifiableClass;
 		private Long maximumResultCount;
+		private String globalFilter;
 		
-		public LazyDataModel(OutputCollection<T> outputCollection,Class<? extends AbstractIdentifiable> identifiableClass) {
+		public LazyDataModel(OutputCollection<T> outputCollection,Class<? extends AbstractIdentifiable> identifiableClass,Long maximumResultCount) {
 			this.outputCollection = outputCollection;
 			this.identifiableClass = identifiableClass;
+			this.maximumResultCount = maximumResultCount;
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		public List<T> load(int first, int pageSize,String sortField, SortOrder sortOrder,Map<String, Object> filters) {
 			String filter = filters == null ? null : (String)filters.get("globalFilter");
 			if(StringUtils.isBlank(filter))
-				filter = WebManager.getInstance().getRequestParameter(UniformResourceLocatorParameter.FILTER);
-			
-			DataReadConfiguration configuration = new DataReadConfiguration((long)first,3l, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
-			/*
-			if(Boolean.TRUE.equals(fetch)){
-				Table.this.load(configuration);
-			}
-			fetch = Boolean.TRUE;
-			
-			resultsCount =  count(configuration);
-			*/
-			outputCollection.getCollection().getElements().clear();
+				filter = globalFilter;
+			DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
+			outputCollection.getCollection().removeAll();
 			outputCollection.add(InstanceHelper.getInstance().get(identifiableClass, configuration));
-			
-			/*List<Object> details = new ArrayList<>();
-			for(AbstractIdentifiable identifiable : InstanceHelper.getInstance().get(identifiableClass, configuration)){
-				details.add( ClassHelper.getInstance().instanciate(outputCollection.getCollection().getElementObjectClass(), new Object[]{identifiableClass,identifiable}) );
-			}*/
 			return (List<T>) outputCollection.getCollection().getElements();
 		}
 		
 		@Override
 		public int getRowCount() {
 			return InstanceHelper.getInstance().getIfNotNullElseDefault(InstanceHelper.getInstance().count(identifiableClass, null),0l).intValue();
-			//rowCount == null ? (resultsCount==null?0:resultsCount.intValue()) : rowCount;
 		}
 		
 	}
