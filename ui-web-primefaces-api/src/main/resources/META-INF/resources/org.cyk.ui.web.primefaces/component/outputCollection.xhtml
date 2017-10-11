@@ -16,7 +16,7 @@
 
 	<cc:implementation>
 	
-		<p:dataTable id="datatable" value="#{cc.value.elements}" var="element" rowIndexVar="index" rendered="#{cc.value.propertiesMap.rendered}"
+		<p:dataTable id="outputcollection_datatable" value="#{cc.value.elements}" var="element" rowIndexVar="index" rendered="#{cc.value.propertiesMap.rendered}"
 			sortMode="#{cc.value.propertiesMap.sortMode}" reflow="#{cc.value.propertiesMap.reflow}"
 			
 			lazy="#{cc.value.propertiesMap.lazy}"
@@ -33,7 +33,9 @@
 			
 			<f:facet name="header">
       			<h:outputText value="#{cc.value.collection.name}" rendered="#{not cc.value.collection.name}" />
-      			MENU
+      			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/menu.xhtml" >
+      				<ui:param name="collection" value="#{cc.value}"></ui:param>
+      			</ui:include>
       		</f:facet>
 			
 			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsBeforeChildren.xhtml">

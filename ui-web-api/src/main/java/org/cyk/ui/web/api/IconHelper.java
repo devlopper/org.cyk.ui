@@ -16,14 +16,13 @@ public class IconHelper extends AbstractBean implements Serializable {
 			@Override
 			protected Object __execute__() {
 				switch(getInput()){
-				case ACTION_ADD:return "ui-icon-plus";
+				case ACTION_ADD:return "fa fa-plus-circle";
 				case ACTION_CANCEL:return "ui-icon-close";
-				case ACTION_OPEN:return "ui-icon-folder-open";
-				case ACTION_REMOVE:return "ui-icon-trash";
+				case ACTION_OPEN:return "fa fa-folder-open";
 				case ACTION_ADMINISTRATE:return "ui-icon-gear";
 				case ACTION_HELP:return "ui-icon-help";
 				case ACTION_APPLY:return  "fa fa-save" /*"fa fa-check" /*"ui-icon-check"*/;
-				case ACTION_EDIT:return "ui-icon-pencil";
+				case ACTION_EDIT:return "fa fa-pencil";
 				case ACTION_GO_BACK:return "ui-icon-arrow-e";
 				case ACTION_OK:return "fa fa-check";
 				case ACTION_SAVE:return "fa fa-save";
@@ -38,7 +37,8 @@ public class IconHelper extends AbstractBean implements Serializable {
 				case ACTION_SET: return "ui-icon-wrench";
 				case ACTION_DOWNLOAD: return "fa fa-download";
 				case ACTION_UPDATE: return "fa fa-edit";
-				case ACTION_DELETE: return "fa fa-remove";
+				case ACTION_REMOVE:return "fa fa-remove";
+				case ACTION_DELETE: return "fa fa-trash";
 				
 				case THING_APPLICATION: return "ui-icon-";
 				case THING_CALENDAR: return "ui-icon-calendar";

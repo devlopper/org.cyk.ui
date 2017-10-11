@@ -21,17 +21,21 @@ public class AbstractCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_
 	
 	public AbstractCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<SELECT_ITEM> sourceClass,Class<?> sourceObjectClass) {
 		super(elementClass,elementObjectClass,sourceClass,sourceObjectClass);
+		//((AbstractBean)((Object)getColumnMap())).
+		//in order to trigger update we need to use a unique css class to identify input
+		getPropertiesMap().addString(Constant.STYLE_CLASS,org.cyk.utility.common.Constant.CHARACTER_SPACE.toString(), identifier);
+				
 		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setRendered(Boolean.TRUE.toString());
 		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setEmptyMessage("MY CUSTOM EMPTY MESSAGE");
-		
-		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setLazy(Boolean.TRUE.toString());
-		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setPaginator(Boolean.TRUE.toString());
 		
 		getAddCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
 		
 		getRemoveCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
 		getRemoveCommand().setNameRendered(getRemoveCommand().getMappedIcon()==null);
+		
+		get__indexColumn__().setWidth("25");
+		get__commandsColumn__().setWidth("30");
 	}
 	
 	/**/

@@ -15,9 +15,13 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<p:importConstants type="org.cyk.ui.api.Constant" var="UI_CONSTANT"/>
- 		<p:dataTable id="datatable" value="#{cc.value.collection.elements}" var="element" rowIndexVar="index" emptyMessage="" rendered="#{cc.value!=null}"
-			styleClass="#{cc.value.propertiesMap.get(UI_CONSTANT.STYLE_CLASS)}">
+		<p:dataTable id="inputcollection_datatable" value="#{cc.value.collection.elements}" var="element" rowIndexVar="index" rendered="#{cc.value.propertiesMap.rendered}"
+		
+			styleClass="#{cc.value.propertiesMap.styleClass}" style="#{cc.value.propertiesMap.style}" 
+			tableStyleClass="#{cc.value.propertiesMap.tableStyleClass}" rowStyleClass="#{element.propertiesMap.rowStyleClass}"
+			
+			emptyMessage="#{cc.value.propertiesMap.emptyMessage}"
+		>
         	<f:facet name="header">
         		<table>
         			<tr>
@@ -41,81 +45,15 @@
         		</table>
         	</f:facet>	
 
-			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.__indexColumn__}" />
-		 		<ui:define name="content">
-		 			<h:outputText value="#{index+1}" />
-		 		</ui:define>
-		 		<ui:define name="footer">
-		 			<ui:fragment rendered="#{cc.value.__indexColumn__.footerCommands.contains(cc.value.addCommand)}">
-		 				<cyk_incubation:command value="#{cc.value.addCommand}"/>
-		 			</ui:fragment>	
-		 		</ui:define>
-		 	</ui:decorate>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsBeforeChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>
 			
- 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.__nameColumn__}" />
-		 		<ui:define name="content">
-		 			<h:outputText value="#{element.__name__}"/>
-		 		</ui:define>
-		 	</ui:decorate>
-		 	
-		 	<!-- some ajax stuff not working with this : like input validation is not required -->
-       		<!--
-       		<p:columns var="column" value="#{cc.value.columns}" headerText="#{column.name}">
-      			<ui:include src="/org.cyk.ui.web.primefaces/include/table/column/content.xhtml">
-      					
-      			</ui:include>
-			</p:columns>
-			-->
        		<cc:insertChildren/>
        		
-       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(0)}"/>
-			</ui:include>
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(1)}"/>
-			</ui:include>
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(2)}"/>
-			</ui:include>
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(3)}"/>
-			</ui:include>
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(4)}"/>
-			</ui:include>
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(5)}"/>
-			</ui:include>
-			
-			<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/column.xhtml" >
-				<ui:param name="column" value="#{cc.value.getColumnAt(6)}"/>
-			</ui:include>
-			
-       		<!--
-       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/collection/columns.xhtml" >
-				<ui:param name="inputCollection" value="#{cc.value}"/>
-			</ui:include>
-			-->
-       		<!--
-       		<p:column width="8%" headerText="#{cc.value.applicableValueQuestion.label}" rendered="#{cc.value.editable and cc.value.applicableValueQuestion.rendered}">
-       			<p:selectBooleanCheckbox value="#{element.applicable}" >
-					<f:selectItems value="#{cc.value.applicableValueQuestion.answers}" />
-					<p:ajax event="change" update="#{cc.value.applicableValueQuestion.update}" />
-				</p:selectBooleanCheckbox>	
-       		</p:column>
-       		-->
-       		<!--  rendered="#{cc.value.editable and cc.value.deleteCommandable.rendered}"  -->
-       		<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
-		 		<ui:param name="column" value="#{cc.value.__commandsColumn__}" />
-		 		<ui:define name="content">
-		 			<cyk_incubation:command value="#{cc.value.deleteCommand}" executeParameter="#{element}"/>
-		 		</ui:define>
-		 	</ui:decorate>
-       		<!--p:column width="4%" > 
-       			
-       		</p:column-->
+       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsAfterChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>       		
        		
        	</p:dataTable>
 			

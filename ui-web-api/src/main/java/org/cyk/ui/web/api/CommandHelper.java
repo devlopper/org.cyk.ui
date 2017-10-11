@@ -20,5 +20,11 @@ public class CommandHelper extends AbstractBean implements Serializable {
 		
 	}
 
+	@Getter @Setter @Accessors(chain=true)
+	public static class Commands extends org.cyk.ui.api.CommandHelper.Commands implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		
+	}
 	
 }

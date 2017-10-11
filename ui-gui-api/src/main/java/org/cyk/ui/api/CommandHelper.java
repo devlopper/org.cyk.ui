@@ -3,6 +3,7 @@ package org.cyk.ui.api;
 import java.io.Serializable;
 
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.MarkupLanguageHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,10 @@ public class CommandHelper extends AbstractBean implements Serializable {
 	public static class Command extends org.cyk.utility.common.helper.CommandHelper.Command.Adapter.Default implements Serializable {
 		private static final long serialVersionUID = 1L;
 
+		public Command() {
+			((MarkupLanguageHelper.Attributes)(Object)getPropertiesMap()).setRendered(Boolean.TRUE.toString());
+		}
+		
 		@Override
 		public Command setProperty(String name, Object value) {
 			return (Command) super.setProperty(name, value);
@@ -30,6 +35,26 @@ public class CommandHelper extends AbstractBean implements Serializable {
 			return setProperty(Constant.ICON, icon);
 		}
 		
+		/**/
+		
+		@Override
+		protected Object instanciatePropertiesMap() {
+			return new MarkupLanguageHelper.Attributes();
+		}
+	}
+	
+	@Getter @Setter @Accessors(chain=true)
+	public static class Commands extends org.cyk.utility.common.helper.CommandHelper.Commands implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		public Commands() {
+			((MarkupLanguageHelper.Attributes)(Object)getPropertiesMap()).setRendered(Boolean.TRUE.toString());
+		}
+		
+		@Override
+		protected Object instanciatePropertiesMap() {
+			return new MarkupLanguageHelper.Attributes();
+		}
 	}
 
 	

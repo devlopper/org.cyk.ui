@@ -21,32 +21,15 @@
  	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{outputCollectionDemoPage}" />
  		<ui:define name="body">
- 			<table>
- 				<tr>
- 					<td>
- 						<cyk:outputCollection value="#{outputCollectionDemoPage.personCollection}">
+ 			<cyk:outputCollection value="#{outputCollectionDemoPage.localityCollection}">
  			
- 						</cyk:outputCollection>
- 					</td>
- 					<td>
- 						<cyk:outputCollection value="#{outputCollectionDemoPage.countryCollection}">
+ 			</cyk:outputCollection>
  			
- 						</cyk:outputCollection>
- 					</td>
- 				</tr>
- 				<tr>
- 					<td>
- 						<cyk:outputCollection value="#{outputCollectionDemoPage.tagCollection}">
+ 			<p:separator/>
+ 						
+ 			<cyk:outputCollection value="#{outputCollectionDemoPage.countryCollection}">
  			
- 						</cyk:outputCollection>
- 					</td>
- 					<td>
- 						<cyk:outputCollection value="#{outputCollectionDemoPage.localityCollection}">
- 			
- 						</cyk:outputCollection>
- 					</td>
- 				</tr>
- 			</table>
+ 			</cyk:outputCollection>
  			
  		</ui:define>
  	</ui:decorate>

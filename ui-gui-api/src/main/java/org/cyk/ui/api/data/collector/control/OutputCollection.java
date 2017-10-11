@@ -4,14 +4,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.DetailsClassLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.ArrayHelper;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.CommandHelper;
+import org.cyk.utility.common.helper.IconHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
+import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.helper.MarkupLanguageHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.helper.ThrowableHelper;
 
 import lombok.Getter;
@@ -29,6 +35,7 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 			,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
 		super(elementClass,elementObjectClass,null,null);
 		
+		MarkupLanguageHelper.Attributes.set(getRemoveCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.FALSE);
 		this.identifiableClass = identifiableClass;
 		if(this.identifiableClass!=null){
 			getCollection().setFieldsContainerClass(getCollection().getElementObjectClass());
@@ -46,6 +53,17 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 			addElementObjectFieldsAsColumns(elementObjectClassFieldNames);
 			get__nameColumn__().setIsShowable(Boolean.FALSE);
 		}
+		
+		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setLazy(String.valueOf(Boolean.TRUE.equals(isLazyLoaded)));
+		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setPaginator(String.valueOf(Boolean.TRUE.equals(isLazyLoaded)));
+		
+		((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getAddCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
+				.Default().setUniformResourceLocatorStringifier(Constant.Action.CREATE, identifiableClass).execute());
+		
+		((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getAddCommand()).getPropertiesMap())).setType("button");
+		getAddCommand().setNameRendered(Boolean.TRUE);
+		
+		get__commandsColumn__().setWidth("200");
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
@@ -88,17 +106,51 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 	public static class Element<T> extends AbstractCollection.Element<T> implements Serializable {
 		private static final long serialVersionUID = 1L;
 	
-		@Override
-		protected Object read(Object object, String fieldName) {
-			if(GlobalIdentifier.FIELD_CODE.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getCode();
-			if(GlobalIdentifier.FIELD_NAME.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getName();
-			if(GlobalIdentifier.FIELD_OTHER_DETAILS.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getOtherDetails();
-			return super.read(object, fieldName);
+		public Element() {
+			readCommand = CommandHelper.getInstance().getCommand().setName(StringHelper.getInstance().get("grid.command.read", (Object[])null))
+					.setIcon(IconHelper.Icon.ACTION_OPEN);
+			getReadCommand().setIsImplemented(Boolean.TRUE);
+			MarkupLanguageHelper.Attributes.set(getReadCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.TRUE);
+			((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getReadCommand()).getPropertiesMap())).setType("button");
+			getReadCommand().setNameRendered(Boolean.FALSE);
+			
+			updateCommand = CommandHelper.getInstance().getCommand().setName(StringHelper.getInstance().get("grid.command.update", (Object[])null))
+					.setIcon(IconHelper.Icon.ACTION_EDIT);
+			getUpdateCommand().setIsImplemented(Boolean.TRUE);
+			MarkupLanguageHelper.Attributes.set(getUpdateCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.TRUE);
+			((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getUpdateCommand()).getPropertiesMap())).setType("button");
+			getUpdateCommand().setNameRendered(Boolean.FALSE);
+			
+			removeCommand = CommandHelper.getInstance().getCommand().setName(StringHelper.getInstance().get("grid.command.delete", (Object[])null))
+					.setIcon(IconHelper.Icon.ACTION_DELETE);
+			getRemoveCommand().setIsImplemented(Boolean.TRUE);
+			MarkupLanguageHelper.Attributes.set(getRemoveCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.TRUE);
+			((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getRemoveCommand()).getPropertiesMap())).setType("button");
+			getRemoveCommand().setNameRendered(Boolean.FALSE);
 		}
 		
+		@Override
+		public org.cyk.utility.common.helper.CollectionHelper.Element<T> setObject(T object) {
+			if(object!=null){
+				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getReadCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
+						.Default().setUniformResourceLocatorStringifier(Constant.Action.CONSULT, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
+				
+				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getUpdateCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
+						.Default().setUniformResourceLocatorStringifier(Constant.Action.UPDATE, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
+				
+				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getRemoveCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
+						.Default().setUniformResourceLocatorStringifier(Constant.Action.DELETE, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
+			}
+			return super.setObject(object);
+		}
+		
+		@Override
+		public String toString() {
+			System.out.println("OutputCollection.Element.toString() : "+InstanceHelper.getInstance().getLabel(((AbstractOutputDetails<?>)getObject()).getMaster()));
+			//if(getObject()!=null)
+				return InstanceHelper.getInstance().getLabel(((AbstractOutputDetails<?>)getObject()).getMaster());
+			//return super.toString();
+		}
 	}
 	
 	/**/

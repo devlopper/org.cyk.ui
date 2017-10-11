@@ -11,7 +11,8 @@ import org.cyk.ui.api.data.collector.form.FormOneData;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.helper.GridHelper;
+import org.cyk.utility.common.helper.JQueryHelper;
+import org.cyk.utility.common.helper.MarkupLanguageHelper;
 import org.cyk.utility.common.helper.ThrowableHelper;
 
 import lombok.Getter;
@@ -19,18 +20,18 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter @Setter @Accessors(chain=true)
-public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_ITEM> implements Serializable {
+public class InputCollection<T,SELECT_ITEM> extends AbstractCollection<T,SELECT_ITEM> implements Serializable {
 	private static final long serialVersionUID = -3543754685060813767L;
 
 	protected InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice;
 
 	public InputCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<SELECT_ITEM> sourceClass,Class<?> sourceObjectClass) {
 		super(elementClass,elementObjectClass,sourceClass,sourceObjectClass);
-		getAddCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
-		getAddCommand().setNameRendered(getAddCommand().getMappedIcon()==null);
+
+		get__indexColumn__().addFooterCommand(getAddCommand());
+		getAddCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));		
+		getRemoveCommand().setProperty(Constant.UPDATE, JQueryHelper.getInstance().getSelectByClass(identifier));
 		
-		getRemoveCommand().setProperty(Constant.INPUT_VALUE_IS_NOT_REQUIRED, Boolean.TRUE);
-		getRemoveCommand().setNameRendered(getRemoveCommand().getMappedIcon()==null);
 	}
 	
 	public InputCollection<T,SELECT_ITEM> setInputChoice(InputChoice<?, ?, ?, ?, ?, SELECT_ITEM> inputChoice){
@@ -63,22 +64,16 @@ public class InputCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_ITE
 	}
 	
 	/**/
-
 	
 	/**/
 	
-	public static class Element<T> extends org.cyk.utility.common.helper.CollectionHelper.Element<T> implements Serializable {
+	public static class Element<T> extends AbstractCollection.Element<T> implements Serializable {
 		private static final long serialVersionUID = 1L;
 	
-		@Override
-		protected Object read(Object object, String fieldName) {
-			if(GlobalIdentifier.FIELD_CODE.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getCode();
-			if(GlobalIdentifier.FIELD_NAME.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getName();
-			if(GlobalIdentifier.FIELD_OTHER_DETAILS.equals(fieldName) && object instanceof AbstractIdentifiable)
-				return ((AbstractIdentifiable)object).getOtherDetails();
-			return super.read(object, fieldName);
+		public Element() {
+			MarkupLanguageHelper.Attributes.set(getReadCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.FALSE);
+			MarkupLanguageHelper.Attributes.set(getUpdateCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.FALSE);
+			MarkupLanguageHelper.Attributes.set(getRemoveCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.FALSE);
 		}
 		
 		@Override
