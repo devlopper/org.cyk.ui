@@ -27,6 +27,10 @@ public class OutputCollectionDemoPage extends AbstractPrimefacesPage implements 
 		super.initialisation(); 
 		countryCollection = new OutputCollection<Country>(Country.class);
 		localityCollection = new OutputCollection<Locality>(Locality.class,new String[]{LocalityBusinessImpl.Details.FIELD_CODE,LocalityBusinessImpl.Details.FIELD_NAME});		
+		
+		//MarkupLanguageHelper.setAjax(localityCollection.getFilterCommand(), Boolean.TRUE);
+		//MarkupLanguageHelper.setGlobal(localityCollection.getFilterCommand(), Boolean.TRUE);
+		//MarkupLanguageHelper.setOnClick(localityCollection.getFilterCommand(), "alert('Clicked!!!');");
 	}
 	
 }

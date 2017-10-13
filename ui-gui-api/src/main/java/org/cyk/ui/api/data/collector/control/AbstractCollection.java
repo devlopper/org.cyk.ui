@@ -21,6 +21,8 @@ public class AbstractCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_
 	
 	public AbstractCollection(Class<T> elementClass,Class<?> elementObjectClass,Class<SELECT_ITEM> sourceClass,Class<?> sourceObjectClass) {
 		super(elementClass,elementObjectClass,sourceClass,sourceObjectClass);
+		((MarkupLanguageHelper.Attributes)((Object)getPropertiesMap())).setWidgetVar(identifier+org.cyk.utility.common.Constant.CHARACTER_UNDESCORE+getClass().getSimpleName()
+				+org.cyk.utility.common.Constant.CHARACTER_UNDESCORE+"WidgetVar");
 		//((AbstractBean)((Object)getColumnMap())).
 		//in order to trigger update we need to use a unique css class to identify input
 		getPropertiesMap().addString(Constant.STYLE_CLASS,org.cyk.utility.common.Constant.CHARACTER_SPACE.toString(), identifier);

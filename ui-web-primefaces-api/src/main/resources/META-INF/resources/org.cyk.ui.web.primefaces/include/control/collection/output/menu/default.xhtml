@@ -14,21 +14,26 @@
 		<ui:composition>
 			
 			<p:toolbar id="collection_toolbar" rendered="#{collection.menuCommands.propertiesMap.rendered}">
-      			<f:facet name="left">
-      				<ui:repeat value="#{collection.menuCommands.list}" var="command" >
-      					<cyk_incubation:command value="#{command}"/>
-      				</ui:repeat>
-      			</f:facet>       					
-     					
-      			<f:facet name="right">
-      				<ui:fragment rendered="#{collection.filterInputAttributes.rendered}">
-       					<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/inputtext/default.xhtml" >
+				<f:facet name="left">
+					<h:outputText value="#{collection.name}" rendered="#{not collection.name}" />
+				</f:facet>
+				<f:facet name="right">
+	      			<ui:repeat value="#{collection.menuCommands.list}" var="command" >
+	      				<cyk_incubation:command value="#{command}"/>
+	      			</ui:repeat>
+	      			
+	      			<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            
+	      			<ui:fragment rendered="#{collection.filterInputAttributes.rendered}">
+	       				<ui:include src="/org.cyk.ui.web.primefaces/include/control/input/inputtext/default.xhtml" >
 							<ui:param name="identifier" value="globalFilter"/>
 							<ui:param name="attributes" value="#{collection.filterInputAttributes}"/>
 						</ui:include>
-       					<cyk_incubation:command value="#{collection.filterCommand}"/>	
-      				</ui:fragment>			
-      			</f:facet>
+	       				<cyk_incubation:command value="#{collection.filterCommand}"/>	
+	      			</ui:fragment>	
+      			</f:facet>		
      		</p:toolbar>
 			
 		</ui:composition>

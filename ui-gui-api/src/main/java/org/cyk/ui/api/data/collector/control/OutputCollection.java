@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.business.impl.DetailsClassLocator;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.Constant;
@@ -14,7 +13,6 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.IconHelper;
-import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.helper.MarkupLanguageHelper;
 import org.cyk.utility.common.helper.StringHelper;
@@ -34,8 +32,9 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<?> elementObjectClass
 			,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
 		super(elementClass,elementObjectClass,null,null);
-		
+		filterInputAttributes.setRendered(Boolean.TRUE.toString());
 		MarkupLanguageHelper.Attributes.set(getRemoveCommand(), MarkupLanguageHelper.Attributes.FIELD_RENDERED, Boolean.FALSE);
+		
 		this.identifiableClass = identifiableClass;
 		if(this.identifiableClass!=null){
 			getCollection().setFieldsContainerClass(getCollection().getElementObjectClass());
@@ -46,7 +45,7 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 			}else{
 				add(identifiables);	
 			}
-			
+			getCollection().setName(StringHelper.getInstance().getClazz(identifiableClass));
 		}
 		
 		if(ArrayHelper.getInstance().isNotEmpty(elementObjectClassFieldNames)){
@@ -56,6 +55,7 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 		
 		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setLazy(String.valueOf(Boolean.TRUE.equals(isLazyLoaded)));
 		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setPaginator(String.valueOf(Boolean.TRUE.equals(isLazyLoaded)));
+		((MarkupLanguageHelper.Attributes) (Object)getPropertiesMap()).setPaginatorAlwaysVisible(Boolean.FALSE.toString());
 		
 		((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getAddCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
 				.Default().setUniformResourceLocatorStringifier(Constant.Action.CREATE, identifiableClass).execute());
@@ -64,6 +64,8 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 		getAddCommand().setNameRendered(Boolean.TRUE);
 		
 		get__commandsColumn__().setWidth("200");
+		
+		getFilterInputAttributes().setPlaceholder(StringHelper.getInstance().get("filter", new Object[]{}));
 	}
 	
 	public <IDENTIFIABLE extends AbstractIdentifiable> OutputCollection(Class<T> elementClass,Class<IDENTIFIABLE> identifiableClass,String[] elementObjectClassFieldNames,Collection<IDENTIFIABLE> identifiables) {
@@ -129,28 +131,6 @@ public class OutputCollection<T> extends AbstractCollection<T,Object>  implement
 			getRemoveCommand().setNameRendered(Boolean.FALSE);
 		}
 		
-		@Override
-		public org.cyk.utility.common.helper.CollectionHelper.Element<T> setObject(T object) {
-			if(object!=null){
-				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getReadCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
-						.Default().setUniformResourceLocatorStringifier(Constant.Action.CONSULT, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
-				
-				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getUpdateCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
-						.Default().setUniformResourceLocatorStringifier(Constant.Action.UPDATE, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
-				
-				((MarkupLanguageHelper.Attributes) (Object)(((AbstractBean)getRemoveCommand()).getPropertiesMap())).setOnClick(new JavaScriptHelper.Script.Window.Navigate.Adapter
-						.Default().setUniformResourceLocatorStringifier(Constant.Action.DELETE, ((AbstractOutputDetails<?>)object).getMaster() ).execute());
-			}
-			return super.setObject(object);
-		}
-		
-		@Override
-		public String toString() {
-			System.out.println("OutputCollection.Element.toString() : "+InstanceHelper.getInstance().getLabel(((AbstractOutputDetails<?>)getObject()).getMaster()));
-			//if(getObject()!=null)
-				return InstanceHelper.getInstance().getLabel(((AbstractOutputDetails<?>)getObject()).getMaster());
-			//return super.toString();
-		}
 	}
 	
 	/**/

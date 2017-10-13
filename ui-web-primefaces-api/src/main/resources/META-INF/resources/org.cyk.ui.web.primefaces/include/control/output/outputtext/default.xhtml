@@ -11,9 +11,11 @@
 
 	<h:outputText 
 		value="#{value}" 
+		title="#{empty attributes.title ? value : attributes.title}"
 		style="#{attributes.style}" 
 		styleClass="#{attributes.styleClass}" 
-		escape="#{attributes.escape} "
+		escape="#{empty attributes.escape ? false : attributes.escape}"
+		rendered="#{empty attributes.rendered ? true : attributes.rendered}"
 	/>
 		
 </ui:composition>

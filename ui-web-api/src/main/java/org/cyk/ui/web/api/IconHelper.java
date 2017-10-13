@@ -10,6 +10,7 @@ public class IconHelper extends AbstractBean implements Serializable {
 	public static class Mapping extends org.cyk.ui.api.IconHelper.Mapping implements Serializable {
 		private static final long serialVersionUID = 1L;
 	
+		@Deprecated
 		public static class FontAwesome extends Mapping implements Serializable {
 			private static final long serialVersionUID = 1L;
 			

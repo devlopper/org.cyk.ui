@@ -13,7 +13,11 @@
 	<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
  		<ui:param name="column" value="#{collection.__indexColumn__}" />
  		<ui:define name="content">
- 			<h:outputText value="#{index+1}" />
+ 			<!--h:outputText value="#{index+1}" /-->
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/control/output/outputtext/default.xhtml" >
+				<ui:param name="identifier" value="outputtext_#{column == null ? viewHelper.getRandomIdentifier() : column.identifier}"/>
+				<ui:param name="value" value="#{index+1}"/>
+			</ui:include>
  		</ui:define>
  		<ui:define name="footer">
  			<ui:fragment rendered="#{collection.__indexColumn__.footerCommands.contains(collection.addCommand)}">
@@ -25,7 +29,11 @@
 	<ui:decorate template="/org.cyk.ui.web.primefaces/template/table/column/default.xhtml">
  		<ui:param name="column" value="#{collection.__nameColumn__}" />
  		<ui:define name="content">
- 			<h:outputText value="#{element.__name__}"/>
+ 			<!--h:outputText value="#{element.__name__}"/-->
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/control/output/outputtext/default.xhtml" >
+				<ui:param name="identifier" value="outputtext_#{column == null ? viewHelper.getRandomIdentifier() : column.identifier}"/>
+				<ui:param name="value" value="#{element.__name__}"/>
+			</ui:include>
  		</ui:define>
  	</ui:decorate>
 
