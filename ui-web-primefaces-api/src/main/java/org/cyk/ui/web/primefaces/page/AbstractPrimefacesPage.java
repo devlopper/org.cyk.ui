@@ -64,22 +64,23 @@ import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.menu.MenuModel;
 
+@Getter @Setter
 public abstract class AbstractPrimefacesPage extends AbstractWebPage<DynaFormModel,DynaFormRow,DynaFormLabel,DynaFormControl,Commandable> implements Serializable {
 
 	private static final long serialVersionUID = -1367372077209082614L;
 	
 	/*@Inject*/// @Getter protected ValidationPolicy validationPolicy;
-	@Inject @Getter transient protected UIManager uiManager;
-	@Inject @Getter transient protected PrimefacesMessageManager messageManager;
-	@Inject @Getter protected UserSession userSession;
+	@Inject transient protected UIManager uiManager;
+	@Inject transient protected PrimefacesMessageManager messageManager;
+	@Inject protected UserSession userSession;
 	@Inject transient protected PrimefacesManager primefacesManager;
 	
-	@Getter protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
+	protected DetailsBlockCollection<MenuModel> detailsBlocks = new DetailsBlockCollection<>();
 	
-	@Getter protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel,windowHierachyMenuModel,detailsMenuModel;
+	protected MenuModel mainMenuModel,contentMenuModel,contextualMenuModel,windowHierachyMenuModel,detailsMenuModel;
 	private String mobilePageTransition="flip";
-	@Getter protected Boolean mobilePageReverse=Boolean.TRUE,showTreeMenu=Boolean.FALSE;
-	@Getter protected Tree treeMenu;
+	protected Boolean mobilePageReverse=Boolean.TRUE,showTreeMenu=Boolean.FALSE;
+	protected Tree treeMenu;
 	
 	@Override
 	protected void initialisation() {

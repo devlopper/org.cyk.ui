@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.pattern.tree.AbstractDataTreeNodeBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -20,6 +17,9 @@ import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormManyPage;
 import org.cyk.utility.common.LogMessage;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractCrudManyPage<ENTITY extends AbstractIdentifiable> extends AbstractBusinessEntityFormManyPage<ENTITY> implements Serializable {

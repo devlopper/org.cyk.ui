@@ -12,7 +12,7 @@
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
  		<ui:param name="pageController" value="#{jobFunctionListPage}" />
  		<ui:define name="body">
- 			<cyk:table value="#{jobFunctionListPage.table}" />
+ 			<cyk:outputCollection value="#{jobFunctionListPage.collection}"/>
  		</ui:define>
  	</ui:decorate>
  
