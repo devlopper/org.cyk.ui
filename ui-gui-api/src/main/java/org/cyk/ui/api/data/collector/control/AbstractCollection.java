@@ -56,11 +56,6 @@ public class AbstractCollection<T,SELECT_ITEM> extends GridHelper.Grid<T,SELECT_
 			return super.read(object, fieldName);
 		}
 		
-		@Override
-		protected Object instanciatePropertiesMap() {
-			return new MarkupLanguageHelper.Attributes();
-		}
-		
 	}
 	
 	/**/

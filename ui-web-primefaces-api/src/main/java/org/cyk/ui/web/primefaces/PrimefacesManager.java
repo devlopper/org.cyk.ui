@@ -51,6 +51,9 @@ import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
+import org.cyk.utility.common.userinterface.Form;
+import org.cyk.utility.common.userinterface.Form.Detail.Builder.Target;
+import org.cyk.utility.common.userinterface.output.OutputText;
 import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -318,5 +321,38 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	public static Collection<DetailsConfiguration> getDetailsConfigurations(){
 		return DETAILS_CONFIGURATION_MAP.values();
+	}
+	
+	/**/
+	
+	public static class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public DynaFormRow createRow(DynaFormModel model) {
+			return model.createRegularRow();
+		}
+		
+		@Override
+		public DynaFormControl addControl(DynaFormRow row, org.cyk.utility.common.userinterface.Control control,String type) {
+			return row.addControl(control, type,control.getArea().getLength().getDistance().intValue()*2-1,control.getArea().getWidth().getDistance().intValue());
+		}
+		
+		@Override
+		public DynaFormLabel addLabel(DynaFormRow row, OutputText outputText) {
+			return row.addLabel(outputText.getAttributes().getLabel(),1,outputText.getArea().getWidth().getDistance()==null ? 1 : outputText.getArea().getWidth().getDistance().intValue());  
+		}
+		
+		@Override
+		public Target<DynaFormModel,DynaFormControl, DynaFormRow, DynaFormLabel> link(DynaFormControl control,DynaFormLabel label) {
+			label.setForControl(control);  
+			return this;
+		}
+		
+		@Override
+		public String getType(org.cyk.utility.common.userinterface.Control control) {
+			return "input";
+		}
+		
 	}
 }

@@ -37,10 +37,6 @@ public class CommandHelper extends AbstractBean implements Serializable {
 		
 		/**/
 		
-		@Override
-		protected Object instanciatePropertiesMap() {
-			return new MarkupLanguageHelper.Attributes();
-		}
 	}
 	
 	@Getter @Setter @Accessors(chain=true)
@@ -51,10 +47,6 @@ public class CommandHelper extends AbstractBean implements Serializable {
 			((MarkupLanguageHelper.Attributes)(Object)getPropertiesMap()).setRendered(Boolean.TRUE.toString());
 		}
 		
-		@Override
-		protected Object instanciatePropertiesMap() {
-			return new MarkupLanguageHelper.Attributes();
-		}
 	}
 
 	
