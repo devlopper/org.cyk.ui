@@ -119,20 +119,7 @@ public class DynamicFormDemoPage extends AbstractPrimefacesPage implements Seria
     	formDetail.getLayout().setType( org.cyk.utility.common.userinterface.Layout.Type.ADAPTIVE);
     	formDetail.layOut(c1).layOut(c2).layOutBreak().layOut(c3).layOutBreak().layOut(c4).layOut(c5).layOutBreak().layOut(c6).layOut(c7).layOutBreak().layOut(c8).layOutBreak();
 		
-    	DynaFormModel model = new DynaFormModel();  
-    	 /* 
-    	for(Integer rowIndex  = 0 ; rowIndex < formDetail.getLayout().getArea().getWidth().getTo().intValue() ; rowIndex++){
-    		 DynaFormRow row = model.createRegularRow(); 
-    		 for(Component t : form.getLayout().getWhereAreaWidthFromEqual(rowIndex)){
-    			 DynaFormLabel label = row.addLabel("Author",1,((Component.Visible)t).getArea().getWidth().getDistance().intValue());  
-    			 
-    	        DynaFormControl control = row.addControl(new BookProperty("Author", true), "input",((Component.Visible)t).getArea().getLength().getDistance().intValue()*2-1
-    	        		,((Component.Visible)t).getArea().getWidth().getDistance().intValue());  
-    	        label.setForControl(control);  
-    		 }
-    	}*/
-    	
-    	model = (DynaFormModel) Form.Detail.buildTarget(formDetail);
+    	DynaFormModel model = (DynaFormModel) Form.Detail.buildTarget(formDetail);
     	
         return model;
     }

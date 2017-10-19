@@ -340,7 +340,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 		
 		@Override
 		public DynaFormLabel addLabel(DynaFormRow row, OutputText outputText) {
-			return row.addLabel(outputText.getAttributes().getLabel(),1,outputText.getArea().getWidth().getDistance()==null ? 1 : outputText.getArea().getWidth().getDistance().intValue());  
+			return row.addLabel(outputText.getPropertiesMap().getValue().toString(),1,outputText.getArea().getWidth().getDistance()==null ? 1 : outputText.getArea().getWidth().getDistance().intValue());  
 		}
 		
 		@Override
