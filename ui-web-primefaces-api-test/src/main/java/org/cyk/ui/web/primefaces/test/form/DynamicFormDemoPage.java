@@ -14,7 +14,7 @@ import javax.inject.Named;
 
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.cyk.utility.common.userinterface.Component;
-import org.cyk.utility.common.userinterface.Form;
+import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -99,22 +99,22 @@ public class DynamicFormDemoPage extends AbstractPrimefacesPage implements Seria
     private DynaFormModel createModel2(){
     	Form.Detail formDetail = new Form.Detail();
     	InputText c1 = new InputText();
-    	c1.setLabelString("f1");
+    	c1.setLabelFromIdentifier("f1");
     	InputText c2 = new InputText();
-    	c2.setLabelString("f2");
+    	c2.setLabelFromIdentifier("f2");
     	InputText c3 = new InputText();
-    	c3.setLabelString("f3");
+    	c3.setLabelFromIdentifier("f3");
     	InputText c4 = new InputText();
-    	c4.setLabelString("f4");
+    	c4.setLabelFromIdentifier("f4");
     	InputText c5 = new InputText();
-    	c5.setLabelString("f5");
+    	c5.setLabelFromIdentifier("f5");
     	InputText c6 = new InputText();
-    	c6.setLabelString("f6");
+    	c6.setLabelFromIdentifier("f6");
     	InputText c7 = new InputText();
-    	c7.setLabelString("f7");
+    	c7.setLabelFromIdentifier("f7");
     	c7.getArea().getWidth().setDistance(2);
     	InputText c8 = new InputText();
-    	c8.setLabelString("f8");
+    	c8.setLabelFromIdentifier("f8");
     	
     	formDetail.getLayout().setType( org.cyk.utility.common.userinterface.Layout.Type.ADAPTIVE);
     	formDetail.layOut(c1).layOut(c2).layOutBreak().layOut(c3).layOutBreak().layOut(c4).layOut(c5).layOutBreak().layOut(c6).layOut(c7).layOutBreak().layOut(c8).layOutBreak();

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Command">
+		<cc:attribute name="value" required="true" />
+		<cc:attribute name="executeParameter" required="false" />
+	</cc:interface>
+
+	<cc:implementation>
+		
+		<p:commandButton id="#{cc.id}Button"
+			action="#{cc.value.command.execute(cc.attrs.executeParameter)}" 
+			ajax="#{cc.value.button.ajax}"
+			
+			icon="#{cc.value.button.icon}"
+			
+			process="#{cc.value.button.process}" 
+			
+			rendered="#{cc.value.menu==null and not cc.value.command.confirm and cc.value.button.rendered}"
+			disabled="#{cc.value.button.disabled}"
+			type="#{cc.value.button.type}"
+			title="#{cc.value.button.title}"
+			
+			update="#{cc.value.button.update}"
+			value="#{cc.value.button.value}" 
+			
+			oncomplete="#{cc.value.button.oncomplete}"
+			onclick="#{cc.value.button.onclick}"
+			
+			immediate="#{cc.value.button.immediate}"
+			
+			widgetVar="#{cc.value.button.widgetVar}"
+			
+			styleClass="#{cc.value.button.styleClass}"
+			>
+			
+			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
+			<f:param name="skipValidation" value="#{cc.value.skipValidation}" />
+		</p:commandButton>
+
+		<p:commandButton id="#{cc.id}ButtonWithConfirm"
+			action="#{cc.value.command.execute(cc.attrs.executeParameter)}" 
+			ajax="#{cc.value.button.ajax}"
+			
+			icon="#{cc.value.button.icon}"
+			
+			process="#{cc.value.button.process}" 
+			
+			rendered="#{cc.value.menu==null and cc.value.command.confirm and cc.value.button.rendered}"
+			type="#{cc.value.button.type}"
+			title="#{cc.value.button.title}"
+			
+			update="#{cc.value.button.update}"
+			value="#{cc.value.button.value}" 
+			
+			oncomplete="#{cc.value.button.oncomplete}"
+			onclick="#{cc.value.button.onclick}"
+			
+			immediate="#{cc.value.button.immediate}"
+			
+			widgetVar="#{cc.value.button.widgetVar}"
+			
+			styleClass="#{cc.value.button.styleClass}"
+			>
+			
+			<p:ajax event="dialogReturn" listener="#{cc.value.onDialogReturn}" />
+
+			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" />
+			
+		</p:commandButton>
+		
+		<!--p:commandButton type="button" value="MyBut" onclick="#{cc.value.onClick}"></p:commandButton-->
+		
+		<ui:fragment rendered="#{not webNavigationManager.isMobileView(request)}" >
+			<p:confirmDialog global="true">
+	        	<p:commandButton value="#{uiManager.text('yes')}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        	<p:commandButton value="#{uiManager.text('no')}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    	</p:confirmDialog>
+		</ui:fragment>		
+		
+	    
+	    <p:menuButton id="#{cc.id}ButtonMenu"
+	    	
+	    	model="#{cc.value.menu}"
+	    	
+	    	rendered="#{cc.value.rendered and cc.value.menu!=null}"
+	    	 
+	    	title="#{cc.value.button.title}"
+	    	
+	    	value="#{cc.value.button.value}" 
+	    >
+	    	
+	    </p:menuButton>
+			
+	</cc:implementation>
+
+</ui:composition>

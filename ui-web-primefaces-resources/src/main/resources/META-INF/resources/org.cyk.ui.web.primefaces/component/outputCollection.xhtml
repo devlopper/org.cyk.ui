@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+	xmlns:cyk_incubation="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component_incubation">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.OutputCollection">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<p:dataTable id="outputcollection_datatable" value="#{cc.value.elements}" var="element" rowIndexVar="index" rendered="#{cc.value.propertiesMap.rendered}"
+			sortMode="#{cc.value.propertiesMap.sortMode}" reflow="#{cc.value.propertiesMap.reflow}"
+			
+			lazy="#{cc.value.propertiesMap.lazy}" rows="#{cc.value.propertiesMap.rows}"
+			paginator="#{cc.value.propertiesMap.paginator}" paginatorPosition="#{empty cc.value.propertiesMap.paginatorPosition ? 'bottom' : cc.value.propertiesMap.paginatorPosition}"
+			paginatorTemplate="#{cc.value.propertiesMap.paginatorTemplate}" currentPageReportTemplate="#{cc.value.propertiesMap.currentPageReportTemplate}"
+			pageLinks="#{empty cc.value.propertiesMap.pageLinks ? 10 : cc.value.propertiesMap.pageLinks}" 
+			paginatorAlwaysVisible="#{empty cc.value.propertiesMap.paginatorAlwaysVisible ? false : cc.value.propertiesMap.paginatorAlwaysVisible}"
+			
+			styleClass="#{cc.value.propertiesMap.styleClass}" style="#{cc.value.propertiesMap.style}" 
+			tableStyleClass="#{cc.value.propertiesMap.tableStyleClass}" rowStyleClass="#{element.propertiesMap.rowStyleClass}"
+			
+			emptyMessage="#{cc.value.propertiesMap.emptyMessage}" widgetVar="#{cc.value.propertiesMap.widgetVar}"
+		>
+			
+			<f:facet name="header">
+      			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/output/header/default.xhtml" >
+      				<ui:param name="collection" value="#{cc.value}"></ui:param>
+      			</ui:include>
+      		</f:facet>
+      		
+      		<ui:include src="/org.cyk.ui.web.primefaces/include/ajax/blockui.xhtml">
+				<ui:param name="event" value="page"/>
+				<ui:param name="ajaxStatusWidgetVar" value="#{cc.value.filterCommand.blockUiWidgetVar}"/>
+			</ui:include>
+			<ui:include src="/org.cyk.ui.web.primefaces/include/ajax/blockui.xhtml">
+				<ui:param name="event" value="filter"/>
+				<ui:param name="ajaxStatusWidgetVar" value="#{cc.value.filterCommand.blockUiWidgetVar}"/>
+			</ui:include>
+			
+			<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsBeforeChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>
+			
+       		<cc:insertChildren/>
+       		
+       		<ui:include src="/org.cyk.ui.web.primefaces/include/control/collection/columnsAfterChildren.xhtml">
+				<ui:param name="collection" value="#{cc.value}"/>
+			</ui:include>
+       		
+       	</p:dataTable>
+       	
+       	<ui:include src="/org.cyk.ui.web.primefaces/include/blockui/default.xhtml">
+			<ui:param name="block" value="outputcollection_datatable"/>
+			<ui:param name="trigger" value="outputcollection_datatable"/>
+			<ui:param name="widgetVar" value="#{cc.value.filterCommand.blockUiWidgetVar}"/>
+		</ui:include>
+			
+	</cc:implementation>
+
+</ui:composition>

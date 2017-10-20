@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+ 	<ui:decorate template="#{mobilePageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{eventListPage}" />
+ 		<ui:define name="body">
+ 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/mobile/page.xhtml">
+ 				<ui:param name="pageId" value="list" />
+ 				<ui:define name="content">
+		    		<p:tabView>
+		 				<p:tab title="#{uiManager.text('past')}" >
+		 					<cyk:table value="#{eventListPage.pastEventTable}">
+		 						<ui:include src="include_details.xhtml" />
+		 					</cyk:table>
+		 				</p:tab>
+		 				<p:tab title="#{uiManager.text('current')}" >
+		 					<cyk:table value="#{eventListPage.currentEventTable}">
+		 						<ui:include src="include_details.xhtml" />
+		 					</cyk:table>
+		 				</p:tab>
+		 				<p:tab title="#{uiManager.text('oncoming')}" >
+		 					<cyk:table value="#{eventListPage.onComingEventTable}">
+		 						<ui:include src="include_details.xhtml" />
+		 					</cyk:table>
+		 				</p:tab>
+		 			</p:tabView>
+ 				</ui:define>	
+ 			</ui:decorate>
+ 			
+ 			<ui:decorate template="/org.cyk.ui.web.primefaces/template/page/mobile/page.xhtml">
+ 				<ui:param name="pageId" value="details" />
+ 				<ui:param name="backPageId" value="list" />
+ 				<ui:define name="content">
+		    		<h2 class="first"><h:outputText value="#{eventListPage.selected.type} - #{eventListPage.selected.object}" /> </h2>
+		    		<p:separator/>
+		    		<h:outputText value="#{eventListPage.selected.date}" />
+ 				</ui:define>	
+ 			</ui:decorate> 		 			
+ 		</ui:define>
+ 	</ui:decorate>
+ 	
+</html>

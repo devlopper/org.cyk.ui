@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{personConsultPage}" />
+ 		<ui:define name="body">
+ 			<ui:include src="/org.cyk.ui.web.primefaces/include/person/consulttabs.xhtml">
+ 				<ui:param name="personConsultPage" value="#{personConsultPage}"/>
+ 			</ui:include>
+ 			<!--cyk:formOneData value="#{personConsultPage.details}" />	
+ 			<cyk:formOneData value="#{personConsultPage.contactCollectionDetails}" />
+ 			<cyk:formOneData value="#{personConsultPage.jobDetails}" />
+ 			<cyk:formOneData value="#{personConsultPage.signatureDetails}" />
+ 			
+ 			<cyk:formOneData value="#{personConsultPage.medicalDetails}" />
+ 			<cyk:table value="#{personConsultPage.medicationTable}" />
+ 			<cyk:table value="#{personConsultPage.allergyTable}" />
+ 			
+ 			<cyk:table value="#{personConsultPage.relationshipTable}" />
+ 			
+ 			<cyk:fileIdentifiableGlobalIdentifiers value="#{personConsultPage.fileIdentifiableGlobalIdentifiers}" />
+ 			<cyk:comments value="#{personConsultPage.comments}" />
+ 			<cyk:formOneData value="#{personConsultPage.globalIdentifierDetails}" /-->
+ 			
+ 		</ui:define>
+ 	</ui:decorate>
+ 
+</html>

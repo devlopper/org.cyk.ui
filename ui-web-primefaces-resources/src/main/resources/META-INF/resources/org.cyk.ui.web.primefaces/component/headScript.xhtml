@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<cc:interface>
+		
+	</cc:interface>
+
+	<cc:implementation>
+		
+	<script type="text/javascript">
+		$ = jQuery;
+	
+        $(document).ready(function() {
+        	//Ready
+        	#{pageController.onDocumentReadyJavaScript}
+        	//Loaded
+        	$(window).on('load', function() { #{pageController.onDocumentLoadJavaScript} });
+        	//Before unloadind
+        	$(window).bind('beforeunload', function(){
+				#{pageController.onDocumentBeforeUnLoadJavaScript}
+				//the custom message for page unload doesn't work on Firefox
+				if(#{pageController.onDocumentBeforeUnLoadWarnAsString})
+					return '#{pageController.onDocumentBeforeUnLoadWarningMessage}';
+			
+			});
+		});
+        
+        function preview(input,previewId) {
+		        if (input.files &amp;&amp; input.files[0]) {
+		            var reader = new FileReader();
+		            reader.onload = function (e) {
+		                $('#'+previewId).attr('src', e.target.result);
+		            }
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+        
+        function playSound(soundfile) {
+			document.getElementById("dummysound").
+				innerHTML='<embed src="'+soundfile+'" hidden="true" autostart="true" loop="false" />';
+		}
+        
+    	function clickEditButtonLastRow(dataTableStyleClass){
+    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+			
+		}
+		
+		function clickEditButtonAllRow(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		function hideAllRowEditorButtons(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('div.ui-row-editor').each(function(){
+				 $(this).display='none';
+				 $(this).visible='false';
+				 $(this).visibility='hidden';	
+			});
+		}			
+		
+		function clickEditButtonRow(dataTableStyleClass,rowIndex){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		
+		function confirmDialog(){
+    		PF('confirmDialogWidgetVar').show();
+		}
+		
+		function blockUIStart() {
+		    PF('#{webManager.blockUIDialogWidgetId}').show();
+		}
+		 
+		function blockUIStop() {
+		    PF('#{webManager.blockUIDialogWidgetId}').hide();
+		}
+		
+		function handleNotificationMessage(facesMessage) { 
+			playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}'); 
+			updateNotifications(); 
+		}
+     </script> 		
+			
+	</cc:implementation>
+
+</ui:composition>

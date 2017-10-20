@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.EventCalendar">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		
+		<p:schedule value="#{cc.value.scheduleModel}" locale="#{uiManager.locale}" >
+			<p:ajax event="eventSelect" listener="#{cc.value.onEventSelect}" oncomplete="PF('eventDialog').show();" update="eventDialogId" />
+		</p:schedule>
+		
+		<p:dialog id="eventDialogId" widgetVar="eventDialog" header="#{uiManager.text('event.details')}" showEffect="clip" hideEffect="clip" appendTo="@(body)" modal="true"
+			resizable="false" draggable="false">
+			<p:panelGrid columns="2" rendered="#{cc.value.selectedEvent!=null}" >
+				<h:outputText value="#{uiManager.text('field.type')}" /><h:outputText value="#{cc.value.selectedEvent.type.name}" />
+				
+				<h:outputText value="#{uiManager.text('field.object')}" rendered="#{not empty cc.value.selectedEventInfos.object}"/>
+				<h:outputText value="#{cc.value.selectedEventInfos.object}" rendered="#{not empty cc.value.selectedEventInfos.object}" escape="false"/>
+				
+				<h:outputText value="#{uiManager.text('field.comments')}" rendered="#{not empty cc.value.selectedEventInfos.comments}"/>
+				<h:outputText value="#{cc.value.selectedEventInfos.comments}" rendered="#{not empty cc.value.selectedEventInfos.comments}" escape="false"/>
+				
+				<h:outputText value="#{uiManager.text('field.date')}" /><h:outputText value="#{cc.value.selectedEventInfos.date}" />
+				
+				<!--
+				<h:outputText value="#{uiManager.text('field.from.date')}" /><h:outputText value="#{uiManager.timeBusiness.formatDateTime(cc.value.selectedEvent.period.fromDate)}" />
+				<h:outputText value="#{uiManager.text('field.to.date')}" /><h:outputText value="#{uiManager.timeBusiness.formatDateTime(cc.value.selectedEvent.period.toDate)}" />
+				-->
+				
+				<!--h:outputText value="#{uiManager.text('field.alarm')}" rendered="#{cc.value.selectedEvent.alarm.period.fromDate != null}"/>
+				<h:outputText value="" rendered="#{cc.value.selectedEvent.alarm.period.fromDate != null}"/>
+				 
+				<h:outputText value="#{uiManager.text('field.from.date')}" /><h:outputText value="#{uiManager.formatDate(cc.value.selectedEvent.alarm.period.fromDate,true)}" />
+				<h:outputText value="#{uiManager.text('field.to.date')}" /><h:outputText value="#{uiManager.formatDate(cc.value.selectedEvent.alarm.period.toDate,true)}" /-->
+				
+				<!--
+				<h:outputText value="#{uiManager.text('field.duration')}" /><h:outputText value="#{uiManager.formatDuration(cc.value.selectedEvent.period)}" />
+				-->
+			</p:panelGrid>
+			<ui:fragment rendered="#{not empty cc.value.selectedEventInfos.parties}">
+				<p:separator/>
+				<p:fieldset legend="#{uiManager.text('field.parties')}">
+					<h:outputText value="#{cc.value.selectedEventInfos.parties}" escape="false"/>
+				</p:fieldset>
+			</ui:fragment>
+			
+		</p:dialog> 
+			
+	</cc:implementation>
+
+</ui:composition>

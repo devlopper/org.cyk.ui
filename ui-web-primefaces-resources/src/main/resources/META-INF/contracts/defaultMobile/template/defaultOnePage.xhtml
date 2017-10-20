@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+ 
+ 	<f:view contentType="text/html" renderKitId="PRIMEFACES_MOBILE" />
+ 
+    <f:metadata>
+  		<!--
+  		<f:viewAction action="#{pageController.onInvokeApplicationPhase}" onPostback="true" phase="APPLY_REQUEST_VALUES" />
+  		-->
+  		<f:event type="preRenderView" listener="#{pageController.onPreRenderView}" />
+  		<ui:insert name="metadata"/>
+	</f:metadata>
+	    
+    <h:head>
+    	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
+    </h:head>
+ 
+	<h:body>
+		<ui:include src="#{webManager.decoratedTemplateInclude}" />
+		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
+
+		<pm:page id="mainPage">
+			<pm:header>
+				<h:outputText value="#{pageController.contentTitle}" escape="false"/>
+			</pm:header>
+			
+			<pm:content>
+			 	<h:form id="form" enctype="multipart/form-data" >
+			 		<p:outputPanel id="contentPanel">
+			 			<p:messages id="messages" globalOnly="true" escape="false"/>
+			 			<ui:fragment rendered="#{not pageController.renderViewError}" >
+			 				<ui:insert name="centerContent"><h:outputText value="Main content." /></ui:insert>
+			 			</ui:fragment>
+			 			<ui:fragment rendered="#{pageController.renderViewError}" >
+			 				<h1><h:outputText value="Content cannot be rendered" /></h1>
+			 			</ui:fragment>
+			 			<!-- Messages -->
+						<p:outputPanel id="messagePanel" autoUpdate="true">
+							<p:dialog id="messageDialogId" widgetVar="#{webManager.messageDialogWidgetId}" header="#{uiManager.text('information')}" modal="true" appendTo="@(body)" 
+								visible="#{not empty facesContext.messageList}" draggable="false" resizable="false" closable="false">
+								<table style="margin: auto;" cellspacing="5">
+									<tr style="vertical-align: middle;">
+										<td class="ui-datalist-bordernone"><p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" 
+											type="#{uiManager.collectionSize(facesContext.messageList)==1?'none':'ordered'}" >
+											<ui:include src="/org.cyk.ui.web.primefaces/include/message.xhtml">
+												<ui:param name="severity" value="#{webManager.facesMessageSeverity(message)}" />
+												<ui:param name="message" value="#{message.summary}" />
+											</ui:include>
+										</p:dataList></td>
+									</tr>
+									<tr>
+										<td colspan="1">
+											<p:separator/>
+											<div align="center">
+												<p:commandButton value="OK" type="button" icon="ui-icon-check" 
+													onclick="PF('#{webManager.messageDialogWidgetId}').hide();#{pageController.messageDialogOkButtonOnClick}" />
+											</div>
+										</td>
+									</tr>
+								</table>
+							</p:dialog>
+						</p:outputPanel>
+			 		</p:outputPanel>
+			 		
+			 		<p:outputPanel id="menuPanel" style="padding-left: 5px !important;padding-top: 2px !important;">
+			 			<ui:insert name="contentMenuBar">
+							<p:menubar id="menubar" model="#{pageController.contentMenuModel}" styleClass="maincenterpanecontentformmenubar"/>
+						</ui:insert>
+			 		</p:outputPanel>
+				 	
+				 	<!--pe:layoutPane id="commandp" position="south" styleClassContent="maincenterpanecontentformmenubar ui-widget-header ui-corner-top pe-layout-pane-header" 
+				 		rendered="#{not pageController.renderViewError and pageController.showContentMenu}">
+						<p:outputPanel id="menuPanel" style="padding-left: 5px !important;padding-top: 2px !important;">
+							
+						</p:outputPanel>
+				 	</pe:layoutPane-->
+				 	
+				 	<!-- Status -->
+					<p:ajaxStatus onstart="PF('#{webManager.blockUIDialogWidgetId}').show();" oncomplete="PF('#{webManager.blockUIDialogWidgetId}').hide();" />
+					<p:dialog modal="true" widgetVar="#{webManager.blockUIDialogWidgetId}" resizable="false" closable="false" 
+						draggable="false" appendTo="@(body)" header="#{uiManager.text('information')}">
+						<table><tr style="vertical-align: middle;">
+							<td><h:outputText value="#{uiManager.text('processing.request')}" /></td>
+							<td><p:graphicImage library="org.cyk.ui.web.primefaces" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
+						</tr> </table>
+					</p:dialog>
+				</h:form>
+			</pm:content>
+			
+			<pm:footer>
+				<h:outputText value="#{pageController.footer}" escape="false"/>
+			</pm:footer>
+		</pm:page>
+				 
+
+		    <!--pe:layoutPane id="footerlayoutpaneid" position="south" resizable="false" closable="false" styleClassContent="footerpanecontent bordernone" 
+				rendered="#{pageController.showFooter}">
+				<ui:insert name="southContent">
+					<div style="text-align: center;font-size: 11px;font-weight: bold;width: 100%;" class="ui-panel-titlebar ui-widget-header ui-helper-clearfix">
+						<h:outputText value="#{pageController.footer}" escape="false"/>
+					</div>
+				</ui:insert>
+			</pe:layoutPane-->
+  
+		
+ 		<ui:include src="/org.cyk.ui.web.primefaces/include/js/bodybottom.xhtml" />
+    </h:body>
+</html>

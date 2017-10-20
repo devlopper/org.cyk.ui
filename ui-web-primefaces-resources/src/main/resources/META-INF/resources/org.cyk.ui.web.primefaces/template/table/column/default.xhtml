@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+ 
+	<p:column headerText="#{column.name}" rendered="#{column.isShowable}" width="#{column.width}">
+		<ui:insert name="content">
+			CELL CONTENT
+		</ui:insert>
+		<f:facet name="footer">
+       		<ui:insert name="footer"/>
+       	</f:facet>
+	</p:column>
+		
+</ui:composition>

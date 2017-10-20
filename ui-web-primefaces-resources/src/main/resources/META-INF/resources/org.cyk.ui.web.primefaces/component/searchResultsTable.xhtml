@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Command">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+     		<p:dataTable id="#{cc.id}DataTable" widgetVar="#{cc.value.widgetVar}" value="#{cc.value.dataModel}" var="result" stickyHeader="true"
+     			lazy="true" paginator="true" rows="#{cc.value.maximumResultsCount}" paginatorPosition="bottom" sortMode="single">
+     			
+     			<f:facet name="header">
+     				<p:toolbar>
+     					<f:facet name="right">
+     						<p:inputText id="globalFilter" >
+     				
+     						</p:inputText>	
+     						<cyk:command value="#{cc.value.searchCommandable}" />
+     					</f:facet>
+     				</p:toolbar>
+     			</f:facet>
+     			
+     			<cc:insertChildren/>
+     			
+     			<f:facet name="footer">
+     			
+     			</f:facet>
+     		</p:dataTable>
+			
+	</cc:implementation>
+
+</ui:composition>

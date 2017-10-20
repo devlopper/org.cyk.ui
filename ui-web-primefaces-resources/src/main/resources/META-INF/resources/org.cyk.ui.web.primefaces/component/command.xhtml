@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.resources.compositecomponent.command.Command">
+		<cc:attribute name="value" required="true" />
+		<cc:attribute name="executeParameter" required="false" />
+	</cc:interface>
+
+	<cc:implementation>
+		<p:commandButton 
+			id="#{cc.id}Button"
+			action="#{cc.value.action.execute(cc.attrs.executeParameter)}" 
+			ajax="#{cc.value.propertiesMap.ajax}"
+			icon="#{cc.value.propertiesMap.icon}"
+			process="#{cc.value.propertiesMap.process}"
+			rendered="#{cc.value.propertiesMap.rendered}"
+			disabled="#{cc.value.propertiesMap.disabled}"
+			type="#{cc.value.propertiesMap.type}"
+			title="#{cc.value.propertiesMap.title == null ? cc.value.propertiesMap.value : cc.value.propertiesMap.title}"
+			update="#{cc.value.propertiesMap.update}"
+			value="#{cc.value.propertiesMap.value}" 
+			oncomplete="#{cc.value.propertiesMap.onComplete}"
+			onclick="#{cc.value.propertiesMap.onClick}"
+			immediate="#{cc.value.propertiesMap.immediate}"
+			widgetVar="#{cc.value.propertiesMap.widgetVar}"
+			styleClass="#{cc.value.propertiesMap.styleClass}"
+			style="#{cc.value.propertiesMap.style}" 
+			global="#{cc.value.propertiesMap.global}"
+		>
+			<p:confirm header="#{uiManager.text('confirmation')}" message="#{uiManager.text('command.serve.confirmation.question')}" icon="ui-icon-alert" 
+				disabled="#{not cc.value.action.isConfirmable}"/>
+			
+			<f:param name="#{viewHelper.parameterNameInputValueIsNotRequired}" value="#{cc.value.propertiesMap.inputValueIsNotRequired}" />
+		</p:commandButton>
+	</cc:implementation>
+
+</ui:composition>

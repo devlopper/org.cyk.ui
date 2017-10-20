@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+      
+	<!--script type="text/javascript">
+		
+		$ = jQuery;
+		
+    	function clickEditButtonLastRow(dataTableStyleClass){
+    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+			
+		}
+		
+		function clickEditButtonAllRow(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		function hideAllRowEditorButtons(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('div.ui-row-editor').each(function(){
+				 $(this).display='none';
+				 $(this).visible='false';
+				 $(this).visibility='hidden';	
+			});
+		}			
+		
+		function clickEditButtonRow(dataTableStyleClass,rowIndex){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		
+		function confirmDialog(){
+    		PF('confirmDialogWidgetVar').show();
+		}
+		
+		function blockUIStart() {
+		    PF('#{webManager.blockUIDialogWidgetId}').show();
+		}
+		 
+		function blockUIStop() {
+		    PF('#{webManager.blockUIDialogWidgetId}').hide();
+		}
+		
+		function handleNotificationMessage(facesMessage) { 
+			playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}'); 
+			updateNotifications(); 
+		}		
+	
+	</script-->
+ 
+</ui:composition>

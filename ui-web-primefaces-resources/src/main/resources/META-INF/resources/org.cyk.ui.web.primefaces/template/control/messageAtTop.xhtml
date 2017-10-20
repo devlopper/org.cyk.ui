@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+ 	
+ 	<ui:fragment rendered="#{not input.readOnly}"><table border="1" style="border: none;">
+ 		<ui:fragment rendered="#{not empty input.description}"><tr>
+ 			<td><h:outputText value="#{input.description}" escape="false" /> </td>
+ 		</tr></ui:fragment>
+ 		<tr>
+ 			<td style="border: none;"><p:message escape="false" for="#{forId}" /></td>
+ 		</tr>
+ 		<tr>
+ 			<td style="border: none;"><ui:insert name="input" /></td>
+ 		</tr>
+ 	</table></ui:fragment>
+ 	
+ 	<ui:fragment rendered="#{input.readOnly}">
+ 		<h:outputText value="#{input.readOnlyValue}" rendered="#{input.readOnly}" style="#{data.readOnlyValueCss.inline}" styleClass="#{data.readOnlyValueCss.clazz}" />		
+	</ui:fragment>
+ 	
+</ui:composition>
