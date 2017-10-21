@@ -17,9 +17,7 @@
     </ui:repeat>
     
     <title>
-		<h:outputText value="#{uiManager.application.name}" rendered="#{not empty uiManager.application.name}"/>
-		<h:outputText value=" - " rendered="#{not empty uiManager.application.name and not empty pageController.title}" />
-		<h:outputText value="#{pageController.title}" rendered="#{not empty pageController.title}"/>	
+		<h:outputText value="#{page.propertiesMap.title}"/>	
 	</title>
       
 	<script type="text/javascript">

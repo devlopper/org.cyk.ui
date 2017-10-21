@@ -17,6 +17,8 @@
 
 	<properties>
 		<version.primefaces>6.1</version.primefaces>
+		<version.primefaces.themes>1.0.10</version.primefaces.themes> 
+		<version.primefaces.extensions>6.1.1</version.primefaces.extensions>
 	</properties>
 
 	<dependencies>
@@ -24,6 +26,18 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>${version.primefaces}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>${version.primefaces.themes}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>primefaces-extensions</artifactId>
+			<version>${version.primefaces.extensions}</version>
 		</dependency>
 	</dependencies>
 	
