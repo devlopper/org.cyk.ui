@@ -21,6 +21,7 @@ import org.cyk.utility.common.userinterface.event.Confirm;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
+import org.cyk.utility.common.userinterface.panel.Dialog;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -51,6 +52,10 @@ public class Startup implements Serializable {
 		Properties.setDefaultValue(Confirm.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces/template/decorate/event/confirm.xhtml");
 		Properties.setDefaultValue(Confirm.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces/include/event/confirm/default.xhtml");
 		Properties.setDefaultValue(Confirm.class, Properties.DISABLED, Boolean.FALSE);
+		
+		Properties.setDefaultValue(Dialog.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces/template/decorate/panel/dialog/dialog.xhtml");
+		Properties.setDefaultValue(Dialog.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces/include/panel/dialog/default.xhtml");
+		
 		
 		Properties.setDefaultValue(ConfirmationDialog.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces/template/decorate/panel/dialog/confirmation/confirmationDialog.xhtml");
 		Properties.setDefaultValue(ConfirmationDialog.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces/include/panel/dialog/confirmation/confirmationDialog/default.xhtml");
@@ -86,15 +91,12 @@ public class Startup implements Serializable {
 			}
 		});
 		
-		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(Viewer.class);
+		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 	}
 	
 	/**/
 
-	public static class Viewer extends org.cyk.utility.common.helper.NotificationHelper.Notification.Viewer.Adapter.Default implements Serializable {
-		private static final long serialVersionUID = 1L;
-		
-	}
+	
 	
 	public static class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
 		private static final long serialVersionUID = 1L;
