@@ -10,8 +10,16 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
  
 	<h:body>
-		<ui:include src="/org.cyk.ui.web.primefaces/template/decorate/view.xhtml">
-			<ui:param name="view" value="#{page}"/>
-		</ui:include>
+		<ui:composition>
+			<p:selectOneRadio 
+				value="#{cc.value.isBoolean ? item.booleanValue : (cc.value.isNumber ? item.numberValue : item.stringValue)}" 
+				rendered="#{cc.value.showRadio}" 
+				required="true" 
+				requiredMessage="#{uiManager.getItemCollectionItemInputValueRequiredMessage(item,'field.value')}">
+				
+				<f:selectItems value="#{cc.value.choices}" />
+				
+			</p:selectOneRadio>	
+		</ui:composition>
 	</h:body>
 </html>

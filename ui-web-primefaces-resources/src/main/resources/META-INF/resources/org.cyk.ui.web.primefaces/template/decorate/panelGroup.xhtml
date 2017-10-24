@@ -5,9 +5,17 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
-
-	<pe:layoutPane position="#{layoutPane.propertiesMap.position}" styleClassContent="#{layoutPane.propertiesMap.styleClassContent}">
-		<ui:include src="#{layoutPane.propertiesMap.include}"/>	
-	</pe:layoutPane>			
-
+	
+	<h:panelGroup 
+		rendered="#{panelGroup.propertiesMap.rendered}"
+		styleClass="#{panelGroup.propertiesMap.styleClass}"
+		layout="#{panelGroup.propertiesMap.layout}"
+		style="#{panelGroup.propertiesMap.style}"
+		 
+	>
+		<ui:insert name="content">
+			panel group content here...
+		</ui:insert>
+	</h:panelGroup>
+	
 </ui:composition>

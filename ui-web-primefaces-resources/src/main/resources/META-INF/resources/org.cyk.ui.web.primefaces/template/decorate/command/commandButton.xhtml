@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+	
+	<p:commandButton
+		id="#{commandButton.propertiesMap.identifier}"
+		action="#{commandButton.action.execute(executeParameter)}" 
+		ajax="#{commandButton.propertiesMap.ajax}"
+		icon="#{commandButton.propertiesMap.icon}"
+		process="#{commandButton.propertiesMap.process}"
+		rendered="#{commandButton.propertiesMap.rendered}"
+		disabled="#{commandButton.propertiesMap.disabled}"
+		type="#{commandButton.propertiesMap.type}"
+		title="#{commandButton.propertiesMap.title}"
+		update="#{commandButton.propertiesMap.update}"
+		value="#{empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value}" 
+		oncomplete="#{commandButton.propertiesMap.onComplete}"
+		onclick="#{commandButton.propertiesMap.onClick}"
+		immediate="#{commandButton.propertiesMap.immediate}"
+		widgetVar="#{commandButton.propertiesMap.widgetVar}"
+		styleClass="#{commandButton.propertiesMap.styleClass}"
+		style="#{commandButton.propertiesMap.style}" 
+		global="#{commandButton.propertiesMap.global}"
+	>
+		<ui:include src="#{commandButton.propertiesMap.include}"/>	
+	</p:commandButton>
+	
+	<ui:decorate template="#{empty commandButton.confirmationDialog.propertiesMap.template ? '/org.cyk.ui.web.primefaces/include/dummyemptycontent.xhtml' : commandButton.confirmationDialog.propertiesMap.template}">
+		<ui:param name="confirmDialog" value="#{commandButton.confirmationDialog}" />	
+	</ui:decorate>
+	
+</ui:composition>

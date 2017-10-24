@@ -1,5 +1,6 @@
 package org.cyk.ui.web.api.handler;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,8 +10,9 @@ import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ViewResource;
 import javax.faces.context.FacesContext;
 
-public class DynamicResourceHandler extends ResourceHandlerWrapper {
-
+public class DynamicResourceHandler extends ResourceHandlerWrapper implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private static final Set<String> PATHS = new LinkedHashSet<String>();
 
 	static {
@@ -49,6 +51,8 @@ public class DynamicResourceHandler extends ResourceHandlerWrapper {
 					break;
 				}
 			}
+		if(resource == null)
+			System.out.println("Resource named "+resourceName+" not found");
 		return resource;
 	}
 

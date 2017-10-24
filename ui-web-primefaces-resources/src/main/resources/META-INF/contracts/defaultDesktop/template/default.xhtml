@@ -10,7 +10,7 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
     <f:metadata>
-  		<f:event type="preRenderView" listener="#{page.listenPreRenderView}" />
+  		<f:event type="preRenderView" listener="#{page.listenBeforeRender}" />
   		<ui:insert name="metadata"/>
 	</f:metadata>
 	    
@@ -24,10 +24,9 @@
 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
 		-->
 		<ui:decorate template="/org.cyk.ui.web.primefaces/template/decorate/layout.xhtml">
-			<ui:param name="container" value="#{page}"/>
+			<ui:param name="layout" value="#{page.propertiesMap.layout}"/>
 		</ui:decorate>
-			
-			
+
  		<ui:include src="/org.cyk.ui.web.primefaces/include/js/bodybottom.xhtml" />
     </h:body>
 </html>

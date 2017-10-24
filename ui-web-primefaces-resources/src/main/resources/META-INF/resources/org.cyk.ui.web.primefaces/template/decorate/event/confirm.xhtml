@@ -5,9 +5,14 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
-
-	<pe:layoutPane position="#{layoutPane.propertiesMap.position}" styleClassContent="#{layoutPane.propertiesMap.styleClassContent}">
-		<ui:include src="#{layoutPane.propertiesMap.include}"/>	
-	</pe:layoutPane>			
-
+	
+	<p:confirm
+		disabled="#{confirm.propertiesMap.disabled}"
+		header="#{confirm.propertiesMap.header}"
+		icon="#{confirm.propertiesMap.icon}"
+		message="#{confirm.propertiesMap.message}"
+	>
+		<ui:include src="#{confirm.propertiesMap.include}"/>
+	</p:confirm>
+	
 </ui:composition>

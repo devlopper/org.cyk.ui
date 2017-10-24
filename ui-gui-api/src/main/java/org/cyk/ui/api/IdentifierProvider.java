@@ -58,7 +58,7 @@ public interface IdentifierProvider{
 		}
 		@Deprecated //Use PathIdentifier.IdentifierProvider for now
 		public static String getViewOf(final Class<?> aClass, final CommonBusinessAction commonBusinessAction, final Boolean one) {
-			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
+			return ListenerUtils.getInstance().getString(IdentifierProvider.COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 				@Override
 				public String execute(IdentifierProvider provider) {
 					return provider.getView(aClass,commonBusinessAction,one);
@@ -67,7 +67,7 @@ public interface IdentifierProvider{
 		}
 		
 		public static String getTabOf(final Class<?> aClass) {
-			return ListenerUtils.getInstance().getString(COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
+			return ListenerUtils.getInstance().getString(IdentifierProvider.COLLECTION, new ListenerUtils.StringMethod<IdentifierProvider>() {
 				@Override
 				public String execute(IdentifierProvider provider) {
 					return provider.getTab(aClass);

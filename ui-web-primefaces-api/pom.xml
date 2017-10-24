@@ -61,7 +61,12 @@
             <artifactId>selenium-server</artifactId>
             <version>3.0.0-beta3</version>
         </dependency-->
-		
+
+		<dependency>
+			<groupId>org.cyk.ui.web</groupId>
+			<artifactId>ui-web-primefaces-resources</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -6,10 +6,8 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
 
-	<pe:layout fullPage="#{container.propertiesMap.fullPage}" options="#{container.propertiesMap.options}" styleClass="#{container.propertiesMap.styleClass}">
-		<ui:insert name="content">
-			<ui:include src="#{container.propertiesMap.include}"/>	
-		</ui:insert>
+	<pe:layout fullPage="#{layout.propertiesMap.fullPage}" options="#{layout.propertiesMap.options}" styleClass="#{layout.propertiesMap.styleClass}">
+		<ui:include src="#{layout.propertiesMap.include}"/>	
 	</pe:layout>			
 
 </ui:composition>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<ui:decorate template="#{control.propertiesMap.template}">
+		
+	</ui:decorate>
+	
+	<pe:dynaFormControl type="InputText" for="inputText">
+		<ui:include src="input/inputText.xhtml" />
+	</pe:dynaFormControl>
+	
+	<p:panelGrid columns="1">
+		<!--
+		<ui:decorate template="#{form.propertiesMap.header.propertiesMap.template}">
+		
+		</ui:decorate>
+		
+		<ui:decorate template="#{form.propertiesMap.body.propertiesMap.template}">
+		
+		</ui:decorate>
+		
+		<ui:decorate template="#{form.propertiesMap.footer.propertiesMap.template}">
+		
+		</ui:decorate>
+		-->
+		<ui:insert name="label">
+			<h:panelGroup rendered="#{form.label.propertiesMap.rendered}" >
+				<ui:decorate template="#{form.label.propertiesMap.template}">
+			 		<ui:param name="outputText" value="#{form.label}" />
+			 	</ui:decorate>		  
+			</h:panelGroup>
+		</ui:insert>	
+	    
+	    <ui:insert name="detail">
+	 		<h:panelGroup rendered="#{form.detail.propertiesMap.rendered}">
+				<ui:decorate template="#{form.detail.propertiesMap.template}">
+		 			<ui:param name="detail" value="#{form.detail}" />
+		 		</ui:decorate>   	
+			</h:panelGroup>
+		</ui:insert>
+	 	
+	 	<ui:insert name="menu">
+		    <h:panelGroup rendered="#{form.menu.propertiesMap.rendered}">
+				<ui:decorate template="#{form.menu.propertiesMap.template}">
+			 		<ui:param name="menu" value="#{form.menu}" />
+			 	</ui:decorate>  
+			</h:panelGroup>
+		</ui:insert>
+	</p:panelGrid>
+	
+</ui:composition>

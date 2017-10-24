@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+    
+    <h:head>
+        <title>Commands Page</title>
+    </h:head>
+
+    <h:body>
+    	<h:form>
+
+    		<cyk:command value="#{commandsPage.command}" />
+			<p:commandButton value="SEND" />	
+			
+    	</h:form>
+		
+    </h:body>
+
+</html>
