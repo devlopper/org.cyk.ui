@@ -41,9 +41,16 @@
 	 	
 	 	<ui:insert name="menu">
 		    <h:panelGroup rendered="#{form.menu.propertiesMap.rendered}">
-				<ui:decorate template="#{form.menu.propertiesMap.template}">
+				
+				<!--ui:decorate template="#{form.menu.propertiesMap.template}">
 			 		<ui:param name="menu" value="#{form.menu}" />
-			 	</ui:decorate>  
+			 	</ui:decorate--> 
+			 	
+			 	<ui:decorate template="#{form.submitCommand.propertiesMap.template}">
+ 					<ui:param name="commandButton" value="#{form.submitCommand}" />
+ 					
+ 				</ui:decorate> 
+			 	 
 			</h:panelGroup>
 		</ui:insert>
 	</p:panelGrid>

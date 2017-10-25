@@ -25,7 +25,8 @@ public class Page extends Window implements Serializable {
 		getPropertiesMap().setLayout(createLayoutModel());
 		
 		getLayout().getPropertiesMap().setTemplate(LAYOUT_TEMPLATE);
-		getLayout().getPropertiesMap().setContracts(CONTRACTS);
+		getLayout().getPropertiesMap().setContracts(CONTRACTS);//TODO should be set on page
+		
 	}
 		
 	protected LayoutModel createLayoutModel(){

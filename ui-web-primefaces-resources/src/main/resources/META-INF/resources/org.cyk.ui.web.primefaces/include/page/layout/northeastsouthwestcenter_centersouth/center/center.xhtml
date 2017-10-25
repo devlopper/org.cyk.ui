@@ -16,10 +16,24 @@
 		</ui:insert>
 	</f:facet>
 	
+	<h:form>
+		<ui:insert name="centerCenterNotifications">
+			<ui:include src="/org.cyk.ui.web.primefaces/include/notification/default.xhtml">
+				<ui:param name="dialog" value="#{page.notificationDialog}"/>
+			</ui:include>
+		</ui:insert>
 	
-	<ui:insert name="centerCenterContent">
-		<h1>Center Center content here...</h1>
-	</ui:insert>
+		<ui:insert name="centerCenterContent">
+			<h1>Center Center content here...</h1>
+		</ui:insert>
+		
+		<ui:insert name="centerCenterRequestStatus">
+			<ui:include src="/org.cyk.ui.web.primefaces/include/processingstatus/default.xhtml">
+				<ui:param name="requestComponent" value="#{page.requestComponent}"/>
+			</ui:include>
+		</ui:insert>
+	</h:form>
+	
 	
 	
 	

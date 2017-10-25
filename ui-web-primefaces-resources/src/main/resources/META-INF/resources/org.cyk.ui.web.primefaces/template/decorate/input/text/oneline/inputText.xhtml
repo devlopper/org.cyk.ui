@@ -14,8 +14,7 @@
 		styleClass="#{input.propertiesMap.styleClass}" 
 		widgetVar="#{input.propertiesMap.widgetVar}"
 		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
-		validator="#{input.propertiesMap.validator}" 
-		converter="#{input.propertiesMap.converter}" 
+		
 		title="#{input.propertiesMap.title}" 
 		disabled="#{input.propertiesMap.disabled}"
 		requiredMessage="#{input.propertiesMap.requiredMessage}" 
@@ -27,5 +26,10 @@
 		<ui:include src="#{input.propertiesMap.include}" />
 	
 	</p:inputText>	
+	
+	<!-- 
+		converter="#{input.propertiesMap.converter}" 
+		validator="#{input.propertiesMap.validator}" 
+	 -->
 	
 </ui:composition>
