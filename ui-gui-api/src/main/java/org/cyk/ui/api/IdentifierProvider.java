@@ -8,9 +8,9 @@ import java.util.Collection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.system.root.business.impl.AbstractOutputDetails;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.CommonBusinessAction;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.cdi.BeanAdapter;
@@ -75,7 +75,7 @@ public interface IdentifierProvider{
 			});
 		}
 		
-		public static class Default extends Adapter implements Serializable{
+		public static class Default extends IdentifierProvider.Adapter implements Serializable{
 			private static final long serialVersionUID = 748871774704504356L;
 			
 			@Override

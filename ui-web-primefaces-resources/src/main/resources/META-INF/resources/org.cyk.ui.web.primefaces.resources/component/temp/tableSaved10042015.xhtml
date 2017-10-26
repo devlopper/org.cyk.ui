@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Table">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<ui:param name="updateDataTableStyleClass" value="#{cc.value.updateStyleClass}" />
+		<ui:param name="controlDir" value="/org.cyk.ui.web.primefaces.resources/include/control" />
+		
+		<!--
+		<p:menubar model="#{cc.value.menuModel}" /> 
+		-->
+		<!--
+		<cyk:command value="#{cc.value.primefacesAddRowCommand}" />
+		-->
+		<!--
+		<table style="width: 100%;"><tr style="vertical-align: top;">
+		-->
+			<!--
+			<ui:fragment rendered="#{cc.value.showHierarchy}"><td style="width: 1%;">
+				<cyk:tree value="#{cc.value.primefacesTree}" />
+			</td></ui:fragment>
+			--> 
+			<!--<td>--><p:dataTable id="dataTable" widgetVar="dataTableWidgetVar" var="row" value="#{cc.value.value}" editable="#{cc.value.editable}" 
+				styleClass="dataTableStyleClass #{updateDataTableStyleClass}" rowIndexVar="index" 
+				emptyMessage="#{uiManager.text('record.list.empty')}" lazy="#{cc.value.lazyLoad}"			
+				paginator="#{cc.value.lazyLoad}" rows="#{cc.value.rows.size()}" paginatorPosition="bottom" sortMode="single"
+				paginatorTemplate="#{cc.value.dataTable.paginatorTemplate}" currentPageReportTemplate="#{cc.value.dataTable.currentPageReportTemplate}"
+				tableStyleClass="ui-table-columntoggle" reflow="true"
+				>
+				
+				<f:facet name="header">
+       				<h:outputText value="#{cc.value.title}" rendered="#{not empty cc.value.title}" />
+       				<p:toolbar id="toolbar" rendered="#{cc.value.showToolBar}">
+       					<f:facet name="left">
+       						<cyk:command value="#{cc.value.addRowCommandable}" />
+       						<ui:fragment rendered="#{cc.value.addRowCommandable.button.rendered}" ><span class="ui-separator">
+				                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+				            </span></ui:fragment>
+       						<cyk:command value="#{cc.value.exportCommandable}" />
+       						<cyk:command value="#{cc.value.printCommandable}" />
+       					</f:facet>       					
+       					
+       					<f:facet name="right">
+       						<ui:fragment rendered="#{cc.value.globalFilter}">
+	       						<p:inputText id="globalFilter">
+	       				
+	       						</p:inputText>
+	       						<cyk:command id="searchCommand" value="#{cc.value.searchCommandable}" />
+	       						
+       						</ui:fragment>
+       						
+       					</f:facet>
+       				</p:toolbar>
+       			</f:facet>
+				
+				<p:ajax event="rowEditInit" listener="#{cc.value.onRowEditInit}" />
+				<p:ajax event="rowEdit" listener="#{cc.value.onRowEdit}"  />
+				<p:ajax event="rowEditCancel" listener="#{cc.value.onRowEditCancel}" />
+				
+				<p:column headerText="#" width="1"><h:outputText value="#{index+1}" /> </p:column>
+				
+				<!-- sortBy="#{column.fieldName}" filterBy="#{column.fieldName}" -->
+				<p:columns value="#{cc.value.columns}" var="column" columnIndexVar="colIndex">  
+		            <f:facet name="header"><h:outputText value="#{column.title}" /></f:facet>  
+		            <f:facet name="footer"><h:outputText value="#{column.footer}" /></f:facet>  
+		  			<ui:param name="templateFile" value="/org.cyk.ui.web.primefaces.resources/template/control/messageAtTop.xhtml" />
+		  			<!--
+		  			<ui:param name="data" value="#{cc.value.cell(row,column).control}" />
+		  			-->
+		  			
+		  			<p:cellEditor>
+		  				<f:facet name="input">
+		  					<ui:fragment rendered="#{cc.value.editable}" >
+			  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputText')}" ><ui:include src="#{controlDir}/input/inputText.xhtml" >
+			  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+			  					</ui:include></ui:fragment>
+			  					
+			  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputOneCombo')}" ><ui:include src="#{controlDir}/input/choice/one/inputOneCombo.xhtml" >
+			  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+			  					</ui:include></ui:fragment>
+			  					
+			  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputNumber')}" ><ui:include src="#{controlDir}/input/inputNumber.xhtml" >
+			  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+			  					</ui:include></ui:fragment>
+			  					
+			  					<ui:fragment rendered="#{uiProvider.isControl(cc.value.cell(row,column).control,'InputBooleanCheck')}" ><ui:include src="#{controlDir}/input/inputBooleanCheck.xhtml" >
+			  						<ui:param name="control" value="#{cc.value.cell(row,column).control}" />
+			  					</ui:include></ui:fragment>
+		  					</ui:fragment>
+		  				</f:facet>
+		  				<f:facet name="output">
+		  					<ui:fragment rendered="#{cc.value.cell(row,column).isFile}" >
+		  						<ui:fragment rendered="#{cc.value.cell(row,column).isImage}">
+		  							<!--img src="#{request.contextPath}/_cyk_file_image/?identifier=#{cc.value.cell(row,column)}" alt="image" width="32" height="32" /-->
+		  							<cyk:image identifier="#{cc.value.cell(row,column)}" />
+		  						</ui:fragment>
+		  					</ui:fragment>
+		  					<ui:fragment rendered="#{not cc.value.cell(row,column).isFile}" >
+		  						<h:outputText value="#{cc.value.cell(row,column)}" escape="false"/>
+		  					</ui:fragment>
+		  					
+		  				</f:facet>
+		  			</p:cellEditor>
+		        </p:columns> 
+		        
+		        <p:column rendered="#{cc.value.showEditColumn}" width="35">
+		        	<p:rowEditor rendered="#{cc.value.inplaceEdit}" /> 
+		        	<cyk:command value="#{cc.value.updateRowCommandable}" executeParameter="#{row}" rendered="#{not cc.value.inplaceEdit}"/>
+		        </p:column>
+		        
+		        <p:column rendered="#{cc.value.showAddRemoveColumn}" width="90">
+		        	<table><tr>
+		        		<td style="border: none;"><cyk:command value="#{cc.value.removeRowCommandable}" executeParameter="#{row}" /></td>
+		        		<ui:fragment rendered="#{cc.value.showOpenCommand}" ><td style="border: none;">
+		        			<cyk:command value="#{cc.value.openRowCommandable}" executeParameter="#{row}" />
+		        		</td></ui:fragment>
+		        	</tr></table>
+		        </p:column>
+		        
+			</p:dataTable><!--</td>-->
+		
+		<!--</tr> </table>-->
+		<p:outputPanel rendered="#{cc.value.showFooterCommandBlock}" >
+			<cyk:command value="#{cc.value.addRowCommandable}" />	
+		</p:outputPanel>
+		
+		<h:outputScript>
+			function search() {
+				alert(searchCommandWidgetVar);
+				searchCommandWidgetVar.jq.click();
+			}	
+		</h:outputScript>
+		
+		
+				
+	</cc:implementation>
+
+</ui:composition>

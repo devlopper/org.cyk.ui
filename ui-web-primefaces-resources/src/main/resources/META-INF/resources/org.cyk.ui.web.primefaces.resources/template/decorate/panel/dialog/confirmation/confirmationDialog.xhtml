@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<p:confirmDialog 
+		id="#{confirmDialog.propertiesMap.identifier}"
+		global="#{confirmDialog.propertiesMap.global}" 
+		appendTo="#{confirmDialog.propertiesMap.appendTo}" 
+		closable="#{confirmDialog.propertiesMap.closable}" 
+		closeOnEscape="#{confirmDialog.propertiesMap.closeOnEscape}" 
+		header="#{confirmDialog.propertiesMap.header}"
+		message="#{confirmDialog.propertiesMap.message}"
+		
+		showEffect="#{confirmDialog.propertiesMap.showEffect}"
+		hideEffect="#{confirmDialog.propertiesMap.hideEffect}"
+		
+		rendered="#{confirmDialog.propertiesMap.rendered}"
+		visible="#{confirmDialog.propertiesMap.visible}"
+		responsive="#{confirmDialog.propertiesMap.responsive}"
+		severity="#{confirmDialog.propertiesMap.severity}"
+		
+		widgetVar="#{confirmDialog.propertiesMap.widgetVar}"
+		width="#{confirmDialog.propertiesMap.width}"
+		height="#{confirmDialog.propertiesMap.height}"
+		styleClass="#{confirmDialog.propertiesMap.styleClass}"
+		style="#{confirmDialog.propertiesMap.style}"
+	>
+		<ui:include src="#{confirmDialog.propertiesMap.include}"/>
+	</p:confirmDialog>
+	
+</ui:composition>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.FormOneDataCollection">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<!--p:tabView value="#{cc.value.collection}" var="form">
+			<p:tab title="#{form.title}" >
+				<cyk:formOneData value="#{form}" />
+			</p:tab>
+		</p:tabView-->
+		
+		<cyk:formOneData value="#{cc.value.getFormOneDataAt(0)}" rendered="#{not cc.value.hasFormOneDataAt(1)}"/>
+		
+		<p:tabView rendered="#{cc.value.hasFormOneDataAt(1)}">
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(0)}" rendered="#{cc.value.hasFormOneDataAt(0)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(0)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(1)}" rendered="#{cc.value.hasFormOneDataAt(1)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(1)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(2)}" rendered="#{cc.value.hasFormOneDataAt(2)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(2)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(3)}" rendered="#{cc.value.hasFormOneDataAt(3)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(3)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(4)}" rendered="#{cc.value.hasFormOneDataAt(4)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(4)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(5)}" rendered="#{cc.value.hasFormOneDataAt(5)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(5)}" />
+			</p:tab>
+			
+			<p:tab title="#{cc.value.getFormOneDataTabTitleAt(6)}" rendered="#{cc.value.hasFormOneDataAt(6)}">
+				<cyk:formOneData value="#{cc.value.getFormOneDataAt(6)}" />
+			</p:tab>
+			
+			<!--ui:fragment rendered="#{cc.value.hasFormOneDataAt(0)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(0)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(1)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(1)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(2)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(2)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(3)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(3)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(4)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(4)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(5)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(5)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(6)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(6)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(7)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(7)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(8)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(8)}"/>
+			</ui:include></ui:fragment>
+			
+			<ui:fragment rendered="#{cc.value.hasFormOneDataAt(9)}"><ui:include src="/org.cyk.ui.web.primefaces.resources/include/form/one/tab.xhtml">
+				<ui:param name="form" value="#{cc.value.getFormOneDataAt(9)}"/>
+			</ui:include></ui:fragment-->
+		</p:tabView>
+		
+	</cc:implementation>
+
+</ui:composition>

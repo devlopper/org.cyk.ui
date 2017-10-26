@@ -11,7 +11,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.ui.web.api.AjaxListener;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 
 
 public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, ROW, LABEL, CONTROL> {
@@ -42,7 +42,7 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 		
 		/**/
 		
-		public static class Adapter extends BeanAdapter implements Listener,Serializable{
+		public static class Adapter extends BeanListener.Adapter implements Listener,Serializable{
 
 			private static final long serialVersionUID = -8747839786713747954L;
 
@@ -51,7 +51,7 @@ public interface WebInput<MODEL, ROW, LABEL, CONTROL> extends WebControl<MODEL, 
 			
 			/**/
 			
-			public static class Default extends Adapter implements Serializable{
+			public static class Default extends Listener.Adapter implements Serializable{
 				private static final long serialVersionUID = -2890801679859553209L;
 				
 			}

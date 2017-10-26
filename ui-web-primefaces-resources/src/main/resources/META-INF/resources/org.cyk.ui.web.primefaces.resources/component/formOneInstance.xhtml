@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.FormOneInstance">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		FORM ONE INSTANCE BALISE BODY
+		<ui:decorate template="#{cc.value.templateId}">
+			<ui:param name="form" value="#{cc.value}"/>
+		</ui:decorate>
+		
+		<!--
+		<ui:include src="include/controls.xhtml" >
+			<ui:param name="controls" value="#{cc.value.selected.inputTemplateFile}" />
+			<ui:param name="templateFile" value="#{cc.value.selected.inputTemplateFile}" />
+		</ui:include>
+		-->
+				
+		<ui:fragment rendered="#{cc.value.showCommands}" >
+			COMMANDS
+			<!--
+			<p:separator/>
+			<cyk:command value="#{cc.value.primefacesSubmitCommandable}" executeParameter="#{cc.value.objectModel}" />
+			<cyk:command value="#{cc.value.primefacesBackCommandable}" rendered="#{not cc.value.root}"/>
+			-->
+		</ui:fragment>
+		<!--
+		<p:menubar model="#{cc.value.model}" /> 
+		-->
+		
+	</cc:implementation>
+
+</ui:composition>

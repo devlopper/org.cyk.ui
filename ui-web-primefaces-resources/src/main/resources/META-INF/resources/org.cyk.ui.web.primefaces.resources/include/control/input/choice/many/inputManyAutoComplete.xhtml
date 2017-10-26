@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:decorate template="#{templateFile}">
+		<ui:param name="input" value="#{control}" />
+		<ui:param name="forId" value="inputManyAutoComplete" />
+		<ui:define name="input">
+			<ui:include src="/org.cyk.ui.web.primefaces.resources/include/control/input/choice/autoComplete.xhtml" >
+				<ui:param name="identifier" value="inputManyAutoComplete"/>
+				<ui:param name="multiple" value="true"/>
+			</ui:include>
+			<!--p:autoComplete id="inputManyAutoComplete" value="#{control.value}" style="#{control.css.inline}" styleClass="#{control.css.clazz}" 
+				panelStyleClass="#{control.common.resultsContainerCascadeStyleSheet.clazz}" panelStyle="#{control.common.resultsContainerCascadeStyleSheet.inline}"
+				completeMethod="#{control.common.complete}" required="#{control.required}" validator="#{control.validate}" converter="#{control.converter}" title="#{control.label}"
+				requiredMessage="#{control.requiredMessage}" disabled="#{control.disabled}" queryDelay="#{control.common.numberOfMillisecondBetweenQueries}" 
+				minQueryLength="#{control.common.numberOfCharacterBeforeQuery}" forceSelection="#{control.common.forceSelectionEnabled}" 
+				cache="#{control.common.queryResultsCacheEnabled}" cacheTimeout="#{control.common.numberOfMillisecondQueryResultsCacheTimeOut}" 
+				emptyMessage="#{control.common.noResultMessage}" pt:placeholder="#{control.label}" multiple="true"
+				widgetVar="#{control.widgetVar}" onchange="#{control.onChange}" appendTo="#{control.common.appendTo}"
+				 var="item" itemLabel="#{control.common.getLabel(item)}" itemValue="#{item}">
+			
+				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/control/input/body.xhtml" />
+			</p:autoComplete-->
+			
+					
+		</ui:define>
+	</ui:decorate>
+		
+</ui:composition>

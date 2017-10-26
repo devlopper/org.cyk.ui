@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Editor">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+		<pe:dynaForm id="DynaForm" value="#{cc.value.selected.dataModel}" var="data">
+			<ui:param name="templateFile" value="#{cc.value.selected.inputTemplateFile}" />
+			
+			<pe:dynaFormControl />
+			
+			<pe:dynaFormControl type="OutputText" for="outputText" style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}"> 
+	        	<h:outputText id="outputText" value="#{data.value}" escape="false"
+	        		style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" />
+	        </pe:dynaFormControl>
+	        
+	        <pe:dynaFormControl type="OutputSeparator" for="outputSeparator" > 
+	        	<!-- style="#{data.cascadeStyleSheet.inline}" styleClass="#{data.cascadeStyleSheet.clazz}" -->
+	        	<table style="width: 100%;" ><tr>
+	        		<td style="width: 1%;font-size: 12px;font-style: italic;"><h:outputText value="#{data.value}" /> </td>
+	        		<td><p:separator   /></td>
+	        	</tr> </table>
+	        </pe:dynaFormControl>
+
+			<!--  ********************************************************** Inputs *********************************************************************** -->
+			<!-- Single Line Text -->
+			<pe:dynaFormControl type="InputText" for="inputText">
+				<ui:include src="include/inputTextOneLine.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Multiple Line Text -->
+			<pe:dynaFormControl type="InputTextArea" for="inputTextArea">
+				<ui:include src="include/inputTextManyLine.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Date -->
+			<pe:dynaFormControl type="InputDate" for="calendar">
+				<ui:include src="include/inputDate.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- URL -->
+			<pe:dynaFormControl type="InputUrl" for="inputUrl">
+				<ui:include src="include/inputUrl.xhtml" />
+			</pe:dynaFormControl>
+			
+			<!-- Number -->
+			<pe:dynaFormControl type="InputNumber" for="inputNumber" >  
+	        	<ui:include src="include/inputNumber.xhtml" />
+	        </pe:dynaFormControl>
+			
+			<!-- Select One -->
+			<!-- Radio -->
+			<pe:dynaFormControl type="InputSelectOneRadio" for="selectOneRadio">  
+	        	<ui:include src="include/inputOneRadio.xhtml" />
+	        </pe:dynaFormControl> 
+
+	        <pe:dynaFormControl type="InputSelectOne" for="selectOneMenu">
+				<ui:include src="include/inputOneMenu.xhtml" />
+	        </pe:dynaFormControl>
+	        
+	        <!-- Input Many -->
+	        <pe:dynaFormControl type="InputMany" >
+				<ui:include src="include/inputMany.xhtml" />
+	        </pe:dynaFormControl>
+	        
+		</pe:dynaForm>
+		
+		
+		<ui:fragment rendered="#{cc.value.showCommands}" >
+			<p:separator/>
+			<cyk:command value="#{cc.value.primefacesSubmitCommand}" executeParameter="#{cc.value.objectModel}" />
+			<cyk:command value="#{cc.value.primefacesBackCommand}" rendered="#{not cc.value.root}"/>
+		</ui:fragment>
+		<!--
+		<p:menubar model="#{cc.value.model}" /> 
+		-->
+		
+	</cc:implementation>
+
+</ui:composition>

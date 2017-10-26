@@ -30,7 +30,7 @@ import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.api.WebNavigationManager;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 
 public abstract class AbstractFilter extends AbstractBean implements Filter,Serializable {
 
@@ -108,7 +108,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 		
 		/**/
 		
-		public static class Adapter extends BeanAdapter implements AbstractListener,Serializable{
+		public static class Adapter extends BeanListener.Adapter implements AbstractListener,Serializable{
 
 			private static final long serialVersionUID = -2057765010522840493L;
 
@@ -126,7 +126,7 @@ public abstract class AbstractFilter extends AbstractBean implements Filter,Seri
 			
 			/**/
 			
-			public static class Default extends Adapter implements Serializable{
+			public static class Default extends AbstractListener.Adapter implements Serializable{
 
 				private static final long serialVersionUID = -2057765010522840493L;
 				

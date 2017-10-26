@@ -19,7 +19,7 @@ import org.cyk.ui.web.api.data.collector.control.WebInputAutoCompleteCommon;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -96,7 +96,7 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 		String getLabel(InputAutoCompleteCommon<?> inputAutoCompleteCommon,VALUE_TYPE item);
 		/**/
 		
-		public static class Adapter<VALUE_TYPE> extends BeanAdapter implements Listener<VALUE_TYPE> , Serializable {
+		public static class Adapter<VALUE_TYPE> extends BeanListener.Adapter implements Listener<VALUE_TYPE> , Serializable {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -109,7 +109,7 @@ public class InputAutoCompleteCommon<VALUE_TYPE> extends AbstractBean implements
 			}
 			/**/
 			
-			public static class Default<VALUE_TYPE> extends Adapter<VALUE_TYPE> implements Serializable {
+			public static class Default<VALUE_TYPE> extends Listener.Adapter<VALUE_TYPE> implements Serializable {
 				private static final long serialVersionUID = 1L;
 				
 				@SuppressWarnings({ "unchecked" })

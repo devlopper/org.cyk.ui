@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<p:ajaxStatus
+		id="#{ajaxStatus.propertiesMap.identifier}"
+		oncomplete="#{ajaxStatus.propertiesMap.onComplete}"
+		onerror="#{ajaxStatus.propertiesMap.onError}"
+		onstart="#{ajaxStatus.propertiesMap.onStart}"
+		onsuccess="#{ajaxStatus.propertiesMap.onSuccess}"
+		rendered="#{ajaxStatus.propertiesMap.rendered}"
+		styleClass="#{ajaxStatus.propertiesMap.styleClass}"
+		widgetVar="#{ajaxStatus.propertiesMap.widgetVar}"
+		style="#{ajaxStatus.propertiesMap.style}"
+	>
+		<ui:include src="#{ajaxStatus.propertiesMap.include}"/>
+	</p:ajaxStatus>
+	
+</ui:composition>

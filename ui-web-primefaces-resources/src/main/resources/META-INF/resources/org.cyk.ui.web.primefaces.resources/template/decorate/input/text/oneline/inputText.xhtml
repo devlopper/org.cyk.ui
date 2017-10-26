@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<p:inputText 
+		id="#{identifier}" 
+		value="#{input.value}" 
+		style="#{input.propertiesMap.style}" 
+		styleClass="#{input.propertiesMap.styleClass}" 
+		widgetVar="#{input.propertiesMap.widgetVar}"
+		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
+		
+		title="#{input.propertiesMap.title}" 
+		disabled="#{input.propertiesMap.disabled}"
+		requiredMessage="#{input.propertiesMap.requiredMessage}" 
+		pt:placeholder="#{input.propertiesMap.placeholder}" 
+		label="#{input.propertiesMap.label}" 
+		onchange="#{input.propertiesMap.onChange}" 
+		onclick="#{input.propertiesMap.onClick}"  
+	>
+		<ui:include src="#{input.propertiesMap.include}" />
+	
+	</p:inputText>	
+	
+	<!-- 
+		converter="#{input.propertiesMap.converter}" 
+		validator="#{input.propertiesMap.validator}" 
+	 -->
+	
+</ui:composition>

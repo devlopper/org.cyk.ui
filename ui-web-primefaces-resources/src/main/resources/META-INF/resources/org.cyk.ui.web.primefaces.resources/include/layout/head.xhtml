@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces.resources" />
+    
+    <ui:repeat var="applicationUImanager" value="#{uiManager.applicationUImanagers}">
+    	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=#{webManager.libraryName(applicationUImanager)}" />
+    </ui:repeat>
+    
+    <title>
+		<h:outputText value="#{page.propertiesMap.title}"/>	
+	</title>
+      
+	<script type="text/javascript">
+		$ = jQuery;
+		
+        $(document).ready(function() {
+        	//Ready
+        	#{pageController.onDocumentReadyJavaScript}
+        	//Loaded
+        	$(window).on('load', function() { #{pageController.onDocumentLoadJavaScript} });
+        	//Before unloadind
+        	$(window).bind('beforeunload', function(){
+				#{pageController.onDocumentBeforeUnLoadJavaScript}
+				//the custom message for page unload doesn't work on Firefox
+				if(#{pageController.onDocumentBeforeUnLoadWarnAsString})
+					return '#{pageController.onDocumentBeforeUnLoadWarningMessage}';
+			
+			});
+		});
+        
+        function preview(input,previewId) {
+	        if (input.files &amp;&amp; input.files[0]) {
+	            var reader = new FileReader();
+	            reader.onload = function (e) {
+	                $('#'+previewId).attr('src', e.target.result);
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+         
+    	function clickEditButtonLastRow(dataTableStyleClass){
+    		$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').last().find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+			
+		}
+		
+		function clickEditButtonAllRow(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		function hideAllRowEditorButtons(dataTableStyleClass){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content').find('div.ui-row-editor').each(function(){
+				 $(this).display='none';
+				 $(this).visible='false';
+				 $(this).visibility='hidden';	
+			});
+		}			
+		
+		function clickEditButtonRow(dataTableStyleClass,rowIndex){
+			$('.'+dataTableStyleClass+' div.ui-datatable-tablewrapper table tbody.ui-datatable-data tr.ui-widget-content:nth-child('+rowIndex+')').find('td div.ui-row-editor span.ui-icon-pencil').each(function(){
+				 $(this).click();	
+			});
+		}
+		
+		function confirmDialog(){
+    		PF('confirmDialogWidgetVar').show();
+		}
+		
+		function blockUIStart() {
+		    PF('#{webManager.blockUIDialogWidgetId}').show();
+		}
+		 
+		function blockUIStop() {
+		    PF('#{webManager.blockUIDialogWidgetId}').hide();
+		}
+		
+		function handleNotificationMessage(facesMessage) { 
+			//alert("M : "+#{webNavigationManager.isMobileView()});
+			/*playSound('#{resource['org.cyk.ui.web.primefaces/sound/messageincoming.mp3']}');*/
+			playSound('#{resource[defaultDesktopLayoutManager.incomingMessageSoundPath]}');
+			//window.navigator.vibrate(200);
+			updateNotifications(); 
+			if(#{webNavigationManager.isMobileView()})
+				mobileNotification(facesMessage);
+			else
+				desktopNotification(facesMessage);
+		}
+		
+		function desktopNotification(facesMessage) {
+		  var message = facesMessage.summary;
+		  /*var options = {
+			body: facesMessage.detail
+		  };*/
+		  var notification;
+		  if (!("Notification" in window)) {
+		  	alert("This browser does not support desktop notifications");
+		  }else if (Notification.permission === "granted") {
+		  	notification = new Notification(message);
+		  }else if (Notification.permission !== 'denied') {
+		  	Notification.requestPermission(
+		  		function (permission) {
+		    		if(!('permission' in Notification)) {
+		    			Notification.permission = permission;
+		    		}
+		    		if (permission === "granted") {
+		    			notification = new Notification(message);
+		    		}
+		  		});
+		  }
+		  
+		  if(notification){
+			window.navigator.vibrate(300);
+			notification.onshow = function () { 
+				//alert('Show');	
+				setTimeout(notification.close.bind(notification), 30000); 
+			}	
+		  }
+		}
+		
+		function mobileNotification(facesMessage) {
+			var message = facesMessage.summary;
+			//alert(message);
+			$( '#soundPlayerLink').trigger('click');
+		}
+        
+     </script>      
+ 
+</ui:composition>

@@ -2,7 +2,7 @@ package org.cyk.ui.api;
 
 import java.io.Serializable;
 
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 
 public enum Icon{
 	
@@ -27,7 +27,7 @@ public enum Icon{
 		IDENTIFIER getDefault();
 		/**/
 		
-		public static class Adapter<IDENTIFIER> extends BeanAdapter implements GetIdentifierListener<IDENTIFIER>,Serializable{
+		public static class Adapter<IDENTIFIER> extends BeanListener.Adapter implements GetIdentifierListener<IDENTIFIER>,Serializable{
 
 			private static final long serialVersionUID = 390223813843448212L;
 
@@ -43,7 +43,7 @@ public enum Icon{
 			
 			/**/
 			
-			public static class Default<IDENTIFIER> extends Adapter<IDENTIFIER> implements Serializable{
+			public static class Default<IDENTIFIER> extends GetIdentifierListener.Adapter<IDENTIFIER> implements Serializable{
 				private static final long serialVersionUID = -1794051632042084273L;
 				
 				@Override

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component"
+      xmlns:cyk_incubation="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component_incubation">
+ 
+	<h:body>
+		<ui:composition>
+			<ui:include src="/org.cyk.ui.web.primefaces.resources/include/control/collection/output/menu/default.xhtml" >
+				<ui:param name="collection" value="#{collection}"/>
+			</ui:include>	
+			<!--table class="table_collection_output_header table_collection_output_header_default">
+				<tr>
+					<td class="td_left">
+						<h:outputText value="#{collection.name}" rendered="#{not collection.name}" />		
+					</td>
+					<td class="td_right">
+						<ui:include src="/org.cyk.ui.web.primefaces.resources/include/control/collection/output/menu/default.xhtml" >
+			     			<ui:param name="collection" value="#{collection}"/>
+			     		</ui:include>			
+					</td>
+				</tr>
+			</table-->					
+		</ui:composition>
+	</h:body>
+</html>

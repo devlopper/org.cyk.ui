@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+
+	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.Menu">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<p:importConstants type="org.cyk.system.root.model.RootConstant$Code$UserInterfaceMenuRenderType" var="UserInterfaceMenuRenderType"/>
+		
+		<p:menu model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.PLAIN}" 
+			styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+		 
+		<p:slideMenu model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.SLIDE}" 
+			styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+		
+		<p:panelMenu model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.PANEL}" 
+			styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+	 	
+	 	<p:tabMenu model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.TAB}" 
+	 		activeIndex="#{menu.selectedIndex}" 
+	 		styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+	 	
+	 	<p:breadCrumb model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.BREAD_CRUMB}" 
+	 		styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+	 	
+	 	<p:menubar model="#{cc.value.targetModel}" rendered="#{cc.value.userModel.renderType.code eq UserInterfaceMenuRenderType.BAR}" 
+	 		styleClass="#{cc.value.userModel.cascadeStyleSheet.clazz}" style="#{cc.value.userModel.cascadeStyleSheet.inline}"/>
+		
+	</cc:implementation>
+
+</ui:composition>

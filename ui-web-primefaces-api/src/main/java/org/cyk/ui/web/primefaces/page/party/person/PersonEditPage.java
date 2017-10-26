@@ -7,6 +7,10 @@ import javax.inject.Named;
 
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.web.primefaces.page.party.AbstractPersonEditPage;
+import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.Form.Master.SubmitCommandActionAdapter;
+import org.cyk.utility.common.userinterface.input.InputText;
+import org.cyk.utility.common.userinterface.input.InputTextarea;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,36 +19,38 @@ import lombok.Setter;
 public class PersonEditPage extends AbstractPersonEditPage<Person> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
-	 
+	
+	private org.cyk.utility.common.userinterface.container.Form.Master form2;
+	private Form d = new Form();
+	
 	@Override
 	protected void afterInitialisation() {
-		// TODO Auto-generated method stub
 		super.afterInitialisation();
-		/*form.findInputByClassByFieldName(InputOneCascadeList.class, "locality").setValue(
-				((SelectItemGroup)form.findInputByClassByFieldName(InputOneCascadeList.class, "locality").getList().get(1)).getValue() );
-		((org.cyk.ui.web.primefaces.data.collector.control.InputOneCascadeList)form.findInputByClassByFieldName(InputOneCascadeList.class, "locality")).setWidgetVar("aze");
-		debug(form.findInputByClassByFieldName(InputOneCascadeList.class, "locality"));
-		*/
-		/*
-		onDocumentLoadJavaScript = onDocumentLoadJavaScript + ";$( '.ui-multiselectlistbox-list li:nth-child(2)' ).css( 'background-color', 'red' ); "
-				+ "PF('aze').showItemGroup($( '.ui-multiselectlistbox-list li:nth-child(2)' )); $( '.ui-multiselectlistbox-list li:nth-child(3)' ).click();"
-				+ "$( '.ui-multiselectlistbox-list li:nth-child(2)' ).click(function(){alert(\"hello click\");});";
-		*/
-		//onDocumentReadyJavaScript =  "$( '.ui-multiselectlistbox-list > li:nth-child(2)' ).click(function(){alert(\"hello click\");});";
-		/*onDocumentReadyJavaScript =  "$( '.ui-multiselectlistbox-list > li:nth-child(2)' ).click();"
-				+ "$( '.ui-multiselectlistbox-list > li:nth-child(2) > ul > li:nth-child(3)' ).click();"
-				;*/
-		/*
-		createAjaxBuilder(LocationFormModel.FIELD_LOCALITY_TYPE).updatedFieldNames(LocationFormModel.FIELD_LOCALITY)
-		.method(LocalityType.class,new ListenValueMethod<LocalityType>() {
-			@Override
-			public void execute(LocalityType localityType) {
-				//System.out.println(localityType+" : "+inject(LocalityBusiness.class).findByType(localityType).size());
-				//setFieldValue(LocationFormModel.FIELD_LOCALITY, inject(LocalityBusiness.class).findByType(localityType));
-				setChoices(LocationFormModel.FIELD_LOCALITY, inject(LocalityBusiness.class).findByType(localityType));
-			}
-		}).build();
-		*/
+		form2 = new org.cyk.utility.common.userinterface.container.Form.Master(SubmitCommandActionAdapter.class)
+				.setObject(d).setLabelFromIdentifier("editperson");
+		
+		org.cyk.utility.common.userinterface.container.Form.Detail formDetail = form2.instanciateDetail(org.cyk.utility.common.userinterface.Layout.Type.ADAPTIVE);
+    	InputText c1 = new InputText();
+    	c1.setField(d, Form.FIELD_NAME);
+    	InputText c2 = new InputText();
+    	c2.setField(d, Form.FIELD_LAST_NAMES);
+    	InputText c3 = new InputText();
+    	c3.setField(d, Form.FIELD_DESCRIPTION);
+    	InputText c4 = new InputText();
+    	c4.setField(d, Form.FIELD_BIRTH_DATE);
+    	InputText c5 = new InputText();
+    	c5.setField(d, Form.FIELD_BIRTH_LOCATION);
+    	InputText c6 = new InputText();
+    	c6.setField(d, Form.FIELD_SEX);
+    	InputTextarea c7 = new InputTextarea();
+    	c7.setField(d, Form.FIELD_OTHER_DETAILS);
+    	c7.getArea().getWidth().setDistance(2);
+    	InputText c8 = new InputText();
+    	c8.setField(d, Form.FIELD_NATIONALITY);
+    	
+    	formDetail.layOut(c1).layOut(c2).layOutBreak().layOut(c3).layOutBreak().layOut(c4).layOut(c5).layOutBreak().layOut(c6).layOut(c7).layOutBreak().layOut(c8).layOutBreak();
+		
+		form2.build();
 	}
 	
 	@Override

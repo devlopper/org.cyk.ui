@@ -14,7 +14,7 @@ import org.cyk.ui.api.data.collector.control.OutputLabel;
 import org.cyk.utility.common.AbstractFieldSorter.FieldSorter;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectField;
 import org.cyk.utility.common.AbstractFieldSorter.ObjectFieldSorter;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,7 +57,7 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 	
 	/**/
 	
-	public static class Adapter<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends BeanAdapter implements ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> {
+	public static class Adapter<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends BeanListener.Adapter implements ControlSetListener<DATA, MODEL, ROW, LABEL, CONTROL, SELECTITEM> {
 
 		private static final long serialVersionUID = 1L;
 
@@ -145,7 +145,7 @@ public interface ControlSetListener<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> {
 		
 		/**/
 		@NoArgsConstructor
-		public static class Default<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends Adapter<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> implements Serializable {
+		public static class Default<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> extends ControlSetListener.Adapter<DATA,MODEL,ROW,LABEL,CONTROL,SELECTITEM> implements Serializable {
 			private static final long serialVersionUID = 1L;
 			
 			private Class<?> identifiableClass;

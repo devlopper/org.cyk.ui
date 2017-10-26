@@ -18,10 +18,6 @@ import javax.inject.Singleton;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
@@ -54,9 +50,13 @@ import org.cyk.utility.common.FileExtension;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.helper.StringHelper;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
 
 @Singleton @Named @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class WebNavigationManager extends AbstractBean implements Serializable {
@@ -819,7 +819,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 		
 		/**/
 		
-		public static class Adapter<USER_SESSION extends AbstractWebUserSession<?,?>> extends BeanAdapter implements Listener<USER_SESSION>,Serializable{
+		public static class Adapter<USER_SESSION extends AbstractWebUserSession<?,?>> extends BeanListener.Adapter implements Listener<USER_SESSION>,Serializable{
 
 			private static final long serialVersionUID = -6865620540167646004L;
 
@@ -830,7 +830,7 @@ public class WebNavigationManager extends AbstractBean implements Serializable {
 			
 			/**/
 			
-			public static class Default<USER_SESSION extends AbstractWebUserSession<?,?>> extends Adapter<USER_SESSION> implements Serializable{
+			public static class Default<USER_SESSION extends AbstractWebUserSession<?,?>> extends Listener.Adapter<USER_SESSION> implements Serializable{
 
 				private static final long serialVersionUID = 3989646511932404057L;
 				

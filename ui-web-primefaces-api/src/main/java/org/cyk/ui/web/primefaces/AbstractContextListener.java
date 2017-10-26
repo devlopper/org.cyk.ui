@@ -177,7 +177,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
 		CommandHelper.Command.Adapter.Default.DEFAULT_CLASS = (Class<CommandHelper.Command>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.CommandHelper.Command.class);
 		CommandHelper.Commands.DEFAULT_CLASS = (Class<CommandHelper.Commands>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.CommandHelper.Commands.class);
-		Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(PrimefacesManager.FormBuilderBasedOnDynamicForm.class);
+		//Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(PrimefacesManager.FormBuilderBasedOnDynamicForm.class);
 		layoutManager.setLogoPath(stringContextParameter(ContextParam.LOGO_PATH, event,layoutManager.getLogoPath()));
 		layoutManager.setLoginBackgroundPath(stringContextParameter(ContextParam.LOGIN_BACKGROUN_DPATH, event,layoutManager.getLoginBackgroundPath()));
 		layoutManager.setHomeBackgroundPath(stringContextParameter(ContextParam.HOME_BACKGROUND_PATH, event,layoutManager.getHomeBackgroundPath()));

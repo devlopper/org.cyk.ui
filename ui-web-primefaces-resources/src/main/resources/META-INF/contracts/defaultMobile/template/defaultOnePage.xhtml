@@ -19,12 +19,12 @@
 	</f:metadata>
 	    
     <h:head>
-    	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
+    	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/head.xhtml" />
     </h:head>
  
 	<h:body>
 		<ui:include src="#{webManager.decoratedTemplateInclude}" />
-		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
+		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/bodytop.xhtml" />
 
 		<pm:page id="mainPage">
 			<pm:header>
@@ -49,7 +49,7 @@
 									<tr style="vertical-align: middle;">
 										<td class="ui-datalist-bordernone"><p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" 
 											type="#{uiManager.collectionSize(facesContext.messageList)==1?'none':'ordered'}" >
-											<ui:include src="/org.cyk.ui.web.primefaces/include/message.xhtml">
+											<ui:include src="/org.cyk.ui.web.primefaces.resources/include/message.xhtml">
 												<ui:param name="severity" value="#{webManager.facesMessageSeverity(message)}" />
 												<ui:param name="message" value="#{message.summary}" />
 											</ui:include>
@@ -88,7 +88,7 @@
 						draggable="false" appendTo="@(body)" header="#{uiManager.text('information')}">
 						<table><tr style="vertical-align: middle;">
 							<td><h:outputText value="#{uiManager.text('processing.request')}" /></td>
-							<td><p:graphicImage library="org.cyk.ui.web.primefaces" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
+							<td><p:graphicImage library="org.cyk.ui.web.primefaces.resources" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
 						</tr> </table>
 					</p:dialog>
 				</h:form>
@@ -110,6 +110,6 @@
 			</pe:layoutPane-->
   
 		
- 		<ui:include src="/org.cyk.ui.web.primefaces/include/js/bodybottom.xhtml" />
+ 		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/js/bodybottom.xhtml" />
     </h:body>
 </html>

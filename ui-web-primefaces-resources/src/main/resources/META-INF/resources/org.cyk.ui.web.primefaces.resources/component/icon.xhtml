@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<cc:interface>
+		<cc:attribute name="library" default="org.cyk.ui.web.primefaces.resources" />
+		<cc:attribute name="name" required="true" />
+		<cc:attribute name="extension" default="png" />
+		<cc:attribute name="size" default="32" />
+		<cc:attribute name="title" default="icon" />
+		
+		<cc:attribute name="url" />
+		<cc:attribute name="styleClass" />
+	</cc:interface>
+
+	<cc:implementation>
+		<p:graphicImage 
+			library="#{cc.attrs.library}" 
+			name="images/icons/#{cc.attrs.size}/#{cc.attrs.name}.#{cc.attrs.extension}" 
+			alt="#{cc.attrs.title}" 
+			title="#{cc.attrs.title}"
+			styleClass="#{cc.attrs.styleClass}"
+			rendered="#{empty cc.attrs.url}"/>
+			
+		<p:graphicImage 
+			url="#{cc.attrs.url}" 
+			alt="#{cc.attrs.title}" 
+			title="#{cc.attrs.title}"
+			styleClass="#{cc.attrs.styleClass}"
+			rendered="#{not empty cc.attrs.url}"/>	
+	</cc:implementation>
+
+</ui:composition>

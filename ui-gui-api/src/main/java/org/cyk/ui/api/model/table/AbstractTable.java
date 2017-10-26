@@ -45,7 +45,7 @@ import org.cyk.utility.common.ListenerUtils;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 import org.cyk.utility.common.annotation.user.interfaces.IncludeInputs;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
-import org.cyk.utility.common.cdi.BeanAdapter;
+import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.computation.DataReadConfiguration;
 import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.model.table.Table;
@@ -617,7 +617,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 		}
 		/**/
 		@Getter @Setter
-		public static class Adapter<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends BeanAdapter implements Listener<DATA, NODE, NODE_MODEL>, Serializable {
+		public static class Adapter<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends BeanListener.Adapter implements Listener<DATA, NODE, NODE_MODEL>, Serializable {
 
 			private static final long serialVersionUID = 1L;
 
@@ -634,7 +634,7 @@ public abstract class AbstractTable<DATA,NODE,MODEL extends AbstractHierarchyNod
 			}
 			/**/
 			
-			public static class Default<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends Adapter<DATA, NODE, NODE_MODEL> implements Serializable {
+			public static class Default<DATA, NODE, NODE_MODEL extends AbstractHierarchyNode> extends Listener.Adapter<DATA, NODE, NODE_MODEL> implements Serializable {
 				private static final long serialVersionUID = 1L;
 				
 				/**/

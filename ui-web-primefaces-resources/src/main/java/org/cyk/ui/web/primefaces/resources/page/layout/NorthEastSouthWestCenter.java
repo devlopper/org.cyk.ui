@@ -15,7 +15,7 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
 	private static final long serialVersionUID = 1L;
 
 	public NorthEastSouthWestCenter() {
-		super("/org.cyk.ui.web.primefaces/include/page/layout/northeastsouthwestcenter_centersouth/");
+		super("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_centersouth/");
 		
 		createContainerNorth();
 		createContainerEast();

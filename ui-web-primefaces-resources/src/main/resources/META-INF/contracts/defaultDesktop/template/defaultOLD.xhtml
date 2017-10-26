@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 
     <f:metadata>
   		<f:event type="preRenderView" listener="#{page.listenPreRenderView}" />
@@ -15,12 +15,12 @@
 	</f:metadata>
 	    
     <h:head>
-    	<ui:include src="/org.cyk.ui.web.primefaces/include/layout/head.xhtml" />
+    	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/head.xhtml" />
     </h:head>
     
 	<h:body>
 		<ui:include src="#{webManager.decoratedTemplateInclude}" />
-		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodytop.xhtml" />
+		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/bodytop.xhtml" />
 		
 		<pe:layout fullPage="true" options="#{webPageLayoutManager.options}" styleClass="mainlayout">
 			<pe:layoutPane position="north"  styleClassContent="mainnorthpanecontent bordernone" rendered="#{page.showMainMenu}"><h:form id="formNorth">
@@ -40,7 +40,7 @@
 				<f:facet name="header">
 					<!--p:outputPanel rendered="#{page.showWindowHierachyMenu}" >
 						<h:form>
-							<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+							<ui:include src="/org.cyk.ui.web.primefaces.resources/include/menu/menu.xhtml" >
 								<ui:param name="model" value="#{page.windowHierachyMenuModel}" />
 								<ui:param name="menu" value="#{page.windowHierachyMenu}" />
 							</ui:include>
@@ -50,13 +50,13 @@
 				</f:facet>
 				
 			 	<h:form id="form" enctype="multipart/form-data" >
-			 		<ui:include src="/org.cyk.ui.web.primefaces/include/layout/sounds.xhtml" />	
+			 		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/sounds.xhtml" />	
 			 		<p:idleMonitor timeout="#{page.userActiveTimeout}" rendered="true">
 				        <p:ajax event="idle" listener="#{page.onUserInactive}" update=":form:contentPanel" global="false"/>
 				        <p:ajax event="active" listener="#{page.onUserActive}" update=":form:contentPanel" global="false"/>
 				    </p:idleMonitor>
 				 	<pe:layoutPane id="contentp" position="center">
-				 		<!--ui:include src="/org.cyk.ui.web.primefaces/include/layout/bodycontenttop.xhtml" /-->
+				 		<!--ui:include src="/org.cyk.ui.web.primefaces.resources/include/layout/bodycontenttop.xhtml" /-->
 				 		<p:outputPanel id="contentPanel">
 				 			<p:messages id="messages" globalOnly="true" escape="false"/>
 				 			<!--div class="loader"></div-->
@@ -78,7 +78,7 @@
 								global="false" interval="1000" /-->
 				 			<ui:fragment rendered="#{not page.renderViewError}" >
 				 				<ui:fragment rendered="#{page.showDetailsMenu}">
-					 				<ui:include src="/org.cyk.ui.web.primefaces/include/menu/menu.xhtml" >
+					 				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/menu/menu.xhtml" >
 										<ui:param name="model" value="#{page.detailsMenuModel}" />
 										<ui:param name="menu" value="#{page.detailsMenu}" />
 									</ui:include>
@@ -99,7 +99,7 @@
 										<tr style="vertical-align: middle;">
 											<td class="ui-datalist-bordernone"><p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" 
 												type="#{uiManager.collectionSize(facesContext.messageList)==1?'none':'ordered'}" >
-												<ui:include src="/org.cyk.ui.web.primefaces/include/message.xhtml">
+												<ui:include src="/org.cyk.ui.web.primefaces.resources/include/message.xhtml">
 													<ui:param name="severity" value="#{webManager.facesMessageSeverity(message)}" />
 													<ui:param name="message" value="#{message.summary}" />
 												</ui:include>
@@ -136,7 +136,7 @@
 						draggable="false" appendTo="@(body)" header="#{uiManager.text('information')}">
 						<table><tr style="vertical-align: middle;">
 							<td><h:outputText value="#{uiManager.text('processing.request')}" /></td>
-							<td><p:graphicImage library="org.cyk.ui.web.primefaces" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
+							<td><p:graphicImage library="org.cyk.ui.web.primefaces.resources" name="images/processing.gif" alt="#{uiManager.text('processing.request')}"/>  </td>
 						</tr> </table>
 						<ui:fragment rendered="#{page.executionProgress!=null}">
 							<p:separator/>
@@ -179,6 +179,6 @@
 			</pe:layoutPane>
 			
 		</pe:layout> 
- 		<ui:include src="/org.cyk.ui.web.primefaces/include/js/bodybottom.xhtml" />
+ 		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/js/bodybottom.xhtml" />
     </h:body>
 </html>
