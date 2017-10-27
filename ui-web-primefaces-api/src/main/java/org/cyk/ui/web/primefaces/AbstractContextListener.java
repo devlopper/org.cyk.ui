@@ -152,8 +152,6 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
-import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.ViewHelper;
 import org.cyk.utility.common.userinterface.ViewHelper.Listener;
 import org.primefaces.model.TreeNode;

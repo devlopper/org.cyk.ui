@@ -172,7 +172,12 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					properties.setInclude("/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml");
 					
 					((Window)instance).getLayout().getPropertiesMap().setTemplate("/template/default.xhtml");
+				}else if(instance instanceof Form.Master){
+					properties.setTemplate("/org.cyk.ui.web.primefaces.resources/template/decorate/form.xhtml");
+					properties.setInclude("/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml");
+					
 				}
+				
 			}
 		});
 		
