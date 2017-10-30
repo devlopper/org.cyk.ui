@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+		
+	<pe:blockUI
+		source="#{blockUI.propertiesMap.source}"
+		timeout="#{blockUI.propertiesMap.timeOut}"
+		autoShow="#{blockUI.propertiesMap.autoShow}"
+		centerX="#{blockUI.propertiesMap.centerX}"
+		centerY="#{blockUI.propertiesMap.centerY}"
+		event="#{blockUI.propertiesMap.event}"
+		id="#{blockUI.propertiesMap.identifier}"
+		rendered="#{blockUI.propertiesMap.rendered}"
+		target="#{blockUI.propertiesMap.target}"
+		widgetVar="#{blockUI.propertiesMap.widgetVar}"
+	>
+		<ui:include src="#{blockUI.propertiesMap.include}"/>
+	</pe:blockUI>
+	
+	<!-- 
+		content="#{blockUI.propertiesMap.content}"
+		css="#{blockUI.propertiesMap.css}"
+		cssOverlay="#{blockUI.propertiesMap.cssOverlay}"
+		
+		
+	 -->
+	
+</ui:composition>

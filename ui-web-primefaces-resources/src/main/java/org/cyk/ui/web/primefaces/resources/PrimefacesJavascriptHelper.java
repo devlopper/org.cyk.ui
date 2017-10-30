@@ -58,10 +58,20 @@ public class PrimefacesJavascriptHelper extends AbstractBean implements Serializ
 		return getMethodCall(object, HIDE);
 	}
 	
+	public String getMethodCallBlock(Object object){
+		return getMethodCall(object, BLOCK);
+	}
+	
+	public String getMethodCallUnBlock(Object object){
+		return getMethodCall(object, UN_BLOCK);
+	}
+	
 	/**/
 	
 	public static final String FILTER = "filter";
 	public static final String SHOW = "show";
 	public static final String HIDE = "hide";
+	public static final String BLOCK = "block";
+	public static final String UN_BLOCK = "unblock";
 	
 }

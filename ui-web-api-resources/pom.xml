@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.cyk.ui</groupId>
+		<artifactId>ui-_pom</artifactId>
+		<version>0.0.1</version>
+	</parent>
+
+	<name>Web User Interface API Resources</name>
+	
+	<groupId>org.cyk.ui.web</groupId>
+	<artifactId>ui-web-api-resources</artifactId>
+	<packaging>jar</packaging>	
+ 
+	<properties>
+		<version.omnifaces>2.0</version.omnifaces>
+		<!--version.omnifaces>2.4</version.omnifaces-->
+		<version.shiro>1.3.0</version.shiro>
+		<version.prettyfaces>3.0.0.Alpha4</version.prettyfaces>
+		
+		<!--version.atmosphere>2.2.2</version.atmosphere-->
+		<!--version.atmosphere>2.4.0</version.atmosphere-->
+		<!--version.atmosphere>2.4.1.4</version.atmosphere-->
+		<!--version.atmosphere>2.4.2</version.atmosphere-->
+		<version.atmosphere>2.4.3</version.atmosphere>
+		
+		<version.itext>2.1.7</version.itext>
+		<version.poi>3.13</version.poi> 
+		<!--version.poi>3.7</version.poi--> 
+		<version.cyk>0.0.1</version.cyk>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.cyk.ui.api</groupId>
+			<artifactId>ui-gui-api-resources</artifactId>
+			<version>${version.cyk}</version>
+		</dependency>
+		
+		<!-- Utilities -->
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>${version.omnifaces}</version>
+		</dependency>
+		
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<!-- Security -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${version.shiro}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${version.shiro}</version>
+		</dependency>
+		
+		<!-- Pretty faces -->
+		<dependency>
+		    <groupId>org.ocpsoft.rewrite</groupId>
+			<artifactId>rewrite-servlet</artifactId>
+			<version>${version.prettyfaces}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.ocpsoft.rewrite</groupId>
+		    <artifactId>rewrite-config-prettyfaces</artifactId>
+		    <version>${version.prettyfaces}</version>
+		</dependency>
+		
+		<!-- PDF -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>${version.itext}</version>
+		</dependency>
+		
+		<!-- Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${version.poi}</version>
+		</dependency>
+		
+		<!-- Push  -->
+		<dependency>
+			<groupId>org.atmosphere</groupId>
+			<artifactId>atmosphere-runtime</artifactId>
+			<version>${version.atmosphere}</version>
+		</dependency>
+	</dependencies>
+</project>

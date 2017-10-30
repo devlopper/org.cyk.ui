@@ -6,18 +6,6 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<pe:dynaForm 
-		id="#{detail.propertiesMap.identifier}"
-		value="#{detail.built}" 
-		var="control" 
-		varContainerId="clientId" 
-		styleClass="#{detail.propertiesMap.styleClass}"
-	>
-		
-		<ui:insert name="content">
-			<ui:include src="#{detail.propertiesMap.include}"/>
-		</ui:insert>
-		
-	</pe:dynaForm>
-	
+	<ui:include src="#{form.propertiesMap.include}"/>
+			
 </ui:composition>

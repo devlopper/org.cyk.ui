@@ -18,13 +18,36 @@
 		title="#{commandButton.propertiesMap.title}"
 		update="#{commandButton.propertiesMap.update}"
 		value="#{empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value}" 
-		oncomplete="#{commandButton.propertiesMap.onComplete}"
+		
 		onclick="#{commandButton.propertiesMap.onClick}"
+		oncomplete="#{commandButton.propertiesMap.onComplete}"
+		
+		ondblclick="#{commandButton.propertiesMap.onDoubleClick}"
+		onmouseover="#{commandButton.propertiesMap.onMouseOver}"
+		onmouseup="#{commandButton.propertiesMap.onMouseUp}"
+		onmousedown="#{commandButton.propertiesMap.onMouseDown}"
+		onmouseout="#{commandButton.propertiesMap.onMouseOut}"
+		onmousemove="#{commandButton.propertiesMap.onMouseMove}"
+		onkeydown="#{commandButton.propertiesMap.onKeyDown}"
+		onkeypress="#{commandButton.propertiesMap.onKeyPress}"
+		onkeyup="#{commandButton.propertiesMap.onKeyUp}"
+		onfocus="#{commandButton.propertiesMap.onFocus}"
+		onselect="#{commandButton.propertiesMap.onSelect}"
+		onblur="#{commandButton.propertiesMap.onBlur}"
+		onchange="#{commandButton.propertiesMap.onChange}"
+		
+		onstart="#{commandButton.propertiesMap.onStart}"
+		onsuccess="#{commandButton.propertiesMap.onSuccess}"
+		onerror="#{commandButton.propertiesMap.onError}"
+		
 		immediate="#{commandButton.propertiesMap.immediate}"
 		widgetVar="#{commandButton.propertiesMap.widgetVar}"
+		partialSubmit="#{commandButton.propertiesMap.partialSubmit}"
 		styleClass="#{commandButton.propertiesMap.styleClass}"
 		style="#{commandButton.propertiesMap.style}" 
 		global="#{commandButton.propertiesMap.global}"
+		
+		async="#{commandButton.propertiesMap.async}"
 	>
 		<ui:include src="#{commandButton.propertiesMap.include}"/>	
 	</p:commandButton>
@@ -32,5 +55,13 @@
 	<ui:decorate template="#{empty commandButton.confirmationDialog.propertiesMap.template ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : commandButton.confirmationDialog.propertiesMap.template}">
 		<ui:param name="confirmDialog" value="#{commandButton.confirmationDialog}" />	
 	</ui:decorate>
+	
+	
+	
+	<!-- 
+	
+		
+	
+	 -->
 	
 </ui:composition>

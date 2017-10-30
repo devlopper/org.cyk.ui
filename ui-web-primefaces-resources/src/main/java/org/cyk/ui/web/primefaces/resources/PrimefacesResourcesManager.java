@@ -7,7 +7,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.cyk.ui.web.primefaces.resources.page.Page;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -20,6 +19,7 @@ import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.helper.RandomHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.command.Command;
@@ -27,6 +27,7 @@ import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
+import org.cyk.utility.common.userinterface.input.Input;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.cyk.utility.common.userinterface.input.InputTextarea;
 import org.cyk.utility.common.userinterface.output.OutputText;
@@ -42,6 +43,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+@SuppressWarnings("unchecked")
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
 public class PrimefacesResourcesManager extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -60,15 +62,19 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	static {
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
-		//Properties.setDefaultValue(Window.class, Properties.TEMPLATE, Page.TEMPLATE);
+		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
+				,Properties.CONTRACTS,"defaultDesktop",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
 		
-		Properties.setDefaultValue(Form.Master.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form.xhtml");
-		Properties.setDefaultValue(Form.Master.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml");
+		Properties.setDefaultValues(Form.Master.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form/include.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml"});
 		
-		Properties.setDefaultValue(Form.Detail.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/dynaForm.xhtml");
-		Properties.setDefaultValue(Form.Detail.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dynaForm/default.xhtml");
+		Properties.setDefaultValues(Form.Detail.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/dynaForm.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dynaForm/default.xhtml"});
+		
+		Properties.setDefaultValues(InteractivityBlocker.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/blockUI/blockUI.xhtml"
+				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/blockUI/default.xhtml",Properties.CENTER_X,Boolean.TRUE,Properties.CENTER_Y,Boolean.TRUE});
 		
 		Properties.setDefaultValue(Command.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/command/commandButton.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/command/commandButton/default.xhtml");
@@ -115,11 +121,14 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(Notifications.class, Properties.SHOW_SUMMARY, Boolean.TRUE);
 		Properties.setDefaultValue(Notifications.class, Properties.SHOW_DETAIL, Boolean.FALSE);
 		Properties.setDefaultValue(Notifications.class, Properties.SHOW_ICON, Boolean.TRUE);
-		Properties.setDefaultValue(Notifications.class, Properties.REDISPLAY, Boolean.TRUE);
+		Properties.setDefaultValue(Notifications.class, Properties.REDISPLAY, Boolean.FALSE);
 		Properties.setDefaultValue(Notifications.class, Properties.ESCAPE, Boolean.FALSE);
 	
 		Properties.setDefaultValue(Request.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/ajax/ajaxStatus.xhtml");
 		Properties.setDefaultValue(Request.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml");
+		
+		Properties.setDefaultValues(Input.class, new Object[]{Properties.STRUCTURE_TEMPLATE
+				, "/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml"});
 		
 		Properties.setDefaultValue(InputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/input/text/oneline/inputText.xhtml");
 		Properties.setDefaultValue(InputText.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/input/text/oneline/default.xhtml");
@@ -141,7 +150,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					properties.setWidgetVar(RandomHelper.getInstance().getAlphabetic(10));
 				}
 				if(instance instanceof ConfirmationDialog){
-					//((ConfirmationDialog)instance).getPropertiesMap().setWidgetVar(RandomHelper.getInstance().getAlphabetic(10));
 					((ConfirmationDialog)instance).getYesCommand().getPropertiesMap().setType("button");
 					((ConfirmationDialog)instance).getYesCommand().getPropertiesMap().setStyleClass("ui-confirmdialog-yes");
 					((ConfirmationDialog)instance).getYesCommand().getPropertiesMap().setIcon("ui-icon-check");
@@ -161,21 +169,20 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				}else if(instance instanceof Request){
 					properties.setOnStart(PrimefacesJavascriptHelper.getInstance().getMethodCallShow(((Request)instance).getStatusDialog()));
 					properties.setOnComplete(PrimefacesJavascriptHelper.getInstance().getMethodCallHide(((Request)instance).getStatusDialog()));
-
 					((Request)instance).getStatusDialog().getPropertiesMap().setInclude("/org.cyk.ui.web.primefaces.resources/include/processingstatus/dialog/default.xhtml");
 					((Request)instance).getStatusDialog().getPropertiesMap().setMessage(StringHelper.getInstance().get("notification.request.status.processing", new Object[]{}));
 					((Request)instance).getStatusDialog().getPropertiesMap().setClosable(Boolean.FALSE);
 					((Request)instance).getStatusDialog().getPropertiesMap().setHeader("REQUEST STATUS HEADER HERE...");
 				}else if(instance instanceof Window){
-					properties.setContracts("defaultDesktop");
-					properties.setTemplate("/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml");
-					properties.setInclude("/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml");
-					
 					((Window)instance).getLayout().getPropertiesMap().setTemplate("/template/default.xhtml");
 				}else if(instance instanceof Form.Master){
-					properties.setTemplate("/org.cyk.ui.web.primefaces.resources/template/decorate/form.xhtml");
-					properties.setInclude("/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml");
+					Form.Master form = (Form.Master) instance;
+					form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
+					form.getSubmitCommand().getPropertiesMap().setUpdate(form.getDetail().getPropertiesMap().getIdentifier());
+					form.getSubmitCommand().getPropertiesMap().setType("submit");
+					form.getSubmitCommand().getPropertiesMap().setPartialSubmit(Boolean.TRUE);
 					
+					//setInteractivityBlocker(form, Boolean.TRUE);
 				}
 				
 			}
@@ -253,5 +260,21 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			return control.getClass().getSimpleName();
 		}
 		
+	}
+
+	public static void setInteractivityBlocker(Form.Master form,Boolean global){
+		form.getSubmitCommand().getPropertiesMap().setGlobal(global);
+		if(Boolean.TRUE.equals(global)){
+			form.getPropertiesMap().setInteractivityBlocker(null);
+		}else {
+			form.getPropertiesMap().setInteractivityBlocker(new InteractivityBlocker());
+			form.getSubmitCommand().getPropertiesMap().setOnStart(PrimefacesJavascriptHelper.getInstance()
+					.getMethodCallBlock(form.getPropertiesMap().getInteractivityBlocker()));
+			form.getSubmitCommand().getPropertiesMap().setOnComplete(PrimefacesJavascriptHelper.getInstance()
+					.getMethodCallUnBlock(form.getPropertiesMap().getInteractivityBlocker()));
+			
+			((InteractivityBlocker)form.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setSource(form.getSubmitCommand().getPropertiesMap().getIdentifier());
+			((InteractivityBlocker)form.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setTarget(form.getDetail().getPropertiesMap().getIdentifier());
+		}
 	}
 }

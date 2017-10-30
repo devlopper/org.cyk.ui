@@ -10,19 +10,6 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
 	<p:panelGrid columns="1">
-		<!--
-		<ui:decorate template="#{form.propertiesMap.header.propertiesMap.template}">
-		
-		</ui:decorate>
-		
-		<ui:decorate template="#{form.propertiesMap.body.propertiesMap.template}">
-		
-		</ui:decorate>
-		
-		<ui:decorate template="#{form.propertiesMap.footer.propertiesMap.template}">
-		
-		</ui:decorate>
-		-->
 		<ui:insert name="label">
 			<h:panelGroup rendered="#{form.label.propertiesMap.rendered}" >
 				<ui:decorate template="#{form.label.propertiesMap.template}">
@@ -42,17 +29,17 @@
 	 	<ui:insert name="menu">
 		    <h:panelGroup rendered="#{form.menu.propertiesMap.rendered}">
 				
-				<!--ui:decorate template="#{form.menu.propertiesMap.template}">
-			 		<ui:param name="menu" value="#{form.menu}" />
-			 	</ui:decorate--> 
-			 	
 			 	<ui:decorate template="#{form.submitCommand.propertiesMap.template}">
  					<ui:param name="commandButton" value="#{form.submitCommand}" />
- 					
+ 					<ui:param name="executeParameter" value="FormParamValue"/>
  				</ui:decorate> 
 			 	 
 			</h:panelGroup>
 		</ui:insert>
 	</p:panelGrid>
+	
+	<ui:decorate template="#{form.propertiesMap.interactivityBlocker == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : form.propertiesMap.interactivityBlocker.propertiesMap.template}">
+		<ui:param name="blockUI" value="#{form.propertiesMap.interactivityBlocker}"/>
+	</ui:decorate>
 	
 </ui:composition>

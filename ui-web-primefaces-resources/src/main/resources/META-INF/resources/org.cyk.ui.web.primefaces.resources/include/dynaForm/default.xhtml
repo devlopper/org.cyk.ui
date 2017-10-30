@@ -14,11 +14,16 @@
 	<ui:param name="identifier" value="inputText"/>
 	<ui:param name="type" value="InputText"/>
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
-		<ui:decorate template="#{primefacesResourcesManager.inputTextDefaultTemplate}">
-		 	<ui:param name="input" value="#{control}" />
-		</ui:decorate>
+	<ui:decorate template="/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml">
+		<ui:define name="input">
+			
+				<ui:decorate template="#{primefacesResourcesManager.inputTextDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>		
+			
+		</ui:define>
+	</ui:decorate>
 	</pe:dynaFormControl>
-	
 	<ui:param name="identifier" value="inputTextarea"/>
 	<ui:param name="type" value="InputTextarea"/>
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">

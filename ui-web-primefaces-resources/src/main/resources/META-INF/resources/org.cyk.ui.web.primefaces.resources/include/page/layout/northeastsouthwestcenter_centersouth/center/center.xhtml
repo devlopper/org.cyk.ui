@@ -16,7 +16,7 @@
 		</ui:insert>
 	</f:facet>
 	
-	<h:form>
+	<h:form id="form">
 		<ui:insert name="centerCenterNotifications">
 			<ui:include src="/org.cyk.ui.web.primefaces.resources/include/notification/default.xhtml">
 				<ui:param name="dialog" value="#{page.notificationDialog}"/>
@@ -33,8 +33,5 @@
 			</ui:include>
 		</ui:insert>
 	</h:form>
-	
-	
-	
 	
 </ui:composition>
