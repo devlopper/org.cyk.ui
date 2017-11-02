@@ -7,11 +7,16 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<p:inputTextarea 
+	<p:selectBooleanButton
 		id="#{identifier}" 
 		widgetVar="#{input.propertiesMap.widgetVar}"
 		
 		value="#{input.value}" 
+		onLabel="#{input.propertiesMap.onLabel}" 
+		onIcon="#{input.propertiesMap.onIcon}" 
+		offLabel="#{input.propertiesMap.offLabel}" 
+		offIcon="#{input.propertiesMap.offIcon}"
+		
 		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
 		requiredMessage="#{input.propertiesMap.requiredMessage}"
 		
@@ -25,19 +30,9 @@
 		
 		onchange="#{input.propertiesMap.onChange}" 
 		onclick="#{input.propertiesMap.onClick}"
+		
 	>
 		<ui:include src="#{input.propertiesMap.include}" />
-	
-	</p:inputTextarea>	
-	
-	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__bottom__.xhtml">
-		
-	</ui:include>
-	
-	<!-- 
-		pt:placeholder="#{input.propertiesMap.placeholder}"
-		converter="#{input.propertiesMap.converter}" 
-		validator="#{input.propertiesMap.validator}" 
-	 -->
+	</p:selectBooleanButton>
 	
 </ui:composition>

@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api;
+package org.cyk.ui.web.api.resources;
 
 import java.io.Serializable;
 
@@ -6,10 +6,9 @@ import javax.faces.model.SelectItem;
 
 import org.cyk.utility.common.helper.SelectItemHelper.Builder.One;
 
-@Deprecated
 public class SelectItemHelper {
-	@Deprecated
-	public static class OneBuilder extends org.cyk.ui.api.helper.SelectItemHelper.OneBuilder<SelectItem> implements Serializable{
+
+	public static class OneBuilder extends org.cyk.ui.api.resources.SelectItemHelper.OneBuilder<SelectItem> implements Serializable{
 		private static final long serialVersionUID = 1L;
 
 		public OneBuilder() {

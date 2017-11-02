@@ -1,12 +1,16 @@
 package org.cyk.ui.web.primefaces.resources;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.web.api.resources.ObjectConverter;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -17,8 +21,11 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.helper.RandomHelper;
+import org.cyk.utility.common.helper.SelectItemHelper;
 import org.cyk.utility.common.helper.StringHelper;
+import org.cyk.utility.common.helper.StringHelper.CaseType;
 import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
@@ -28,8 +35,29 @@ import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target
 import org.cyk.utility.common.userinterface.container.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
 import org.cyk.utility.common.userinterface.input.Input;
+import org.cyk.utility.common.userinterface.input.InputBooleanButton;
+import org.cyk.utility.common.userinterface.input.InputBooleanCheckBox;
+import org.cyk.utility.common.userinterface.input.InputCalendar;
+import org.cyk.utility.common.userinterface.input.InputEditor;
+import org.cyk.utility.common.userinterface.input.InputNumber;
+import org.cyk.utility.common.userinterface.input.InputPassword;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.cyk.utility.common.userinterface.input.InputTextarea;
+import org.cyk.utility.common.userinterface.input.Watermark;
+import org.cyk.utility.common.userinterface.input.choice.InputChoice;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyAutoComplete;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyButton;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyCheck;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyCombo;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyList;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceManyPickList;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneAutoComplete;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneButton;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneCascadeList;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneCombo;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneList;
+import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
+import org.cyk.utility.common.userinterface.input.choice.SelectItems;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
@@ -38,6 +66,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+import org.primefaces.model.DualListModel;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +104,11 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(InteractivityBlocker.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/blockUI/blockUI.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/blockUI/default.xhtml",Properties.CENTER_X,Boolean.TRUE,Properties.CENTER_Y,Boolean.TRUE});
+		/*
+		Properties.setDefaultValues(Watermark.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/watermark/watermark.xhtml"
+				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/watermark/default.xhtml"});
+		*/
+		setComponentTemplateAndIncludeDefaultValues(Watermark.class, "support");
 		
 		Properties.setDefaultValue(Command.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/command/commandButton.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/command/commandButton/default.xhtml");
@@ -130,13 +164,39 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(Input.class, new Object[]{Properties.STRUCTURE_TEMPLATE
 				, "/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml"});
 		
-		Properties.setDefaultValue(InputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/input/text/oneline/inputText.xhtml");
-		Properties.setDefaultValue(InputText.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/input/text/oneline/default.xhtml");
-		Properties.setDefaultValue(InputText.class, Properties.TYPE, "InputText");
+		setInputDefaultValues(InputText.class, "text/oneline");
+		setInputDefaultValues(InputPassword.class, "text/oneline",Boolean.TRUE);
 		
-		Properties.setDefaultValue(InputTextarea.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/input/text/manyline/inputTextarea.xhtml");
-		Properties.setDefaultValue(InputTextarea.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/input/text/manyline/inputTextarea/default.xhtml");
-		Properties.setDefaultValue(InputTextarea.class, Properties.TYPE, "InputTextarea");
+		setInputDefaultValues(InputTextarea.class, "text/manyline");
+		setInputDefaultValues(InputEditor.class, "text/manyline",Boolean.TRUE);
+		
+		setInputDefaultValues(InputBooleanCheckBox.class, "choice/one/boolean","selectBooleanCheckBox");
+		
+		setInputDefaultValues(InputBooleanButton.class, "choice/one/boolean","selectBooleanButton");
+		Properties.setDefaultValues(InputBooleanButton.class, new Object[]{Properties.ON_LABEL, StringHelper.getInstance().getResponse(Boolean.TRUE)
+				,Properties.OFF_LABEL,StringHelper.getInstance().getResponse(Boolean.FALSE)});
+		
+		setInputDefaultValues(InputNumber.class, "number");
+		
+		setInputDefaultValues(InputCalendar.class, "time",Boolean.TRUE);
+		
+		Properties.setDefaultValues(InputChoice.class, new Object[]{Properties.CONVERTER, ObjectConverter.getInstance()
+				,Properties.SELECT_ITEM_WRAPPABLE, Boolean.TRUE});
+		setInputDefaultValues(InputChoiceOneAutoComplete.class, "choice","autoComplete");
+		setInputDefaultValues(InputChoiceOneCombo.class, "choice/one","selectOneMenu");
+		setInputDefaultValues(InputChoiceOneList.class, "choice/one","selectOneListbox");
+		setInputDefaultValues(InputChoiceOneButton.class, "choice/one","selectOneButton");
+		setInputDefaultValues(InputChoiceOneRadio.class, "choice/one","selectOneRadio");
+		setInputDefaultValues(InputChoiceOneCascadeList.class, "choice/one","multiSelectListbox");
+		
+		setInputDefaultValues(InputChoiceManyAutoComplete.class, "choice","autoComplete");
+		setInputDefaultValues(InputChoiceManyButton.class, "choice/many","selectManyButton");
+		setInputDefaultValues(InputChoiceManyCheck.class, "choice/many","selectManyCheckbox");
+		setInputDefaultValues(InputChoiceManyList.class, "choice/many","selectManyMenu");
+		setInputDefaultValues(InputChoiceManyCombo.class, "choice/many","selectCheckboxMenu");
+		Properties.setDefaultValues(InputChoiceManyCombo.class, new Object[]{Properties.LABEL, StringHelper.getInstance().getWord("choice", Boolean.TRUE, Boolean.TRUE)});
+		setInputDefaultValues(InputChoiceManyPickList.class, "choice/many","pickList");
+		Properties.setDefaultValues(InputChoiceManyPickList.class, new Object[]{Properties.SELECT_ITEM_WRAPPABLE, Boolean.FALSE});
 		
 		Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(FormBuilderBasedOnDynamicForm.class);
 	
@@ -148,6 +208,13 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				super.propertiesMapInstanciated(instance,properties);
 				if(instance instanceof Component){
 					properties.setWidgetVar(RandomHelper.getInstance().getAlphabetic(10));
+				}else if(instance instanceof SelectItems){
+					/*properties.setGetter(Properties.LABEL, new Properties.Getter() {
+						@Override
+						public Object execute(Properties properties, Object key, Object nullValue) {
+							return CollectionHelper.getInstance().getSize(FacesContext.getCurrentInstance().getMessageList()) > 0;
+						}
+					});*/
 				}
 				if(instance instanceof ConfirmationDialog){
 					((ConfirmationDialog)instance).getYesCommand().getPropertiesMap().setType("button");
@@ -183,13 +250,21 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					form.getSubmitCommand().getPropertiesMap().setPartialSubmit(Boolean.TRUE);
 					
 					//setInteractivityBlocker(form, Boolean.TRUE);
+				}else if(instance instanceof InputChoiceManyPickList){
+					if(((InputChoiceManyPickList)instance).getChoices().getElements() == null)
+						((InputChoiceManyPickList)instance).getChoices().setElements(new ArrayList<Object>());
+					if(((InputChoiceManyPickList)instance).getValue() == null)
+						((InputChoiceManyPickList)instance).setValue(new ArrayList<Object>());
+					properties.setDualListModel(new DualListModel<Object>((List<Object>) ((InputChoiceManyPickList)instance).getChoices().getElements()
+							, (List<Object>) ((InputChoiceManyPickList)instance).getValue()));
 				}
 				
 			}
 		});
 		
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
-	
+		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
+		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
 			
@@ -210,13 +285,131 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			}
 		});
 	}
-		
+	/*
+	public static final String CONTROL_TEMPLATE_FORMAT = "/org.cyk.ui.web.primefaces.resources/template/decorate/%s/%s/%s.xhtml";
+	public static final String CONTROL_INCLUDE_FORMAT = "/org.cyk.ui.web.primefaces.resources/include/%s/%s/default.xhtml";
+	*/
+	
+	public static final String COMPONENT_TEMPLATE_FORMAT = "/org.cyk.ui.web.primefaces.resources/template/decorate/%s/%s/%s.xhtml";
+	public static final String COMPONENT_INCLUDE_FORMAT = "/org.cyk.ui.web.primefaces.resources/include/%s/%s/%s/default.xhtml";
+	
+	protected static <COMPONENT extends Component> void setComponentTemplateAndIncludeDefaultValues(Class<COMPONENT> aClass,String family,String relativePath,String fileName){
+		Properties.setDefaultValues(aClass, new Object[]{
+				Properties.TEMPLATE, String.format(COMPONENT_TEMPLATE_FORMAT, family,relativePath,fileName)
+				, Properties.INCLUDE, String.format(COMPONENT_INCLUDE_FORMAT, family,relativePath,fileName)
+				, Properties.TYPE, getComponentTypeForDynaForm(aClass)
+			});
+	}
+	
+	protected static <COMPONENT extends Component> void setComponentTemplateAndIncludeDefaultValues(Class<COMPONENT> aClass,String family,String relativePath){
+		setComponentTemplateAndIncludeDefaultValues(aClass, family, relativePath, getTemplateFileName(aClass));
+	}
+	
+	protected static <COMPONENT extends Component> void setComponentTemplateAndIncludeDefaultValues(Class<COMPONENT> aClass,String family){
+		setComponentTemplateAndIncludeDefaultValues(aClass, family, aClass.getSimpleName().toLowerCase());
+	}
+	
+	protected static <CONTROL extends Control> void setInputDefaultValues(Class<CONTROL> aClass,String relativePath,String fileName){
+		setComponentTemplateAndIncludeDefaultValues(aClass,"input",relativePath,fileName);
+	}
+	
+	protected static <CONTROL extends Control> void setInputDefaultValues(Class<CONTROL> aClass,String relativePath,Boolean removeInputPrefixFromFileName){
+		String fileName = getTemplateFileName(aClass);
+		if(Boolean.TRUE.equals(removeInputPrefixFromFileName))
+			fileName = getTemplateFileNameFromClassName(StringUtils.substringAfter(fileName, "input"));
+		setInputDefaultValues(aClass, relativePath,  fileName );
+	}
+	
+	protected static <CONTROL extends Control> void setInputDefaultValues(Class<CONTROL> aClass,String relativePath){
+		setInputDefaultValues(aClass, relativePath, getTemplateFileName(aClass));
+	}
+	
+	protected static <CONTROL extends Control> void setOutputDefaultValues(Class<CONTROL> aClass,String relativePath){
+		setComponentTemplateAndIncludeDefaultValues(aClass,"output",relativePath);
+	}
+	
+	public Object getWatermarkDefaultTemplate(){
+		return Properties.getDefaultValue(Watermark.class, Properties.TEMPLATE);
+	}
+	
 	public Object getInputTextDefaultTemplate(){
 		return Properties.getDefaultValue(InputText.class, Properties.TEMPLATE);
 	}
 	
 	public Object getInputTextareaDefaultTemplate(){
 		return Properties.getDefaultValue(InputTextarea.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputCalendarDefaultTemplate(){
+		return Properties.getDefaultValue(InputCalendar.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputPasswordDefaultTemplate(){
+		return Properties.getDefaultValue(InputPassword.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputEditorDefaultTemplate(){
+		return Properties.getDefaultValue(InputEditor.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputNumberDefaultTemplate(){
+		return Properties.getDefaultValue(InputNumber.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputBooleanCheckBoxDefaultTemplate(){
+		return Properties.getDefaultValue(InputBooleanCheckBox.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputBooleanButtonDefaultTemplate(){
+		return Properties.getDefaultValue(InputBooleanButton.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneAutoCompleteDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneAutoComplete.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneComboDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneCombo.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneListDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneList.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneButtonDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneButton.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneRadioDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneRadio.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneCascadeListDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceOneCascadeList.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyAutoCompleteDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyAutoComplete.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyCheckDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyCheck.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyButtonDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyButton.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyComboDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyCombo.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyPickListDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyPickList.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceManyListDefaultTemplate(){
+		return Properties.getDefaultValue(InputChoiceManyList.class, Properties.TEMPLATE);
 	}
 	
 	public String getFacesMessageSeverityAsString(FacesMessage facesMessage){
@@ -227,6 +420,18 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		case 3:return "fatal";
 		default: return "info";
 		}
+	}
+	
+	public static String getComponentTypeForDynaForm(Class<?> aClass){
+		return aClass.getSimpleName();
+	}
+	
+	public static String getTemplateFileName(Class<?> aClass){
+		return getTemplateFileNameFromClassName(aClass.getSimpleName());
+	}
+	
+	public static String getTemplateFileNameFromClassName(String classSimpleName){
+		return StringHelper.getInstance().applyCaseType(classSimpleName,CaseType.FL);
 	}
 	
 	/**/
@@ -257,7 +462,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		@Override
 		public String getType(org.cyk.utility.common.userinterface.Control control) {
-			return control.getClass().getSimpleName();
+			return getComponentTypeForDynaForm(control.getClass());
 		}
 		
 	}

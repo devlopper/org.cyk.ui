@@ -11,25 +11,343 @@
 	
 	<!-- #{primefacesResourcesManager.inputTextDefaultTemplate}  -->
 	
+	<ui:param name="template" value="/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml"/>
+	
+	<!-- Inputs -->
+	
 	<ui:param name="identifier" value="inputText"/>
 	<ui:param name="type" value="InputText"/>
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
-	<ui:decorate template="/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml">
-		<ui:define name="input">
-			
+		<ui:decorate template="#{template}">
+			<ui:define name="input">			
 				<ui:decorate template="#{primefacesResourcesManager.inputTextDefaultTemplate}">
-				 	<ui:param name="input" value="#{control}" />
+					 <ui:param name="input" value="#{control}" />
 				</ui:decorate>		
-			
-		</ui:define>
-	</ui:decorate>
+			</ui:define>
+		</ui:decorate>
 	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputPassword"/>
+	<ui:param name="type" value="InputPassword"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputPasswordDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
 	<ui:param name="identifier" value="inputTextarea"/>
 	<ui:param name="type" value="InputTextarea"/>
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
-		<ui:decorate template="#{primefacesResourcesManager.inputTextareaDefaultTemplate}">
-		 	<ui:param name="input" value="#{control}" />
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputTextareaDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
 		</ui:decorate>
 	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputEditor"/>
+	<ui:param name="type" value="InputEditor"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputEditorDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputNumber"/>
+	<ui:param name="type" value="InputNumber"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputNumberDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputBooleanCheckBox"/>
+	<ui:param name="type" value="InputBooleanCheckBox"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputBooleanCheckBoxDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputBooleanButton"/>
+	<ui:param name="type" value="InputBooleanButton"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputBooleanButtonDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputCalendar"/>
+	<ui:param name="type" value="InputCalendar"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputCalendarDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<!-- One choice -->
+	
+	<ui:param name="identifier" value="inputChoiceOneAutoComplete"/>
+	<ui:param name="type" value="InputChoiceOneAutoComplete"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneAutoCompleteDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceOneCombo"/>
+	<ui:param name="type" value="InputChoiceOneCombo"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneComboDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>	
+	
+	<ui:param name="identifier" value="inputChoiceOneList"/>
+	<ui:param name="type" value="InputChoiceOneList"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneListDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+				
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceOneButton"/>
+	<ui:param name="type" value="InputChoiceOneButton"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneButtonDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceOneRadio"/>
+	<ui:param name="type" value="InputChoiceOneRadio"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneRadioDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceOneCascadeList"/>
+	<ui:param name="type" value="InputChoiceOneCascadeList"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneCascadeListDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<!-- Many Choices -->
+	
+	<ui:param name="identifier" value="inputChoiceManyAutoComplete"/>
+	<ui:param name="type" value="InputChoiceManyAutoComplete"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyAutoCompleteDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceManyCheck"/>
+	<ui:param name="type" value="InputChoiceManyCheck"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyCheckDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceManyCombo"/>
+	<ui:param name="type" value="InputChoiceManyCombo"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyComboDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceManyList"/>
+	<ui:param name="type" value="InputChoiceManyList"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyListDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceManyPickList"/>
+	<ui:param name="type" value="InputChoiceManyPickList"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyPickListDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="inputChoiceManyButton"/>
+	<ui:param name="type" value="InputChoiceManyButton"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyButtonDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<!-- Outputs -->
 	
 </ui:composition>

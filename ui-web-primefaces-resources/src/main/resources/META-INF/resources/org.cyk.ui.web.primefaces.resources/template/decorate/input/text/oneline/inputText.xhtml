@@ -9,17 +9,20 @@
 	
 	<p:inputText 
 		id="#{identifier}" 
+		widgetVar="#{input.propertiesMap.widgetVar}"
+		
 		value="#{input.value}" 
+		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
+		requiredMessage="#{input.propertiesMap.requiredMessage}"
+		
+		label="#{input.propertiesMap.label}"
+		title="#{input.propertiesMap.title}" 
+		
+		disabled="#{input.propertiesMap.disabled}"
+		
 		style="#{input.propertiesMap.style}" 
 		styleClass="#{input.propertiesMap.styleClass}" 
-		widgetVar="#{input.propertiesMap.widgetVar}"
-		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
 		
-		title="#{input.propertiesMap.title}" 
-		disabled="#{input.propertiesMap.disabled}"
-		requiredMessage="#{input.propertiesMap.requiredMessage}" 
-		pt:placeholder="#{input.propertiesMap.placeholder}" 
-		label="#{input.propertiesMap.label}" 
 		onchange="#{input.propertiesMap.onChange}" 
 		onclick="#{input.propertiesMap.onClick}"  
 	>
@@ -27,9 +30,8 @@
 	
 	</p:inputText>	
 	
-	<!-- 
-		converter="#{input.propertiesMap.converter}" 
-		validator="#{input.propertiesMap.validator}" 
-	 -->
+	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__bottom__.xhtml">
+		
+	</ui:include>
 	
 </ui:composition>
