@@ -39,6 +39,7 @@ import org.cyk.utility.common.userinterface.input.InputBooleanButton;
 import org.cyk.utility.common.userinterface.input.InputBooleanCheckBox;
 import org.cyk.utility.common.userinterface.input.InputCalendar;
 import org.cyk.utility.common.userinterface.input.InputEditor;
+import org.cyk.utility.common.userinterface.input.InputFile;
 import org.cyk.utility.common.userinterface.input.InputNumber;
 import org.cyk.utility.common.userinterface.input.InputPassword;
 import org.cyk.utility.common.userinterface.input.InputText;
@@ -198,6 +199,11 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		setInputDefaultValues(InputChoiceManyPickList.class, "choice/many","pickList");
 		Properties.setDefaultValues(InputChoiceManyPickList.class, new Object[]{Properties.SELECT_ITEM_WRAPPABLE, Boolean.FALSE});
 		
+		setInputDefaultValues(InputFile.class, "file","fileUpload");
+		Properties.setDefaultValues(InputFile.class, new Object[]{Properties.PREVIEW_WIDTH, 150
+				,Properties.PREVIEW_HEIGHT,150,Properties.MODE,"simple",Properties.PREVIEWABLE,Boolean.FALSE,Properties.CLEARABLE,Boolean.FALSE
+				,Properties.SKIN_SIMPLE,Boolean.TRUE});
+		
 		Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(FormBuilderBasedOnDynamicForm.class);
 	
 		BeanListener.COLLECTION.add(new BeanListener.Adapter(){
@@ -257,6 +263,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 						((InputChoiceManyPickList)instance).setValue(new ArrayList<Object>());
 					properties.setDualListModel(new DualListModel<Object>((List<Object>) ((InputChoiceManyPickList)instance).getChoices().getElements()
 							, (List<Object>) ((InputChoiceManyPickList)instance).getValue()));
+				}else if(instance instanceof InputFile){
+					((Command)properties.getClearCommand()).getPropertiesMap().setProcess("@this");
 				}
 				
 			}
@@ -410,6 +418,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getInputChoiceManyListDefaultTemplate(){
 		return Properties.getDefaultValue(InputChoiceManyList.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputFileDefaultTemplate(){
+		return Properties.getDefaultValue(InputFile.class, Properties.TEMPLATE);
 	}
 	
 	public String getFacesMessageSeverityAsString(FacesMessage facesMessage){

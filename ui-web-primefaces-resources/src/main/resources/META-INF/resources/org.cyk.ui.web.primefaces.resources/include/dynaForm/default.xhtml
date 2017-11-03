@@ -348,6 +348,18 @@
 		</ui:decorate>
 	</pe:dynaFormControl>
 	
+	<ui:param name="identifier" value="inputFile"/>
+	<ui:param name="type" value="InputFile"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{template}">
+			<ui:define name="input">
+				<ui:decorate template="#{primefacesResourcesManager.inputFileDefaultTemplate}">
+				 	<ui:param name="input" value="#{control}" />
+				</ui:decorate>
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
 	<!-- Outputs -->
 	
 </ui:composition>
