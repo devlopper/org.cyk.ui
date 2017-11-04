@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.web.api.resources.NumberConverter;
 import org.cyk.ui.web.api.resources.ObjectConverter;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
@@ -40,7 +41,6 @@ import org.cyk.utility.common.userinterface.input.InputBooleanCheckBox;
 import org.cyk.utility.common.userinterface.input.InputCalendar;
 import org.cyk.utility.common.userinterface.input.InputEditor;
 import org.cyk.utility.common.userinterface.input.InputFile;
-import org.cyk.utility.common.userinterface.input.InputNumber;
 import org.cyk.utility.common.userinterface.input.InputPassword;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.cyk.utility.common.userinterface.input.InputTextarea;
@@ -59,6 +59,7 @@ import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneCombo;
 import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneList;
 import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
 import org.cyk.utility.common.userinterface.input.choice.SelectItems;
+import org.cyk.utility.common.userinterface.input.number.InputNumber;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
@@ -181,7 +182,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		setInputDefaultValues(InputCalendar.class, "time",Boolean.TRUE);
 		
-		Properties.setDefaultValues(InputChoice.class, new Object[]{Properties.CONVERTER, ObjectConverter.getInstance()
+		Properties.setDefaultValues(InputChoice.class, new Object[]{Properties.CONVERTER, inject(ObjectConverter.class)
 				,Properties.SELECT_ITEM_WRAPPABLE, Boolean.TRUE});
 		setInputDefaultValues(InputChoiceOneAutoComplete.class, "choice","autoComplete");
 		setInputDefaultValues(InputChoiceOneCombo.class, "choice/one","selectOneMenu");
@@ -256,15 +257,27 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					form.getSubmitCommand().getPropertiesMap().setPartialSubmit(Boolean.TRUE);
 					
 					//setInteractivityBlocker(form, Boolean.TRUE);
-				}else if(instance instanceof InputChoiceManyPickList){
-					if(((InputChoiceManyPickList)instance).getChoices().getElements() == null)
-						((InputChoiceManyPickList)instance).getChoices().setElements(new ArrayList<Object>());
-					if(((InputChoiceManyPickList)instance).getValue() == null)
-						((InputChoiceManyPickList)instance).setValue(new ArrayList<Object>());
-					properties.setDualListModel(new DualListModel<Object>((List<Object>) ((InputChoiceManyPickList)instance).getChoices().getElements()
-							, (List<Object>) ((InputChoiceManyPickList)instance).getValue()));
+				}else if(instance instanceof InputChoice<?>){
+					/*properties.setGetter(Properties.CONVERTER, new Properties.Getter() {
+						@Override
+						public Object execute(Properties properties, Object key, Object nullValue) {
+							return inject(ObjectConverter.class);//.getInstance();
+						}
+					});*/
+					
+					if(instance instanceof InputChoiceManyPickList){
+						if(((InputChoiceManyPickList)instance).getChoices().getElements() == null)
+							((InputChoiceManyPickList)instance).getChoices().setElements(new ArrayList<Object>());
+						if(((InputChoiceManyPickList)instance).getValue() == null)
+							((InputChoiceManyPickList)instance).setValue(new ArrayList<Object>());
+						((InputChoiceManyPickList)instance).setValueObject(new DualListModel<Object>((List<Object>) ((InputChoiceManyPickList)instance).getChoices().getElements()
+								, (List<Object>) ((InputChoiceManyPickList)instance).getValue()));
+					}
+					
 				}else if(instance instanceof InputFile){
 					((Command)properties.getClearCommand()).getPropertiesMap().setProcess("@this");
+				}else if(instance instanceof InputNumber){
+					
 				}
 				
 			}
@@ -272,6 +285,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
+		InputChoiceManyPickList.DEFAULT_CLASS = org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class;
 		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
@@ -435,6 +449,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	}
 	
 	public static String getComponentTypeForDynaForm(Class<?> aClass){
+		if(ClassHelper.getInstance().isInstanceOf(InputNumber.class,aClass))
+			aClass = InputNumber.class;
 		return aClass.getSimpleName();
 	}
 	
