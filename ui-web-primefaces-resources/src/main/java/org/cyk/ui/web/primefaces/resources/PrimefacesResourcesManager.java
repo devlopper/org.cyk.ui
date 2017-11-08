@@ -10,8 +10,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.ui.web.api.resources.NumberConverter;
-import org.cyk.ui.web.api.resources.ObjectConverter;
+import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
+import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -20,6 +20,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.helper.RandomHelper;
 import org.cyk.utility.common.helper.SelectItemHelper;
@@ -27,6 +28,7 @@ import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.helper.StringHelper.CaseType;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.Control;
+import org.cyk.utility.common.userinterface.Image;
 import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
@@ -64,6 +66,7 @@ import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
 import org.cyk.utility.common.userinterface.panel.NotificationDialog;
+import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -90,8 +93,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		return INSTANCE;
 	}
 	
-	static {
-		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
+	public void initialize(){
+StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"defaultDesktop",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
@@ -106,11 +109,15 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(InteractivityBlocker.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/blockUI/blockUI.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/blockUI/default.xhtml",Properties.CENTER_X,Boolean.TRUE,Properties.CENTER_Y,Boolean.TRUE});
+		
+		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/support/image/graphicImage.xhtml"
+				,Properties.ALT,"Image"});
 		/*
 		Properties.setDefaultValues(Watermark.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/watermark/watermark.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/watermark/default.xhtml"});
 		*/
 		setComponentTemplateAndIncludeDefaultValues(Watermark.class, "support");
+		//setComponentTemplateAndIncludeDefaultValues(Image.class, "support");
 		
 		Properties.setDefaultValue(Command.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/command/commandButton.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/command/commandButton/default.xhtml");
@@ -182,8 +189,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		setInputDefaultValues(InputCalendar.class, "time",Boolean.TRUE);
 		
-		Properties.setDefaultValues(InputChoice.class, new Object[]{Properties.CONVERTER, inject(ObjectConverter.class)
-				,Properties.SELECT_ITEM_WRAPPABLE, Boolean.TRUE});
+		Properties.setDefaultValues(InputChoice.class, new Object[]{Properties.SELECT_ITEM_WRAPPABLE, Boolean.TRUE});
 		setInputDefaultValues(InputChoiceOneAutoComplete.class, "choice","autoComplete");
 		setInputDefaultValues(InputChoiceOneCombo.class, "choice/one","selectOneMenu");
 		setInputDefaultValues(InputChoiceOneList.class, "choice/one","selectOneListbox");
@@ -192,6 +198,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		setInputDefaultValues(InputChoiceOneCascadeList.class, "choice/one","multiSelectListbox");
 		
 		setInputDefaultValues(InputChoiceManyAutoComplete.class, "choice","autoComplete");
+		Properties.setDefaultValues(InputChoiceManyAutoComplete.class, new Object[]{Properties.MULTIPLE, Boolean.TRUE});
 		setInputDefaultValues(InputChoiceManyButton.class, "choice/many","selectManyButton");
 		setInputDefaultValues(InputChoiceManyCheck.class, "choice/many","selectManyCheckbox");
 		setInputDefaultValues(InputChoiceManyList.class, "choice/many","selectManyMenu");
@@ -201,8 +208,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(InputChoiceManyPickList.class, new Object[]{Properties.SELECT_ITEM_WRAPPABLE, Boolean.FALSE});
 		
 		setInputDefaultValues(InputFile.class, "file","fileUpload");
-		Properties.setDefaultValues(InputFile.class, new Object[]{Properties.PREVIEW_WIDTH, 150
-				,Properties.PREVIEW_HEIGHT,150,Properties.MODE,"simple",Properties.PREVIEWABLE,Boolean.FALSE,Properties.CLEARABLE,Boolean.FALSE
+		Properties.setDefaultValues(InputFile.class, new Object[]{Properties.MODE,"simple",Properties.PREVIEWABLE,Boolean.TRUE,Properties.CLEARABLE,Boolean.TRUE
 				,Properties.SKIN_SIMPLE,Boolean.TRUE});
 		
 		Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(FormBuilderBasedOnDynamicForm.class);
@@ -215,6 +221,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				super.propertiesMapInstanciated(instance,properties);
 				if(instance instanceof Component){
 					properties.setWidgetVar(RandomHelper.getInstance().getAlphabetic(10));
+					properties.setIdentifierAsStyleClass(RandomHelper.getInstance().getAlphabetic(10));
+					properties.addString(Properties.STYLE_CLASS, (String)properties.getIdentifierAsStyleClass());
 				}else if(instance instanceof SelectItems){
 					/*properties.setGetter(Properties.LABEL, new Properties.Getter() {
 						@Override
@@ -258,12 +266,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 					//setInteractivityBlocker(form, Boolean.TRUE);
 				}else if(instance instanceof InputChoice<?>){
-					/*properties.setGetter(Properties.CONVERTER, new Properties.Getter() {
-						@Override
-						public Object execute(Properties properties, Object key, Object nullValue) {
-							return inject(ObjectConverter.class);//.getInstance();
-						}
-					});*/
+					properties.setConverter(new ObjectIdentifierConverter());
 					
 					if(instance instanceof InputChoiceManyPickList){
 						if(((InputChoiceManyPickList)instance).getChoices().getElements() == null)
@@ -272,20 +275,46 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 							((InputChoiceManyPickList)instance).setValue(new ArrayList<Object>());
 						((InputChoiceManyPickList)instance).setValueObject(new DualListModel<Object>((List<Object>) ((InputChoiceManyPickList)instance).getChoices().getElements()
 								, (List<Object>) ((InputChoiceManyPickList)instance).getValue()));
+					}else if(instance instanceof InputChoiceOneAutoComplete){
+						properties.setConverter(new ObjectLabelConverter());
+					}else if(instance instanceof InputChoiceManyAutoComplete){
+						properties.setConverter(new ObjectLabelConverter());
 					}
 					
 				}else if(instance instanceof InputFile){
-					((Command)properties.getClearCommand()).getPropertiesMap().setProcess("@this");
+					//((Command)properties.getClearCommand()).getPropertiesMap().setProcess("@this");
+					//((Command)properties.getClearCommand()).getPropertiesMap().setOnClick("");
+					
+					Image previewImage = (Image) properties.getPreviewImageComponent();
+					previewImage.getPropertiesMap().setValue("/"+"playground-primefaces-6_1"+"/javax.faces.resource/images/icons/128/camera.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
+					
+					properties.setOnChange(JavaScriptHelper.getInstance().getFunctionCallPreview("this",JavaScriptHelper.getInstance()
+							.formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())
+							,JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass()) ));
+					
+					((Command)properties.getClearCommand()).getPropertiesMap().setValue(null);
+					((Command)properties.getClearCommand()).getPropertiesMap().setIcon("fa fa-eraser");
+					((Command)properties.getClearCommand()).getPropertiesMap().setType("button");
+					((Command)properties.getClearCommand()).getPropertiesMap().setOnClick(JavaScriptHelper.getInstance().getFunctionCallResetInputFile(
+							JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass())
+							,JavaScriptHelper.getInstance().formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())
+							,JavaScriptHelper.getInstance().formatParameterString(previewImage.getPropertiesMap().getValue()) ));
+					
+					//properties.setOnChange(properties.getOnChange()+";alert('update clear button');");
+					
+					
+					
 				}else if(instance instanceof InputNumber){
 					
-				}
+				}		
 				
 			}
 		});
 		
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
-		InputChoiceManyPickList.DEFAULT_CLASS = org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class;
+		ClassHelper.getInstance().map(InputChoiceManyPickList.class, org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class);
+		ClassHelper.getInstance().map(InputFile.class, org.cyk.ui.web.primefaces.resources.input.InputFile.class);
 		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
@@ -307,11 +336,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			}
 		});
 	}
-	/*
-	public static final String CONTROL_TEMPLATE_FORMAT = "/org.cyk.ui.web.primefaces.resources/template/decorate/%s/%s/%s.xhtml";
-	public static final String CONTROL_INCLUDE_FORMAT = "/org.cyk.ui.web.primefaces.resources/include/%s/%s/default.xhtml";
-	*/
-	
+		
 	public static final String COMPONENT_TEMPLATE_FORMAT = "/org.cyk.ui.web.primefaces.resources/template/decorate/%s/%s/%s.xhtml";
 	public static final String COMPONENT_INCLUDE_FORMAT = "/org.cyk.ui.web.primefaces.resources/include/%s/%s/%s/default.xhtml";
 	
@@ -350,8 +375,16 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		setComponentTemplateAndIncludeDefaultValues(aClass,"output",relativePath);
 	}
 	
+	public Object getImageDefaultTemplate(){
+		return Properties.getDefaultValue(Image.class, Properties.TEMPLATE);
+	}
+	
 	public Object getWatermarkDefaultTemplate(){
 		return Properties.getDefaultValue(Watermark.class, Properties.TEMPLATE);
+	}
+	
+	public Object getCommandDefaultTemplate(){
+		return Properties.getDefaultValue(Command.class, Properties.TEMPLATE);
 	}
 	
 	public Object getInputTextDefaultTemplate(){

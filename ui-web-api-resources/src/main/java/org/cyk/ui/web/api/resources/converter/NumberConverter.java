@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.resources;
+package org.cyk.ui.web.api.resources.converter;
 import java.io.Serializable;
 
 import javax.faces.component.UIComponent;

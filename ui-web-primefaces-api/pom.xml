@@ -26,21 +26,6 @@
 	<dependencies>
 
 		<!-- Primefaces Components Library -->
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>${version.primefaces}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>all-themes</artifactId>
-			<version>${version.primefaces.themes}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.primefaces.extensions</groupId>
-			<artifactId>primefaces-extensions</artifactId>
-			<version>${version.primefaces.extensions}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.cyk.ui.web</groupId>
@@ -65,7 +50,7 @@
 		<dependency>
 			<groupId>org.cyk.ui.web</groupId>
 			<artifactId>ui-web-primefaces-resources</artifactId>
-			<version>0.0.1</version>
+			<version>${version.cyk}</version>
 		</dependency>
 	</dependencies>
 

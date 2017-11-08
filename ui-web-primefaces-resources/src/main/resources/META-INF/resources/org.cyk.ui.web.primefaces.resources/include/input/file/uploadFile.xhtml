@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+	
+	<script type="text/javascript">	
+		$(document).on('change','.#{control.propertiesMap.identifierAsStyleClass}' , function(){
+			#{control.propertiesMap.onChange}
+		});
+	</script>
+	
+	<p:remoteCommand name="updateccp" update="ccp" />
+	
+	<table border="0" class="cyk-ui-input-file">
+		<!-- input command -->
+		<tr>
+			<td class="cyk-ui-input-file-input">
+				<ui:decorate template="#{primefacesResourcesManager.inputFileDefaultTemplate}">
+			 		<ui:param name="input" value="#{control}" />
+				</ui:decorate>	
+			</td>
+		</tr>
+		
+		<!-- preview -->	
+		<tr>
+			<td class="cyk-ui-input-file-preview">
+				<ui:decorate template="#{primefacesResourcesManager.imageDefaultTemplate}">
+			 		<ui:param name="graphicImage" value="#{control.propertiesMap.previewImageComponent}" />
+				</ui:decorate>
+				
+				<!--ui:fragment rendered="#{control.propertiesMap.previewable}">
+					<img 
+						id="#{control.propertiesMap.previewImageComponent.propertiesMap.identifier}" 
+						src="#{control.propertiesMap.previewImageComponent.propertiesMap.src}" 
+						width="#{control.propertiesMap.previewImageComponent.propertiesMap.width}" 
+						height="#{control.propertiesMap.previewImageComponent.propertiesMap.height}" /> 
+				</ui:fragment-->					
+			</td>
+		</tr>
+			
+		<!-- clear command -->	
+		<tr>
+			<td class="cyk-ui-input-file-clear">
+				<p:outputPanel id="ccp">
+					<ui:decorate template="#{primefacesResourcesManager.commandDefaultTemplate}">
+ 					<ui:param name="commandButton" value="#{control.propertiesMap.clearCommand}" />	
+ 				</ui:decorate>
+				</p:outputPanel>
+				
+			</td>
+		</tr>						
+	</table>		
+	
+</ui:composition>

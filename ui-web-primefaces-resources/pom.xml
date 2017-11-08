@@ -19,13 +19,14 @@
 		<version.primefaces>6.1</version.primefaces>
 		<version.primefaces.themes>1.0.10</version.primefaces.themes> 
 		<version.primefaces.extensions>6.1.1</version.primefaces.extensions>
+		<version.cyk>0.0.1</version.cyk>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.cyk.ui.web</groupId>
 			<artifactId>ui-web-api-resources</artifactId>
-			<version>0.0.1</version>
+			<version>${version.cyk}</version>
 		</dependency>
 		
 		<dependency>
@@ -44,7 +45,8 @@
 			<groupId>org.primefaces.extensions</groupId>
 			<artifactId>primefaces-extensions</artifactId>
 			<version>${version.primefaces.extensions}</version>
-		</dependency>
+		</dependency>		
+		
 	</dependencies>
 	
 </project>

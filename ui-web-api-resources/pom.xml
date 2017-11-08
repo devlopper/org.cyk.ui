@@ -14,7 +14,7 @@
 	<groupId>org.cyk.ui.web</groupId>
 	<artifactId>ui-web-api-resources</artifactId>
 	<packaging>jar</packaging>	
- 
+	 
 	<properties>
 		<version.omnifaces>2.0</version.omnifaces>
 		<!--version.omnifaces>2.4</version.omnifaces-->
@@ -48,11 +48,11 @@
 		</dependency>
 		
 		<!-- Apache Commons -->
-		<dependency>
+		<!--dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3</version>
-		</dependency>
+		</dependency-->
 
 		<!-- Security -->
 		<dependency>
@@ -94,10 +94,10 @@
 		</dependency>
 		
 		<!-- Push  -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-runtime</artifactId>
 			<version>${version.atmosphere}</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 </project>

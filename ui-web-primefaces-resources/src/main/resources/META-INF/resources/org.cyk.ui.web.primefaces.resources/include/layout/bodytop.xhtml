@@ -10,6 +10,43 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
       
 	<h:outputScript library="org.cyk.ui.web.primefaces.resources" name="js/primefaces.js" />
+	
+	<script type="text/javascript">
+		$ = jQuery;
+		
+		function getTagByClass(tagName,aClass){
+			var element = document.getElementsByClassName(aClass)[0];
+			if(element.tagName != tagName)
+				element = element.getElementsByTagName(tagName)[0];
+			return element;
+		}
+		
+		function getInputByCssClass(aClass){
+			var input = document.getElementsByClassName(aClass)[0];
+			if(input.tagName != 'INPUT')
+				input = input.getElementsByTagName('input')[0];
+			return input;
+		}
+		
+		function preview(input,previewClass,cssClass) {
+			var input = getInputByCssClass(cssClass);
+			if (input.files &amp;&amp; input.files[0]) {
+	        	var reader = new FileReader();
+	            reader.onload = function (e) {
+	                $('.'+previewClass).attr('src', e.target.result);
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+		
+		function resetInputFile(aClass,previewImageClass,defaultSrc){
+			var input = getInputByCssClass(aClass);
+			$(input).wrap( "<form></form>" ).closest('form').get(0).reset();
+			$(input).unwrap();
+			$("."+aClass+" .ui-fileupload-filename").empty();
+			$("."+previewImageClass).attr('src',defaultSrc);
+		}
+	</script>
 		
 	<!--h:form>
 		<p:growl id="notificationChannelGrowlId" widgetVar="#{primefacesManager.notificationChannelGrowlWidgetVar}" 

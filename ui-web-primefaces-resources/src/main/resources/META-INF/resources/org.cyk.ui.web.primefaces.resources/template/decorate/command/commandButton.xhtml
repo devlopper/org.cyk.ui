@@ -6,8 +6,12 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<p:commandButton
-		id="#{commandButton.propertiesMap.identifier}"
+	<!--  
+		id="#{commandButton.propertiesMap.identifier}" 
+		id="#{commandButton.propertiesMap.identifier == null ? 'generated_id' : commandButton.propertiesMap.identifier}" 
+	-->
+	
+	<p:commandButton	
 		action="#{commandButton.action.execute(executeParameter)}" 
 		ajax="#{commandButton.propertiesMap.ajax}"
 		icon="#{commandButton.propertiesMap.icon}"

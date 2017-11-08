@@ -243,14 +243,14 @@
 			<ui:define name="input">
 				<ui:decorate template="#{primefacesResourcesManager.inputChoiceManyAutoCompleteDefaultTemplate}">
 				 	<ui:param name="input" value="#{control}" />
-				 	<ui:define name="include">
+				 	<!--ui:define name="include">
 				 		<f:selectItems
 							value="#{input.choices.elements}"
 							var="item"
 							itemValue="#{item}"
 							itemLabel="#{input.getChoiceLabel(item)}" 
 						/>
-				 	</ui:define>
+				 	</ui:define-->
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
@@ -353,9 +353,9 @@
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
 		<ui:decorate template="#{template}">
 			<ui:define name="input">
-				<ui:decorate template="#{primefacesResourcesManager.inputFileDefaultTemplate}">
-				 	<ui:param name="input" value="#{control}" />
-				</ui:decorate>
+				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/file/uploadFile.xhtml">
+					<ui:param name="identifier" value="inputFile"/>
+				</ui:include>
 			</ui:define>
 		</ui:decorate>
 	</pe:dynaFormControl>
