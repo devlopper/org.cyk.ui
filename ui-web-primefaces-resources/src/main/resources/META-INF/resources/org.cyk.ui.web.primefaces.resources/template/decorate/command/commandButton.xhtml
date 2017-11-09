@@ -21,7 +21,7 @@
 		type="#{commandButton.propertiesMap.type}"
 		title="#{commandButton.propertiesMap.title}"
 		update="#{commandButton.propertiesMap.update}"
-		value="#{empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value}" 
+		value="#{commandButton.label.propertiesMap.rendered ? (empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value) : null}" 
 		
 		onclick="#{commandButton.propertiesMap.onClick}"
 		oncomplete="#{commandButton.propertiesMap.onComplete}"

@@ -66,7 +66,6 @@ import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
 import org.cyk.utility.common.userinterface.panel.NotificationDialog;
-import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -94,7 +93,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	}
 	
 	public void initialize(){
-StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
+		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"defaultDesktop",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
@@ -286,13 +285,13 @@ StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 					//((Command)properties.getClearCommand()).getPropertiesMap().setOnClick("");
 					
 					Image previewImage = (Image) properties.getPreviewImageComponent();
-					previewImage.getPropertiesMap().setValue("/"+"playground-primefaces-6_1"+"/javax.faces.resource/images/icons/128/camera.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
+					previewImage.getPropertiesMap().setValue(ServletContextListener.CONTEXT+"/javax.faces.resource/images/icons/128/file.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
 					
 					properties.setOnChange(JavaScriptHelper.getInstance().getFunctionCallPreview("this",JavaScriptHelper.getInstance()
 							.formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())
 							,JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass()) ));
 					
-					((Command)properties.getClearCommand()).getPropertiesMap().setValue(null);
+					((Command)properties.getClearCommand()).getLabel().getPropertiesMap().setRendered(Boolean.FALSE);
 					((Command)properties.getClearCommand()).getPropertiesMap().setIcon("fa fa-eraser");
 					((Command)properties.getClearCommand()).getPropertiesMap().setType("button");
 					((Command)properties.getClearCommand()).getPropertiesMap().setOnClick(JavaScriptHelper.getInstance().getFunctionCallResetInputFile(
@@ -313,7 +312,7 @@ StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
-		ClassHelper.getInstance().map(InputChoiceManyPickList.class, org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class);
+		//ClassHelper.getInstance().map(InputChoiceManyPickList.class, org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class);
 		ClassHelper.getInstance().map(InputFile.class, org.cyk.ui.web.primefaces.resources.input.InputFile.class);
 		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
