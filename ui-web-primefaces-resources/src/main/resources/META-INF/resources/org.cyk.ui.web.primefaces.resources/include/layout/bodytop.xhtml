@@ -39,12 +39,16 @@
 	        }
 	    }
 		
+		function setAttribute(aClass,name,value){
+			$("."+aClass).attr(name,value);
+		}
+		
 		function resetInputFile(aClass,previewImageClass,defaultSrc){
 			var input = getInputByCssClass(aClass);
 			$(input).wrap( "<form></form>" ).closest('form').get(0).reset();
 			$(input).unwrap();
 			$("."+aClass+" .ui-fileupload-filename").empty();
-			$("."+previewImageClass).attr('src',defaultSrc);
+			setAttribute(previewImageClass,'src',defaultSrc);
 		}
 	</script>
 		

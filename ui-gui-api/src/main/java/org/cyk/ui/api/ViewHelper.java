@@ -35,7 +35,7 @@ public class ViewHelper extends AbstractBean implements Serializable {
 	}
 	
 	public String getParameterValueInputValueIsNotRequired(){
-		return org.cyk.utility.common.userinterface.ViewHelper.getInstance().getParameter(getParameterNameInputValueIsNotRequired());
+		return (String)org.cyk.utility.common.userinterface.ViewHelper.getInstance().getParameter(getParameterNameInputValueIsNotRequired());
 	}
 	
 	/**/

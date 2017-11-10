@@ -20,6 +20,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.helper.RandomHelper;
@@ -110,7 +111,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/blockUI/default.xhtml",Properties.CENTER_X,Boolean.TRUE,Properties.CENTER_Y,Boolean.TRUE});
 		
 		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/support/image/graphicImage.xhtml"
-				,Properties.ALT,"Image"});
+				,Properties.ALT,"Image",Properties.STREAM,Boolean.TRUE});
 		/*
 		Properties.setDefaultValues(Watermark.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/watermark/watermark.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/watermark/default.xhtml"});
@@ -289,19 +290,32 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 					properties.setOnChange(JavaScriptHelper.getInstance().getFunctionCallPreview("this",JavaScriptHelper.getInstance()
 							.formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())
-							,JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass()) ));
+							,JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass()))
+							+JavaScriptHelper.getInstance().getFunctionCallSetAttribute(
+									JavaScriptHelper.getInstance().formatParameterString(((Command)properties.getClearCommand()).getPropertiesMap().getIdentifierAsStyleClass())
+									,"'style'","'visibility : visible'"
+							)
+							);
 					
 					((Command)properties.getClearCommand()).getLabel().getPropertiesMap().setRendered(Boolean.FALSE);
 					((Command)properties.getClearCommand()).getPropertiesMap().setIcon("fa fa-eraser");
 					((Command)properties.getClearCommand()).getPropertiesMap().setType("button");
+					((Command)properties.getClearCommand()).getPropertiesMap().setStyle("visibility: hidden");
 					((Command)properties.getClearCommand()).getPropertiesMap().setOnClick(JavaScriptHelper.getInstance().getFunctionCallResetInputFile(
 							JavaScriptHelper.getInstance().formatParameterString(properties.getIdentifierAsStyleClass())
 							,JavaScriptHelper.getInstance().formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())
-							,JavaScriptHelper.getInstance().formatParameterString(previewImage.getPropertiesMap().getValue()) ));
+							,JavaScriptHelper.getInstance().formatParameterString(previewImage.getPropertiesMap().getValue()))
+							
+							+JQueryHelper.getInstance().getHide(JavaScriptHelper.OBJECT_THIS)
+							
+							);
 					
-					//properties.setOnChange(properties.getOnChange()+";alert('update clear button');");
+					//Image image = (Image) properties.getImageComponent();
 					
-					
+					((Command)properties.getRemoveCommand()).getLabel().getPropertiesMap().setRendered(Boolean.FALSE);
+					((Command)properties.getRemoveCommand()).getPropertiesMap().setIcon("fa fa-trash");
+					((Command)properties.getRemoveCommand()).getPropertiesMap().setUpdate("currentimagepanel currentimageremovecommandpanel");
+					//((Command)properties.getRemoveCommand()).getPropertiesMap().setUpdate("@(."+image.getPropertiesMap().getIdentifierAsStyleClass()+")");
 					
 				}else if(instance instanceof InputNumber){
 					
@@ -313,7 +327,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
 		//ClassHelper.getInstance().map(InputChoiceManyPickList.class, org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class);
-		ClassHelper.getInstance().map(InputFile.class, org.cyk.ui.web.primefaces.resources.input.InputFile.class);
+		//ClassHelper.getInstance().map(InputFile.class, org.cyk.ui.web.primefaces.resources.input.InputFile.class);
 		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;

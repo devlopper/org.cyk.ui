@@ -153,7 +153,6 @@ import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.userinterface.ViewHelper;
-import org.cyk.utility.common.userinterface.ViewHelper.Listener;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -170,7 +169,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		JQueryHelper.JQUERY = "@";
-		ViewHelper.Listener.Adapter.Default.DEFAULT_CLASS = (Class<Listener>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
+		ClassHelper.getInstance().map(ViewHelper.Listener.Adapter.Default.class,org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
 		CommandHelper.Command.Adapter.Default.DEFAULT_CLASS = (Class<CommandHelper.Command>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.CommandHelper.Command.class);

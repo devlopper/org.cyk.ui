@@ -16,12 +16,10 @@
 		});
 	</script>
 	
-	<p:remoteCommand name="updateccp" update="ccp" />
-	
 	<table border="0" class="cyk-ui-input-file">
 		<!-- input command -->
 		<tr>
-			<td class="cyk-ui-input-file-input">
+			<td class="cyk-ui-input-file-input" colspan="2">
 				<ui:decorate template="#{primefacesResourcesManager.inputFileDefaultTemplate}">
 			 		<ui:param name="input" value="#{control}" />
 				</ui:decorate>	
@@ -32,29 +30,30 @@
 		<tr>
 			<td class="cyk-ui-input-file-preview">
 				<ui:decorate template="#{primefacesResourcesManager.imageDefaultTemplate}">
-			 		<ui:param name="graphicImage" value="#{control.propertiesMap.previewImageComponent}" />
+		 			<ui:param name="graphicImage" value="#{control.propertiesMap.previewImageComponent}" />
 				</ui:decorate>
-				
-				<!--ui:fragment rendered="#{control.propertiesMap.previewable}">
-					<img 
-						id="#{control.propertiesMap.previewImageComponent.propertiesMap.identifier}" 
-						src="#{control.propertiesMap.previewImageComponent.propertiesMap.src}" 
-						width="#{control.propertiesMap.previewImageComponent.propertiesMap.width}" 
-						height="#{control.propertiesMap.previewImageComponent.propertiesMap.height}" /> 
-				</ui:fragment-->					
 			</td>
+			
+			<td><p:outputPanel id="currentimagepanel">
+				<ui:decorate template="#{primefacesResourcesManager.imageDefaultTemplate}">
+			 		<ui:param name="graphicImage" value="#{control.propertiesMap.imageComponent}" />
+				</ui:decorate>
+			</p:outputPanel></td>		
 		</tr>
 			
 		<!-- clear command -->	
 		<tr>
 			<td class="cyk-ui-input-file-clear">
-				<p:outputPanel id="ccp">
-					<ui:decorate template="#{primefacesResourcesManager.commandDefaultTemplate}">
+				<ui:decorate template="#{primefacesResourcesManager.commandDefaultTemplate}">
  					<ui:param name="commandButton" value="#{control.propertiesMap.clearCommand}" />	
  				</ui:decorate>
-				</p:outputPanel>
-				
 			</td>
+			
+			<td class="cyk-ui-input-file-remove"><p:outputPanel id="currentimageremovecommandpanel">
+				<ui:decorate template="#{primefacesResourcesManager.commandDefaultTemplate}">
+ 					<ui:param name="commandButton" value="#{control.propertiesMap.removeCommand}" />	
+ 				</ui:decorate>
+			</p:outputPanel></td>
 		</tr>						
 	</table>		
 	
