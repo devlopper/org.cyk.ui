@@ -1,30 +1,30 @@
-package org.cyk.ui.web.api.handler;
+package org.cyk.ui.web.api.resources.handler;
 
 import java.io.Serializable;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ViewResource;
 import javax.faces.context.FacesContext;
 
-@Deprecated
-public class DynamicResourceHandler extends ResourceHandlerWrapper implements Serializable {
+public class ResourceHandler extends javax.faces.application.ResourceHandlerWrapper implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Set<String> PATHS = new LinkedHashSet<String>();
 
 	static {
-		PATHS.add("/META-INF/resources");//images , css , ...
-		PATHS.add("/META-INF/contracts");//templates
-		PATHS.add("/META-INF/pages");//web pages
+		addPath("/META-INF/resources");//images , css , ...
+		
+		//contracts
+		addPath("/META-INF/contracts");
+		
+		addPath("/META-INF/pages");//web pages
 	}
 
-	private ResourceHandler wrapped;
+	private javax.faces.application.ResourceHandler wrapped;
 
-	public DynamicResourceHandler(ResourceHandler wrapped) {
+	public ResourceHandler(javax.faces.application.ResourceHandler wrapped) {
 		this.wrapped = wrapped;
 	}
 
@@ -58,7 +58,7 @@ public class DynamicResourceHandler extends ResourceHandlerWrapper implements Se
 	}
 
 	@Override
-	public ResourceHandler getWrapped() {
+	public javax.faces.application.ResourceHandler getWrapped() {
 		return wrapped;
 	}
 

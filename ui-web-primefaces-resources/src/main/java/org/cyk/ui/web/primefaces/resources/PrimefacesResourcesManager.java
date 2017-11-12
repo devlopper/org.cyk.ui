@@ -97,7 +97,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
-				,Properties.CONTRACTS,"defaultDesktop",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
+				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
 		

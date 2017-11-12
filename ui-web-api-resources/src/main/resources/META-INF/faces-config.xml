@@ -3,5 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
+	
+	<application>
+		<resource-handler>org.cyk.ui.web.api.resources.handler.ResourceHandler</resource-handler>
+		<!-- Because of glassfish Null String Issue -->
+		<el-resolver>org.cyk.ui.web.api.resources.resolver.NullStringResolver</el-resolver>
+	</application>
 
+	<locale-config>
+		<supported-locale>fr</supported-locale>
+	</locale-config>
+	
 </faces-config>

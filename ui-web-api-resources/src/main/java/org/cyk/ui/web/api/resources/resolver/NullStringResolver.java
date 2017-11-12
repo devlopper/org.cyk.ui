@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.resolver;
+package org.cyk.ui.web.api.resources.resolver;
 
 import java.beans.FeatureDescriptor;
 import java.io.Serializable;
@@ -21,7 +21,6 @@ import javax.el.ELResolver;
 	<el-resolver>org.cyk.ui.web.api.resolver.NullStringResolver</el-resolver>
  * 
  */
-@Deprecated
 public class NullStringResolver extends ELResolver implements Serializable {
 
 	private static final long serialVersionUID = -951013441338441816L;

@@ -26,9 +26,14 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.InputAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
+import org.cyk.ui.web.primefaces.resources.PrimefacesResourcesManager;
+import org.cyk.ui.web.primefaces.resources.ServletContextListener;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.userinterface.input.Input;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -38,6 +43,11 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void initialisation() {
 		super.initialisation();  
+		inject(PrimefacesResourcesManager.class).initialize();
+		
+		
+		ClassHelper.getInstance().map(Input.Listener.Adapter.Default.class, InputAdapter.class);
+		
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		Comment.define(Actor.class); 
 		FileIdentifiableGlobalIdentifier.define(Actor.class);
@@ -99,6 +109,7 @@ public class ContextListener extends AbstractContextListener {
 		
 		AbstractSelectManyPage.Listener.COLLECTION.add(new PersonSelectManyPageAdapter());
 
+		ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
 	}
 	
 	@Override

@@ -94,10 +94,10 @@
 		</dependency>
 		
 		<!-- Push  -->
-		<!--dependency>
+		<dependency>
 			<groupId>org.atmosphere</groupId>
 			<artifactId>atmosphere-runtime</artifactId>
 			<version>${version.atmosphere}</version>
-		</dependency-->
+		</dependency>
 	</dependencies>
 </project>

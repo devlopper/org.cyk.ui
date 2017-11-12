@@ -23,7 +23,7 @@ import lombok.extern.java.Log;
  * @author christian yao komenan
  *
  */
-@Named @Singleton @Log @Deployment(initialisationType=InitialisationType.EAGER)
+//@Named @Singleton @Log @Deployment(initialisationType=InitialisationType.EAGER)
 public class ObjectConverter extends AbstractBean implements Converter,Serializable {
 	private static final long serialVersionUID = -1615078449226502960L;
 	
@@ -77,7 +77,7 @@ public class ObjectConverter extends AbstractBean implements Converter,Serializa
 			return NULL_STRING_VALUE;
 		String identifier = getIdentifier(object);
 		if(identifier==null){
-			log.warning("Identifier value of <"+object+"> is null");
+			//log.warning("Identifier value of <"+object+"> is null");
 			return NULL_STRING_VALUE;
 		}
 		// handle duplicate id (two object of different type can have the same id value)

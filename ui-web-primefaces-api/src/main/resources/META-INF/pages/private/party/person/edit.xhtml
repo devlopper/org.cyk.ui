@@ -11,13 +11,12 @@
  		<ui:param name="pageController" value="#{personEditPage}" />
  		<ui:define name="body">
  			
+ 			<!--
  			<cyk:formOneDataCollection value="#{personEditPage.formOneDataCollection}" />
- 			
- 			
- 			<!--ui:decorate template="#{personEditPage.form2.propertiesMap.template}">
-		 		<ui:param name="form" value="#{personEditPage.form2}" />
-		 		<ui:param name="identifier" value="myform"/>
-		 	</ui:decorate-->
+ 			-->
+ 			<ui:decorate template="#{personEditPage.form2.propertiesMap.template}">
+				<ui:param name="form" value="#{personEditPage.form2}" />
+			</ui:decorate>
  			
  		</ui:define>
  		

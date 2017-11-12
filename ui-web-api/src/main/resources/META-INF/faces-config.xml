@@ -72,14 +72,6 @@
 		
 	</navigation-rule>
 
-	<application>
-		<resource-handler>org.cyk.ui.web.api.handler.DynamicResourceHandler</resource-handler>
-		<!-- Because of glassfish Null String Issue -->
-		<el-resolver>org.cyk.ui.web.api.resolver.NullStringResolver</el-resolver>
-	</application>
-
-	<locale-config>
-		<supported-locale>fr</supported-locale>
-	</locale-config>
+	
 
 </faces-config>
