@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
+import org.cyk.ui.web.primefaces.resources.menu.MainMenu;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -20,6 +21,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.JavaScriptHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
@@ -34,6 +36,8 @@ import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.command.Command;
+import org.cyk.utility.common.userinterface.command.Menu;
+import org.cyk.utility.common.userinterface.command.MenuNode;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.Window;
@@ -72,6 +76,11 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.Submenu;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -86,6 +95,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	private ConfirmationDialog confirmationDialog = new ConfirmationDialog();
 	private NotificationDialog notificationDialog = new NotificationDialog();
+	private Menu mainMenu;
 	
 	public static PrimefacesResourcesManager getInstance() {
 		if(INSTANCE == null)
@@ -95,9 +105,14 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public void initialize(){
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
+		mainMenu = ClassHelper.getInstance().instanciateOne(MainMenu.class);
+		mainMenu.build();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
-				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default",Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"});
+				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
+				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
+				,Properties.MAIN_MENU,mainMenu
+		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
 		
@@ -123,6 +138,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(Command.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/command/commandButton/default.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.AJAX, Boolean.TRUE);
 		Properties.setDefaultValue(Command.class, Properties.GLOBAL, Boolean.TRUE);
+		
+		Properties.setDefaultValue(Menu.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml");
 		
 		Properties.setDefaultValue(Confirm.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/event/confirm.xhtml");
 		Properties.setDefaultValue(Confirm.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/event/confirm/default.xhtml");
@@ -282,9 +299,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					}
 					
 				}else if(instance instanceof InputFile){
-					//((Command)properties.getClearCommand()).getPropertiesMap().setProcess("@this");
-					//((Command)properties.getClearCommand()).getPropertiesMap().setOnClick("");
-					
 					Image previewImage = (Image) properties.getPreviewImageComponent();
 					previewImage.getPropertiesMap().setValue(ServletContextListener.CONTEXT+"/javax.faces.resource/images/icons/128/file.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
 					
@@ -319,7 +333,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 				}else if(instance instanceof InputNumber){
 					
-				}		
+				}else if(instance instanceof Menu){
+					
+				}
 				
 			}
 		});
@@ -336,6 +352,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			public Object build(Component component) {
 				if(component instanceof Form.Detail)
 					return Form.Detail.buildTarget((Form.Detail) component);
+				if(component instanceof Menu)
+					return new MenuBasedOnMenuModel().setInput((Menu) component).execute();
 				return super.build(component);
 			}
 			
@@ -484,6 +502,22 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		return Properties.getDefaultValue(InputFile.class, Properties.TEMPLATE);
 	}
 	
+	public Object getMenuTemplate(Menu menu){
+		Object template = menu.getPropertiesMap().getTemplate();
+		if(template==null){
+			Menu.RenderType renderType = InstanceHelper.getInstance().getIfNotNullElseDefault(menu.getRenderType(),Menu.RenderType.DEFAULT);
+			switch(renderType){
+			case BAR:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menubar.xhtml";break;
+			case BREAD_CRUMB:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/breadCrumb.xhtml";break;
+			case PANEL:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/panelMenu.xhtml";break;
+			case PLAIN:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menu.xhtml";break;
+			case SLIDE:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/slideMenu.xhtml";break;
+			case TAB:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/tabMenu.xhtml";break;
+			}
+		}
+		return template;
+	}
+	
 	public String getFacesMessageSeverityAsString(FacesMessage facesMessage){
 		switch(facesMessage.getSeverity().getOrdinal()){
 		case 0:return "info";
@@ -539,6 +573,42 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			return getComponentTypeForDynaForm(control.getClass());
 		}
 		
+	}
+	
+	public static class MenuBasedOnMenuModel extends Menu.Builder.Target.Adapter.Default<DefaultMenuModel> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		protected Object createNotLeaf(DefaultMenuModel menu, MenuNode menuNode) {
+			DefaultSubMenu subMenu = new DefaultSubMenu();
+			subMenu.setLabel((String)menuNode.getLabel().getPropertiesMap().getValue());
+			return subMenu;
+		}
+		
+		@Override
+		protected Object createLeaf(DefaultMenuModel menu, MenuNode menuNode) {
+			DefaultMenuItem	menuItem = new DefaultMenuItem();
+			menuItem.setValue(menuNode.getLabel().getPropertiesMap().getValue());
+			if(menuNode.getPropertiesMap().getUrl()!=null)
+				menuItem.setUrl((String)menuNode.getPropertiesMap().getUrl());
+			if(menuNode.getPropertiesMap().getOutcome()!=null)
+				menuItem.setOutcome((String)menuNode.getPropertiesMap().getOutcome());
+			return menuItem;
+		}
+			
+		@Override
+		protected void addNode(DefaultMenuModel menu, Object node, Object parent) {
+			if(parent==null)
+				menu.addElement((MenuElement) node);
+			else if(parent instanceof Submenu)
+				((DefaultSubMenu)parent).addElement((MenuElement) node);
+		}
+		
+		@Override
+		protected DefaultMenuModel __execute__() {
+			getInput().getPropertiesMap().setTemplate(getInstance().getMenuTemplate(getInput()));
+			return super.__execute__();
+		}
 	}
 
 	public static void setInteractivityBlocker(Form.Master form,Boolean global){

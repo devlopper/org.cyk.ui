@@ -10,11 +10,57 @@
  	<ui:decorate template="#{createPersonPage.propertiesMap.template}">
  		<ui:param name="page" value="#{createPersonPage}" />
  		<ui:define name="centerCenterContent">
- 			
+ 			 			
  			<ui:decorate template="#{createPersonPage.form.propertiesMap.template}">
 				<ui:param name="form" value="#{createPersonPage.form}" />
 			</ui:decorate>
- 			
+			<ui:param name="commandButton" value="#{createPersonPage.form.detail.getInputByFieldName(createPersonPage.form.object.globalIdentifier,'image').propertiesMap.clearCommand}"/>
+			<!--
+			<p:commandButton	
+		action="#{commandButton.action.execute(executeParameter)}" 
+		ajax="#{commandButton.propertiesMap.ajax}"
+		icon="#{commandButton.propertiesMap.icon}"
+		process="#{commandButton.propertiesMap.process}"
+		rendered="#{commandButton.propertiesMap.rendered}"
+		disabled="#{commandButton.propertiesMap.disabled}"
+		type="#{commandButton.propertiesMap.type}"
+		title="#{commandButton.propertiesMap.title}"
+		update="#{commandButton.propertiesMap.update}"
+		value="#{commandButton.label.propertiesMap.rendered ? (empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value) : null}" 
+		
+		onclick="alert('oh!!!!');resetInputFile('1','2','/gui-primefaces/javax.faces.resource/images/icons/128/file.png.jsf?ln=org.cyk.ui.web.primefaces.resources');$(this).hide();"
+		oncomplete="#{commandButton.propertiesMap.onComplete}"
+		
+		ondblclick="#{commandButton.propertiesMap.onDoubleClick}"
+		onmouseover="#{commandButton.propertiesMap.onMouseOver}"
+		onmouseup="#{commandButton.propertiesMap.onMouseUp}"
+		onmousedown="#{commandButton.propertiesMap.onMouseDown}"
+		onmouseout="#{commandButton.propertiesMap.onMouseOut}"
+		onmousemove="#{commandButton.propertiesMap.onMouseMove}"
+		onkeydown="#{commandButton.propertiesMap.onKeyDown}"
+		onkeypress="#{commandButton.propertiesMap.onKeyPress}"
+		onkeyup="#{commandButton.propertiesMap.onKeyUp}"
+		onfocus="#{commandButton.propertiesMap.onFocus}"
+		onselect="#{commandButton.propertiesMap.onSelect}"
+		onblur="#{commandButton.propertiesMap.onBlur}"
+		onchange="#{commandButton.propertiesMap.onChange}"
+		
+		onstart="#{commandButton.propertiesMap.onStart}"
+		onsuccess="#{commandButton.propertiesMap.onSuccess}"
+		onerror="#{commandButton.propertiesMap.onError}"
+		
+		immediate="#{commandButton.propertiesMap.immediate}"
+		widgetVar="#{commandButton.propertiesMap.widgetVar}"
+		partialSubmit="#{commandButton.propertiesMap.partialSubmit}"
+		styleClass="#{commandButton.propertiesMap.styleClass}"
+		style="#{commandButton.propertiesMap.style}" 
+		global="#{commandButton.propertiesMap.global}"
+		
+		async="#{commandButton.propertiesMap.async}"
+	>
+		<ui:include src="#{commandButton.propertiesMap.include}"/>	
+	</p:commandButton>
+ 			-->
  		</ui:define>
  	</ui:decorate>
  	

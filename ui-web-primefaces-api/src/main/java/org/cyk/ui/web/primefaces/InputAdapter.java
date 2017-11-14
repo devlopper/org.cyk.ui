@@ -73,8 +73,4 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 		return value;
 	}
 
-	@Override
-	protected void setFileName(Object object, String name) {
-		
-	}
 }

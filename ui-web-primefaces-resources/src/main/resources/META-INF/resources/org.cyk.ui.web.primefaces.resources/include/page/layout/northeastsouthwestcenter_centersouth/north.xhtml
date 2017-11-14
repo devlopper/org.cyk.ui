@@ -10,7 +10,13 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
 	<ui:insert name="north">
-		North content here...
+		<ui:fragment rendered="#{page.propertiesMap.mainMenu != null}" >
+			<!--h:form>
+				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/command/menu/menu.xhtml">
+					<ui:param name="menu" value="#{page.propertiesMap.mainMenu}"/>
+				</ui:include>
+			</h:form-->
+		</ui:fragment>
 	</ui:insert>
 	
 </ui:composition>
