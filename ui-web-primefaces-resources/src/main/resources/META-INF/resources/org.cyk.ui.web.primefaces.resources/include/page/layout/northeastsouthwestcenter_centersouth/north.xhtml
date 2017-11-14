@@ -11,14 +11,12 @@
 	
 	<ui:insert name="north">
 		<ui:fragment rendered="#{page.propertiesMap.mainMenu != null}" >
-			<!--h:form>
-				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/command/menu/menu.xhtml">
+			<h:form>
+				<ui:composition template="#{page.propertiesMap.mainMenu == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : page.propertiesMap.mainMenu.propertiesMap.template}">
 					<ui:param name="menu" value="#{page.propertiesMap.mainMenu}"/>
-				</ui:include>
-			</h:form-->
-			<ui:composition template="#{page.propertiesMap.mainMenu.propertiesMap.template}">
-				<ui:param name="menu" value="#{page.propertiesMap.panelMenu}"/>
-			</ui:composition>
+				</ui:composition>
+			</h:form>
+			
 		</ui:fragment>
 	</ui:insert>
 	

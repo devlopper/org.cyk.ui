@@ -36,8 +36,6 @@ import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
-import org.cyk.utility.common.userinterface.command.Menu.Set;
-import org.cyk.utility.common.userinterface.command.Menu.Type;
 import org.cyk.utility.common.userinterface.command.MenuNode;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
@@ -104,12 +102,18 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	}
 	
 	public void initialize(){
+		JQueryHelper.JQUERY = "$";
+		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
+		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
+		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
+		
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
-				,Properties.MAIN_MENU,Menu.build(Menu.Set.APPLICATION, Menu.Type.MAIN)
+				,Properties.MAIN_MENU,Menu.build(null, Menu.Type.MAIN)
+				,Properties.FOOTER,"MY FOOT HERE"
 		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
@@ -272,6 +276,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					((Request)instance).getStatusDialog().getPropertiesMap().setHeader("REQUEST STATUS HEADER HERE...");
 				}else if(instance instanceof Window){
 					((Window)instance).getLayout().getPropertiesMap().setTemplate("/template/default.xhtml");
+					Menu menu = (Menu) properties.getMainMenu();
+					if(menu.getBuilt()==null)
+						menu.build();
 				}else if(instance instanceof Form.Master){
 					Form.Master form = (Form.Master) instance;
 					form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
@@ -337,11 +344,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				
 			}
 		});
-		
-		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
-		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
-		//ClassHelper.getInstance().map(InputChoiceManyPickList.class, org.cyk.ui.web.primefaces.resources.input.InputChoiceManyPickList.class);
-		//ClassHelper.getInstance().map(InputFile.class, org.cyk.ui.web.primefaces.resources.input.InputFile.class);
 		
 		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
@@ -569,33 +571,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		@Override
 		public String getType(org.cyk.utility.common.userinterface.Control control) {
 			return getComponentTypeForDynaForm(control.getClass());
-		}
-		
-	}
-	
-	public static class MenuBuilder extends Menu.Builder.Adapter.Default implements Serializable {
-		private static final long serialVersionUID = 1L;
-		
-		@Override
-		protected Menu __execute__() {
-			Menu menu = new Menu();
-			
-			menu.setSet((Set) getProperty(PROPERTY_NAME_SET));
-			menu.setType((Type) getProperty(PROPERTY_NAME_TYPE));
-			
-			MenuNode menuNode = new MenuNode();
-			menuNode.setLabelFromIdentifier("Item 1");
-			menu.addOneChild(menuNode);
-			
-			menuNode = new MenuNode();
-			menuNode.setLabelFromIdentifier("Item 2");
-			menu.addOneChild(menuNode);
-			
-			menuNode = new MenuNode();
-			menuNode.setLabelFromIdentifier("Item 3");
-			menu.addOneChild(menuNode);
-			
-			return menu;
 		}
 		
 	}

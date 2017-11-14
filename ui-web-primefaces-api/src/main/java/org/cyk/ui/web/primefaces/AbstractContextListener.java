@@ -150,7 +150,6 @@ import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CommandHelper;
-import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.userinterface.ViewHelper;
 import org.primefaces.model.TreeNode;
@@ -168,8 +167,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 	@Override 
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		//JQueryHelper.JQUERY = "@";
-		JQueryHelper.JQUERY = "$";
 		ClassHelper.getInstance().map(ViewHelper.Listener.Adapter.Default.class,org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
