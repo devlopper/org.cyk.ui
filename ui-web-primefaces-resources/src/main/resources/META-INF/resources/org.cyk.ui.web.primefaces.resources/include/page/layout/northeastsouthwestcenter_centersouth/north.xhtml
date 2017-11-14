@@ -16,6 +16,9 @@
 					<ui:param name="menu" value="#{page.propertiesMap.mainMenu}"/>
 				</ui:include>
 			</h:form-->
+			<ui:composition template="#{page.propertiesMap.mainMenu.propertiesMap.template}">
+				<ui:param name="menu" value="#{page.propertiesMap.panelMenu}"/>
+			</ui:composition>
 		</ui:fragment>
 	</ui:insert>
 	

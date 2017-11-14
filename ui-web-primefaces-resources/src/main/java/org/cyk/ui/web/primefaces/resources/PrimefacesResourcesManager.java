@@ -12,7 +12,6 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
-import org.cyk.ui.web.primefaces.resources.menu.MainMenu;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -37,6 +36,8 @@ import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
+import org.cyk.utility.common.userinterface.command.Menu.Set;
+import org.cyk.utility.common.userinterface.command.Menu.Type;
 import org.cyk.utility.common.userinterface.command.MenuNode;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
@@ -95,7 +96,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	private ConfirmationDialog confirmationDialog = new ConfirmationDialog();
 	private NotificationDialog notificationDialog = new NotificationDialog();
-	private Menu mainMenu;
 	
 	public static PrimefacesResourcesManager getInstance() {
 		if(INSTANCE == null)
@@ -105,13 +105,11 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public void initialize(){
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
-		mainMenu = ClassHelper.getInstance().instanciateOne(MainMenu.class);
-		mainMenu.build();
 		
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
-				,Properties.MAIN_MENU,mainMenu
+				,Properties.MAIN_MENU,Menu.build(Menu.Set.APPLICATION, Menu.Type.MAIN)
 		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
@@ -571,6 +569,33 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		@Override
 		public String getType(org.cyk.utility.common.userinterface.Control control) {
 			return getComponentTypeForDynaForm(control.getClass());
+		}
+		
+	}
+	
+	public static class MenuBuilder extends Menu.Builder.Adapter.Default implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		protected Menu __execute__() {
+			Menu menu = new Menu();
+			
+			menu.setSet((Set) getProperty(PROPERTY_NAME_SET));
+			menu.setType((Type) getProperty(PROPERTY_NAME_TYPE));
+			
+			MenuNode menuNode = new MenuNode();
+			menuNode.setLabelFromIdentifier("Item 1");
+			menu.addOneChild(menuNode);
+			
+			menuNode = new MenuNode();
+			menuNode.setLabelFromIdentifier("Item 2");
+			menu.addOneChild(menuNode);
+			
+			menuNode = new MenuNode();
+			menuNode.setLabelFromIdentifier("Item 3");
+			menu.addOneChild(menuNode);
+			
+			return menu;
 		}
 		
 	}
