@@ -20,7 +20,10 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
 		createContainerNorth();
 		createContainerEast();
 		createContainerSouth();
-		createContainerWest();
+		
+		Container west = createContainerWest();
+		west.getPropertiesMap().setNorth("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_centersouth/west_north.xhtml");
+		
 		createContainerCenter();
 		
 		Container center = createContainerAssemblyCenter();

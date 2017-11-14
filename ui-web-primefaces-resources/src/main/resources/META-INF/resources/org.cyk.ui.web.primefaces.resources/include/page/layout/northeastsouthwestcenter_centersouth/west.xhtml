@@ -14,22 +14,20 @@
 			<table>
 				<tr>
 					<td>
-						<h1>LOGO</h1>
+						<ui:include src="#{layoutPane.propertiesMap.north == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : layoutPane.propertiesMap.north}"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						
-					</td>
-				</tr>
-				
-			</table>
-			
-			<ui:fragment rendered="#{page.propertiesMap.contextMenu != null}" >
+						<ui:fragment rendered="#{page.propertiesMap.contextMenu != null}" >
 							<ui:composition template="#{page.propertiesMap.contextMenu == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : page.propertiesMap.contextMenu.propertiesMap.template}">
 								<ui:param name="menu" value="#{page.propertiesMap.contextMenu}"/>
 							</ui:composition>
 						</ui:fragment>
+					</td>
+				</tr>
+				
+			</table>
 		</h:form>
 	</ui:insert>
 	
