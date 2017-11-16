@@ -20,6 +20,7 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.cdi.BeanListener;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.FileHelper;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.JQueryHelper;
 import org.cyk.utility.common.helper.JavaScriptHelper;
@@ -28,6 +29,7 @@ import org.cyk.utility.common.helper.RandomHelper;
 import org.cyk.utility.common.helper.SelectItemHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.helper.StringHelper.CaseType;
+import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.Image;
@@ -74,6 +76,7 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+import org.primefaces.model.ByteArrayContent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -92,6 +95,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 
 	private static PrimefacesResourcesManager INSTANCE;
 	
+	public static FileHelper.File LOGO_FILE;
+	
 	private ConfirmationDialog confirmationDialog = new ConfirmationDialog();
 	private NotificationDialog notificationDialog = new NotificationDialog();
 	
@@ -106,6 +111,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
+		
+		UniformResourceLocatorHelper.DEFAULT_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
+		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
 		
@@ -276,9 +284,16 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					((Request)instance).getStatusDialog().getPropertiesMap().setHeader("REQUEST STATUS HEADER HERE...");
 				}else if(instance instanceof Window){
 					((Window)instance).getLayout().getPropertiesMap().setTemplate("/template/default.xhtml");
+					
+					Image image = new Image();
+					image.getPropertiesMap().setStream(Boolean.FALSE);
+					image.getPropertiesMap().setValue(new ByteArrayContent(LOGO_FILE.getBytes(), LOGO_FILE.getMime()));
+					properties.setImageComponent(image);
+					
 					Menu menu = (Menu) properties.getMainMenu();
 					if(menu.getBuilt()==null)
 						menu.build();
+					
 				}else if(instance instanceof Form.Master){
 					Form.Master form = (Form.Master) instance;
 					form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
@@ -305,7 +320,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 				}else if(instance instanceof InputFile){
 					Image previewImage = (Image) properties.getPreviewImageComponent();
-					previewImage.getPropertiesMap().setValue(ServletContextListener.CONTEXT+"/javax.faces.resource/images/icons/128/file.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
+					previewImage.getPropertiesMap().setValue("/"+UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT+"/javax.faces.resource/images/icons/128/file.png.jsf?ln=org.cyk.ui.web.primefaces.resources").setWidth("100px").setHeight("100px");
 					
 					properties.setOnChange(JavaScriptHelper.getInstance().getFunctionCallPreview("this",JavaScriptHelper.getInstance()
 							.formatParameterString(previewImage.getPropertiesMap().getIdentifierAsStyleClass())

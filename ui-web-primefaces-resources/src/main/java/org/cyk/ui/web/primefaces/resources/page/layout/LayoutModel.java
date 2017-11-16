@@ -83,6 +83,12 @@ public class LayoutModel extends Container implements Serializable {
 		return container;
 	}
 	
+	protected static Container createContainerAssemblyWest(Container parent){
+		Container container = createContainerAssembly(parent, "west");
+		parent.getPropertiesMap().setWest(container);
+		return container;
+	}
+	
 	protected Container createContainerNorth(){
 		return createContainerNorth(this);
 	}
@@ -107,10 +113,18 @@ public class LayoutModel extends Container implements Serializable {
 		return createContainerAssemblyCenter(this);
 	}
 	
-	protected void fixed(LayoutOptions pane){
-		pane.addOption("resizable", false);  
-        pane.addOption("closable", false);  
-        pane.addOption("spacing_open", 0);  
+	protected Container createContainerAssemblyWest(){
+		return createContainerAssemblyWest(this);
+	}
+	
+	protected void setAttribute(LayoutOptions options,String key,Object value){
+		options.addOption(key, value);
+	}
+	
+	protected void fixed(LayoutOptions layoutOptions){
+		setAttribute(layoutOptions,"resizable", false);  
+		setAttribute(layoutOptions,"closable", false);  
+		setAttribute(layoutOptions,"spacing_open", 0);  
 	}
 	
 	protected LayoutOptions createOptions(){

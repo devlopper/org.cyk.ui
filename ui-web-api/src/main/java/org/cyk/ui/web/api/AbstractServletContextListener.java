@@ -62,7 +62,7 @@ import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.joda.time.DateTimeConstants;
 import org.omnifaces.util.Faces;
 
-public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends WebHierarchyNode,USER_SESSION extends AbstractWebUserSession<NODE,NODE_MODEL>> extends AbstractBean implements ServletContextListener,MenuManager.Listener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
+public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends WebHierarchyNode,USER_SESSION extends AbstractWebUserSession<NODE,NODE_MODEL>> extends org.cyk.ui.web.api.resources.ServletContextListener implements ServletContextListener,MenuManager.Listener<USER_SESSION>,WebNavigationManager.Listener<USER_SESSION>,Serializable {
 
 	private static final long serialVersionUID = 5382833444089348823L;
 	
@@ -101,8 +101,6 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 		rootBusinessLayer = RootBusinessLayer.getInstance();
 		
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.SelectItemHelper.OneBuilder.class;
-		UniformResourceLocatorHelper.DEFAULT_LISTENER_CLASS = org.cyk.ui.web.api.helper.UniformResourceLocatorHelper.Listener.class;
-		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.helper.UniformResourceLocatorHelper.Listener.class;
 			
 		UrlStringBuilder.Listener.COLLECTION.add(new UrlStringBuilder.Listener.Adapter.Default(){
 			private static final long serialVersionUID = 1L;
@@ -217,15 +215,13 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		super.contextInitialized(event);
 		InstanceHelper.Listener.Adapter.Default.DEFAULT_CLASS = org.cyk.system.root.business.impl.helper.InstanceHelper.Listener.class;
 		servletContext = event.getServletContext();
 		/*UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_SCHEME = "http";
 		UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_HOST = "localhost";
 		UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_PORT = 8080;
 		*/
-		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
-		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP = new LinkedHashMap<>();
-		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP.put(WebNavigationManager.FILE_STATIC_EXTENSION, WebNavigationManager.FILE_PROCESSING_EXTENSION);
 		
 		UrlStringBuilder.PathStringBuilder.CONTEXT = StringUtils.replace(servletContext.getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
 		UrlStringBuilder.PathStringBuilder.IdentifierBuilder.Listener.COLLECTION.add(new UrlStringBuilder.PathStringBuilder.IdentifierBuilder.Listener.Adapter.Default(){
@@ -361,6 +357,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
+		super.contextDestroyed(event);
 		RootBusinessLayer.getInstance().disableAlarmScanning();
 	}
 	

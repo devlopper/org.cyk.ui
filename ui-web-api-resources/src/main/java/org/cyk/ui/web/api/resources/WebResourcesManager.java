@@ -21,6 +21,9 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 
 	private static WebResourcesManager INSTANCE;
 	
+	public static final String FILE_STATIC_EXTENSION = ".xhtml";
+	public static final String FILE_PROCESSING_EXTENSION = ".jsf";
+	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;

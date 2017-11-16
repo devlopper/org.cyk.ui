@@ -109,7 +109,7 @@ public class ContextListener extends AbstractContextListener {
 		
 		AbstractSelectManyPage.Listener.COLLECTION.add(new PersonSelectManyPageAdapter());
 
-		ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
+		//ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
 		
 		
 	}

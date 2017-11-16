@@ -9,6 +9,10 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	YOUR LOGO
+	<ui:insert name="westNorth">
+		<ui:decorate template="#{page.propertiesMap.imageComponent == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : primefacesResourcesManager.imageDefaultTemplate}">
+	 		<ui:param name="graphicImage" value="#{page.propertiesMap.imageComponent}" />
+		</ui:decorate>
+	</ui:insert>
 	
 </ui:composition>

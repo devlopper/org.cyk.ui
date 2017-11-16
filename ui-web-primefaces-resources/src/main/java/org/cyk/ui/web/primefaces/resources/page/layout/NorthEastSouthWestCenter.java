@@ -2,6 +2,8 @@ package org.cyk.ui.web.primefaces.resources.page.layout;
 
 import java.io.Serializable;
 
+import org.cyk.utility.common.CardinalPoint;
+import org.cyk.utility.common.helper.MethodHelper;
 import org.cyk.utility.common.userinterface.container.Container;
 import org.primefaces.extensions.model.layout.LayoutOptions;
 
@@ -15,77 +17,57 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
 	private static final long serialVersionUID = 1L;
 
 	public NorthEastSouthWestCenter() {
-		super("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_centersouth/");
+		super("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_westnorth_centersouth/");
 		
 		createContainerNorth();
 		createContainerEast();
 		createContainerSouth();
 		
-		Container west = createContainerWest();
-		west.getPropertiesMap().setNorth("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_centersouth/west_north.xhtml");
+		createContainerWest();
+		Container west = createContainerAssemblyWest();
+		createContainerNorth(west);
+		createContainerCenter(west);
 		
 		createContainerCenter();
-		
 		Container center = createContainerAssemblyCenter();
-		createContainerSouth(center);
 		createContainerCenter(center);
+		createContainerSouth(center);
 	}
-	
+
+	private LayoutOptions createOptions(LayoutOptions parent,CardinalPoint cardinalPoint){
+		LayoutOptions options = new LayoutOptions(); 
+        if(parent!=null)
+			MethodHelper.getInstance().callSet(parent, cardinalPoint.name().toLowerCase()+"Options", LayoutOptions.class, options);
+		return options;
+	}
+
 	@Override
 	protected LayoutOptions createOptions(){
-		LayoutOptions options = new LayoutOptions();  
-		  
+		LayoutOptions options = createOptions(null, null);
+		
         // options for all panes  
         LayoutOptions panes = new LayoutOptions();  
-        panes.addOption("slidable", false);  
+        setAttribute(panes, "slidable", Boolean.FALSE);  
         options.setPanesOptions(panes);    
-  
-        // north pane  
-        LayoutOptions north = new LayoutOptions(); 
-        fixed(north);
-        north.addOption("size", 44);
-        options.setNorthOptions(north);  
-        //configureNorth(north);
         
-        // west pane  
-        LayoutOptions west = new LayoutOptions();   
-        west.addOption("size", 220);
-        options.setWestOptions(west);  
+        LayoutOptions north = createOptions(options, CardinalPoint.NORTH);
+        setAttribute(north, "size", 44);  
+        fixed(north);
+         
+        LayoutOptions west = createOptions(options, CardinalPoint.WEST);  
+        setAttribute(west, "size", 220);  
+        configureWest(west);
   		
-        //center pane
-        LayoutOptions center = new LayoutOptions();  
-        center.addOption("resizable", false);  
-        center.addOption("closable", false);  
-        options.setCenterOptions(center);
+        LayoutOptions center = createOptions(options, CardinalPoint.CENTER);
+        setAttribute(center, "resizable", Boolean.FALSE);  
+        setAttribute(center, "closable", Boolean.FALSE);  
         configureCenter(center);
         
-        // south pane  
-        LayoutOptions south = new LayoutOptions();  
+        LayoutOptions south = createOptions(options, CardinalPoint.SOUTH);
+        setAttribute(south, "size", 15);  
         fixed(south);
-        south.addOption("size", 15);    
-        options.setSouthOptions(south);  
         
         return options;
-	}
-	
-	protected void configureNorth(LayoutOptions parent){
-		// options for nested layout  
-        LayoutOptions childOptions = new LayoutOptions();  
-        parent.setChildOptions(childOptions);  
-        
-        // options for north-center pane  
-        LayoutOptions center = new LayoutOptions();
-        fixed(center);
-        //center.addOption("size", "45");  
-        childOptions.setCenterOptions(center);  
-        //configureNorthCenter(center);
-  
-        // options for north-south pane  
-        LayoutOptions south = new LayoutOptions();  
-        south.addOption("size", "30"); 
-        fixed(south);
-        childOptions.setSouthOptions(south);
-        
 	}
 	
 	protected void configureNorthCenter(LayoutOptions parent){
@@ -113,17 +95,27 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
         //LayoutOptions north = new LayoutOptions();
         //childOptions.setNorthOptions(north);  
         
-        // options for center-center pane  
-        LayoutOptions center = new LayoutOptions();
-        childOptions.setCenterOptions(center);  
+        createOptions(childOptions, CardinalPoint.CENTER);
         
         // options for center-south pane  
-        LayoutOptions south = new LayoutOptions();  
-        south.addOption("size", "34"); 
+        LayoutOptions south = createOptions(childOptions, CardinalPoint.SOUTH);
+        setAttribute(south, "size", "34");
         fixed(south);
-        childOptions.setSouthOptions(south);
+        
+        //childOptions.setSouthOptions(south);
         
         
+	}
+	
+	protected void configureWest(LayoutOptions parent){
+		// options for nested layout  
+        LayoutOptions childOptions = new LayoutOptions();  
+        parent.setChildOptions(childOptions);  
+  
+        LayoutOptions north = createOptions(childOptions, CardinalPoint.NORTH);  
+        setAttribute(north, "size", "150");
+        fixed(north);
+        createOptions(childOptions, CardinalPoint.CENTER);    
 	}
 	
 }

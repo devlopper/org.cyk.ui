@@ -1,4 +1,4 @@
-package org.cyk.ui.web.api.helper;
+package org.cyk.ui.web.api.resources.helper;
 
 import java.io.Serializable;
 
@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.cyk.utility.common.Constant.Action;
-import org.omnifaces.util.Faces;
 
 public class UniformResourceLocatorHelper implements Serializable {
 
@@ -17,11 +16,6 @@ public class UniformResourceLocatorHelper implements Serializable {
 	public static class Listener extends org.cyk.utility.common.helper.UniformResourceLocatorHelper.Listener.Adapter.Default {
 		
 		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Object getRequest() {
-			return Faces.getRequest();
-		}
 		
 		@Override
 		public String getRequestUniformResourceLocator(Object request) {
