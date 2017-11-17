@@ -40,7 +40,7 @@ public abstract class AbstractContactEditPage<IDENTIFIABLE extends Contact> exte
 		
 		@Input @InputChoice @InputOneChoice @InputOneCombo protected ContactCollection collection;
 		
-		@Input @InputNumber protected Byte orderNumber;
+		//@Input @InputNumber protected Byte orderNumber;
 		
 		public static final String FIELD_COLLECTION = "collection";
 		public static final String FIELD_ORDER_NUMBER = "orderNumber";

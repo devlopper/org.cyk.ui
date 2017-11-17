@@ -36,6 +36,7 @@ import org.cyk.utility.common.userinterface.Image;
 import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
+import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
 import org.cyk.utility.common.userinterface.command.MenuNode;
@@ -111,8 +112,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
+		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class);
 		
-		UniformResourceLocatorHelper.DEFAULT_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
 		StringHelper.ToStringMapping.Datasource.Adapter.Default.initialize();
@@ -137,6 +138,15 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/support/image/graphicImage.xhtml"
 				,Properties.ALT,"Image",Properties.STREAM,Boolean.TRUE});
+		
+		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml"});
+		
+		Properties.setDefaultValues(DataTable.Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml"});
+		
+		Properties.setDefaultValues(DataTable.Columns.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/columns.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/columns/default.xhtml"});
 		/*
 		Properties.setDefaultValues(Watermark.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/watermark/watermark.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/watermark/default.xhtml"});
@@ -522,7 +532,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		if(template==null){
 			Menu.RenderType renderType = InstanceHelper.getInstance().getIfNotNullElseDefault(menu.getRenderType(),Menu.RenderType.DEFAULT);
 			switch(renderType){
-			case BAR:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menubar.xhtml";break;
+			case BAR:template = getMenuBarDefaultTemplate();break;
 			case BREAD_CRUMB:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/breadCrumb.xhtml";break;
 			case PANEL:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/panelMenu.xhtml";break;
 			case PLAIN:template = "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menu.xhtml";break;
@@ -531,6 +541,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			}
 		}
 		return template;
+	}
+	
+	public Object getMenuBarDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menubar.xhtml";
 	}
 	
 	public String getFacesMessageSeverityAsString(FacesMessage facesMessage){

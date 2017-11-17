@@ -24,7 +24,7 @@ public class ServletContextListener extends AbstractBean implements javax.servle
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP = new LinkedHashMap<>();
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP.put(WebResourcesManager.FILE_STATIC_EXTENSION, WebResourcesManager.FILE_PROCESSING_EXTENSION);
 		
-		ClassHelper.getInstance().map(RequestHelper.Listener.Adapter.Default.class, org.cyk.ui.web.api.resources.helper.RequestHelper.Listener.class);
+		ClassHelper.getInstance().map(RequestHelper.Listener.class, org.cyk.ui.web.api.resources.helper.RequestHelper.Listener.class);
 	}
 
 	@Override

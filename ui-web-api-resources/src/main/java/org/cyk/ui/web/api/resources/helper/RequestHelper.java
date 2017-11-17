@@ -18,17 +18,17 @@ public class RequestHelper {
 		}
 		
 		@Override
-		public Object getParameter(Object request, String name) {
-			if(request instanceof HttpServletRequest)
-				return ((HttpServletRequest)request).getParameter(name);
-			return super.getParameter(request, name);
-		}
-		
-		@Override
 		public String getUniformResourceLocator(Object request) {
 			if(request instanceof HttpServletRequest)
 				return ((HttpServletRequest)request).getRequestURL().toString();
 			return super.getUniformResourceLocator(request);
+		}
+		
+		@Override
+		public Object getParameter(Object request, String name) {
+			if(request instanceof HttpServletRequest)
+				return ((HttpServletRequest)request).getParameter(name);
+			return super.getParameter(request, name);
 		}
 		
 	}

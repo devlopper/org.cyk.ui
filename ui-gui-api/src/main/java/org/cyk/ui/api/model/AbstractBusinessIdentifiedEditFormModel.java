@@ -43,7 +43,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 	
 	@IncludeInputs(layout=Layout.VERTICAL) protected PeriodFormModel existencePeriod = new PeriodFormModel();
 	
-	@Input @InputNumber protected Long orderNumber;
+	//@Input @InputNumber protected Long orderNumber;
 	
 	@Input @InputNumber protected BigDecimal weight;
 	
