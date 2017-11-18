@@ -12,6 +12,7 @@
 	<!-- #{primefacesResourcesManager.inputTextDefaultTemplate}  -->
 	
 	<ui:param name="template" value="/org.cyk.ui.web.primefaces.resources/template/decorate/input/__layout__/1.xhtml"/>
+	<ui:param name="templateOutput" value="/org.cyk.ui.web.primefaces.resources/template/decorate/output/__layout__/1.xhtml"/>
 	
 	<!-- Inputs -->
 	
@@ -361,5 +362,29 @@
 	</pe:dynaFormControl>
 	
 	<!-- Outputs -->
+	
+	<ui:param name="identifier" value="outputText"/>
+	<ui:param name="type" value="OutputText"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{templateOutput}">
+			<ui:define name="output">			
+				<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+					 <ui:param name="outputText" value="#{control}" />
+				</ui:decorate>		
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="outputFile"/>
+	<ui:param name="type" value="OutputFile"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{templateOutput}">
+			<ui:define name="output">			
+				<ui:decorate template="#{primefacesResourcesManager.outputFileDefaultTemplate}">
+					 <ui:param name="outputFile" value="#{control}" />
+				</ui:decorate>		
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
 	
 </ui:composition>

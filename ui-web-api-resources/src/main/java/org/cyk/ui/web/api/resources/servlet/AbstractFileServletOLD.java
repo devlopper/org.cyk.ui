@@ -86,7 +86,7 @@ public abstract class AbstractFileServletOLD extends HttpServlet implements Seri
 	}
 	
 	protected AttachmentType getAttachmentType(HttpServletRequest request,HttpServletResponse response){
-		String attachmentTypeString = RequestHelper.getInstance().getParameterAsString(request,UniformResourceLocatorHelper.QueryParameter.Name.ATTACHMENT);
+		String attachmentTypeString = RequestHelper.getInstance().getParameterAsString(UniformResourceLocatorHelper.QueryParameter.Name.ATTACHMENT,request);
 		AttachmentType attachmentType = null;
 		if(StringUtils.isBlank(attachmentTypeString))
 			attachmentType = getAttachmentTypeWhenNotSpecified();
@@ -130,8 +130,8 @@ public abstract class AbstractFileServletOLD extends HttpServlet implements Seri
 	protected Collection<FileHelper.File> getFiles(HttpServletRequest request, HttpServletResponse response){
 		Collection<FileHelper.File> collection = new ArrayList<>();
 		Collection<Long> identifiers = new ArrayList<>();
-		String identifier = RequestHelper.getInstance().getParameterAsString(request, UniformResourceLocatorHelper.QueryParameter.Name.IDENTIFIER);
-		String encodedParameter = RequestHelper.getInstance().getParameterAsString(request, UniformResourceLocatorHelper.QueryParameter.Name.ENCODED);
+		String identifier = RequestHelper.getInstance().getParameterAsString(UniformResourceLocatorHelper.QueryParameter.Name.IDENTIFIER,request);
+		String encodedParameter = RequestHelper.getInstance().getParameterAsString(UniformResourceLocatorHelper.QueryParameter.Name.ENCODED,request);
 		if(UniformResourceLocatorHelper.QueryParameter.Name.IDENTIFIER.equals(encodedParameter)){
 			Collection<Long> r = null;//webManager.decodeIdentifiersRequestParameterValue(identifiable);
 			if(r!=null)
@@ -157,7 +157,7 @@ public abstract class AbstractFileServletOLD extends HttpServlet implements Seri
 	/**/
 	
 	protected String fileExtensionRequestParameter(HttpServletRequest request){
-		return RequestHelper.getInstance().getParameterAsString(request, UniformResourceLocatorHelper.QueryParameter.Name.FILE_EXTENSION);
+		return RequestHelper.getInstance().getParameterAsString(UniformResourceLocatorHelper.QueryParameter.Name.FILE_EXTENSION,request);
 	}
 	
 	/**/

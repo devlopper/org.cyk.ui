@@ -31,7 +31,7 @@ public class CreatePersonPage extends Window implements Serializable {
 		person.setGlobalIdentifier(new GlobalIdentifier());
 		//person.getGlobalIdentifier().setImage(new File(FileHelper.getInstance().get(ContextListener.class, "image001.png")));
 		//System.out.println("CreatePersonPage.initialisation() : "+person.getGlobalIdentifier().getImage());
-		form = new Form.Master(person,SubmitCommandActionAdapter.class);
+		form = new Form.Master(this,person,SubmitCommandActionAdapter.class);
 		
 		Form.Detail detail = form.getDetail();
 		detail.getLayout().setType(Layout.Type.ADAPTIVE);

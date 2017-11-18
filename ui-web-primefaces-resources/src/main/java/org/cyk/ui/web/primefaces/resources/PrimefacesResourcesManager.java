@@ -69,6 +69,7 @@ import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneList;
 import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
 import org.cyk.utility.common.userinterface.input.choice.SelectItems;
 import org.cyk.utility.common.userinterface.input.number.InputNumber;
+import org.cyk.utility.common.userinterface.output.OutputFile;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
@@ -126,6 +127,11 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
+		Properties.setDefaultValue(OutputText.class, Properties.ESCAPE, Boolean.FALSE);
+		Properties.setDefaultValue(OutputText.class, Properties.DIR, "LTR");
+		
+		Properties.setDefaultValue(OutputFile.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/file.xhtml");
+		Properties.setDefaultValue(OutputFile.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/output/file/outputFile/default.xhtml");
 		
 		Properties.setDefaultValues(Form.Master.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form/include.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml"});
@@ -136,7 +142,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(InteractivityBlocker.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/blockUI/blockUI.xhtml"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/blockUI/default.xhtml",Properties.CENTER_X,Boolean.TRUE,Properties.CENTER_Y,Boolean.TRUE});
 		
-		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/support/image/graphicImage.xhtml"
+		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/graphicImage.xhtml"
 				,Properties.ALT,"Image",Properties.STREAM,Boolean.TRUE});
 		
 		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
@@ -525,6 +531,14 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getInputFileDefaultTemplate(){
 		return Properties.getDefaultValue(InputFile.class, Properties.TEMPLATE);
+	}
+	
+	public Object getOutputFileDefaultTemplate(){
+		return Properties.getDefaultValue(OutputFile.class, Properties.TEMPLATE);
+	}
+	
+	public Object getOutputTextDefaultTemplate(){
+		return Properties.getDefaultValue(OutputText.class, Properties.TEMPLATE);
 	}
 	
 	public Object getMenuTemplate(Menu menu){

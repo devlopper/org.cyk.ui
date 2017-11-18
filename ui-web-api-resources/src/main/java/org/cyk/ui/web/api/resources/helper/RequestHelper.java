@@ -25,10 +25,10 @@ public class RequestHelper {
 		}
 		
 		@Override
-		public Object getParameter(Object request, String name) {
+		public Object getParameter(String name,Object request) {
 			if(request instanceof HttpServletRequest)
 				return ((HttpServletRequest)request).getParameter(name);
-			return super.getParameter(request, name);
+			return super.getParameter(name,request);
 		}
 		
 	}

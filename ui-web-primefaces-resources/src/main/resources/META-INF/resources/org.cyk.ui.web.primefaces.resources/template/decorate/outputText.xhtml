@@ -7,11 +7,12 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
 	<h:outputText 
-		value="#{outputText.propertiesMap.value}" 
+		dir="#{outputText.propertiesMap.dir}"
+		value="#{outputText.propertiesMap.value}"  
 		title="#{empty outputText.propertiesMap.title ? outputText.propertiesMap.value : outputText.propertiesMap.title}"
 		style="#{outputText.propertiesMap.style}" 
 		styleClass="#{outputText.propertiesMap.styleClass}" 
-		escape="#{empty outputText.propertiesMap.escape ? false : outputText.propertiesMap.escape}"
+		escape="#{outputText.propertiesMap.escape}"
 		rendered="#{outputText.propertiesMap.rendered}"
 	/>
 	

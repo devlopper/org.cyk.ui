@@ -29,7 +29,7 @@ public class PersonEditPage extends AbstractPersonEditPage<Person> implements Se
 		person.setGlobalIdentifier(new GlobalIdentifier());
 		//person.getGlobalIdentifier().setImage(new File(FileHelper.getInstance().get(ContextListener.class, "image001.png")));
 		//System.out.println("CreatePersonPage.initialisation() : "+person.getGlobalIdentifier().getImage());
-		form2 = new org.cyk.utility.common.userinterface.container.Form.Master(person,SubmitCommandActionAdapter.class);
+		form2 = null;//new org.cyk.utility.common.userinterface.container.Form.Master(this,person,SubmitCommandActionAdapter.class);
 		
 		org.cyk.utility.common.userinterface.container.Form.Detail detail = form2.getDetail();
 		detail.getLayout().setType(org.cyk.utility.common.userinterface.Layout.Type.ADAPTIVE);
