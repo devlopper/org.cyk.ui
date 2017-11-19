@@ -64,7 +64,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		description = identifiable.getDescription();
 		existencePeriod.set(identifiable.getExistencePeriod());
 		otherDetails = identifiable.getOtherDetails();
-		orderNumber = identifiable.getOrderNumber();
+		__orderNumber__ = identifiable.getOrderNumber();
 		weight = identifiable.getWeight();
 		defaulted = identifiable.getDefaulted();
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractBusinessIdentifiedEditFormModel<IDENTIFIABLE exten
 		existencePeriod.write(identifiable.getExistencePeriod());
 		
 		identifiable.setOtherDetails(otherDetails);
-		identifiable.setOrderNumber(orderNumber);
+		identifiable.setOrderNumber(__orderNumber__);
 		identifiable.setWeight(weight);
 		
 		identifiable.setDefaulted(defaulted);
