@@ -69,6 +69,7 @@ import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneList;
 import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
 import org.cyk.utility.common.userinterface.input.choice.SelectItems;
 import org.cyk.utility.common.userinterface.input.number.InputNumber;
+import org.cyk.utility.common.userinterface.output.Output;
 import org.cyk.utility.common.userinterface.output.OutputFile;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
@@ -114,6 +115,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
 		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class);
+		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
@@ -371,6 +373,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 				}else if(instance instanceof Menu){
 					
+				}else if(instance instanceof OutputFile){
+					((Image)properties.getThumbnail()).getPropertiesMap().setStream(Boolean.FALSE);
 				}
 				
 			}
