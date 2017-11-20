@@ -9,6 +9,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
@@ -39,7 +43,6 @@ import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
-import org.cyk.utility.common.userinterface.command.MenuNode;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.Window;
@@ -75,21 +78,8 @@ import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
 import org.cyk.utility.common.userinterface.panel.NotificationDialog;
-import org.primefaces.extensions.model.dynaform.DynaFormControl;
-import org.primefaces.extensions.model.dynaform.DynaFormLabel;
-import org.primefaces.extensions.model.dynaform.DynaFormModel;
-import org.primefaces.extensions.model.dynaform.DynaFormRow;
 import org.primefaces.model.ByteArrayContent;
 import org.primefaces.model.DualListModel;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.Submenu;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @SuppressWarnings("unchecked")
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
@@ -375,6 +365,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 				}else if(instance instanceof OutputFile){
 					((Image)properties.getThumbnail()).getPropertiesMap().setStream(Boolean.FALSE);
+					((Image)properties.getThumbnail()).getPropertiesMap().setWidth("150px");
+					((Image)properties.getThumbnail()).getPropertiesMap().setHeight("150px");
 				}
 				
 			}
@@ -591,73 +583,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	/**/
 	
-	public static class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
-		private static final long serialVersionUID = 1L;
-		
-		@Override
-		public DynaFormRow createRow(DynaFormModel model) {
-			return model.createRegularRow();
-		}
-		
-		@Override
-		public DynaFormControl addControl(DynaFormRow row, org.cyk.utility.common.userinterface.Control control,String type) {
-			return row.addControl(control, type,control.getArea().getLength().getDistance().intValue()*2-1,control.getArea().getWidth().getDistance().intValue());
-		}
-		
-		@Override
-		public DynaFormLabel addLabel(DynaFormRow row, OutputText outputText) {
-			return row.addLabel(outputText.getPropertiesMap().getValue().toString(),1,outputText.getArea().getWidth().getDistance()==null ? 1 : outputText.getArea().getWidth().getDistance().intValue());  
-		}
-		
-		@Override
-		public Target<DynaFormModel,DynaFormControl, DynaFormRow, DynaFormLabel> link(DynaFormControl control,DynaFormLabel label) {
-			label.setForControl(control);  
-			return this;
-		}
-		
-		@Override
-		public String getType(org.cyk.utility.common.userinterface.Control control) {
-			return getComponentTypeForDynaForm(control.getClass());
-		}
-		
-	}
-	
-	public static class MenuBasedOnMenuModel extends Menu.Builder.Target.Adapter.Default<DefaultMenuModel> implements Serializable {
-		private static final long serialVersionUID = 1L;
-		
-		@Override
-		protected Object createNotLeaf(DefaultMenuModel menu, MenuNode menuNode) {
-			DefaultSubMenu subMenu = new DefaultSubMenu();
-			subMenu.setLabel((String)menuNode.getLabel().getPropertiesMap().getValue());
-			return subMenu;
-		}
-		
-		@Override
-		protected Object createLeaf(DefaultMenuModel menu, MenuNode menuNode) {
-			DefaultMenuItem	menuItem = new DefaultMenuItem();
-			menuItem.setValue(menuNode.getLabel().getPropertiesMap().getValue());
-			if(menuNode.getPropertiesMap().getUrl()!=null)
-				menuItem.setUrl((String)menuNode.getPropertiesMap().getUrl());
-			if(menuNode.getPropertiesMap().getOutcome()!=null)
-				menuItem.setOutcome((String)menuNode.getPropertiesMap().getOutcome());
-			return menuItem;
-		}
-			
-		@Override
-		protected void addNode(DefaultMenuModel menu, Object node, Object parent) {
-			if(parent==null)
-				menu.addElement((MenuElement) node);
-			else if(parent instanceof Submenu)
-				((DefaultSubMenu)parent).addElement((MenuElement) node);
-		}
-		
-		@Override
-		protected DefaultMenuModel __execute__() {
-			getInput().getPropertiesMap().setTemplate(getInstance().getMenuTemplate(getInput()));
-			return super.__execute__();
-		}
-	}
-
 	public static void setInteractivityBlocker(Form.Master form,Boolean global){
 		form.getSubmitCommand().getPropertiesMap().setGlobal(global);
 		if(Boolean.TRUE.equals(global)){
