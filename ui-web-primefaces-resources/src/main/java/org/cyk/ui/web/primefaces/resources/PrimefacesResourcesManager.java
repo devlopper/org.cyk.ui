@@ -352,7 +352,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 							
 							);
 					
-					//Image image = (Image) properties.getImageComponent();
+					Image image = (Image) properties.getImageComponent();
+					image.getPropertiesMap().setWidth(previewImage.getPropertiesMap().getWidth());
+					image.getPropertiesMap().setHeight(previewImage.getPropertiesMap().getHeight());
 					
 					((Command)properties.getRemoveCommand()).getLabel().getPropertiesMap().setRendered(Boolean.FALSE);
 					((Command)properties.getRemoveCommand()).getPropertiesMap().setIcon("fa fa-trash");
