@@ -38,8 +38,8 @@ public class FormClassLocator extends ClassLocator implements Serializable {
 				return "model";
 			}
 			@Override
-			protected String getModulePrefix() {
-				return "ui.web.primefaces.page";
+			protected String[] getModulePrefixes() {
+				return new String[]{"ui.web.primefaces.page"};
 			}
 			@Override
 			protected String[] getModuleSuffixes() {
