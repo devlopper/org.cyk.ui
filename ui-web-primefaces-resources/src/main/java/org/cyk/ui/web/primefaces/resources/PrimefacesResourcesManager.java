@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.servlet.ServletContextEvent;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -295,7 +296,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 					Image image = new Image();
 					image.getPropertiesMap().setStream(Boolean.FALSE);
-					image.getPropertiesMap().setValue(new ByteArrayContent(LOGO_FILE.getBytes(), LOGO_FILE.getMime()));
+					if(LOGO_FILE!=null)
+						image.getPropertiesMap().setValue(new ByteArrayContent(LOGO_FILE.getBytes(), LOGO_FILE.getMime()));
 					properties.setImageComponent(image);
 					
 					Menu menu = (Menu) properties.getMainMenu();
@@ -395,6 +397,16 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				return new NorthEastSouthWestCenter();
 			}
 		});
+		
+		logInfo("CYK Primefaces Resources Manager has been initialized");
+	}
+	
+	public void initializeContext(ServletContextEvent servletContextEvent){
+		initialize();
+	}
+	
+	public void destroyContext(ServletContextEvent servletContextEvent){
+		
 	}
 		
 	public static final String COMPONENT_TEMPLATE_FORMAT = "/org.cyk.ui.web.primefaces.resources/template/decorate/%s/%s/%s.xhtml";

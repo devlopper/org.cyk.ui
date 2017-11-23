@@ -12,6 +12,7 @@ import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.security.UserAccount;
+import org.cyk.system.test.business.MenuBuilder;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
 import org.cyk.system.test.model.actor.Actor;
@@ -26,14 +27,12 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
-import org.cyk.ui.web.primefaces.InputAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.resources.PrimefacesResourcesManager;
-import org.cyk.ui.web.primefaces.resources.ServletContextListener;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.userinterface.input.Input;
+import org.cyk.utility.common.userinterface.command.Menu;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -43,10 +42,6 @@ public class ContextListener extends AbstractContextListener {
 	@Override
 	protected void initialisation() {
 		super.initialisation();  
-		inject(PrimefacesResourcesManager.class).initialize();
-		
-		
-		ClassHelper.getInstance().map(Input.Listener.Adapter.Default.class, InputAdapter.class);
 		
 		uiManager.registerApplicationUImanager(MyWebManager.getInstance());
 		Comment.define(Actor.class); 
@@ -101,6 +96,9 @@ public class ContextListener extends AbstractContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
+		//inject(WebResourcesManager.class).initializeContext(event);
+		inject(PrimefacesResourcesManager.class).initializeContext(event);
+		
 		MyWebManager.getInstance().getListeners().add(new org.cyk.system.test.business.PrimefacesManager());
 		
 		AbstractSelectOnePage.Listener.COLLECTION.add(new ActorSelectOnePageAdapter());
@@ -111,7 +109,7 @@ public class ContextListener extends AbstractContextListener {
 
 		//ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
 		
-		
+		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
 	}
 	
 	@Override

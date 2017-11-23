@@ -216,7 +216,7 @@ public abstract class AbstractServletContextListener<NODE,NODE_MODEL extends Web
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		InstanceHelper.Listener.Adapter.Default.DEFAULT_CLASS = org.cyk.system.root.business.impl.helper.InstanceHelper.Listener.class;
+		//InstanceHelper.Listener.Adapter.Default.DEFAULT_CLASS = org.cyk.system.root.business.impl.helper.InstanceHelper.Listener.class;
 		servletContext = event.getServletContext();
 		/*UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_SCHEME = "http";
 		UniformResourceLocatorHelper.Stringifier.Adapter.Default.DEFAULT_HOST = "localhost";

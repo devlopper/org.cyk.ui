@@ -1,4 +1,4 @@
-package org.cyk.ui.web.primefaces.page.party.person;
+package org.cyk.ui.web.primefaces.page.party.person.__OLD__;
 
 import java.io.Serializable;
 
@@ -14,7 +14,8 @@ import org.cyk.ui.web.primefaces.page.party.AbstractPersonListPage;
 import lombok.Getter;
 import lombok.Setter;
 
-@Named @ViewScoped @Getter @Setter
+//@Named @ViewScoped 
+@Getter @Setter
 public class PersonListPage extends AbstractPersonListPage<Person> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
