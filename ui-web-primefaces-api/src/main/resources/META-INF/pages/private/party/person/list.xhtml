@@ -7,12 +7,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
- 	<ui:decorate template="#{personListWindow.propertiesMap.template}">
- 		<ui:param name="page" value="#{personListWindow}" />
+ 	<ui:decorate template="#{personListPage.propertiesMap.template}">
+ 		<ui:param name="page" value="#{personListPage}" />
  		<ui:define name="centerCenterContent">
  			
- 			<ui:decorate template="#{personListWindow.dataTable.propertiesMap.template}">
-		 		<ui:param name="dataTable" value="#{personListWindow.dataTable}" />
+ 			<ui:decorate template="#{personListPage.dataTable.propertiesMap.template}">
+		 		<ui:param name="dataTable" value="#{personListPage.dataTable}" />
 		 	</ui:decorate>
  			
  		</ui:define>

@@ -10,7 +10,7 @@ public class ObjectIdentifierConverter extends AbstractBasedMapConverter impleme
 	protected String getString(Object object) {
 		Object identifier = InstanceHelper.getInstance().getIdentifier(object);
 		if(identifier==null){
-			System.out.println("ObjectIdentifierConverter.getString() : Identifier is null for object "+object);
+			logWarning("Identifier is null for object {}",object);
 		}
 		return identifier == null ? null : identifier.toString();
 	}

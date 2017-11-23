@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
-public class PersonListWindow extends ListWindow implements Serializable {
+public class PersonListPage extends ListWindow implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;
 	
@@ -28,7 +28,7 @@ public class PersonListWindow extends ListWindow implements Serializable {
 			addColumn("lastnames", "lastnames");
 			addColumn("sex", "sex");
 			//rows
-			//addManyRow(inject(PersonBusiness.class).findAll());
+			addManyRow(inject(PersonBusiness.class).findAll());
 		}
 		
 	}

@@ -17,6 +17,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>personReadView</from-outcome>
+			<to-view-id>/private/party/person/consult.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>personConsultView</from-outcome>
 			<to-view-id>/private/party/person/consult.jsf</to-view-id>
 			<redirect />

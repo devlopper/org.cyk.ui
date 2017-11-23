@@ -15,6 +15,7 @@ import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
+import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.RequestHelper;
 
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 	}
 
 	public void initializeContext(ServletContextEvent servletContextEvent){
+		Component.ClassLocator.GetOrgCykSystem.WINDOW = "Page";
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT = StringUtils.replace(servletContextEvent.getServletContext().getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP = new LinkedHashMap<>();
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP.put(WebResourcesManager.FILE_STATIC_EXTENSION, WebResourcesManager.FILE_PROCESSING_EXTENSION);

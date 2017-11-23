@@ -29,7 +29,7 @@ public class PersonWebITRunner extends IdentifiableWebITRunner<Person> implement
 	}
 	@Override
 	public void fillForm(Form form,Crud crud) {
-		switch(crud){
+		/*switch(crud){
 		case CREATE:
 			form.addInputText(PersonEditPage.Form.FIELD_NAME,"yao")
 	        	.addInputText(PersonEditPage.Form.FIELD_LAST_NAMES, "evelyne")
@@ -52,7 +52,7 @@ public class PersonWebITRunner extends IdentifiableWebITRunner<Person> implement
 			break;
 		case DELETE:
 			break;
-		}
+		}*/
 	}
 
 	
