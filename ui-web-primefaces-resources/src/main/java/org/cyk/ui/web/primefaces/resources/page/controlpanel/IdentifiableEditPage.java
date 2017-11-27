@@ -19,8 +19,11 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected Class< ? extends Master> getFormMasterClass() {
-		return FormMaster.class;
+	protected Class<? extends Master> getFormMasterClass() {
+		Class<? extends Master> clazz = super.getFormMasterClass();
+		if(Form.Master.class.equals(clazz))
+			clazz = FormMaster.class;
+		return clazz;
 	}
 	
 	@Getter @Setter @Accessors(chain=true)

@@ -18,7 +18,11 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 
 	@Override
 	protected Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> getDataTableClass() {
-		return DataTable.class;
+		Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> clazz = super.getDataTableClass();
+		System.out.println("IdentifiableListPage.getDataTableClass() : "+clazz);
+		if(org.cyk.utility.common.userinterface.collection.DataTable.class.equals(clazz))
+			clazz = DataTable.class;
+		return clazz;
 	}
 	
 	public static class DataTable extends org.cyk.utility.common.userinterface.collection.DataTable implements Serializable {
