@@ -7,11 +7,16 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
- 	<ui:decorate template="#{blankPage.propertiesMap.template}">
- 		<ui:param name="page" value="#{blankPage}" />
- 		<ui:define name="centerCenterContent">
- 			<h1>Home</h1>
+ 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+ 		<ui:param name="pageController" value="#{privateIndexPage}" />
+ 		<ui:define name="body">
+ 			<style>
+				.ui-layout-pane-center{
+					background:url(#{resource[defaultDesktopLayoutManager.homeBackgroundPath]}) fixed 50% / cover !important;
+					background-size: 100% 100%;
+				}
+			</style>
  		</ui:define>
  	</ui:decorate>
- 	
+ 
 </html>

@@ -14,4 +14,56 @@
 		<supported-locale>fr</supported-locale>
 	</locale-config>
 	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<navigation-case>
+			<from-outcome>homeView</from-outcome>
+			<to-view-id>/private/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>controlPanelIdentifiablesManageView</from-outcome>
+			<to-view-id>/private/controlpanel/identifiables/manage.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>__identifiable__listView</from-outcome>
+			<to-view-id>/private/controlpanel/identifiables/list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>__identifiable__editView</from-outcome>
+			<to-view-id>/private/controlpanel/identifiables/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>__identifiable__readView</from-outcome>
+			<to-view-id>/private/controlpanel/identifiables/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>__identifiable__consultView</from-outcome>
+			<to-view-id>/private/controlpanel/identifiables/consult.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>toolsView</from-outcome>
+			<to-view-id>/private/tools/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>userView</from-outcome>
+			<to-view-id>/private/user/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>	
+	</navigation-rule>
+	
 </faces-config>

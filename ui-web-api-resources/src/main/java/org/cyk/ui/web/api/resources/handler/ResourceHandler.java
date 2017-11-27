@@ -53,6 +53,7 @@ public class ResourceHandler extends javax.faces.application.ResourceHandlerWrap
 				}
 			}
 		if(resource == null)
+			//throw new RuntimeException();
 			System.out.println("Resource named "+resourceName+" not found");
 		return resource;
 	}

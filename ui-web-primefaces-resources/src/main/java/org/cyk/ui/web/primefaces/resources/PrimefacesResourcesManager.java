@@ -115,7 +115,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
-				,Properties.MAIN_MENU,Menu.build(null, Menu.Type.MAIN)
+				//,Properties.MAIN_MENU,Menu.build(null, Menu.Type.MAIN)
 				,Properties.FOOTER,"MY FOOT HERE"
 		});
 		
@@ -301,6 +301,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					properties.setImageComponent(image);
 					
 					Menu menu = (Menu) properties.getMainMenu();
+					if(menu==null){
+						properties.setMainMenu(menu = Menu.build(null, Menu.Type.MAIN));
+					}
 					if(menu.getBuilt()==null)
 						menu.build();
 					

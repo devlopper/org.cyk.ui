@@ -7,10 +7,14 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
- 	<ui:decorate template="#{blankPage.propertiesMap.template}">
- 		<ui:param name="page" value="#{blankPage}" />
+ 	<ui:decorate template="#{identifiableListPage.propertiesMap.template}">
+ 		<ui:param name="page" value="#{identifiableListPage}" />
  		<ui:define name="centerCenterContent">
- 			<h1>Home</h1>
+ 			
+ 			<ui:decorate template="#{identifiableListPage.dataTable.propertiesMap.template}">
+		 		<ui:param name="dataTable" value="#{identifiableListPage.dataTable}" />
+		 	</ui:decorate>
+ 			
  		</ui:define>
  	</ui:decorate>
  	
