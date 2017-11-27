@@ -5,10 +5,6 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.utility.common.helper.InstanceHelper;
-import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
-import org.cyk.utility.common.userinterface.RequestHelper;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +15,6 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 	@Override
 	protected Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> getDataTableClass() {
 		Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> clazz = super.getDataTableClass();
-		System.out.println("IdentifiableListPage.getDataTableClass() : "+clazz);
 		if(org.cyk.utility.common.userinterface.collection.DataTable.class.equals(clazz))
 			clazz = DataTable.class;
 		return clazz;
@@ -28,14 +23,9 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 	public static class DataTable extends org.cyk.utility.common.userinterface.collection.DataTable implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		public DataTable() {
-			super(RequestHelper.getInstance().getParameterAsClass(UniformResourceLocatorHelper.QueryParameter.Name.CLASS));
-			//columns
-			addColumn("code", "globalIdentifier.code");
-			addColumn("name", "globalIdentifier.name");
-			
-			//rows
-			addManyRow(InstanceHelper.getInstance().get(getActionOnClass()));
+		@Override
+		protected void __prepare__() {
+			addColumnsByFieldNames("globalIdentifier.code","globalIdentifier.name");
 		}
 		
 	}
