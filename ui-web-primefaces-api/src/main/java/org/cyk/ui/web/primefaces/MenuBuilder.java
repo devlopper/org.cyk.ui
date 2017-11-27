@@ -1,32 +1,14 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import org.cyk.system.root.model.event.Event;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
-import org.cyk.system.root.model.geography.Country;
-import org.cyk.system.root.model.geography.ElectronicMailAddress;
-import org.cyk.system.root.model.geography.Locality;
-import org.cyk.system.root.model.geography.LocalityType;
-import org.cyk.system.root.model.geography.Location;
-import org.cyk.system.root.model.geography.LocationType;
-import org.cyk.system.root.model.geography.PhoneNumber;
-import org.cyk.system.root.model.geography.PhoneNumberType;
-import org.cyk.system.root.model.geography.PostalBox;
-import org.cyk.system.root.model.geography.Website;
-import org.cyk.system.root.model.party.person.Allergy;
-import org.cyk.system.root.model.party.person.BloodGroup;
-import org.cyk.system.root.model.party.person.JobFunction;
-import org.cyk.system.root.model.party.person.JobTitle;
-import org.cyk.system.root.model.party.person.MaritalStatus;
-import org.cyk.system.root.model.party.person.Medication;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.party.person.PersonRelationship;
-import org.cyk.system.root.model.party.person.PersonRelationshipType;
-import org.cyk.system.root.model.party.person.PersonRelationshipTypeGroup;
-import org.cyk.system.root.model.party.person.PersonRelationshipTypeRole;
-import org.cyk.system.root.model.party.person.PersonRelationshipTypeRoleName;
-import org.cyk.system.root.model.party.person.PersonTitle;
-import org.cyk.system.root.model.party.person.Sex;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.command.Menu;
 
 public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder implements Serializable {
@@ -100,16 +82,31 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 	@Override
 	protected void addNodeIdentifiablesManage(Menu menu) {
 		super.addNodeIdentifiablesManage(menu);
-		menu.addNode("ui.menu.controlpanel.identifiables.manage.geography")
+		Collection<Class<?>> classes = ClassHelper.getInstance().getByAnnotation("org.cyk", javax.persistence.Entity.class);
+		menu.addNode("geography")
+			.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,ContactCollection.class.getPackage().getName(), StringHelper.Location.START));
+		
+		menu.addNode("event")
+		.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,Event.class.getPackage().getName(), StringHelper.Location.START));
+		
+		menu.addNode("file")
+		.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,File.class.getPackage().getName(), StringHelper.Location.START));
+		
+		menu.addNode("person")
+			.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,Person.class.getPackage().getName(), StringHelper.Location.START));
+		
+		/*
+		for(Class<?> index : ClassHelper.getInstance().getByAnnotation(Person.class.getPackage().getName(), javax.persistence.Entity.class))
+			
 			.addNodeActionListMany(LocalityType.class,Locality.class,Country.class,LocationType.class,PhoneNumberType.class,PhoneNumber.class,ElectronicMailAddress.class
 					,Location.class,Website.class,PostalBox.class,ContactCollection.class)
-		;
-	
+		;*/
+		/*
 		menu.addNode("ui.menu.controlpanel.identifiables.manage.person")
 		.addNodeActionListMany(Allergy.class,Medication.class,BloodGroup.class,JobFunction.class,JobTitle.class,Sex.class,MaritalStatus.class,PersonTitle.class
 				,PersonRelationshipTypeRoleName.class,PersonRelationshipTypeRole.class,PersonRelationshipType.class,PersonRelationshipTypeGroup.class,Person.class,
 				PersonRelationship.class)
-		;
+		;*/
 		
 		
 	}
