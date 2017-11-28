@@ -7,11 +7,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
- 	<ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
- 		<ui:param name="pageController" value="#{logoutPage}" />
- 		<ui:define name="body">
- 			<p:commandButton value="Logout" action="#{userSession.logout}" />
+ 	<ui:decorate template="#{logoutPage.propertiesMap.template}">
+ 		<ui:param name="page" value="#{logoutPage}" />
+ 		<ui:define name="centerCenterContent">
+ 			Logout
  		</ui:define>
  	</ui:decorate>
- 
+ 	
 </html>

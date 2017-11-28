@@ -1,14 +1,12 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.command.Menu;
 
 public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder implements Serializable {
@@ -59,6 +57,7 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 			}
 			*/
 		}else if(Menu.Type.CONTEXT.equals(menu.getType())){
+			//menu.setRenderType(Menu.RenderType.SLIDE);
 			/*
 			if(componentParent instanceof Session2MenusPage){
 				MenuNode menuNode1 = new MenuNode();
@@ -82,33 +81,7 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 	@Override
 	protected void addNodeIdentifiablesManage(Menu menu) {
 		super.addNodeIdentifiablesManage(menu);
-		Collection<Class<?>> classes = ClassHelper.getInstance().getByAnnotation("org.cyk", javax.persistence.Entity.class);
-		menu.addNode("geography")
-			.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,ContactCollection.class.getPackage().getName(), StringHelper.Location.START));
-		
-		menu.addNode("event")
-		.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,Event.class.getPackage().getName(), StringHelper.Location.START));
-		
-		menu.addNode("file")
-		.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,File.class.getPackage().getName(), StringHelper.Location.START));
-		
-		menu.addNode("person")
-			.addNodeActionListMany(ClassHelper.getInstance().filterByPackageName(classes,Person.class.getPackage().getName(), StringHelper.Location.START));
-		
-		/*
-		for(Class<?> index : ClassHelper.getInstance().getByAnnotation(Person.class.getPackage().getName(), javax.persistence.Entity.class))
-			
-			.addNodeActionListMany(LocalityType.class,Locality.class,Country.class,LocationType.class,PhoneNumberType.class,PhoneNumber.class,ElectronicMailAddress.class
-					,Location.class,Website.class,PostalBox.class,ContactCollection.class)
-		;*/
-		/*
-		menu.addNode("ui.menu.controlpanel.identifiables.manage.person")
-		.addNodeActionListMany(Allergy.class,Medication.class,BloodGroup.class,JobFunction.class,JobTitle.class,Sex.class,MaritalStatus.class,PersonTitle.class
-				,PersonRelationshipTypeRoleName.class,PersonRelationshipTypeRole.class,PersonRelationshipType.class,PersonRelationshipTypeGroup.class,Person.class,
-				PersonRelationship.class)
-		;*/
-		
-		
+		menu.addNodeActionListManyFromPackage(ContactCollection.class,Event.class,File.class,Person.class);
 	}
 	
 }
