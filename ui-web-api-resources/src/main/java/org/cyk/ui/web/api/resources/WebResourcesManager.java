@@ -16,7 +16,9 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.ContentType;
 import org.cyk.utility.common.userinterface.RequestHelper;
+import org.omnifaces.util.Faces;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,10 +40,18 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 	}
 
 	public void initializeContext(ServletContextEvent servletContextEvent){
+		ContentType.DEFAULT = ContentType.HTML;
+		Component.RENDER_AS_CONTENT_TYPE = ContentType.DEFAULT;
 		Component.ClassLocator.GetOrgCykSystem.WINDOW = "Page";
+		
+		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.IDENTIFIER_HOME = "homeView";
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT = StringUtils.replace(servletContextEvent.getServletContext().getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP = new LinkedHashMap<>();
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_SEQUENCE_REPLACEMENT_MAP.put(WebResourcesManager.FILE_STATIC_EXTENSION, WebResourcesManager.FILE_PROCESSING_EXTENSION);
+		
+		//Realm.DATA_SOURCE = applicationBusiness.findShiroConfigurator().getDataSource();
+		//WebEnvironmentAdapter.DATA_SOURCE = Realm.DATA_SOURCE;
+		//WebEnvironmentListener.Adapter.DATA_SOURCE = Realm.DATA_SOURCE;
 		
 		ClassHelper.getInstance().map(RequestHelper.Listener.class, org.cyk.ui.web.api.resources.helper.RequestHelper.Listener.class);
 	}
@@ -59,6 +69,18 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 	public Converter instanciateConverter(Class<?> aClass){
 		Class<?> converterClass = getConverterClass(aClass);
 		return converterClass == null ? null :(Converter) ClassHelper.getInstance().instanciateOne(converterClass);
+	}
+	
+	public void redirect(String url){
+		//logTrace("Redirect to {} , Committed = {}", url,Faces.isResponseCommitted());
+		try {
+			//throw new RuntimeException();
+			Faces.redirect(url);
+			//Faces.responseComplete();
+		} catch (Exception e) {
+			logThrowable(e);
+			//log.log(Level.SEVERE,e.toString(),e);
+		}
 	}
 	
 	public static WebResourcesManager getInstance() {
