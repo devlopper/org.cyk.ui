@@ -55,7 +55,7 @@
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
   </filter-mapping>
-  <context-param>
+  <!--context-param>
     <param-name>shiroEnvironmentClass</param-name>
     <param-value>org.cyk.ui.web.api.security.shiro.WebEnvironment</param-value>
   </context-param>
@@ -74,6 +74,6 @@
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
-  </filter-mapping>
+  </filter-mapping-->
    
 </web-fragment>

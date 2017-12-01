@@ -3,6 +3,7 @@ package org.cyk.ui.api.resources;
 import java.io.Serializable;
 
 import org.cyk.ui.api.resources.window.IdentifiablesManageWindow;
+import org.cyk.utility.common.security.SecurityHelper;
 import org.cyk.utility.common.userinterface.command.Menu;
 import org.cyk.utility.common.userinterface.command.MenuNode;
 
@@ -14,7 +15,7 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 	@Override
 	protected Menu __execute__() {
 		Menu menu = super.__execute__();
-		
+		Object principal = SecurityHelper.getInstance().getPrincipal();
 		if(Menu.Type.MAIN.equals(menu.getType())){
 			homeMainMenuNode = menu.addNode("ui.menu.home","homeView");
 		
@@ -27,12 +28,15 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 				.getParentAsNode().addNode("ui.menu.tools.data.import")
 				;
 			*/
-			/*
-			menu.addNode("ui.menu.user","userView")
-				.addNode("ui.menu.user.account.manage")
-				.getParentAsNode().addNode("ui.menu.user.disconnect")
-				;
-			*/
+			
+			if(principal!=null){
+				MenuNode menuNode = menu.addNode((String)null,"userView");
+				menuNode.getLabel().getPropertiesMap().setValue(principal);
+				menuNode.addNode("ui.menu.user.account.manage");
+				menuNode.addNode("ui.menu.user.logout","userLogoutView");
+			}
+			
+			
 		}else if(Menu.Type.CONTEXT.equals(menu.getType())){
 			if(componentParent instanceof IdentifiablesManageWindow){
 				addNodeIdentifiablesManage(menu);

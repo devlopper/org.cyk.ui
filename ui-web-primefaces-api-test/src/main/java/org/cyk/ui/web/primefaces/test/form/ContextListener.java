@@ -32,6 +32,7 @@ import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.resources.PrimefacesResourcesManager;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.security.Shiro;
 import org.cyk.utility.common.userinterface.command.Menu;
 
 @WebListener
@@ -57,23 +58,6 @@ public class ContextListener extends AbstractContextListener {
 			}
 		});
 		
-		/*AbstractWindow.WindowInstanceManager.INSTANCE = new PageInstanceManager(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Boolean isShowDetails(Class<?> detailsClass,AbstractIdentifiable identifiable,AbstractWindow<?, ?, ?, ?, ?, ?> window) {
-				if(MedicalDetails.class.equals(detailsClass) || MedicalInformationsAllergyDetails.class.equals(detailsClass) 
-						|| MedicalInformationsMedicationDetails.class.equals(detailsClass))
-					return Boolean.FALSE;
-				if(PersonRelationshipDetails.class.equals(detailsClass))
-					return Boolean.TRUE;
-				if(SignatureDetails.class.equals(detailsClass) && identifiable instanceof Person)
-					return Boolean.FALSE;
-				if(JobDetails.class.equals(detailsClass) && identifiable instanceof Actor)
-					return Boolean.FALSE;
-				return super.isShowDetails(detailsClass, identifiable,window);
-			}
-		};*/
-		
 		LanguageBusinessImpl.Listener.COLLECTION.add(new LanguageBusinessImpl.Listener.Adapter.Default.EnterpriseResourcePlanning(){
 			private static final long serialVersionUID = 1L;
 
@@ -90,6 +74,8 @@ public class ContextListener extends AbstractContextListener {
 				return super.afterFindFieldLabelText(object, field, findTextResult);
 			}
 		});
+		
+		
 	}
 	
 	@Override
@@ -110,6 +96,11 @@ public class ContextListener extends AbstractContextListener {
 		//ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
 		
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
+		
+		Shiro.Ini ini = Shiro.Ini.getInstance().clean();
+		ini.addUsers("admin", "123","user1","123","user2","123");
+		ini.addFoldersForUser("private");
+		ini.addLoginUrl("/public/security/login.jsf");
 	}
 	
 	@Override

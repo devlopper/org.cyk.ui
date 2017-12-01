@@ -26,7 +26,7 @@ public class LoginPage extends LoginWindow implements Serializable {
 	static {
 		ClassHelper.getInstance().map(LoginWindow.FormMaster.SubmitCommandActionAdapter.class, SubmitCommandActionAdapter.class);
 	}
-	
+		
 	public static class SubmitCommandActionAdapter extends LoginWindow.FormMaster.SubmitCommandActionAdapter implements Serializable {
 		private static final long serialVersionUID = 1L;
 		

@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
-@Named @RequestScoped
+//@Named @RequestScoped
 public class LogoutPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = -1797753269882644031L;

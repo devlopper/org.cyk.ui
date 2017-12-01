@@ -3,7 +3,9 @@ package org.cyk.ui.web.primefaces.resources.page.layout;
 import java.io.Serializable;
 
 import org.cyk.utility.common.CardinalPoint;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.MethodHelper;
+import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.container.Container;
 import org.primefaces.extensions.model.layout.LayoutOptions;
 
@@ -13,18 +15,23 @@ import lombok.experimental.Accessors;
 
 @Getter @Setter @Accessors(chain=true)
 public class NorthEastSouthWestCenter extends LayoutModel implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
-	public NorthEastSouthWestCenter() {
-		super("/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_westnorth_centersouth/");
+	public NorthEastSouthWestCenter(Component component) {
+		super(component,"/org.cyk.ui.web.primefaces.resources/include/page/layout/northeastsouthwestcenter_westnorth_centersouth/");
 		
-		createContainerNorth();
-		createContainerEast();
-		createContainerSouth();
+		createContainerNorth().getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointNorthRendered(),Boolean.TRUE));
+		createContainerEast().getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointEastRendered(),Boolean.TRUE));
+		createContainerSouth().getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointSouthRendered(),Boolean.TRUE));
 		
-		createContainerWest();
+		createContainerWest().getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointWestRendered(),Boolean.TRUE));
 		Container west = createContainerAssemblyWest();
+		west.getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointWestRendered(),Boolean.TRUE));
 		createContainerNorth(west);
 		createContainerCenter(west);
 		
@@ -42,7 +49,7 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
 	}
 
 	@Override
-	protected LayoutOptions createOptions(){
+	protected LayoutOptions createOptions(Component component){
 		LayoutOptions options = createOptions(null, null);
 		
         // options for all panes  
@@ -52,11 +59,16 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
         
         LayoutOptions north = createOptions(options, CardinalPoint.NORTH);
         setAttribute(north, "size", 44);  
+        setAttribute(north, "rendered", component.getPropertiesMap().getLayoutCardinalPointNorthRendered() == null 
+        		|| Boolean.TRUE.equals(component.getPropertiesMap().getLayoutCardinalPointNorthRendered()));  
         fixed(north);
          
         LayoutOptions west = createOptions(options, CardinalPoint.WEST);  
         setAttribute(west, "size", 220);  
+        setAttribute(west, "rendered", component.getPropertiesMap().getLayoutCardinalPointNorthRendered() == null 
+        		|| Boolean.TRUE.equals(component.getPropertiesMap().getLayoutCardinalPointNorthRendered()));  
         configureWest(west);
+        
   		
         LayoutOptions center = createOptions(options, CardinalPoint.CENTER);
         setAttribute(center, "resizable", Boolean.FALSE);  
@@ -65,6 +77,8 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
         
         LayoutOptions south = createOptions(options, CardinalPoint.SOUTH);
         setAttribute(south, "size", 15);  
+        setAttribute(south, "rendered", component.getPropertiesMap().getLayoutCardinalPointNorthRendered() == null 
+        		|| Boolean.TRUE.equals(component.getPropertiesMap().getLayoutCardinalPointNorthRendered()));  
         fixed(south);
         
         return options;

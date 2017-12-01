@@ -6,7 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		<navigation-case>
+		<!--navigation-case>
 			<from-outcome>contactCollectionListView</from-outcome>
 			<to-view-id>/private/geography/contactcollection/list.xhtml</to-view-id>
 			<redirect />
@@ -76,22 +76,6 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>phoneNumberTypeListView</from-outcome>
-			<to-view-id>/private/geography/phonenumber/type/list.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>phoneNumberTypeEditView</from-outcome>
-			<to-view-id>/private/geography/phonenumber/type/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>phoneNumberTypeConsultView</from-outcome>
-			<to-view-id>/private/geography/phonenumber/type/consult.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
 			<from-outcome>localityListView</from-outcome>
 			<to-view-id>/private/geography/locality/list.xhtml</to-view-id>
 			<redirect />
@@ -140,22 +124,6 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>locationTypeListView</from-outcome>
-			<to-view-id>/private/geography/location/type/list.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>locationTypeEditView</from-outcome>
-			<to-view-id>/private/geography/location/type/edit.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>locationTypeConsultView</from-outcome>
-			<to-view-id>/private/geography/location/type/consult.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		
-		<navigation-case>
 			<from-outcome>websiteListView</from-outcome>
 			<to-view-id>/private/geography/website/list.xhtml</to-view-id>
 			<redirect />
@@ -185,7 +153,7 @@
 			<from-outcome>postalBoxConsultView</from-outcome>
 			<to-view-id>/private/geography/postalbox/consult.xhtml</to-view-id>
 			<redirect />
-		</navigation-case>
+		</navigation-case-->
 		
 	</navigation-rule>
 

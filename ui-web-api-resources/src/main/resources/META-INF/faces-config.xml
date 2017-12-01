@@ -61,9 +61,19 @@
 		
 		<navigation-case>
 			<from-outcome>userView</from-outcome>
-			<to-view-id>/private/user/index.xhtml</to-view-id>
+			<to-view-id>/private/security/useraccount/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userManageView</from-outcome>
+			<to-view-id>/private/security/useraccount/index.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>	
+		<navigation-case>
+			<from-outcome>userLogoutView</from-outcome>
+			<to-view-id>/private/security/useraccount/logout.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>		
 	</navigation-rule>
 	
 </faces-config>

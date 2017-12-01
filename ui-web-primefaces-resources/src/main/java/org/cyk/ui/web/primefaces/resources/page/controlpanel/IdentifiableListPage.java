@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.utility.common.helper.ClassHelper;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +28,11 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 		@Override
 		protected void __prepare__() {
 			addColumnsByFieldNames("globalIdentifier.code","globalIdentifier.name");
+			if(ClassHelper.getInstance().isHierarchy(getActionOnClass()))
+				addColumnsByFieldNames("parent");
+			if(ClassHelper.getInstance().isTyped(getActionOnClass()))
+				addColumnsByFieldNames("type");
+			
 		}
 		
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.FileHelper;
+import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.container.Container;
 import org.primefaces.extensions.model.layout.LayoutOptions;
 
@@ -18,11 +19,13 @@ public class LayoutModel extends Container implements Serializable {
 	private static final String INCLUDE_FORMAT = "%s%s.xhtml";
 	private static final String ASSEMBLY_FILE_NAME = "__assembly__";
 	
+	protected Component component;
+	
 	/**/
 	
-	public LayoutModel(String directory) {
+	public LayoutModel(Component component,String directory) {
 		getPropertiesMap().setFullPage(Boolean.TRUE);
-		getPropertiesMap().setOptions(createOptions());
+		getPropertiesMap().setOptions(createOptions(component));
 		getPropertiesMap().setInclude(String.format(INCLUDE_FORMAT, directory,ASSEMBLY_FILE_NAME));
 	}
 	
@@ -127,7 +130,7 @@ public class LayoutModel extends Container implements Serializable {
 		setAttribute(layoutOptions,"spacing_open", 0);  
 	}
 	
-	protected LayoutOptions createOptions(){
+	protected LayoutOptions createOptions(Component component){
 		return null;
 	}
 	

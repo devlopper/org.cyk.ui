@@ -397,7 +397,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Object createLayout(Window window) {
-				return new NorthEastSouthWestCenter();
+				NorthEastSouthWestCenter layout = new NorthEastSouthWestCenter(window);
+				return layout;
 			}
 		});
 		

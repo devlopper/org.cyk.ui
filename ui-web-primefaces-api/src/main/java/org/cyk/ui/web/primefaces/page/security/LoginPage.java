@@ -43,7 +43,7 @@ import org.cyk.utility.common.annotation.user.interfaces.InputPassword;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.omnifaces.util.Faces;
 
-@Named @ViewScoped
+//@Named @ViewScoped
 public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> implements Serializable {
 
 	private static final long serialVersionUID = -1797753269882644031L;

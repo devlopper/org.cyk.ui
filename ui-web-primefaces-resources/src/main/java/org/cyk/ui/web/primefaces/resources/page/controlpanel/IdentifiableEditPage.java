@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.Layout;
 import org.cyk.utility.common.userinterface.container.Form;
@@ -39,6 +40,13 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 			detail.setFieldsObjectFromMaster("globalIdentifier");
 			detail.add("code").addBreak();
 			detail.add("name").addBreak();
+			
+			detail.setFieldsObjectFromMaster();
+			if(ClassHelper.getInstance().isHierarchy(getObject().getClass()))
+				detail.add("parent");
+			if(ClassHelper.getInstance().isTyped(getObject().getClass()))
+				detail.add("type");
+			
 			return this;
 		}
 		
