@@ -9,7 +9,7 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<ui:decorate template="#{empty commandButton.confirm.propertiesMap.template ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : commandButton.confirm.propertiesMap.template}">
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(commandButton.confirm)}">
 		<ui:param name="confirm" value="#{commandButton.confirm}" />	
 	</ui:decorate>
 				

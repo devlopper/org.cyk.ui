@@ -25,7 +25,7 @@
 		<ui:param name="layoutPane" value="#{layout.propertiesMap.south}"/>
 	</ui:decorate>
 	
-	<ui:decorate template="#{empty page.confirmationDialog.propertiesMap.template ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : page.confirmationDialog.propertiesMap.template}">
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(page.confirmationDialog)}">
 		<ui:param name="confirmDialog" value="#{page.confirmationDialog}" />	
 	</ui:decorate>
 	

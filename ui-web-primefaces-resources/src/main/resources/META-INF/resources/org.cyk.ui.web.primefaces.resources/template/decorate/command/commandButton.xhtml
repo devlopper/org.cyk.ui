@@ -56,7 +56,7 @@
 		<ui:include src="#{commandButton.propertiesMap.include}"/>	
 	</p:commandButton>
 	
-	<ui:decorate template="#{empty commandButton.confirmationDialog.propertiesMap.template ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : commandButton.confirmationDialog.propertiesMap.template}">
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(commandButton.confirmationDialog)}">
 		<ui:param name="confirmDialog" value="#{commandButton.confirmationDialog}" />	
 	</ui:decorate>
 	

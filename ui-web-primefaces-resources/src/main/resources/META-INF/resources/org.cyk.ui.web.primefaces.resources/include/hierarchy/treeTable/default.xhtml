@@ -11,7 +11,7 @@
 	
 	<ui:insert name="header">
 		<f:facet name="header">
-			<ui:composition template="#{empty treeTable.propertiesMap.mainMenu.propertiesMap.template ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : treeTable.propertiesMap.mainMenu.propertiesMap.template}">
+			<ui:composition template="#{primefacesResourcesManager.getTemplate(treeTable.propertiesMap.mainMenu)}">
 				<ui:param name="menu" value="#{treeTable.propertiesMap.mainMenu}"/>
 			</ui:composition>
 		</f:facet>

@@ -45,7 +45,6 @@ import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target
 import org.cyk.utility.common.userinterface.container.window.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
 import org.cyk.utility.common.userinterface.hierarchy.Hierarchy;
-import org.cyk.utility.common.userinterface.hierarchy.HierarchyNode;
 import org.cyk.utility.common.userinterface.input.Input;
 import org.cyk.utility.common.userinterface.input.InputBooleanButton;
 import org.cyk.utility.common.userinterface.input.InputBooleanCheckBox;
@@ -465,6 +464,15 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		setComponentTemplateAndIncludeDefaultValues(aClass,"output",relativePath);
 	}
 	
+	public String getDummyEmptyContentDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml";
+	}
+	
+	public Object getTemplate(Component component){
+		return component == null ? getDummyEmptyContentDefaultTemplate() 
+				: StringUtils.defaultIfBlank((String)component.getPropertiesMap().getTemplate(), getDummyEmptyContentDefaultTemplate());
+	}
+	
 	public Object getImageDefaultTemplate(){
 		return Properties.getDefaultValue(Image.class, Properties.TEMPLATE);
 	}
@@ -585,6 +593,14 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		return template;
 	}
 	
+	public Object getSlideMenuDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/slideMenu.xhtml";
+	}
+	
+	public Object getTabMenuDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/tabMenu.xhtml";
+	}
+	
 	public Object getMenuBarDefaultTemplate(){
 		return "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menubar.xhtml";
 	}
@@ -610,15 +626,15 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	}
 	
 	public Object getHierarchyInclude(Hierarchy hierarchy){
-		Object template = hierarchy.getPropertiesMap().getTemplate();
-		if(template==null){
+		Object include = hierarchy.getPropertiesMap().getTemplate();
+		if(include==null){
 			Hierarchy.RenderType renderType = InstanceHelper.getInstance().getIfNotNullElseDefault(hierarchy.getRenderType(),Hierarchy.RenderType.DEFAULT);
 			switch(renderType){
-			case TREE:template = getTreeDefaultInclude();break;
-			
+			case TREE:include = getTreeDefaultInclude();break;
+			case TABLE:include = getTreeTableDefaultInclude();break;
 			}
 		}
-		return template;
+		return include;
 	}
 	
 	public Object getTreeDefaultInclude(){

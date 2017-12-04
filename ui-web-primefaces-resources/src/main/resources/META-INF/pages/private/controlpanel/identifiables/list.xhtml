@@ -11,9 +11,13 @@
  		<ui:param name="page" value="#{identifiableListPage}" />
  		<ui:define name="centerCenterContent">
  			
- 			<ui:decorate template="#{identifiableListPage.dataTable.propertiesMap.template}">
+ 			<ui:decorate template="#{primefacesResourcesManager.getTemplate(identifiableListPage.dataTable)}">
 		 		<ui:param name="dataTable" value="#{identifiableListPage.dataTable}" />
 		 	</ui:decorate>
+		 	
+	 		<ui:decorate template="#{primefacesResourcesManager.getTemplate(identifiableListPage.hierarchy)}">
+				<ui:param name="treeTable" value="#{identifiableListPage.hierarchy}" />
+			</ui:decorate>
  			
  		</ui:define>
  	</ui:decorate>

@@ -38,7 +38,7 @@
 		</ui:insert>
 	</p:panelGrid>
 	
-	<ui:decorate template="#{form.propertiesMap.interactivityBlocker == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : form.propertiesMap.interactivityBlocker.propertiesMap.template}">
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(form.propertiesMap.interactivityBlocker)}">
 		<ui:param name="blockUI" value="#{form.propertiesMap.interactivityBlocker}"/>
 	</ui:decorate>
 	

@@ -12,7 +12,7 @@
 
 	<ui:insert name="westCenter">
 		<h:form>
-			<ui:composition template="#{page.propertiesMap.contextMenu == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : page.propertiesMap.contextMenu.propertiesMap.template}">
+			<ui:composition template="#{primefacesResourcesManager.getTemplate(page.propertiesMap.contextMenu)}">
 				<ui:param name="menu" value="#{page.propertiesMap.contextMenu}"/>
 			</ui:composition>
 		</h:form>

@@ -12,7 +12,7 @@
 	<ui:insert name="north">
 		<ui:fragment rendered="#{page.propertiesMap.mainMenu != null}" >
 			<h:form>
-				<ui:composition template="#{page.propertiesMap.mainMenu == null ? '/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml' : page.propertiesMap.mainMenu.propertiesMap.template}">
+				<ui:composition template="#{primefacesResourcesManager.getTemplate(page.propertiesMap.mainMenu)}">
 					<ui:param name="menu" value="#{page.propertiesMap.mainMenu}"/>
 				</ui:composition>
 			</h:form>
