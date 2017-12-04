@@ -10,10 +10,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.ServletContextEvent;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
@@ -48,6 +44,8 @@ import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.window.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
+import org.cyk.utility.common.userinterface.hierarchy.Hierarchy;
+import org.cyk.utility.common.userinterface.hierarchy.HierarchyNode;
 import org.cyk.utility.common.userinterface.input.Input;
 import org.cyk.utility.common.userinterface.input.InputBooleanButton;
 import org.cyk.utility.common.userinterface.input.InputBooleanCheckBox;
@@ -79,8 +77,14 @@ import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
 import org.cyk.utility.common.userinterface.panel.NotificationDialog;
+import org.cyk.utility.common.userinterface.tree.Tree;
+import org.cyk.utility.common.userinterface.tree.TreeNode;
 import org.primefaces.model.ByteArrayContent;
 import org.primefaces.model.DualListModel;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @SuppressWarnings("unchecked")
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
@@ -121,7 +125,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
 		Properties.setDefaultValue(OutputText.class, Properties.ESCAPE, Boolean.FALSE);
-		Properties.setDefaultValue(OutputText.class, Properties.DIR, "LTR");
 		
 		Properties.setDefaultValue(OutputFile.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/file.xhtml");
 		Properties.setDefaultValue(OutputFile.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/output/file/outputFile/default.xhtml");
@@ -137,6 +140,13 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(Image.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/graphicImage.xhtml"
 				,Properties.ALT,"Image",Properties.STREAM,Boolean.TRUE});
+		
+		Properties.setDefaultValues(TreeNode.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/hierarchy/tree/node.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/hierarchy/tree/node/default.xhtml"
+				,Properties.TYPE,"default"});
+		
+		Properties.setDefaultValues(Tree.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/hierarchy/tree/tree.xhtml"
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/hierarchy/tree/default.xhtml"});
 		
 		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml"});
@@ -158,6 +168,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(Command.class, Properties.AJAX, Boolean.TRUE);
 		Properties.setDefaultValue(Command.class, Properties.GLOBAL, Boolean.TRUE);
 		
+		//Properties.setDefaultValue(Hierarchy.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml");
 		Properties.setDefaultValue(Menu.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml");
 		
 		Properties.setDefaultValue(Confirm.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/event/confirm.xhtml");
@@ -259,6 +270,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					properties.setWidgetVar(RandomHelper.getInstance().getAlphabetic(10));
 					properties.setIdentifierAsStyleClass(RandomHelper.getInstance().getAlphabetic(10));
 					properties.addString(Properties.STYLE_CLASS, (String)properties.getIdentifierAsStyleClass());
+					properties.setDir("LTR");
 				}else if(instance instanceof SelectItems){
 					/*properties.setGetter(Properties.LABEL, new Properties.Getter() {
 						@Override
@@ -388,6 +400,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					return Form.Detail.buildTarget((Form.Detail) component);
 				if(component instanceof Menu)
 					return new MenuBasedOnMenuModel().setInput((Menu) component).execute();
+				if(component instanceof Hierarchy)
+					return new HierarchyBasedOnTreeNode().setInput((Hierarchy) component).execute();
 				return super.build(component);
 			}
 			
@@ -573,6 +587,50 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getMenuBarDefaultTemplate(){
 		return "/org.cyk.ui.web.primefaces.resources/template/decorate/menu/menubar.xhtml";
+	}
+	
+	public Object getHierarchyTemplate(Hierarchy hierarchy){
+		Object template = hierarchy.getPropertiesMap().getTemplate();
+		if(template==null){
+			Hierarchy.RenderType renderType = InstanceHelper.getInstance().getIfNotNullElseDefault(hierarchy.getRenderType(),Hierarchy.RenderType.DEFAULT);
+			switch(renderType){
+			case TREE:template = getTreeDefaultTemplate();break;
+			case TABLE:template = getTreeTableDefaultTemplate();break;
+			}
+		}
+		return template;
+	}
+	
+	public Object getTreeDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/template/decorate/hierarchy/tree/tree.xhtml";
+	}
+	
+	public Object getTreeTableDefaultTemplate(){
+		return "/org.cyk.ui.web.primefaces.resources/template/decorate/hierarchy/treeTable.xhtml";
+	}
+	
+	public Object getHierarchyInclude(Hierarchy hierarchy){
+		Object template = hierarchy.getPropertiesMap().getTemplate();
+		if(template==null){
+			Hierarchy.RenderType renderType = InstanceHelper.getInstance().getIfNotNullElseDefault(hierarchy.getRenderType(),Hierarchy.RenderType.DEFAULT);
+			switch(renderType){
+			case TREE:template = getTreeDefaultInclude();break;
+			
+			}
+		}
+		return template;
+	}
+	
+	public Object getTreeDefaultInclude(){
+		return "/org.cyk.ui.web.primefaces.resources/include/hierarchy/tree/default.xhtml";
+	}
+	
+	public Object getTreeNodeDefaultInclude(){
+		return "/org.cyk.ui.web.primefaces.resources/include/hierarchy/tree/node/default.xhtml";
+	}
+	
+	public Object getTreeTableDefaultInclude(){
+		return "/org.cyk.ui.web.primefaces.resources/include/hierarchy/treeTable/default.xhtml";
 	}
 	
 	public String getFacesMessageSeverityAsString(FacesMessage facesMessage){

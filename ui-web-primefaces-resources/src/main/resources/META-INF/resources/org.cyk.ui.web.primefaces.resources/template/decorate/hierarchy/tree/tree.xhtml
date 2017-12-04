@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<p:tree
+		value="#{tree.built}"
+		var="node"
+		tabindex="#{tree.propertiesMap.tabIndex}"
+		required="#{tree.propertiesMap.required}"
+		requiredMessage="#{tree.propertiesMap.requiredMessage}"
+		
+		orientation="#{tree.propertiesMap.orientation}"
+		propagateSelectionDown="#{tree.propertiesMap.propagateSelectionDown}"
+		propagateSelectionUp="#{tree.propertiesMap.propagateSelectionUp}"
+		 
+		showUnselectableCheckbox="#{tree.propertiesMap.showUnselectableCheckbox}"
+		skipChildren="#{tree.propertiesMap.skipChildren}"
+		
+		animate="#{tree.propertiesMap.animate}"
+		cache="#{tree.propertiesMap.cache}"
+		datakey="#{tree.propertiesMap.dataKey}"
+		dragdropScope="#{tree.propertiesMap.dragDropScope}"
+		draggable="#{tree.propertiesMap.draggable}"
+		dragMode="#{tree.propertiesMap.dragMode}"
+		droppable="#{tree.propertiesMap.droppable}"
+		dropRestrict="#{tree.propertiesMap.dropRestrict}"
+		dynamic="#{tree.propertiesMap.dynamic}"
+		
+		highlight="#{tree.propertiesMap.highlight}"
+		nodeVar="nodeVar"
+	>
+
+		<ui:include src="#{primefacesResourcesManager.treeDefaultInclude}"/>
+				
+	</p:tree>
+	
+	<!--
+		
+		
+		selection="#{tree.propertiesMap.selection}" // we need a writable property
+		selectionMode="#{tree.propertiesMap.selectionMode}"
+		
+		filterBy="#{tree.propertiesMap.filterBy}"
+		filterMatchMode="#{tree.propertiesMap.filterMatchMode}"
+	 -->		
+
+</ui:composition>
