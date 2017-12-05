@@ -10,10 +10,28 @@
 		id="#{dataTable.propertiesMap.identifier}"
 		value="#{dataTable.propertiesMap.value}"
 		var="row"
+		
+		lazy="#{dataTable.propertiesMap.lazy}"
+		rows="#{dataTable.propertiesMap.rows}"
+		first="#{dataTable.propertiesMap.first}"
+		currentPageReportTemplate="#{dataTable.propertiesMap.currentPageReportTemplate}"
+		pageLinks="#{dataTable.propertiesMap.pageLinks}"
+		paginator="#{dataTable.propertiesMap.paginator}"
+		paginatorAlwaysVisible="#{dataTable.propertiesMap.paginatorAlwaysVisible}"
+		paginatorPosition="#{dataTable.propertiesMap.paginatorPosition}"
+		paginatorTemplate="#{dataTable.propertiesMap.paginatorTemplate}"
+		rowsPerPageLabel="#{dataTable.propertiesMap.rowsPerPageLabel}"
+		rowsPerPageTemplate="#{dataTable.propertiesMap.rowsPerPageTemplate}"
+		
+		emptyMessage="#{dataTable.propertiesMap.emptyMessage}"
 	>
 		
 		<ui:include src="#{dataTable.propertiesMap.include}"/>
 		
 	</p:dataTable>
+	
+	<!-- 
+	
+	 -->
 	
 </ui:composition>

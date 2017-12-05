@@ -148,7 +148,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/hierarchy/tree/default.xhtml"});
 		
 		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
-				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml"});
+				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml",Properties.FIRST,0
+				,Properties.PAGINATOR,Boolean.FALSE,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"both",Properties.PAGINATOR_ALWAYS_VISIBLE,Boolean.FALSE
+				,Properties.LAZY,Boolean.FALSE,Properties.EMPTY_MESSAGE,StringHelper.getInstance().get("notification.data.collection.empty", new Object[]{})});
 		
 		Properties.setDefaultValues(DataTable.Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml"});

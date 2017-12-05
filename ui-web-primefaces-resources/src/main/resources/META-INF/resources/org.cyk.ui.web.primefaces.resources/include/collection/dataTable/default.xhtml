@@ -11,7 +11,7 @@
 	
 	<ui:insert name="header">
 		<f:facet name="header">
-			<ui:composition template="#{dataTable.propertiesMap.mainMenu.propertiesMap.template}">
+			<ui:composition template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.mainMenu)}">
 				<ui:param name="menu" value="#{dataTable.propertiesMap.mainMenu}"/>
 			</ui:composition>
 		</f:facet>
