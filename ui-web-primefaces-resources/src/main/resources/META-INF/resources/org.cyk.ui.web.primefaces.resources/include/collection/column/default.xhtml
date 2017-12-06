@@ -18,7 +18,15 @@
 	</ui:fragment>
 	
 	<ui:fragment rendered="#{column.cellValueType.name() eq 'TEXT'}">
-		#{cell.propertiesMap.value}
+		<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+			<ui:param name="outputText" value="#{cell.propertiesMap.value}" />
+		</ui:decorate>
+	</ui:fragment>
+	
+	<ui:fragment rendered="#{column.cellValueType.name() eq 'FILE'}">
+		<ui:decorate template="#{primefacesResourcesManager.outputFileDefaultTemplate}">
+			<ui:param name="outputFile" value="#{cell.propertiesMap.value}" />
+		</ui:decorate>	
 	</ui:fragment>
 	
 </ui:composition>
