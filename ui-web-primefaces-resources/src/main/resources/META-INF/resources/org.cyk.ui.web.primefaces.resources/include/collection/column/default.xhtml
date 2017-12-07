@@ -11,22 +11,17 @@
 	
 	<ui:param name="cell" value="#{column.getCell(row)}"/>
 	
-	<ui:fragment rendered="#{column.cellValueType.name() eq 'MENU'}">
-		<ui:composition template="#{primefacesResourcesManager.menuBarDefaultTemplate}">
-			<ui:param name="menu" value="#{cell.propertiesMap.value}"/>
-		</ui:composition>
+	<ui:fragment rendered="#{not column.propertiesMap.linked}">
+		<ui:include src="__content__.xhtml"/>
 	</ui:fragment>
 	
-	<ui:fragment rendered="#{column.cellValueType.name() eq 'TEXT'}">
-		<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
-			<ui:param name="outputText" value="#{cell.propertiesMap.value}" />
-		</ui:decorate>
-	</ui:fragment>
-	
-	<ui:fragment rendered="#{column.cellValueType.name() eq 'FILE'}">
-		<ui:decorate template="#{primefacesResourcesManager.outputFileDefaultTemplate}">
-			<ui:param name="outputFile" value="#{cell.propertiesMap.value}" />
+	<ui:fragment rendered="#{column.propertiesMap.linked}">	
+		<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
+			<ui:param name="outputLink" value="#{cell.propertiesMap.value.propertiesMap.outputLinkComponent}" />
+			<ui:define name="content">
+				<ui:include src="__content__.xhtml"/>
+			</ui:define>
 		</ui:decorate>	
 	</ui:fragment>
-	
+
 </ui:composition>

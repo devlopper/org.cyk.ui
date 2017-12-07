@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<h:outputLink
+		value="#{outputLink.propertiesMap.value}"
+		rendered="#{outputLink.propertiesMap.rendered}"
+	>
+		<ui:insert name="content">
+			<ui:include src="#{outputLink.propertiesMap.include}"/>
+		</ui:insert>
+		
+	</h:outputLink>
+	
+	<!-- 
+		
+		accesskey=""
+		charset=""
+		dir=""
+		disabled=""
+		
+		
+		tabindex=""
+		title=""
+		type=""
+		target=""
+		shape=""
+		rev=""
+		rel=""
+		lang=""
+		hreflang=""
+		coords=""
+				
+		styleClass=""
+		style=""
+		
+		onmouseup=""
+		onmouseover=""
+		onmouseout=""
+		onmousemove=""
+		onmousedown=""
+		onkeyup=""
+		onkeypress=""
+		onkeydown=""
+		ondblclick=""
+		onfocus=""
+		onclick=""
+		onblur=""
+		
+	 -->
+	
+</ui:composition>

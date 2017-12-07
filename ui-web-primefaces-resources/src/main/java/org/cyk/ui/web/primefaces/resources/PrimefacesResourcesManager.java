@@ -10,6 +10,10 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.ServletContextEvent;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
@@ -72,6 +76,7 @@ import org.cyk.utility.common.userinterface.input.choice.SelectItems;
 import org.cyk.utility.common.userinterface.input.number.InputNumber;
 import org.cyk.utility.common.userinterface.output.Output;
 import org.cyk.utility.common.userinterface.output.OutputFile;
+import org.cyk.utility.common.userinterface.output.OutputLink;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.cyk.utility.common.userinterface.panel.ConfirmationDialog;
 import org.cyk.utility.common.userinterface.panel.Dialog;
@@ -80,10 +85,6 @@ import org.cyk.utility.common.userinterface.tree.Tree;
 import org.cyk.utility.common.userinterface.tree.TreeNode;
 import org.primefaces.model.ByteArrayContent;
 import org.primefaces.model.DualListModel;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @SuppressWarnings("unchecked")
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
@@ -127,6 +128,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValue(OutputFile.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/file.xhtml");
 		Properties.setDefaultValue(OutputFile.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/output/file/outputFile/default.xhtml");
+		
+		Properties.setDefaultValue(OutputLink.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputLink.xhtml");
+		Properties.setDefaultValue(OutputLink.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/outputLink/default.xhtml");
 		
 		Properties.setDefaultValues(Form.Master.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form/include.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml"});
@@ -577,6 +581,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getOutputTextDefaultTemplate(){
 		return Properties.getDefaultValue(OutputText.class, Properties.TEMPLATE);
+	}
+	
+	public Object getOutputLinkDefaultTemplate(){
+		return Properties.getDefaultValue(OutputLink.class, Properties.TEMPLATE);
 	}
 	
 	public Object getMenuTemplate(Menu menu){
