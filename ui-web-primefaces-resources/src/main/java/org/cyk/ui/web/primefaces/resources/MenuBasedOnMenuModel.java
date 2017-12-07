@@ -23,11 +23,20 @@ public class MenuBasedOnMenuModel extends Menu.Builder.Target.Adapter.Default<De
 	@Override
 	protected Object createLeaf(DefaultMenuModel menu, MenuNode menuNode) {
 		DefaultMenuItem	menuItem = new DefaultMenuItem();
-		menuItem.setValue(menuNode.getLabel().getPropertiesMap().getValue());
+		if(Boolean.TRUE.equals(menuNode.getLabel().getPropertiesMap().getRendered()))
+			menuItem.setValue(menuNode.getLabel().getPropertiesMap().getValue());
+		if(menuNode.getPropertiesMap().getIcon()!=null)
+			menuItem.setIcon((String)menuNode.getPropertiesMap().getIcon());
 		if(menuNode.getPropertiesMap().getUrl()!=null)
 			menuItem.setUrl((String)menuNode.getPropertiesMap().getUrl());
 		if(menuNode.getPropertiesMap().getOutcome()!=null)
 			menuItem.setOutcome((String)menuNode.getPropertiesMap().getOutcome());
+		
+		if(menuNode.getPropertiesMap().getTitle()!=null)
+			menuItem.setTitle((String)menuNode.getPropertiesMap().getTitle());
+		if(menuNode.getPropertiesMap().getTitle()==null)
+			menuItem.setTitle((String)menuNode.getLabel().getPropertiesMap().getValue());
+		
 		return menuItem;
 	}
 		
