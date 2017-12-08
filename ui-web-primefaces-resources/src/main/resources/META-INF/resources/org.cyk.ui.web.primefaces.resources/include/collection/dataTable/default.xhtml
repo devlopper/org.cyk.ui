@@ -22,5 +22,12 @@
 			<ui:param name="columns" value="#{dataTable.propertiesMap.columns}"/>
 		</ui:decorate>
 	</ui:insert>
+	
+	<ui:insert name="onPageEvent">
+		<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.onPageEventComponent)}">
+			<ui:param name="ajax" value="#{dataTable.propertiesMap.onPageEventComponent}"/>
+		</ui:decorate>
+	</ui:insert>
+	
 			
 </ui:composition>

@@ -8,10 +8,11 @@
 	
 	<!--  
 		id="#{commandButton.propertiesMap.identifier}" 
-		id="#{commandButton.propertiesMap.identifier == null ? 'generated_id' : commandButton.propertiesMap.identifier}" 
+		
 	-->
 	
 	<p:commandButton	
+		id="#{commandButton.propertiesMap.identifier == null ? randomHelper.getAlphabetic(5) : commandButton.propertiesMap.identifier}" 
 		action="#{commandButton.action.execute(executeParameter)}" 
 		ajax="#{commandButton.propertiesMap.ajax}"
 		icon="#{commandButton.propertiesMap.icon}"

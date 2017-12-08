@@ -48,6 +48,7 @@ import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.window.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
+import org.cyk.utility.common.userinterface.event.Event;
 import org.cyk.utility.common.userinterface.hierarchy.Hierarchy;
 import org.cyk.utility.common.userinterface.input.Input;
 import org.cyk.utility.common.userinterface.input.InputBooleanButton;
@@ -128,6 +129,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValue(OutputFile.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/output/file/file.xhtml");
 		Properties.setDefaultValue(OutputFile.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/output/file/outputFile/default.xhtml");
+		
+		Properties.setDefaultValue(Event.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/ajax/ajax.xhtml");
+		Properties.setDefaultValue(Event.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/ajax/ajax/default.xhtml");
+		Properties.setDefaultValue(Event.class, Properties.GLOBAL, Boolean.TRUE);
 		
 		Properties.setDefaultValue(OutputLink.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputLink.xhtml");
 		Properties.setDefaultValue(OutputLink.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/outputLink/default.xhtml");
@@ -686,7 +691,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	/**/
 	
 	public static void setInteractivityBlocker(Form.Master form,Boolean global){
-		form.getSubmitCommand().getPropertiesMap().setGlobal(global);
+		setInteractivityBlocker(form, form.getSubmitCommand(), (String)form.getDetail().getPropertiesMap().getIdentifier(), global);
+		/*form.getSubmitCommand().getPropertiesMap().setGlobal(global);
 		if(Boolean.TRUE.equals(global)){
 			form.getPropertiesMap().setInteractivityBlocker(null);
 		}else {
@@ -699,5 +705,40 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			((InteractivityBlocker)form.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setSource(form.getSubmitCommand().getPropertiesMap().getIdentifier());
 			((InteractivityBlocker)form.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setTarget(form.getDetail().getPropertiesMap().getIdentifier());
 		}
+		*/
+	}
+	
+	public static void setInteractivityBlocker(Component.Visible visible,Command command,String identifier,Boolean global){
+		command.getPropertiesMap().setGlobal(global);
+		if(Boolean.TRUE.equals(global)){
+			visible.getPropertiesMap().setInteractivityBlocker(null);
+		}else {
+			setInteractivityBlockerNotGlobal(visible, command, identifier);
+			/*
+			visible.getPropertiesMap().setInteractivityBlocker(new InteractivityBlocker());
+			command.getPropertiesMap().setOnStart(PrimefacesJavascriptHelper.getInstance()
+					.getMethodCallBlock(visible.getPropertiesMap().getInteractivityBlocker()));
+			command.getPropertiesMap().setOnComplete(PrimefacesJavascriptHelper.getInstance()
+					.getMethodCallUnBlock(visible.getPropertiesMap().getInteractivityBlocker()));
+			
+			((InteractivityBlocker)visible.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setSource(command.getPropertiesMap().getIdentifier());
+			((InteractivityBlocker)visible.getPropertiesMap().getInteractivityBlocker()).getPropertiesMap().setTarget(identifier);
+			*/
+		}
+	}
+	
+	public static void setInteractivityBlockerNotGlobal(Component component,Component command,String identifier){
+		InteractivityBlocker interactivityBlocker = new InteractivityBlocker();
+		interactivityBlocker.getPropertiesMap().setSource(command.getPropertiesMap().getIdentifier());
+		interactivityBlocker.getPropertiesMap().setTarget(identifier);
+		
+		component.getPropertiesMap().setInteractivityBlocker(interactivityBlocker);
+		
+		command.getPropertiesMap().setOnStart(PrimefacesJavascriptHelper.getInstance().getMethodCallBlock(interactivityBlocker));
+		command.getPropertiesMap().setOnComplete(PrimefacesJavascriptHelper.getInstance().getMethodCallUnBlock(interactivityBlocker));
+	}
+	
+	public static void setInteractivityBlockerNotGlobal(Component component,Component command){
+		setInteractivityBlockerNotGlobal(component, command, (String)component.getPropertiesMap().getIdentifier());
 	}
 }

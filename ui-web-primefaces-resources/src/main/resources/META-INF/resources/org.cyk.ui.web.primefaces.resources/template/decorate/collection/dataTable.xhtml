@@ -25,10 +25,14 @@
 		
 		emptyMessage="#{dataTable.propertiesMap.emptyMessage}"
 	>
-		
+	
 		<ui:include src="#{dataTable.propertiesMap.include}"/>
 		
 	</p:dataTable>
+	
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.interactivityBlocker)}">
+		<ui:param name="blockUI" value="#{dataTable.propertiesMap.interactivityBlocker}"/>
+	</ui:decorate>
 	
 	<!-- 
 	
