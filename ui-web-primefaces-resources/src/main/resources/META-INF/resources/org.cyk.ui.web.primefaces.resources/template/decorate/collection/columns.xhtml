@@ -12,10 +12,35 @@
 		var="column"
 		headerText="#{column.propertiesMap.headerText}"
 		
+		sortable="#{column.propertiesMap.sortable}"
+		sortBy="#{column.getCell(row).propertiesMap.sortBy}"
+		sortFunction="#{column.sort}"
+		
+		field="#{column.propertiesMap.fieldName}"
 	>
 	
 		<ui:include src="#{columns.propertiesMap.include}"/>
 		
 	</p:columns>
+	
+	<!-- 
+		sortFunction="#{column.propertiesMap.sortFunction}"
+		
+		
+		
+		
+		filterable="#{column.propertiesMap.filterable}"
+		filterBy="#{column.getCell(row).propertiesMap.filterBy}"
+		filterFunction="#{column.filter}"
+		
+		filterFunction=""
+		filterMatchMode=""
+		filterMaxLength=""
+		filterOptions=""
+		filterPosition=""
+		filterStyle=""
+		filterStyleClass=""
+		filterValue=""
+	 -->
 	
 </ui:composition>
