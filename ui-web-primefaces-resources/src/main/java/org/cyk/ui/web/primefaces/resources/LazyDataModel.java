@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cyk.utility.common.Comparator;
+import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.ThrowableHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.DataTable;
@@ -77,7 +78,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 	}
 	
 	protected List<T> page(List<T> collection,Integer first,Integer size){
-		return collection.subList(first, first+size);
+		return CollectionHelper.getInstance().getSize(collection) >= first+size ? collection.subList(first, first+size) : collection;
 	}
 
 	/**/

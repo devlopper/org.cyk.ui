@@ -16,6 +16,9 @@
 		sortBy="#{column.getCell(row).propertiesMap.sortBy}"
 		sortFunction="#{column.sort}"
 		
+		filterable="#{column.propertiesMap.filterable}"
+		filterBy="#{column.getCell(row).propertiesMap.filterBy}"
+		
 		field="#{column.propertiesMap.fieldName}"
 	>
 	
@@ -27,10 +30,6 @@
 		sortFunction="#{column.propertiesMap.sortFunction}"
 		
 		
-		
-		
-		filterable="#{column.propertiesMap.filterable}"
-		filterBy="#{column.getCell(row).propertiesMap.filterBy}"
 		filterFunction="#{column.filter}"
 		
 		filterFunction=""
