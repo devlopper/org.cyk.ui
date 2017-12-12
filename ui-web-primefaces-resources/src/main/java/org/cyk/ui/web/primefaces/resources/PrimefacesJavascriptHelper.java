@@ -8,7 +8,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.cdi.AbstractBean;
 
-@Singleton
+@Singleton @Deprecated
 public class PrimefacesJavascriptHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 

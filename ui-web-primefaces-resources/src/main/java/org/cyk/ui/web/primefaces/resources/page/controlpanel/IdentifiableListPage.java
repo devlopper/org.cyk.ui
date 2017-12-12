@@ -1,15 +1,19 @@
 package org.cyk.ui.web.primefaces.resources.page.controlpanel;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.userinterface.container.window.ListWindow;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.cyk.system.root.model.party.person.Person;
+import org.cyk.ui.web.primefaces.resources.LazyDataModel;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.userinterface.container.window.ListWindow;
 
 @Named @ViewScoped @Getter @Setter
 public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.IdentifiableListPage implements Serializable {
@@ -21,6 +25,30 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 		if(org.cyk.utility.common.userinterface.collection.DataTable.class.equals(clazz))
 			clazz = DataTable.class;
 		return clazz;
+	}
+
+	@Override
+	protected org.cyk.utility.common.userinterface.collection.DataTable buildDataTable() {
+		org.cyk.utility.common.userinterface.collection.DataTable dataTable = super.buildDataTable();
+		dataTable.getPropertiesMap().setValue(new LazyDataModel<Object>(dataTable){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected Boolean isFilterable(Map<String, Object> filters) {
+				return Boolean.TRUE;
+			}
+			
+			@Override
+			protected List<Object> filter(List<Object> collection, Map<String, Object> filters) {
+				return null;//Person.filter(collection, filters);
+			}
+			
+			@Override
+			protected Boolean isPageable(Integer first, Integer size) {
+				return Boolean.TRUE;
+			}
+		});
+		return dataTable;
 	}
 	
 	@Override
@@ -38,9 +66,9 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 		protected void __prepare__() {
 			super.__prepare__();
 			addColumnsByFieldNames("globalIdentifier.code","globalIdentifier.name");
-			if(ClassHelper.getInstance().isHierarchy(getActionOnClass()))
+			if(ClassHelper.getInstance().isHierarchy((Class<?>) getPropertiesMap().getActionOnClass()))
 				addColumnsByFieldNames("parent");
-			if(ClassHelper.getInstance().isTyped(getActionOnClass()))
+			if(ClassHelper.getInstance().isTyped((Class<?>) getPropertiesMap().getActionOnClass()))
 				addColumnsByFieldNames("type");
 			
 		}
