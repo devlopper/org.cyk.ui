@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.resources;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 		return null;
 	}
 	
-	protected List<T> __load__(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
-		List<T> instances = __getInstances__(first, pageSize, sortField, sortOrder, filters);
+	/*protected List<T> __process__(List<T> instances,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
 		
 		if(Boolean.TRUE.equals(isFilterable(filters)))
 			instances = filter(instances, filters);
@@ -39,20 +39,33 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 			instances = page(instances, first,pageSize);
 		
 		return instances;
-	}
+	}*/
 	
-	protected Integer __count__(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
-		ThrowableHelper.getInstance().throwNotYetImplemented();
-		return null;
+	protected Integer __count__(Collection<T> instances,int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
+		return instances.size();
 	}
 	
 	@Override
 	public List<DataTable.Row> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters) {
-		List<T> instances = __load__(first, pageSize, sortField, sortOrder, filters);	
-		setRowCount(__count__(first, pageSize, sortField, sortOrder, filters));
+		List<T> instances = __getInstances__(first, pageSize, sortField, sortOrder, filters);
+		
+		//instances = __process__(instances,first, pageSize, sortField, sortOrder, filters);	
+		if(Boolean.TRUE.equals(isFilterable(filters)))
+			instances = filter(instances, filters);
+		
+		if(Boolean.TRUE.equals(isSortable(sortField)))
+			instances = sort(instances, sortField, sortOrder);
+		
+		setRowCount(__count__(instances,first, pageSize, sortField, sortOrder, filters));
+		
+		if(Boolean.TRUE.equals(isPageable(first,pageSize)))
+			instances = page(instances, first,pageSize);
+		
 		List<DataTable.Row> rows = (List<DataTable.Row>) DataTable.Row.instanciateMany(instances,component,null);
+		
 		if("__orderNumber__".equals(sortField))
 			sort(rows, sortOrder, sortField);
+		
 		return rows;
 	}
 	

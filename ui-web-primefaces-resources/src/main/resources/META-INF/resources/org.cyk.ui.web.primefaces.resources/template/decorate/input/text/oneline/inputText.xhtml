@@ -11,7 +11,7 @@
 		id="#{identifier}" 
 		widgetVar="#{input.propertiesMap.widgetVar}"
 		
-		value="#{input.value}" 
+		value="#{input.value}"
 		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
 		requiredMessage="#{input.propertiesMap.requiredMessage}"
 		
@@ -25,6 +25,8 @@
 		
 		onchange="#{input.propertiesMap.onChange}" 
 		onclick="#{input.propertiesMap.onClick}"  
+		
+		onkeyup="#{input.propertiesMap.onKeyUp}"
 	>
 		<ui:include src="#{input.propertiesMap.include}" />
 	
@@ -33,5 +35,9 @@
 	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__bottom__.xhtml">
 		
 	</ui:include>
+	
+	<!-- 
+		 immediate="#{input.propertiesMap.immediate}"
+	 -->
 	
 </ui:composition>
