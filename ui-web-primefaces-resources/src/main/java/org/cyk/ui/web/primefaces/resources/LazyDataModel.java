@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.cyk.utility.common.Comparator;
+import org.cyk.utility.common.computation.DataReadConfiguration;
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
-import org.cyk.utility.common.helper.ThrowableHelper;
+import org.cyk.utility.common.helper.FilterHelper;
+import org.cyk.utility.common.helper.FilterHelper.Filter;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.primefaces.model.SortOrder;
@@ -22,34 +26,37 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 		this.component = component;
 	}
 	
-	protected List<T> __getInstances__(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
-		ThrowableHelper.getInstance().throwNotYetImplemented();
-		return null;
+	protected FilterHelper.Filter<T> getFilter(Class<T> aClass,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
+		@SuppressWarnings("unchecked")
+		FilterHelper.Filter<T> filter = (Filter<T>) ClassHelper.getInstance().instanciateOne(FilterHelper.Filter.getClassLocator().locate(aClass));
+		filter.set((String)filters.get("globalFilter"));
+		return filter;
 	}
 	
-	/*protected List<T> __process__(List<T> instances,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
-		
-		if(Boolean.TRUE.equals(isFilterable(filters)))
-			instances = filter(instances, filters);
-		
-		if(Boolean.TRUE.equals(isSortable(sortField)))
-			instances = sort(instances, sortField, sortOrder);
-		
-		if(Boolean.TRUE.equals(isPageable(first,pageSize)))
-			instances = page(instances, first,pageSize);
-		
-		return instances;
-	}*/
+	protected DataReadConfiguration getDataReadConfiguration(Class<T> aClass,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
+		DataReadConfiguration dataReadConfiguration = new DataReadConfiguration(new Long(first), new Long(pageSize));
+		return dataReadConfiguration;
+	}
+	
+	protected List<T> __getInstances__(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
+		@SuppressWarnings("unchecked")
+		Class<T> aClass = (Class<T>) component.getPropertiesMap().getActionOnClass();
+		return  (List<T>) InstanceHelper.getInstance().get(aClass, getFilter(aClass, first, pageSize, sortField, sortOrder, filters)
+				, getDataReadConfiguration(aClass, first, pageSize, sortField, sortOrder, filters));
+	}
 	
 	protected Integer __count__(Collection<T> instances,int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
-		return instances.size();
+		@SuppressWarnings("unchecked")
+		Class<T> aClass = (Class<T>) component.getPropertiesMap().getActionOnClass();
+		return InstanceHelper.getInstance().count(aClass, getFilter(aClass, first, pageSize, sortField, sortOrder, filters)
+				, getDataReadConfiguration(aClass, first, pageSize, sortField, sortOrder, filters)).intValue();
+		//return instances.size();
 	}
 	
 	@Override
 	public List<DataTable.Row> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters) {
 		List<T> instances = __getInstances__(first, pageSize, sortField, sortOrder, filters);
 		
-		//instances = __process__(instances,first, pageSize, sortField, sortOrder, filters);	
 		if(Boolean.TRUE.equals(isFilterable(filters)))
 			instances = filter(instances, filters);
 		
@@ -91,7 +98,11 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 	}
 	
 	protected List<T> page(List<T> collection,Integer first,Integer size){
-		return CollectionHelper.getInstance().getSize(collection) >= first+size ? collection.subList(first, first+size) : collection;
+		Integer collectionSize = CollectionHelper.getInstance().getSize(collection);
+		Integer last = first + size;
+		if(last > collectionSize)
+			last = collectionSize;
+		return collection.subList(first, last);
 	}
 
 	/**/

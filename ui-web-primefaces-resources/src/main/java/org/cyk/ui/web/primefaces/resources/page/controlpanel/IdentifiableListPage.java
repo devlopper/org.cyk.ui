@@ -1,19 +1,15 @@
 package org.cyk.ui.web.primefaces.resources.page.controlpanel;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.cyk.system.root.model.party.person.Person;
-import org.cyk.ui.web.primefaces.resources.LazyDataModel;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.userinterface.container.window.ListWindow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.IdentifiableListPage implements Serializable {
@@ -27,30 +23,6 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 		return clazz;
 	}
 
-	@Override
-	protected org.cyk.utility.common.userinterface.collection.DataTable buildDataTable() {
-		org.cyk.utility.common.userinterface.collection.DataTable dataTable = super.buildDataTable();
-		dataTable.getPropertiesMap().setValue(new LazyDataModel<Object>(dataTable){
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected Boolean isFilterable(Map<String, Object> filters) {
-				return Boolean.TRUE;
-			}
-			
-			@Override
-			protected List<Object> filter(List<Object> collection, Map<String, Object> filters) {
-				return null;//Person.filter(collection, filters);
-			}
-			
-			@Override
-			protected Boolean isPageable(Integer first, Integer size) {
-				return Boolean.TRUE;
-			}
-		});
-		return dataTable;
-	}
-	
 	@Override
 	protected Class<? extends org.cyk.utility.common.userinterface.hierarchy.Hierarchy> getHierarchyClass() {
 		Class<? extends org.cyk.utility.common.userinterface.hierarchy.Hierarchy> clazz = super.getHierarchyClass();

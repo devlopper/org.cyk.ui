@@ -27,12 +27,14 @@ import org.cyk.ui.api.config.IdentifiableConfiguration;
 import org.cyk.ui.api.model.party.AbstractActorEditFormModel;
 import org.cyk.ui.api.model.party.AbstractPersonEditFormModel;
 import org.cyk.ui.web.primefaces.AbstractContextListener;
+import org.cyk.ui.web.primefaces.ComponentAdapter;
 import org.cyk.ui.web.primefaces.page.AbstractProcessManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectManyPage;
 import org.cyk.ui.web.primefaces.page.AbstractSelectOnePage;
 import org.cyk.ui.web.primefaces.resources.PrimefacesResourcesManager;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.security.Shiro;
+import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.command.Menu;
 
 @WebListener
@@ -84,6 +86,7 @@ public class ContextListener extends AbstractContextListener {
 		
 		//inject(WebResourcesManager.class).initializeContext(event);
 		inject(PrimefacesResourcesManager.class).initializeContext(event);
+		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		
 		MyWebManager.getInstance().getListeners().add(new org.cyk.system.test.business.PrimefacesManager());
 		

@@ -112,6 +112,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
 		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class);
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
+		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
@@ -158,8 +159,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml",Properties.FIRST,0
-				,Properties.PAGINATOR,Boolean.FALSE,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"both",Properties.PAGINATOR_ALWAYS_VISIBLE,Boolean.FALSE
-				,Properties.LAZY,Boolean.FALSE,Properties.EMPTY_MESSAGE,StringHelper.getInstance().get("notification.data.collection.empty", new Object[]{})});
+				,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"both"
+				,Properties.EMPTY_MESSAGE,StringHelper.getInstance().get("notification.data.collection.empty", new Object[]{})});
 		
 		Properties.setDefaultValues(DataTable.Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml"});
@@ -401,7 +402,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 			}
 		});
 		
-		Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
+		/*Component.Listener.COLLECTION.add(new Component.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -415,7 +416,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				return super.build(component);
 			}
 			
-		});
+		});*/
 		
 		Window.Listener.COLLECTION.add(new Window.Listener.Adapter(){
 			private static final long serialVersionUID = 1L;
