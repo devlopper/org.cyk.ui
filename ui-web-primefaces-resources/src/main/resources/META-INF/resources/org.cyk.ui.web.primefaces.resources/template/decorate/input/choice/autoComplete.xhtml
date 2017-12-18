@@ -18,7 +18,7 @@
 		itemValue="#{item}"
 		itemLabel="#{input.getChoiceLabel(item)}"
 		
-		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
+		required="#{input.propertiesMap.required}" 
 		requiredMessage="#{input.propertiesMap.requiredMessage}"
 		
 		converter="#{input.propertiesMap.converter}"

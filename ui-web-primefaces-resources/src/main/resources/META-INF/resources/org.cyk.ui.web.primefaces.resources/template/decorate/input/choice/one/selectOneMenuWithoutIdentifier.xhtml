@@ -7,8 +7,7 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<p:selectManyMenu
-		id="#{identifier}" 
+	<p:selectOneMenu
 		widgetVar="#{input.propertiesMap.widgetVar}"
 		
 		value="#{input.value}" 
@@ -33,6 +32,6 @@
 		<ui:insert name="include">
 			<ui:include src="#{input.propertiesMap.include}" />
 		</ui:insert>
-	</p:selectManyMenu>
+	</p:selectOneMenu>
 	
 </ui:composition>

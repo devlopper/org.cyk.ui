@@ -7,16 +7,14 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<p:selectManyMenu
-		id="#{identifier}" 
+	<p:inputText 
 		widgetVar="#{input.propertiesMap.widgetVar}"
 		
-		value="#{input.value}" 
-		
+		value="#{input.value}"
 		required="#{input.propertiesMap.required}" 
 		requiredMessage="#{input.propertiesMap.requiredMessage}"
-		
-		converter="#{input.propertiesMap.converter}"
+
+		rendered="#{input.propertiesMap.rendered}"
 		
 		label="#{input.propertiesMap.label}"
 		title="#{input.propertiesMap.title}" 
@@ -27,12 +25,11 @@
 		styleClass="#{input.propertiesMap.styleClass}" 
 		
 		onchange="#{input.propertiesMap.onChange}" 
-		onclick="#{input.propertiesMap.onClick}"
+		onclick="#{input.propertiesMap.onClick}"  
 		
+		onkeyup="#{input.propertiesMap.onKeyUp}"
 	>
-		<ui:insert name="include">
-			<ui:include src="#{input.propertiesMap.include}" />
-		</ui:insert>
-	</p:selectManyMenu>
+		
+	</p:inputText>	
 	
 </ui:composition>

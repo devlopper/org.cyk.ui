@@ -6,7 +6,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.Layout;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Master;
@@ -32,7 +31,8 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Component prepare() {
+		protected void __prepare__() {
+			super.__prepare__();
 			//controls
 			//inputs
 			Form.Detail detail = getDetail();
@@ -46,8 +46,6 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 				detail.add("parent");
 			if(ClassHelper.getInstance().isTyped(getObject().getClass()))
 				detail.add("type");
-			
-			return this;
 		}
 		
 	}

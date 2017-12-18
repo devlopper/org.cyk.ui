@@ -9,32 +9,14 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:pm="http://primefaces.org/mobile">
 
-	<cc:interface componentType="org.cyk.ui.web.primefaces.compositecomponent.InputText">
+	<cc:interface componentType="org.cyk.ui.web.primefaces.resources.compositecomponent.InputText">
 		<cc:attribute name="value" required="true" />
-		<cc:attribute name="controlDir" default="/org.cyk.ui.web.primefaces.resources/include/control" />
-		<cc:attribute name="templateFile" default="/org.cyk.ui.web.primefaces.resources/template/control/messageAtTop.xhtml" />
 	</cc:interface>
 
 	<cc:implementation>
-		<ui:param name="control" value="#{cc.value}" />
-		<ui:param name="templateFile" value="#{cc.attrs.templateFile}" />
-		<ui:param name="controlFile" value="/input/inputText.xhtml" />
-		
-		<ui:fragment rendered="#{not uiManager.isMobileDevice(cc.value.userDeviceType)}" >
-			<ui:include src="#{cc.attrs.controlDir}#{controlFile}" >
-				<ui:param name="controlId" value="noMobileInputText" />
-			</ui:include>
-		</ui:fragment>
-		
-		<ui:fragment rendered="#{uiManager.isMobileDevice(cc.value.userDeviceType)}" >
-			<pm:field>
-				<p:outputLabel for="mobileInputText" value="#{cc.value.label}" />
-				<ui:include src="#{cc.attrs.controlDir}#{controlFile}" >
-					<ui:param name="controlId" value="mobileInputText" />
-				</ui:include>
-				
-			</pm:field>
-		</ui:fragment>
+		<ui:decorate template="#{primefacesResourcesManager.inputTextDefaultTemplate}">
+			<ui:param name="input" value="#{cc.attrs.value}" />	
+		</ui:decorate>
 	</cc:implementation>
 
 </ui:composition>

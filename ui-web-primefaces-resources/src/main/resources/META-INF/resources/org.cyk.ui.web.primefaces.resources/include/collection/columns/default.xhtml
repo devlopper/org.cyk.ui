@@ -9,8 +9,10 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml">
+	<ui:insert name="columnsColumn">
+		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml">
 	
-	</ui:include>
+		</ui:include>
+	</ui:insert>
 				
 </ui:composition>

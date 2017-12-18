@@ -13,7 +13,7 @@
 		
 		value="#{input.value}" 
 		
-		required="#{(not viewHelper.parameterValueInputValueIsNotRequired) and input.propertiesMap.required}" 
+		required="#{input.propertiesMap.required}" 
 		requiredMessage="#{input.propertiesMap.requiredMessage}"
 		
 		label="#{input.propertiesMap.label}"
@@ -30,5 +30,9 @@
 	>
 		<ui:include src="#{input.propertiesMap.include}" />
 	</p:inputNumber>
+	
+	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__bottom__.xhtml">
+		
+	</ui:include>
 	
 </ui:composition>

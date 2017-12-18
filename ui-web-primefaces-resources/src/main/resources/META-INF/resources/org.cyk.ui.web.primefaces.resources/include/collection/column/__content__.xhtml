@@ -26,5 +26,44 @@
 			<ui:param name="outputFile" value="#{cell.propertiesMap.value}" />
 		</ui:decorate>	
 	</ui:fragment>	
+	
+	<ui:fragment rendered="#{column.cellValueType.name() eq 'INPUT'}">
+		
+		<ui:insert name="columnsColumnContentInput">
+			
+			<ui:fragment rendered="#{primefacesResourcesManager.isInputText(input)}">
+				<ui:decorate template="#{primefacesResourcesManager.inputTextDefaultTemplateWithoutIdentifier}">
+				
+				</ui:decorate>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{primefacesResourcesManager.isInputTextarea(input)}">
+				<ui:decorate template="#{primefacesResourcesManager.inputTextareaDefaultTemplateWithoutIdentifier}">
+					
+				</ui:decorate>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{primefacesResourcesManager.isInputNumber(input)}">
+				<ui:decorate template="#{primefacesResourcesManager.inputNumberDefaultTemplateWithoutIdentifier}">
+					
+				</ui:decorate>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{primefacesResourcesManager.isInputChoiceOneCombo(input)}">
+				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneComboDefaultTemplateWithoutIdentifier}">
+					<ui:define name="include">
+				 		<f:selectItems
+							value="#{input.choices.elements}"
+							var="item"
+							itemValue="#{item}"
+							itemLabel="#{input.getChoiceLabel(item)}" 
+						/>
+				 	</ui:define>
+				</ui:decorate>
+			</ui:fragment>
+			
+		</ui:insert>
+		
+	</ui:fragment>	
 		
 </ui:composition>

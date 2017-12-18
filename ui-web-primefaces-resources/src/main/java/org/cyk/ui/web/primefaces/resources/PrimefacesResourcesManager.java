@@ -17,6 +17,7 @@ import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
+import org.cyk.ui.web.api.resources.helper.RequestHelper;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -301,7 +302,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				}else if(instance instanceof NotificationDialog){
 					properties.setGetter(Properties.VISIBLE, new Properties.Getter() {
 						@Override
-						public Object execute(Properties properties, Object key, Object nullValue) {
+						public Object execute(Properties properties, Object key,Object value, Object nullValue) {
 							return CollectionHelper.getInstance().getSize(FacesContext.getCurrentInstance().getMessageList()) > 0;
 						}
 					});
@@ -332,11 +333,13 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					
 				}else if(instance instanceof Form.Master){
 					Form.Master form = (Form.Master) instance;
-					form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
-					form.getSubmitCommand().getPropertiesMap().setUpdate(form.getDetail().getPropertiesMap().getIdentifier());
+					form.getSubmitCommand().getPropertiesMap().addString(Properties.PROCESS, "@this"); 
+					//setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
+					//form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
+					//form.getSubmitCommand().getPropertiesMap().setUpdate(form.getDetail().getPropertiesMap().getIdentifier());
 					form.getSubmitCommand().getPropertiesMap().setType("submit");
 					form.getSubmitCommand().getPropertiesMap().setPartialSubmit(Boolean.TRUE);
-					
+					//System.out.println("PrimefacesResourcesManager.initialize()");
 					//setInteractivityBlocker(form, Boolean.TRUE);
 				}else if(instance instanceof InputChoice<?>){
 					properties.setConverter(new ObjectIdentifierConverter());
@@ -399,6 +402,16 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					((Image)properties.getThumbnail()).getPropertiesMap().setHeight("150px");
 				}
 				
+				if(instance instanceof Input){
+					properties.setGetter(Properties.REQUIRED, new Properties.Getter() {
+					@Override
+					public Object execute(Properties properties, Object key,Object value, Object nullValue) {
+						Boolean inputValueIsNotRequired = 
+								Boolean.valueOf((String)org.cyk.utility.common.userinterface.RequestHelper.getInstance().getParameterInputValueIsNotRequired());
+						return  !Boolean.TRUE.equals(inputValueIsNotRequired) && Boolean.TRUE.equals(value);
+					}
+				});
+				}
 			}
 		});
 		
@@ -445,6 +458,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(aClass, new Object[]{
 				Properties.TEMPLATE, String.format(COMPONENT_TEMPLATE_FORMAT, family,relativePath,fileName)
 				, Properties.INCLUDE, String.format(COMPONENT_INCLUDE_FORMAT, family,relativePath,fileName)
+				, Properties.TEMPLATE_WITHOUT_IDENTIFIER, String.format(COMPONENT_TEMPLATE_FORMAT, family,relativePath,fileName+"WithoutIdentifier")
 				, Properties.TYPE, getComponentTypeForDynaForm(aClass)
 			});
 	}
@@ -485,6 +499,11 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				: StringUtils.defaultIfBlank((String)component.getPropertiesMap().getTemplate(), getDummyEmptyContentDefaultTemplate());
 	}
 	
+	public Object getTemplateWithoutIdentifier(Component component){
+		return component == null ? getDummyEmptyContentDefaultTemplate() 
+				: StringUtils.defaultIfBlank((String)component.getPropertiesMap().getTemplateWithoutIdentifier(), getDummyEmptyContentDefaultTemplate());
+	}
+	
 	public Object getImageDefaultTemplate(){
 		return Properties.getDefaultValue(Image.class, Properties.TEMPLATE);
 	}
@@ -501,8 +520,16 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		return Properties.getDefaultValue(InputText.class, Properties.TEMPLATE);
 	}
 	
+	public Object getInputTextDefaultTemplateWithoutIdentifier(){
+		return Properties.getDefaultValue(InputText.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER);
+	}
+	
 	public Object getInputTextareaDefaultTemplate(){
 		return Properties.getDefaultValue(InputTextarea.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputTextareaDefaultTemplateWithoutIdentifier(){
+		return Properties.getDefaultValue(InputTextarea.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER);
 	}
 	
 	public Object getInputCalendarDefaultTemplate(){
@@ -521,6 +548,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		return Properties.getDefaultValue(InputNumber.class, Properties.TEMPLATE);
 	}
 	
+	public Object getInputNumberDefaultTemplateWithoutIdentifier(){
+		return Properties.getDefaultValue(InputNumber.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER);
+	}
+	
 	public Object getInputBooleanCheckBoxDefaultTemplate(){
 		return Properties.getDefaultValue(InputBooleanCheckBox.class, Properties.TEMPLATE);
 	}
@@ -535,6 +566,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getInputChoiceOneComboDefaultTemplate(){
 		return Properties.getDefaultValue(InputChoiceOneCombo.class, Properties.TEMPLATE);
+	}
+	
+	public Object getInputChoiceOneComboDefaultTemplateWithoutIdentifier(){
+		return Properties.getDefaultValue(InputChoiceOneCombo.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER);
 	}
 	
 	public Object getInputChoiceOneListDefaultTemplate(){
@@ -741,5 +776,23 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public static void setInteractivityBlockerNotGlobal(Component component,Component command){
 		setInteractivityBlockerNotGlobal(component, command, (String)component.getPropertiesMap().getIdentifier());
+	}
+
+	/**/
+	
+	public Boolean isInputText(Input<?> input){
+		return input!=null && input.getClass().equals(InputText.class);
+	}
+	
+	public Boolean isInputTextarea(Input<?> input){
+		return input!=null && input.getClass().equals(InputTextarea.class);
+	}
+	
+	public Boolean isInputNumber(Input<?> input){
+		return input instanceof InputNumber;
+	}
+	
+	public Boolean isInputChoiceOneCombo(Input<?> input){
+		return input!=null && input.getClass().equals(InputChoiceOneCombo.class);
 	}
 }

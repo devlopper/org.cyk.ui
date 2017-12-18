@@ -9,19 +9,23 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<ui:param name="cell" value="#{column.getCell(row)}"/>
+	<ui:insert name="columnsColumnContent">
 	
-	<ui:fragment rendered="#{not column.propertiesMap.linked}">
-		<ui:include src="__content__.xhtml"/>
-	</ui:fragment>
-	
-	<ui:fragment rendered="#{column.propertiesMap.linked}">	
-		<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
-			<ui:param name="outputLink" value="#{cell.propertiesMap.value.propertiesMap.outputLinkComponent}" />
-			<ui:define name="content">
-				<ui:include src="__content__.xhtml"/>
-			</ui:define>
-		</ui:decorate>	
-	</ui:fragment>
+		<ui:param name="cell" value="#{column.getCell(row)}"/>
+		<ui:param name="input" value="#{cell.input}"/>
+		
+		<ui:fragment rendered="#{not column.propertiesMap.linked}">
+			<ui:include src="__content__.xhtml"/>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{column.propertiesMap.linked}">	
+			<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
+				<ui:param name="outputLink" value="#{cell.propertiesMap.value.propertiesMap.outputLinkComponent}" />
+				<ui:define name="content">
+					<ui:include src="__content__.xhtml"/>
+				</ui:define>
+			</ui:decorate>	
+		</ui:fragment>
 
+	</ui:insert>
 </ui:composition>
