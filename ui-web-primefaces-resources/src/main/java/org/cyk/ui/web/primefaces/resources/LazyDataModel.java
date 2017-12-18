@@ -68,7 +68,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 		if(Boolean.TRUE.equals(isPageable(first,pageSize)))
 			instances = page(instances, first,pageSize);
 		
-		List<DataTable.Row> rows = (List<DataTable.Row>) DataTable.Row.instanciateMany(instances,component,null);
+		List<DataTable.Row> rows = (List<DataTable.Row>) DataTable.Row.instanciateMany(instances,component,null).getElements();
 		
 		if("__orderNumber__".equals(sortField))
 			sort(rows, sortOrder, sortField);

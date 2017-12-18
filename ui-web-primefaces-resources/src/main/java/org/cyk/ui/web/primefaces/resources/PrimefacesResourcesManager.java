@@ -17,7 +17,6 @@ import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
-import org.cyk.ui.web.api.resources.helper.RequestHelper;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
@@ -42,6 +41,7 @@ import org.cyk.utility.common.userinterface.Image;
 import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
+import org.cyk.utility.common.userinterface.RequestHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
@@ -406,9 +406,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					properties.setGetter(Properties.REQUIRED, new Properties.Getter() {
 					@Override
 					public Object execute(Properties properties, Object key,Object value, Object nullValue) {
-						Boolean inputValueIsNotRequired = 
-								Boolean.valueOf((String)org.cyk.utility.common.userinterface.RequestHelper.getInstance().getParameterInputValueIsNotRequired());
-						return  !Boolean.TRUE.equals(inputValueIsNotRequired) && Boolean.TRUE.equals(value);
+						return  !Boolean.TRUE.equals(RequestHelper.getInstance().getParameterInputValueIsNotRequired()) && Boolean.TRUE.equals(value);
 					}
 				});
 				}
