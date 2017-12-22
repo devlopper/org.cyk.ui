@@ -10,8 +10,11 @@
 		event="#{ajax.propertiesMap.event}"
 		onstart="#{ajax.propertiesMap.onStart}"
 		oncomplete="#{ajax.propertiesMap.onComplete}"
-		global="#{ajax.propertiesMap.global}"	
-		async="#{ajax.propertiesMap.async}"		
+		global="#{global == null ? ajax.propertiesMap.global : global}"	
+		async="#{async == null ? ajax.propertiesMap.async : async}"	
+		listener="#{ajax.listener.execute}"	
+		
+		update="#{ajax.propertiesMap.update}"
 	>
 		<ui:include src="#{ajax.propertiesMap.include}"/>
 	</p:ajax>

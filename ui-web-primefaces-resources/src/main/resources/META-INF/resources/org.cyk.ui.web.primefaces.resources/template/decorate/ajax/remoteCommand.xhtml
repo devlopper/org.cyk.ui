@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<p:remoteCommand
+		name="#{remoteCommand.propertiesMap.name}"
+		
+		action="#{remoteCommand.action.execute}"
+		actionListener="#{remoteCommand.actionListener.execute}"
+		
+		async="#{remoteCommand.propertiesMap.async}"
+		autoRun="#{remoteCommand.propertiesMap.autoRun}"
+		delay="#{remoteCommand.propertiesMap.delay}"
+		form="#{remoteCommand.propertiesMap.form}"
+		global="#{remoteCommand.propertiesMap.global}"
+		ignoreAutoUpdate="#{remoteCommand.propertiesMap.ignoreAutoUpdate}"
+		immediate="#{remoteCommand.propertiesMap.immediate}"
+		
+		partialSubmit="#{remoteCommand.propertiesMap.partialSubmit}"
+		partialSubmitFilter="#{remoteCommand.propertiesMap.partialSubmitFilter}"
+		process="#{remoteCommand.propertiesMap.process}"
+		rendered="#{remoteCommand.propertiesMap.rendered}"
+		resetValues="#{remoteCommand.propertiesMap.resetValues}"
+		timeout="#{remoteCommand.propertiesMap.timeOut}"
+		update="#{remoteCommand.propertiesMap.update}"
+		
+		oncomplete="#{remoteCommand.propertiesMap.onComplete}"
+		onerror="#{remoteCommand.propertiesMap.onError}"
+		onstart="#{remoteCommand.propertiesMap.onStart}"
+		onsuccess="#{remoteCommand.propertiesMap.onSuccess}"
+	>
+		<ui:include src="#{remoteCommand.propertiesMap.include}"/>
+	</p:remoteCommand>
+	
+	
+	
+</ui:composition>

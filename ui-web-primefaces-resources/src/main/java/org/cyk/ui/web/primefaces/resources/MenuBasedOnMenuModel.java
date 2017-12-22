@@ -32,6 +32,9 @@ public class MenuBasedOnMenuModel extends Menu.Builder.Target.Adapter.Default<De
 		if(menuNode.getPropertiesMap().getOutcome()!=null)
 			menuItem.setOutcome((String)menuNode.getPropertiesMap().getOutcome());
 		
+		if(menuNode.getPropertiesMap().getOnClick()!=null)
+			menuItem.setOnclick((String)menuNode.getPropertiesMap().getOnClick());
+		
 		if(menuNode.getPropertiesMap().getTitle()!=null)
 			menuItem.setTitle((String)menuNode.getPropertiesMap().getTitle());
 		if(menuNode.getPropertiesMap().getTitle()==null)

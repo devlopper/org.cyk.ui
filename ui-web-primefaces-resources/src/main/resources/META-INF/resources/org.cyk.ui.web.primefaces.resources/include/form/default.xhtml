@@ -19,16 +19,30 @@
 		</ui:insert>	
 	    
 	    <ui:insert name="detail">
-	 		<h:panelGroup rendered="#{form.detail.propertiesMap.rendered}">
-				<ui:decorate template="#{form.detail.propertiesMap.template}">
-		 			<ui:param name="detail" value="#{form.detail}" />
-		 		</ui:decorate>   	
-			</h:panelGroup>
+	    	<ui:insert name="detailNorth">
+	    		<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,false)}" />
+ 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+ 			
+ 				<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,false)}" />
+ 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+	    	</ui:insert>
+	    	<ui:insert name="detailCenter">
+		    	<h:panelGroup rendered="#{form.detail.propertiesMap.rendered}">
+					<ui:decorate template="#{form.detail.propertiesMap.template}">
+			 			<ui:param name="detail" value="#{form.detail}" />
+			 		</ui:decorate>   	
+				</h:panelGroup>
+	    	</ui:insert>
+	    	<ui:insert name="detailSouth">
+	    		<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,true)}" />
+ 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+ 			
+ 				<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,true)}" />
+ 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+	    		
+	    	</ui:insert>
+	 		
 		</ui:insert>
-	 	
-	 	<ui:insert name="detailExtension">
-	 	
-	 	</ui:insert>
 	 	
 	 	<ui:insert name="menu">
 		    <h:panelGroup rendered="#{form.menu.propertiesMap.rendered}">

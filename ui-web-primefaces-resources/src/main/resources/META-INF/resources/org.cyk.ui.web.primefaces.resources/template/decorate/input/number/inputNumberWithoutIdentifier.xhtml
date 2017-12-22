@@ -27,7 +27,17 @@
 		onclick="#{input.propertiesMap.onClick}"
 		
 	>
-	
+		
+		<ui:decorate template="#{primefacesResourcesManager.eventDefaultTemplate}">
+			<ui:param name="ajax" value="#{input.propertiesMap.event}" />	
+			<ui:param name="async" value="#{async == null ? input.propertiesMap.event.propertiesMap.async : async}"/>
+			<ui:param name="global" value="#{global == null ? input.propertiesMap.event.propertiesMap.global : global}"/>
+		</ui:decorate>
+		
 	</p:inputNumber>
+	
+	<!-- 
+		valueChangeListener="#{input.valueChangeListener}"
+	 -->
 	
 </ui:composition>

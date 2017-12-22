@@ -45,6 +45,7 @@ import org.cyk.utility.common.userinterface.RequestHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
+import org.cyk.utility.common.userinterface.command.RemoteCommand;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.window.Window;
@@ -135,6 +136,9 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(Event.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/ajax/ajax.xhtml");
 		Properties.setDefaultValue(Event.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/ajax/ajax/default.xhtml");
 		Properties.setDefaultValue(Event.class, Properties.GLOBAL, Boolean.TRUE);
+		
+		Properties.setDefaultValue(RemoteCommand.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/ajax/remoteCommand.xhtml");
+		Properties.setDefaultValue(RemoteCommand.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/ajax/remoteCommand/default.xhtml");
 		
 		Properties.setDefaultValue(OutputLink.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputLink.xhtml");
 		Properties.setDefaultValue(OutputLink.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/outputLink/default.xhtml");
@@ -502,6 +506,14 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				: StringUtils.defaultIfBlank((String)component.getPropertiesMap().getTemplateWithoutIdentifier(), getDummyEmptyContentDefaultTemplate());
 	}
 	
+	public Object getDataTableDefaultTemplate(){
+		return Properties.getDefaultValue(DataTable.class, Properties.TEMPLATE);
+	}
+	
+	public Object getEventDefaultTemplate(){
+		return Properties.getDefaultValue(Event.class, Properties.TEMPLATE);
+	}
+	
 	public Object getImageDefaultTemplate(){
 		return Properties.getDefaultValue(Image.class, Properties.TEMPLATE);
 	}
@@ -512,6 +524,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getCommandDefaultTemplate(){
 		return Properties.getDefaultValue(Command.class, Properties.TEMPLATE);
+	}
+	
+	public Object getRemoteCommandDefaultTemplate(){
+		return Properties.getDefaultValue(RemoteCommand.class, Properties.TEMPLATE);
 	}
 	
 	public Object getInputTextDefaultTemplate(){

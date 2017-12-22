@@ -10,10 +10,22 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
 	<ui:fragment rendered="#{column.cellValueType.name() eq 'MENU'}">
-		<ui:composition template="#{primefacesResourcesManager.menuBarDefaultTemplate}">
+		<ui:insert name="columnsColumnContentMenu">
+			<ui:composition template="#{primefacesResourcesManager.menuBarDefaultTemplate}">
+				<ui:param name="menu" value="#{cell.propertiesMap.value.propertiesMap.value}"/>
+			</ui:composition>
+			
+			<ui:composition template="#{primefacesResourcesManager.commandDefaultTemplate}">
+				<ui:param name="commandButton" value="#{row.propertiesMap.removeCommandComponent}"/>
+			</ui:composition>
+		</ui:insert>
+	</ui:fragment>
+	
+	<!--ui:fragment rendered="#{column.cellValueType.name() eq 'COMMAND'}">
+		<ui:composition template="#{primefacesResourcesManager.commandButtonDefaultTemplate}">
 			<ui:param name="menu" value="#{cell.propertiesMap.value.propertiesMap.value}"/>
 		</ui:composition>
-	</ui:fragment>
+	</ui:fragment-->
 		
 	<ui:fragment rendered="#{column.cellValueType.name() eq 'TEXT'}">
 		<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
@@ -43,11 +55,15 @@
 				</ui:decorate>
 			</ui:fragment>
 			
-			<ui:fragment rendered="#{primefacesResourcesManager.isInputNumber(input)}">
-				<ui:decorate template="#{primefacesResourcesManager.inputNumberDefaultTemplateWithoutIdentifier}">
-					
-				</ui:decorate>
-			</ui:fragment>
+			<ui:insert name="columnsColumnContentInputNumber">
+				<ui:fragment rendered="#{primefacesResourcesManager.isInputNumber(input)}">
+					<ui:decorate template="#{primefacesResourcesManager.inputNumberDefaultTemplateWithoutIdentifier}">
+						<ui:param name="async" value="false"/>
+						<ui:param name="global" value="true"/>
+					</ui:decorate>
+				</ui:fragment>
+			</ui:insert>
+			
 			
 			<ui:fragment rendered="#{primefacesResourcesManager.isInputChoiceOneCombo(input)}">
 				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneComboDefaultTemplateWithoutIdentifier}">

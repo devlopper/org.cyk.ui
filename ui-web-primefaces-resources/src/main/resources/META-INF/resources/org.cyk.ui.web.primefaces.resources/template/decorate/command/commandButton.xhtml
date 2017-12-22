@@ -12,7 +12,7 @@
 	-->
 	
 	<p:commandButton	
-		id="#{commandButton.propertiesMap.identifier == null ? randomHelper.getAlphabetic(5) : commandButton.propertiesMap.identifier}" 
+		id="#{commandButtonIdentifier == null ? (commandButton.propertiesMap.identifier == null ? randomHelper.getAlphabetic(5) : commandButton.propertiesMap.identifier) : commandButtonIdentifier}" 
 		action="#{commandButton.action.execute(executeParameter)}" 
 		ajax="#{commandButton.propertiesMap.ajax}"
 		icon="#{commandButton.propertiesMap.icon}"
@@ -61,7 +61,9 @@
 		<ui:param name="confirmDialog" value="#{commandButton.confirmationDialog}" />	
 	</ui:decorate>
 	
-	
+	<ui:decorate template="#{commandButton.propertiesMap.remoteCommand.propertiesMap.template == null ? primefacesResourcesManager.remoteCommandDefaultTemplate : commandButton.propertiesMap.remoteCommand.propertiesMap.template}">
+		<ui:param name="remoteCommand" value="#{commandButton.propertiesMap.remoteCommand}"/>
+	</ui:decorate>
 	
 	<!-- 
 	
