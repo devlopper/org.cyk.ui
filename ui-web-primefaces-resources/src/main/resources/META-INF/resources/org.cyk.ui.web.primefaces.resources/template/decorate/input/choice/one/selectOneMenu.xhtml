@@ -33,6 +33,13 @@
 		<ui:insert name="include">
 			<ui:include src="#{input.propertiesMap.include}" />
 		</ui:insert>
+		
+		<!--ui:decorate template="#{input.propertiesMap.event.propertiesMap.template == null ? primefacesResourcesManager.eventDefaultTemplate : input.propertiesMap.event.propertiesMap.template}">
+			<ui:param name="ajax" value="#{input.propertiesMap.event}" />	
+			<ui:param name="async" value="#{false}"/>
+			<ui:param name="global" value="#{true}"/>
+		</ui:decorate>
+		-->
 	</p:selectOneMenu>
 	
 </ui:composition>

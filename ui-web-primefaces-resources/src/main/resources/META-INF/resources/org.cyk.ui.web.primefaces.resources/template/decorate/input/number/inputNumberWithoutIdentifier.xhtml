@@ -20,6 +20,10 @@
 		
 		disabled="#{input.propertiesMap.disabled}"
 		
+		decimalPlaces="#{input.propertiesMap.decimalPlaces}"
+		decimalSeparator="#{input.propertiesMap.decimalSeparator}"
+		thousandSeparator="#{input.propertiesMap.thousandSeparator}"
+		
 		style="#{input.propertiesMap.style}" 
 		styleClass="#{input.propertiesMap.styleClass}" 
 		
@@ -27,12 +31,13 @@
 		onclick="#{input.propertiesMap.onClick}"
 		
 	>
+		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__common__.xhtml" />
 		
-		<ui:decorate template="#{primefacesResourcesManager.eventDefaultTemplate}">
+		<!--ui:decorate template="#{primefacesResourcesManager.eventDefaultTemplate}">
 			<ui:param name="ajax" value="#{input.propertiesMap.event}" />	
 			<ui:param name="async" value="#{async == null ? input.propertiesMap.event.propertiesMap.async : async}"/>
 			<ui:param name="global" value="#{global == null ? input.propertiesMap.event.propertiesMap.global : global}"/>
-		</ui:decorate>
+		</ui:decorate-->
 		
 	</p:inputNumber>
 	

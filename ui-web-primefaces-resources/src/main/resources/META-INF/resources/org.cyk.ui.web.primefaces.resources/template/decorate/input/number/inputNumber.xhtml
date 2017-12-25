@@ -21,6 +21,10 @@
 		
 		disabled="#{input.propertiesMap.disabled}"
 		
+		decimalPlaces="#{input.propertiesMap.decimalPlaces}"
+		decimalSeparator="#{input.propertiesMap.decimalSeparator}"
+		thousandSeparator="#{input.propertiesMap.thousandSeparator}"
+		
 		style="#{input.propertiesMap.style}" 
 		styleClass="#{input.propertiesMap.styleClass}" 
 		
@@ -28,7 +32,9 @@
 		onclick="#{input.propertiesMap.onClick}"
 		
 	>
-		<ui:include src="#{input.propertiesMap.include}" />
+		<ui:insert name="include">
+			<ui:include src="#{input.propertiesMap.include}" />
+		</ui:insert>
 	</p:inputNumber>
 	
 	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__bottom__.xhtml">

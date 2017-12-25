@@ -14,7 +14,10 @@
 		async="#{async == null ? ajax.propertiesMap.async : async}"	
 		listener="#{ajax.listener.execute}"	
 		
+		process="#{ajax.propertiesMap.process}"
 		update="#{ajax.propertiesMap.update}"
+		
+		disabled="#{ajax.propertiesMap.disabled}"
 	>
 		<ui:include src="#{ajax.propertiesMap.include}"/>
 	</p:ajax>

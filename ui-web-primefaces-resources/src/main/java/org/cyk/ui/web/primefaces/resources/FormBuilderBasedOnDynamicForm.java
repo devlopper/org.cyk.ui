@@ -2,6 +2,8 @@ package org.cyk.ui.web.primefaces.resources;
 
 import java.io.Serializable;
 
+import org.cyk.utility.common.model.Area;
+import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.output.OutputText;
@@ -20,7 +22,15 @@ public class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Ad
 	
 	@Override
 	public DynaFormControl addControl(DynaFormRow row, org.cyk.utility.common.userinterface.Control control,String type) {
-		return row.addControl(control, type,control.getArea().getLength().getDistance().intValue()*2-1,control.getArea().getWidth().getDistance().intValue());
+		Area area = control.getArea();
+		if(Boolean.TRUE.equals(control.getPropertiesMap().getReadableOnly())){
+			if(control.getPropertiesMap().getOutputComponent() == null){
+				control = new OutputText();
+				((OutputText)control).getPropertiesMap().setValue(control.getPropertiesMap().getReadableOnlyValue());
+			}else
+				control = (Control) control.getPropertiesMap().getOutputComponent();
+		}
+		return row.addControl(control, type,area.getLength().getDistance().intValue()*2-1,area.getWidth().getDistance().intValue());
 	}
 	
 	@Override
@@ -36,7 +46,15 @@ public class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Ad
 	
 	@Override
 	public String getType(org.cyk.utility.common.userinterface.Control control) {
-		return PrimefacesResourcesManager.getComponentTypeForDynaForm(control.getClass());
+		Class<?> aClass;
+		if(Boolean.TRUE.equals(control.getPropertiesMap().getReadableOnly())){
+			if(control.getPropertiesMap().getOutputComponent() == null){
+				aClass = OutputText.class;
+			}else
+				aClass = control.getPropertiesMap().getOutputComponent().getClass();
+		}else
+			aClass = control.getClass();
+		return PrimefacesResourcesManager.getComponentTypeForDynaForm(aClass);
 	}
 	
 }

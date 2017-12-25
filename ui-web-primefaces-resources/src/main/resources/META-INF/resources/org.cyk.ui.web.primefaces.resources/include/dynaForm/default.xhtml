@@ -71,6 +71,9 @@
 			<ui:define name="input">
 				<ui:decorate template="#{primefacesResourcesManager.inputNumberDefaultTemplate}">
 				 	<ui:param name="input" value="#{control}" />
+				 	<ui:define name="include">
+				 		<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/__common__.xhtml" />
+				 	</ui:define>
 				</ui:decorate>
 			</ui:define>
 		</ui:decorate>
@@ -142,12 +145,16 @@
 				<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneComboDefaultTemplate}">
 				 	<ui:param name="input" value="#{control}" />
 				 	<ui:define name="include">
+				 		<!--
 				 		<f:selectItems
 							value="#{input.choices.elements}"
 							var="item"
 							itemValue="#{item}"
 							itemLabel="#{input.getChoiceLabel(item)}" 
 						/>
+						-->
+						<ui:include src="/org.cyk.ui.web.primefaces.resources/include/input/choice/__common__.xhtml" />
+						
 				 	</ui:define>
 				</ui:decorate>
 			</ui:define>
