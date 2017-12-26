@@ -129,7 +129,8 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
         LayoutOptions north = createOptions(childOptions, CardinalPoint.NORTH);  
         setAttribute(north, "size", "150");
         fixed(north);
-        createOptions(childOptions, CardinalPoint.CENTER);    
+        LayoutOptions center = createOptions(childOptions, CardinalPoint.CENTER);    
+        setAttribute(center, "overflow", "scroll");
 	}
 	
 }

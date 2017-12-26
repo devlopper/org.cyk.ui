@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.ContactCollection;
+import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.userinterface.command.Menu;
@@ -81,7 +82,7 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 	@Override
 	protected void addNodeIdentifiablesManage(Menu menu) {
 		super.addNodeIdentifiablesManage(menu);
-		menu.addNodeActionListManyFromPackage(ContactCollection.class,Event.class,File.class,Person.class);
+		menu.addNodeActionListManyFromPackage(ContactCollection.class,Event.class,File.class,Person.class,Movement.class);
 	}
 	
 }

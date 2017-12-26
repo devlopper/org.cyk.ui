@@ -6,6 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<!--
 		<navigation-case>
 			<from-outcome>movementActionEditView</from-outcome>
 			<to-view-id>/private/mathematics/movementaction/edit.xhtml</to-view-id>
@@ -180,6 +181,7 @@
 			<to-view-id>/private/mathematics/finitestatemachinestatelog/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		-->
 				
 	</navigation-rule>
 
