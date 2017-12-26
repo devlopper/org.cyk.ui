@@ -6,6 +6,12 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
+	<style>
+		.#{dataTable.propertiesMap.identifierAsStyleClass} tfoot {
+			display: #{dataTable.propertiesMap.columns.propertiesMap.footerRendered ? 'table-footer-group' : 'none'};
+		}
+	</style>
+	
 	<p:dataTable
 		id="#{dataTable.propertiesMap.identifier}"
 		value="#{dataTable.propertiesMap.value}"
@@ -30,7 +36,9 @@
 		style="#{dataTable.propertiesMap.style}"
 	>
 	
-		<ui:include src="#{dataTable.propertiesMap.include}"/>
+		<ui:include src="#{dataTable.propertiesMap.include}">
+			<ui:param name="columns" value="#{dataTable.propertiesMap.columns}"/>
+		</ui:include>
 		
 	</p:dataTable>
 	

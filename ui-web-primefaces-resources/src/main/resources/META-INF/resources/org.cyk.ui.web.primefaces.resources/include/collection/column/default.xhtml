@@ -9,6 +9,14 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
+	<ui:insert name="columnsColumnHeader">
+		<f:facet name="header">
+			<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+				<ui:param name="outputText" value="#{column.propertiesMap.header}" />
+			</ui:decorate>
+		</f:facet>
+	</ui:insert>
+	
 	<ui:insert name="columnsColumnContent">
 	
 		<ui:param name="cell" value="#{column.getCell(row)}"/>
@@ -28,4 +36,13 @@
 		</ui:fragment>
 
 	</ui:insert>
+	
+	<ui:insert name="columnsColumnFooter">
+		<f:facet name="footer">
+			<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+				<ui:param name="outputText" value="#{column.propertiesMap.footer}" />
+			</ui:decorate>
+		</f:facet>
+	</ui:insert>
+	
 </ui:composition>
