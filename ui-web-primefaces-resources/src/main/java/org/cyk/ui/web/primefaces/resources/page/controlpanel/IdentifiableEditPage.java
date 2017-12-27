@@ -22,7 +22,7 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 	protected Class<? extends Master> getFormMasterClass() {
 		Class<? extends Master> clazz = super.getFormMasterClass();
 		if(Form.Master.class.equals(clazz))
-			clazz = FormMaster.class;
+			clazz = ClassHelper.getInstance().getMapping(FormMaster.class);
 		return clazz;
 	}
 	

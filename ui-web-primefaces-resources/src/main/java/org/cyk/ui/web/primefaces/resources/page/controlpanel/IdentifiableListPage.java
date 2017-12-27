@@ -19,7 +19,7 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 	protected Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> getDataTableClass() {
 		Class<? extends org.cyk.utility.common.userinterface.collection.DataTable> clazz = super.getDataTableClass();
 		if(org.cyk.utility.common.userinterface.collection.DataTable.class.equals(clazz))
-			clazz = DataTable.class;
+			clazz = ClassHelper.getInstance().getMapping(DataTable.class);
 		return clazz;
 	}
 

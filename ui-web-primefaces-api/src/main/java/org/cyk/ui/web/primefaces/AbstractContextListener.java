@@ -52,6 +52,7 @@ import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueDetails;
 import org.cyk.system.root.business.impl.value.ValuePropertiesDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
@@ -148,6 +149,8 @@ import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
+import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
+import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPage;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
@@ -172,6 +175,10 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(ViewHelper.Listener.Adapter.Default.class,org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
 		ClassHelper.getInstance().map(Input.Listener.class, InputAdapter.class);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
+		ClassHelper.IDENTIFIABLE_BASE_CLASSES.add(AbstractIdentifiable.class);
+		
+		ClassHelper.getInstance().map(IdentifiableEditPage.FormMaster.class, FormMaster.class);
+		ClassHelper.getInstance().map(IdentifiableListPage.DataTable.class, DataTable.class);
 		
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
