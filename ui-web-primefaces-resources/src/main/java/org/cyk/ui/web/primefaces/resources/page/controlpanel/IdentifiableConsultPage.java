@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Master;
@@ -21,7 +22,7 @@ public class IdentifiableConsultPage extends org.cyk.ui.web.api.resources.page.I
 	protected Class<? extends Master> getFormMasterClass() {
 		Class<? extends Master> clazz = super.getFormMasterClass();
 		if(Form.Master.class.equals(clazz))
-			clazz = FormMaster.class;
+			clazz = ClassHelper.getInstance().getMapping(FormMaster.class);
 		return clazz;
 	}
 	

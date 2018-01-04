@@ -14,13 +14,26 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.Form.Master;
 import org.cyk.utility.common.userinterface.event.Event;
 
-public class FormMaster extends IdentifiableEditPage.FormMaster implements Serializable {
+public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
+	
+	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
+		if(fieldName.equals("movementAction"))
+			fieldName = "incrementAction";
+		if(fieldName.equals("movementCollection"))
+			fieldName = "collection";
+		if(fieldName.equals("incrementAction") || fieldName.equals("person"))
+			return this;
+		
+		return super.setFromRequestParameter(aClass, fieldName);
+	}
 	
 	@Override
 	protected void __prepare__() {
@@ -49,32 +62,40 @@ public class FormMaster extends IdentifiableEditPage.FormMaster implements Seria
 			detail.add(AbstractCollectionItem.FIELD_COLLECTION).addBreak();
 			
 			if(Movement.class.equals(actionOnClass)){
+				Movement movement = (Movement)getObject();
+				movement.setValueSettableFromAbsolute(Boolean.TRUE);
+				if(movement.getValue()!=null)
+					movement.setValueAbsolute(movement.getValue().abs());
+				
 				detail.addReadOnly(Movement.FIELD_PREVIOUS_CUMUL).addBreak();
 				detail.add(Movement.FIELD_ACTION).addBreak();
-				detail.add(Movement.FIELD_VALUE).addBreak();
+				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
 				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
-				/* events */
-				Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-					private static final long serialVersionUID = 1L;
-					protected void ____execute____() {
-						inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-					}
-				});
+				if(Constant.Action.isCreateOrUpdate(_getPropertyAction())){
+					/* events */
+					Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
+						private static final long serialVersionUID = 1L;
+						protected void ____execute____() {
+							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
+						}
+					});
+					
+					Event.instanciateOne(detail, Movement.FIELD_ACTION, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
+						private static final long serialVersionUID = 1L;
+						protected void ____execute____() {
+							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
+						}
+					});
+					
+					Event.instanciateOne(detail, Movement.FIELD_VALUE_ABSOLUTE, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
+						private static final long serialVersionUID = 1L;
+						protected void ____execute____() {
+							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
+						}
+					});	
+				}
 				
-				Event.instanciateOne(detail, Movement.FIELD_ACTION, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-					private static final long serialVersionUID = 1L;
-					protected void ____execute____() {
-						inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-					}
-				});
-				
-				Event.instanciateOne(detail, Movement.FIELD_VALUE, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-					private static final long serialVersionUID = 1L;
-					protected void ____execute____() {
-						inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-					}
-				});
 				
 			}else if(Interval.class.equals(actionOnClass)){
 				detail.setFieldsObjectFromMaster(Interval.FIELD_LOW);

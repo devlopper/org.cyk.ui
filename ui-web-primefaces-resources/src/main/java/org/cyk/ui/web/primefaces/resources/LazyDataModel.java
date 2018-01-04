@@ -29,8 +29,9 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 	
 	protected FilterHelper.Filter<T> getFilter(Class<T> aClass,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
 		@SuppressWarnings("unchecked")
-		FilterHelper.Filter<T> filter = (Filter<T>) ClassHelper.getInstance().instanciateOne(FilterHelper.Filter.getClassLocator().locate(aClass));
+		FilterHelper.Filter<T> filter = (Filter<T>) ClassHelper.getInstance().instanciateOne(FilterHelper.Filter.ClassLocator.getInstance().locate(aClass));
 		filter.set((String)filters.get("globalFilter"));
+		filter.addMaster(component.getPropertiesMap().getMaster());
 		return filter;
 	}
 	

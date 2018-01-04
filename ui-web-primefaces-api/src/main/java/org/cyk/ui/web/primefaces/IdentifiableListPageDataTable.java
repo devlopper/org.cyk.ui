@@ -14,7 +14,7 @@ import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPag
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 
-public class DataTable extends IdentifiableListPage.DataTable implements Serializable {
+public class IdentifiableListPageDataTable extends IdentifiableListPage.DataTable implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
 	
 	@Override

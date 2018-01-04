@@ -149,6 +149,7 @@ import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
+import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPage;
 import org.cyk.utility.common.helper.ClassHelper;
@@ -177,8 +178,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		ClassHelper.IDENTIFIABLE_BASE_CLASSES.add(AbstractIdentifiable.class);
 		
-		ClassHelper.getInstance().map(IdentifiableEditPage.FormMaster.class, FormMaster.class);
-		ClassHelper.getInstance().map(IdentifiableListPage.DataTable.class, DataTable.class);
+		ClassHelper.getInstance().map(IdentifiableListPage.DataTable.class, IdentifiableListPageDataTable.class);
+		ClassHelper.getInstance().map(IdentifiableEditPage.FormMaster.class, IdentifiableEditPageFormMaster.class);
+		ClassHelper.getInstance().map(IdentifiableConsultPage.FormMaster.class, IdentifiableConsultPageFormMaster.class);
 		
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
