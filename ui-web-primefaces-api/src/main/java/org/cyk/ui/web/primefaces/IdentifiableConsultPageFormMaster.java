@@ -26,8 +26,16 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	private static final long serialVersionUID = -6211058744595898478L;
 	
 	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
-		if(fieldName.equals("movementAction"))
-			return this;
+		/*if(MovementCollection.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else if(Movement.class.equals(getPropertiesMap().getActionOnClass())){
+			if(MovementCollection.class.equals(aClass))
+				fieldName = Movement.FIELD_COLLECTION;
+			else if(MovementAction.class.equals(aClass))
+				fieldName = Movement.FIELD_ACTION;
+		}*/
+		//if(fieldName.equals("movementAction"))
+		//	return this;
 		return super.setFromRequestParameter(aClass, fieldName);
 	}
 	

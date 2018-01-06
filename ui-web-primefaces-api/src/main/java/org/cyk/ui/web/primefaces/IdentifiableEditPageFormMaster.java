@@ -11,6 +11,7 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
@@ -25,12 +26,20 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 	private static final long serialVersionUID = -6211058744595898478L;
 	
 	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
-		if(fieldName.equals("movementAction"))
-			fieldName = "incrementAction";
-		if(fieldName.equals("movementCollection"))
-			fieldName = "collection";
-		if(fieldName.equals("incrementAction") || fieldName.equals("person"))
-			return this;
+		if(MovementCollection.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else if(Movement.class.equals(getPropertiesMap().getActionOnClass())){
+			if(MovementCollection.class.equals(aClass))
+				fieldName = Movement.FIELD_COLLECTION;
+			else if(MovementAction.class.equals(aClass))
+				fieldName = Movement.FIELD_ACTION;
+		}
+		//if(fieldName.equals("movementAction"))
+		//	fieldName = "incrementAction";
+		//if(fieldName.equals("movementCollection"))
+		//	fieldName = "collection";
+		//if(fieldName.equals("incrementAction") || fieldName.equals("person"))
+		//	return this;
 		
 		return super.setFromRequestParameter(aClass, fieldName);
 	}
@@ -72,6 +81,9 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
 				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
+				
+				//detail.getInputByFieldName(Movement.FIELD_ACTION).getPropertiesMap().setDisabled( ((Movement)getObject()).getAction() != null );
+				
 				if(Constant.Action.isCreateOrUpdate(_getPropertyAction())){
 					/* events */
 					Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
