@@ -2,21 +2,12 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.model.AbstractCollection;
-import org.cyk.system.root.model.AbstractCollectionItem;
-import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
-import org.cyk.system.root.model.mathematics.Interval;
-import org.cyk.system.root.model.mathematics.IntervalCollection;
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
-import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPage;
-import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.FieldHelper;
 
 public class IdentifiableListPageDataTable extends IdentifiableListPage.DataTable implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
 	
+	/*
 	@Override
 	protected void __prepare__() {
 		super.__prepare__();
@@ -44,5 +35,5 @@ public class IdentifiableListPageDataTable extends IdentifiableListPage.DataTabl
 			}
 		}
 	}
-	
+	*/
 }

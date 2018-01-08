@@ -9,6 +9,10 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
+	<ui:fragment rendered="#{column.cellValueType == null}">
+		VAL TYP IS NULL
+	</ui:fragment>
+	
 	<ui:fragment rendered="#{column.cellValueType.name() eq 'MENU'}">
 		<ui:insert name="columnsColumnContentMenu">
 			<ui:composition template="#{primefacesResourcesManager.menuBarDefaultTemplate}">

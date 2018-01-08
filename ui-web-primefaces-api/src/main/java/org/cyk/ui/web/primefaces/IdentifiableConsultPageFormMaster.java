@@ -60,10 +60,10 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				detail.add(MovementCollection.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 				detail.add(MovementCollection.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 				
-				DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE,Movement.FIELD_COLLECTION,Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_ACTION);
-				dataTable.setOnPrepareAddMenu(Boolean.TRUE);
-				dataTable.setOnPrepareAddColumnAction(true);
-				dataTable.setOnPrepareAddMenuAddCommand(Boolean.FALSE);
+				DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE/*,Movement.FIELD_COLLECTION,Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_ACTION*/);
+				dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
+				dataTable.getPropertiesMap().setOnPrepareAddColumnAction(true);
+				dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
 				
 				MovementAction movementAction = movementCollection.getIncrementAction();
 				dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()

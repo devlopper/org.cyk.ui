@@ -374,10 +374,23 @@
 	<ui:param name="type" value="OutputText"/>
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
 		<ui:decorate template="#{templateOutput}">
-			<ui:define name="output">			
-				<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
-					 <ui:param name="outputText" value="#{control}" />
-				</ui:decorate>		
+			<ui:define name="output">
+				<ui:fragment rendered="#{not control.propertiesMap.linked}">	
+					<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+						 <ui:param name="outputText" value="#{control}" />
+					</ui:decorate>	
+				</ui:fragment>	
+				<ui:fragment rendered="#{control.propertiesMap.linked}">	
+					<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
+						<ui:param name="outputLink" value="#{control.propertiesMap.outputLinkComponent}" />
+						<ui:define name="content">
+							<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+								 <ui:param name="outputText" value="#{control}" />
+							</ui:decorate>	
+						</ui:define>
+					</ui:decorate>	
+				</ui:fragment>			
+				<!-- id attribute on output text has been removed to make possible to generated component twice without duplicated id value -->	
 			</ui:define>
 		</ui:decorate>
 	</pe:dynaFormControl>
@@ -394,4 +407,31 @@
 		</ui:decorate>
 	</pe:dynaFormControl>
 	
+	<!-- Output Text Linked -->
+	<!--
+	<ui:param name="identifier" value="outputText"/>
+	<ui:param name="type" value="OutputText"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{templateOutput}">
+			<ui:define name="output">
+				<ui:fragment rendered="#{not control.propertiesMap.linked}">	
+					<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+						 <ui:param name="outputText" value="#{control}" />
+					</ui:decorate>	
+				</ui:fragment>	
+				<ui:fragment rendered="#{control.propertiesMap.linked}">	
+					<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
+						<ui:param name="outputLink" value="#{control.propertiesMap.value.propertiesMap.outputLinkComponent}" />
+						<ui:define name="content">
+							<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+								 <ui:param name="outputText" value="#{control}" />
+							</ui:decorate>	
+						</ui:define>
+					</ui:decorate>	
+				</ui:fragment>			
+					
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	-->
 </ui:composition>

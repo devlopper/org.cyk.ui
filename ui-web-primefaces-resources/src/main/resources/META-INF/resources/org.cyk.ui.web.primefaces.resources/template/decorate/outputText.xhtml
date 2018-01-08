@@ -7,7 +7,7 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
 	<h:outputText 
-		id="#{identifier == null ? randomHelper.getAlphabetic(5) : identifier}"
+		
 		dir="#{outputText.propertiesMap.dir}"
 		value="#{outputText.propertiesMap.value}"  
 		title="#{empty outputText.propertiesMap.title ? outputText.propertiesMap.value : outputText.propertiesMap.title}"
@@ -16,5 +16,9 @@
 		escape="#{outputText.propertiesMap.escape}"
 		rendered="#{outputText.propertiesMap.rendered}"
 	/>
+	
+	<!-- 
+		id="#{identifier == null ? randomHelper.getAlphabetic(5) : identifier}"
+	 -->
 	
 </ui:composition>
