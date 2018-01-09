@@ -15,6 +15,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.web.api.resources.WebResourcesManager;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
@@ -109,6 +110,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public void initialize(){
 		JQueryHelper.JQUERY = "$";
+		inject(WebResourcesManager.class).addStyleSheetHrefFromName("common");
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
 		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
@@ -124,7 +126,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
 				//,Properties.MAIN_MENU,Menu.build(null, Menu.Type.MAIN)
-				,Properties.FOOTER,"MY FOOT HERE"
+				//,Properties.FOOTER,"MY FOOT HERE"
 		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");

@@ -17,10 +17,10 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 		Menu menu = super.__execute__();
 		Object principal = SecurityHelper.getInstance().getPrincipal();
 		if(Menu.Type.MAIN.equals(menu.getType())){
-			homeMainMenuNode = menu.addNode("ui.menu.home","homeView");
+			homeMainMenuNode = menu.addNode("userinterface.menu.main.home.label","homeView");
 		
-			controlPanelMainMenuNode = menu.addNode("ui.menu.controlpanel");
-			controlPanelMainMenuNode.addNode("ui.menu.controlpanel.identifiables.manage","controlPanelIdentifiablesManageView");
+			controlPanelMainMenuNode = menu.addNode("userinterface.menu.main.controlpanel.label");
+			controlPanelMainMenuNode.addNode("userinterface.menu.main.controlpanel.identifiables.manage.label","controlPanelIdentifiablesManageView");
 			
 			/*
 			menu.addNode("ui.menu.tools","toolsView")
@@ -32,8 +32,8 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 			if(principal!=null){
 				MenuNode menuNode = menu.addNode((String)null,"userView");
 				menuNode.getLabel().getPropertiesMap().setValue(principal);
-				menuNode.addNode("ui.menu.user.account.manage");
-				menuNode.addNode("ui.menu.user.logout","userLogoutView");
+				menuNode.addNode("userinterface.menu.main.user.account.manage.label");
+				menuNode.addNode("userinterface.menu.main.user.logout.label","userLogoutView");
 			}
 			
 			

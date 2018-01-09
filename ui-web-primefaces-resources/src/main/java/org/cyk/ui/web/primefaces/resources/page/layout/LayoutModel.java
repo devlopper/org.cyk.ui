@@ -18,6 +18,7 @@ public class LayoutModel extends Container implements Serializable {
 
 	private static final String INCLUDE_FORMAT = "%s%s.xhtml";
 	private static final String ASSEMBLY_FILE_NAME = "__assembly__";
+	private static final String STYLE_CLASS_CONTENT_PREFIX = "page_layout_";
 	
 	protected Component component;
 	
@@ -34,10 +35,17 @@ public class LayoutModel extends Container implements Serializable {
 	}
 	
 	protected static Container createContainer(Container parent,String position,Boolean assembly){
+		//System.out.println("LayoutModel.createContainer() P : "+parent.getPropertiesMap().getStyleClassContent()+" :: "+position+" : "+assembly);
 		Container container = new Container();
 		container.getPropertiesMap().setInclude(String.format(INCLUDE_FORMAT
 				, getDirectory(parent)+(Boolean.TRUE.equals(assembly) ? position+Constant.CHARACTER_SLASH : Constant.EMPTY_STRING)
 				,Boolean.TRUE.equals(assembly) ? ASSEMBLY_FILE_NAME : position)).setPosition(position);
+		container.getPropertiesMap().setStyleClassContent(parent == null || parent.getPropertiesMap().getStyleClassContent() == null ? STYLE_CLASS_CONTENT_PREFIX+position 
+				: parent.getPropertiesMap().getStyleClassContent()+Constant.CHARACTER_UNDESCORE.toString()+position
+				);
+		//if(Boolean.TRUE.equals(assembly))
+		//	container.getPropertiesMap().setStyleClassContent(container.getPropertiesMap().getStyleClassContent()+Constant.CHARACTER_UNDESCORE.toString()+"assembly");
+		//System.out.println("LayoutModel.createContainer() : "+container.getPropertiesMap().getStyleClassContent());
 		return container;
 	}
 	

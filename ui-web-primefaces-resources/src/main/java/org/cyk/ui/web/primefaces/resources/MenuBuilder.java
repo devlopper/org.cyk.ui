@@ -14,7 +14,7 @@ public class MenuBuilder extends org.cyk.ui.web.api.resources.MenuBuilder implem
 
 		}else if(Menu.Type.CONTEXT.equals(menu.getType())){
 			if(Menu.RenderType.PANEL.equals(menu.getRenderType()))
-				menu.getPropertiesMap().setStyle("height : 445px;overflow : scroll;");
+				;//menu.getPropertiesMap().setStyle("height : 445px;overflow : auto;");
 		}
 		return menu;
 	}

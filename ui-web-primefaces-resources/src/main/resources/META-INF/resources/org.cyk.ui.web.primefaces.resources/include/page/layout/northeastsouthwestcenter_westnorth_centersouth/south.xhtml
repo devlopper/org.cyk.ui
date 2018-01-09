@@ -10,7 +10,9 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
 	<ui:insert name="south">
-		#{page.propertiesMap.footer}
+		<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+			<ui:param name="outputText" value="#{page.propertiesMap.footer}" />
+		</ui:decorate>
 	</ui:insert>
 	
 </ui:composition>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces.resources" />
+    
+    <ui:repeat var="styleSheetsHref" value="#{webResourcesManager.styleSheetsHrefs}">
+    	<link type="text/css" rel="stylesheet" href="#{request.contextPath}#{styleSheetsHref}" />
+    </ui:repeat>
+    
+    <title>
+    	<h:outputText value="#{page.propertiesMap.title.propertiesMap.value}"  />
+	</title>
+      
+	<script type="text/javascript">
+		$ = jQuery;
+		
+     </script>      
+ 
+</ui:composition>

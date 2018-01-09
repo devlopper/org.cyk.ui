@@ -38,7 +38,9 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
 		createContainerCenter();
 		Container center = createContainerAssemblyCenter();
 		createContainerCenter(center);
-		createContainerSouth(center);
+		Container centerSouth = createContainerSouth(center);
+		centerSouth.getPropertiesMap().setRendered(InstanceHelper.getInstance()
+				.getIfNotNullElseDefault(component.getPropertiesMap().getLayoutCardinalPointCenterSouthRendered(),Boolean.TRUE));
 	}
 
 	private LayoutOptions createOptions(LayoutOptions parent,CardinalPoint cardinalPoint){
@@ -69,10 +71,10 @@ public class NorthEastSouthWestCenter extends LayoutModel implements Serializabl
         		|| Boolean.TRUE.equals(component.getPropertiesMap().getLayoutCardinalPointNorthRendered()));  
         configureWest(west);
         
-  		
         LayoutOptions center = createOptions(options, CardinalPoint.CENTER);
         setAttribute(center, "resizable", Boolean.FALSE);  
         setAttribute(center, "closable", Boolean.FALSE);  
+        //setAttribute(center, "styleClassContent", "maincenterpanecontent");
         configureCenter(center);
         
         LayoutOptions south = createOptions(options, CardinalPoint.SOUTH);
