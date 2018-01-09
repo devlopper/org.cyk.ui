@@ -9,68 +9,9 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<ui:insert name="header">
-		<f:facet name="header">
-			<p:toolbar>
-				<f:facet name="left">
-					<table>
-						<tr>
-							<ui:fragment rendered="#{dataTable.propertiesMap.mainMenu.propertiesMap.rendered}">
-								<td>
-									<ui:composition template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.mainMenu)}">
-										<ui:param name="menu" value="#{dataTable.propertiesMap.mainMenu}"/>
-									</ui:composition>
-								</td>
-							</ui:fragment>
-							<ui:fragment rendered="#{dataTable.propertiesMap.addCommandComponent.propertiesMap.rendered}">
-								<td>
-									<ui:fragment rendered="#{dataTable.propertiesMap.action.name() eq 'CREATE' or dataTable.propertiesMap.action.name() eq 'UPDATE'}">
-										<table>
-											<tr>
-												<td>
-													<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.addTextComponent)}">
-										 				<ui:param name="outputText" value="#{dataTable.propertiesMap.addTextComponent}" />
-										 			</ui:decorate>
-												</td>
-												<td>
-													<ui:decorate template="#{primefacesResourcesManager.inputChoiceOneComboDefaultTemplateWithoutIdentifier}">
-										 				<ui:param name="input" value="#{dataTable.propertiesMap.addInputComponent}" />
-										 				<ui:define name="include">
-													 		<f:selectItems
-																value="#{input.choices.elements}"
-																var="item"
-																itemValue="#{item}"
-																itemLabel="#{input.getChoiceLabel(item)}" 
-															/>
-													 	</ui:define>
-										 			</ui:decorate>		
-												</td>
-												<td>
-													<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.addCommandComponent)}">
-										 				<ui:param name="commandButton" value="#{dataTable.propertiesMap.addCommandComponent}" />
-										 			</ui:decorate>	
-												</td>
-											</tr>
-										</table>
-									</ui:fragment>
-								</td>
-							</ui:fragment>
-						</tr>
-					</table>
-				</f:facet>
-				<f:facet name="right">
-					<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.filterInputComponent)}">
-						 <ui:param name="input" value="#{dataTable.propertiesMap.filterInputComponent}" />
-						 <ui:param name="identifier" value="globalFilter" />
-					</ui:decorate>		
-					
-					<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.filterCommandComponent)}">
-		 				<ui:param name="commandButton" value="#{dataTable.propertiesMap.filterCommandComponent}" />
-		 			</ui:decorate>	
-				</f:facet>
-			</p:toolbar>
-		</f:facet>
-	</ui:insert>
+	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/header.xhtml">
+		
+	</ui:include>
 	
 	<ui:insert name="columns">
 		<ui:decorate template="/org.cyk.ui.web.primefaces.resources/template/decorate/collection/columns.xhtml">

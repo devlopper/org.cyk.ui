@@ -9,13 +9,9 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<ui:insert name="header">
-		<f:facet name="header">
-			<ui:composition template="#{primefacesResourcesManager.getTemplate(treeTable.propertiesMap.mainMenu)}">
-				<ui:param name="menu" value="#{treeTable.propertiesMap.mainMenu}"/>
-			</ui:composition>
-		</f:facet>
-	</ui:insert>
+	<ui:include src="/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/header.xhtml">
+		<ui:param name="dataTable" value="#{treeTable}"/>
+	</ui:include>
 	
 	<ui:insert name="columns">
 		<ui:param name="row" value="#{node.propertiesMap.row}"/>

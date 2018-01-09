@@ -17,6 +17,13 @@ public class HomePage extends Window implements Serializable {
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		//getPropertyStringValueIdentifier("window", "ho", "title");
+		_setPropertyTitleFromStringIdentifier("userinterface.page.home.title");
 	}
 	
+	@Override
+	protected String computePropertyTitle() {
+		// TODO Auto-generated method stub
+		return super.computePropertyTitle();
+	}
 }

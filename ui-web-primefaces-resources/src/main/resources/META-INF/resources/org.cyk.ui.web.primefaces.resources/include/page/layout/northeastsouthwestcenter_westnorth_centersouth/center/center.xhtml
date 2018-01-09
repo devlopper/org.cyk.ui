@@ -9,10 +9,11 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	
 	<f:facet name="header">
 		<ui:insert name="centerCenterHeader">
-			Center Center title here...
+			<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+				<ui:param name="outputText" value="#{page.propertiesMap.contentTitle}" />
+			</ui:decorate>
 		</ui:insert>
 	</f:facet>
 	
