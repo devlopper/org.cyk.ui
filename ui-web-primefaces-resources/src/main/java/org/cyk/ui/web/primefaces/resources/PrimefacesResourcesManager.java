@@ -125,8 +125,6 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValues(Window.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/page/desktop/default.xhtml"
 				,Properties.CONTRACTS,"org.cyk.ui.web.primefaces.resources.desktop.default"
 				,Properties.INCLUDE,"/org.cyk.ui.web.primefaces.resources/include/page/default.xhtml"
-				//,Properties.MAIN_MENU,Menu.build(null, Menu.Type.MAIN)
-				//,Properties.FOOTER,"MY FOOT HERE"
 		});
 		
 		Properties.setDefaultValue(OutputText.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputText.xhtml");
@@ -166,7 +164,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		Properties.setDefaultValues(DataTable.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/dataTable.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/dataTable/default.xhtml",Properties.FIRST,0
-				,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"both"
+				,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"bottom"
 				,Properties.EMPTY_MESSAGE,StringHelper.getInstance().get("notification.data.collection.empty", new Object[]{})});
 		
 		Properties.setDefaultValues(DataTable.Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"

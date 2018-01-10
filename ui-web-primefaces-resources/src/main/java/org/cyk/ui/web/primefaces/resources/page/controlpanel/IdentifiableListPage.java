@@ -34,30 +34,10 @@ public class IdentifiableListPage extends org.cyk.ui.web.api.resources.page.Iden
 	public static class DataTable extends ListWindow.DataTable implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		/*@Override
-		protected void __prepare__() {
-			super.__prepare__();
-			addColumnsByFieldNames("globalIdentifier.code","globalIdentifier.name");
-			if(ClassHelper.getInstance().isHierarchy((Class<?>) getPropertiesMap().getActionOnClass()))
-				addColumnsByFieldNames("parent");
-			if(ClassHelper.getInstance().isTyped((Class<?>) getPropertiesMap().getActionOnClass()))
-				addColumnsByFieldNames("type");
-			
-		}*/
-		
 	}
 	
 	public static class Hierarchy extends ListWindow.Hierarchy implements Serializable {
 		private static final long serialVersionUID = 1L;
-		
-		/*@Override
-		protected void __prepare__() {
-			super.__prepare__();
-			addColumnsByFieldNames("globalIdentifier.code","globalIdentifier.name");
-			addColumnsByFieldNames("parent");
-			if(ClassHelper.getInstance().isTyped(getActionOnClass()))
-				addColumnsByFieldNames("type");
-		}*/
 		
 	}
 }

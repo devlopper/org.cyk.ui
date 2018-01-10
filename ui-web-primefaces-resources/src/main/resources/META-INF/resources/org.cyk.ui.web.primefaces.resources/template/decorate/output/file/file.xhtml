@@ -7,19 +7,22 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
-	<table border="0">
-		<tr>
-			<td>
+	<div class="#{cascadeStyleSheetHelper.getClassPrefix()}file">
+		
+		<ui:fragment rendered="#{outputFile.propertiesMap.thumbnail.propertiesMap.rendered}">
+			<div class="#{cascadeStyleSheetHelper.getClassPrefix()}file_thumbnail">
 				<ui:decorate template="#{primefacesResourcesManager.imageDefaultTemplate}">
-		 			<ui:param name="graphicImage" value="#{outputFile.propertiesMap.thumbnail}" />
+			 		<ui:param name="graphicImage" value="#{outputFile.propertiesMap.thumbnail}" />
 				</ui:decorate>
-			</td>
-		</tr>
-		<!--tr>
-			<td>
-				A DOWNLOAD COMMAND
-			</td>
-		</tr-->
-	</table>
-	
+			</div>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{outputFile.propertiesMap.mainMenu.propertiesMap.rendered}">
+			<div class="#{cascadeStyleSheetHelper.getClassPrefix()}file_menu">
+				MENU
+			</div>
+		</ui:fragment>  
+		
+	</div>
+		
 </ui:composition>

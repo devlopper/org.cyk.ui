@@ -49,7 +49,7 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 		Component.RENDER_AS_CONTENT_TYPE = ContentType.DEFAULT;
 		Component.ClassLocator.GetOrgCykSystem.WINDOW = "Page";
 		
-		addStyleSheetHrefFromName("common");
+		addStyleSheetHrefFromName("common","page","datatable");
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.IDENTIFIER_HOME = "homeView";
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT = StringUtils.replace(servletContextEvent.getServletContext().getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);
@@ -98,8 +98,9 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 		addStyleSheetHref(String.format(STYLE_SHEET_HREF_FORMAT, name,library));
 	}
 	
-	public void addStyleSheetHrefFromName(String name){
-		addStyleSheetHrefFromName(name,"org.cyk.ui.web.primefaces.resources");
+	public void addStyleSheetHrefFromName(String...names){
+		for(String name : names)
+			addStyleSheetHrefFromName(name,"org.cyk.ui.web.primefaces.resources");
 	}
 	
 	public static WebResourcesManager getInstance() {

@@ -1,0 +1,59 @@
+.ui-layout-unit {   
+   padding-top: 0 !important;
+   padding-right:  0 !important;
+   padding-bottom:  0 !important;
+   padding-left:  0 !important;
+}
+
+.cyk_userinterface_page_layout_north{
+	z-index:3 !important;
+ 	overflow:visible !important;
+ 	padding: 0px !important;
+    margin: 0px !important;
+}
+ 
+.cyk_userinterface_page_layout_center_center {
+ 	overflow: auto !important;
+ 	border-radius:0px !important;
+ 	border-top : none !important;
+ 	border-right : none !important;
+ 	border-bottom : none !important;
+ 	padding: 0px !important;
+ 	margin: 0px !important;
+}
+
+.cyk_userinterface_page_layout_center_south {
+	border-radius:0px !important;
+	border-top : none !important;
+ 	border-right : none !important;
+ 	border-bottom : none !important;
+ 	
+ 	overflow:visible !important;
+ 	z-index: 0 !important;
+ 	padding: 0px !important;
+    margin: 0px !important;
+}
+
+.cyk_userinterface_page_layout_west_north{
+	border-radius:0px !important;
+ 	border-top : none !important;
+ 	border-right : none !important;
+ 	border-bottom : none !important;
+}
+
+.cyk_userinterface_page_layout_west_center{
+	border-radius:0px !important;
+ 	border-top : none !important;
+ 	border-right : none !important;
+ 	border-bottom : none !important;
+ 	overflow:auto !important;
+}
+
+.cyk_userinterface_page_layout_south{
+	z-index:1000 !important;
+    overflow:visible !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    border-radius:0px !important;
+    text-align: center;
+}
