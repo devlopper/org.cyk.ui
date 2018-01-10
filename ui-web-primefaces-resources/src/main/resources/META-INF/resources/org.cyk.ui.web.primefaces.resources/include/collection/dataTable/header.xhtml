@@ -13,8 +13,7 @@
 		<f:facet name="header">
 			<p:toolbar>
 				<f:facet name="left">
-					<table>
-						<tr>
+					
 							<ui:fragment rendered="#{dataTable.propertiesMap.mainMenu.propertiesMap.rendered}">
 								<td>
 									<ui:composition template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.mainMenu)}">
@@ -55,8 +54,7 @@
 									</ui:fragment>
 								</td>
 							</ui:fragment>
-						</tr>
-					</table>
+						
 				</f:facet>
 				<f:facet name="right">
 					<ui:decorate template="#{primefacesResourcesManager.getTemplate(dataTable.propertiesMap.filterInputComponent)}">

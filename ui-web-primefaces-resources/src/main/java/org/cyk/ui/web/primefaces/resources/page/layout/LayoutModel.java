@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.FileHelper;
+import org.cyk.utility.common.userinterface.CascadeStyleSheetHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.container.Container;
 import org.primefaces.extensions.model.layout.LayoutOptions;
@@ -18,7 +19,7 @@ public class LayoutModel extends Container implements Serializable {
 
 	private static final String INCLUDE_FORMAT = "%s%s.xhtml";
 	private static final String ASSEMBLY_FILE_NAME = "__assembly__";
-	private static final String STYLE_CLASS_CONTENT_PREFIX = "page_layout_";
+	private static final String STYLE_CLASS_CONTENT_PREFIX = CascadeStyleSheetHelper.getInstance().getClass("page","layout")+Constant.CHARACTER_UNDESCORE;
 	
 	protected Component component;
 	
