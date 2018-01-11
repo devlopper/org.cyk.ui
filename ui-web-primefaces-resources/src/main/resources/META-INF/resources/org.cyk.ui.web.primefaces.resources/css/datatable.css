@@ -3,6 +3,8 @@
 	padding: 0px !important;
     margin: 0px !important;
     border : none !important;
+    width: auto !important;
+    float: left !important;
 }
 
 .cyk_userinterface_datatable .ui-toolbar{
@@ -10,15 +12,6 @@
 	padding: 0px !important;
     margin: 0px !important;
     border : none !important;
-}
-
-.cyk_userinterface_datatable_row_menu{
-	/*background: none !important;
-	padding: 0px !important;
-    margin: 0px !important;
-    border : none !important;
-    */
-    border: 1px solid red !important;
 }
 
 .cyk_userinterface_datatable .ui-toolbar-group-left{
@@ -41,8 +34,17 @@
     margin: 0px !important;
 }
 
+.cyk_userinterface_datatable .cyk_userinterface_main_menu{
+	width: 65px !important;
+}
 .cyk_userinterface_datatable td.cyk_userinterface_main_menu{
 	padding: 0px !important;
     margin: 0px !important;
-    /*background: red !important;*/
+}
+
+.cyk_userinterface_datatable .cyk_userinterface___ordernumber__{
+	width: 15px !important;
+}
+.cyk_userinterface_datatable td.cyk_userinterface___ordernumber__{
+	
 }
