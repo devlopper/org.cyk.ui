@@ -9,52 +9,79 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<p:panelGrid columns="1">
-		<ui:insert name="label">
-			<h:panelGroup rendered="#{form.label.propertiesMap.rendered}" >
-				<ui:decorate template="#{form.label.propertiesMap.template}">
-			 		<ui:param name="outputText" value="#{form.label}" />
-			 	</ui:decorate>		  
-			</h:panelGroup>
-		</ui:insert>	
-	    
-	    <ui:insert name="detail">
-	    	<ui:insert name="detailNorth">
-	    		<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,false)}" />
- 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
- 			
- 				<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,false)}" />
- 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
-	    	</ui:insert>
-	    	<ui:insert name="detailCenter">
-		    	<h:panelGroup rendered="#{form.detail.propertiesMap.rendered}">
-					<ui:decorate template="#{form.detail.propertiesMap.template}">
-			 			<ui:param name="detail" value="#{form.detail}" />
-			 		</ui:decorate>   	
-				</h:panelGroup>
-	    	</ui:insert>
-	    	<ui:insert name="detailSouth">
-	    		<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,true)}" />
- 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
- 			
- 				<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,true)}" />
- 				<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
-	    		
-	    	</ui:insert>
-	 		
-		</ui:insert>
-	 	
-	 	<ui:insert name="menu">
-		    <h:panelGroup rendered="#{form.menu.propertiesMap.rendered}">
+	<style>
+ 		.ui-panel-titlebar{
+ 			display: #{form.propertiesMap.headerRendered ? 'block' : 'none'};
+ 		}
+ 		
+ 		.ui-panel-footer{
+ 			display: #{form.propertiesMap.footerRendered ? 'block' : 'none'};
+ 		}
+ 	</style>
+	
+	<p:panel styleClass="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container">
+		<f:facet name="header">
+			<ui:insert name="header">			
+				<ui:insert name="label">
+					<ui:decorate template="#{form.label.propertiesMap.template}">
+					 	<ui:param name="outputText" value="#{form.label}" />
+					 </ui:decorate>		  
+				</ui:insert>	
+			</ui:insert>
+		</f:facet>
+			    
+    	<ui:insert name="body">
+	   		<div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r1_c1"></div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r1_c2">
+					<ui:insert name="form_master_container_body_r1_c2">
+						<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,false)}" />
+	 					<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+	 			
+	 					<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,false)}" />
+	 					<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+					</ui:insert>
+				</div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r1_c3"></div>
 				
-			 	<ui:decorate template="#{form.submitCommand.propertiesMap.template}">
- 					<ui:param name="commandButton" value="#{form.submitCommand}" />
- 					<ui:param name="executeParameter" value="FormParamValue"/>
- 				</ui:decorate> 
-			 	 
-			</h:panelGroup>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r2_c1"></div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r2_c2">
+					<ui:insert name="form_master_container_body_r2_c2">
+						<p:outputPanel styleClass="" rendered="#{form.detail.propertiesMap.rendered}">
+							<ui:decorate template="#{form.detail.propertiesMap.template}">
+					 			<ui:param name="detail" value="#{form.detail}" />
+					 		</ui:decorate>   	
+						</p:outputPanel>
+					</ui:insert>
+				</div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r2_c3"></div>
+				
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r3_c1"></div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r3_c2">
+					<ui:insert name="form_master_container_body_r3_c2">
+						<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(0,true)}" />
+	 					<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+	 			
+	 					<ui:param name="dataTable" value="#{form.detail.getDataTableAtIndex(1,true)}" />
+	 					<ui:decorate template="#{dataTable == null ? primefacesResourcesManager.dummyEmptyContentDefaultTemplate : primefacesResourcesManager.dataTableDefaultTemplate}"/>
+					</ui:insert>
+				</div>
+				<div class="#{cascadeStyleSheetHelper.getClassPrefix()}form_master_container_body_r3_c3"></div>
+			</div>
 		</ui:insert>
-	</p:panelGrid>
+		
+		<f:facet name="footer">
+			<ui:insert name="footer">
+			 	<ui:insert name="menu">
+				    <ui:decorate template="#{form.submitCommand.propertiesMap.template}">
+		 				<ui:param name="commandButton" value="#{form.submitCommand}" />
+		 				<ui:param name="executeParameter" value="FormParamValue"/>
+		 			</ui:decorate> 
+				</ui:insert>
+			</ui:insert>
+		</f:facet>
+	 	
+	</p:panel>
 	
 	<ui:decorate template="#{primefacesResourcesManager.getTemplate(form.propertiesMap.interactivityBlocker)}">
 		<ui:param name="blockUI" value="#{form.propertiesMap.interactivityBlocker}"/>

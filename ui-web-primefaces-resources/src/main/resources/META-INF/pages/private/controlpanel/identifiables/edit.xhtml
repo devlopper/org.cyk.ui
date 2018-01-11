@@ -10,12 +10,21 @@
  	<ui:decorate template="#{identifiableEditPage.propertiesMap.template}">
  		<ui:param name="page" value="#{identifiableEditPage}" />
  		<ui:define name="centerCenterContent">
- 			
  			<ui:decorate template="#{identifiableEditPage.form.propertiesMap.template}">
 				<ui:param name="form" value="#{identifiableEditPage.form}" />
 			</ui:decorate>
- 			
  		</ui:define>
+ 		
+ 		<!--ui:define name="centerSouth">
+ 			<ui:decorate template="#{primefacesResourcesManager.commandDefaultTemplate}">
+		 		<ui:param name="commandButton" value="#{identifiableEditPage.form.submitCommand}" />
+		 		<ui:param name="commandButtonIdentifier" value="centerSouthSubmitCommandButton"/>
+		 		<ui:param name="executeParameter" value="FormParamValue"/>
+		 	</ui:decorate> 
+ 		</ui:define-->
+ 		
  	</ui:decorate>
+ 	
+ 	
  	
 </html>
