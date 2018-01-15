@@ -31,7 +31,7 @@ public class MoveLocalityIT extends AbstractBusinessIT {
     	Locality coteDivoire = inject(LocalityDao.class).read(RootConstant.Code.Country.COTE_DIVOIRE);
     	Locality america = inject(LocalityDao.class).read(RootConstant.Code.Locality.AMERICA);
     	coteDivoire.setAutomaticallyMoveToNewParent(Boolean.TRUE);
-    	coteDivoire.setNewParent(america);
+    	//coteDivoire.setNewParent(america);
     	update(coteDivoire);
     	System.exit(0);
     }

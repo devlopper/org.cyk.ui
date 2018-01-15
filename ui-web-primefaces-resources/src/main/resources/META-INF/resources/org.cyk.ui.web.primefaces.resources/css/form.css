@@ -1,5 +1,6 @@
 .cyk_userinterface_form_master_container {
 	display: inline-block;
+	min-width:60% ;
 	margin-left: 5px;
 	margin-top: 5px;
 	
@@ -13,6 +14,11 @@
 	
 }
 
-.cyk_userinterface_form_master_container_body div{
-	
+.cyk_userinterface_form_master_container input {
+	width: 100% !important;
+}
+
+.cyk_userinterface_form_master_container .ui-selectonemenu {
+	background: yellow !important;
+	width: 96% !important;
 }

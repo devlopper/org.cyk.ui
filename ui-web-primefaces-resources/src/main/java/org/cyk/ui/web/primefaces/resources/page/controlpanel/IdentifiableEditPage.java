@@ -6,9 +6,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.userinterface.Layout;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Master;
+import org.cyk.utility.common.userinterface.input.Input;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,17 +39,48 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 			//inputs
 			Form.Detail detail = getDetail();
 			detail.getLayout().setType(Layout.Type.ADAPTIVE);
-			detail.setFieldsObjectFromMaster("globalIdentifier");
-			detail.add("code").addBreak();
-			detail.add("name").addBreak();
-			
-			detail.setFieldsObjectFromMaster();
-			if(ClassHelper.getInstance().isHierarchy(getObject().getClass()))
-				detail.add("parent");
-			if(ClassHelper.getInstance().isTyped(getObject().getClass()))
-				detail.add("type");
+			____add____();
 		}
 		
+		protected void ____add____(){
+			____addCode____();
+			____addName____();
+			____addHierarchy____();
+			____addType____();
+		}
+		
+		protected void ____addCode____(){
+			if(ClassHelper.getInstance().isIdentified(getObject().getClass()))
+				____add____(ClassHelper.getInstance().getIdentifierFieldName(getObject().getClass()));
+		}
+		
+		protected void ____addName____(){
+			if(ClassHelper.getInstance().isNamed(getObject().getClass()))
+				____add____(ClassHelper.getInstance().getNameFieldName(getObject().getClass()));
+		}
+		
+		protected void ____addHierarchy____(){
+			if(ClassHelper.getInstance().isHierarchy(getObject().getClass()))
+				____add____(ClassHelper.getInstance().getHierarchyFieldName(getObject().getClass()));
+		}
+		
+		protected void ____addType____(){
+			if(ClassHelper.getInstance().isTyped(getObject().getClass()))
+				____add____(ClassHelper.getInstance().getTypeFieldName(getObject().getClass()));
+		}
+		
+		/**/
+		
+		protected void ____add____(String fieldName){
+			if(Boolean.TRUE.equals(Input.isinputable(getObject().getClass(), fieldName))){
+				getDetail().setFieldsObjectFromMaster(FieldHelper.getInstance().getIsContainSeparator(fieldName) ? ____getFieldsObjectFromMaster____(fieldName) : null);
+				getDetail().add(FieldHelper.getInstance().getLast(fieldName)).addBreak();
+			}
+		}
+
+		protected String[] ____getFieldsObjectFromMaster____(String fieldName) {
+			return FieldHelper.getInstance().getFieldNames(FieldHelper.getInstance().getBeforeLast(fieldName)).toArray(new String[]{});
+		}
 	}
 	
 }

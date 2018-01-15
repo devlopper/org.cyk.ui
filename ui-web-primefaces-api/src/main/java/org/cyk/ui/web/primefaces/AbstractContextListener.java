@@ -158,6 +158,7 @@ import org.cyk.utility.common.helper.NotificationHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.ViewHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
+import org.cyk.utility.common.userinterface.hierarchy.Hierarchy;
 import org.cyk.utility.common.userinterface.input.Input;
 import org.primefaces.model.TreeNode;
 
@@ -184,6 +185,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(IdentifiableConsultPage.FormMaster.class, IdentifiableConsultPageFormMaster.class);
 		
 		ClassHelper.getInstance().map(DataTable.Listener.class, org.cyk.ui.web.primefaces.DataTable.Listener.class);
+		ClassHelper.getInstance().map(Hierarchy.Listener.class, org.cyk.ui.web.primefaces.Hierarchy.Listener.class);
 		
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);

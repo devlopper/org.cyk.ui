@@ -50,7 +50,7 @@ public abstract class AbstractDataTreeNodeForm<ENUMERATION extends AbstractDataT
 		if(identifiable.getIdentifier()==null)
 			identifiable.setParentNode(parent);
 		else
-			identifiable.setNewParent(parent);
+			;//identifiable.setNewParent(parent);
 	}
 	
 	//public static final String FIELD_CURRENT_PARENT = "currentParent";

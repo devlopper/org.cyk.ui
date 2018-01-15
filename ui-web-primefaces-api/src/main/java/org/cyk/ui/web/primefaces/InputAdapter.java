@@ -4,9 +4,14 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
+import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.FileHelper;
 import org.cyk.utility.common.userinterface.container.Form.Detail;
 import org.cyk.utility.common.userinterface.input.Input;
@@ -19,6 +24,16 @@ import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
 
 public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapter {
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public Boolean isInputable(Class<?> aClass, String fieldName) {
+		if(ClassHelper.getInstance().isInstanceOf(Contact.class, aClass) && ArrayUtils.contains(new String[]{
+				FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)
+				,FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME)
+		}, fieldName))
+			return Boolean.FALSE;
+		return super.isInputable(aClass, fieldName);
+	}
 	
 	@Override
 	public Collection<String> getFieldNames(Detail form, Object object) {

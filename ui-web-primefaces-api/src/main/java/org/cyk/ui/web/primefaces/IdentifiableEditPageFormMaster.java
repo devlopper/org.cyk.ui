@@ -6,6 +6,8 @@ import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.geography.Contact;
+import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -19,7 +21,6 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Master;
 import org.cyk.utility.common.userinterface.event.Event;
 
 public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMaster implements Serializable {
@@ -42,6 +43,17 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 		//	return this;
 		
 		return super.setFromRequestParameter(aClass, fieldName);
+	}
+	
+	@Override
+	protected void ____addType____() {
+		//Form.Detail detail = getDetail();
+		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
+		if(PhoneNumber.class.equals(actionOnClass)){
+			return;
+		}
+		super.____addType____();
+		
 	}
 	
 	@Override
@@ -82,6 +94,8 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
 				
+				addExistencePeriodFromDate();
+				
 				//detail.getInputByFieldName(Movement.FIELD_ACTION).getPropertiesMap().setDisabled( ((Movement)getObject()).getAction() != null );
 				
 				if(Constant.Action.isCreateOrUpdate(_getPropertyAction())){
@@ -119,10 +133,21 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 				detail.setFieldsObjectFromMaster();
 				detail.add(Interval.FIELD_VALUE).addBreak();
 				
+			}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
+				if(PhoneNumber.class.equals(actionOnClass)){
+					detail.add(PhoneNumber.FIELD_COUNTRY).addBreak();
+					detail.add(PhoneNumber.FIELD_TYPE).addBreak();
+					detail.add(PhoneNumber.FIELD_NUMBER).addBreak();
+					detail.add(PhoneNumber.FIELD_LOCATION_TYPE).addBreak();
+				}
 			}
 		}
-		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
-		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
+		
+	}
+	
+	private void addExistencePeriodFromDate(){
+		getDetail().setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
+		getDetail().add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
 	}
 	
 }

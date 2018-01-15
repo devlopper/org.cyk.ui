@@ -1,9 +1,13 @@
 package org.cyk.ui.web.primefaces;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
+import org.cyk.system.root.model.geography.Contact;
+import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -17,6 +21,13 @@ public class DataTable {
 
 	public static class Listener extends org.cyk.ui.web.primefaces.resources.component.DataTable.Listener {
 		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public List<String> getColumnsFieldNamesOrder(org.cyk.utility.common.userinterface.collection.DataTable dataTable) {
+			if(PhoneNumber.class.equals(dataTable.getPropertiesMap().getActionOnClass()))
+				return Arrays.asList(PhoneNumber.FIELD_NUMBER,PhoneNumber.FIELD_TYPE,PhoneNumber.FIELD_LOCATION_TYPE,PhoneNumber.FIELD_COUNTRY,PhoneNumber.FIELD_COLLECTION);
+			return super.getColumnsFieldNamesOrder(dataTable);
+		}
 		
 		@Override
 		public void processColumnsFieldNames(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames) {
@@ -42,6 +53,12 @@ public class DataTable {
 					fieldNames.add(Movement.FIELD_VALUE);
 					fieldNames.add(Movement.FIELD_CUMUL);
 					fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));
+				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
+					if(PhoneNumber.class.equals(actionOnClass)){
+						fieldNames.add(PhoneNumber.FIELD_COUNTRY);
+						fieldNames.add(PhoneNumber.FIELD_LOCATION_TYPE);
+						fieldNames.add(PhoneNumber.FIELD_NUMBER);
+					}
 				}
 			}
 		}
