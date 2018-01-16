@@ -3,7 +3,6 @@ package org.cyk.ui.web.primefaces;
 import java.io.Serializable;
 
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.ui.web.primefaces.resources.LazyDataModel;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 

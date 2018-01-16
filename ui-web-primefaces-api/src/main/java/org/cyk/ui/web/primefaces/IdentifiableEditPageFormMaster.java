@@ -2,12 +2,21 @@ package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.cyk.system.root.business.api.geography.CountryBusiness;
 import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.Contact;
+import org.cyk.system.root.model.geography.Country;
+import org.cyk.system.root.model.geography.ElectronicMailAddress;
+import org.cyk.system.root.model.geography.GlobalPosition;
+import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.PhoneNumber;
+import org.cyk.system.root.model.geography.PostalBox;
+import org.cyk.system.root.model.geography.Website;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -49,7 +58,7 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 	protected void ____addType____() {
 		//Form.Detail detail = getDetail();
 		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
-		if(PhoneNumber.class.equals(actionOnClass)){
+		if(ArrayUtils.contains(new Class<?>[]{PhoneNumber.class,Location.class}, actionOnClass)){
 			return;
 		}
 		super.____addType____();
@@ -139,8 +148,35 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 					detail.add(PhoneNumber.FIELD_TYPE).addBreak();
 					detail.add(PhoneNumber.FIELD_NUMBER).addBreak();
 					detail.add(PhoneNumber.FIELD_LOCATION_TYPE).addBreak();
+				}else if(Location.class.equals(actionOnClass)){
+					detail.add(Location.FIELD_LOCALITY).addBreak();
+					detail.setFieldsObjectFromMaster(Location.FIELD_GLOBAL_IDENTIFIER);
+					detail.add(GlobalIdentifier.FIELD_OTHER_DETAILS).addBreak();
+					detail.setFieldsObjectFromMaster();
+					detail.add(Location.FIELD_TYPE).addBreak();
+				}else if(ElectronicMailAddress.class.equals(actionOnClass)){
+					detail.add(ElectronicMailAddress.FIELD_ADDRESS).addBreak();
+				}else if(PostalBox.class.equals(actionOnClass)){
+					detail.add(PostalBox.FIELD_ADDRESS).addBreak();
+				}else if(Website.class.equals(actionOnClass)){
+					detail.add(Website.FIELD_UNIFORM_RESOURCE_LOCATOR).addBreak();
 				}
 			}
+		}else if(Locality.class.equals(actionOnClass)){
+			detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
+			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_POSITION);
+			detail.add(GlobalPosition.FIELD_LATITUDE).addBreak();
+			detail.add(GlobalPosition.FIELD_LONGITUDE).addBreak();
+			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
+			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
+			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+		}else if(Country.class.equals(actionOnClass)){
+			if(!Constant.Action.CREATE.equals(getPropertiesMap().getAction()))
+				inject(CountryBusiness.class).setContinent((Country) getObject());
+			detail.add(Country.FIELD_LOCALITY).addBreak();
+			detail.add(Country.FIELD_CONTINENT).addBreak();
+			detail.add(Country.FIELD_PHONE_NUMBER_CODE).addBreak();
+			detail.add(Country.FIELD_PHONE_NUMBER_FORMAT).addBreak();
 		}
 		
 	}

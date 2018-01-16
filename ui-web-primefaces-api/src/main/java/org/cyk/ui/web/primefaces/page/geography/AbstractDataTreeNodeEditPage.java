@@ -54,7 +54,7 @@ public abstract class AbstractDataTreeNodeEditPage<DATA_TREE_NODE extends Abstra
 	@Override
 	protected void processOnIdentifiableFound(DATA_TREE_NODE identifiable) {
 		super.processOnIdentifiableFound(identifiable);
-		identifiable.setParent(getBusiness().findParent(identifiable));
+		identifiable.set__parent__(getBusiness().findParent(identifiable));
 	}
 	/*
 	@SuppressWarnings("unchecked")

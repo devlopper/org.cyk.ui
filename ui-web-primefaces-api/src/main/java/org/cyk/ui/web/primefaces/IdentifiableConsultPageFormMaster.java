@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.geography.GlobalPosition;
+import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -111,6 +113,14 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				detail.add(Interval.FIELD_VALUE).addBreak();
 				
 			}
+		}else if(Locality.class.equals(actionOnClass)){
+			detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
+			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_POSITION);
+			detail.add(GlobalPosition.FIELD_LATITUDE).addBreak();
+			detail.add(GlobalPosition.FIELD_LONGITUDE).addBreak();
+			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
+			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
+			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 		}
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();

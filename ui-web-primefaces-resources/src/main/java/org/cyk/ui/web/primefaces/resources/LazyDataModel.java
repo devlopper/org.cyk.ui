@@ -21,7 +21,7 @@ import org.primefaces.model.SortOrder;
 public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTable.Row> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Component component;
+	protected Component component;
 	
 	public LazyDataModel(Component component) {
 		this.component = component;

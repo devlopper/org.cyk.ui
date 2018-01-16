@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @Named @ViewScoped @Getter @Setter
 public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.IdentifiableEditPage implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	protected Class<? extends Master> getFormMasterClass() {
 		Class<? extends Master> clazz = super.getFormMasterClass();

@@ -160,6 +160,7 @@ import org.cyk.utility.common.userinterface.ViewHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.hierarchy.Hierarchy;
 import org.cyk.utility.common.userinterface.input.Input;
+import org.cyk.utility.common.userinterface.output.Output;
 import org.primefaces.model.TreeNode;
 
 public abstract class AbstractContextListener extends AbstractServletContextListener<TreeNode,HierarchyNode,UserSession> implements Serializable {
@@ -177,6 +178,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		super.contextInitialized(event);
 		ClassHelper.getInstance().map(ViewHelper.Listener.Adapter.Default.class,org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
 		ClassHelper.getInstance().map(Input.Listener.class, InputAdapter.class);
+		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		ClassHelper.IDENTIFIABLE_BASE_CLASSES.add(AbstractIdentifiable.class);
 		
@@ -186,7 +188,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		
 		ClassHelper.getInstance().map(DataTable.Listener.class, org.cyk.ui.web.primefaces.DataTable.Listener.class);
 		ClassHelper.getInstance().map(Hierarchy.Listener.class, org.cyk.ui.web.primefaces.Hierarchy.Listener.class);
-		
+	
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);
 		CommandHelper.Command.Adapter.Default.DEFAULT_CLASS = (Class<CommandHelper.Command>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.CommandHelper.Command.class);

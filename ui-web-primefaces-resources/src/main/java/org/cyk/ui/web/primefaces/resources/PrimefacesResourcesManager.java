@@ -113,10 +113,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		inject(WebResourcesManager.class).addStyleSheetHrefFromName("common");
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.resources.NotificationHelper.Viewer.class);
 		SelectItemHelper.Builder.One.Adapter.Default.DEFAULT_CLASS = org.cyk.ui.web.api.resources.SelectItemHelper.OneBuilder.class;
-		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
-		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class);
-		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
-		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
+		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class,Boolean.FALSE);
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
