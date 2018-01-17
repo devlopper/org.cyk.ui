@@ -52,7 +52,6 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 		Class<T> aClass = (Class<T>) component.getPropertiesMap().getActionOnClass();
 		return InstanceHelper.getInstance().count(aClass, getFilter(aClass, first, pageSize, sortField, sortOrder, filters)
 				, getDataReadConfiguration(aClass, first, pageSize, sortField, sortOrder, filters)).intValue();
-		//return instances.size();
 	}
 	
 	@Override

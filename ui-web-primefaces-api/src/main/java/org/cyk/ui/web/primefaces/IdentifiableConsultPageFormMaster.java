@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
-import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.GlobalPosition;
 import org.cyk.system.root.model.geography.Locality;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
@@ -15,10 +15,11 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.time.Period;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
+import org.cyk.system.root.model.value.LongValue;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.IconHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
@@ -54,7 +55,6 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			
 			if(MovementCollection.class.equals(actionOnClass)){
 				MovementCollection movementCollection = (MovementCollection) getObject();
-				//System.out.println("IdentifiableConsultPageFormMaster.__prepare__() 000 : "+movementCollection.getIncrementAction());
 				detail.add(MovementCollection.FIELD_INTERVAL).addBreak();
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
 				detail.add(MovementCollection.FIELD_INCREMENT_ACTION).addBreak();
@@ -79,7 +79,6 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 						._setLabelPropertyValue(movementAction.getName())
 						;
 				
-				//System.out.println("IdentifiableConsultPageFormMaster.__prepare__() : "+dataTable.getPropertiesMap().getMaster());
 				dataTable.prepare();
 				dataTable.build();
 				
@@ -121,9 +120,54 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
 			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+		}else if(ClassHelper.getInstance().isHierarchy(actionOnClass)){
+			
+		}else if(GlobalIdentifier.class.equals(actionOnClass)){
+			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ABBREVIATION).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ACTIVATED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CLOSED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CONSTANT).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CREATION_DATE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DEFAULTED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DERIVED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DESCRIPTION).addBreak();
+			detail.add(GlobalIdentifier.FIELD_EXTERNAL_IDENTIFIER).addBreak();
+			detail.add(GlobalIdentifier.FIELD_INITIALIZED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_MALE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ORDER_NUMBER).addBreak();
+			detail.add(GlobalIdentifier.FIELD_OTHER_DETAILS).addBreak();
+			detail.add(GlobalIdentifier.FIELD_REQUIRED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_USABLE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_WEIGHT).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
+			detail.add(Period.FIELD_FROM_DATE).addBreak();
+			detail.add(Period.FIELD_TO_DATE).addBreak();
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_NUMBER_OF_MILLISECOND);
+			detail.add(LongValue.FIELD_PREFERRED_PROPERTY).addBreak();
+			detail.add(LongValue.FIELD_USER).addBreak();
+			detail.add(LongValue.FIELD_SYSTEM).addBreak();
+			detail.add(LongValue.FIELD_GAP).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_CASCADE_STYLE_SHEET);
+			detail.add(CascadeStyleSheet.FIELD_INLINE).addBreak();
+			detail.add(CascadeStyleSheet.FIELD_CLASS).addBreak();
+			detail.add(CascadeStyleSheet.FIELD_UNIQUE_CLASS).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_RUD);
+			detail.add(Rud.FIELD_READABLE).addBreak();
+			detail.add(Rud.FIELD_UPDATABLE).addBreak();
+			detail.add(Rud.FIELD_DELETABLE).addBreak();
+			
+			/*detail.add(GlobalIdentifier.FIELD_).addBreak();
+			detail.add(GlobalIdentifier.FIELD_).addBreak();
+			*/
 		}
+		/*
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
+		*/
 	}
 	
 }

@@ -52,7 +52,6 @@ import org.cyk.system.root.business.impl.value.ValueCollectionDetails;
 import org.cyk.system.root.business.impl.value.ValueDetails;
 import org.cyk.system.root.business.impl.value.ValuePropertiesDetails;
 import org.cyk.system.root.model.AbstractEnumeration;
-import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.event.Event;
 import org.cyk.system.root.model.event.EventMissed;
 import org.cyk.system.root.model.event.EventParty;
@@ -180,7 +179,6 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(Input.Listener.class, InputAdapter.class);
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
-		ClassHelper.IDENTIFIABLE_BASE_CLASSES.add(AbstractIdentifiable.class);
 		
 		ClassHelper.getInstance().map(IdentifiableListPage.DataTable.class, IdentifiableListPageDataTable.class);
 		ClassHelper.getInstance().map(IdentifiableEditPage.FormMaster.class, IdentifiableEditPageFormMaster.class);

@@ -17,6 +17,14 @@ public class MenuBasedOnMenuModel extends Menu.Builder.Target.Adapter.Default<De
 	protected Object createNotLeaf(DefaultMenuModel menu, MenuNode menuNode) {
 		DefaultSubMenu subMenu = new DefaultSubMenu();
 		subMenu.setLabel((String)menuNode.getLabel().getPropertiesMap().getValue());
+		if(menuNode.getPropertiesMap().getExpanded()==null){
+			if(menuNode.getPropertiesMap().getExpanded()!=null)
+				subMenu.setExpanded((Boolean)menuNode.getPropertiesMap().getExpanded());
+			else if(menuNode.getPropertiesMap().getCollapsed()!=null)
+				subMenu.setExpanded(!((Boolean)menuNode.getPropertiesMap().getCollapsed()));
+		}else {
+			subMenu.setExpanded((Boolean)menuNode.getPropertiesMap().getExpanded());
+		}
 		return subMenu;
 	}
 	

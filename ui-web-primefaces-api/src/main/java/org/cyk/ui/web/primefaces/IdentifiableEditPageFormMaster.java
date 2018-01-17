@@ -8,6 +8,7 @@ import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
@@ -25,6 +26,8 @@ import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.time.Period;
+import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
+import org.cyk.system.root.model.value.LongValue;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
@@ -52,6 +55,14 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 		//	return this;
 		
 		return super.setFromRequestParameter(aClass, fieldName);
+	}
+	
+	@Override
+	protected void ____addCode____() {
+		if(GlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else
+			super.____addCode____();
 	}
 	
 	@Override
@@ -177,6 +188,47 @@ public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMas
 			detail.add(Country.FIELD_CONTINENT).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_CODE).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_FORMAT).addBreak();
+		}else if(GlobalIdentifier.class.equals(actionOnClass)){
+			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ABBREVIATION).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ACTIVATED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CLOSED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CONSTANT).addBreak();
+			detail.add(GlobalIdentifier.FIELD_CREATION_DATE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DEFAULTED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DERIVED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_DESCRIPTION).addBreak();
+			detail.add(GlobalIdentifier.FIELD_EXTERNAL_IDENTIFIER).addBreak();
+			detail.add(GlobalIdentifier.FIELD_INITIALIZED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_MALE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_ORDER_NUMBER).addBreak();
+			detail.add(GlobalIdentifier.FIELD_OTHER_DETAILS).addBreak();
+			detail.add(GlobalIdentifier.FIELD_REQUIRED).addBreak();
+			detail.add(GlobalIdentifier.FIELD_USABLE).addBreak();
+			detail.add(GlobalIdentifier.FIELD_WEIGHT).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
+			detail.add(Period.FIELD_FROM_DATE).addBreak();
+			detail.add(Period.FIELD_TO_DATE).addBreak();
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_NUMBER_OF_MILLISECOND);
+			detail.add(LongValue.FIELD_PREFERRED_PROPERTY).addBreak();
+			detail.add(LongValue.FIELD_USER).addBreak();
+			detail.add(LongValue.FIELD_SYSTEM).addBreak();
+			detail.add(LongValue.FIELD_GAP).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_CASCADE_STYLE_SHEET);
+			detail.add(CascadeStyleSheet.FIELD_INLINE).addBreak();
+			detail.add(CascadeStyleSheet.FIELD_CLASS).addBreak();
+			detail.add(CascadeStyleSheet.FIELD_UNIQUE_CLASS).addBreak();
+			
+			detail.setFieldsObjectFromMaster(GlobalIdentifier.FIELD_RUD);
+			detail.add(Rud.FIELD_READABLE).addBreak();
+			detail.add(Rud.FIELD_UPDATABLE).addBreak();
+			detail.add(Rud.FIELD_DELETABLE).addBreak();
+			
+			/*detail.add(GlobalIdentifier.FIELD_).addBreak();
+			detail.add(GlobalIdentifier.FIELD_).addBreak();
+			*/
 		}
 		
 	}
