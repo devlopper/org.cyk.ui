@@ -6,7 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		
+		<!--
 		<navigation-case>
 			<from-outcome>scheduleListView</from-outcome>
 			<to-view-id>/private/time/schedule/list.xhtml</to-view-id>
@@ -54,7 +54,7 @@
 			<to-view-id>/private/time/schedule/identifiableglobalidentifier/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		
+		-->
 	</navigation-rule>
 
 </faces-config>

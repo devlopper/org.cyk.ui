@@ -6,7 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		
+		<!--
 		<navigation-case>
 			<from-outcome>valueListView</from-outcome>
 			<to-view-id>/private/value/list.xhtml</to-view-id>
@@ -70,7 +70,7 @@
 			<to-view-id>/private/value/measure/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		
+		-->
 	</navigation-rule>
 
 </faces-config>
