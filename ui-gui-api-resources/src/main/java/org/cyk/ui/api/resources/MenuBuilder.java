@@ -17,8 +17,7 @@ import org.cyk.utility.common.userinterface.container.window.Window;
 public class MenuBuilder extends Menu.Builder.Adapter.Default implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	protected MenuNode homeMainMenuNode,controlPanelMainMenuNode;
-	
+	/*
 	@Override
 	protected Menu __execute__() {
 		Menu menu = super.__execute__();
@@ -28,13 +27,6 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 		
 			controlPanelMainMenuNode = menu.addNode("userinterface.menu.main.controlpanel.label");
 			controlPanelMainMenuNode.addNode("userinterface.menu.main.controlpanel.identifiables.manage.label","controlPanelIdentifiablesManageView");
-			
-			/*
-			menu.addNode("ui.menu.tools","toolsView")
-				.addNode("ui.menu.tools.data.export")
-				.getParentAsNode().addNode("ui.menu.tools.data.import")
-				;
-			*/
 			
 			if(principal!=null){
 				MenuNode menuNode = menu.addNode((String)null,"userView");
@@ -52,10 +44,8 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 			}
 		}
 		return menu;
-	}
-	
-	protected void addNodeIdentifiablesManage(Menu menu){}
-	
+	}*/
+	/*
 	protected void addNodeInstance(Menu menu,Object instance,Constant.Action action){
 		MenuNode node = menu.addNode("");
 		node.getPropertiesMap().setExpanded(Boolean.TRUE);
@@ -74,6 +64,6 @@ public class MenuBuilder extends Menu.Builder.Adapter.Default implements Seriali
 		}
 		
 		
-	}
+	}*/
 	
 }
