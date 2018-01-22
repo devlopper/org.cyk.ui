@@ -12,7 +12,6 @@ import org.cyk.system.root.model.file.FileIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.information.Comment;
 import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.security.UserAccount;
-import org.cyk.system.test.business.MenuBuilder;
 import org.cyk.system.test.business.MyWebManager;
 import org.cyk.system.test.business.impl.actor.ActorBusinessImpl;
 import org.cyk.system.test.model.actor.Actor;
@@ -35,7 +34,6 @@ import org.cyk.ui.web.primefaces.resources.PrimefacesResourcesManager;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.security.Shiro;
 import org.cyk.utility.common.userinterface.Component;
-import org.cyk.utility.common.userinterface.command.Menu;
 
 @WebListener
 public class ContextListener extends AbstractContextListener {
@@ -97,9 +95,7 @@ public class ContextListener extends AbstractContextListener {
 		AbstractSelectManyPage.Listener.COLLECTION.add(new PersonSelectManyPageAdapter());
 
 		//ServletContextListener.CONTEXT = event.getServletContext().getContextPath();
-		
-		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
-		
+	
 		Shiro.Ini ini = Shiro.Ini.getInstance().clean();
 		ini.addUsers("admin", "123","user1","123","user2","123");
 		ini.addFoldersForUser("private");

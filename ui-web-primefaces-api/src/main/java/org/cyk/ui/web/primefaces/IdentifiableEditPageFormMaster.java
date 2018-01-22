@@ -28,14 +28,13 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
-import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.event.Event;
 
-public class IdentifiableEditPageFormMaster extends IdentifiableEditPage.FormMaster implements Serializable {
+public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPageFormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
 	
 	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
