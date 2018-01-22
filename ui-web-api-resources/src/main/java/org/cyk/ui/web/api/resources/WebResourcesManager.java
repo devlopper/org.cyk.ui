@@ -15,6 +15,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.ui.api.resources.SubmitCommandActionAdapter;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -24,6 +25,7 @@ import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.ContentType;
 import org.cyk.utility.common.userinterface.RequestHelper;
+import org.cyk.utility.common.userinterface.container.Form;
 import org.omnifaces.util.Faces;
 
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
@@ -61,6 +63,7 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 		//WebEnvironmentListener.Adapter.DATA_SOURCE = Realm.DATA_SOURCE;
 		
 		ClassHelper.getInstance().map(RequestHelper.Listener.class, org.cyk.ui.web.api.resources.helper.RequestHelper.Listener.class);
+		ClassHelper.getInstance().map(Form.Master.SubmitCommandActionAdapter.class, SubmitCommandActionAdapter.class);
 	}
 	
 	public void destroyContext(ServletContextEvent servletContextEvent){

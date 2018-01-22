@@ -15,8 +15,14 @@
 }
 
 .cyk_userinterface_datatable .ui-toolbar-group-left{
-	width: 80% !important;
+	/*width: 80% !important;*/
 }
+
+/*.cyk_userinterface_datatable .ui-toolbar-group-left > div{
+	border: 1px solid red;
+	float: left;
+	
+}*/
 
 /*.cyk_userinterface_datatable .ui-toolbar-group-right{
 	width: 20% !important;
