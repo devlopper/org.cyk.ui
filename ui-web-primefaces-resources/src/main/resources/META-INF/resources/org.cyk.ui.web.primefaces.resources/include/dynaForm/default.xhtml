@@ -375,7 +375,8 @@
 	<pe:dynaFormControl type="#{type}" for="#{identifier}">
 		<ui:decorate template="#{templateOutput}">
 			<ui:define name="output">
-				<ui:fragment rendered="#{not control.propertiesMap.linked}">	
+				LINKED OR NOT ???
+				<!--ui:fragment rendered="#{not control.propertiesMap.linked}">	
 					<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
 						 <ui:param name="outputText" value="#{control}" />
 					</ui:decorate>	
@@ -389,8 +390,37 @@
 							</ui:decorate>	
 						</ui:define>
 					</ui:decorate>	
-				</ui:fragment>			
-				<!-- id attribute on output text has been removed to make possible to generated component twice without duplicated id value -->	
+				</ui:fragment-->			
+				<!-- id attribute on output text must be removed to make possible to generated component twice without duplicated id value -->	
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="outputTextNotLinked"/>
+	<ui:param name="type" value="OutputTextNotLinked"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{templateOutput}">
+			<ui:define name="output">	
+				<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+					<ui:param name="outputText" value="#{control}" />
+				</ui:decorate>			
+			</ui:define>
+		</ui:decorate>
+	</pe:dynaFormControl>
+	
+	<ui:param name="identifier" value="outputTextLinked"/>
+	<ui:param name="type" value="OutputTextLinked"/>
+	<pe:dynaFormControl type="#{type}" for="#{identifier}">
+		<ui:decorate template="#{templateOutput}">
+			<ui:define name="output">	
+				<ui:decorate template="#{primefacesResourcesManager.outputLinkDefaultTemplate}">
+					<ui:param name="outputLink" value="#{control.propertiesMap.outputLinkComponent}" />
+					<ui:define name="content">
+						<ui:decorate template="#{primefacesResourcesManager.outputTextDefaultTemplate}">
+							 <ui:param name="outputText" value="#{control}" />
+						</ui:decorate>	
+					</ui:define>
+				</ui:decorate>	
 			</ui:define>
 		</ui:decorate>
 	</pe:dynaFormControl>

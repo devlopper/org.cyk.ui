@@ -46,15 +46,7 @@ public class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Ad
 	
 	@Override
 	public String getType(org.cyk.utility.common.userinterface.Control control) {
-		Class<?> aClass;
-		if(Boolean.TRUE.equals(control.getPropertiesMap().getReadableOnly())){
-			if(control.getPropertiesMap().getOutputComponent() == null){
-				aClass = OutputText.class;
-			}else
-				aClass = control.getPropertiesMap().getOutputComponent().getClass();
-		}else
-			aClass = control.getClass();
-		return PrimefacesResourcesManager.getComponentTypeForDynaForm(aClass);
+		return PrimefacesResourcesManager.getComponentTypeForDynaForm(control);
 	}
 	
 }

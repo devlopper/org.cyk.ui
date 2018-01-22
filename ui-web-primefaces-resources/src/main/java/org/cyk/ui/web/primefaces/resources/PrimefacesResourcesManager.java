@@ -19,6 +19,7 @@ import org.cyk.ui.web.api.resources.WebResourcesManager;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
 import org.cyk.ui.web.api.resources.converter.ObjectLabelConverter;
 import org.cyk.ui.web.primefaces.resources.page.layout.NorthEastSouthWestCenter;
+import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -728,6 +729,21 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		if(ClassHelper.getInstance().isInstanceOf(InputNumber.class,aClass))
 			aClass = InputNumber.class;
 		return aClass.getSimpleName();
+	}
+	
+	public static String getComponentTypeForDynaForm(Control control){
+		Class<?> aClass;
+		if(Boolean.TRUE.equals(control.getPropertiesMap().getReadableOnly())){
+			if(control.getPropertiesMap().getOutputComponent() == null){
+				aClass = OutputText.class;
+			}else
+				aClass = control.getPropertiesMap().getOutputComponent().getClass();
+		}else
+			aClass = control.getClass();
+		String type = getComponentTypeForDynaForm(aClass);
+		if(control instanceof OutputText)
+			type = type+( Boolean.TRUE.equals(control.getPropertiesMap().getLinked()) ? Constant.EMPTY_STRING : "Not")+"Linked";
+		return type;
 	}
 	
 	public static String getTemplateFileName(Class<?> aClass){
