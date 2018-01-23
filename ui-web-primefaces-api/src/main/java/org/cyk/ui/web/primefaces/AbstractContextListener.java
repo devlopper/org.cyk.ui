@@ -148,9 +148,6 @@ import org.cyk.ui.web.primefaces.page.value.MeasureEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueCollectionEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValueEditPage;
 import org.cyk.ui.web.primefaces.page.value.ValuePropertiesEditPage;
-import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
-import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage;
-import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPage;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CommandHelper;
 import org.cyk.utility.common.helper.NotificationHelper;
@@ -181,9 +178,9 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		
-		ClassHelper.getInstance().map(IdentifiableListPage.DataTable.class, IdentifiableListPageDataTable.class);
-		ClassHelper.getInstance().map(IdentifiableEditPage.FormMaster.class, IdentifiableEditPageFormMaster.class);
-		ClassHelper.getInstance().map(IdentifiableConsultPage.FormMaster.class, IdentifiableConsultPageFormMaster.class);
+		ClassHelper.getInstance().map(org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableListPage.DataTable.class, IdentifiableListPageDataTable.class);
+		ClassHelper.getInstance().map(org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage.FormMaster.class, IdentifiableEditPageFormMaster.class);
+		ClassHelper.getInstance().map(org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage.FormMaster.class, IdentifiableConsultPageFormMaster.class);
 		
 		ClassHelper.getInstance().map(DataTable.Listener.class, org.cyk.ui.web.primefaces.DataTable.Listener.class);
 		ClassHelper.getInstance().map(Hierarchy.Listener.class, org.cyk.ui.web.primefaces.Hierarchy.Listener.class);

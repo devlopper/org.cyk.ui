@@ -10,10 +10,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.ServletContextEvent;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.ui.web.api.resources.WebResourcesManager;
 import org.cyk.ui.web.api.resources.converter.ObjectIdentifierConverter;
@@ -49,7 +45,6 @@ import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
 import org.cyk.utility.common.userinterface.command.RemoteCommand;
 import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
 import org.cyk.utility.common.userinterface.container.window.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
 import org.cyk.utility.common.userinterface.event.Event;
@@ -91,6 +86,10 @@ import org.cyk.utility.common.userinterface.tree.TreeNode;
 import org.primefaces.model.ByteArrayContent;
 import org.primefaces.model.DualListModel;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 @SuppressWarnings("unchecked")
 @Singleton @Named @Getter @Setter @Accessors(chain=true) @Deployment(initialisationType=InitialisationType.EAGER)
 public class PrimefacesResourcesManager extends AbstractBean implements Serializable {
@@ -118,6 +117,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class,Boolean.FALSE);
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class,Boolean.FALSE);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(Form.Detail.Builder.Target.class,FormBuilderBasedOnDynamicForm.class,Boolean.FALSE);
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
@@ -273,9 +273,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		
 		setInputDefaultValues(InputFile.class, "file","fileUpload");
 		Properties.setDefaultValues(InputFile.class, new Object[]{Properties.MODE,"simple",Properties.PREVIEWABLE,Boolean.TRUE,Properties.CLEARABLE,Boolean.TRUE
-				,Properties.SKIN_SIMPLE,Boolean.TRUE});
-		
-		Form.Detail.Builder.Target.Adapter.Default.DEFAULT_CLASS = (Class<? extends Target<?, ?, ?, ?>>) ClassHelper.getInstance().getByName(FormBuilderBasedOnDynamicForm.class);
+				,Properties.SKIN_SIMPLE,Boolean.TRUE});		
 	
 		BeanListener.COLLECTION.add(new BeanListener.Adapter(){
 			private static final long serialVersionUID = 1L;

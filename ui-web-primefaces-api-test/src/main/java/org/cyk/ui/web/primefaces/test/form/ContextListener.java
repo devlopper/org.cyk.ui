@@ -84,7 +84,7 @@ public class ContextListener extends AbstractContextListener {
 		
 		//inject(WebResourcesManager.class).initializeContext(event);
 		inject(PrimefacesResourcesManager.class).initializeContext(event);
-		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
+		//ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class);
 		
 		MyWebManager.getInstance().getListeners().add(new org.cyk.system.test.business.PrimefacesManager());
 		
