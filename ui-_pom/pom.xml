@@ -20,9 +20,13 @@
 
 	<modules>
 		<module>../ui-test-resources</module>
+		
+		<module>../ui-gui-api-resources</module>
+		<module>../ui-web-api-resources</module>
+		<module>../ui-web-primefaces-resources</module>
+		
 		<module>../ui-gui-api</module>
 		<module>../ui-web-api</module>
-		
 		<module>../ui-web-primefaces-api</module>
 		<!--
 		<module>../web-vaadin-api</module>
