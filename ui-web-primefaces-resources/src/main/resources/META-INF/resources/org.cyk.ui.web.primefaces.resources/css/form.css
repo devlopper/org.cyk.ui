@@ -22,3 +22,18 @@
 	background: yellow !important;
 	width: 96% !important;
 }
+
+.cyk_userinterface_loginpage_TO_DO_ {
+	/* Value must be set like followings in other to make centering work */
+	display: block;
+	min-width:30%;
+	
+	/* we need it to be set for auto center*/
+	width:30% ;
+	margin:auto;
+}
+
+.cyk_userinterface_loginpage .pe-dynaform-grid{
+	
+	
+}	
