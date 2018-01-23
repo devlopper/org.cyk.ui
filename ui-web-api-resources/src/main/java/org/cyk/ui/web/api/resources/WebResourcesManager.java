@@ -64,6 +64,8 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 		
 		ClassHelper.getInstance().map(RequestHelper.Listener.class, org.cyk.ui.web.api.resources.helper.RequestHelper.Listener.class);
 		ClassHelper.getInstance().map(Form.Master.SubmitCommandActionAdapter.class, SubmitCommandActionAdapter.class);
+		
+		logInfo("Web resources manager initialized");
 	}
 	
 	public void destroyContext(ServletContextEvent servletContextEvent){

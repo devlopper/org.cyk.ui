@@ -171,8 +171,8 @@ public abstract class AbstractContextListener extends AbstractServletContextList
  
 	@SuppressWarnings("unchecked")
 	@Override 
-	public void contextInitialized(ServletContextEvent event) {
-		super.contextInitialized(event);
+	public void __contextInitialized__(ServletContextEvent event) {
+		super.__contextInitialized__(event);
 		ClassHelper.getInstance().map(ViewHelper.Listener.Adapter.Default.class,org.cyk.ui.web.primefaces.ViewHelper.Listener.class);
 		ClassHelper.getInstance().map(Input.Listener.class, InputAdapter.class);
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class);

@@ -440,12 +440,12 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				return layout;
 			}
 		});
-		
-		logInfo("CYK Primefaces Resources Manager has been initialized");
 	}
 	
 	public void initializeContext(ServletContextEvent servletContextEvent){
+		inject(WebResourcesManager.class).initializeContext(servletContextEvent);
 		initialize();
+		logInfo("Primefaces resources manager has been initialized");
 	}
 	
 	public void destroyContext(ServletContextEvent servletContextEvent){
