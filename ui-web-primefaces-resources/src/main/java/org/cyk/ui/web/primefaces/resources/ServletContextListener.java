@@ -13,4 +13,8 @@ public class ServletContextListener extends org.cyk.ui.web.api.resources.Servlet
 		inject(PrimefacesResourcesManager.class).initializeContext(servletContextEvent);
 	}
 	
+	@Override
+	protected Class<?> __getMenuBuilderClass__() {
+		return MenuBuilder.class;
+	}
 }

@@ -10,7 +10,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import lombok.Getter;
 import lombok.Setter;
 
-@Named @ViewScoped @Getter @Setter
+/*@Named @ViewScoped*/ @Getter @Setter
 public class CrudOnePage extends AbstractCrudOnePage<AbstractIdentifiable> implements Serializable {
 
 	private static final long serialVersionUID = 3274187086682750183L;

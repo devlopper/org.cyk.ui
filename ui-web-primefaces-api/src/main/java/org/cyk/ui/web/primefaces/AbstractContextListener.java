@@ -185,7 +185,7 @@ public abstract class AbstractContextListener extends AbstractServletContextList
 		ClassHelper.getInstance().map(DataTable.Listener.class, org.cyk.ui.web.primefaces.DataTable.Listener.class);
 		ClassHelper.getInstance().map(Hierarchy.Listener.class, org.cyk.ui.web.primefaces.Hierarchy.Listener.class);
 		
-		ClassHelper.getInstance().map(Menu.Builder.Adapter.Default.class,MenuBuilder.class);
+		ClassHelper.getInstance().map(Menu.Builder.class,MenuBuilder.class);
 		
 		//IconHelper.Icon.Mapping.Adapter.Default.DEFAULT_CLASS = (Class<IconHelper.Icon.Mapping>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.IconHelper.Mapping.FontAwesome.class);
 		NotificationHelper.Notification.Viewer.Adapter.Default.DEFAULT_CLASS = (Class<NotificationHelper.Notification.Viewer>) ClassHelper.getInstance().getByName(org.cyk.ui.web.primefaces.NotificationHelper.Viewer.class);

@@ -5,7 +5,9 @@ import java.io.Serializable;
 import javax.servlet.ServletContextEvent;
 
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.security.Shiro;
+import org.cyk.utility.common.userinterface.command.Menu;
 
 public class ServletContextListener extends AbstractBean implements javax.servlet.ServletContextListener , Serializable  {
 
@@ -17,7 +19,17 @@ public class ServletContextListener extends AbstractBean implements javax.servle
 		__initialiseSecutity__(servletContextEvent);
 	}
 	
-	protected void __contextInitialized__(ServletContextEvent servletContextEvent){}
+	protected void __contextInitialized__(ServletContextEvent servletContextEvent){
+		ClassHelper.getInstance().map(Menu.Builder.class,__getMenuBuilderClass__());
+	}
+	
+	/**/
+	
+	protected Class<?> __getMenuBuilderClass__(){
+		return MenuBuilder.class;
+	}
+	
+	/**/
 	
 	protected void __initialiseSecutity__(ServletContextEvent servletContextEvent){
 		Shiro.Ini ini = Shiro.Ini.getInstance().clean();
