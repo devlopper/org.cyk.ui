@@ -25,6 +25,8 @@ import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.MovementCollectionType;
+import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
@@ -60,8 +62,18 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	protected void ____addCode____() {
 		if(GlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
 			
+		}else if(PartyIdentifiableGlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+			
 		}else
 			super.____addCode____();
+	}
+	
+	@Override
+	protected void ____addName____() {
+		if(PartyIdentifiableGlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else
+			super.____addName____();
 	}
 	
 	@Override
@@ -87,12 +99,8 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
 			
 			if(MovementCollection.class.equals(actionOnClass)){
-				detail.add(MovementCollection.FIELD_INTERVAL).addBreak();
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
-				detail.add(MovementCollection.FIELD_INCREMENT_ACTION).addBreak();
-				detail.add(MovementCollection.FIELD_DECREMENT_ACTION).addBreak();
-				detail.add(MovementCollection.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
-				detail.add(MovementCollection.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
+				addOwner();
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
@@ -111,6 +119,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				detail.add(Movement.FIELD_ACTION).addBreak();
 				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
 				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
+				detail.add(Movement.FIELD_MODE).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
 				
 				addExistencePeriodFromDate();
@@ -180,6 +189,12 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
 			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+		}else if(MovementCollectionType.class.equals(actionOnClass)){
+			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
+			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();
+			detail.add(MovementCollectionType.FIELD_DECREMENT_ACTION).addBreak();
+			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
+			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 		}else if(Country.class.equals(actionOnClass)){
 			if(!Constant.Action.CREATE.equals(getPropertiesMap().getAction()))
 				inject(CountryBusiness.class).setContinent((Country) getObject());
@@ -187,6 +202,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(Country.FIELD_CONTINENT).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_CODE).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_FORMAT).addBreak();
+		}else if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY).addBreak();
+			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE).addBreak();
+			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();
 		}else if(GlobalIdentifier.class.equals(actionOnClass)){
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 			detail.add(GlobalIdentifier.FIELD_ABBREVIATION).addBreak();
@@ -232,9 +251,14 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		
 	}
 	
-	private void addExistencePeriodFromDate(){
+	protected void addExistencePeriodFromDate(){
 		getDetail().setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		getDetail().add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
+	}
+	
+	protected void addOwner(){
+		getDetail().setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
+		getDetail().add(GlobalIdentifier.FIELD_OWNER).addBreak();
 	}
 	
 }

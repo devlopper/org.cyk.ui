@@ -3,13 +3,9 @@ package org.cyk.ui.web.primefaces.page.mathematics;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 import javax.faces.model.SelectItem;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -33,6 +29,9 @@ import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable,COLLECTION extends AbstractIdentifiable> extends AbstractCollectionItemEditPage<ITEM,COLLECTION> implements Serializable {
@@ -143,8 +142,8 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			return;
 		movement.setCollection(getMovementCollection(collection));
 		
-		setChoices(AbstractMovementForm.FIELD_ACTION, movement.getCollection()==null || movement.getCollection().getIncrementAction()==null?null
-				:Arrays.asList(movement.getCollection().getIncrementAction(),movement.getCollection().getDecrementAction()));
+		//setChoices(AbstractMovementForm.FIELD_ACTION, movement.getCollection()==null || movement.getCollection().getIncrementAction()==null?null
+		//		:Arrays.asList(movement.getCollection().getIncrementAction(),movement.getCollection().getDecrementAction()));
 		updateCurrentTotal();
 	
 		if(movement!=null && movementAction!=null)
@@ -205,8 +204,8 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 			getMovement().setAction(action);
 			getMovement().setValue(value);
 			//getMovement().setBirthDate(date);
-			if(getMovement().getCollection().getDecrementAction()!=null && getMovement().getCollection().getDecrementAction().equals(getMovement().getAction()))
-				getMovement().setValue(value.negate());
+			//if(getMovement().getCollection().getDecrementAction()!=null && getMovement().getCollection().getDecrementAction().equals(getMovement().getAction()))
+			//	getMovement().setValue(value.negate());
 		}
 		
 		/**/
