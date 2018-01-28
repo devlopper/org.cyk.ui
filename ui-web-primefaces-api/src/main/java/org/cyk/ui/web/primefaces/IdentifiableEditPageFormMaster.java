@@ -18,6 +18,7 @@ import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.system.root.model.geography.Website;
+import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -33,16 +34,33 @@ import org.cyk.system.root.model.value.LongValue;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
+import org.cyk.utility.common.userinterface.RequestHelper;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.event.Event;
 
 public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage.FormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
 	
+	@Override
+	protected void __setFromRequestParameter__() {
+		super.__setFromRequestParameter__();
+		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
+		if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, actionOnClass)){
+			Class<?> globalIdentifierIdentifiableClass = RequestHelper.getInstance().getParameterAsClass(UniformResourceLocatorHelper.QueryParameter.Name
+					.CLASS_IDENTIFIABLE_GLOBAL_IDENTIFIER);
+			AbstractIdentifiable identifiable = (AbstractIdentifiable) RequestHelper.getInstance().getParameterAsInstance(globalIdentifierIdentifiableClass);
+			if(((AbstractJoinGlobalIdentifier)getObject()).getIdentifiableGlobalIdentifier() == null){
+				((AbstractJoinGlobalIdentifier)getObject()).setIdentifiableGlobalIdentifier(identifiable.getGlobalIdentifier());
+			}			
+		}
+	}
+	
 	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
-		if(MovementCollection.class.equals(getPropertiesMap().getActionOnClass())){
+		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
+		if(MovementCollection.class.equals(actionOnClass)){
 			
-		}else if(Movement.class.equals(getPropertiesMap().getActionOnClass())){
+		}else if(Movement.class.equals(actionOnClass)){
 			if(MovementCollection.class.equals(aClass))
 				fieldName = Movement.FIELD_COLLECTION;
 			else if(MovementAction.class.equals(aClass))
@@ -202,10 +220,12 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(Country.FIELD_CONTINENT).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_CODE).addBreak();
 			detail.add(Country.FIELD_PHONE_NUMBER_FORMAT).addBreak();
-		}else if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
-			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY).addBreak();
-			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE).addBreak();
-			detail.add(PartyIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();
+		}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, actionOnClass)){
+			if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY).addBreak();
+				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE).addBreak();
+				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
+			}
 		}else if(GlobalIdentifier.class.equals(actionOnClass)){
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 			detail.add(GlobalIdentifier.FIELD_ABBREVIATION).addBreak();

@@ -1,12 +1,14 @@
 package org.cyk.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.GlobalPosition;
 import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
@@ -79,11 +81,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				dataTable.prepare();
 				dataTable.build();
 				
-				dataTable = instanciateDataTable(PartyIdentifiableGlobalIdentifier.class,null,null,Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.TRUE);
-				dataTable.prepare();
-				dataTable.build();
+				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
@@ -177,6 +175,17 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
 		*/
+	}
+	
+	protected void addDataTableJoinGlobalIdentifier(Class<? extends AbstractJoinGlobalIdentifier> aClass){
+		DataTable dataTable = instanciateDataTable(aClass,null,null,Boolean.TRUE);
+		dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
+		dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.TRUE);
+		dataTable.getPropertiesMap().setAddCommandQueryKeyValues(Arrays.asList(UniformResourceLocatorHelper.QueryParameter.Name.CLASS_IDENTIFIABLE_GLOBAL_IDENTIFIER
+				,dataTable.getPropertiesMap().getMaster().getClass()
+				));
+		dataTable.prepare();
+		dataTable.build();
 	}
 	
 }

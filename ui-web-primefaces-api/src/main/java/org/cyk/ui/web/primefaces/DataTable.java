@@ -14,11 +14,13 @@ import org.cyk.system.root.model.geography.Location;
 import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.system.root.model.geography.Website;
+import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -91,6 +93,15 @@ public class DataTable {
 			}else if(Country.class.equals(actionOnClass)){
 				fieldNames.add(Country.FIELD_PHONE_NUMBER_CODE);
 				fieldNames.add(Country.FIELD_CONTINENT);
+			}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, actionOnClass)){
+				fieldNames.remove(FieldHelper.getInstance().buildPath(AbstractJoinGlobalIdentifier.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE));
+				fieldNames.remove(FieldHelper.getInstance().buildPath(AbstractJoinGlobalIdentifier.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+				if(dataTable.getPropertiesMap().getMaster()==null)
+					fieldNames.add(AbstractJoinGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER);
+				if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE);
+					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY);
+				}
 			}
 		}
 	}
