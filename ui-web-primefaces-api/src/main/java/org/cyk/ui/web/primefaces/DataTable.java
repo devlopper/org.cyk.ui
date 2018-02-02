@@ -21,6 +21,8 @@ import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.Movement;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -102,8 +104,31 @@ public class DataTable {
 					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE);
 					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY);
 				}
+			}else if(Person.class.equals(actionOnClass)){
+				processColumnsFieldNamesPerson(dataTable, fieldNames);
+			}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
+				processColumnsFieldNamesActor(dataTable, fieldNames);
 			}
 		}
+		
+		/**/
+		
+		protected void __processColumnsFieldNamesPerson__(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames,String fieldName){
+			fieldNames.add(FieldHelper.getInstance().buildPath(fieldName,Person.FIELD_LASTNAMES));
+		}
+		
+		protected void processColumnsFieldNamesPerson(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
+			__processColumnsFieldNamesPerson__(dataTable, fieldNames, null);
+		}
+		
+		protected void processColumnsFieldNamesActor(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
+			__processColumnsFieldNamesPerson__(dataTable, fieldNames, AbstractActor.FIELD_PERSON);
+		}
+		
 	}
+	
+	/**/
+	
+	
 	
 }

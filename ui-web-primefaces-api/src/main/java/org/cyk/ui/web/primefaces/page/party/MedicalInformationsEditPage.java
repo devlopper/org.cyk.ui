@@ -6,15 +6,11 @@ import java.lang.reflect.Field;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Allergy;
 import org.cyk.system.root.model.party.person.MedicalInformations;
 import org.cyk.system.root.model.party.person.MedicalInformationsAllergy;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.ui.api.command.UICommand;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -27,6 +23,11 @@ import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
 import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Named @ViewScoped @Getter @Setter
 public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractActor> implements Serializable {
 
@@ -37,7 +38,7 @@ public class MedicalInformationsEditPage extends AbstractCrudOnePage<AbstractAct
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,identifiable.getPerson().getMedicalInformations(),null,null);
+		allergyItems = createItemCollection(form,"qwerty",AllergyItem.class,MedicalInformationsAllergy.class,((Person)identifiable.getPerson()).getMedicalInformations(),null,null);
 		
 		form.getControlSetListeners().add(new ControlSetAdapter<Object>(){
 			private static final long serialVersionUID = 1L;

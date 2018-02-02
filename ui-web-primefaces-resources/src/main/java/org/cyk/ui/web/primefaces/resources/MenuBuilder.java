@@ -3,6 +3,7 @@ package org.cyk.ui.web.primefaces.resources;
 import java.io.Serializable;
 
 import org.cyk.ui.api.resources.window.IdentifiableConsultWindow;
+import org.cyk.ui.api.resources.window.IdentifiableEditWindow;
 import org.cyk.ui.api.resources.window.IdentifiablesManageWindow;
 
 public class MenuBuilder extends org.cyk.ui.web.api.resources.MenuBuilder implements Serializable {
@@ -18,5 +19,8 @@ public class MenuBuilder extends org.cyk.ui.web.api.resources.MenuBuilder implem
 		return componentParent instanceof IdentifiableConsultWindow;
 	}
 	
-	
+	@Override
+	protected Boolean isIdentifiableEditWindow() {
+		return componentParent instanceof IdentifiableEditWindow;
+	}
 }

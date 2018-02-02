@@ -16,7 +16,7 @@ public abstract class AbstractActorConsultPage<ACTOR extends AbstractActor> exte
 	
 	@Override
 	protected Person getPerson() {
-		return identifiable.getPerson();
+		return (Person) identifiable.getPerson();
 	}
 	
 	public static class ActorDetailsFormOneDataConfigurationAdapter<DETAILS extends AbstractOutputDetails<AbstractActor>> extends DetailsConfigurationListener.Form.Adapter<AbstractActor,DETAILS>{

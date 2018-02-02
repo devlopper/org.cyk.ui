@@ -18,6 +18,8 @@ import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.MovementCollectionType;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
@@ -47,6 +49,14 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	}
 	
 	@Override
+	protected void ____add____() {
+		if(Person.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else
+			super.____add____();
+	}
+	
+	@Override
 	protected void __prepare__() {
 		super.__prepare__();
 		Form.Detail detail = getDetail();
@@ -62,9 +72,6 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
 				
 				DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
 				
 				MovementAction movementAction = movementCollection.getType().getIncrementAction();
 				dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()
@@ -170,6 +177,10 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			/*detail.add(GlobalIdentifier.FIELD_).addBreak();
 			detail.add(GlobalIdentifier.FIELD_).addBreak();
 			*/
+		}else if(Person.class.equals(actionOnClass)){
+			IdentifiableEditPageFormMaster.preparePerson(detail);
+		}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
+			IdentifiableEditPageFormMaster.prepareActor(detail);
 		}
 		/*
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
@@ -179,8 +190,6 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	
 	protected void addDataTableJoinGlobalIdentifier(Class<? extends AbstractJoinGlobalIdentifier> aClass){
 		DataTable dataTable = instanciateDataTable(aClass,null,null,Boolean.TRUE);
-		dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
-		dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.TRUE);
 		dataTable.getPropertiesMap().setAddCommandQueryKeyValues(Arrays.asList(UniformResourceLocatorHelper.QueryParameter.Name.CLASS_IDENTIFIABLE_GLOBAL_IDENTIFIER
 				,dataTable.getPropertiesMap().getMaster().getClass()
 				));

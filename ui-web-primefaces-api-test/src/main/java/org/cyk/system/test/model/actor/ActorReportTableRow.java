@@ -18,8 +18,8 @@ public class ActorReportTableRow implements Serializable {
 	@Input @InputText @ReportColumn private String name,lastnames,contacts;
 	
 	public ActorReportTableRow(Actor actor) {
-		name = actor.getPerson().getName();
-		lastnames = actor.getPerson().getNames();
+		//name = actor.getPerson().getName();
+		//lastnames = actor.getPerson().getNames();
 		//contacts = actor.getPerson().getName();
 	}
 	

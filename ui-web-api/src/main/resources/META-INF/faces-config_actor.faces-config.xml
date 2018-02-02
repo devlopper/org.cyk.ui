@@ -6,7 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		<navigation-case>
+		<!--navigation-case>
 			<from-outcome>anyActorTypeListView</from-outcome>
 			<to-view-id>/private/party/person/actor/anytype/list.jsf</to-view-id>
 			<redirect />
@@ -20,7 +20,7 @@
 			<from-outcome>anyActorTypeEditView</from-outcome>
 			<to-view-id>/private/party/person/actor/anytype/edit.jsf</to-view-id>
 			<redirect />
-		</navigation-case>
+		</navigation-case-->
 	
 	</navigation-rule>
 

@@ -39,8 +39,6 @@ public class IdentifiableConsultPage extends org.cyk.ui.web.api.resources.page.I
 			Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
 			if(ClassHelper.getInstance().isHierarchy(actionOnClass)){
 				DataTable dataTable = instanciateDataTable(actionOnClass,null,null,Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddMenu(Boolean.TRUE);
-				dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.TRUE);
 				dataTable.prepare();
 				dataTable.build();
 			}

@@ -19,7 +19,7 @@ public abstract class AbstractActorEditPage<ACTOR extends AbstractIdentifiable> 
 	
 	@Override
 	protected Person getPerson() {
-		return getActor().getPerson();
+		return (Person) getActor().getPerson();
 	}
 	
 	@Getter @Setter

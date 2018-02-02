@@ -13,7 +13,7 @@
 		</navigation-case>
 		
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		<navigation-case>
+		<!--navigation-case>
 			<from-outcome>applicationEditView</from-outcome>
 			<to-view-id>/private/application/edit.xhtml</to-view-id>
 			<redirect />
@@ -107,7 +107,7 @@
 			<from-outcome>personRelationshipTypeConsultView</from-outcome>
 			<to-view-id>/private/party/person/relationship/type/consult.xhtml</to-view-id>
 			<redirect />
-		</navigation-case>
+		</navigation-case-->
 		
 	</navigation-rule>
 

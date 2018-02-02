@@ -21,7 +21,7 @@ public abstract class AbstractActorEditFormModel<ACTOR extends AbstractIdentifia
 	
 	@Override
 	protected Person getPerson() {
-		return getActor().getPerson();
+		return (Person) getActor().getPerson();
 	}
 	
 	protected abstract AbstractActor getActor();

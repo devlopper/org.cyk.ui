@@ -28,6 +28,8 @@ import org.cyk.system.root.model.mathematics.MovementAction;
 import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.mathematics.MovementCollectionType;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.person.AbstractActor;
+import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
@@ -74,6 +76,14 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		//	return this;
 		
 		return super.setFromRequestParameter(aClass, fieldName);
+	}
+	
+	@Override
+	protected void ____add____() {
+		if(Person.class.equals(getPropertiesMap().getActionOnClass())){
+			
+		}else
+			super.____add____();
 	}
 	
 	@Override
@@ -267,6 +277,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			/*detail.add(GlobalIdentifier.FIELD_).addBreak();
 			detail.add(GlobalIdentifier.FIELD_).addBreak();
 			*/
+		}else if(Person.class.equals(actionOnClass)){
+			preparePerson(detail);
+		}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
+			prepareActor(detail);
 		}
 		
 	}
@@ -281,4 +295,24 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		getDetail().add(GlobalIdentifier.FIELD_OWNER).addBreak();
 	}
 	
+	/**/
+	
+	private static void __preparePerson__(Form.Detail detail,String fieldName){
+		detail.setFieldsObjectFromMaster(fieldName,Person.FIELD_GLOBAL_IDENTIFIER);
+		detail.add(GlobalIdentifier.FIELD_CODE);
+		detail.add(GlobalIdentifier.FIELD_IMAGE,1,3).addBreak();
+		detail.add(GlobalIdentifier.FIELD_NAME).addBreak();
+		detail.setFieldsObjectFromMaster(fieldName);
+		detail.add(Person.FIELD_LASTNAMES).addBreak();
+		detail.add(Person.FIELD_NATIONALITY);
+		detail.add(Person.FIELD_SEX).addBreak();
+	}
+	
+	public static void preparePerson(Form.Detail detail){
+		__preparePerson__(detail, null);
+	}
+	
+	public static void prepareActor(Form.Detail detail){
+		__preparePerson__(detail, AbstractActor.FIELD_PERSON);
+	}
 }

@@ -6,7 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
-		<navigation-case>
+		<!--navigation-case>
 			<from-outcome>personEditView</from-outcome>
 			<to-view-id>/private/party/person/edit.jsf</to-view-id>
 			<redirect />
@@ -46,7 +46,7 @@
 			<from-outcome>editActorRelationship</from-outcome>
 			<to-view-id>/private/party/person/editactorrelationship.jsf</to-view-id>
 			<redirect />
-		</navigation-case>
+		</navigation-case-->
 		
 	</navigation-rule>
 

@@ -43,8 +43,9 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 			return Arrays.asList("inputTextarea","inputText","inputPassword");
 		if(object instanceof GlobalIdentifier)
 			return Arrays.asList("code","name","description","otherDetails");
-		if(object instanceof Person)
+		/*if(object instanceof Person)
 			return Arrays.asList("lastnames","sex","nationality");
+		*/
 		return super.getFieldNames(form, object);
 	}
 	
@@ -62,12 +63,12 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 			if(field.getName().equals(GlobalIdentifier.FIELD_OTHER_DETAILS))
 				return InputEditor.class;
 		}else if(object instanceof Person){
-			if(field.getName().equals(Person.FIELD_LASTNAMES))
+			/*if(field.getName().equals(Person.FIELD_LASTNAMES))
 				return InputText.class;
 			if(field.getName().equals(Person.FIELD_SEX))
 				return InputChoiceOneRadio.class;
 			if(field.getName().equals(Person.FIELD_NATIONALITY))
-				return InputChoiceOneCombo.class;
+				return InputChoiceOneCombo.class;*/
 		}
 		return super.getClass(detail, object, field);
 	}
