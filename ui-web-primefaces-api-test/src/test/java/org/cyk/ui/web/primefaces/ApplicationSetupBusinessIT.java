@@ -1,26 +1,21 @@
 package org.cyk.ui.web.primefaces;
 
+import java.io.Serializable;
+
 import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
 import org.cyk.system.root.model.security.Installation;
+import org.cyk.utility.common.helper.ClassHelper;
 
 public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
-
     private static final long serialVersionUID = -6691092648665798471L;
  
+    static {
+		ClassHelper.getInstance().map(ApplicationBusinessImpl.Listener.class, ApplicationBusinessAdapter.class);
+	}
+    
     @Override
     protected void businesses() {
-    	ApplicationBusinessImpl.Listener.COLLECTION.add(new ApplicationBusinessImpl.Listener.Adapter.Default(){
-			private static final long serialVersionUID = -7737204312141333272L;
-    		@Override
-    		public void installationStarted(Installation installation) {
-    			installation.getApplication().setUniformResourceLocatorFiltered(Boolean.FALSE);
-    			installation.getApplication().setWebContext("gui-primefaces");
-    			installation.getApplication().setName("GuiApp");
-    			super.installationStarted(installation);
-    		}
-    	});
     	installApplication();
-    	//create(CommonUtils.getInstance().inject(MovementCollectionBusiness.class).instanciateOne("MyMovCol", "ComeIn", "ComeOut"));
     	System.exit(0);
     }
     
@@ -30,5 +25,18 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     @Override protected void read() {}
     @Override protected void update() {}
     
+    /**/
     
+    public static class ApplicationBusinessAdapter extends AbstractBusinessIT.ApplicationBusinessAdapter implements Serializable {
+		private static final long serialVersionUID = 1L;
+    	
+		@Override
+		public void installationStarted(Installation installation) {
+			super.installationStarted(installation);
+			installation.setIsCreateAccounts(Boolean.TRUE);
+			installation.setIsCreateLicence(Boolean.TRUE);
+			installation.getApplication().setUniformResourceLocatorFiltered(Boolean.FALSE);
+		}
+		
+    }
 }

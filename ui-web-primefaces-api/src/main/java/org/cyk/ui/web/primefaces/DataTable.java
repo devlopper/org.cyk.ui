@@ -68,6 +68,7 @@ public class DataTable {
 					fieldNames.add(Interval.FIELD_HIGH);
 					fieldNames.add(Interval.FIELD_VALUE);
 				}else if(Movement.class.equals(actionOnClass)){
+					fieldNames.remove(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
 					fieldNames.add(Movement.FIELD_ACTION);	
 					fieldNames.add(Movement.FIELD_VALUE);
 					fieldNames.add(Movement.FIELD_CUMUL);

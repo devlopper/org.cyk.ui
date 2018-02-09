@@ -1,5 +1,7 @@
 package org.cyk.ui.web.primefaces;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -8,21 +10,27 @@ import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.impl.BusinessIntegrationTestHelper;
 import org.cyk.system.root.business.impl.RootBusinessLayer;
 import org.cyk.system.root.business.impl.RootBusinessTestHelper;
+import org.cyk.system.root.business.impl.party.ApplicationBusinessImpl;
 import org.cyk.system.root.business.impl.validation.AbstractValidator;
 import org.cyk.system.root.business.impl.validation.DefaultValidator;
 import org.cyk.system.root.business.impl.validation.ExceptionUtils;
 import org.cyk.system.root.business.impl.validation.ValidatorMap;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.security.Installation;
 import org.cyk.system.root.persistence.impl.GenericDaoImpl;
 import org.cyk.system.root.persistence.impl.PersistenceIntegrationTestHelper;
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.test.ArchiveBuilder;
 import org.cyk.utility.test.integration.AbstractIntegrationTestJpaBased;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 
 public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased {
-
 	private static final long serialVersionUID = 7531234257367131255L;
+	
+	static {
+		ClassHelper.getInstance().map(ApplicationBusinessImpl.Listener.class, ApplicationBusinessAdapter.class,Boolean.FALSE);
+	}
 	
 	@Deployment
     public static Archive<?> createDeployment() {
@@ -114,5 +122,19 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
                 //.addPackage(ExceptionUtils.class.getPackage())
                 //.addPackage(PersonValidator.class.getPackage())
                 ;
-    } 
+    }
+    
+    public static class ApplicationBusinessAdapter extends ApplicationBusinessImpl.Listener.Adapter.Default implements Serializable {
+		private static final long serialVersionUID = 1L;
+    	
+		@Override
+		public void installationStarted(Installation installation) {
+			super.installationStarted(installation);
+			installation.setIsCreateAccounts(Boolean.FALSE);
+			installation.setIsCreateLicence(Boolean.FALSE);
+			installation.getApplication().setWebContext("gui-primefaces");
+			installation.getApplication().setName("GuiApp");
+		}
+		
+    }
 }

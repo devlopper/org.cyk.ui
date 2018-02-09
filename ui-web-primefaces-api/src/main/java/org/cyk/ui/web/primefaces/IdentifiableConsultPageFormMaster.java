@@ -71,22 +71,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				MovementCollection movementCollection = (MovementCollection) getObject();
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
 				
-				DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE);
-				
-				MovementAction movementAction = movementCollection.getType().getIncrementAction();
-				dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()
-						.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
-						._setLabelPropertyValue(movementAction.getName())
-						;
-				
-				movementAction = movementCollection.getType().getDecrementAction();
-				dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.MINUS, UniformResourceLocatorHelper.getInstance()
-						.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
-						._setLabelPropertyValue(movementAction.getName())
-						;
-				
-				dataTable.prepare();
-				dataTable.build();
+				addDataTableMovement(movementCollection);
 				
 				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				
@@ -197,4 +182,22 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		dataTable.build();
 	}
 	
+	protected void addDataTableMovement(MovementCollection movementCollection){
+		DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE);
+		dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
+		MovementAction movementAction = movementCollection.getType().getIncrementAction();
+		dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()
+				.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
+				._setLabelPropertyValue(movementAction.getName())
+				;
+		
+		movementAction = movementCollection.getType().getDecrementAction();
+		dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.MINUS, UniformResourceLocatorHelper.getInstance()
+				.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
+				._setLabelPropertyValue(movementAction.getName())
+				;
+		
+		dataTable.prepare();
+		dataTable.build();
+	}
 }
