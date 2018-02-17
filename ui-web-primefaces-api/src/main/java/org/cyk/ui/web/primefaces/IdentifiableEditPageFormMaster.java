@@ -139,6 +139,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			
 			if(Movement.class.equals(actionOnClass)){
 				Movement movement = (Movement)getObject();
+				if(Constant.Action.CREATE.equals(_getPropertyAction())){
+					if(movement.getCollection()!=null)
+						movement.setPreviousCumul(movement.getCollection().getValue());
+				}
 				movement.setValueSettableFromAbsolute(Boolean.TRUE);
 				if(movement.getValue()!=null)
 					movement.setValueAbsolute(movement.getValue().abs());
@@ -150,7 +154,9 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				detail.add(Movement.FIELD_MODE).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
 				
-				addExistencePeriodFromDate();
+				//addExistencePeriodFromDate();
+				
+				detail.add(Movement.FIELD_DESTINATION_MOVEMENT_COLLECTION).addBreak();
 				
 				//detail.getInputByFieldName(Movement.FIELD_ACTION).getPropertiesMap().setDisabled( ((Movement)getObject()).getAction() != null );
 				

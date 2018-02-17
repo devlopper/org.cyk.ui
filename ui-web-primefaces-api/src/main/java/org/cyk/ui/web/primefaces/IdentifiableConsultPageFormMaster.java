@@ -29,6 +29,7 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.IconHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
+import org.cyk.utility.common.userinterface.command.MenuNode;
 import org.cyk.utility.common.userinterface.container.Form;
 
 public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.FormMaster implements Serializable {
@@ -185,21 +186,25 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	protected void addDataTableMovement(MovementCollection movementCollection){
 		DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE);
 		dataTable.getPropertiesMap().setMaster(movementCollection);
-		dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
-		MovementAction movementAction = movementCollection.getType().getIncrementAction();
-		dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()
-				.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
-				._setLabelPropertyValue(movementAction.getName())
-				;
-		
-		movementAction = movementCollection.getType().getDecrementAction();
-		dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.MINUS, UniformResourceLocatorHelper.getInstance()
-				.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction))
-				._setLabelPropertyValue(movementAction.getName())
-				;
+		if(movementCollection.getType().getIncrementAction()!=null || movementCollection.getType().getDecrementAction()!=null){
+			dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
+			if(movementCollection.getType().getIncrementAction()!=null)
+				addDataTableMovementAction(dataTable, movementCollection, movementCollection.getType().getIncrementAction(), IconHelper.Icon.FontAwesome.ARROW_UP);
+			if(movementCollection.getType().getDecrementAction()!=null)
+				addDataTableMovementAction(dataTable, movementCollection, movementCollection.getType().getDecrementAction(), IconHelper.Icon.FontAwesome.ARROW_DOWN);
+		}
 		
 		dataTable.prepare();
 		dataTable.build();
+	}
+	
+	protected void addDataTableMovementAction(DataTable dataTable,MovementCollection movementCollection,MovementAction movementAction,Object icon){
+		if(movementAction!=null){
+			MenuNode menuNode = dataTable.addMainMenuNode(movementAction.getName(), icon, UniformResourceLocatorHelper.getInstance()
+					.getStringifier(Constant.Action.CREATE, Movement.class).addQueryParameterInstances(movementCollection,movementAction));
+			menuNode._setLabelPropertyValue(movementAction.getName());
+			menuNode._setPropertyTitleFromLabel();
+		}
 	}
 	
 	/**/
