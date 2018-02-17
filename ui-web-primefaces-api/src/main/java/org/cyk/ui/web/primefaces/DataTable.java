@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
+import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
@@ -125,7 +126,12 @@ public class DataTable {
 		protected void processColumnsFieldNamesActor(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
 			__processColumnsFieldNamesPerson__(dataTable, fieldNames, AbstractActor.FIELD_PERSON);
 		}
+	
+		/**/
 		
+		public static void addExistencePeriodFromDate(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
+			fieldNames.add(FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));
+		}
 	}
 	
 	/**/

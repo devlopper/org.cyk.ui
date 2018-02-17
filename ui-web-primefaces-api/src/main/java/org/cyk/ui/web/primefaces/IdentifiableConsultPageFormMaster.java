@@ -184,6 +184,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	
 	protected void addDataTableMovement(MovementCollection movementCollection){
 		DataTable dataTable = instanciateDataTable(Movement.class,null,null,Boolean.TRUE);
+		dataTable.getPropertiesMap().setMaster(movementCollection);
 		dataTable.getPropertiesMap().setOnPrepareAddMenuAddCommand(Boolean.FALSE);
 		MovementAction movementAction = movementCollection.getType().getIncrementAction();
 		dataTable.addMainMenuNode(movementAction.getName(), IconHelper.Icon.FontAwesome.PLUS, UniformResourceLocatorHelper.getInstance()
@@ -199,5 +200,15 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		
 		dataTable.prepare();
 		dataTable.build();
+	}
+	
+	/**/
+	
+	protected void addExistencePeriodFromDate(){
+		IdentifiableEditPageFormMaster.addExistencePeriodFromDate(getDetail());
+	}
+	
+	protected void addOwner(){
+		IdentifiableEditPageFormMaster.addOwner(getDetail());
 	}
 }

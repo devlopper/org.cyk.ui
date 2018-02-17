@@ -286,13 +286,11 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	}
 	
 	protected void addExistencePeriodFromDate(){
-		getDetail().setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
-		getDetail().add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
+		addExistencePeriodFromDate(getDetail());
 	}
 	
 	protected void addOwner(){
-		getDetail().setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
-		getDetail().add(GlobalIdentifier.FIELD_OWNER).addBreak();
+		addOwner(getDetail());
 	}
 	
 	/**/
@@ -314,5 +312,17 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	
 	public static void prepareActor(Form.Detail detail){
 		__preparePerson__(detail, AbstractActor.FIELD_PERSON);
+	}
+
+	/**/
+	
+	public static void addExistencePeriodFromDate(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
+		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
+	}
+	
+	public static void addOwner(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
+		detail.add(GlobalIdentifier.FIELD_OWNER).addBreak();
 	}
 }
