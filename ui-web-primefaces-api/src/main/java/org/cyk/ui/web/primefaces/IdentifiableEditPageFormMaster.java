@@ -152,7 +152,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
 				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
 				detail.add(Movement.FIELD_MODE).addBreak();
-				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PERSON).addBreak();
+				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PARTY).addBreak();
 				
 				//addExistencePeriodFromDate();
 				
