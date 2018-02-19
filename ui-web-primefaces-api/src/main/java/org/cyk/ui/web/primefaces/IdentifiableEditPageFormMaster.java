@@ -38,6 +38,7 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.RequestHelper;
+import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.event.Event;
 
@@ -156,7 +157,8 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				
 				//addExistencePeriodFromDate();
 				
-				detail.add(Movement.FIELD_DESTINATION_MOVEMENT_COLLECTION).addBreak();
+				//detail.add(Movement.FIELD_DESTINATION_MOVEMENT_COLLECTION).addBreak();
+				detail.add(Movement.FIELD_PARENT).addBreak();
 				
 				//detail.getInputByFieldName(Movement.FIELD_ACTION).getPropertiesMap().setDisabled( ((Movement)getObject()).getAction() != null );
 				
@@ -183,8 +185,12 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 						}
 					});	
 				}
-				
-				
+				DataTable dataTable = detail.getMaster().instanciateDataTable(Movement.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+				//dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.FALSE);
+				//dataTable.getPropertiesMap().setMasterFieldName(Movement.FIELD_COLLECTION);
+				//dataTable.getPropertiesMap().setMaster(salableProductCollection);
+				dataTable.prepare();
+				dataTable.build();	
 			}else if(Interval.class.equals(actionOnClass)){
 				detail.setFieldsObjectFromMaster(Interval.FIELD_LOW);
 				detail.addFieldName(IntervalExtremity.FIELD_VALUE,"lowest.value");
