@@ -70,11 +70,16 @@ public class DataTable {
 					fieldNames.add(Interval.FIELD_VALUE);
 				}else if(Movement.class.equals(actionOnClass)){
 					fieldNames.remove(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					fieldNames.add(Movement.FIELD_ACTION);	
-					fieldNames.add(Movement.FIELD_VALUE);
-					fieldNames.add(Movement.FIELD_CUMUL);
-					fieldNames.add(Movement.FIELD_MODE);
-					fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));
+					if(dataTable.getPropertiesMap().getMaster() instanceof Movement){
+						fieldNames.removeAll(Arrays.asList(Movement.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+						fieldNames.addAll(Arrays.asList(Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_VALUE_ABSOLUTE,Movement.FIELD_CUMUL));
+					}else {
+						fieldNames.add(Movement.FIELD_ACTION);	
+						fieldNames.add(Movement.FIELD_VALUE);
+						fieldNames.add(Movement.FIELD_CUMUL);
+						fieldNames.add(Movement.FIELD_MODE);
+						fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+					}
 				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 					if(PhoneNumber.class.equals(actionOnClass)){
 						fieldNames.add(PhoneNumber.FIELD_COUNTRY);
