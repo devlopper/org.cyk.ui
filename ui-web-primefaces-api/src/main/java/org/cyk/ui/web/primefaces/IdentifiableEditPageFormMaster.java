@@ -8,6 +8,7 @@ import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
@@ -144,6 +145,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			if(Movement.class.equals(actionOnClass)){
 				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 				Movement movement = (Movement)getObject();
+				
+				if(movement.getIdentifiables()==null)
+					movement.setIdentifiables(new IdentifiableRuntimeCollection<AbstractIdentifiable>());
+				
 				if(Constant.Action.CREATE.equals(_getPropertyAction())){
 					if(movement.getCollection()!=null)
 						movement.setPreviousCumul(movement.getCollection().getValue());
@@ -169,30 +174,13 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				DataTable dataTable = detail.getMaster().instanciateDataTable(Movement.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 				dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
 				dataTable.getPropertiesMap().setMasterFieldName(Movement.FIELD_COLLECTION);
-				//dataTable.getPropertiesMap().setMaster(salableProductCollection);
+				dataTable.getPropertiesMap().setFormMasterObjectActionOnClassCollectionInstanceFieldName(Movement.FIELD_IDENTIFIABLES);
 				
 				if(isCreateOrUpdate){
 					/* events */
-					Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-						private static final long serialVersionUID = 1L;
-						protected void ____execute____() {
-							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-						}
-					});
-					
-					Event.instanciateOne(detail, Movement.FIELD_ACTION, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-						private static final long serialVersionUID = 1L;
-						protected void ____execute____() {
-							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-						}
-					});
-					
-					Event.instanciateOne(detail, Movement.FIELD_VALUE_ABSOLUTE, new String[]{Movement.FIELD_CUMUL}, new Event.CommandAdapter(){
-						private static final long serialVersionUID = 1L;
-						protected void ____execute____() {
-							inject(MovementBusiness.class).computeChanges((Movement) getEventPropertyFormMasterObject());
-						}
-					});	
+					Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL});					
+					Event.instanciateOne(detail, Movement.FIELD_ACTION, new String[]{Movement.FIELD_CUMUL});					
+					Event.instanciateOne(detail, Movement.FIELD_VALUE_ABSOLUTE, new String[]{Movement.FIELD_CUMUL});	
 					
 					dataTable.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
 						private static final long serialVersionUID = 1L;
@@ -200,7 +188,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 							final DataTable.Cell cell = super.instanciateOne(column, row);
 							
 							if(ArrayUtils.contains(new String[]{Movement.FIELD_VALUE_ABSOLUTE},column.getPropertiesMap().getFieldName())){
-								Event.instanciateOne(cell, new String[]{Movement.FIELD_CUMUL},new String[]{Movement.FIELD_CUMUL});
+								Event.instanciateOne(cell, new String[]{Movement.FIELD_CUMUL},new String[]{});
 							}
 							return cell;
 						}
