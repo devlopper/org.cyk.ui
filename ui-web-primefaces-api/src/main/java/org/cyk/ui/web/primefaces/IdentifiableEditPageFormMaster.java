@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.business.api.geography.CountryBusiness;
-import org.cyk.system.root.business.api.mathematics.MovementBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.IdentifiableRuntimeCollection;
 import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
@@ -31,6 +29,8 @@ import org.cyk.system.root.model.mathematics.MovementCollectionType;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.time.IdentifiablePeriod;
+import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
@@ -94,7 +94,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	protected void ____addCode____() {
 		if(GlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
 			
-		}else if(PartyIdentifiableGlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+		}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
 			
 		}else
 			super.____addCode____();
@@ -102,7 +102,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	
 	@Override
 	protected void ____addName____() {
-		if(PartyIdentifiableGlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+		if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
 			
 		}else
 			super.____addName____();
@@ -275,6 +275,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				}else if(Website.class.equals(actionOnClass)){
 					detail.add(Website.FIELD_UNIFORM_RESOURCE_LOCATOR).addBreak();
 				}
+			}else if(IdentifiablePeriod.class.equals(actionOnClass)){
+				addExistencePeriodFromDate();
+				addExistencePeriodToDate();
+				addClosed();
 			}
 		}else if(Locality.class.equals(actionOnClass)){
 			detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
@@ -288,6 +292,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();
 			detail.add(MovementCollectionType.FIELD_DECREMENT_ACTION).addBreak();
+			detail.add(MovementCollectionType.FIELD_IDENTIFIABLE_PERIOD_COLLECTION_TYPE).addBreak(); 
 			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 		}else if(Country.class.equals(actionOnClass)){
@@ -302,6 +307,9 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY).addBreak();
 				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE).addBreak();
 				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
+			}else if(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+				detail.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_PERIOD_COLLECTION).addBreak();
+				detail.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
 			}
 		}else if(GlobalIdentifier.class.equals(actionOnClass)){
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
@@ -356,8 +364,16 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		addExistencePeriodFromDate(getDetail());
 	}
 	
+	protected void addExistencePeriodToDate(){
+		addExistencePeriodToDate(getDetail());
+	}
+	
 	protected void addOwner(){
 		addOwner(getDetail());
+	}
+	
+	protected void addClosed(){
+		addClosed(getDetail());
 	}
 	
 	/**/
@@ -388,8 +404,18 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
 	}
 	
+	public static void addExistencePeriodToDate(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
+		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_TO_DATE)).addBreak();
+	}
+	
 	public static void addOwner(Form.Detail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_OWNER).addBreak();
+	}
+	
+	public static void addClosed(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
+		detail.add(GlobalIdentifier.FIELD_CLOSED).addBreak();
 	}
 }

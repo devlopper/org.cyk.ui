@@ -20,6 +20,8 @@ import org.cyk.system.root.model.mathematics.MovementCollectionType;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.time.IdentifiablePeriod;
+import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
@@ -74,7 +76,8 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				
 				addDataTableMovement(movementCollection);
 				
-				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
+				//addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
+				addDataTableJoinGlobalIdentifier(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class);
 				
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
@@ -105,6 +108,10 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				detail.setFieldsObjectFromMaster();
 				detail.add(Interval.FIELD_VALUE).addBreak();
 				
+			}else if(IdentifiablePeriod.class.equals(actionOnClass)){
+				addExistencePeriodFromDate();
+				addExistencePeriodToDate();
+				addClosed();
 			}
 		}else if(Locality.class.equals(actionOnClass)){
 			detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
@@ -118,6 +125,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();
 			detail.add(MovementCollectionType.FIELD_DECREMENT_ACTION).addBreak();
+			detail.add(MovementCollectionType.FIELD_IDENTIFIABLE_PERIOD_COLLECTION_TYPE).addBreak(); 
 			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 		}else if(ClassHelper.getInstance().isHierarchy(actionOnClass)){
@@ -213,7 +221,15 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		IdentifiableEditPageFormMaster.addExistencePeriodFromDate(getDetail());
 	}
 	
+	protected void addExistencePeriodToDate(){
+		IdentifiableEditPageFormMaster.addExistencePeriodToDate(getDetail());
+	}
+	
 	protected void addOwner(){
 		IdentifiableEditPageFormMaster.addOwner(getDetail());
+	}
+	
+	protected void addClosed(){
+		IdentifiableEditPageFormMaster.addClosed(getDetail());
 	}
 }

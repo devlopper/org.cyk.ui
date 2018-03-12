@@ -9,7 +9,6 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
-import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -21,8 +20,6 @@ import org.cyk.utility.common.userinterface.input.InputFile;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.cyk.utility.common.userinterface.input.InputTextarea;
 import org.cyk.utility.common.userinterface.input.choice.InputChoice;
-import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneCombo;
-import org.cyk.utility.common.userinterface.input.choice.InputChoiceOneRadio;
 
 public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapter {
 	private static final long serialVersionUID = 1L;
@@ -96,8 +93,8 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 		Class<?> aClass;
 		if(GlobalIdentifier.class.equals(inputChoice.getObject().getClass()) && GlobalIdentifier.FIELD_OWNER.equals(inputChoice.getField().getName()))
 			aClass = Person.class;
-		else if(PartyIdentifiableGlobalIdentifier.class.equals(inputChoice.getObject().getClass()) && PartyIdentifiableGlobalIdentifier.FIELD_PARTY.equals(inputChoice.getField().getName()))
-			aClass = Person.class;
+		/*else if(PartyIdentifiableGlobalIdentifier.class.equals(inputChoice.getObject().getClass()) && PartyIdentifiableGlobalIdentifier.FIELD_PARTY.equals(inputChoice.getField().getName()))
+			aClass = Person.class;*/
 		else
 			aClass = super.computeChoiceInstanceClass(inputChoice);
 		return aClass;

@@ -7,7 +7,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.ui.web.primefaces.page.event.EventEditPage;
 import org.cyk.utility.common.ListenerUtils;
 
-public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> extends org.cyk.utility.common.test.Runnable.Adapter<IdentifiableWebITRunner.Listener<IDENTIFIABLE>> implements Serializable {
+public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> extends org.cyk.utility.common.test.Runnable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -27,7 +27,8 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 	}
 	
 	protected String[] getListMenuItemPath(){
-		return listenerUtils.getValue(String[].class, listeners, new ListenerUtils.ResultMethod<Listener<IDENTIFIABLE>, String[]>(){
+		return null;
+		/*return listenerUtils.getValue(String[].class, listeners, new ListenerUtils.ResultMethod<Listener<IDENTIFIABLE>, String[]>(){
 			@Override
 			public String[] execute(Listener<IDENTIFIABLE> listener) {
 				return listener.getListMenuItemPath();
@@ -37,7 +38,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 			public String[] getNullValue() {
 				return null;
 			}
-		});
+		});*/
 	}
 	
 	protected void list(){
@@ -45,7 +46,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 	}
 	
 	protected Form createForm(final Crud crud){
-		Form form = listenerUtils.getValue(Form.class, listeners, new ListenerUtils.ResultMethod<Listener<IDENTIFIABLE>, Form>(){
+		Form form = listenerUtils.getValue(Form.class, /*listeners*/null, new ListenerUtils.ResultMethod<Listener<IDENTIFIABLE>, Form>(){
 			@Override
 			public Form execute(Listener<IDENTIFIABLE> listener) {
 				return listener.createForm(Crud.CREATE);
@@ -63,7 +64,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 		return form;
 	}
 	protected void fillForm(final Form form,final Crud crud){
-		listenerUtils.execute(listeners, new ListenerUtils.VoidMethod<Listener<IDENTIFIABLE>>(){
+		listenerUtils.execute(/*listeners*/null, new ListenerUtils.VoidMethod<Listener<IDENTIFIABLE>>(){
 			@Override
 			public void execute(Listener<IDENTIFIABLE> listener) {
 				listener.fillForm(form, crud);
@@ -72,7 +73,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 	}
 	
 	protected String getCode(final Crud crud){
-		return listenerUtils.getString(listeners, new ListenerUtils.StringMethod<Listener<IDENTIFIABLE>>(){
+		return listenerUtils.getString(/*listeners*/null, new ListenerUtils.StringMethod<Listener<IDENTIFIABLE>>(){
 
 			@Override
 			public String execute(Listener<IDENTIFIABLE> listener) {
@@ -105,7 +106,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
 		createForm(Crud.DELETE).setSubmitCommandableConfirmed(Boolean.TRUE).sendKeys().submit();
 	}
 	
-    public void run() {
+    public void __run__() {
     	list();
     	create();
     	read();
@@ -113,7 +114,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
     	delete();
 	}
     
-    public static interface Listener<IDENTIFIABLE extends AbstractIdentifiable> extends org.cyk.utility.common.test.Runnable.Listener{
+    public static interface Listener<IDENTIFIABLE extends AbstractIdentifiable> /*extends org.cyk.utility.common.test.Runnable.Listener*/{
     	
     	String[] getListMenuItemPath();
     	Form createForm(Crud crud);
@@ -122,7 +123,7 @@ public class IdentifiableWebITRunner<IDENTIFIABLE extends AbstractIdentifiable> 
     	
     	/**/
     	
-    	public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable> extends org.cyk.utility.common.test.Runnable.Listener.Adapter implements Listener<IDENTIFIABLE>,Serializable{
+    	public static class Adapter<IDENTIFIABLE extends AbstractIdentifiable> /*extends org.cyk.utility.common.test.Runnable.Listener.Adapter*/ implements Listener<IDENTIFIABLE>,Serializable{
 			private static final long serialVersionUID = -8100384307117008109L;
 
 			@Override

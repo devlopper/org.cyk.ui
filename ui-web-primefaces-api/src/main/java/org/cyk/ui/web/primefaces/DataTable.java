@@ -24,6 +24,8 @@ import org.cyk.system.root.model.mathematics.MovementCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.time.IdentifiablePeriod;
+import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -96,6 +98,10 @@ public class DataTable {
 						fieldNames.add(Website.FIELD_UNIFORM_RESOURCE_LOCATOR);
 					}
 					
+				}else if(IdentifiablePeriod.class.equals(actionOnClass)){
+					addExistencePeriodFromDate(dataTable, fieldNames);
+					addExistencePeriodToDate(dataTable, fieldNames);
+					addClosed(dataTable, fieldNames);
 				}
 			}else if(Locality.class.equals(actionOnClass)){
 				
@@ -110,6 +116,8 @@ public class DataTable {
 				if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
 					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE);
 					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY);
+				}else if(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+					fieldNames.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_PERIOD_COLLECTION);
 				}
 			}else if(Person.class.equals(actionOnClass)){
 				processColumnsFieldNamesPerson(dataTable, fieldNames);
@@ -136,6 +144,14 @@ public class DataTable {
 		
 		public static void addExistencePeriodFromDate(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
 			fieldNames.add(FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));
+		}
+		
+		public static void addExistencePeriodToDate(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
+			fieldNames.add(FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_TO_DATE));
+		}
+		
+		public static void addClosed(org.cyk.utility.common.userinterface.collection.DataTable dataTable,Collection<String> fieldNames){
+			fieldNames.add(FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CLOSED));
 		}
 	}
 	

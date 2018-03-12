@@ -4,14 +4,9 @@ import java.io.Serializable;
 import java.net.URI;
 
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.cyk.system.root.business.api.BusinessEntityInfos;
-import org.cyk.system.root.business.api.BusinessException;
+import org.cyk.system.root.business.api.BusinessThrowable;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.security.OpticalDecoderBusiness;
 import org.cyk.system.root.business.api.security.SoftwareBusiness;
@@ -42,6 +37,9 @@ import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputPassword;
 import org.cyk.utility.common.annotation.user.interfaces.InputText;
 import org.omnifaces.util.Faces;
+
+import lombok.Getter;
+import lombok.Setter;
 
 //@Named @ViewScoped
 public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> implements Serializable {
@@ -139,9 +137,9 @@ public class LoginPage extends AbstractBusinessEntityFormOnePage<Credentials> im
 	
 	@Override
 	public Object fail(UICommand command, Object parameter, Throwable throwable) {
-		if(throwable instanceof BusinessException){
-			BusinessException businessException = (BusinessException) throwable;
-			if(UserAccountBusiness.EXCEPTION_ALREADY_CONNECTED.equals(businessException.getIdentifier()))
+		if(throwable instanceof BusinessThrowable){
+			BusinessThrowable businessException = (BusinessThrowable) throwable;
+			if(UserAccountBusiness.EXCEPTION_ALREADY_CONNECTED.equals(businessException.getFields().getIdentifier()))
 				messageDialogOkButtonOnClick = "PF('"+webManager.getConnectionMessageDialogWidgetId()+"').show();" ;
 		}
 		return super.fail(command, parameter, throwable);

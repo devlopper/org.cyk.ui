@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.AbstractBusinessException;
+import org.cyk.system.root.business.api.AbstractBusinessThrowable;
 import org.cyk.system.root.business.impl.validation.ExceptionUtils;
 import org.cyk.ui.api.UIMessageManager;
 import org.cyk.ui.api.UIMessageManager.SeverityType;
@@ -97,7 +97,7 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 	}
 	
 	private Object fail(Object parameter,Throwable throwable) {
-		Throwable cause = inject(ThrowableHelper.class).getInstanceOf(throwable, AbstractBusinessException.class);
+		Throwable cause = inject(ThrowableHelper.class).getInstanceOf(throwable, AbstractBusinessThrowable.class);
 		Set<String> messages = new LinkedHashSet<>();
 		if(throwable!=null){
 			//logThrowable(throwable);
@@ -110,8 +110,8 @@ public abstract class AbstractCommand extends AbstractBean implements UICommand 
 			}
 			//messages.add(UIManager.getInstance().text("command.serve.failure.summary"));
 		}else{
-			if(cause instanceof AbstractBusinessException)
-				messages.addAll(((AbstractBusinessException)cause).getMessages());
+			if(cause instanceof AbstractBusinessThrowable)
+				messages.addAll(((AbstractBusinessThrowable)cause).getFields().getMessages());
 		}
 		
 		AfterServeState state = AfterServeState.FAIL;
