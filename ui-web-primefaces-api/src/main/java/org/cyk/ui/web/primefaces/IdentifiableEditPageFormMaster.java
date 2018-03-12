@@ -175,6 +175,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				DataTable dataTable = detail.getMaster().instanciateDataTable(Movement.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 				dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
 				dataTable.getPropertiesMap().setMasterFieldName(Movement.FIELD_COLLECTION);
+				dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(Movement.FIELD_COLLECTION);
 				dataTable.getPropertiesMap().setFormMasterObjectActionOnClassCollectionInstanceFieldName(Movement.FIELD_IDENTIFIABLES);
 				
 				if(isCreateOrUpdate){
