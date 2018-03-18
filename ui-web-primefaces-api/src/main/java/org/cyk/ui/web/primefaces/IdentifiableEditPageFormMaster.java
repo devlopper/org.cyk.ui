@@ -377,6 +377,14 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		addClosed(getDetail());
 	}
 	
+	protected void addImage(){
+		addImage(getDetail());
+	}
+	
+	protected void addDescription(){
+		addDescription(getDetail());
+	}
+	
 	/**/
 	
 	private static void __preparePerson__(Form.Detail detail,String fieldName){
@@ -418,5 +426,15 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	public static void addClosed(Form.Detail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_CLOSED).addBreak();
+	}
+	
+	public static void addImage(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
+		detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+	}
+	
+	public static void addDescription(Form.Detail detail){
+		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
+		detail.add(GlobalIdentifier.FIELD_DESCRIPTION).addBreak();
 	}
 }

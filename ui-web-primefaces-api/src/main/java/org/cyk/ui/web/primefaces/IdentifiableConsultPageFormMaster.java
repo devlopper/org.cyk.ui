@@ -75,8 +75,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
 				
 				addDataTableMovement(movementCollection);
-				
-				//addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
+				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				addDataTableJoinGlobalIdentifier(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class);
 				
 			}else if(IntervalCollection.class.equals(actionOnClass)){
@@ -231,5 +230,13 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	
 	protected void addClosed(){
 		IdentifiableEditPageFormMaster.addClosed(getDetail());
+	}
+	
+	protected void addImage(){
+		IdentifiableEditPageFormMaster.addImage(getDetail());
+	}
+	
+	protected void addDescription(){
+		IdentifiableEditPageFormMaster.addDescription(getDetail());
 	}
 }
