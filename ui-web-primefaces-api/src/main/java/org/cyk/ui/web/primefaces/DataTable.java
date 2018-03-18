@@ -114,7 +114,7 @@ public class DataTable {
 				if(dataTable.getPropertiesMap().getMaster()==null)
 					fieldNames.add(AbstractJoinGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER);
 				if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
-					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE);
+					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_BUSINESS_ROLE);
 					fieldNames.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY);
 				}else if(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
 					fieldNames.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_PERIOD_COLLECTION);

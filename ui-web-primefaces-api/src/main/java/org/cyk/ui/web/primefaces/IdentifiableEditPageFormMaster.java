@@ -306,7 +306,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, actionOnClass)){
 			if(PartyIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
 				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_PARTY).addBreak();
-				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_ROLE).addBreak();
+				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_BUSINESS_ROLE).addBreak();
 				detail.add(PartyIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
 			}else if(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
 				detail.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_PERIOD_COLLECTION).addBreak();
