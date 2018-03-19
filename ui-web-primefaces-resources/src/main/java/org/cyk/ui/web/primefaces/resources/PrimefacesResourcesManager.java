@@ -181,6 +181,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		//setComponentTemplateAndIncludeDefaultValues(Image.class, "support");
 		
 		Properties.setDefaultValue(Command.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/command/commandButton.xhtml");
+		Properties.setDefaultValue(Command.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER, "/org.cyk.ui.web.primefaces.resources/template/decorate/command/commandButtonWithoutIdentifier.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/command/commandButton/default.xhtml");
 		Properties.setDefaultValue(Command.class, Properties.AJAX, Boolean.TRUE);
 		Properties.setDefaultValue(Command.class, Properties.GLOBAL, Boolean.TRUE);
@@ -390,6 +391,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					image.getPropertiesMap().setWidth(previewImage.getPropertiesMap().getWidth());
 					image.getPropertiesMap().setHeight(previewImage.getPropertiesMap().getHeight());
 					
+					((Command)properties.getRemoveCommand()).getPropertiesMap().setTemplate(PrimefacesResourcesManager.getInstance().getCommandDefaultTemplate());
 					((Command)properties.getRemoveCommand()).getLabel().getPropertiesMap().setRendered(Boolean.FALSE);
 					((Command)properties.getRemoveCommand()).getPropertiesMap().setIcon("fa fa-trash");
 					((Command)properties.getRemoveCommand()).getPropertiesMap().setUpdate("currentimagepanel currentimageremovecommandpanel");
@@ -523,6 +525,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	public Object getCommandDefaultTemplate(){
 		return Properties.getDefaultValue(Command.class, Properties.TEMPLATE);
+	}
+	
+	public Object getCommandDefaultTemplateWithoutIdentifier(){
+		return Properties.getDefaultValue(Command.class, Properties.TEMPLATE_WITHOUT_IDENTIFIER);
 	}
 	
 	public Object getRemoteCommandDefaultTemplate(){

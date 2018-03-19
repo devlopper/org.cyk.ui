@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
+	
+	<!--  
+		I do not know why but strangely component is not working with id property declared
+		id="#{commandButtonIdentifier == null ? (commandButton.propertiesMap.identifier == null ? randomHelper.getAlphabetic(5) : commandButton.propertiesMap.identifier) : commandButtonIdentifier}"
+	-->
+	
+	<p:commandButton	 
+		action="#{commandButton.action.execute(executeParameter)}" 
+		ajax="#{commandButton.propertiesMap.ajax}"
+		icon="#{commandButton.propertiesMap.icon}"
+		process="#{commandButton.propertiesMap.process}"
+		rendered="#{commandButton.propertiesMap.rendered}"
+		disabled="#{commandButton.propertiesMap.disabled}"
+		type="#{commandButton.propertiesMap.type}"
+		title="#{commandButton.propertiesMap.title}"
+		update="#{commandButton.propertiesMap.update}"
+		value="#{commandButton.label.propertiesMap.rendered ? (empty commandButton.propertiesMap.value ? commandButton.label.propertiesMap.value : commandButton.propertiesMap.value) : null}" 
+		
+		onclick="#{commandButton.propertiesMap.onClick}"
+		oncomplete="#{commandButton.propertiesMap.onComplete}"
+		
+		ondblclick="#{commandButton.propertiesMap.onDoubleClick}"
+		onmouseover="#{commandButton.propertiesMap.onMouseOver}"
+		onmouseup="#{commandButton.propertiesMap.onMouseUp}"
+		onmousedown="#{commandButton.propertiesMap.onMouseDown}"
+		onmouseout="#{commandButton.propertiesMap.onMouseOut}"
+		onmousemove="#{commandButton.propertiesMap.onMouseMove}"
+		onkeydown="#{commandButton.propertiesMap.onKeyDown}"
+		onkeypress="#{commandButton.propertiesMap.onKeyPress}"
+		onkeyup="#{commandButton.propertiesMap.onKeyUp}"
+		onfocus="#{commandButton.propertiesMap.onFocus}"
+		onselect="#{commandButton.propertiesMap.onSelect}"
+		onblur="#{commandButton.propertiesMap.onBlur}"
+		onchange="#{commandButton.propertiesMap.onChange}"
+		
+		onstart="#{commandButton.propertiesMap.onStart}"
+		onsuccess="#{commandButton.propertiesMap.onSuccess}"
+		onerror="#{commandButton.propertiesMap.onError}"
+		
+		immediate="#{commandButton.propertiesMap.immediate}"
+		widgetVar="#{commandButton.propertiesMap.widgetVar}"
+		partialSubmit="#{commandButton.propertiesMap.partialSubmit}"
+		styleClass="#{commandButton.propertiesMap.styleClass}"
+		style="#{commandButton.propertiesMap.style}" 
+		global="#{commandButton.propertiesMap.global}"
+		
+		async="#{commandButton.propertiesMap.async}"
+	>
+		<ui:include src="#{commandButton.propertiesMap.include}"/>	
+	</p:commandButton>
+	
+	<ui:decorate template="#{primefacesResourcesManager.getTemplate(commandButton.confirmationDialog)}">
+		<ui:param name="confirmDialog" value="#{commandButton.confirmationDialog}" />	
+	</ui:decorate>
+	
+	<ui:decorate template="#{commandButton.propertiesMap.remoteCommand.propertiesMap.template == null ? primefacesResourcesManager.remoteCommandDefaultTemplate : commandButton.propertiesMap.remoteCommand.propertiesMap.template}">
+		<ui:param name="remoteCommand" value="#{commandButton.propertiesMap.remoteCommand}"/>
+	</ui:decorate>
+	
+	<!-- 
+	
+		
+	
+	 -->
+	
+</ui:composition>
