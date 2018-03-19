@@ -19,9 +19,11 @@
 	
 	<h:form id="form" enctype="multipart/form-data">
 		<ui:insert name="centerCenterNotifications">
-			<ui:include src="/org.cyk.ui.web.primefaces.resources/include/notification/default.xhtml">
-				<ui:param name="dialog" value="#{page.notificationDialog}"/>
-			</ui:include>
+			<!--p:scrollPanel styleClass="cyk_userinterface_notifications_scrollpane"-->
+				<ui:include src="/org.cyk.ui.web.primefaces.resources/include/notification/default.xhtml">
+					<ui:param name="dialog" value="#{page.notificationDialog}"/>
+				</ui:include>
+			<!--/p:scrollPanel-->
 		</ui:insert>
 	
 		<ui:insert name="centerCenterContent">

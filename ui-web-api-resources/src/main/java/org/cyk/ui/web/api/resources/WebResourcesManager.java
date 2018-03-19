@@ -51,7 +51,7 @@ public class WebResourcesManager extends AbstractBean implements Serializable {
 		Component.RENDER_AS_CONTENT_TYPE = ContentType.DEFAULT;
 		Component.ClassLocator.GetOrgCykSystem.WINDOW = "Page";
 		
-		addStyleSheetHrefFromName("common","page","datatable","form","input","output");
+		addStyleSheetHrefFromName("common","page","datatable","form","input","output","notification");
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.IDENTIFIER_HOME = "homeView";
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_CONTEXT = StringUtils.replace(servletContextEvent.getServletContext().getContextPath(),Constant.CHARACTER_SLASH.toString(),Constant.EMPTY_STRING);

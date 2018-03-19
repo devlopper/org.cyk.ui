@@ -9,15 +9,17 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	
-	<table style="margin: auto;" cellspacing="5">
+	<table class="cyk_userinterface_notifications" cellspacing="5">
 		<tr style="vertical-align: middle;">
 			<td class="ui-datalist-bordernone">
-				<p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" type="#{collectionHelper.getSize(facesContext.messageList)==1?'none':'ordered'}" >
-					<ui:include src="/org.cyk.ui.web.primefaces.resources/include/message.xhtml">
-						<ui:param name="severity" value="#{primefacesResourcesManager.getFacesMessageSeverityAsString(message)}" />
-						<ui:param name="message" value="#{message.summary}" />
-					</ui:include>
-				</p:dataList>
+				<p:scrollPanel styleClass="cyk_userinterface_notifications_scrollpane">
+					<p:dataList value="#{facesContext.messageList}" var="message" rowIndexVar="index" type="#{collectionHelper.getSize(facesContext.messageList)==1?'none':'ordered'}" >
+						<ui:include src="/org.cyk.ui.web.primefaces.resources/include/message.xhtml">
+							<ui:param name="severity" value="#{primefacesResourcesManager.getFacesMessageSeverityAsString(message)}" />
+							<ui:param name="message" value="#{message.summary}" />
+						</ui:include>
+					</p:dataList>
+				</p:scrollPanel>
 			</td>
 		</tr>
 		<tr>
