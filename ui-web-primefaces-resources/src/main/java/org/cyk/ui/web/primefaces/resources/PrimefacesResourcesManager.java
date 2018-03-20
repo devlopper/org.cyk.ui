@@ -230,7 +230,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(Notifications.class, Properties.SHOW_DETAIL, Boolean.FALSE);
 		Properties.setDefaultValue(Notifications.class, Properties.SHOW_ICON, Boolean.TRUE);
 		Properties.setDefaultValue(Notifications.class, Properties.REDISPLAY, Boolean.FALSE);
-		Properties.setDefaultValue(Notifications.class, Properties.ESCAPE, Boolean.FALSE);
+		Properties.setDefaultValue(Notifications.class, Properties.ESCAPE, Boolean.TRUE);
 	
 		Properties.setDefaultValue(Request.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/ajax/ajaxStatus.xhtml");
 		Properties.setDefaultValue(Request.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dummyemptycontent.xhtml");
