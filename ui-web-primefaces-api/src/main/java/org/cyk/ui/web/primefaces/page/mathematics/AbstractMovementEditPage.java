@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.system.root.business.api.mathematics.MovementCollectionBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
@@ -74,8 +73,9 @@ public abstract class AbstractMovementEditPage<ITEM extends AbstractIdentifiable
 		Movement movement = getMovement();
 		if(movement==null || movement.getCollection()==null)
 			return null;
-		return inject(MovementCollectionBusiness.class)
-				.computeValue(getMovement().getCollection(), (MovementAction) form.getInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
+		//return inject(MovementCollectionBusiness.class)
+		//		.computeValue(getMovement().getCollection(), (MovementAction) form.getInputByFieldName(AbstractMovementForm.FIELD_ACTION).getValue(), increment);
+		return null;
 	}
 		
 	@Override
