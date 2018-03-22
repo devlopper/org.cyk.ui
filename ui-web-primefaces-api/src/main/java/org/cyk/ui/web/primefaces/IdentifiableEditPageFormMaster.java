@@ -210,7 +210,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 						DataTable.Row row = (DataTable.Row) element;
 						Movement movement = (Movement) row.getPropertiesMap().getValue();
 						movement.setParent((Movement) detail.getMaster().getObject());
-						//movement.setPreviousCumul(movement.getCollection().getValue());
+						movement.setPreviousCumul(movement.getCollection().getValue());
 						movement.setValueSettableFromAbsolute(Boolean.TRUE);
 						movement.__setBirthDateComputedByUser__(Boolean.TRUE).setValueSettableFromAbsolute(Boolean.TRUE);
 					}		
