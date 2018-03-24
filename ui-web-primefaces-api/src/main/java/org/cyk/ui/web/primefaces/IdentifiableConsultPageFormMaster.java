@@ -88,13 +88,16 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			
 			if(Movement.class.equals(actionOnClass)){
 				Movement movement = (Movement)getObject();
-				if(movement.getValue()!=null)
+				if(movement.getValue()!=null){
 					movement.setValueAbsolute(movement.getValue().abs());
+					//movement.set__identifiablePeriod__(inject(IdentifiablePeriodBusiness.class).findby);
+				}
 				
-				detail.addReadOnly(Movement.FIELD_PREVIOUS_CUMUL).addBreak();
+				detail.add(Movement.FIELD___IDENTIFIABLE___PERIOD).addBreak();
+				detail.add(Movement.FIELD_PREVIOUS_CUMUL).addBreak();
 				detail.add(Movement.FIELD_ACTION).addBreak();
 				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
-				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
+				detail.add(Movement.FIELD_CUMUL).addBreak();
 				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PARTY).addBreak();
 				
 			}else if(Interval.class.equals(actionOnClass)){

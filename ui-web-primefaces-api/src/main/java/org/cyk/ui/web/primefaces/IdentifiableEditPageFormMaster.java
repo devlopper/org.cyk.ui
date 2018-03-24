@@ -157,6 +157,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				if(movement.getValue()!=null)
 					movement.setValueAbsolute(movement.getValue().abs());
 				
+				detail.addReadOnly(Movement.FIELD___IDENTIFIABLE___PERIOD).addBreak();
 				detail.addReadOnly(Movement.FIELD_PREVIOUS_CUMUL).addBreak();
 				detail.add(Movement.FIELD_ACTION).addBreak();
 				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
