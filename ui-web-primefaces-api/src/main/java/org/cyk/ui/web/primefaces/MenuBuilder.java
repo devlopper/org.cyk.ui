@@ -16,6 +16,7 @@ import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.pattern.tree.DataTree;
 import org.cyk.system.root.model.security.Role;
+import org.cyk.system.root.model.store.Store;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.UserInterface;
 import org.cyk.system.root.model.value.Value;
@@ -29,7 +30,7 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 		packageFromClass.addAll(Arrays.asList(ContactCollection.class,Event.class,File.class,Party.class,Movement.class
 				,Value.class
 				,UserInterface.class,Period.class,Role.class,DataTree.class,Computer.class,SmtpProperties.class,Language.class
-				,IdentifiableCollection.class,StringGenerator.class));
+				,IdentifiableCollection.class,StringGenerator.class,Store.class));
 	}
 	
 }
