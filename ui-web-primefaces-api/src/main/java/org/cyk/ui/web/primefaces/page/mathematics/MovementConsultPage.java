@@ -8,8 +8,8 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.Movement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 
 @Named @ViewScoped @Getter @Setter
 public class MovementConsultPage extends AbstractMovementConsultPage<Movement,MovementCollection> implements Serializable {

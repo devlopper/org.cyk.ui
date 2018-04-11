@@ -28,9 +28,9 @@ import org.cyk.system.root.business.impl.mathematics.MetricCollectionTypeDetails
 import org.cyk.system.root.business.impl.mathematics.MetricDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueDetails;
 import org.cyk.system.root.business.impl.mathematics.MetricValueIdentifiableGlobalIdentifierDetails;
-import org.cyk.system.root.business.impl.mathematics.MovementActionDetails;
-import org.cyk.system.root.business.impl.mathematics.MovementCollectionDetails;
-import org.cyk.system.root.business.impl.mathematics.MovementDetails;
+import org.cyk.system.root.business.impl.mathematics.movement.MovementActionDetails;
+import org.cyk.system.root.business.impl.mathematics.movement.MovementCollectionDetails;
+import org.cyk.system.root.business.impl.mathematics.movement.MovementDetails;
 import org.cyk.system.root.business.impl.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifierDetails;
 import org.cyk.system.root.business.impl.message.SmtpPropertiesDetails;
 import org.cyk.system.root.business.impl.network.ComputerDetails;
@@ -70,9 +70,9 @@ import org.cyk.system.root.model.mathematics.MetricCollectionIdentifiableGlobalI
 import org.cyk.system.root.model.mathematics.MetricCollectionType;
 import org.cyk.system.root.model.mathematics.MetricValue;
 import org.cyk.system.root.model.mathematics.MetricValueIdentifiableGlobalIdentifier;
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementAction;
-import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.Movement;
+import org.cyk.system.root.model.mathematics.movement.MovementAction;
+import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.machine.FiniteStateMachineStateIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;

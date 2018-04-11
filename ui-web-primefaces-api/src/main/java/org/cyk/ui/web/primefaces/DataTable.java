@@ -19,8 +19,10 @@ import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifi
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.Movement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollectionItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -82,6 +84,14 @@ public class DataTable {
 						fieldNames.add(Movement.FIELD_MODE);
 						fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
 					}
+				}else if(MovementsTransferItemCollectionItem.class.equals(actionOnClass)){
+					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+					if(dataTable.getPropertiesMap().getMaster() instanceof MovementsTransferItemCollection){
+						fieldNames.removeAll(Arrays.asList(MovementsTransferItemCollectionItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+					}else {
+						fieldNames.add(FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+					}
+					fieldNames.addAll(Arrays.asList(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION,MovementsTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementsTransferItemCollectionItem.FIELD_VALUE));
 				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 					if(PhoneNumber.class.equals(actionOnClass)){
 						fieldNames.add(PhoneNumber.FIELD_COUNTRY);

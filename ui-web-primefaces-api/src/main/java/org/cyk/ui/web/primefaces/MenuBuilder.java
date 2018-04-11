@@ -10,7 +10,7 @@ import org.cyk.system.root.model.generator.StringGenerator;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.information.IdentifiableCollection;
 import org.cyk.system.root.model.language.Language;
-import org.cyk.system.root.model.mathematics.Movement;
+import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
 import org.cyk.system.root.model.party.Party;

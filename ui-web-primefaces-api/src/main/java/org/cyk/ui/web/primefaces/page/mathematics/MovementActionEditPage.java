@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.root.model.mathematics.Interval;
-import org.cyk.system.root.model.mathematics.MovementAction;
+import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.annotation.user.interfaces.Input;

@@ -22,10 +22,12 @@ import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.IntervalExtremity;
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementAction;
-import org.cyk.system.root.model.mathematics.MovementCollection;
-import org.cyk.system.root.model.mathematics.MovementCollectionType;
+import org.cyk.system.root.model.mathematics.movement.Movement;
+import org.cyk.system.root.model.mathematics.movement.MovementAction;
+import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollectionItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -34,16 +36,13 @@ import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGl
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
+import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
-import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.RequestHelper;
-import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.event.Event;
 
 public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage.FormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
@@ -134,6 +133,8 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			if(MovementCollection.class.equals(actionOnClass)){
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
 				addOwner();
+			}else if(MovementsTransferItemCollection.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementsTransferItemCollection(detail, null);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
@@ -143,112 +144,9 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(AbstractCollectionItem.FIELD_COLLECTION).addBreak();
 			
 			if(Movement.class.equals(actionOnClass)){
-				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-				Movement movement = (Movement)getObject();
-				movement.setParentActionIsOppositeOfChildAction(Boolean.TRUE);
-				//if(movement.getIdentifiables()==null)
-				//	movement.setIdentifiables(new IdentifiableRuntimeCollection<AbstractIdentifiable>());
+				MovementIdentifiableEditPageFormMaster.prepareMovement(detail, actionOnClass);
+			}else if(MovementsTransferItemCollectionItem.class.equals(actionOnClass)){
 				
-				if(Constant.Action.CREATE.equals(_getPropertyAction())){
-					if(movement.getCollection()!=null)
-						movement.setPreviousCumul(movement.getCollection().getValue());
-				}
-				movement.setValueSettableFromAbsolute(Boolean.TRUE);
-				if(movement.getValue()!=null)
-					movement.setValueAbsolute(movement.getValue().abs());
-				
-				detail.addReadOnly(Movement.FIELD___IDENTIFIABLE___PERIOD).addBreak();
-				detail.addReadOnly(Movement.FIELD_PREVIOUS_CUMUL).addBreak();
-				detail.add(Movement.FIELD_ACTION).addBreak();
-				detail.add(Movement.FIELD_VALUE_ABSOLUTE).addBreak();
-				detail.addReadOnly(Movement.FIELD_CUMUL).addBreak();
-				detail.add(Movement.FIELD_MODE).addBreak();
-				detail.add(Movement.FIELD_SENDER_OR_RECEIVER_PARTY).addBreak();
-				detail.add(Movement.FIELD_PARENT_ACTION_IS_OPPOSITE_OF_CHILD_ACTION).addBreak();
-				
-				//addExistencePeriodFromDate();
-				
-				//detail.add(Movement.FIELD_DESTINATION_MOVEMENT_COLLECTION).addBreak();
-				//detail.add(Movement.FIELD_PARENT).addBreak();
-				
-				//detail.getInputByFieldName(Movement.FIELD_ACTION).getPropertiesMap().setDisabled( ((Movement)getObject()).getAction() != null );
-				
-				DataTable dataTable = detail.getMaster().instanciateDataTable(Movement.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
-				dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
-				dataTable.getPropertiesMap().setMasterFieldName(Movement.FIELD_COLLECTION);
-				dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(Movement.FIELD_COLLECTION);
-				dataTable.getPropertiesMap().setFormMasterObjectActionOnClassCollectionInstanceFieldName(Movement.FIELD_IDENTIFIABLES);
-				
-				if(isCreateOrUpdate){
-					/* events */
-					Event.instanciateOne(detail, AbstractCollectionItem.FIELD_COLLECTION, new String[]{Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_CUMUL});					
-					Event.instanciateOne(detail, Movement.FIELD_ACTION, new String[]{Movement.FIELD_CUMUL});					
-					Event.instanciateOne(detail, Movement.FIELD_VALUE_ABSOLUTE, new String[]{Movement.FIELD_CUMUL});	
-					
-					dataTable.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
-						private static final long serialVersionUID = 1L;
-						public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
-							final DataTable.Cell cell = super.instanciateOne(column, row);
-							
-							if(ArrayUtils.contains(new String[]{Movement.FIELD_VALUE_ABSOLUTE},column.getPropertiesMap().getFieldName())){
-								Event.instanciateOne(cell, new String[]{Movement.FIELD_CUMUL},new String[]{});
-							}
-							return cell;
-						}
-					});
-					/*
-					dataTable.getPropertyRowPropertiesPropertyRemoveCommandProperties().setUpdatedFieldNames(Arrays.asList(FieldHelper.getInstance()
-							.buildPath(fieldName,SalableProductCollection.FIELD_COST,Cost.FIELD_VALUE)));
-					dataTable.getPropertyRowPropertiesPropertyRemoveCommandProperties().setUpdatedColumnFieldNames(Arrays.asList(FieldHelper.getInstance()
-							.buildPath(SalableProductCollectionItem.FIELD_COST,Cost.FIELD_VALUE)));
-					*/
-				}
-				
-				((CollectionHelper.Instance<Object>)dataTable.getPropertyRowsCollectionInstance()).addListener(new CollectionHelper.Instance.Listener.Adapter<Object>(){
-					private static final long serialVersionUID = 1L;
-							
-					public void addOne(CollectionHelper.Instance<Object> instance, Object element, Object source, Object sourceObject) {
-						DataTable.Row row = (DataTable.Row) element;
-						Movement movement = (Movement) row.getPropertiesMap().getValue();
-						movement.setParent((Movement) detail.getMaster().getObject());
-						movement.setPreviousCumul(movement.getCollection().getValue());
-						movement.setValueSettableFromAbsolute(Boolean.TRUE);
-						movement.__setBirthDateComputedByUser__(Boolean.TRUE).setValueSettableFromAbsolute(Boolean.TRUE);
-					}		
-					
-				});
-				
-				/*dataTable.addRowsCollectionInstanceListener(DataTable.RowsCollectionInstanceListener new CollectionHelper.Instance.Listener.Adapter<Object>(){
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void addOne(Instance<Object> instance,Object element, Object source, Object sourceObject) {
-						super.addOne(instance, element, source, sourceObject);
-						//((DataTable.Row)element)
-						debug(element);
-					}
-				});*/
-				
-				dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
-						super.addOne(instance, element, source, sourceObject);
-						if(element instanceof DataTable.Column){
-							DataTable.Column column = (DataTable.Column)element;
-							if(Movement.FIELD_PREVIOUS_CUMUL.equals(column.getPropertiesMap().getFieldName())){
-								if(isCreateOrUpdate)
-									column.setCellValueType(DataTable.Cell.ValueType.TEXT);
-							}else if(Movement.FIELD_CUMUL.equals(column.getPropertiesMap().getFieldName())){
-								if(isCreateOrUpdate)
-									column.setCellValueType(DataTable.Cell.ValueType.TEXT);
-							}
-						}
-					}
-				});
-				
-				dataTable.prepare();
-				dataTable.build();	
 			}else if(Interval.class.equals(actionOnClass)){
 				detail.setFieldsObjectFromMaster(Interval.FIELD_LOW);
 				detail.addFieldName(IntervalExtremity.FIELD_VALUE,"lowest.value");

@@ -8,8 +8,8 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.cyk.system.root.model.mathematics.Movement;
-import org.cyk.system.root.model.mathematics.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.Movement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.utility.common.annotation.FieldOverride;
 
 @Named @ViewScoped @Getter @Setter
