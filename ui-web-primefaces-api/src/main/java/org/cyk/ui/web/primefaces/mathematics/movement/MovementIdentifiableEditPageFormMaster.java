@@ -154,6 +154,10 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 					if(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION.equals(column.getPropertiesMap().getFieldName())){
 						if(isCreateOrUpdate)
 							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}else if(FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE)
+							.equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
 					}
 				}
 			}
