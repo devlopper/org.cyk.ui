@@ -173,6 +173,8 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 	}
 	
 	public static void prepareMovementsTransfer(Form.Detail detail,Class<?> aClass){
+		detail.add(MovementsTransfer.FIELD_SENDER).addBreak();
+		detail.add(MovementsTransfer.FIELD_RECEIVER).addBreak();
 		prepareMovementsTransferItemCollection(detail, MovementsTransfer.FIELD_ITEMS);
 	}
 	
