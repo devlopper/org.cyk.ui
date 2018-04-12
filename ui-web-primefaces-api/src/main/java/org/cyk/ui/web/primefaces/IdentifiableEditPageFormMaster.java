@@ -26,6 +26,8 @@ import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollectionItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
@@ -195,6 +197,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(MovementCollectionType.FIELD_IDENTIFIABLE_PERIOD_COLLECTION_TYPE).addBreak(); 
 			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
+		}else if(MovementsTransfer.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementsTransfer(detail, actionOnClass);
+		}else if(MovementsTransferAcknowledgement.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementsTransferAcknowledgement(detail, actionOnClass);
 		}else if(Country.class.equals(actionOnClass)){
 			if(!Constant.Action.CREATE.equals(getPropertiesMap().getAction()))
 				inject(CountryBusiness.class).setContinent((Country) getObject());

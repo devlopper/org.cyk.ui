@@ -17,6 +17,8 @@ import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -127,6 +129,10 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
 			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+		}else if(MovementsTransfer.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementsTransfer(detail, actionOnClass);
+		}else if(MovementsTransferAcknowledgement.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementsTransferAcknowledgement(detail, actionOnClass);
 		}else if(MovementCollectionType.class.equals(actionOnClass)){
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();

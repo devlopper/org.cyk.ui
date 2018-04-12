@@ -6,6 +6,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollectionItem;
 import org.cyk.utility.common.Constant;
@@ -167,11 +169,12 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 	}
 	
 	public static void prepareMovementsTransfer(Form.Detail detail,Class<?> aClass){
-		
+		prepareMovementsTransferItemCollection(detail, MovementsTransfer.FIELD_ITEMS);
 	}
 	
 	public static void prepareMovementsTransferAcknowledgement(Form.Detail detail,Class<?> aClass){
-		
+		detail.add(MovementsTransferAcknowledgement.FIELD_MOVEMENTS_TRANSFER).addBreak();
+		prepareMovementsTransferItemCollection(detail, MovementsTransferAcknowledgement.FIELD_ITEMS);
 	}
 	
 }
