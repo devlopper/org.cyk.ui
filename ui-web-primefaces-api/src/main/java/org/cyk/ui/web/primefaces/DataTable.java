@@ -91,7 +91,7 @@ public class DataTable {
 					}else {
 						fieldNames.add(FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
 					}
-					fieldNames.addAll(Arrays.asList(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION,MovementsTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementsTransferItemCollectionItem.FIELD_VALUE));
+					fieldNames.addAll(Arrays.asList(MovementsTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementsTransferItemCollectionItem.FIELD_VALUE));
 				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 					if(PhoneNumber.class.equals(actionOnClass)){
 						fieldNames.add(PhoneNumber.FIELD_COUNTRY);

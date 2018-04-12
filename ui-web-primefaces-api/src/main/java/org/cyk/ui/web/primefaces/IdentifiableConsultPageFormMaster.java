@@ -17,6 +17,7 @@ import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
+import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -25,6 +26,7 @@ import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGl
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
+import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
@@ -78,6 +80,8 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				addDataTableJoinGlobalIdentifier(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class);
 				
+			}else if(MovementsTransferItemCollection.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementsTransferItemCollection(detail,null);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();

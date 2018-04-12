@@ -141,7 +141,21 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		//DataTable dataTable = detail.getMaster().instanciateDataTable(MovementsTransferItemCollectionItem.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementsTransferItemCollectionItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 		
-		
+		dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
+				super.addOne(instance, element, source, sourceObject);
+				if(element instanceof DataTable.Column){
+					DataTable.Column column = (DataTable.Column)element;
+					if(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION.equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}
+				}
+			}
+		});
 		
 		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.FALSE);
 		dataTable.getPropertiesMap().setMasterFieldName(MovementsTransferItemCollectionItem.FIELD_COLLECTION);

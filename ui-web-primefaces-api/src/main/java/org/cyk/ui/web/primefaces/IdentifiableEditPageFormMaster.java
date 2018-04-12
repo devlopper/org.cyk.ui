@@ -118,7 +118,6 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void __prepare__() {
 		super.__prepare__();
