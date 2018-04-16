@@ -17,9 +17,9 @@ import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransfer;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransferAcknowledgement;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -82,8 +82,8 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				addDataTableJoinGlobalIdentifier(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class);
 				
-			}else if(MovementsTransferItemCollection.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementsTransferItemCollection(detail,null);
+			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail,null);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
@@ -129,10 +129,10 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
 			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
-		}else if(MovementsTransfer.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementsTransfer(detail, actionOnClass);
-		}else if(MovementsTransferAcknowledgement.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementsTransferAcknowledgement(detail, actionOnClass);
+		}else if(MovementCollectionValuesTransfer.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransfer(detail, actionOnClass);
+		}else if(MovementCollectionValuesTransferAcknowledgement.class.equals(actionOnClass)){
+			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferAcknowledgement(detail, actionOnClass);
 		}else if(MovementCollectionType.class.equals(actionOnClass)){
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();

@@ -2,6 +2,7 @@ package org.cyk.ui.web.primefaces.test.form;
 
 import java.io.Serializable;
 
+import org.cyk.system.test.business.MenuBuilder;
 import org.cyk.utility.common.security.Shiro;
 
 @javax.servlet.annotation.WebListener
@@ -10,6 +11,11 @@ public class ContextListener extends org.cyk.ui.web.primefaces.ServletContextLis
 
 	protected void __addFoldersForUser__(Shiro.Ini ini){
 		ini.addFoldersForUser("privates");
+	}
+	
+	@Override
+	protected Class<?> __getMenuBuilderClass__() {
+		return MenuBuilder.class;
 	}
 	
 }

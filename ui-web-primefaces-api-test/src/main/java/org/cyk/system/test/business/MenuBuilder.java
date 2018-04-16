@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.cyk.utility.common.userinterface.command.Menu;
 
-public class MenuBuilder extends org.cyk.ui.web.primefaces.MenuBuilder implements Serializable {
+public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -14,6 +14,13 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.MenuBuilder implement
 		
 		
 		return menu;
+	}
+	
+	@Override
+	protected void addNodeIdentifiablesManage(Menu menu) {
+		super.addNodeIdentifiablesManage(menu);
+		
+		menu.addNode("Custom").addNode("List of Transfer", "transferlist01");
 	}
 	
 }

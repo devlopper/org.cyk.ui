@@ -6,10 +6,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransfer;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransferAcknowledgement;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementsTransferItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -133,15 +133,15 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		dataTable.build();	
 	}
 	
-	public static void prepareMovementsTransferItemCollection(Form.Detail detail,final String fieldName){
-		MovementsTransferItemCollection movementsTransferItemCollection = (MovementsTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
+	public static void prepareMovementCollectionValuesTransferItemCollection(Form.Detail detail,final String fieldName){
+		MovementCollectionValuesTransferItemCollection movementsTransferItemCollection = (MovementCollectionValuesTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
 				: FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName));
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		movementsTransferItemCollection.getItems().setSynchonizationEnabled(isCreateOrUpdate);
 		movementsTransferItemCollection.getItems().removeAll(); // will be filled up by the data table load call
 		
-		//DataTable dataTable = detail.getMaster().instanciateDataTable(MovementsTransferItemCollectionItem.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
-		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementsTransferItemCollectionItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+		//DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionValuesTransferItemCollectionItem.class,isCreateOrUpdate ? MovementCollection.class : null,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionValuesTransferItemCollectionItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 		
 		dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
 			private static final long serialVersionUID = 1L;
@@ -151,11 +151,16 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 				super.addOne(instance, element, source, sourceObject);
 				if(element instanceof DataTable.Column){
 					DataTable.Column column = (DataTable.Column)element;
-					if(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION.equals(column.getPropertiesMap().getFieldName())){
+					if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
 						if(isCreateOrUpdate)
 							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
-					}else if(FieldHelper.getInstance().buildPath(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE)
-							.equals(column.getPropertiesMap().getFieldName())){
+					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
 						if(isCreateOrUpdate)
 							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
 					}
@@ -164,23 +169,23 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		});
 		
 		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.FALSE);
-		dataTable.getPropertiesMap().setMasterFieldName(MovementsTransferItemCollectionItem.FIELD_COLLECTION);
+		dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionValuesTransferItemCollectionItem.FIELD_COLLECTION);
 		dataTable.getPropertiesMap().setMaster(movementsTransferItemCollection);
-		dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(MovementsTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION);
+		dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
 		
 		dataTable.prepare();
 		dataTable.build();	
 	}
 	
-	public static void prepareMovementsTransfer(Form.Detail detail,Class<?> aClass){
-		detail.add(MovementsTransfer.FIELD_SENDER).addBreak();
-		detail.add(MovementsTransfer.FIELD_RECEIVER).addBreak();
-		prepareMovementsTransferItemCollection(detail, MovementsTransfer.FIELD_ITEMS);
+	public static void prepareMovementCollectionValuesTransfer(Form.Detail detail,Class<?> aClass){
+		detail.add(MovementCollectionValuesTransfer.FIELD_SENDER).addBreak();
+		detail.add(MovementCollectionValuesTransfer.FIELD_RECEIVER).addBreak();
+		prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransfer.FIELD_ITEMS);
 	}
 	
-	public static void prepareMovementsTransferAcknowledgement(Form.Detail detail,Class<?> aClass){
-		detail.add(MovementsTransferAcknowledgement.FIELD_MOVEMENTS_TRANSFER).addBreak();
-		prepareMovementsTransferItemCollection(detail, MovementsTransferAcknowledgement.FIELD_ITEMS);
+	public static void prepareMovementCollectionValuesTransferAcknowledgement(Form.Detail detail,Class<?> aClass){
+		detail.add(MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER).addBreak();
+		prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
 	}
 	
 }
