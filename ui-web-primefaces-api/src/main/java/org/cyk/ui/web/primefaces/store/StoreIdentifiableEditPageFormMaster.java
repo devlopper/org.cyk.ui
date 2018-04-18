@@ -2,13 +2,11 @@ package org.cyk.ui.web.primefaces.store;
 
 import java.io.Serializable;
 
-import org.cyk.system.root.business.api.party.PartyIdentifiableGlobalIdentifierBusiness;
+import org.cyk.system.root.business.api.party.PartyBusiness;
 import org.cyk.system.root.model.RootConstant;
-import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
-import org.cyk.system.root.model.store.Store;
+import org.cyk.system.root.model.party.Store;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.userinterface.container.Form;
 
 public class StoreIdentifiableEditPageFormMaster extends AbstractBean implements Serializable {
@@ -18,12 +16,10 @@ public class StoreIdentifiableEditPageFormMaster extends AbstractBean implements
 		if(Constant.Action.CREATE.equals(detail._getPropertyAction())){
 			
 		}else{
-			PartyIdentifiableGlobalIdentifier partyIdentifiableGlobalIdentifier = CollectionHelper.getInstance()
-					.getFirst(inject(PartyIdentifiableGlobalIdentifierBusiness.class).findByIdentifiableGlobalIdentifierByBusinessRoleCode((Store)detail.getMaster().getObject()
-						, RootConstant.Code.BusinessRole.COMPANY));
-				if(partyIdentifiableGlobalIdentifier!=null)
-					((Store)detail.getMaster().getObject()).setPartyCompany(partyIdentifiableGlobalIdentifier.getParty());	
+			Store store = (Store)detail.getMaster().getObject();
+			store.setPartyCompany(inject(PartyBusiness.class).findFirstByIdentifiableByBusinessRoleCode(store, RootConstant.Code.BusinessRole.COMPANY));	
 		}
+		detail.add(Store.FIELD_HAS_PARTY_AS_COMPANY).addBreak();
 		detail.add(Store.FIELD_PARTY_COMPANY).addBreak();
 	}
 }

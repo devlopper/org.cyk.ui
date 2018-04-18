@@ -25,15 +25,16 @@ import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.Store;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.store.Store;
 import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
@@ -222,6 +223,9 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			}else if(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
 				detail.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_PERIOD_COLLECTION).addBreak();
 				detail.add(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
+			}else if(MovementCollectionIdentifiableGlobalIdentifier.class.equals(actionOnClass)){
+				detail.add(MovementCollectionIdentifiableGlobalIdentifier.FIELD_MOVEMENT_COLLECTION).addBreak();
+				detail.add(MovementCollectionIdentifiableGlobalIdentifier.FIELD_IDENTIFIABLE_GLOBAL_IDENTIFIER).addBreak();	
 			}
 		}else if(GlobalIdentifier.class.equals(actionOnClass)){
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();

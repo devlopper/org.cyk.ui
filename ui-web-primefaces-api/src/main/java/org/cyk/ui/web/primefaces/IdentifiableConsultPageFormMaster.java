@@ -16,14 +16,15 @@ import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.Store;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
-import org.cyk.system.root.model.store.Store;
 import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
@@ -83,6 +84,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				addDataTableMovement(movementCollection);
 				addDataTableJoinGlobalIdentifier(PartyIdentifiableGlobalIdentifier.class);
 				addDataTableJoinGlobalIdentifier(IdentifiablePeriodCollectionIdentifiableGlobalIdentifier.class);
+				addDataTableJoinGlobalIdentifier(MovementCollectionIdentifiableGlobalIdentifier.class);
 				
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
 				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail,null);
@@ -202,6 +204,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	
 	protected void addDataTableJoinGlobalIdentifier(Class<? extends AbstractJoinGlobalIdentifier> aClass){
 		DataTable dataTable = instanciateDataTable(aClass,null,null,Boolean.TRUE);
+		dataTable.getPropertiesMap().setMaster(getDetail().getMaster().getObject());
 		dataTable.getPropertiesMap().setAddCommandQueryKeyValues(Arrays.asList(UniformResourceLocatorHelper.QueryParameter.Name.CLASS_IDENTIFIABLE_GLOBAL_IDENTIFIER
 				,dataTable.getPropertiesMap().getMaster().getClass()
 				));
