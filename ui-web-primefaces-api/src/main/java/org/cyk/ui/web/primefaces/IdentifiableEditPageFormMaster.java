@@ -33,12 +33,14 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.store.Store;
 import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
+import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -182,14 +184,18 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				addExistencePeriodToDate();
 				addClosed();
 			}
-		}else if(Locality.class.equals(actionOnClass)){
-			detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
-			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_POSITION);
-			detail.add(GlobalPosition.FIELD_LATITUDE).addBreak();
-			detail.add(GlobalPosition.FIELD_LONGITUDE).addBreak();
-			detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
-			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
-			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+		}else if(ClassHelper.getInstance().isHierarchy(actionOnClass)){
+			if(Locality.class.equals(actionOnClass)){
+				detail.add(Locality.FIELD_RESIDENT_NAME).addBreak();
+				detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_POSITION);
+				detail.add(GlobalPosition.FIELD_LATITUDE).addBreak();
+				detail.add(GlobalPosition.FIELD_LONGITUDE).addBreak();
+				detail.add(GlobalPosition.FIELD_ALTITUDE).addBreak();
+				detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
+				detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
+			}else if(Store.class.equals(actionOnClass)){
+				StoreIdentifiableEditPageFormMaster.prepareStore(detail);
+			}
 		}else if(MovementCollectionType.class.equals(actionOnClass)){
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();

@@ -23,6 +23,7 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
+import org.cyk.system.root.model.store.Store;
 import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
@@ -30,6 +31,7 @@ import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
+import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.IconHelper;
@@ -141,7 +143,9 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 		}else if(ClassHelper.getInstance().isHierarchy(actionOnClass)){
-			
+			if(Store.class.equals(actionOnClass)){
+				StoreIdentifiableEditPageFormMaster.prepareStore(detail);
+			}
 		}else if(GlobalIdentifier.class.equals(actionOnClass)){
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 			detail.add(GlobalIdentifier.FIELD_ABBREVIATION).addBreak();
@@ -188,6 +192,8 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
 			IdentifiableEditPageFormMaster.prepareActor(detail);
 		}
+		
+		
 		/*
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
