@@ -2,15 +2,28 @@ package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.commons.lang3.ArrayUtils;
+import org.cyk.system.root.business.api.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifierBusiness;
+import org.cyk.system.root.business.api.party.BusinessRoleBusiness;
+import org.cyk.system.root.business.api.party.PartyIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.model.AbstractCollectionItem;
+import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.Party;
+import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.party.Store;
+import org.cyk.system.root.persistence.api.party.StoreDao;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.ClassHelper;
@@ -159,15 +172,17 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 				private static final long serialVersionUID = 1L;
 				public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
 					final DataTable.Cell cell = super.instanciateOne(column, row);
-					
+					//System.out.println("F : "+column.getPropertiesMap().getFieldName());
 					if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)}
 						,column.getPropertiesMap().getFieldName())){
 						Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
 								,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
+						//System.out.println("E01");
 					}else if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_VALUE)}
 						,column.getPropertiesMap().getFieldName())){
 						Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL)
 								,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
+						//System.out.println("E02");
 					}
 					
 					return cell;
@@ -239,7 +254,8 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 	public static interface PrepareMovementCollectionValuesTransferItemCollectionListener {
 		
 		void addPropertyRowsCollectionInstanceListener(final Form.Detail detail,final String fieldName,final Boolean isCreateOrUpdate,final DataTable dataTable);
-		MovementCollection getDestinationMovementCollection(Party sender,Party receiver,MovementCollection source);
+		MovementCollection getDestinationMovementCollection(EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
+		AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender,EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier);
 		
 		public static class Adapter extends AbstractBean implements PrepareMovementCollectionValuesTransferItemCollectionListener,Serializable {
 			private static final long serialVersionUID = 1L;
@@ -248,7 +264,12 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 			public void addPropertyRowsCollectionInstanceListener(Detail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
 			
 			@Override
-			public MovementCollection getDestinationMovementCollection(Party sender,Party receiver,MovementCollection source) {
+			public MovementCollection getDestinationMovementCollection(EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
+				return null;
+			}
+			
+			@Override
+			public AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender, EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier) {
 				return null;
 			}
 			
@@ -265,12 +286,32 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 							DataTable.Row row = (DataTable.Row) element;
 							MovementCollectionValuesTransferItemCollectionItem item = (MovementCollectionValuesTransferItemCollectionItem) row.getPropertiesMap().getValue();
 							InstanceHelper.getInstance().computeChanges(item.getSource());
-							Party sender = null,receiver = null;
+							EndPoint sender = new EndPoint(),receiver = new EndPoint();
+							AbstractIdentifiable sourceIdentifiableJoined=null;
 							if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){
-								sender = ((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getSender();
-								receiver = ((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getReceiver();
+								sender.setParty(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getSender());
+								if(sender.getParty()!=null){
+									PartyIdentifiableGlobalIdentifier partyIdentifiableGlobalIdentifier = CollectionHelper.getInstance().getFirst(
+											inject(PartyIdentifiableGlobalIdentifierBusiness.class).findByPartyByBusinessRole(sender.getParty(), inject(BusinessRoleBusiness.class)
+													.find(RootConstant.Code.BusinessRole.COMPANY)));
+									if(partyIdentifiableGlobalIdentifier!=null)
+										sender.setStore(inject(StoreDao.class).readByGlobalIdentifier(partyIdentifiableGlobalIdentifier.getIdentifiableGlobalIdentifier()));
+								}
+								MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier = CollectionHelper.getInstance().getFirst(
+										inject(MovementCollectionIdentifiableGlobalIdentifierBusiness.class).findByMovementCollection(item.getSource().getCollection()));
+								
+								sourceIdentifiableJoined = getSourceIdentifiableJoined(sender, receiver, item.getSource().getCollection(),movementCollectionIdentifiableGlobalIdentifier);
+								
+								receiver.setParty(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getReceiver());
+								if(receiver.getParty()!=null){
+									PartyIdentifiableGlobalIdentifier partyIdentifiableGlobalIdentifier = CollectionHelper.getInstance().getFirst(
+											inject(PartyIdentifiableGlobalIdentifierBusiness.class).findByPartyByBusinessRole(receiver.getParty(), inject(BusinessRoleBusiness.class)
+													.find(RootConstant.Code.BusinessRole.COMPANY)));
+									if(partyIdentifiableGlobalIdentifier!=null)
+										receiver.setStore(inject(StoreDao.class).readByGlobalIdentifier(partyIdentifiableGlobalIdentifier.getIdentifiableGlobalIdentifier()));
+								}
 							}
-							item.getDestination().setCollection(getDestinationMovementCollection(sender,receiver , item.getSource().getCollection()));
+							item.getDestination().setCollection(getDestinationMovementCollection(sender,receiver , item.getSource().getCollection(),sourceIdentifiableJoined));
 							if(item.getDestination()!=null)
 								InstanceHelper.getInstance().computeChanges(item.getDestination());
 							//System.out.println(
@@ -280,6 +321,17 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 					});
 				}	
 			}
+		}
+		
+		/**/
+		
+		@Getter @Setter @Accessors(chain=true)
+		public static class EndPoint implements Serializable {
+			private static final long serialVersionUID = 1L;
+			
+			private Party party;
+			private Store store;
+			
 		}
 	}
 }
