@@ -136,6 +136,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			
 			if(MovementCollection.class.equals(actionOnClass)){
 				detail.add(MovementCollection.FIELD_VALUE).addBreak();
+				detail.add(MovementCollection.FIELD_IS_CREATE_BUFFER_AUTOMATICALLY).addBreak();
 				addOwner();
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
 				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail, null);
