@@ -21,6 +21,8 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
@@ -104,6 +106,24 @@ public class DataTable {
 						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)
 						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
 						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)
+						));
+					
+				}else if(MovementCollectionInventoryItemCollectionItem.class.equals(actionOnClass)){
+					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+					if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionInventoryItemCollection){
+						fieldNames.removeAll(Arrays.asList(MovementCollectionInventoryItemCollectionItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionInventoryItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+					}else {
+						fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+					}
+					/*
+					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
+							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
+					*/
+					
+					fieldNames.addAll(Arrays.asList(
+						 MovementCollectionInventoryItemCollectionItem.FIELD_VALUE
+						,MovementCollectionInventoryItemCollectionItem.FIELD_VALUE_GAP
+						
 						));
 					
 				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){

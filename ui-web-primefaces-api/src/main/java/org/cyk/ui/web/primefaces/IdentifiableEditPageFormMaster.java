@@ -26,6 +26,7 @@ import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
@@ -40,6 +41,7 @@ import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGl
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
+import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
@@ -133,17 +135,14 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		if(ClassHelper.getInstance().isInstanceOf(AbstractCollection.class, actionOnClass)){
 			detail.add(AbstractCollection.FIELD_ITEM_CODE_SEPARATOR).addBreak();
 			detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
-			
 			if(MovementCollection.class.equals(actionOnClass)){
-				detail.add(MovementCollection.FIELD_VALUE).addBreak();
-				detail.add(MovementCollection.FIELD_IS_CREATE_BUFFER_AUTOMATICALLY).addBreak();
-				addOwner();
+				MovementIdentifiableEditPageFormMaster.prepareMovementCollection(detail, actionOnClass);
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
 				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail, null);
+			}else if(MovementCollectionInventoryItemCollection.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionInventoryItemCollection(detail);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
-				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
-				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
-				detail.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT).addBreak();
+				MathematicsIdentifiableEditPageFormMaster.prepareIntervalCollection(detail, actionOnClass);
 			}
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractCollectionItem.class, actionOnClass)){
 			detail.add(AbstractCollectionItem.FIELD_COLLECTION).addBreak();
@@ -153,15 +152,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			}else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass)){
 				
 			}else if(Interval.class.equals(actionOnClass)){
-				detail.setFieldsObjectFromMaster(Interval.FIELD_LOW);
-				detail.addFieldName(IntervalExtremity.FIELD_VALUE,"lowest.value");
-				detail.add(IntervalExtremity.FIELD_EXCLUDED).addBreak();
-				detail.setFieldsObjectFromMaster(Interval.FIELD_HIGH);
-				detail.addFieldName(IntervalExtremity.FIELD_VALUE,"highest.value");
-				detail.add(IntervalExtremity.FIELD_EXCLUDED).addBreak();
-				detail.setFieldsObjectFromMaster();
-				detail.add(Interval.FIELD_VALUE).addBreak();
-				
+				MathematicsIdentifiableEditPageFormMaster.prepareInterval(detail, actionOnClass);
 			}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 				if(PhoneNumber.class.equals(actionOnClass)){
 					detail.add(PhoneNumber.FIELD_COUNTRY).addBreak();
