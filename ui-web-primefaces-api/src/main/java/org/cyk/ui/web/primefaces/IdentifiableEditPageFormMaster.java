@@ -21,17 +21,17 @@ import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifi
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
-import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementAction;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionType;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.Store;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -139,8 +139,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				MovementIdentifiableEditPageFormMaster.prepareMovementCollection(detail, actionOnClass);
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
 				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail, null);
-			}else if(MovementCollectionInventoryItemCollection.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionInventoryItemCollection(detail);
+			}else if(MovementCollectionInventory.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionInventory(detail);
+			}else if(MovementGroup.class.equals(actionOnClass)){
+				MovementIdentifiableEditPageFormMaster.prepareMovementGroup(detail);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				MathematicsIdentifiableEditPageFormMaster.prepareIntervalCollection(detail, actionOnClass);
 			}

@@ -11,6 +11,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.utility.common.CommonUtils;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.primefaces.model.SortOrder;
 
@@ -31,6 +32,8 @@ public class LazyDataModel<T> extends org.cyk.ui.web.primefaces.resources.LazyDa
 		}else if(Country.class.equals(component.getPropertiesMap().getActionOnClass())){
 			CommonUtils.getInstance().inject(CountryBusiness.class).setContinent((Collection<Country>)instances);
 		}
+		/*for(T index : instances)
+			InstanceHelper.getInstance().computeChanges(index);*/
 		return instances;
 	}
 	

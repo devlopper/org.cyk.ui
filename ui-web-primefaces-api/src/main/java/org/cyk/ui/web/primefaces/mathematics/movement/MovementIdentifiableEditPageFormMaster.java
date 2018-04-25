@@ -6,12 +6,14 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementGroup;
+import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
@@ -27,7 +29,8 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 
 	static {
 		ClassHelper.getInstance().map(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class, MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.Adapter.Default.class,Boolean.FALSE);
-		ClassHelper.getInstance().map(MovementCollectionInventoryItemCollectionEditFormMasterPrepareListener.class, MovementCollectionInventoryItemCollectionEditFormMasterPrepareListener.Adapter.Default.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(MovementCollectionInventoryEditFormMasterPrepareListener.class, MovementCollectionInventoryEditFormMasterPrepareListener.Adapter.Default.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(MovementGroupEditFormMasterPrepareListener.class, MovementGroupEditFormMasterPrepareListener.Adapter.Default.class,Boolean.FALSE);
 	}
 	
 	public static void prepareMovementCollection(final Form.Detail detail,Class<?> aClass){
@@ -239,13 +242,13 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
 	}
 	
-	public static void prepareMovementCollectionInventoryItemCollection(final Form.Detail detail,MovementCollectionInventoryItemCollectionEditFormMasterPrepareListener listener){
-		MovementCollectionInventoryItemCollection movementCollectionInventoryItemCollection = (MovementCollectionInventoryItemCollection) detail.getMaster().getObject();
+	public static void prepareMovementCollectionInventory(final Form.Detail detail,MovementCollectionInventoryEditFormMasterPrepareListener listener){
+		MovementCollectionInventory movementCollectionInventory = (MovementCollectionInventory) detail.getMaster().getObject();
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-		movementCollectionInventoryItemCollection.getItems().setSynchonizationEnabled(isCreateOrUpdate);
-		movementCollectionInventoryItemCollection.getItems().removeAll(); // will be filled up by the data table load call
+		movementCollectionInventory.getItems().setSynchonizationEnabled(isCreateOrUpdate);
+		movementCollectionInventory.getItems().removeAll(); // will be filled up by the data table load call
 		
-		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionInventoryItemCollectionItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionInventoryItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 		
 		if(isCreateOrUpdate){
 			/* events */
@@ -254,8 +257,8 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 				private static final long serialVersionUID = 1L;
 				public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
 					final DataTable.Cell cell = super.instanciateOne(column, row);
-					if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItemCollectionItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
-						Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItemCollectionItem.FIELD_VALUE_GAP},new String[]{});
+					if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
+						Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});
 						
 					}
 					
@@ -275,7 +278,7 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 				super.addOne(instance, element, source, sourceObject);
 				if(element instanceof DataTable.Column){
 					DataTable.Column column = (DataTable.Column)element;
-					if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItemCollectionItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
+					if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
 						if(isCreateOrUpdate)
 							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
 					}
@@ -284,16 +287,73 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		});
 		
 		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
-		dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItemCollectionItem.FIELD_COLLECTION);
-		dataTable.getPropertiesMap().setMaster(movementCollectionInventoryItemCollection);
+		dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItem.FIELD_COLLECTION);
+		dataTable.getPropertiesMap().setMaster(movementCollectionInventory);
 		//dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
 		
 		dataTable.prepare();
 		dataTable.build();	
 	}
 	
-	public static void prepareMovementCollectionInventoryItemCollection(final Form.Detail detail){
-		prepareMovementCollectionInventoryItemCollection(detail, ClassHelper.getInstance().instanciateOne(MovementCollectionInventoryItemCollectionEditFormMasterPrepareListener.class));
+	public static void prepareMovementCollectionInventory(final Form.Detail detail){
+		prepareMovementCollectionInventory(detail, ClassHelper.getInstance().instanciateOne(MovementCollectionInventoryEditFormMasterPrepareListener.class));
+	}
+	
+	public static void prepareMovementGroup(final Form.Detail detail,MovementGroupEditFormMasterPrepareListener listener){
+		MovementGroup movementGroup = (MovementGroup) detail.getMaster().getObject();
+		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
+		movementGroup.getItems().setSynchonizationEnabled(isCreateOrUpdate);
+		movementGroup.getItems().removeAll(); // will be filled up by the data table load call
+		
+		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementGroupItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+		
+		if(isCreateOrUpdate){
+			/* events */
+			
+			dataTable.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
+				private static final long serialVersionUID = 1L;
+				public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
+					final DataTable.Cell cell = super.instanciateOne(column, row);
+					if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_VALUE)},column.getPropertiesMap().getFieldName())){
+						Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL)},new String[]{});
+						
+					}
+					
+					return cell;
+				}
+			});
+			
+		}
+		
+		listener.addPropertyRowsCollectionInstanceListener(detail, isCreateOrUpdate, dataTable);
+		
+		dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
+				super.addOne(instance, element, source, sourceObject);
+				if(element instanceof DataTable.Column){
+					DataTable.Column column = (DataTable.Column)element;
+					if(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}
+				}
+			}
+		});
+		
+		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
+		dataTable.getPropertiesMap().setMasterFieldName(MovementGroupItem.FIELD_COLLECTION);
+		dataTable.getPropertiesMap().setMaster(movementGroup);
+		dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_COLLECTION));
+		
+		dataTable.prepare();
+		dataTable.build();	
+	}
+	
+	public static void prepareMovementGroup(final Form.Detail detail){
+		prepareMovementGroup(detail, ClassHelper.getInstance().instanciateOne(MovementGroupEditFormMasterPrepareListener.class));
 	}
 	
 	/**/

@@ -21,10 +21,12 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
+import org.cyk.system.root.model.mathematics.movement.MovementGroup;
+import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
 import org.cyk.system.root.model.party.person.Person;
@@ -108,10 +110,10 @@ public class DataTable {
 						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)
 						));
 					
-				}else if(MovementCollectionInventoryItemCollectionItem.class.equals(actionOnClass)){
-					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionInventoryItemCollection){
-						fieldNames.removeAll(Arrays.asList(MovementCollectionInventoryItemCollectionItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionInventoryItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+				}else if(MovementCollectionInventoryItem.class.equals(actionOnClass)){
+					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+					if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionInventory){
+						fieldNames.removeAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
 					}else {
 						fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
 					}
@@ -120,11 +122,23 @@ public class DataTable {
 							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
 					*/
 					
-					fieldNames.addAll(Arrays.asList(
-						 MovementCollectionInventoryItemCollectionItem.FIELD_VALUE
-						,MovementCollectionInventoryItemCollectionItem.FIELD_VALUE_GAP
-						
-						));
+					fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
+					
+				}else if(MovementGroupItem.class.equals(actionOnClass)){
+					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+					if(dataTable.getPropertiesMap().getMaster() instanceof MovementGroup){
+						fieldNames.removeAll(Arrays.asList(MovementGroupItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+					}else {
+							
+					}
+					/*
+					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
+							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
+					*/
+					
+					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_PREVIOUS_CUMUL)
+							,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_VALUE)
+							,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL)));
 					
 				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 					if(PhoneNumber.class.equals(actionOnClass)){
