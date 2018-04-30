@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.value.Measure;
 import org.cyk.system.root.model.value.NullString;

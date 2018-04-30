@@ -46,7 +46,7 @@ public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> ex
 		public void read() {
 			super.read();
 			extension = getFile().getExtension();
-			uniformResourceLocator = getFile().getUri() == null ? Constant.EMPTY_STRING : getFile().getUri().toString();
+			//uniformResourceLocator = getFile().getUri() == null ? Constant.EMPTY_STRING : getFile().getUri().toString();
 			mime = getFile().getMime();
 			if( FileContentDetails.LABEL_IDENTIFIER.equals( ((AbstractPrimefacesPage)window).getSelectedTabId() )){
 				if(inject(FileBusiness.class).isText(getFile()))
@@ -69,9 +69,9 @@ public abstract class AbstractFileEditPage<FILE extends AbstractIdentifiable> ex
 				getFile().setExtension(file.getExtension());
 			
 			if(StringUtils.isNotBlank(uniformResourceLocator) || file == null)
-				getFile().setUri(uniformResourceLocator);
+				;//getFile().setUri(uniformResourceLocator);
 			else
-				getFile().setUri(file.getUri());
+				;//getFile().setUri(file.getUri());
 			
 			if(StringUtils.isNotBlank(mime) || file == null)
 				getFile().setMime(mime);

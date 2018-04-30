@@ -5,11 +5,8 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.file.ScriptVariable;
+import org.cyk.system.root.model.language.programming.ScriptVariable;
 import org.cyk.ui.api.data.collector.form.AbstractFormModel;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudOnePage;
 import org.cyk.utility.common.FileExtensionGroup;
@@ -17,6 +14,9 @@ import org.cyk.utility.common.annotation.user.interfaces.FileExtensions;
 import org.cyk.utility.common.annotation.user.interfaces.Input;
 import org.cyk.utility.common.annotation.user.interfaces.InputFile;
 import org.cyk.utility.common.annotation.user.interfaces.InputTextarea;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named @ViewScoped @Getter @Setter
 public class ScriptVariableEditPage extends AbstractCrudOnePage<ScriptVariable> implements Serializable {

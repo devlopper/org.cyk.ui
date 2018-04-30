@@ -10,6 +10,7 @@ import org.cyk.system.root.model.generator.StringGenerator;
 import org.cyk.system.root.model.geography.ContactCollection;
 import org.cyk.system.root.model.information.IdentifiableCollection;
 import org.cyk.system.root.model.language.Language;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.message.SmtpProperties;
 import org.cyk.system.root.model.network.Computer;
@@ -29,7 +30,7 @@ public class MenuBuilder extends org.cyk.ui.web.primefaces.resources.MenuBuilder
 		packageFromClass.addAll(Arrays.asList(ContactCollection.class,Event.class,File.class,Party.class,Movement.class
 				,Value.class
 				,UserInterface.class,Period.class,Role.class,DataTree.class,Computer.class,SmtpProperties.class,Language.class
-				,IdentifiableCollection.class,StringGenerator.class));
+				,IdentifiableCollection.class,StringGenerator.class,Script.class));
 	}
 	
 }

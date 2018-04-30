@@ -6,6 +6,7 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<!-- ########################################### Private Navigations Cases ############################################### -->
+		<!--
 		<navigation-case>
 			<from-outcome>fileListView</from-outcome>
 			<to-view-id>/private/file/list.xhtml</to-view-id>
@@ -123,7 +124,7 @@
 			<to-view-id>/private/file/report/template/consult.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
-		
+		-->
 		<navigation-case>
 			<from-outcome>toolsreport</from-outcome>
 			<to-view-id>/private/file/report.jsf</to-view-id>

@@ -9,6 +9,7 @@ import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
@@ -59,14 +60,18 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 				return InputTextarea.class;
 			if(field.getName().equals(GlobalIdentifier.FIELD_OTHER_DETAILS))
 				return InputEditor.class;
+			if(field.getName().equals(GlobalIdentifier.FIELD_TEXT))
+				return InputTextarea.class;
+		}else if(object instanceof Script){
+			
 		}else if(object instanceof Person){
 			/*if(field.getName().equals(Person.FIELD_LASTNAMES))
-				return InputText.class;
-			if(field.getName().equals(Person.FIELD_SEX))
-				return InputChoiceOneRadio.class;
-			if(field.getName().equals(Person.FIELD_NATIONALITY))
-				return InputChoiceOneCombo.class;*/
-		}
+			return InputText.class;
+		if(field.getName().equals(Person.FIELD_SEX))
+			return InputChoiceOneRadio.class;
+		if(field.getName().equals(Person.FIELD_NATIONALITY))
+			return InputChoiceOneCombo.class;*/
+	}
 		return super.getClass(detail, object, field);
 	}
 	

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.file.ScriptVariable;
+import org.cyk.system.root.model.language.programming.ScriptVariable;
 import org.cyk.ui.web.primefaces.page.crud.AbstractCrudManyPage;
 
 import lombok.Getter;

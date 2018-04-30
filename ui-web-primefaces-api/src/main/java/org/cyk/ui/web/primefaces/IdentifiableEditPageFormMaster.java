@@ -8,6 +8,7 @@ import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.Rud;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
@@ -19,6 +20,7 @@ import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.system.root.model.geography.Website;
 import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
@@ -41,6 +43,7 @@ import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGl
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
+import org.cyk.ui.web.primefaces.file.FileIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
@@ -266,6 +269,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			preparePerson(detail);
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
 			prepareActor(detail);
+		}else if(File.class.equals(actionOnClass)){
+			FileIdentifiableEditPageFormMaster.prepareFile(detail, actionOnClass);
+		}else if(Script.class.equals(actionOnClass)){
+			FileIdentifiableEditPageFormMaster.prepareScript(detail, actionOnClass);
 		}
 		
 	}

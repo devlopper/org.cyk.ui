@@ -34,9 +34,7 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
 		public void installationStarted(Installation installation) {
 			super.installationStarted(installation);
 			installation.setIsCreateAccounts(Boolean.TRUE);
-			installation.setIsCreateLicence(Boolean.TRUE);
-			installation.getApplication().setUniformResourceLocatorFiltered(Boolean.FALSE);
-		}
-		
+			installation.getApplication().setUniformResourceLocatorFiltered(Boolean.FALSE);			
+		}		
     }
 }

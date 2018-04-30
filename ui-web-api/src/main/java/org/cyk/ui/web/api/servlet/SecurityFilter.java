@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cyk.system.root.business.api.globalidentification.GlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.network.UniformResourceLocatorBusiness;
-import org.cyk.system.root.business.api.security.LicenseBusiness;
+import org.cyk.system.root.business.api.party.ApplicationBusiness;
 import org.cyk.system.root.business.api.security.RoleBusiness;
 import org.cyk.system.root.business.api.security.RoleUniformResourceLocatorBusiness;
 import org.cyk.system.root.business.api.security.UserAccountBusiness;
@@ -65,14 +65,14 @@ public class SecurityFilter extends AbstractFilter implements Filter,Serializabl
 			Boolean doFilterChain = Boolean.FALSE;
 			if(!goTo(application==null, PATH_INSTALL, request, response)){
 				//System.out.println("SecurityFilter.__filter__() INstalled / Expired ? : "+Boolean.TRUE.equals(application.getLicense().getExpirable()));
-				if(Boolean.TRUE.equals(application.getLicense().getExpirable())){
-					if(!goTo(Boolean.TRUE.equals(application.getLicense().getExpired()) || application.getLicense().getExistencePeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
+				if(Boolean.TRUE.equals(application.getExpirable())){
+					if(!goTo(Boolean.TRUE.equals(application.getExpired()) || application.getExistencePeriod().getToDate().before(CommonUtils.getInstance().getUniversalTimeCoordinated())
 							, PATH_LICENSE_EXPIRED, request, response))
 						doFilterChain = Boolean.TRUE;
 					else{
-						if(!Boolean.TRUE.equals(application.getLicense().getExpired())){
-							application.getLicense().setExpired(Boolean.TRUE); 
-							inject(LicenseBusiness.class).update(application.getLicense());
+						if(!Boolean.TRUE.equals(application.getExpired())){
+							application.setExpired(Boolean.TRUE); 
+							inject(ApplicationBusiness.class).update(application);
 						}
 					}
 				}else

@@ -8,11 +8,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.cyk.system.root.business.api.file.ScriptVariableBusiness;
 import org.cyk.system.root.model.file.File;
-import org.cyk.system.root.model.file.Script;
-import org.cyk.system.root.model.file.ScriptEvaluationEngine;
-import org.cyk.system.root.model.file.ScriptVariable;
+import org.cyk.system.root.model.language.programming.Script;
+import org.cyk.system.root.model.language.programming.ScriptEvaluationEngine;
+import org.cyk.system.root.model.language.programming.ScriptVariable;
 import org.cyk.ui.api.model.AbstractBusinessIdentifiedEditFormModel;
 import org.cyk.ui.api.model.AbstractItemCollection;
 import org.cyk.ui.api.model.AbstractItemCollectionItem;
@@ -45,7 +44,7 @@ public class ScriptEditPage extends AbstractCrudOnePage<Script> implements Seria
 			private static final long serialVersionUID = -3872058204105902514L;
 			@Override
 			public Collection<ScriptVariable> load() {
-				return inject(ScriptVariableBusiness.class).findByScript(identifiable);
+				return null;//inject(ScriptVariableBusiness.class).findByScript(identifiable);
 			}
 			
 			@Override

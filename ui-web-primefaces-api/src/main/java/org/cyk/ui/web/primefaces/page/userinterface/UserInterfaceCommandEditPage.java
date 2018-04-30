@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.network.UniformResourceLocator;
 import org.cyk.system.root.model.userinterface.UserInterfaceCommand;
 import org.cyk.system.root.model.userinterface.UserInterfaceComponent;

@@ -37,6 +37,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 	
 	protected DataReadConfiguration getDataReadConfiguration(Class<T> aClass,Integer first, Integer pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters){
 		DataReadConfiguration dataReadConfiguration = new DataReadConfiguration(new Long(first), new Long(pageSize));
+		dataReadConfiguration.setComputeChanges(Boolean.TRUE);//TODO can be taken from parameter
 		return dataReadConfiguration;
 	}
 	

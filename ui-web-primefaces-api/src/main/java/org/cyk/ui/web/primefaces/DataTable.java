@@ -7,6 +7,7 @@ import java.util.List;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.geography.Contact;
 import org.cyk.system.root.model.geography.Country;
 import org.cyk.system.root.model.geography.ElectronicMailAddress;
@@ -17,6 +18,7 @@ import org.cyk.system.root.model.geography.PostalBox;
 import org.cyk.system.root.model.geography.Website;
 import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
@@ -33,6 +35,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
+import org.cyk.ui.web.primefaces.file.FileIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 
@@ -181,6 +184,10 @@ public class DataTable {
 				processColumnsFieldNamesPerson(dataTable, fieldNames);
 			}else if(ClassHelper.getInstance().isInstanceOf(AbstractActor.class, actionOnClass)){
 				processColumnsFieldNamesActor(dataTable, fieldNames);
+			}else if(File.class.equals(actionOnClass)){
+				FileIdentifiableEditPageFormMaster.processColumnsFieldNamesFile(dataTable, fieldNames);
+			}else if(Script.class.equals(actionOnClass)){
+				FileIdentifiableEditPageFormMaster.processColumnsFieldNamesScript(dataTable, fieldNames);
 			}
 		}
 		

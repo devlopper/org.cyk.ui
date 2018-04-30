@@ -5,9 +5,9 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.system.root.business.api.file.ScriptBusiness;
-import org.cyk.system.root.business.impl.file.ScriptDetails;
-import org.cyk.system.root.model.file.Script;
+import org.cyk.system.root.business.api.language.programming.ScriptBusiness;
+import org.cyk.system.root.business.impl.language.programming.ScriptDetails;
+import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.ui.web.primefaces.page.crud.AbstractConsultPage;
 
 import lombok.Getter;
