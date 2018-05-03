@@ -2,8 +2,10 @@ package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail;
@@ -28,7 +30,8 @@ public interface MovementGroupEditFormMasterPrepareListener {
 					private static final long serialVersionUID = 1L;
 							
 					public void addOne(CollectionHelper.Instance<Object> instance, Object element, Object source, Object sourceObject) {
-						
+						MovementGroupItem movementGroupItem = (MovementGroupItem) ((DataTable.Row) element).getPropertiesMap().getValue();
+						InstanceHelper.getInstance().computeChanges(movementGroupItem.getMovement());
 					}		
 					
 				});

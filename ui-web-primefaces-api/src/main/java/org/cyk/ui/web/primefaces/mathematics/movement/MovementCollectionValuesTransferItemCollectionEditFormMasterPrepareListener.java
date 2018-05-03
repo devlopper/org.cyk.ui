@@ -10,6 +10,7 @@ import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
@@ -32,8 +33,17 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 	MovementCollection getDestinationMovementCollection(EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
 	AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender,EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier);
 	
+	Boolean getIsSourceMovementCollectionMustBeBuffer();
+	MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsSourceMovementCollectionMustBeBuffer(Boolean isSourceMovementCollectionMustBeBuffer);
+	
+	Boolean getIsDetinationMovementCollectionMustBeBuffer();
+	MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean isDetinationMovementCollectionMustBeBuffer);
+	
+	@Getter
 	public static class Adapter extends AbstractBean implements MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener,Serializable {
 		private static final long serialVersionUID = 1L;
+		
+		protected Boolean isDetinationMovementCollectionMustBeBuffer,isSourceMovementCollectionMustBeBuffer;
 		
 		@Override
 		public void addPropertyRowsCollectionInstanceListener(Detail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
@@ -45,6 +55,16 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 		
 		@Override
 		public AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender, EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier) {
+			return null;
+		}
+		
+		@Override
+		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsSourceMovementCollectionMustBeBuffer(Boolean value) {
+			return null;
+		}
+		
+		@Override
+		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean value) {
 			return null;
 		}
 		
@@ -88,11 +108,20 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 						}
 						MovementCollection movementCollection = getDestinationMovementCollection(sender,receiver , item.getSource().getCollection(),sourceIdentifiableJoined);
 						if(movementCollection!=null){
-							if(Boolean.TRUE.equals(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getItems().getDestination().getMovementCollectionIsBuffer())){
-								movementCollection = movementCollection.getBuffer();
-							}else{
-								
-							}	
+							if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){
+								if(Boolean.TRUE.equals(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getItems().getDestination().getMovementCollectionIsBuffer())){
+									movementCollection = movementCollection.getBuffer();
+								}else{
+									
+								}		
+							}else if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransferAcknowledgement){
+								if(Boolean.TRUE.equals(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getSource().getMovementCollectionIsBuffer())){
+									
+								}else{
+									
+								}		
+							}
+							
 						}
 						item.getDestination().setCollection(movementCollection);
 						if(item.getDestination()!=null)
@@ -102,7 +131,32 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 					}		
 					
 				});
-			}	
+			}
+			
+			@Override
+			public MovementCollection getDestinationMovementCollection(EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
+				/*if(Boolean.TRUE.equals(getIsDetinationMovementCollectionMustBeBuffer())){
+					System.out.println(
+							"MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.Adapter.Default.getDestinationMovementCollection() 01");
+					if(source!=null){
+						System.out.println(source.getBuffer()!=null);
+						return source.getBuffer();
+					}
+				}*/
+				return source;
+			}
+			
+			@Override
+			public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsSourceMovementCollectionMustBeBuffer(Boolean isSourceMovementCollectionMustBeBuffer) {
+				this.isSourceMovementCollectionMustBeBuffer = isSourceMovementCollectionMustBeBuffer;
+				return this;
+			}
+			
+			@Override
+			public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean isDetinationMovementCollectionMustBeBuffer) {
+				this.isDetinationMovementCollectionMustBeBuffer = isDetinationMovementCollectionMustBeBuffer;
+				return this;
+			}
 		}
 	}
 	

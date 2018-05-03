@@ -88,7 +88,7 @@ public class DataTable {
 						fieldNames.add(Movement.FIELD_ACTION);	
 						fieldNames.add(Movement.FIELD_VALUE);
 						fieldNames.add(Movement.FIELD_CUMUL);
-						fieldNames.add(Movement.FIELD_MODE);
+						fieldNames.add(Movement.FIELD_REASON);
 						fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
 					}
 				}else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass)){

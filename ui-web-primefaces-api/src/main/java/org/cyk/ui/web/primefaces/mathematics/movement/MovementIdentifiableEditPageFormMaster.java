@@ -14,10 +14,13 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
+import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.LoggingHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.DataTable;
@@ -150,7 +153,7 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		dataTable.build();	
 	}
 	
-	public static void prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){
+	public static DataTable prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){
 		MovementCollectionValuesTransferItemCollection movementsTransferItemCollection = (MovementCollectionValuesTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
 				: FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName));
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
@@ -218,14 +221,17 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		
 		dataTable.prepare();
 		dataTable.build();	
+		
+		return dataTable;
 	}
 	
-	public static void prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName){
-		prepareMovementCollectionValuesTransferItemCollection(detail, fieldName, ClassHelper.getInstance().instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class));
+	public static DataTable prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName){
+		return prepareMovementCollectionValuesTransferItemCollection(detail, fieldName, ClassHelper.getInstance().instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class));
 	}
 	
 	public static void prepareMovementCollectionValuesTransfer(Form.Detail detail,Class<?> aClass){
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
+		
 		detail.add(MovementCollectionValuesTransfer.FIELD_SENDER).addBreak();
 		detail.add(MovementCollectionValuesTransfer.FIELD_RECEIVER).addBreak();
 		
@@ -238,8 +244,25 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 	}
 	
 	public static void prepareMovementCollectionValuesTransferAcknowledgement(Form.Detail detail,Class<?> aClass){
+		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		detail.add(MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER).addBreak();
-		prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
+	
+		final DataTable movementCollectionValuesTransferItemCollection = prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
+		
+		if(isCreateOrUpdate){
+			Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
+			//event.getPropertiesMap().addString(Properties.UPDATE,"@(."+movementCollectionValuesTransferItemCollection.getPropertiesMap().getIdentifierAsStyleClass()+")");
+			
+			event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void __execute__(Action<?, ?> action) {
+					super.__execute__(action);
+					movementCollectionValuesTransferItemCollection.addManyRow(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getItems());
+				}
+			});
+		}
 	}
 	
 	public static void prepareMovementCollectionInventory(final Form.Detail detail,MovementCollectionInventoryEditFormMasterPrepareListener listener){
@@ -336,6 +359,9 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 				if(element instanceof DataTable.Column){
 					DataTable.Column column = (DataTable.Column)element;
 					if(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+						if(isCreateOrUpdate)
+							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+					}else if(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
 						if(isCreateOrUpdate)
 							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
 					}
