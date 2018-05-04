@@ -68,7 +68,7 @@ public class DataTable {
 				if(IntervalCollection.class.equals(actionOnClass)){
 					fieldNames.add(IntervalCollection.FIELD_LOWEST_VALUE);
 					fieldNames.add(IntervalCollection.FIELD_HIGHEST_VALUE);
-					fieldNames.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
+					//fieldNames.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
 				}else if(MovementCollection.class.equals(actionOnClass)){
 					fieldNames.add(MovementCollection.FIELD_VALUE);		
 				}

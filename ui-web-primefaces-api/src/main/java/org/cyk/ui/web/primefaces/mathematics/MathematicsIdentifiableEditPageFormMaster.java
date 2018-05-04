@@ -13,7 +13,7 @@ public class MathematicsIdentifiableEditPageFormMaster implements Serializable {
 	public static void prepareIntervalCollection(final Form.Detail detail,Class<?> aClass){
 		detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 		detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
-		detail.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT).addBreak();
+		
 	}
 	
 	public static void prepareInterval(final Form.Detail detail,Class<?> aClass){
@@ -25,6 +25,7 @@ public class MathematicsIdentifiableEditPageFormMaster implements Serializable {
 		detail.add(IntervalExtremity.FIELD_EXCLUDED).addBreak();
 		detail.setFieldsObjectFromMaster();
 		detail.add(Interval.FIELD_VALUE).addBreak();
+		//detail.add(Interval.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT).addBreak();
 	}
 	
 	/**/

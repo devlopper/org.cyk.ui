@@ -30,7 +30,7 @@ import lombok.experimental.Accessors;
 public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener {
 	
 	void addPropertyRowsCollectionInstanceListener(final Form.Detail detail,final String fieldName,final Boolean isCreateOrUpdate,final DataTable dataTable);
-	MovementCollection getDestinationMovementCollection(EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
+	MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
 	AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender,EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier);
 	
 	Boolean getIsSourceMovementCollectionMustBeBuffer();
@@ -49,7 +49,7 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 		public void addPropertyRowsCollectionInstanceListener(Detail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
 		
 		@Override
-		public MovementCollection getDestinationMovementCollection(EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
+		public MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
 			return null;
 		}
 		
@@ -106,8 +106,8 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 									receiver.setStore(inject(StoreDao.class).readByGlobalIdentifier(partyIdentifiableGlobalIdentifier.getIdentifiableGlobalIdentifier()));
 							}
 						}
-						MovementCollection movementCollection = getDestinationMovementCollection(sender,receiver , item.getSource().getCollection(),sourceIdentifiableJoined);
-						if(movementCollection!=null){
+						MovementCollection movementCollection = getDestinationMovementCollection(detail,sender,receiver , item.getSource().getCollection(),sourceIdentifiableJoined);
+						/*if(movementCollection!=null){
 							if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){
 								if(Boolean.TRUE.equals(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getItems().getDestination().getMovementCollectionIsBuffer())){
 									movementCollection = movementCollection.getBuffer();
@@ -122,7 +122,7 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 								}		
 							}
 							
-						}
+						}*/
 						item.getDestination().setCollection(movementCollection);
 						if(item.getDestination()!=null)
 							InstanceHelper.getInstance().computeChanges(item.getDestination());
@@ -134,16 +134,25 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 			}
 			
 			@Override
-			public MovementCollection getDestinationMovementCollection(EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
-				/*if(Boolean.TRUE.equals(getIsDetinationMovementCollectionMustBeBuffer())){
-					System.out.println(
-							"MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.Adapter.Default.getDestinationMovementCollection() 01");
-					if(source!=null){
-						System.out.println(source.getBuffer()!=null);
-						return source.getBuffer();
+			public MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
+				MovementCollection movementCollection = null;
+				if(source!=null){
+					if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){
+						if(Boolean.TRUE.equals(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getItems().getDestination().getMovementCollectionIsBuffer())){
+							movementCollection = source.getBuffer();
+						}else{
+							
+						}		
+					}else if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransferAcknowledgement){
+						if(Boolean.TRUE.equals(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getSource().getMovementCollectionIsBuffer())){
+							
+						}else{
+							
+						}		
 					}
-				}*/
-				return source;
+					
+				}
+				return movementCollection;
 			}
 			
 			@Override
