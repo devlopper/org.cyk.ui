@@ -1,0 +1,16 @@
+create movement group
+	movement collection must be empty
+	add store field , add related movement collection on store select
+	hide code , name , separators , aggregation apply fields
+	generate code , name values
+
+create transfer
+	movement collection must be empty
+	add related movement collection on sender select
+	hide code , name , type fields
+	generate code , name values
+
+create acknowledgment
+	movement collection must be empty
+	hide code , name fields
+	generate code , name values

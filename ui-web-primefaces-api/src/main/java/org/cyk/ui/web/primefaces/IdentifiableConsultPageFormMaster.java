@@ -32,7 +32,7 @@ import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGl
 import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
-import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
+import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiablePages;
 import org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableConsultPage;
 import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
@@ -89,11 +89,11 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 				addDataTableJoinGlobalIdentifier(MovementCollectionIdentifiableGlobalIdentifier.class);
 				
 			}else if(MovementCollectionInventory.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionInventory(detail);
+				MovementIdentifiablePages.prepareMovementCollectionInventoryEditFormMaster(detail);
 			}else if(MovementGroup.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementGroup(detail);
+				MovementIdentifiablePages.prepareMovementGroupEditFormMaster(detail);
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail,null);
+				MovementIdentifiablePages.prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail,null);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
 				detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 				detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();
@@ -140,9 +140,9 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 			detail.setFieldsObjectFromMaster(Locality.FIELD_GLOBAL_IDENTIFIER);
 			detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 		}else if(MovementCollectionValuesTransfer.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransfer(detail, actionOnClass);
+			MovementIdentifiablePages.prepareMovementCollectionValuesTransferEditFormMaster(detail, actionOnClass);
 		}else if(MovementCollectionValuesTransferAcknowledgement.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferAcknowledgement(detail, actionOnClass);
+			MovementIdentifiablePages.prepareMovementCollectionValuesTransferAcknowledgementEditFormMaster(detail, actionOnClass);
 		}else if(MovementCollectionType.class.equals(actionOnClass)){
 			detail.add(MovementCollectionType.FIELD_INTERVAL).addBreak();
 			detail.add(MovementCollectionType.FIELD_INCREMENT_ACTION).addBreak();

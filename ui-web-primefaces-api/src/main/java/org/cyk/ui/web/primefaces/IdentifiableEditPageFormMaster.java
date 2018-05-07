@@ -44,8 +44,8 @@ import org.cyk.system.root.model.time.Period;
 import org.cyk.system.root.model.userinterface.style.CascadeStyleSheet;
 import org.cyk.system.root.model.value.LongValue;
 import org.cyk.ui.web.primefaces.file.FileIdentifiableEditPageFormMaster;
-import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiableEditPageFormMaster;
-import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiableEditPageFormMaster;
+import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiablePages;
+import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiablePages;
 import org.cyk.ui.web.primefaces.store.StoreIdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
@@ -105,6 +105,8 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
 			
+		}else if(MovementCollectionInventory.class.equals(getPropertiesMap().getActionOnClass())){
+			
 		}else
 			super.____addCode____();
 	}
@@ -113,15 +115,16 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	protected void ____addName____() {
 		if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
 			
+		}else if(MovementCollectionInventory.class.equals(getPropertiesMap().getActionOnClass())){
+			
 		}else
 			super.____addName____();
 	}
 	
 	@Override
 	protected void ____addType____() {
-		//Form.Detail detail = getDetail();
 		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
-		if(ArrayUtils.contains(new Class<?>[]{PhoneNumber.class,Location.class}, actionOnClass)){
+		if(ArrayUtils.contains(new Class<?>[]{PhoneNumber.class,Location.class,MovementCollectionInventory.class}, actionOnClass)){
 			return;
 		}
 		super.____addType____();
@@ -136,28 +139,29 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		detail.setFieldsObjectFromMaster();
 		
 		if(ClassHelper.getInstance().isInstanceOf(AbstractCollection.class, actionOnClass)){
-			detail.add(AbstractCollection.FIELD_ITEM_CODE_SEPARATOR).addBreak();
-			detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
+			//detail.add(AbstractCollection.FIELD_ITEM_CODE_SEPARATOR).addBreak();
+			//detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
+			
 			if(MovementCollection.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollection(detail, actionOnClass);
+				MovementIdentifiablePages.prepareMovementCollectionEditFormMaster(detail, actionOnClass);
 			}else if(MovementCollectionValuesTransferItemCollection.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferItemCollection(detail, null);
+				MovementIdentifiablePages.prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, null);
 			}else if(MovementCollectionInventory.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementCollectionInventory(detail);
+				MovementIdentifiablePages.prepareMovementCollectionInventoryEditFormMaster(detail);
 			}else if(MovementGroup.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovementGroup(detail);
+				MovementIdentifiablePages.prepareMovementGroupEditFormMaster(detail);
 			}else if(IntervalCollection.class.equals(actionOnClass)){
-				MathematicsIdentifiableEditPageFormMaster.prepareIntervalCollection(detail, actionOnClass);
+				MathematicsIdentifiablePages.prepareIntervalCollectionEditFormMaster(detail, actionOnClass);
 			}
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractCollectionItem.class, actionOnClass)){
 			detail.add(AbstractCollectionItem.FIELD_COLLECTION).addBreak();
 			
 			if(Movement.class.equals(actionOnClass)){
-				MovementIdentifiableEditPageFormMaster.prepareMovement(detail, actionOnClass);
+				MovementIdentifiablePages.prepareMovementEditFormMaster(detail, actionOnClass);
 			}else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass)){
 				
 			}else if(Interval.class.equals(actionOnClass)){
-				MathematicsIdentifiableEditPageFormMaster.prepareInterval(detail, actionOnClass);
+				MathematicsIdentifiablePages.prepareIntervalEditFormMaster(detail, actionOnClass);
 			}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 				if(PhoneNumber.class.equals(actionOnClass)){
 					detail.add(PhoneNumber.FIELD_COUNTRY).addBreak();
@@ -202,9 +206,9 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 			detail.add(MovementCollectionType.FIELD_SUPPORT_DOCUMENT_IDENTIFIER).addBreak();
 			detail.add(MovementCollectionType.FIELD_DOCUMENT_IDENTIFIER_COUNT_INTERVAL).addBreak();
 		}else if(MovementCollectionValuesTransfer.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransfer(detail, actionOnClass);
+			MovementIdentifiablePages.prepareMovementCollectionValuesTransferEditFormMaster(detail, actionOnClass);
 		}else if(MovementCollectionValuesTransferAcknowledgement.class.equals(actionOnClass)){
-			MovementIdentifiableEditPageFormMaster.prepareMovementCollectionValuesTransferAcknowledgement(detail, actionOnClass);
+			MovementIdentifiablePages.prepareMovementCollectionValuesTransferAcknowledgementEditFormMaster(detail, actionOnClass);
 		}else if(Country.class.equals(actionOnClass)){
 			if(!Constant.Action.CREATE.equals(getPropertiesMap().getAction()))
 				inject(CountryBusiness.class).setContinent((Country) getObject());

@@ -23,11 +23,8 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
-import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
-import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.person.AbstractActor;
@@ -36,6 +33,8 @@ import org.cyk.system.root.model.time.IdentifiablePeriod;
 import org.cyk.system.root.model.time.IdentifiablePeriodCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.time.Period;
 import org.cyk.ui.web.primefaces.file.FileIdentifiableEditPageFormMaster;
+import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiablePages;
+import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiablePages;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 
@@ -65,85 +64,24 @@ public class DataTable {
 			super.processColumnsFieldNames(dataTable, fieldNames);
 			Class<?> actionOnClass = (Class<?>) dataTable.getPropertiesMap().getActionOnClass();
 			if(ClassHelper.getInstance().isInstanceOf(AbstractCollection.class, actionOnClass)){
-				if(IntervalCollection.class.equals(actionOnClass)){
-					fieldNames.add(IntervalCollection.FIELD_LOWEST_VALUE);
-					fieldNames.add(IntervalCollection.FIELD_HIGHEST_VALUE);
-					//fieldNames.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
-				}else if(MovementCollection.class.equals(actionOnClass)){
-					fieldNames.add(MovementCollection.FIELD_VALUE);		
-				}
+				if(IntervalCollection.class.equals(actionOnClass))
+					MathematicsIdentifiablePages.processIntervalCollectionColumnsFieldNames(dataTable, fieldNames);
+				else if(MovementCollection.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementCollectionColumnsFieldNames(dataTable, fieldNames);
 			}else if(ClassHelper.getInstance().isInstanceOf(AbstractCollectionItem.class, actionOnClass)){
 				if(!(dataTable.getPropertiesMap().getMaster() instanceof AbstractCollection))
 					fieldNames.add(AbstractCollectionItem.FIELD_COLLECTION);
 				if(Interval.class.equals(actionOnClass)){
-					fieldNames.add(Interval.FIELD_LOW);
-					fieldNames.add(Interval.FIELD_HIGH);
-					fieldNames.add(Interval.FIELD_VALUE);
-				}else if(Movement.class.equals(actionOnClass)){
-					fieldNames.remove(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					if(dataTable.getPropertiesMap().getMaster() instanceof Movement){
-						fieldNames.removeAll(Arrays.asList(Movement.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
-						fieldNames.addAll(Arrays.asList(Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_VALUE_ABSOLUTE,Movement.FIELD_CUMUL));
-					}else {
-						fieldNames.add(Movement.FIELD_ACTION);	
-						fieldNames.add(Movement.FIELD_VALUE);
-						fieldNames.add(Movement.FIELD_CUMUL);
-						fieldNames.add(Movement.FIELD_REASON);
-						fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
-					}
-				}else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass)){
-					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionValuesTransferItemCollection){
-						fieldNames.removeAll(Arrays.asList(MovementCollectionValuesTransferItemCollectionItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
-					}else {
-						fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
-					}
-					/*
-					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
-							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
-					*/
-					
-					fieldNames.addAll(Arrays.asList(
-						 FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_PREVIOUS_CUMUL)
-						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL)
-						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_VALUE_ABSOLUTE)
-						
-						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)
-						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
-						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)
-						));
-					
-				}else if(MovementCollectionInventoryItem.class.equals(actionOnClass)){
-					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionInventory){
-						fieldNames.removeAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
-					}else {
-						fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
-					}
-					/*
-					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
-							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
-					*/
-					
-					fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
-					
-				}else if(MovementGroupItem.class.equals(actionOnClass)){
-					fieldNames.remove(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
-					if(dataTable.getPropertiesMap().getMaster() instanceof MovementGroup){
-						fieldNames.removeAll(Arrays.asList(MovementGroupItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
-					}else {
-							
-					}
-					/*
-					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
-							,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
-					*/
-					
-					fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_PREVIOUS_CUMUL)
-							,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_VALUE)
-							,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL)));
-					
-				}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
+					MathematicsIdentifiablePages.processIntervalColumnsFieldNames(dataTable, fieldNames);
+				}else if(Movement.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementColumnsFieldNames(dataTable, fieldNames);
+				else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementCollectionValuesTransferItemCollectionItemColumnsFieldNames(dataTable, fieldNames);
+				else if(MovementCollectionInventoryItem.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementCollectionInventoryItemColumnsFieldNames(dataTable, fieldNames);
+				else if(MovementGroupItem.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementGroupItemColumnsFieldNames(dataTable, fieldNames);
+				else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 					if(PhoneNumber.class.equals(actionOnClass)){
 						fieldNames.add(PhoneNumber.FIELD_COUNTRY);
 						fieldNames.add(PhoneNumber.FIELD_LOCATION_TYPE);

@@ -1,9 +1,13 @@
 package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.AbstractCollectionItem;
+import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
@@ -14,20 +18,24 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
+import org.cyk.system.root.model.time.Period;
 import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
-import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.FieldHelper.Constraints;
 import org.cyk.utility.common.helper.LoggingHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.Form.Detail;
 import org.cyk.utility.common.userinterface.event.Event;
+import org.cyk.utility.common.userinterface.input.choice.InputChoice;
 
-public class MovementIdentifiableEditPageFormMaster implements Serializable {
+public class MovementIdentifiablePages implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	static {
@@ -36,14 +44,18 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		ClassHelper.getInstance().map(MovementGroupEditFormMasterPrepareListener.class, MovementGroupEditFormMasterPrepareListener.Adapter.Default.class,Boolean.FALSE);
 	}
 	
-	public static void prepareMovementCollection(final Form.Detail detail,Class<?> aClass){
+	public static void prepareMovementCollectionEditFormMaster(final Form.Detail detail,Class<?> aClass){
 		detail.add(MovementCollection.FIELD_VALUE).addBreak();
 		detail.add(MovementCollection.FIELD_IS_CREATE_BUFFER_AUTOMATICALLY).addBreak();
 		//IdentifiableEditPageFormMaster.addOwner(detail);
 	}
 	
+	public static void processMovementCollectionColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
+		fieldNames.add(MovementCollection.FIELD_VALUE);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public static void prepareMovement(final Form.Detail detail,Class<?> aClass){
+	public static void prepareMovementEditFormMaster(final Form.Detail detail,Class<?> aClass){
 		Constant.Action action = (Constant.Action)detail._getPropertyAction();
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(action);
 		Movement movement = (Movement)detail.getMaster().getObject();
@@ -153,7 +165,21 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		dataTable.build();	
 	}
 	
-	public static DataTable prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){
+	public static void processMovementColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
+		fieldNames.remove(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+		if(dataTable.getPropertiesMap().getMaster() instanceof Movement){
+			fieldNames.removeAll(Arrays.asList(Movement.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+			fieldNames.addAll(Arrays.asList(Movement.FIELD_PREVIOUS_CUMUL,Movement.FIELD_VALUE_ABSOLUTE,Movement.FIELD_CUMUL));
+		}else {
+			fieldNames.add(Movement.FIELD_ACTION);	
+			fieldNames.add(Movement.FIELD_VALUE);
+			fieldNames.add(Movement.FIELD_CUMUL);
+			fieldNames.add(Movement.FIELD_REASON);
+			fieldNames.add(FieldHelper.getInstance().buildPath(Movement.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+		}
+	}
+	
+	public static DataTable prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final Form.Detail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){
 		MovementCollectionValuesTransferItemCollection movementsTransferItemCollection = (MovementCollectionValuesTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
 				: FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName));
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
@@ -225,11 +251,34 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		return dataTable;
 	}
 	
-	public static DataTable prepareMovementCollectionValuesTransferItemCollection(final Form.Detail detail,final String fieldName){
-		return prepareMovementCollectionValuesTransferItemCollection(detail, fieldName, ClassHelper.getInstance().instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class));
+	public static DataTable prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final Form.Detail detail,final String fieldName){
+		return prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, fieldName, ClassHelper.getInstance().instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class));
 	}
 	
-	public static void prepareMovementCollectionValuesTransfer(Form.Detail detail,Class<?> aClass){
+	public static void processMovementCollectionValuesTransferItemCollectionItemColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
+		fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+		if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionValuesTransferItemCollection){
+			fieldNames.removeAll(Arrays.asList(MovementCollectionValuesTransferItemCollectionItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+		}else {
+			fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+		}
+		/*
+		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
+				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
+		*/
+		
+		fieldNames.addAll(Arrays.asList(
+			 FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_PREVIOUS_CUMUL)
+			,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL)
+			,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_VALUE_ABSOLUTE)
+			
+			,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)
+			,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
+			,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)
+			));
+	}
+	
+	public static void prepareMovementCollectionValuesTransferEditFormMaster(Form.Detail detail,Class<?> aClass){
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		
 		detail.add(MovementCollectionValuesTransfer.FIELD_SENDER).addBreak();
@@ -240,14 +289,14 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 			Event.instanciateOne(detail, MovementCollectionValuesTransfer.FIELD_RECEIVER, new String[]{});
 		}
 		
-		prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransfer.FIELD_ITEMS);
+		prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, MovementCollectionValuesTransfer.FIELD_ITEMS);
 	}
 	
-	public static void prepareMovementCollectionValuesTransferAcknowledgement(Form.Detail detail,Class<?> aClass){
+	public static void prepareMovementCollectionValuesTransferAcknowledgementEditFormMaster(Form.Detail detail,Class<?> aClass){
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		detail.add(MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER).addBreak();
 	
-		final DataTable movementCollectionValuesTransferItemCollection = prepareMovementCollectionValuesTransferItemCollection(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
+		final DataTable movementCollectionValuesTransferItemCollection = prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
 		
 		if(isCreateOrUpdate){
 			Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
@@ -265,35 +314,63 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		}
 	}
 	
-	public static void prepareMovementCollectionInventory(final Form.Detail detail,MovementCollectionInventoryEditFormMasterPrepareListener listener){
+	public static void prepareMovementCollectionInventoryEditFormMaster(final Form.Detail detail,final MovementCollectionInventoryEditFormMasterPrepareListener listener){
 		MovementCollectionInventory movementCollectionInventory = (MovementCollectionInventory) detail.getMaster().getObject();
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		movementCollectionInventory.getItems().setSynchonizationEnabled(isCreateOrUpdate);
 		movementCollectionInventory.getItems().removeAll(); // will be filled up by the data table load call
 		
-		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionInventoryItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
+		detail.addByControlGetListener(new Control.Listener.Get.Adapter(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void processBeforeInitialise(Control control, Detail detail, Object object, Field field,Constraints constraints) {
+				super.processBeforeInitialise(control, detail, object, field, constraints);
+				if(control instanceof InputChoice<?>){
+					if(listener != null)
+						((InputChoice<?>)control).setInstances(listener.findParties(detail));
+				}
+			}
+			
+			@Override
+			public String getLabelValueIdentifier() {
+				return "store";
+			}
+			
+		},MovementCollectionInventory.FIELD_PARTY).addBreak();
+		
+		final DataTable movementCollectionInventoryItemCollection = detail.getMaster().instanciateDataTable(MovementCollectionInventoryItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
 		
 		if(isCreateOrUpdate){
 			/* events */
 			
-			dataTable.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
+			Event event = Event.instanciateOne(detail, MovementCollectionInventory.FIELD_PARTY, new String[]{});
+			
+			event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void __execute__(Action<?, ?> action) {
+					super.__execute__(action);
+					movementCollectionInventoryItemCollection.addManyRow(((MovementCollectionInventory)detail.getMaster().getObject()).getItems());
+				}
+			});
+			
+			movementCollectionInventoryItemCollection.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
 				private static final long serialVersionUID = 1L;
 				public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
 					final DataTable.Cell cell = super.instanciateOne(column, row);
 					if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
-						Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});
-						
+						Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
 					}
-					
 					return cell;
 				}
 			});
 			
 		}
 		
-		listener.addPropertyRowsCollectionInstanceListener(detail, isCreateOrUpdate, dataTable);
+		listener.addPropertyRowsCollectionInstanceListener(detail, isCreateOrUpdate, movementCollectionInventoryItemCollection);
 		
-		dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
+		movementCollectionInventoryItemCollection.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -309,20 +386,36 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 			}
 		});
 		
-		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
-		dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItem.FIELD_COLLECTION);
-		dataTable.getPropertiesMap().setMaster(movementCollectionInventory);
+		movementCollectionInventoryItemCollection.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
+		movementCollectionInventoryItemCollection.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItem.FIELD_COLLECTION);
+		movementCollectionInventoryItemCollection.getPropertiesMap().setMaster(movementCollectionInventory);
+		movementCollectionInventoryItemCollection.getPropertiesMap().setIsAutomaticallyAddChoiceValues(Boolean.FALSE);
 		//dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
 		
-		dataTable.prepare();
-		dataTable.build();	
+		movementCollectionInventoryItemCollection.prepare();
+		movementCollectionInventoryItemCollection.build();	
 	}
 	
-	public static void prepareMovementCollectionInventory(final Form.Detail detail){
-		prepareMovementCollectionInventory(detail, ClassHelper.getInstance().instanciateOne(MovementCollectionInventoryEditFormMasterPrepareListener.class));
+	public static void prepareMovementCollectionInventoryEditFormMaster(final Form.Detail detail){
+		prepareMovementCollectionInventoryEditFormMaster(detail, ClassHelper.getInstance().instanciateOne(MovementCollectionInventoryEditFormMasterPrepareListener.class));
 	}
 	
-	public static void prepareMovementGroup(final Form.Detail detail,MovementGroupEditFormMasterPrepareListener listener){
+	public static void processMovementCollectionInventoryItemColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
+		fieldNames.remove(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+		if(dataTable.getPropertiesMap().getMaster() instanceof MovementCollectionInventory){
+			fieldNames.removeAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+		}else {
+			fieldNames.add(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE));	
+		}
+		/*
+		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
+				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
+		*/
+		
+		fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
+	}
+	
+	public static void prepareMovementGroupEditFormMaster(final Form.Detail detail,MovementGroupEditFormMasterPrepareListener listener){
 		MovementGroup movementGroup = (MovementGroup) detail.getMaster().getObject();
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		movementGroup.getItems().setSynchonizationEnabled(isCreateOrUpdate);
@@ -378,8 +471,25 @@ public class MovementIdentifiableEditPageFormMaster implements Serializable {
 		dataTable.build();	
 	}
 	
-	public static void prepareMovementGroup(final Form.Detail detail){
-		prepareMovementGroup(detail, ClassHelper.getInstance().instanciateOne(MovementGroupEditFormMasterPrepareListener.class));
+	public static void prepareMovementGroupEditFormMaster(final Form.Detail detail){
+		prepareMovementGroupEditFormMaster(detail, ClassHelper.getInstance().instanciateOne(MovementGroupEditFormMasterPrepareListener.class));
+	}
+	
+	public static void processMovementGroupItemColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
+		fieldNames.remove(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_NAME));
+		if(dataTable.getPropertiesMap().getMaster() instanceof MovementGroup){
+			fieldNames.removeAll(Arrays.asList(MovementGroupItem.FIELD_COLLECTION,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_CODE)));
+		}else {
+				
+		}
+		/*
+		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE_MOVEMENT_COLLECTION
+				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
+		*/
+		
+		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_PREVIOUS_CUMUL)
+				,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_VALUE)
+				,FieldHelper.getInstance().buildPath(MovementGroupItem.FIELD_MOVEMENT,Movement.FIELD_CUMUL)));
 	}
 	
 	/**/
