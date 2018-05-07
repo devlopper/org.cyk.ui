@@ -320,80 +320,9 @@ public class MovementIdentifiablePages implements Serializable {
 		movementCollectionInventory.getItems().setSynchonizationEnabled(isCreateOrUpdate);
 		movementCollectionInventory.getItems().removeAll(); // will be filled up by the data table load call
 		
-		detail.addByControlGetListener(new Control.Listener.Get.Adapter(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void processBeforeInitialise(Control control, Detail detail, Object object, Field field,Constraints constraints) {
-				super.processBeforeInitialise(control, detail, object, field, constraints);
-				if(control instanceof InputChoice<?>){
-					if(listener != null)
-						((InputChoice<?>)control).setInstances(listener.findParties(detail));
-				}
-			}
-			
-			@Override
-			public String getLabelValueIdentifier() {
-				return "store";
-			}
-			
-		},MovementCollectionInventory.FIELD_PARTY).addBreak();
+		listener.addPartyField(detail);		
+		listener.addItemsDataTable(detail);
 		
-		final DataTable movementCollectionInventoryItemCollection = detail.getMaster().instanciateDataTable(MovementCollectionInventoryItem.class,MovementCollection.class,new DataTable.Cell.Listener.Adapter.Default(),Boolean.TRUE);
-		
-		if(isCreateOrUpdate){
-			/* events */
-			
-			Event event = Event.instanciateOne(detail, MovementCollectionInventory.FIELD_PARTY, new String[]{});
-			
-			event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void __execute__(Action<?, ?> action) {
-					super.__execute__(action);
-					movementCollectionInventoryItemCollection.addManyRow(((MovementCollectionInventory)detail.getMaster().getObject()).getItems());
-				}
-			});
-			
-			movementCollectionInventoryItemCollection.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
-				private static final long serialVersionUID = 1L;
-				public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
-					final DataTable.Cell cell = super.instanciateOne(column, row);
-					if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
-						Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
-					}
-					return cell;
-				}
-			});
-			
-		}
-		
-		listener.addPropertyRowsCollectionInstanceListener(detail, isCreateOrUpdate, movementCollectionInventoryItemCollection);
-		
-		movementCollectionInventoryItemCollection.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
-				super.addOne(instance, element, source, sourceObject);
-				if(element instanceof DataTable.Column){
-					DataTable.Column column = (DataTable.Column)element;
-					if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
-						if(isCreateOrUpdate)
-							column.setCellValueType(DataTable.Cell.ValueType.TEXT);
-					}
-				}
-			}
-		});
-		
-		movementCollectionInventoryItemCollection.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
-		movementCollectionInventoryItemCollection.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItem.FIELD_COLLECTION);
-		movementCollectionInventoryItemCollection.getPropertiesMap().setMaster(movementCollectionInventory);
-		movementCollectionInventoryItemCollection.getPropertiesMap().setIsAutomaticallyAddChoiceValues(Boolean.FALSE);
-		//dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
-		
-		movementCollectionInventoryItemCollection.prepare();
-		movementCollectionInventoryItemCollection.build();	
 	}
 	
 	public static void prepareMovementCollectionInventoryEditFormMaster(final Form.Detail detail){
