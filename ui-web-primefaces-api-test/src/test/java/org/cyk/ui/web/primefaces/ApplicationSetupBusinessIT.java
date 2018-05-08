@@ -30,10 +30,10 @@ public class ApplicationSetupBusinessIT extends AbstractBusinessIT {
     		store.setCode((String)storeArray[0]).setName((String)storeArray[1]);
     		store.setHasPartyAsCompany(Boolean.TRUE);
     		inject(GenericBusiness.class).create(store);
-    		for(Object[] movementCollectionArray : new Object[][]{{"OMO","Omo"},{"JAV","Javel"},{"SAC","Sac"}}){
+    		for(Object[] productArray : new Object[][]{{"OMO","Omo"},{"JAV","Javel"},{"SAC","Sac"}}){
     			MovementCollection movementCollection = inject(MovementCollectionBusiness.class).instanciateOne();
-    			movementCollection.setCode(store.getCode()+movementCollectionArray[0]);
-    			movementCollection.setName(store.getName()+" "+movementCollectionArray[1]);
+    			movementCollection.setCode(store.getCode()+productArray[0]);
+    			movementCollection.setName((String)productArray[1]);
     			movementCollection.setTypeFromCode(RootConstant.Code.MovementCollectionType.STOCK_REGISTER);
     			movementCollection.setIsCreateBufferAutomatically(Boolean.TRUE);
     			inject(GenericBusiness.class).create(movementCollection);

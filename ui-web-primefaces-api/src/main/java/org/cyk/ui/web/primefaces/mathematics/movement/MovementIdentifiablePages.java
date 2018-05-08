@@ -1,7 +1,6 @@
 package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -24,16 +23,12 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.helper.FieldHelper.Constraints;
 import org.cyk.utility.common.helper.LoggingHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
-import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail;
 import org.cyk.utility.common.userinterface.event.Event;
-import org.cyk.utility.common.userinterface.input.choice.InputChoice;
 
 public class MovementIdentifiablePages implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -341,7 +336,8 @@ public class MovementIdentifiablePages implements Serializable {
 				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
 		*/
 		
-		fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
+		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE) 
+				, MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
 	}
 	
 	public static void prepareMovementGroupEditFormMaster(final Form.Detail detail,MovementGroupEditFormMasterPrepareListener listener){

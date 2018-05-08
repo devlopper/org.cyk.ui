@@ -10,12 +10,12 @@ import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
-import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.Store;
 import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.FieldHelper.Constraints;
@@ -28,12 +28,14 @@ import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail;
 import org.cyk.utility.common.userinterface.event.Event;
 import org.cyk.utility.common.userinterface.input.choice.InputChoice;
-import org.cyk.utility.common.userinterface.output.OutputText;
 
 public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 	
 	void addPartyField(Form.Detail detail);
 	Collection<Party> findParties(Form.Detail detail);
+	Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass();
+	Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass();
+	Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass();
 	void addItemsDataTable(Form.Detail detail);
 	
 	public static class Adapter extends AbstractBean implements MovementCollectionInventoryEditFormMasterPrepareListener,Serializable {
@@ -44,17 +46,12 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 			
 			@Override
 			public void addPartyField(Detail detail) {
-				detail.addByControlGetListener(new Control.Listener.Get.Adapter(){
-					private static final long serialVersionUID = 1L;
+				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
+				detail.addByControlGetListener(ClassHelper.getInstance().instanciateOne(getPartyControlGetAdapterClass()),MovementCollectionInventory.FIELD_PARTY).addBreak();
+				
+				if(isCreateOrUpdate){
 					
-					@Override
-					public void processBeforeInitialise(Control control, Detail detail, Object object, Field field,Constraints constraints) {
-						super.processBeforeInitialise(control, detail, object, field, constraints);
-						if(control instanceof InputChoice)
-							((InputChoice<?>)control).setInstances(findParties(detail));
-					}
-					
-				},MovementCollectionInventory.FIELD_PARTY).addBreak();
+				}
 			}
 		
 			@Override
@@ -83,36 +80,11 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 						}
 					});
 					
-					movementCollectionInventoryItemCollection.getPropertiesMap().setCellListener(new DataTable.Cell.Listener.Adapter.Default(){
-						private static final long serialVersionUID = 1L;
-						public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
-							final DataTable.Cell cell = super.instanciateOne(column, row);
-							if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
-								Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
-							}else if(movementCollectionInventoryItemCollection.getChoiceValueClassMasterFieldName().equals(column.getPropertiesMap().getFieldName())) {
-								((OutputText)cell.getPropertiesMap().getValue()).getPropertiesMap().setValue("XXXXX");
-							}
-							return cell;
-						}
-					});
+					movementCollectionInventoryItemCollection.getPropertiesMap().setCellListener(ClassHelper.getInstance().instanciateOne(getItemsDataTableCellAdapterClass()));
 					
 				}
 				
-				movementCollectionInventoryItemCollection.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
-						super.addOne(instance, element, source, sourceObject);
-						if(element instanceof DataTable.Column){
-							DataTable.Column column = (DataTable.Column)element;
-							if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
-								if(isCreateOrUpdate)
-									column.setCellValueType(DataTable.Cell.ValueType.TEXT);
-							}
-						}
-					}
-				});
+				movementCollectionInventoryItemCollection.addColumnListener(ClassHelper.getInstance().instanciateOne(getItemsDataTableColumnAdapterClass()));
 				
 				movementCollectionInventoryItemCollection.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.TRUE);
 				movementCollectionInventoryItemCollection.getPropertiesMap().setMasterFieldName(MovementCollectionInventoryItem.FIELD_COLLECTION);
@@ -120,17 +92,28 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 				movementCollectionInventoryItemCollection.getPropertiesMap().setIsAutomaticallyAddChoiceValues(Boolean.FALSE);
 				//dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
 				
-				movementCollectionInventoryItemCollection.prepare();
+				prepareItemsDataTable(movementCollectionInventoryItemCollection);
 				movementCollectionInventoryItemCollection.build();	
-				
-				((OutputText)movementCollectionInventoryItemCollection.getPropertiesMap().getAddTextComponent()).getPropertiesMap().setValue("CL001");
-				((OutputText)movementCollectionInventoryItemCollection.getColumn(movementCollectionInventoryItemCollection.getChoiceValueClassMasterFieldName()).getPropertiesMap().getHeader()).getPropertiesMap().setValue("CL002");
-				((InputChoice<?>)movementCollectionInventoryItemCollection.getPropertiesMap().getAddInputComponent())
-					.setInputChoiceListener(new InputChoice.Listener.Adapter.Default(){
-						public String getChoiceLabel(Object value) {
-							return value+"???";
-						}
-					} );
+								
+			}
+		
+			protected void prepareItemsDataTable(DataTable movementCollectionInventoryItemCollection){
+				movementCollectionInventoryItemCollection.prepare();
+			}
+			
+			@Override
+			public Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass() {
+				return PartyControlGetAdapter.class;
+			}
+			
+			@Override
+			public Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass() {
+				return ItemsDataTableCellAdapter.class;
+			}
+			
+			@Override
+			public Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass() {
+				return ItemsDataTableColumnAdapter.class;
 			}
 		}
 		
@@ -143,9 +126,77 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 		}
 		
 		@Override
+		public Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass() {
+			return null;
+		}
+		
+		@Override
+		public Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass() {
+			return null;
+		}
+		
+		@Override
+		public Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass() {
+			return null;
+		}
+		
+		@Override
 		public void addItemsDataTable(Detail detail) {}
+
+		
 	}
 	
 	/**/
+	
+	public static class PartyControlGetAdapter extends Control.Listener.Get.Adapter implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		protected Collection<Party> findInstances(Form.Detail detail){
+			return inject(PartyBusiness.class).findByIdentifiablesByBusinessRoleCode(InstanceHelper.getInstance().get(Store.class), RootConstant.Code.BusinessRole.COMPANY);
+		}
+		
+		@Override
+		public void processBeforeInitialise(Control control, Detail detail, Object object, Field field,Constraints constraints) {
+			super.processBeforeInitialise(control, detail, object, field, constraints);
+			if(control instanceof InputChoice)
+				((InputChoice<?>)control).setInstances(findInstances(detail));
+		}
+		
+	}
+	
+	public static class ItemsDataTableColumnAdapter extends CollectionHelper.Instance.Listener.Adapter<Component> implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
+			super.addOne(instance, element, source, sourceObject);
+			if(element instanceof DataTable.Column){
+				DataTable.Column column = (DataTable.Column)element;
+				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)column._getPropertyAction());
+				if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
+					if(isCreateOrUpdate)
+						column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE).equals(column.getPropertiesMap().getFieldName())){
+					//((OutputText)column.getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
+					//column.getLabel().getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
+					if(isCreateOrUpdate)
+						column.setCellValueType(DataTable.Cell.ValueType.TEXT);
+				}
+			}
+		}
+	}
+	
+	public static class ItemsDataTableCellAdapter extends DataTable.Cell.Listener.Adapter.Default implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		public DataTable.Cell instanciateOne(DataTable.Column column, DataTable.Row row) {
+			final DataTable.Cell cell = super.instanciateOne(column, row);
+			if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
+				Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
+			}
+			return cell;
+		}
+		
+	}
 	
 }
