@@ -1,6 +1,7 @@
 package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -9,6 +10,7 @@ import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
+import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.Store;
 import org.cyk.utility.common.Action;
@@ -16,13 +18,17 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.FieldHelper.Constraints;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.LoggingHelper;
 import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.Control;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.container.Form;
 import org.cyk.utility.common.userinterface.container.Form.Detail;
 import org.cyk.utility.common.userinterface.event.Event;
+import org.cyk.utility.common.userinterface.input.choice.InputChoice;
+import org.cyk.utility.common.userinterface.output.OutputText;
 
 public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 	
@@ -38,7 +44,17 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 			
 			@Override
 			public void addPartyField(Detail detail) {
-				detail.add(MovementCollectionInventory.FIELD_PARTY).addBreak();
+				detail.addByControlGetListener(new Control.Listener.Get.Adapter(){
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public void processBeforeInitialise(Control control, Detail detail, Object object, Field field,Constraints constraints) {
+						super.processBeforeInitialise(control, detail, object, field, constraints);
+						if(control instanceof InputChoice)
+							((InputChoice<?>)control).setInstances(findParties(detail));
+					}
+					
+				},MovementCollectionInventory.FIELD_PARTY).addBreak();
 			}
 		
 			@Override
@@ -73,6 +89,8 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 							final DataTable.Cell cell = super.instanciateOne(column, row);
 							if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
 								Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
+							}else if(movementCollectionInventoryItemCollection.getChoiceValueClassMasterFieldName().equals(column.getPropertiesMap().getFieldName())) {
+								((OutputText)cell.getPropertiesMap().getValue()).getPropertiesMap().setValue("XXXXX");
 							}
 							return cell;
 						}
@@ -104,6 +122,15 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 				
 				movementCollectionInventoryItemCollection.prepare();
 				movementCollectionInventoryItemCollection.build();	
+				
+				((OutputText)movementCollectionInventoryItemCollection.getPropertiesMap().getAddTextComponent()).getPropertiesMap().setValue("CL001");
+				((OutputText)movementCollectionInventoryItemCollection.getColumn(movementCollectionInventoryItemCollection.getChoiceValueClassMasterFieldName()).getPropertiesMap().getHeader()).getPropertiesMap().setValue("CL002");
+				((InputChoice<?>)movementCollectionInventoryItemCollection.getPropertiesMap().getAddInputComponent())
+					.setInputChoiceListener(new InputChoice.Listener.Adapter.Default(){
+						public String getChoiceLabel(Object value) {
+							return value+"???";
+						}
+					} );
 			}
 		}
 		
