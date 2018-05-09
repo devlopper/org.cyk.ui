@@ -32,7 +32,6 @@ import org.cyk.utility.common.userinterface.input.choice.InputChoice;
 public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 	
 	void addPartyField(Form.Detail detail);
-	Collection<Party> findParties(Form.Detail detail);
 	Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass();
 	Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass();
 	Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass();
@@ -53,11 +52,6 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 					
 				}
 			}
-		
-			@Override
-			public Collection<Party> findParties(Detail detail) {
-				return inject(PartyBusiness.class).findByIdentifiablesByBusinessRoleCode(InstanceHelper.getInstance().get(Store.class), RootConstant.Code.BusinessRole.COMPANY);
-			}
 			
 			@Override
 			public void addItemsDataTable(Detail detail) {
@@ -76,6 +70,9 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 						@Override
 						public void __execute__(Action<?, ?> action) {
 							super.__execute__(action);
+							@SuppressWarnings("unchecked")
+							CollectionHelper.Instance<DataTable.Row> rows = (CollectionHelper.Instance<DataTable.Row>)movementCollectionInventoryItemCollection.getPropertiesMap().getRowsCollectionInstance();
+							rows.removeAll();
 							movementCollectionInventoryItemCollection.addManyRow(((MovementCollectionInventory)detail.getMaster().getObject()).getItems());
 						}
 					});
@@ -119,11 +116,6 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener {
 		
 		@Override
 		public void addPartyField(Detail detail) {}
-		
-		@Override
-		public Collection<Party> findParties(Detail detail) {
-			return null;
-		}
 		
 		@Override
 		public Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass() {
