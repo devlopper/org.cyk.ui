@@ -7,12 +7,12 @@ import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.party.Store;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 public class StoreIdentifiableEditPageFormMaster extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static void prepareStore(Form.Detail detail){
+	public static void prepareStore(FormDetail detail){
 		if(Constant.Action.CREATE.equals(detail._getPropertyAction())){
 			
 		}else{

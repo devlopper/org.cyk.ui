@@ -6,8 +6,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.utility.common.helper.ClassHelper;
-import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Master;
+import org.cyk.utility.common.userinterface.container.form.Form;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +17,9 @@ public class IdentifiableEditPage extends org.cyk.ui.web.api.resources.page.Iden
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	protected Class<? extends Master> getFormMasterClass() {
-		Class<? extends Master> clazz = super.getFormMasterClass();
-		if(Form.Master.class.equals(clazz))
+	protected Class<? extends Form> getFormMasterClass() {
+		Class<? extends Form> clazz = super.getFormMasterClass();
+		if(Form.class.equals(clazz))
 			clazz = ClassHelper.getInstance().getMapping(FormMaster.class);
 		return clazz;
 	}

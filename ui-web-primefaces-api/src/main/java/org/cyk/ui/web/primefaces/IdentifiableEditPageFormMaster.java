@@ -52,7 +52,8 @@ import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.RequestHelper;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.resources.page.controlpanel.IdentifiableEditPage.FormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
@@ -71,7 +72,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		}
 	}
 	
-	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
+	public Form setFromRequestParameter(Class<?> aClass,String fieldName){
 		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
 		if(MovementCollection.class.equals(actionOnClass)){
 			
@@ -101,11 +102,10 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	
 	@Override
 	protected void ____addCode____() {
-		if(GlobalIdentifier.class.equals(getPropertiesMap().getActionOnClass())){
+		if(ArrayUtils.contains(new Class<?>[]{GlobalIdentifier.class,MovementCollectionInventory.class,MovementGroup.class,MovementCollectionValuesTransfer.class
+			,MovementCollectionValuesTransferAcknowledgement.class}, getPropertiesMap().getActionOnClass())){
 			
 		}else if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
-			
-		}else if(MovementCollectionInventory.class.equals(getPropertiesMap().getActionOnClass())){
 			
 		}else
 			super.____addCode____();
@@ -115,7 +115,8 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	protected void ____addName____() {
 		if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
 			
-		}else if(MovementCollectionInventory.class.equals(getPropertiesMap().getActionOnClass())){
+		}else if(ArrayUtils.contains(new Class<?>[]{MovementCollectionInventory.class,MovementGroup.class,MovementCollectionValuesTransfer.class
+			,MovementCollectionValuesTransferAcknowledgement.class}, getPropertiesMap().getActionOnClass())){
 			
 		}else
 			super.____addName____();
@@ -134,7 +135,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	@Override
 	protected void __prepare__() {
 		super.__prepare__();
-		final Form.Detail detail = getDetail();
+		final FormDetail detail = getDetail();
 		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
 		detail.setFieldsObjectFromMaster();
 		
@@ -160,7 +161,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 				MovementIdentifiablePages.prepareMovementEditFormMaster(detail, actionOnClass);
 			}else if(MovementCollectionValuesTransferItemCollectionItem.class.equals(actionOnClass)){
 				
-			}else if(Interval.class.equals(actionOnClass)){
+			}else if(Interval.class.equals(actionOnClass)){ 
 				MathematicsIdentifiablePages.prepareIntervalEditFormMaster(detail, actionOnClass);
 			}else if(ClassHelper.getInstance().isInstanceOf(Contact.class, actionOnClass)){
 				if(PhoneNumber.class.equals(actionOnClass)){
@@ -307,7 +308,7 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 	
 	/**/
 	
-	private static void __preparePerson__(Form.Detail detail,String fieldName){
+	private static void __preparePerson__(FormDetail detail,String fieldName){
 		detail.setFieldsObjectFromMaster(fieldName,Person.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_CODE);
 		detail.add(GlobalIdentifier.FIELD_IMAGE,1,3).addBreak();
@@ -318,42 +319,42 @@ public class IdentifiableEditPageFormMaster extends org.cyk.ui.web.primefaces.re
 		detail.add(Person.FIELD_SEX).addBreak();
 	}
 	
-	public static void preparePerson(Form.Detail detail){
+	public static void preparePerson(FormDetail detail){
 		__preparePerson__(detail, null);
 	}
 	
-	public static void prepareActor(Form.Detail detail){
+	public static void prepareActor(FormDetail detail){
 		__preparePerson__(detail, AbstractActor.FIELD_PERSON);
 	}
 
 	/**/
 	
-	public static void addExistencePeriodFromDate(Form.Detail detail){
+	public static void addExistencePeriodFromDate(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_FROM_DATE)).addBreak();
 	}
 	
-	public static void addExistencePeriodToDate(Form.Detail detail){
+	public static void addExistencePeriodToDate(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD);
 		detail.add(FieldHelper.getInstance().buildPath(Period.FIELD_TO_DATE)).addBreak();
 	}
 	
-	public static void addOwner(Form.Detail detail){
+	public static void addOwner(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_OWNER).addBreak();
 	}
 	
-	public static void addClosed(Form.Detail detail){
+	public static void addClosed(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_CLOSED).addBreak();
 	}
 	
-	public static void addImage(Form.Detail detail){
+	public static void addImage(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_IMAGE).addBreak();
 	}
 	
-	public static void addDescription(Form.Detail detail){
+	public static void addDescription(FormDetail detail){
 		detail.setFieldsObjectFromMaster(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_DESCRIPTION).addBreak();
 	}

@@ -41,12 +41,13 @@ import org.cyk.utility.common.helper.IconHelper;
 import org.cyk.utility.common.helper.UniformResourceLocatorHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.MenuNode;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.FormMaster implements Serializable {
 	private static final long serialVersionUID = -6211058744595898478L;
 	
-	public Master setFromRequestParameter(Class<?> aClass,String fieldName){
+	public Form setFromRequestParameter(Class<?> aClass,String fieldName){
 		/*if(MovementCollection.class.equals(getPropertiesMap().getActionOnClass())){
 			
 		}else if(Movement.class.equals(getPropertiesMap().getActionOnClass())){
@@ -71,7 +72,7 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	@Override
 	protected void __prepare__() {
 		super.__prepare__();
-		Form.Detail detail = getDetail();
+		FormDetail detail = getDetail();
 		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
 		detail.setFieldsObjectFromMaster();
 		

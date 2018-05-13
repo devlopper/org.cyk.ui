@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 import org.cyk.utility.common.model.Area;
 import org.cyk.utility.common.userinterface.Control;
-import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
+import org.cyk.utility.common.userinterface.container.form.FormDetail.Builder.Target;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-public class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
+public class FormBuilderBasedOnDynamicForm extends FormDetail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Override

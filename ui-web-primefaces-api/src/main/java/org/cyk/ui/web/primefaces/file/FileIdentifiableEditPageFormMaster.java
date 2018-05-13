@@ -8,7 +8,7 @@ import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.language.programming.Script;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 public class FileIdentifiableEditPageFormMaster implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -17,7 +17,7 @@ public class FileIdentifiableEditPageFormMaster implements Serializable {
 		CollectionHelper.getInstance().add(fieldNames, File.FIELD_REPRESENTATION_TYPE, File.FIELD_EXTENSION, File.FIELD_MIME);
 	}
 	
-	public static void prepareFile(final Form.Detail detail,Class<?> aClass){
+	public static void prepareFile(final FormDetail detail,Class<?> aClass){
 		detail.add(File.FIELD_REPRESENTATION_TYPE).addBreak();
 		detail.add(File.FIELD_UNIFORM_RESOURCE_IDENTIFIER).addBreak();
 		
@@ -37,7 +37,7 @@ public class FileIdentifiableEditPageFormMaster implements Serializable {
 				,GlobalIdentifier.FIELD_TEXT));
 	}
 	
-	public static void prepareScript(final Form.Detail detail,Class<?> aClass){
+	public static void prepareScript(final FormDetail detail,Class<?> aClass){
 		detail.add(Script.FIELD_EVALUATION_ENGINE).addBreak();
 		detail.setFieldsObjectFromMaster(Script.FIELD_GLOBAL_IDENTIFIER);
 		detail.add(GlobalIdentifier.FIELD_TEXT).addBreak();

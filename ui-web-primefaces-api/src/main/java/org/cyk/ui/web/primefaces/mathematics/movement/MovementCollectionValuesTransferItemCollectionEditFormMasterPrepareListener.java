@@ -20,8 +20,8 @@ import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.collection.DataTable;
-import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail;
+import org.cyk.utility.common.userinterface.collection.Row;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +29,8 @@ import lombok.experimental.Accessors;
 
 public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener {
 	
-	void addPropertyRowsCollectionInstanceListener(final Form.Detail detail,final String fieldName,final Boolean isCreateOrUpdate,final DataTable dataTable);
-	MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
+	void addPropertyRowsCollectionInstanceListener(final FormDetail detail,final String fieldName,final Boolean isCreateOrUpdate,final DataTable dataTable);
+	MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
 	AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender,EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier);
 	
 	Boolean getIsSourceMovementCollectionMustBeBuffer();
@@ -46,10 +46,10 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 		protected Boolean isDetinationMovementCollectionMustBeBuffer,isSourceMovementCollectionMustBeBuffer;
 		
 		@Override
-		public void addPropertyRowsCollectionInstanceListener(Detail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
+		public void addPropertyRowsCollectionInstanceListener(FormDetail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
 		
 		@Override
-		public MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
+		public MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
 			return null;
 		}
 		
@@ -73,12 +73,12 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public void addPropertyRowsCollectionInstanceListener(final Detail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {
+			public void addPropertyRowsCollectionInstanceListener(final FormDetail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {
 				((CollectionHelper.Instance<Object>)dataTable.getPropertyRowsCollectionInstance()).addListener(new CollectionHelper.Instance.Listener.Adapter<Object>(){
 					private static final long serialVersionUID = 1L;
 							
 					public void addOne(CollectionHelper.Instance<Object> instance, Object element, Object source, Object sourceObject) {
-						DataTable.Row row = (DataTable.Row) element;
+						Row row = (Row) element;
 						MovementCollectionValuesTransferItemCollectionItem item = (MovementCollectionValuesTransferItemCollectionItem) row.getPropertiesMap().getValue();
 						InstanceHelper.getInstance().computeChanges(item.getSource());
 						EndPoint sender = new EndPoint(),receiver = new EndPoint();
@@ -134,7 +134,7 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 			}
 			
 			@Override
-			public MovementCollection getDestinationMovementCollection(Form.Detail detail,EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
+			public MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
 				MovementCollection movementCollection = null;
 				if(source!=null){
 					if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){

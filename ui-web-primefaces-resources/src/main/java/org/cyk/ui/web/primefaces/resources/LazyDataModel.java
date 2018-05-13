@@ -15,10 +15,10 @@ import org.cyk.utility.common.helper.FilterHelper;
 import org.cyk.utility.common.helper.FilterHelper.Filter;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.Component;
-import org.cyk.utility.common.userinterface.collection.DataTable;
+import org.cyk.utility.common.userinterface.collection.Row;
 import org.primefaces.model.SortOrder;
 
-public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTable.Row> implements Serializable {
+public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<Row> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	protected Component component;
@@ -56,7 +56,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 	}
 	
 	@Override
-	public List<DataTable.Row> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters) {
+	public List<Row> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, Object> filters) {
 		List<T> instances = __getInstances__(first, pageSize, sortField, sortOrder, filters);
 		
 		if(Boolean.TRUE.equals(isFilterable(filters)))
@@ -70,7 +70,7 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<DataTab
 		if(Boolean.TRUE.equals(isPageable(first,pageSize)))
 			instances = page(instances, first,pageSize);
 		
-		List<DataTable.Row> rows = CollectionHelper.getInstance().isEmpty(instances) ? new ArrayList<DataTable.Row>() : (List<DataTable.Row>) DataTable.Row.instanciateMany(instances,component,null).getElements();
+		List<Row> rows = CollectionHelper.getInstance().isEmpty(instances) ? new ArrayList<Row>() : (List<Row>) Row.instanciateMany(instances,component,null).getElements();
 		
 		if("__orderNumber__".equals(sortField))
 			sort(rows, sortOrder, sortField);

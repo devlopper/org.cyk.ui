@@ -23,6 +23,7 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
@@ -68,6 +69,8 @@ public class DataTable {
 					MathematicsIdentifiablePages.processIntervalCollectionColumnsFieldNames(dataTable, fieldNames);
 				else if(MovementCollection.class.equals(actionOnClass))
 					MovementIdentifiablePages.processMovementCollectionColumnsFieldNames(dataTable, fieldNames);
+				else if(MovementCollectionInventory.class.equals(actionOnClass))
+					MovementIdentifiablePages.processMovementCollectionInventoryColumnsFieldNames(dataTable, fieldNames);
 			}else if(ClassHelper.getInstance().isInstanceOf(AbstractCollectionItem.class, actionOnClass)){
 				if(!(dataTable.getPropertiesMap().getMaster() instanceof AbstractCollection))
 					fieldNames.add(AbstractCollectionItem.FIELD_COLLECTION);

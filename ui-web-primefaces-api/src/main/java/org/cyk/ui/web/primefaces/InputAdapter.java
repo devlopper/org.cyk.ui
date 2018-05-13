@@ -14,7 +14,7 @@ import org.cyk.system.root.model.party.person.Person;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.FileHelper;
-import org.cyk.utility.common.userinterface.container.Form.Detail;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 import org.cyk.utility.common.userinterface.input.Input;
 import org.cyk.utility.common.userinterface.input.InputEditor;
 import org.cyk.utility.common.userinterface.input.InputFile;
@@ -36,7 +36,7 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 	}
 	
 	@Override
-	public Collection<String> getFieldNames(Detail form, Object object) {
+	public Collection<String> getFieldNames(FormDetail form, Object object) {
 		if(object instanceof Person)
 			return Arrays.asList("inputTextarea","inputText","inputPassword");
 		if(object instanceof GlobalIdentifier)
@@ -48,7 +48,7 @@ public class InputAdapter extends org.cyk.ui.web.primefaces.resources.InputAdapt
 	}
 	
 	@Override
-	public Class<? extends Input<?>> getClass(Detail detail, Object object, Field field) {
+	public Class<? extends Input<?>> getClass(FormDetail detail, Object object, Field field) {
 		if(object instanceof GlobalIdentifier){
 			if(field.getName().equals(GlobalIdentifier.FIELD_CODE))
 				return InputText.class;

@@ -51,8 +51,8 @@ import org.cyk.ui.web.primefaces.page.DetailsConfiguration;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 import org.cyk.utility.common.annotation.user.interfaces.InputChoice.ChoiceSet;
-import org.cyk.utility.common.userinterface.container.Form;
-import org.cyk.utility.common.userinterface.container.Form.Detail.Builder.Target;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
+import org.cyk.utility.common.userinterface.container.form.FormDetail.Builder.Target;
 import org.cyk.utility.common.userinterface.output.OutputText;
 import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
@@ -325,7 +325,7 @@ public class PrimefacesManager extends AbstractUITargetManager<DynaFormModel,Dyn
 	
 	/**/
 	
-	public static class FormBuilderBasedOnDynamicForm extends Form.Detail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
+	public static class FormBuilderBasedOnDynamicForm extends FormDetail.Builder.Target.Adapter.Default<DynaFormModel, DynaFormControl,DynaFormRow, DynaFormLabel> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

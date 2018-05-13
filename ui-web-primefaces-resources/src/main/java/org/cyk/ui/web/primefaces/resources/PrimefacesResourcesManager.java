@@ -40,11 +40,14 @@ import org.cyk.utility.common.userinterface.InteractivityBlocker;
 import org.cyk.utility.common.userinterface.Notifications;
 import org.cyk.utility.common.userinterface.Request;
 import org.cyk.utility.common.userinterface.RequestHelper;
+import org.cyk.utility.common.userinterface.collection.Column;
+import org.cyk.utility.common.userinterface.collection.Columns;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.command.Command;
 import org.cyk.utility.common.userinterface.command.Menu;
 import org.cyk.utility.common.userinterface.command.RemoteCommand;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 import org.cyk.utility.common.userinterface.container.window.Window;
 import org.cyk.utility.common.userinterface.event.Confirm;
 import org.cyk.utility.common.userinterface.event.Event;
@@ -117,7 +120,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		ClassHelper.getInstance().map(UniformResourceLocatorHelper.Listener.class,org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class,Boolean.FALSE);
 		ClassHelper.getInstance().map(Output.Listener.class,OutputAdapter.class,Boolean.FALSE);
 		ClassHelper.getInstance().map(Component.Listener.class,ComponentAdapter.class,Boolean.FALSE);
-		ClassHelper.getInstance().map(Form.Detail.Builder.Target.class,FormBuilderBasedOnDynamicForm.class,Boolean.FALSE);
+		ClassHelper.getInstance().map(FormDetail.Builder.Target.class,FormBuilderBasedOnDynamicForm.class,Boolean.FALSE);
 		
 		UniformResourceLocatorHelper.PathStringifier.Adapter.Default.DEFAULT_UNIFORM_RESOURCE_LOCATOR_LISTENER_CLASS = org.cyk.ui.web.api.resources.helper.UniformResourceLocatorHelper.Listener.class;
 		
@@ -144,10 +147,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 		Properties.setDefaultValue(OutputLink.class, Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/outputLink.xhtml");
 		Properties.setDefaultValue(OutputLink.class, Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/outputLink/default.xhtml");
 		
-		Properties.setDefaultValues(Form.Master.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form/include.xhtml"
+		Properties.setDefaultValues(Form.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/form/include.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/form/default.xhtml"});
 		
-		Properties.setDefaultValues(Form.Detail.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/dynaForm.xhtml"
+		Properties.setDefaultValues(FormDetail.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/dynaForm.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/dynaForm/default.xhtml"});
 		
 		Properties.setDefaultValues(InteractivityBlocker.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/blockUI/blockUI.xhtml"
@@ -168,10 +171,10 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 				,Properties.PAGE_LINKS,10,Properties.PAGINATOR_POSITION,"bottom"
 				,Properties.EMPTY_MESSAGE,StringHelper.getInstance().get("notification.data.collection.empty", new Object[]{})});
 		
-		Properties.setDefaultValues(DataTable.Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"
+		Properties.setDefaultValues(Column.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/column.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/column/default.xhtml"});
 		
-		Properties.setDefaultValues(DataTable.Columns.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/columns.xhtml"
+		Properties.setDefaultValues(Columns.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/collection/columns.xhtml"
 				,Properties.INCLUDE, "/org.cyk.ui.web.primefaces.resources/include/collection/columns/default.xhtml"});
 		/*
 		Properties.setDefaultValues(Watermark.class, new Object[]{Properties.TEMPLATE, "/org.cyk.ui.web.primefaces.resources/template/decorate/watermark/watermark.xhtml"
@@ -335,8 +338,8 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 					if(menu.getBuilt()==null)
 						menu.build();
 					
-				}else if(instance instanceof Form.Master){
-					Form.Master form = (Form.Master) instance;
+				}else if(instance instanceof Form){
+					Form form = (Form) instance;
 					form.getSubmitCommand().getPropertiesMap().addString(Properties.PROCESS, "@this"); 
 					//setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
 					//form.getSubmitCommand().getPropertiesMap().setProcess("@this "+form.getDetail().getPropertiesMap().getIdentifier());
@@ -760,7 +763,7 @@ public class PrimefacesResourcesManager extends AbstractBean implements Serializ
 	
 	/**/
 	
-	public static void setInteractivityBlocker(Form.Master form,Boolean global){
+	public static void setInteractivityBlocker(Form form,Boolean global){
 		setInteractivityBlocker(form, form.getSubmitCommand(), (String)form.getDetail().getPropertiesMap().getIdentifier(), global);
 		/*form.getSubmitCommand().getPropertiesMap().setGlobal(global);
 		if(Boolean.TRUE.equals(global)){

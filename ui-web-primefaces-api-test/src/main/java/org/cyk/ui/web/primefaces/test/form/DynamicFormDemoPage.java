@@ -13,8 +13,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
-import org.cyk.utility.common.userinterface.Component;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 import org.cyk.utility.common.userinterface.input.InputText;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -97,7 +96,7 @@ public class DynamicFormDemoPage extends AbstractPrimefacesPage implements Seria
     }
     
     private DynaFormModel createModel2(){
-    	Form.Detail formDetail = new Form.Detail();
+    	FormDetail formDetail = new FormDetail();
     	InputText c1 = new InputText();
     	c1.setLabelFromIdentifier("f1");
     	InputText c2 = new InputText();
@@ -119,7 +118,7 @@ public class DynamicFormDemoPage extends AbstractPrimefacesPage implements Seria
     	formDetail.getLayout().setType( org.cyk.utility.common.userinterface.Layout.Type.ADAPTIVE);
     	formDetail.layOut(c1).layOut(c2).layOutBreak().layOut(c3).layOutBreak().layOut(c4).layOut(c5).layOutBreak().layOut(c6).layOut(c7).layOutBreak().layOut(c8).layOutBreak();
 		
-    	DynaFormModel model = (DynaFormModel) Form.Detail.buildTarget(formDetail);
+    	DynaFormModel model = (DynaFormModel) FormDetail.buildTarget(formDetail);
     	
         return model;
     }

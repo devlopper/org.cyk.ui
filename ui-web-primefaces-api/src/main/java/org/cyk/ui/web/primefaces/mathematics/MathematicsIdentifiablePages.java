@@ -7,12 +7,12 @@ import org.cyk.system.root.model.mathematics.Interval;
 import org.cyk.system.root.model.mathematics.IntervalCollection;
 import org.cyk.system.root.model.mathematics.IntervalExtremity;
 import org.cyk.utility.common.userinterface.collection.DataTable;
-import org.cyk.utility.common.userinterface.container.Form;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 
 public class MathematicsIdentifiablePages implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static void prepareIntervalCollectionEditFormMaster(final Form.Detail detail,Class<?> aClass){
+	public static void prepareIntervalCollectionEditFormMaster(final FormDetail detail,Class<?> aClass){
 		detail.add(IntervalCollection.FIELD_LOWEST_VALUE).addBreak();
 		detail.add(IntervalCollection.FIELD_HIGHEST_VALUE).addBreak();	
 	}
@@ -23,7 +23,7 @@ public class MathematicsIdentifiablePages implements Serializable {
 		//fieldNames.add(IntervalCollection.FIELD_NUMBER_OF_DECIMAL_AFTER_DOT);
 	}
 	
-	public static void prepareIntervalEditFormMaster(final Form.Detail detail,Class<?> aClass){
+	public static void prepareIntervalEditFormMaster(final FormDetail detail,Class<?> aClass){
 		detail.setFieldsObjectFromMaster(Interval.FIELD_LOW);
 		detail.addFieldName(IntervalExtremity.FIELD_VALUE,"lowest.value");
 		detail.add(IntervalExtremity.FIELD_EXCLUDED).addBreak();
