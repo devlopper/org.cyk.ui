@@ -8,6 +8,7 @@ import org.cyk.system.root.business.api.party.PartyBusiness;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.RootConstant;
+import org.cyk.system.root.model.mathematics.movement.AbstractMovementCollections;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.Store;
@@ -16,6 +17,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.FieldHelper.Constraints;
 import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.LoggingHelper;
@@ -29,11 +31,14 @@ import org.cyk.utility.common.userinterface.container.form.FormDetail;
 import org.cyk.utility.common.userinterface.event.Event;
 import org.cyk.utility.common.userinterface.input.choice.InputChoice;
 
-public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> {
+import lombok.Getter;
+
+public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION extends AbstractMovementCollections<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> {
 	
 	Class<COLLECTION> getCollectionClass();
 	Class<ITEM> getItemClass();
 	String getPartyFieldName();
+	MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION,ITEM> setPartyFieldName(String partyFieldName);
 	void addFields(FormDetail detail);
 	void addPartyField(FormDetail detail);
 	Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass();
@@ -41,31 +46,40 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 	Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass();
 	void addItemsDataTable(FormDetail detail);
 	
-	public static class Adapter<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractBean implements MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION,ITEM>,Serializable {
+	COLLECTION getCollection(FormDetail detail);
+	
+	@Getter
+	public static class Adapter<COLLECTION extends AbstractMovementCollections<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends AbstractBean implements MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION,ITEM>,Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		public static class Default<COLLECTION extends AbstractCollection<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends MovementCollectionByPartyEditFormMasterPrepareListener.Adapter<COLLECTION,ITEM> implements Serializable {
+		protected String partyFieldName;
+		
+		public static class Default<COLLECTION extends AbstractMovementCollections<ITEM>,ITEM extends AbstractCollectionItem<COLLECTION>> extends MovementCollectionByPartyEditFormMasterPrepareListener.Adapter<COLLECTION,ITEM> implements Serializable {
 			private static final long serialVersionUID = 1L;
+			
+			{
+				partyFieldName = Party.VARIABLE_NAME;
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public COLLECTION getCollection(FormDetail detail) {
+				return (COLLECTION) detail.getMaster().getObject();
+			}
 			
 			@Override
 			public void addFields(FormDetail detail) {
-				@SuppressWarnings("unchecked")
-				final COLLECTION collection = (COLLECTION) detail.getMaster().getObject();
+				final COLLECTION collection = getCollection(detail);
 				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 				collection.getItems().setSynchonizationEnabled(isCreateOrUpdate);
 				collection.getItems().removeAll(); // will be filled up by the data table load call				
 				addPartyField(detail);
 			}
 			
-			@Override
-			public String getPartyFieldName() {
-				return ClassHelper.getInstance().getVariableName(Party.class);
-			}
-			
 			@SuppressWarnings("unchecked")
 			@Override
 			public Class<COLLECTION> getCollectionClass() {
-				return (Class<COLLECTION>) ClassHelper.getInstance().getParameterAt(getClass(), 0, AbstractCollection.class);
+				return (Class<COLLECTION>) ClassHelper.getInstance().getParameterAt(getClass(), 0, AbstractMovementCollections.class);
 			}
 			
 			@SuppressWarnings("unchecked")
@@ -77,8 +91,17 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 			@Override
 			public void addPartyField(FormDetail detail) {
 				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-				detail.addByControlGetListener(ClassHelper.getInstance().instanciateOne(getPartyControlGetAdapterClass()),getPartyFieldName()).addBreak();
-				
+				String partyFieldName = getPartyFieldName();
+				String before = FieldHelper.getInstance().getBeforeLast(partyFieldName);
+				String last = FieldHelper.getInstance().getLast(partyFieldName);
+				if(!partyFieldName.equals(before)){
+					System.out.println(before);
+					detail.setFieldsObjectFromMaster(before);
+				}
+				System.out.println(
+						"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addPartyField() : "+last);
+				detail.addByControlGetListener(ClassHelper.getInstance().instanciateOne(getPartyControlGetAdapterClass()),last).addBreak();
+				detail.setFieldsObjectFromMaster();
 				if(isCreateOrUpdate){
 					
 				}
@@ -86,15 +109,13 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 			
 			@Override
 			public void addItemsDataTable(FormDetail detail) {
-				@SuppressWarnings("unchecked")
-				final COLLECTION collection = (COLLECTION) detail.getMaster().getObject();
+				final COLLECTION collection = getCollection(detail);
 				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 				final DataTable dataTable = detail.getMaster().instanciateDataTable(getItemClass(),MovementCollection.class,new Cell.Listener.Adapter.Default(),Boolean.TRUE);
 				
 				if(isCreateOrUpdate){
 					/* events */
-					
-					Event event = Event.instanciateOne(detail, getPartyFieldName(), new String[]{});
+					Event event = Event.instanciateOne(detail, getPartyFieldName()/*"party"*/, new String[]{});
 					
 					event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
 						private static final long serialVersionUID = 1L;
@@ -106,6 +127,10 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 							CollectionHelper.Instance<Row> rows = (CollectionHelper.Instance<Row>)dataTable.getPropertiesMap().getRowsCollectionInstance();
 							rows.removeAll();
 							dataTable.addManyRow(collection.getItems());
+							System.out.println(
+									"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addItemsDataTable(...).new ActionAdapter() {...}.__execute__()");
+							System.out.println(collection.getParty());
+							System.out.println(collection.getItems().getElements());
 						}
 					});
 					
@@ -144,6 +169,22 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 			public Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass() {
 				return ItemsDataTableColumnAdapter.class;
 			}
+			
+			@Override
+			public MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION, ITEM> setPartyFieldName(String partyFieldName) {
+				this.partyFieldName = partyFieldName;
+				return this;
+			}
+		}
+		
+		@Override
+		public MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION, ITEM> setPartyFieldName(String partyFieldName) {
+			return null;
+		}
+		
+		@Override
+		public COLLECTION getCollection(FormDetail detail) {
+			return null;
 		}
 		
 		@Override
@@ -156,11 +197,6 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 		
 		@Override
 		public Class<ITEM> getItemClass() {
-			return null;
-		}
-		
-		@Override
-		public String getPartyFieldName() {
 			return null;
 		}
 		

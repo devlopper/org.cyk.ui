@@ -2,34 +2,44 @@ package org.cyk.ui.web.primefaces.mathematics.movement;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.root.business.api.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.business.api.party.BusinessRoleBusiness;
 import org.cyk.system.root.business.api.party.PartyIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.RootConstant;
+import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransfer;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferAcknowledgement;
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.Store;
 import org.cyk.system.root.persistence.api.party.StoreDao;
-import org.cyk.utility.common.cdi.AbstractBean;
+import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.Constant.Action;
 import org.cyk.utility.common.helper.CollectionHelper;
+import org.cyk.utility.common.helper.FieldHelper;
 import org.cyk.utility.common.helper.InstanceHelper;
+import org.cyk.utility.common.helper.StringHelper;
+import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.collection.Cell;
+import org.cyk.utility.common.userinterface.collection.Column;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.collection.Row;
 import org.cyk.utility.common.userinterface.container.form.FormDetail;
+import org.cyk.utility.common.userinterface.event.Event;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener {
+public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener extends MovementCollectionByPartyEditFormMasterPrepareListener<MovementCollectionValuesTransferItemCollection, MovementCollectionValuesTransferItemCollectionItem> {
 	
-	void addPropertyRowsCollectionInstanceListener(final FormDetail detail,final String fieldName,final Boolean isCreateOrUpdate,final DataTable dataTable);
 	MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined);
 	AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender,EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier);
 	
@@ -39,41 +49,59 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 	Boolean getIsDetinationMovementCollectionMustBeBuffer();
 	MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean isDetinationMovementCollectionMustBeBuffer);
 	
+	String getFieldName();
+	MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setFieldName(String fieldName);
+	
 	@Getter
-	public static class Adapter extends AbstractBean implements MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener,Serializable {
+	public static class Adapter extends MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default<MovementCollectionValuesTransferItemCollection, MovementCollectionValuesTransferItemCollectionItem> implements MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener,Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		protected Boolean isDetinationMovementCollectionMustBeBuffer,isSourceMovementCollectionMustBeBuffer;
-		
-		@Override
-		public void addPropertyRowsCollectionInstanceListener(FormDetail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {}
-		
-		@Override
-		public MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
-			return null;
-		}
-		
-		@Override
-		public AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender, EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier) {
-			return null;
-		}
-		
-		@Override
-		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsSourceMovementCollectionMustBeBuffer(Boolean value) {
-			return null;
-		}
-		
-		@Override
-		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean value) {
-			return null;
-		}
+		protected String fieldName;
 		
 		public static class Default extends MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.Adapter implements Serializable {
 			private static final long serialVersionUID = 1L;
 			
+			@Override
+			public MovementCollectionValuesTransferItemCollection getCollection(FormDetail detail) {
+				String fieldName = getFieldName();
+				if(StringHelper.getInstance().isNotBlank(fieldName))
+					return (MovementCollectionValuesTransferItemCollection) FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName);
+				return super.getCollection(detail);
+			}
+			
+			@Override
+			public Class<MovementCollectionValuesTransferItemCollection> getCollectionClass() {
+				return MovementCollectionValuesTransferItemCollection.class;
+			}
+			
+			@Override
+			public Class<MovementCollectionValuesTransferItemCollectionItem> getItemClass() {
+				return MovementCollectionValuesTransferItemCollectionItem.class;
+			}
+			
+			@Override
+			public Class<? extends MovementCollectionByPartyEditFormMasterPrepareListener.PartyControlGetAdapter> getPartyControlGetAdapterClass() {
+				return MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.PartyControlGetAdapter.class;
+			}
+			
+			@Override
+			public Class<? extends MovementCollectionByPartyEditFormMasterPrepareListener.ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass() {
+				return MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.ItemsDataTableCellAdapter.class;
+			}
+			
+			@Override
+			public Class<? extends MovementCollectionByPartyEditFormMasterPrepareListener.ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass() {
+				return MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.ItemsDataTableColumnAdapter.class;
+			}
+			
 			@SuppressWarnings("unchecked")
 			@Override
-			public void addPropertyRowsCollectionInstanceListener(final FormDetail detail, String fieldName,Boolean isCreateOrUpdate, DataTable dataTable) {
+			protected void prepareItemsDataTable(DataTable dataTable) {
+				final FormDetail detail = dataTable.getForm();
+				MovementCollectionValuesTransferItemCollection movementsTransferItemCollection = (MovementCollectionValuesTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
+						: FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName));
+				
 				((CollectionHelper.Instance<Object>)dataTable.getPropertyRowsCollectionInstance()).addListener(new CollectionHelper.Instance.Listener.Adapter<Object>(){
 					private static final long serialVersionUID = 1L;
 							
@@ -131,8 +159,15 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 					}		
 					
 				});
+				
+				dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.FALSE);
+				dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionValuesTransferItemCollectionItem.FIELD_COLLECTION);
+				dataTable.getPropertiesMap().setMaster(movementsTransferItemCollection);
+				dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
+				
+				super.prepareItemsDataTable(dataTable);
 			}
-			
+				
 			@Override
 			public MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender, EndPoint receiver,MovementCollection source, AbstractIdentifiable sourceIdentifiableJoined) {
 				MovementCollection movementCollection = null;
@@ -166,6 +201,40 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 				this.isDetinationMovementCollectionMustBeBuffer = isDetinationMovementCollectionMustBeBuffer;
 				return this;
 			}
+		
+			@Override
+			public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setFieldName(String fieldName) {
+				this.fieldName = fieldName;
+				if(StringHelper.getInstance().isNotBlank(this.fieldName) && !StringUtils.startsWith(getPartyFieldName(), this.fieldName+".")){
+					setPartyFieldName(FieldHelper.getInstance().buildPath(this.fieldName,getPartyFieldName()));
+				}
+				return this;
+			}
+		}
+	
+		@Override
+		public MovementCollection getDestinationMovementCollection(FormDetail detail,EndPoint sender,EndPoint receiver,MovementCollection source,AbstractIdentifiable sourceIdentifiableJoined) {
+			return null;
+		}
+		
+		@Override
+		public AbstractIdentifiable getSourceIdentifiableJoined(EndPoint sender, EndPoint receiver,MovementCollection source,MovementCollectionIdentifiableGlobalIdentifier movementCollectionIdentifiableGlobalIdentifier) {
+			return null;
+		}
+		
+		@Override
+		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsSourceMovementCollectionMustBeBuffer(Boolean value) {
+			return null;
+		}
+		
+		@Override
+		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setIsDetinationMovementCollectionMustBeBuffer(Boolean value) {
+			return null;
+		}
+	
+		@Override
+		public MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener setFieldName(String fieldName) {
+			return null;
 		}
 	}
 	
@@ -177,6 +246,58 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 		
 		private Party party;
 		private Store store;
+		
+	}
+	
+	public static class PartyControlGetAdapter extends MovementCollectionByPartyEditFormMasterPrepareListener.PartyControlGetAdapter implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+	}
+	
+	public static class ItemsDataTableColumnAdapter extends MovementCollectionByPartyEditFormMasterPrepareListener.ItemsDataTableColumnAdapter implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
+			super.addOne(instance, element, source, sourceObject);
+			if(element instanceof Column){
+				Column column = (Column)element;
+				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Action) column._getPropertyAction());
+				if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+					if(isCreateOrUpdate)
+						column.setCellValueType(Cell.ValueType.TEXT);
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+					if(isCreateOrUpdate)
+						column.setCellValueType(Cell.ValueType.TEXT);
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+					if(isCreateOrUpdate)
+						column.setCellValueType(Cell.ValueType.TEXT);
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
+					if(isCreateOrUpdate)
+						column.setCellValueType(Cell.ValueType.TEXT);
+				}
+			}
+		}
+	}
+	
+	public static class ItemsDataTableCellAdapter extends MovementCollectionByPartyEditFormMasterPrepareListener.ItemsDataTableCellAdapter implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
+		public Cell instanciateOne(Column column, Row row) {
+			final Cell cell = super.instanciateOne(column, row);
+			if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)}
+				,column.getPropertiesMap().getFieldName())){
+				Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
+						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
+				
+			}else if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_VALUE_ABSOLUTE)}
+				,column.getPropertiesMap().getFieldName())){
+				Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL)
+						,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
+			}
+			
+			return cell;
+		}
 		
 	}
 }

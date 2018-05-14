@@ -18,13 +18,10 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.time.Period;
-import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.helper.LoggingHelper;
-import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
@@ -177,80 +174,14 @@ public class MovementIdentifiablePages implements Serializable {
 		}
 	}
 	
-	public static DataTable prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final FormDetail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){
-		MovementCollectionValuesTransferItemCollection movementsTransferItemCollection = (MovementCollectionValuesTransferItemCollection) (StringHelper.getInstance().isBlank(fieldName) ? detail.getMaster().getObject() 
-				: FieldHelper.getInstance().read(detail.getMaster().getObject(), fieldName));
-		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-		movementsTransferItemCollection.getItems().setSynchonizationEnabled(isCreateOrUpdate);
-		movementsTransferItemCollection.getItems().removeAll(); // will be filled up by the data table load call
-		
-		//DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionValuesTransferItemCollectionItem.class,isCreateOrUpdate ? MovementCollection.class : null,new Cell.Listener.Adapter.Default(),Boolean.TRUE);
-		DataTable dataTable = detail.getMaster().instanciateDataTable(MovementCollectionValuesTransferItemCollectionItem.class,MovementCollection.class,new Cell.Listener.Adapter.Default(),Boolean.TRUE);
-		
-		if(isCreateOrUpdate){
-			/* events */
-			
-			dataTable.getPropertiesMap().setCellListener(new Cell.Listener.Adapter.Default(){
-				private static final long serialVersionUID = 1L;
-				public Cell instanciateOne(Column column, Row row) {
-					final Cell cell = super.instanciateOne(column, row);
-					if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_COLLECTION)}
-						,column.getPropertiesMap().getFieldName())){
-						Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL)
-								,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
-						
-					}else if(ArrayUtils.contains(new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_VALUE_ABSOLUTE)}
-						,column.getPropertiesMap().getFieldName())){
-						Event.instanciateOne(cell, new String[]{FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL)
-								,FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL)},new String[]{});
-					}
-					
-					return cell;
-				}
-			});
-			
-		}
-		
-		listener.addPropertyRowsCollectionInstanceListener(detail, fieldName, isCreateOrUpdate, dataTable);
-		
-		dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
-				super.addOne(instance, element, source, sourceObject);
-				if(element instanceof Column){
-					Column column = (Column)element;
-					if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
-						if(isCreateOrUpdate)
-							column.setCellValueType(Cell.ValueType.TEXT);
-					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
-						if(isCreateOrUpdate)
-							column.setCellValueType(Cell.ValueType.TEXT);
-					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_PREVIOUS_CUMUL).equals(column.getPropertiesMap().getFieldName())){
-						if(isCreateOrUpdate)
-							column.setCellValueType(Cell.ValueType.TEXT);
-					}else if(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION,Movement.FIELD_CUMUL).equals(column.getPropertiesMap().getFieldName())){
-						if(isCreateOrUpdate)
-							column.setCellValueType(Cell.ValueType.TEXT);
-					}
-				}
-			}
-		});
-		
-		dataTable.getPropertiesMap().setChoicesIsSourceDisjoint(Boolean.FALSE);
-		dataTable.getPropertiesMap().setMasterFieldName(MovementCollectionValuesTransferItemCollectionItem.FIELD_COLLECTION);
-		dataTable.getPropertiesMap().setMaster(movementsTransferItemCollection);
-		dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
-		
-		dataTable.prepare();
-		dataTable.build();	
-		
-		return dataTable;
+	public static void prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final FormDetail detail,final String fieldName,MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener listener){		
+		listener.addFields(detail);		
+		listener.addItemsDataTable(detail);
 	}
 	
-	public static DataTable prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final FormDetail detail,final String fieldName){
-		return prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, fieldName, ClassHelper.getInstance().instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class));
+	public static void prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(final FormDetail detail,final String fieldName){
+		prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, fieldName, ClassHelper.getInstance()
+				.instanciateOne(MovementCollectionValuesTransferItemCollectionEditFormMasterPrepareListener.class).setFieldName(fieldName));
 	}
 	
 	public static void processMovementCollectionValuesTransferItemCollectionItemColumnsFieldNames(DataTable dataTable,Collection<String> fieldNames) {
@@ -294,10 +225,10 @@ public class MovementIdentifiablePages implements Serializable {
 		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
 		detail.add(MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER).addBreak();
 	
-		final DataTable movementCollectionValuesTransferItemCollection = prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
+		prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
 		
 		if(isCreateOrUpdate){
-			Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
+			/*Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
 			//event.getPropertiesMap().addString(Properties.UPDATE,"@(."+movementCollectionValuesTransferItemCollection.getPropertiesMap().getIdentifierAsStyleClass()+")");
 			
 			event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
@@ -308,19 +239,13 @@ public class MovementIdentifiablePages implements Serializable {
 					super.__execute__(action);
 					movementCollectionValuesTransferItemCollection.addManyRow(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getItems());
 				}
-			});
+			});*/
 		}
 	}
 	
 	public static void prepareMovementCollectionInventoryEditFormMaster(final FormDetail detail,final MovementCollectionInventoryEditFormMasterPrepareListener listener){
-		/*MovementCollectionInventory movementCollectionInventory = (MovementCollectionInventory) detail.getMaster().getObject();
-		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-		movementCollectionInventory.getItems().setSynchonizationEnabled(isCreateOrUpdate);
-		movementCollectionInventory.getItems().removeAll(); // will be filled up by the data table load call
-		*/
 		listener.addFields(detail);		
 		listener.addItemsDataTable(detail);
-		
 	}
 	
 	public static void prepareMovementCollectionInventoryEditFormMaster(final FormDetail detail){
@@ -351,11 +276,6 @@ public class MovementIdentifiablePages implements Serializable {
 	}
 	
 	public static void prepareMovementGroupEditFormMaster(final FormDetail detail,MovementGroupEditFormMasterPrepareListener listener){
-		/*MovementGroup movementGroup = (MovementGroup) detail.getMaster().getObject();
-		final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
-		movementGroup.getItems().setSynchonizationEnabled(isCreateOrUpdate);
-		movementGroup.getItems().removeAll(); // will be filled up by the data table load call
-		*/
 		listener.addFields(detail);		
 		listener.addItemsDataTable(detail);
 	}
