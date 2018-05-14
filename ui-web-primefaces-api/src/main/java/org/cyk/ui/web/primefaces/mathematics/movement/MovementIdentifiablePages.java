@@ -18,10 +18,12 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.mathematics.movement.MovementGroup;
 import org.cyk.system.root.model.mathematics.movement.MovementGroupItem;
 import org.cyk.system.root.model.time.Period;
+import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.ClassHelper;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.LoggingHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
@@ -228,7 +230,7 @@ public class MovementIdentifiablePages implements Serializable {
 		prepareMovementCollectionValuesTransferItemCollectionEditFormMaster(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_ITEMS);
 		
 		if(isCreateOrUpdate){
-			/*Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
+			Event event = Event.instanciateOne(detail, MovementCollectionValuesTransferAcknowledgement.FIELD_TRANSFER, new String[]{});
 			//event.getPropertiesMap().addString(Properties.UPDATE,"@(."+movementCollectionValuesTransferItemCollection.getPropertiesMap().getIdentifierAsStyleClass()+")");
 			
 			event.getListener().addActionListener(new Event.ActionAdapter(event, detail, null, new LoggingHelper.Message.Builder.Adapter.Default()){
@@ -237,9 +239,10 @@ public class MovementIdentifiablePages implements Serializable {
 				@Override
 				public void __execute__(Action<?, ?> action) {
 					super.__execute__(action);
-					movementCollectionValuesTransferItemCollection.addManyRow(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getItems());
+					CollectionHelper.getInstance().getElementAt(detail.getDataTables(),0)
+						.addManyRow(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getItems());
 				}
-			});*/
+			});
 		}
 	}
 	
