@@ -4,11 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.cyk.system.root.business.api.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifierBusiness;
-import org.cyk.system.root.business.api.party.BusinessRoleBusiness;
-import org.cyk.system.root.business.api.party.PartyIdentifiableGlobalIdentifierBusiness;
 import org.cyk.system.root.model.AbstractIdentifiable;
-import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.Movement;
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionIdentifiableGlobalIdentifier;
@@ -17,14 +13,11 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTr
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionValuesTransferItemCollectionItem;
 import org.cyk.system.root.model.party.Party;
-import org.cyk.system.root.model.party.PartyIdentifiableGlobalIdentifier;
 import org.cyk.system.root.model.party.Store;
-import org.cyk.system.root.persistence.api.party.StoreDao;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Constant.Action;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
@@ -106,7 +99,7 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 					private static final long serialVersionUID = 1L;
 							
 					public void addOne(CollectionHelper.Instance<Object> instance, Object element, Object source, Object sourceObject) {
-						Row row = (Row) element;
+						/*Row row = (Row) element;
 						MovementCollectionValuesTransferItemCollectionItem item = (MovementCollectionValuesTransferItemCollectionItem) row.getPropertiesMap().getValue();
 						InstanceHelper.getInstance().computeChanges(item.getSource());
 						EndPoint sender = new EndPoint(),receiver = new EndPoint();
@@ -135,25 +128,11 @@ public interface MovementCollectionValuesTransferItemCollectionEditFormMasterPre
 							}
 						}
 						MovementCollection movementCollection = getDestinationMovementCollection(detail,sender,receiver , item.getSource().getCollection(),sourceIdentifiableJoined);
-						/*if(movementCollection!=null){
-							if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransfer){
-								if(Boolean.TRUE.equals(((MovementCollectionValuesTransfer)detail.getMaster().getObject()).getItems().getDestination().getMovementCollectionIsBuffer())){
-									movementCollection = movementCollection.getBuffer();
-								}else{
-									
-								}		
-							}else if(detail.getMaster().getObject() instanceof MovementCollectionValuesTransferAcknowledgement){
-								if(Boolean.TRUE.equals(((MovementCollectionValuesTransferAcknowledgement)detail.getMaster().getObject()).getItems().getSource().getMovementCollectionIsBuffer())){
-									
-								}else{
-									
-								}		
-							}
-							
-						}*/
+						
 						item.getDestination().setCollection(movementCollection);
 						if(item.getDestination()!=null)
 							InstanceHelper.getInstance().computeChanges(item.getDestination());
+						*/
 						//System.out.println(
 						//		"MovementIdentifiableEditPageFormMaster.PrepareMovementCollectionValuesTransferItemCollectionListener.Adapter.Default.addPropertyRowsCollectionInstanceListener(...).new Adapter() {...}.addOne() 001");
 					}		

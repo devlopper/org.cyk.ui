@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 import org.cyk.system.root.business.api.party.PartyBusiness;
-import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.RootConstant;
 import org.cyk.system.root.model.mathematics.movement.AbstractMovementCollections;
@@ -95,11 +94,8 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 				String before = FieldHelper.getInstance().getBeforeLast(partyFieldName);
 				String last = FieldHelper.getInstance().getLast(partyFieldName);
 				if(!partyFieldName.equals(before)){
-					System.out.println(before);
 					detail.setFieldsObjectFromMaster(before);
 				}
-				System.out.println(
-						"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addPartyField() : "+last);
 				detail.addByControlGetListener(ClassHelper.getInstance().instanciateOne(getPartyControlGetAdapterClass()),last).addBreak();
 				detail.setFieldsObjectFromMaster();
 				if(isCreateOrUpdate){
@@ -127,10 +123,6 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 							CollectionHelper.Instance<Row> rows = (CollectionHelper.Instance<Row>)dataTable.getPropertiesMap().getRowsCollectionInstance();
 							rows.removeAll();
 							dataTable.addManyRow(collection.getItems());
-							System.out.println(
-									"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addItemsDataTable(...).new ActionAdapter() {...}.__execute__()");
-							System.out.println(collection.getParty());
-							System.out.println(collection.getItems().getElements());
 						}
 					});
 					
