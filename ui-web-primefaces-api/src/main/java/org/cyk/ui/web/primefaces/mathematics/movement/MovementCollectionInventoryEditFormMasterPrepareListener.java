@@ -8,11 +8,14 @@ import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventor
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
+import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.collection.Row;
 import org.cyk.utility.common.userinterface.event.Event;
+import org.cyk.utility.common.userinterface.output.OutputText;
 
 public interface MovementCollectionInventoryEditFormMasterPrepareListener extends MovementCollectionByPartyEditFormMasterPrepareListener<MovementCollectionInventory, MovementCollectionInventoryItem> {
 	
@@ -64,13 +67,16 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 			super.addOne(instance, element, source, sourceObject);
 			if(element instanceof Column){
 				Column column = (Column)element;
-				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)column._getPropertyAction());
+				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(column._getPropertyAction());
 				if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
 					if(isCreateOrUpdate)
 						column.setCellValueType(Cell.ValueType.TEXT);
-				}else if(MovementCollectionInventoryItem.FIELD_VALUE_PREVIOUS.equals(column.getPropertiesMap().getFieldName())){
-					//((OutputText)column.getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
-					//column.getLabel().getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
+				}else if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue((DataTable) column.getPropertiesMap().getDataTable())
+						.equals(column.getPropertiesMap().getFieldName())){
+					if(Constant.Action.isCreateOrUpdate(column.getPropertyAction())){
+						((OutputText)column.getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
+						column.getLabel().getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
+					}
 					if(isCreateOrUpdate)
 						column.setCellValueType(Cell.ValueType.TEXT);
 				}

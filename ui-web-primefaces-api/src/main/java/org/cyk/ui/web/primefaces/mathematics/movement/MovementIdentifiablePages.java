@@ -274,8 +274,13 @@ public class MovementIdentifiablePages implements Serializable {
 				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
 		*/
 		
-		fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE_PREVIOUS 
+		fieldNames.addAll(Arrays.asList(getFieldMovementCollectionInventoryItemMovementCollectionValue(dataTable)
 				, MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
+	}
+	
+	public static String getFieldMovementCollectionInventoryItemMovementCollectionValue(DataTable dataTable){
+		return Constant.Action.CREATE.equals(dataTable.getPropertyAction()) ? FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_MOVEMENT_COLLECTION
+				,MovementCollection.FIELD_VALUE) : MovementCollectionInventoryItem.FIELD_PREVIOUS_VALUE ;
 	}
 	
 	public static void prepareMovementGroupEditFormMaster(final FormDetail detail,MovementGroupEditFormMasterPrepareListener listener){
