@@ -3,7 +3,6 @@ package org.cyk.ui.web.primefaces.mathematics.movement;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.utility.common.Constant;
@@ -69,7 +68,7 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 				if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
 					if(isCreateOrUpdate)
 						column.setCellValueType(Cell.ValueType.TEXT);
-				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE).equals(column.getPropertiesMap().getFieldName())){
+				}else if(MovementCollectionInventoryItem.FIELD_VALUE_PREVIOUS.equals(column.getPropertiesMap().getFieldName())){
 					//((OutputText)column.getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
 					//column.getLabel().getPropertiesMap().setValue(StringHelper.getInstance().get("value.actual", new Object[]{}));
 					if(isCreateOrUpdate)

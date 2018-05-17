@@ -274,7 +274,7 @@ public class MovementIdentifiablePages implements Serializable {
 				,MovementCollection.FIELD_VALUE),MovementCollectionValuesTransferItemCollectionItem.FIELD_DESTINATION_MOVEMENT_COLLECTION,MovementCollectionValuesTransferItemCollectionItem.FIELD_VALUE));
 		*/
 		
-		fieldNames.addAll(Arrays.asList(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_MOVEMENT_COLLECTION,MovementCollection.FIELD_VALUE) 
+		fieldNames.addAll(Arrays.asList(MovementCollectionInventoryItem.FIELD_VALUE_PREVIOUS 
 				, MovementCollectionInventoryItem.FIELD_VALUE,MovementCollectionInventoryItem.FIELD_VALUE_GAP));
 	}
 	
