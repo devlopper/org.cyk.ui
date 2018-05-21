@@ -35,6 +35,7 @@ public class FormBuilderBasedOnDynamicForm extends FormDetail.Builder.Target.Ada
 	
 	@Override
 	public DynaFormLabel addLabel(DynaFormRow row, OutputText outputText) {
+		//debug(outputText);
 		return row.addLabel(outputText.getPropertiesMap().getValue().toString(),1,outputText.getArea().getWidth().getDistance()==null ? 1 : outputText.getArea().getWidth().getDistance().intValue());  
 	}
 	

@@ -6,9 +6,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventory;
 import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.utility.common.Constant;
+import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
@@ -24,6 +24,18 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 		
 		public static class Default extends MovementCollectionInventoryEditFormMasterPrepareListener.Adapter implements Serializable {
 			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void prepareItemsDataTable(DataTable dataTable) {
+				dataTable.getPropertiesMap().setOnPrepareAddColumnAction(Boolean.FALSE);
+				super.prepareItemsDataTable(dataTable);
+				if(dataTable.getPropertiesMap().getMainMenu() instanceof Component)
+					((Component)dataTable.getPropertiesMap().getMainMenu()).getPropertiesMap().setRendered(Boolean.FALSE);
+				if(dataTable.getPropertiesMap().getAddCommandComponent() instanceof Component)
+					((Component)dataTable.getPropertiesMap().getAddCommandComponent()).getPropertiesMap().setRendered(Boolean.FALSE);
+				
+				((Component)dataTable.getPropertiesMap().getColumns()).getPropertiesMap().setHeaderRendered(Boolean.FALSE);
+			}
 			
 			@Override
 			public Class<MovementCollectionInventory> getCollectionClass() {
@@ -57,6 +69,11 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 	public static class PartyControlGetAdapter extends MovementCollectionByPartyEditFormMasterPrepareListener.PartyControlGetAdapter implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
+		@Override
+		public String getLabelValueIdentifier() {
+			return "store";
+		}
+		
 	}
 	
 	public static class ItemsDataTableColumnAdapter extends MovementCollectionByPartyEditFormMasterPrepareListener.ItemsDataTableColumnAdapter implements Serializable {
@@ -67,16 +84,21 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 			super.addOne(instance, element, source, sourceObject);
 			if(element instanceof Column){
 				Column column = (Column)element;
-				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(column._getPropertyAction());
-				if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
-					if(isCreateOrUpdate)
+				DataTable dataTable = (DataTable) column.getPropertiesMap().getDataTable();
+				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(column.getPropertyAction());
+				if(dataTable.getChoiceValueClassMasterFieldName().equals(column.getPropertiesMap().getFieldName())){
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("product");	
+				}if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue(dataTable).equals(column.getPropertiesMap().getFieldName())){
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("current.stock");
+					if(isCreateOrUpdate){
 						column.setCellValueType(Cell.ValueType.TEXT);
-				}else if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue((DataTable) column.getPropertiesMap().getDataTable())
-						.equals(column.getPropertiesMap().getFieldName())){
-					if(Constant.Action.isCreateOrUpdate(column.getPropertyAction())){
-						((OutputText)column.getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
-						column.getLabel().getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
-					}
+					}	
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE).equals(column.getPropertiesMap().getFieldName())){
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("found.stock");
+					//if(isCreateOrUpdate)
+					//	column.setCellValueType(Cell.ValueType.TEXT);
+				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("stock.gap");
 					if(isCreateOrUpdate)
 						column.setCellValueType(Cell.ValueType.TEXT);
 				}

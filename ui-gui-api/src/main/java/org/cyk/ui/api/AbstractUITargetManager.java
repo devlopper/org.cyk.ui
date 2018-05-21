@@ -94,7 +94,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 					if(itemBuilder==null && itemsBuilder==null){
 						for(Object object : findAll((Class<? extends AbstractIdentifiable>)type,inputChoice,data,field)){
 							AbstractIdentifiable identifiable = (AbstractIdentifiable) object;
-							list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
+							//list.add(Boolean.TRUE.equals(itemWrapper)?item(identifiable):identifiable);
 						}	
 					}else{
 						if(itemsBuilder==null)
@@ -117,7 +117,7 @@ public abstract class AbstractUITargetManager<MODEL,ROW,LABEL,CONTROL,SELECTITEM
 			list.addAll(getChoiceSetSelectItems(choiceSet,field.getAnnotation(NotNull.class)==null));		
 		}else if(GlobalIdentifier.class.equals(type)){
 			for(GlobalIdentifier globalIdentifier : inject(GlobalIdentifierBusiness.class).findAll()){
-				list.add(Boolean.TRUE.equals(itemWrapper)?item(globalIdentifier):globalIdentifier);
+				//list.add(Boolean.TRUE.equals(itemWrapper)?item(globalIdentifier):globalIdentifier);
 			}		
 		}else{
 			if(getChoices!=null)

@@ -7,6 +7,10 @@
       xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.resources/component">
 	
 	<style>
+		.#{dataTable.propertiesMap.identifierAsStyleClass} .ui-datatable-header {
+			display: #{dataTable.propertiesMap.columns.propertiesMap.headerRendered ? 'block' : 'none'};
+		}
+		
 		.#{dataTable.propertiesMap.identifierAsStyleClass} tfoot {
 			display: #{dataTable.propertiesMap.columns.propertiesMap.footerRendered ? 'table-footer-group' : 'none'};
 		}

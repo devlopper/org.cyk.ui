@@ -2,6 +2,7 @@ package org.cyk.system.test.business;
 
 import java.io.Serializable;
 
+import org.cyk.system.root.model.mathematics.movement.MovementCollectionInventoryItem;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementCollectionInventoryEditFormMasterPrepareListener;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Constant.Action;
@@ -13,6 +14,7 @@ import org.cyk.utility.common.userinterface.collection.Row;
 import org.cyk.utility.common.userinterface.input.choice.InputChoice;
 import org.cyk.utility.common.userinterface.output.OutputText;
 
+@Deprecated
 public class MovementCollectionInventoryEditFormMasterPrepareAdapter extends MovementCollectionInventoryEditFormMasterPrepareListener.Adapter.Default implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -44,8 +46,8 @@ public class MovementCollectionInventoryEditFormMasterPrepareAdapter extends Mov
 		
 		((OutputText)movementCollectionInventoryItemCollection.getColumn(movementCollectionInventoryItemCollection.getChoiceValueClassMasterFieldName()).getPropertiesMap().getHeader()).getPropertiesMap()
 			.setValue(StringHelper.getInstance().get("product", new Object[]{}));
-		//((OutputText)movementCollectionInventoryItemCollection.getColumn(MovementCollectionInventoryItem.FIELD_VALUE_PREVIOUS
-		//	).getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
+		((OutputText)movementCollectionInventoryItemCollection.getColumn(MovementCollectionInventoryItem.FIELD_PREVIOUS_VALUE
+			).getPropertiesMap().getHeader()).getPropertiesMap().setValue(StringHelper.getInstance().get("actual.value", new Object[]{}));
 			
 		
 	}

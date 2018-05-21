@@ -3,11 +3,14 @@ package org.cyk.ui.web.primefaces;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.cyk.system.root.model.AbstractCollection;
 import org.cyk.system.root.model.AbstractCollectionItem;
 import org.cyk.system.root.model.Rud;
 import org.cyk.system.root.model.geography.GlobalPosition;
 import org.cyk.system.root.model.geography.Locality;
+import org.cyk.system.root.model.geography.Location;
+import org.cyk.system.root.model.geography.PhoneNumber;
 import org.cyk.system.root.model.globalidentification.AbstractJoinGlobalIdentifier;
 import org.cyk.system.root.model.globalidentification.GlobalIdentifier;
 import org.cyk.system.root.model.mathematics.Interval;
@@ -70,6 +73,27 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 	}
 	
 	@Override
+	protected void ____addName____() {
+		if(ClassHelper.getInstance().isInstanceOf(AbstractJoinGlobalIdentifier.class, (Class<?>)getPropertiesMap().getActionOnClass())){
+			
+		}else if(ArrayUtils.contains(new Class<?>[]{MovementCollectionInventory.class,MovementGroup.class,MovementCollectionValuesTransfer.class
+			,MovementCollectionValuesTransferAcknowledgement.class}, getPropertiesMap().getActionOnClass())){
+			
+		}else
+			super.____addName____();
+	}
+	
+	@Override
+	protected void ____addType____() {
+		Class<?> actionOnClass = (Class<?>) getPropertiesMap().getActionOnClass();
+		if(ArrayUtils.contains(new Class<?>[]{PhoneNumber.class,Location.class,MovementCollectionInventory.class}, actionOnClass)){
+			return;
+		}
+		super.____addType____();
+		
+	}
+	
+	@Override
 	protected void __prepare__() {
 		super.__prepare__();
 		FormDetail detail = getDetail();
@@ -77,8 +101,8 @@ public class IdentifiableConsultPageFormMaster extends IdentifiableConsultPage.F
 		detail.setFieldsObjectFromMaster();
 		
 		if(ClassHelper.getInstance().isInstanceOf(AbstractCollection.class, actionOnClass)){
-			detail.add(AbstractCollection.FIELD_ITEM_CODE_SEPARATOR).addBreak();
-			detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
+			//detail.add(AbstractCollection.FIELD_ITEM_CODE_SEPARATOR).addBreak();
+			//detail.add(AbstractCollection.FIELD_ITEM_AGGREGATION_APPLIED).addBreak();
 			
 			if(MovementCollection.class.equals(actionOnClass)){
 				MovementCollection movementCollection = (MovementCollection) getObject();
