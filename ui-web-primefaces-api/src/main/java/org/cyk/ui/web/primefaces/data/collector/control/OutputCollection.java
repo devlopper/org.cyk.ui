@@ -109,7 +109,7 @@ public class OutputCollection<T> extends org.cyk.ui.web.api.data.collector.contr
 				filter = globalFilter;
 			DataReadConfiguration configuration = new DataReadConfiguration((long)first,maximumResultCount, sortField, SortOrder.ASCENDING.equals(sortOrder), filters, filter);
 			FilterHelper.Filter<AbstractIdentifiable> filterInstance = (Filter<AbstractIdentifiable>) ClassHelper.getInstance().instanciateOne(FilterClassLocator.getInstance().locate(identifiableClass));
-			filterInstance.set(filter);
+			filterInstance.use(filter);
 			outputCollection.getCollection().removeAll();
 			outputCollection.add(InstanceHelper.getInstance().get((Class<AbstractIdentifiable>)identifiableClass,filterInstance, configuration));
 			rowCount = InstanceHelper.getInstance().getIfNotNullElseDefault(

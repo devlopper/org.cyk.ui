@@ -9,11 +9,13 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.StringHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
 import org.cyk.utility.common.userinterface.collection.DataTable;
 import org.cyk.utility.common.userinterface.collection.Row;
+import org.cyk.utility.common.userinterface.container.form.FormDetail;
 import org.cyk.utility.common.userinterface.event.Event;
 import org.cyk.utility.common.userinterface.output.OutputText;
 
@@ -24,6 +26,13 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 		
 		public static class Default extends MovementCollectionInventoryEditFormMasterPrepareListener.Adapter implements Serializable {
 			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void addFields(FormDetail detail) {
+				//((MovementCollectionInventory)detail.getMaster().getObject()).setParty(party);
+				super.addFields(detail);
+				
+			}
 			
 			@Override
 			protected void prepareItemsDataTable(DataTable dataTable) {
@@ -87,18 +96,18 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 				DataTable dataTable = (DataTable) column.getPropertiesMap().getDataTable();
 				Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(column.getPropertyAction());
 				if(dataTable.getChoiceValueClassMasterFieldName().equals(column.getPropertiesMap().getFieldName())){
-					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("product");	
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).computeAndSetPropertyValueFromStringIdentifier("product");	
 				}if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue(dataTable).equals(column.getPropertiesMap().getFieldName())){
-					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("current.stock");
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).computeAndSetPropertyValueFromStringIdentifier("current.stock");
 					if(isCreateOrUpdate){
 						column.setCellValueType(Cell.ValueType.TEXT);
 					}	
 				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE).equals(column.getPropertiesMap().getFieldName())){
-					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("found.stock");
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).computeAndSetPropertyValueFromStringIdentifier("found.stock");
 					//if(isCreateOrUpdate)
 					//	column.setCellValueType(Cell.ValueType.TEXT);
 				}else if(FieldHelper.getInstance().buildPath(MovementCollectionInventoryItem.FIELD_VALUE_GAP).equals(column.getPropertiesMap().getFieldName())){
-					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).setPropertyValueFromStringIdentifier("stock.gap");
+					column.getPropertyInstanciateIfNull(Properties.HEADER, OutputText.class).computeAndSetPropertyValueFromStringIdentifier("stock.gap");
 					if(isCreateOrUpdate)
 						column.setCellValueType(Cell.ValueType.TEXT);
 				}
@@ -111,8 +120,13 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 		
 		public Cell instanciateOne(Column column, Row row) {
 			final Cell cell = super.instanciateOne(column, row);
+			DataTable dataTable = (DataTable) column.getPropertiesMap().getDataTable();
 			if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
 				Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
+			}else if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue(dataTable).equals(column.getPropertiesMap().getFieldName())){
+				OutputText outputText = cell.getPropertiesMap().get(Properties.VALUE, OutputText.class);
+				if(StringHelper.getInstance().isBlank((String)outputText.getPropertiesMap().getValue()))
+					outputText.getPropertiesMap().setValue("0");
 			}
 			return cell;
 		}
