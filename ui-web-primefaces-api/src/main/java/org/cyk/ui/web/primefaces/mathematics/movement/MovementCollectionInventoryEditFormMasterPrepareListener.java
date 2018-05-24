@@ -9,7 +9,7 @@ import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.Properties;
 import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
-import org.cyk.utility.common.helper.StringHelper;
+import org.cyk.utility.common.helper.InstanceHelper;
 import org.cyk.utility.common.userinterface.Component;
 import org.cyk.utility.common.userinterface.collection.Cell;
 import org.cyk.utility.common.userinterface.collection.Column;
@@ -29,9 +29,8 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 			
 			@Override
 			public void addFields(FormDetail detail) {
-				//((MovementCollectionInventory)detail.getMaster().getObject()).setParty(party);
+				InstanceHelper.getInstance().computeChanges(detail.getMaster().getObject());
 				super.addFields(detail);
-				
 			}
 			
 			@Override
@@ -121,12 +120,16 @@ public interface MovementCollectionInventoryEditFormMasterPrepareListener extend
 		public Cell instanciateOne(Column column, Row row) {
 			final Cell cell = super.instanciateOne(column, row);
 			DataTable dataTable = (DataTable) column.getPropertiesMap().getDataTable();
+			Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate(column.getPropertyAction());
 			if(ArrayUtils.contains(new String[]{MovementCollectionInventoryItem.FIELD_VALUE},column.getPropertiesMap().getFieldName())){
-				Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
+				if(isCreateOrUpdate)
+					Event.instanciateOne(cell, new String[]{MovementCollectionInventoryItem.FIELD_VALUE_GAP},new String[]{});	
 			}else if(MovementIdentifiablePages.getFieldMovementCollectionInventoryItemMovementCollectionValue(dataTable).equals(column.getPropertiesMap().getFieldName())){
-				OutputText outputText = cell.getPropertiesMap().get(Properties.VALUE, OutputText.class);
-				if(StringHelper.getInstance().isBlank((String)outputText.getPropertiesMap().getValue()))
+				/*OutputText outputText = cell.getPropertiesMap().get(Properties.VALUE, OutputText.class);
+				if(outputText.getPropertiesMap().getValue() == null || 
+						(outputText.getPropertiesMap().getValue() instanceof String && StringHelper.getInstance().isBlank((String)outputText.getPropertiesMap().getValue())))
 					outputText.getPropertiesMap().setValue("0");
+				*/
 			}
 			return cell;
 		}

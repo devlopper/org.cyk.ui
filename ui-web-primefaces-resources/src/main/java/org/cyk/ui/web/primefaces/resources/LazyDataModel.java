@@ -70,7 +70,9 @@ public class LazyDataModel<T> extends org.primefaces.model.LazyDataModel<Row> im
 		if(Boolean.TRUE.equals(isPageable(first,pageSize)))
 			instances = page(instances, first,pageSize);
 		
-		List<Row> rows = CollectionHelper.getInstance().isEmpty(instances) ? new ArrayList<Row>() : (List<Row>) Row.instanciateMany(instances,component,null).getElements();
+		@SuppressWarnings("unchecked")
+		List<Row> rows = CollectionHelper.getInstance().isEmpty(instances) ? new ArrayList<Row>() : (List<Row>) Row.instanciateMany(instances,component
+				,(CollectionHelper.Instance<Row>)component.getPropertiesMap().getRowsCollectionInstance()).getElements();
 		
 		if("__orderNumber__".equals(sortField))
 			sort(rows, sortOrder, sortField);

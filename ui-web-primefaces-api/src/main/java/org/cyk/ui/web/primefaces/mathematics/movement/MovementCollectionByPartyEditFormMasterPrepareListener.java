@@ -11,6 +11,7 @@ import org.cyk.system.root.model.mathematics.movement.AbstractMovementCollection
 import org.cyk.system.root.model.mathematics.movement.MovementCollection;
 import org.cyk.system.root.model.party.Party;
 import org.cyk.system.root.model.party.Store;
+import org.cyk.ui.web.primefaces.IdentifiableEditPageFormMaster;
 import org.cyk.utility.common.Action;
 import org.cyk.utility.common.Constant;
 import org.cyk.utility.common.cdi.AbstractBean;
@@ -40,6 +41,7 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 	MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTION,ITEM> setPartyFieldName(String partyFieldName);
 	void addFields(FormDetail detail);
 	void addPartyField(FormDetail detail);
+	void addExistencePeriodFromDateField(FormDetail detail);
 	Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass();
 	Class<? extends ItemsDataTableColumnAdapter> getItemsDataTableColumnAdapterClass();
 	Class<? extends ItemsDataTableCellAdapter> getItemsDataTableCellAdapterClass();
@@ -73,6 +75,8 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 				collection.getItems().setSynchonizationEnabled(isCreateOrUpdate);
 				collection.getItems().removeAll(); // will be filled up by the data table load call				
 				addPartyField(detail);
+				if(Constant.Action.isOneOf(detail.getPropertyAction(), Constant.Action.READ,Constant.Action.CONSULT))
+					addExistencePeriodFromDateField(detail);
 			}
 			
 			@SuppressWarnings("unchecked")
@@ -104,6 +108,11 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 			}
 			
 			@Override
+			public void addExistencePeriodFromDateField(FormDetail detail) {
+				IdentifiableEditPageFormMaster.addExistencePeriodFromDate(detail);
+			}
+			
+			@Override
 			public void addItemsDataTable(FormDetail detail) {
 				final COLLECTION collection = getCollection(detail);
 				final Boolean isCreateOrUpdate = Constant.Action.isCreateOrUpdate((Constant.Action)detail._getPropertyAction());
@@ -125,10 +134,27 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 							dataTable.addManyRow(collection.getItems());
 						}
 					});
-					
-					dataTable.getPropertiesMap().setCellListener(ClassHelper.getInstance().instanciateOne(getItemsDataTableCellAdapterClass()));
-					
+				}else {
+					/*dataTable.getPropertyRowsCollectionInstance(Boolean.TRUE);
+					System.out.println(
+							"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addItemsDataTable() TRUE");
+					dataTable.addRowsCollectionInstanceListener(new RowsCollectionInstanceListener.Adapter<Object>(){
+						private static final long serialVersionUID = 1L;
+						@Override
+						public void addOne(CollectionHelper.Instance<Object> instance,Object element, Object source, Object sourceObject) {
+							super.addOne(instance, element, source, sourceObject);
+							//((Row)element)
+							//InstanceHelper.getInstance().computeChanges(((Row)element).getPropertiesMap().getValue());
+							MovementCollectionInventoryItem i = (MovementCollectionInventoryItem) ((Row)element).getPropertiesMap().getValue();
+							System.out.println(
+									"MovementCollectionByPartyEditFormMasterPrepareListener.Adapter.Default.addItemsDataTable(...).new Adapter() {...}.addOne() : "+i.getPreviousValue());
+						}
+					});	*/
 				}
+				
+				
+				
+				dataTable.getPropertiesMap().setCellListener(ClassHelper.getInstance().instanciateOne(getItemsDataTableCellAdapterClass()));
 				
 				dataTable.addColumnListener(ClassHelper.getInstance().instanciateOne(getItemsDataTableColumnAdapterClass()));
 				
@@ -137,10 +163,11 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 				dataTable.getPropertiesMap().setMaster(collection);
 				dataTable.getPropertiesMap().setIsAutomaticallyAddChoiceValues(Boolean.FALSE);
 				//dataTable.getPropertiesMap().setChoiceValueClassMasterFieldName(FieldHelper.getInstance().buildPath(MovementCollectionValuesTransferItemCollectionItem.FIELD_SOURCE,Movement.FIELD_COLLECTION));
-				
+								
 				prepareItemsDataTable(dataTable);
 				dataTable.build();	
-								
+				
+				
 			}
 		
 			protected void prepareItemsDataTable(DataTable dataTable){
@@ -194,6 +221,9 @@ public interface MovementCollectionByPartyEditFormMasterPrepareListener<COLLECTI
 		
 		@Override
 		public void addPartyField(FormDetail detail) {}
+		
+		@Override
+		public void addExistencePeriodFromDateField(FormDetail detail) {}
 		
 		@Override
 		public Class<? extends PartyControlGetAdapter> getPartyControlGetAdapterClass() {
