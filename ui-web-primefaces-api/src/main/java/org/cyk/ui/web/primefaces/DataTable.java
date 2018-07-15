@@ -37,7 +37,11 @@ import org.cyk.ui.web.primefaces.file.FileIdentifiableEditPageFormMaster;
 import org.cyk.ui.web.primefaces.mathematics.MathematicsIdentifiablePages;
 import org.cyk.ui.web.primefaces.mathematics.movement.MovementIdentifiablePages;
 import org.cyk.utility.common.helper.ClassHelper;
+import org.cyk.utility.common.helper.CollectionHelper;
 import org.cyk.utility.common.helper.FieldHelper;
+import org.cyk.utility.common.helper.StringHelper;
+import org.cyk.utility.common.userinterface.Component;
+import org.cyk.utility.common.userinterface.collection.Column;
 
 public class DataTable {
 
@@ -130,6 +134,29 @@ public class DataTable {
 			}else if(Script.class.equals(actionOnClass)){
 				FileIdentifiableEditPageFormMaster.processColumnsFieldNamesScript(dataTable, fieldNames);
 			}
+		}
+		
+		@Override
+		public void listenPrepare(org.cyk.utility.common.userinterface.collection.DataTable dataTable) {
+			super.listenPrepare(dataTable);
+			if(MovementCollectionInventory.class.equals(dataTable.getPropertiesMap().getActionOnClass())){
+				dataTable.addColumnListener(new CollectionHelper.Instance.Listener.Adapter<Component>(){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void addOne(CollectionHelper.Instance<Component> instance, Component element, Object source,Object sourceObject) {
+						super.addOne(instance, element, source, sourceObject);
+						if(element instanceof Column){
+							Column column = (Column)element;
+							if(FieldHelper.getInstance().buildPath(AbstractIdentifiable.FIELD_GLOBAL_IDENTIFIER,GlobalIdentifier.FIELD_EXISTENCE_PERIOD,Period.FIELD_FROM_DATE)
+									.equals(column.getPropertiesMap().getFieldName())){
+								column.setPropertyHeaderPropertyValue(StringHelper.getInstance().get("date", new String[]{}));
+							}
+						}
+					}
+				});	
+			}
+			
 		}
 		
 		/**/
